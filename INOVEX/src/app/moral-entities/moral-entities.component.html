@@ -1,0 +1,32 @@
+<div class="row">
+    <div class="col-sm-5 col-sm-offset-1">
+  
+      <form (ngSubmit)="onSubmit(f)" #f="ngForm">
+  
+        <div class="form-group">
+          <label for="nom">Nom : </label>
+          <input type="text" id="nom" class="form-control" placeholder="Nom" name="nom" ngModel>
+        </div>
+  
+        <div class="form-group">
+          <label for="adress">Adresse : </label>
+          <input type="text" id="adress" class="form-control" placeholder="Adresse" name="adress" ngModel>
+        </div>
+
+        <div class="form-group">
+            <label for="code">Code : </label>
+            <input type="text" id="code" class="form-control" placeholder="Code" name="code" ngModel>
+        </div>
+
+        <div class="form-group">
+            <label for="unitPrice">Prix unitaire : </label>
+            <input type="text" id="unitPrice" class="form-control" placeholder="Prix Unitaire" name="unitPrice" ngModel>
+        </div>
+  
+        <div class="form-group">
+          <button class="btn btn-primary btn-lg" type="submit">Valider</button>
+        </div>
+  
+      </form>
+    </div>
+  </div>
