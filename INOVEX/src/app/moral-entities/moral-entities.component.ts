@@ -1,6 +1,7 @@
 import {Component, Injectable, OnInit} from '@angular/core';
 import { NgForm } from '@angular/forms';
 import {moralEntitiesService} from "../services/moralentities.service";
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-moral-entities',
@@ -15,9 +16,8 @@ export class MoralEntitiesComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  //TODO : rendre obligatoire tout sauf adresse
+
   onSubmit(form : NgForm){
-    alert("Valider frerot");
 
     if (form.value['adress']==''){
       this.moralEntitiesService.adress = '_';
@@ -26,12 +26,32 @@ export class MoralEntitiesComponent implements OnInit {
 
     this.moralEntitiesService.nom = form.value['nom'];
     this.moralEntitiesService.code = form.value['code'];
-    this.moralEntitiesService.unitPrice = form.value['unitPrice'];
+    this.moralEntitiesService.unitPrice = form.value['unitPrice'].replace(',','.');
 
     this.moralEntitiesService.createMoralEntity().subscribe((response)=>{
-      alert(response);
+      if (response == "Création du client OK"){
+        Swal.fire("Le client a bien été créé !");
+      }
+      else {
+        Swal.fire({
+          icon: 'error',
+          text: 'Erreur lors de la création du client ....',
+        })
+      }
     });
 
+    this.resetFields(form);
+  }
+
+  resetFields(form: NgForm){
+    form.controls['nom'].reset();
+    form.value['nom']='';
+    form.controls['code'].reset();
+    form.value['code']='';
+    form.controls['adress'].reset();
+    form.value['adress']='';
+    form.controls['unitPrice'].reset();
+    form.value['unitPrice']='';
   }
 
 }
