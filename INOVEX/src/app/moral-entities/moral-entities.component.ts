@@ -11,7 +11,11 @@ import Swal from 'sweetalert2';
 
 export class MoralEntitiesComponent implements OnInit {
 
-  constructor(private moralEntitiesService : moralEntitiesService) { }
+  private code : string;
+
+  constructor(private moralEntitiesService : moralEntitiesService) {
+    this.code = '';
+  }
 
   ngOnInit(): void {
   }
@@ -25,20 +29,26 @@ export class MoralEntitiesComponent implements OnInit {
     else this.moralEntitiesService.adress = form.value['adress'];
 
     this.moralEntitiesService.nom = form.value['nom'];
-    this.moralEntitiesService.code = form.value['code'];
     this.moralEntitiesService.unitPrice = form.value['unitPrice'].replace(',','.');
+    this.code = form.value['produit']+form.value['collecteur'];
+    this.moralEntitiesService.getLastCode(this.code).subscribe((response)=>{
+      var CodeCast : number = +response.data[0].Code;
+      this.moralEntitiesService.code = String(CodeCast+1);
 
-    this.moralEntitiesService.createMoralEntity().subscribe((response)=>{
-      if (response == "Création du client OK"){
-        Swal.fire("Le client a bien été créé !");
-      }
-      else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Erreur lors de la création du client ....',
-        })
-      }
+      this.moralEntitiesService.createMoralEntity().subscribe((response)=>{
+        if (response == "Création du client OK"){
+          Swal.fire("Le client a bien été créé !");
+        }
+        else {
+          Swal.fire({
+            icon: 'error',
+            text: 'Erreur lors de la création du client ....',
+          })
+        }
+      });
     });
+
+
 
     this.resetFields(form);
   }
@@ -46,8 +56,6 @@ export class MoralEntitiesComponent implements OnInit {
   resetFields(form: NgForm){
     form.controls['nom'].reset();
     form.value['nom']='';
-    form.controls['code'].reset();
-    form.value['code']='';
     form.controls['adress'].reset();
     form.value['adress']='';
     form.controls['unitPrice'].reset();

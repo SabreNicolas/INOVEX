@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="243.656" height="80.184" viewBox="0 0 243.656 80.184">
+    <defs>
+        <style>
+            .prefix__cls-2{fill:#f22b5d}.prefix__cls-3{fill:#044daa}
+        </style>
+    </defs>
+    <g id="prefix__Groupe_316" data-name="Groupe 316" transform="translate(-169.916 205.339)" style="opacity:.2">
+        <path id="prefix__Tracé_691" d="M7.352 0A7.352 7.352 0 1 1 0 7.352 7.352 7.352 0 0 1 7.352 0z" class="prefix__cls-2" data-name="Tracé 691" transform="translate(169.916 -205.339)"/>
+        <path id="prefix__Rectangle_78" d="M0 0H11.284V55.735H0z" class="prefix__cls-3" data-name="Rectangle 78" transform="translate(171.113 -180.891)"/>
+        <path id="prefix__Tracé_682" d="M221.363-177.817l.038-.012a15.476 15.476 0 0 0-14.769-10.851h-3.424a20.346 20.346 0 0 0-20.332 19.795h-.029v35.94h11.285V-168.5c.094-4.856 4.012-8.771 10.148-8.9a7.517 7.517 0 0 1 6.759 4.309l2.555 5.415 15.868 34.725h12.4z" class="prefix__cls-3" data-name="Tracé 682" transform="translate(6.045 7.788)"/>
+        <path id="prefix__Tracé_683" d="M334.256-177.817l.038-.012a15.476 15.476 0 0 0-14.769-10.851H316.1a20.346 20.346 0 0 0-20.332 19.795h-.029v35.94h11.285V-168.5c.094-4.856 4.012-8.771 10.148-8.9a7.517 7.517 0 0 1 6.759 4.309l2.555 5.415 15.868 34.725h12.4z" class="prefix__cls-3" data-name="Tracé 683" transform="translate(58.82 7.788)"/>
+        <path id="prefix__Tracé_684" d="M272.781-143.807l-.038.012a15.475 15.475 0 0 0 14.767 10.851h3.425a20.346 20.346 0 0 0 20.332-19.795h.028v-35.94h-11.283v35.552c-.094 4.856-4.012 8.771-10.148 8.9a7.521 7.521 0 0 1-6.761-4.309l-2.553-5.415-15.869-34.725h-12.4z" class="prefix__cls-3" data-name="Tracé 684" transform="translate(38.505 7.788)"/>
+        <path id="prefix__Tracé_685" d="M246.161-176.691a15.418 15.418 0 0 1 15.4 15.4 15.418 15.418 0 0 1-15.4 15.4 15.417 15.417 0 0 1-15.4-15.4 15.417 15.417 0 0 1 15.4-15.4m0-11.329a26.729 26.729 0 0 0-26.73 26.729 26.731 26.731 0 0 0 26.73 26.732 26.731 26.731 0 0 0 26.73-26.732 26.729 26.729 0 0 0-26.73-26.729z" class="prefix__cls-3" data-name="Tracé 685" transform="translate(23.147 8.096)"/>
+        <circle id="prefix__Ellipse_51" cx="7.352" cy="7.352" r="7.352" class="prefix__cls-2" data-name="Ellipse 51" transform="translate(370.29 -154.944)"/>
+    </g>
+</svg>

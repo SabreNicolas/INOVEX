@@ -6,7 +6,7 @@
 ### angular/cli : npm install -g @angular/cli
 
 # Lancer l'appli :
-ng serve --port numPort
+ng serve --port numPort --host 0.0.0.0
 
 # Créer un Component :
 ng generate component nomComponent

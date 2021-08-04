@@ -41,8 +41,22 @@ export class moralEntitiesService {
     }
 
     //récupérer les clients
-    getMoralEntities() {
-      let requete = "http://"+this.ip+":"+this.portAPI+"/moralEntities";
+    getLastCode(Code : string) {
+      let requete = "http://"+this.ip+":"+this.portAPI+"/moralEntitieLastCode?Code="+Code;
+      console.log(requete);
+
+
+      const requestOptions = {
+        headers: new HttpHeaders(this.headerDict),
+      };
+
+      return this.http
+        .get<any>(requete,requestOptions);
+    }
+
+    //récupérer les clients
+    getMoralEntities(Code : string) {
+      let requete = "http://"+this.ip+":"+this.portAPI+"/moralEntities?Code="+Code;
       console.log(requete);
 
 
@@ -67,18 +81,31 @@ export class moralEntitiesService {
         .put<any>(requete,requestOptions);
     }
 
-  //mettre à jour le prix d'un client
-  setPrix(prix: string, Id: number){
-    let requete = "http://"+this.ip+":"+this.portAPI+"/moralEntitieUnitPrice/"+Id+"?UnitPrice="+prix;
-    console.log(requete);
+    //mettre à jour le prix d'un client
+    setPrix(prix: string, Id: number){
+      let requete = "http://"+this.ip+":"+this.portAPI+"/moralEntitieUnitPrice/"+Id+"?UnitPrice="+prix;
+      console.log(requete);
 
-    const requestOptions = {
-      headers: new HttpHeaders(this.headerDict),
-    };
+      const requestOptions = {
+        headers: new HttpHeaders(this.headerDict),
+      };
 
-    return this.http
-      .put<any>(requete,requestOptions);
-  }
+      return this.http
+        .put<any>(requete,requestOptions);
+    }
+
+    //mettre à jour le enabled d'un client
+    setEnabled(Id: number){
+      let requete = "http://"+this.ip+":"+this.portAPI+"/moralEntitieEnabled/"+Id;
+      console.log(requete);
+
+      const requestOptions = {
+        headers: new HttpHeaders(this.headerDict),
+      };
+
+      return this.http
+        .put<any>(requete,requestOptions);
+    }
 
 
 
