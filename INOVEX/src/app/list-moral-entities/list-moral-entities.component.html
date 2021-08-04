@@ -34,12 +34,15 @@
 
        <button class="btn btn-primary btn-lg" (click)="setFilters()">Valider</button>
 
+       <button id="changeAllPrice" class="btn btn-primary btn-lg float-right" (click)="changeAllPrice()">Changer plusieurs Prix</button>
+
      </div>
 
       <!--table des client-->
       <table class="table table-hover">
         <thead>
         <tr>
+          <th scope="col">#</th>
           <th scope="col">Nom</th>
           <th scope="col">Adresse</th>
           <th scope="col">Code</th>
@@ -51,6 +54,11 @@
         </thead>
         <tbody *ngFor="let mr of moralEntities">
         <tr class="table-light">
+          <td>
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" id="{{mr.Id}}" (click)="addMr(mr.Id)">
+            </div>
+          </td>
           <td>{{mr.Name }}</td>
           <td>{{mr.Address }}</td>
           <td>{{mr.Code}}</td>
@@ -62,7 +70,7 @@
             Changer le Prix
           </button></td>
           <td><button id="setDisabled" (click)="setDisabled(mr.Id)" class="btn btn-outline-light">
-            <img src="assets/visibility.png" class="mr-2">
+            <img src="assets/visibility.png">
           </button></td>
         </tr>
         </tbody>

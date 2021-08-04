@@ -13,9 +13,11 @@ export class ListMoralEntitiesComponent implements OnInit {
 
   public moralEntities : moralEntity[] | undefined;
   public debCode : string;
+  public listId : number[];
 
   constructor(private moralEntitiesService : moralEntitiesService) {
     this.debCode = '';
+    this.listId = [];
   }
 
   ngOnInit(): void {
@@ -88,5 +90,39 @@ export class ListMoralEntitiesComponent implements OnInit {
     });
     this.ngOnInit();
   }
+
+  //permet de stocker les Id des moralEntities pour lesquelles il faut changer le prix
+  addMr(Id : number){
+    // @ts-ignore
+    if (document.getElementById(""+Id).checked == true) {
+      this.listId.push(Id);
+    }
+    else this.listId.splice(this.listId.indexOf(Id),1);
+
+    console.log(this.listId);
+  }
+
+  changeAllPrice(){
+    var prix = prompt('Veuillez saisir un Prix','0');
+    for(var i= 0; i < this.listId.length; i++)
+    {
+      // @ts-ignore
+      this.moralEntitiesService.setPrix(prix.replace(',','.'),this.listId[i]).subscribe((response)=>{
+        if (response == "Mise à jour du prix unitaire OK"){
+          console.log("Le Prix a été mis à jour !");
+        }
+        else {
+          Swal.fire({
+            icon: 'error',
+            text: 'Erreur lors de la mise à jour du Prix ....',
+          })
+        }
+      });
+    }
+    this.listId = [];
+    this.ngOnInit();
+    Swal.fire("Le Prix a été mis à jour !");
+  }
+
 
 }
