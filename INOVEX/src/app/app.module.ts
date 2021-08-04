@@ -8,12 +8,16 @@ import { MoralEntitiesComponent } from './moral-entities/moral-entities.componen
 import {HttpClientModule} from "@angular/common/http";
 import {moralEntitiesService} from "./services/moralentities.service";
 import { ListMoralEntitiesComponent } from './list-moral-entities/list-moral-entities.component';
+import { CategoriesComponent } from './categories/categories.component';
+import { ListCategoriesComponent } from './list-categories/list-categories.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MoralEntitiesComponent,
-    ListMoralEntitiesComponent
+    ListMoralEntitiesComponent,
+    CategoriesComponent,
+    ListCategoriesComponent
   ],
   imports: [
     BrowserModule,
