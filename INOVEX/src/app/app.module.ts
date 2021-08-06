@@ -11,6 +11,7 @@ import { ListMoralEntitiesComponent } from './list-moral-entities/list-moral-ent
 import { CategoriesComponent } from './categories/categories.component';
 import { ListCategoriesComponent } from './list-categories/list-categories.component';
 import {categoriesService} from "./services/categories.service";
+import { ListEntreeComponent } from './list-entree/list-entree.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import {categoriesService} from "./services/categories.service";
     MoralEntitiesComponent,
     ListMoralEntitiesComponent,
     CategoriesComponent,
-    ListCategoriesComponent
+    ListCategoriesComponent,
+    ListEntreeComponent
   ],
   imports: [
     BrowserModule,

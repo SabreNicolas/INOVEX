@@ -4,6 +4,7 @@ import { MoralEntitiesComponent } from './moral-entities/moral-entities.componen
 import {ListMoralEntitiesComponent} from "./list-moral-entities/list-moral-entities.component";
 import {CategoriesComponent} from "./categories/categories.component";
 import {ListCategoriesComponent} from "./list-categories/list-categories.component";
+import {ListEntreeComponent} from "./list-entree/list-entree.component";
 
 const routes: Routes = [
     {
@@ -11,10 +12,16 @@ const routes: Routes = [
         component: MoralEntitiesComponent
     },
 
-  {
-    path: 'listClients',
-    component: ListMoralEntitiesComponent
-  },
+    {
+        path: 'listClients',
+        component: ListMoralEntitiesComponent
+    },
+
+    {
+        path: 'entree',
+        component : ListEntreeComponent
+    },
+
 ];
 
 @NgModule({
