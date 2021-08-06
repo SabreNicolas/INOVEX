@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-sm-5 col-sm-offset-1">
 
-        <form ngNativeValidate  #f="ngForm">
+        <form ngNativeValidate (ngSubmit)="onSubmit(f)" #f="ngForm">
 
             <div class="form-group">
                 <label for="nom">Nom : * </label>
@@ -12,8 +12,9 @@
                 <label>Catégorie parente : *</label>
                 <div class="row">
                     <div class="form-group">
-                        <select required class="form-select form-select-sm" aria-label=".form-select-sm example" name="parent" ngModel="201">
-                            <option selected value="201">OM</option>
+                        <select *ngIf="listCategories" required class="form-select form-select-sm" aria-label=".form-select-sm example" name="parent" ngModel="0">
+                            <option selected value="0">-</option>
+                            <option *ngFor="let c of listCategories" selected value="{{c.Id}}">{{c.Name}}</option>
                         </select>
                     </div>
                 </div>

@@ -1,6 +1,7 @@
  <div *ngIf="moralEntities">
 
      <div class="form-group">
+
        <h5><label>Filtres :</label></h5>
        <div class="row">
          <div class="col-sm-3">
@@ -45,9 +46,8 @@
           <th scope="col">#</th>
           <th scope="col">Nom</th>
           <th scope="col">Adresse</th>
-          <th scope="col">Code</th>
+          <th scope="col">Type Déchets</th>
           <th scope="col">Prix Unitaire</th>
-          <th scope="col">#</th>
           <th scope="col">#</th>
           <th scope="col">#</th>
         </tr>
@@ -59,13 +59,10 @@
               <input class="form-check-input" type="checkbox" id="{{mr.Id}}" (click)="addMr(mr.Id)">
             </div>
           </td>
-          <td>{{mr.Name }}</td>
-          <td>{{mr.Address }}</td>
-          <td>{{mr.Code}}</td>
+          <td>{{mr.Name}}</td>
+          <td>{{mr.Address}}</td>
+          <td>{{mr.produit}} - {{mr.collecteur}}</td>
           <td>{{mr.UnitPrice}}</td>
-          <td><button id="setCode" (click)="setCode(mr)" class="btn btn-primary">
-            Changer le Code
-          </button></td>
           <td><button id="setPrice" (click)="setPrice(mr)" class="btn btn-primary">
             Changer le Prix
           </button></td>

@@ -7,4 +7,6 @@ export interface moralEntity{
   Enabled : number;
   Code : string;
   UnitPrice : number;
+  produit : string;
+  collecteur : string;
 }

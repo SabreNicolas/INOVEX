@@ -15,16 +15,6 @@ const routes: Routes = [
     path: 'listClients',
     component: ListMoralEntitiesComponent
   },
-
-    {
-        path: 'categories',
-        component: CategoriesComponent
-    },
-
-    {
-        path: 'listCategories',
-        component: ListCategoriesComponent
-    },
 ];
 
 @NgModule({

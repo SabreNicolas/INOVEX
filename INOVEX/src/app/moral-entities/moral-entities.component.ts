@@ -32,8 +32,14 @@ export class MoralEntitiesComponent implements OnInit {
     this.moralEntitiesService.unitPrice = form.value['unitPrice'].replace(',','.');
     this.code = form.value['produit']+form.value['collecteur'];
     this.moralEntitiesService.getLastCode(this.code).subscribe((response)=>{
-      var CodeCast : number = +response.data[0].Code;
-      this.moralEntitiesService.code = String(CodeCast+1);
+      if (response.data.length > 0){
+        var CodeCast : number = +response.data[0].Code;
+        this.moralEntitiesService.code = String(CodeCast+1);
+      }
+      else {
+        this.moralEntitiesService.code = this.code + '0001';
+        
+      }
 
       this.moralEntitiesService.createMoralEntity().subscribe((response)=>{
         if (response == "Création du client OK"){
@@ -48,8 +54,6 @@ export class MoralEntitiesComponent implements OnInit {
       });
     });
 
-
-
     this.resetFields(form);
   }
 
@@ -60,6 +64,9 @@ export class MoralEntitiesComponent implements OnInit {
     form.value['adress']='';
     form.controls['unitPrice'].reset();
     form.value['unitPrice']='';
+    //TODO : reset default value select
+    form.controls['produit'].reset();
+    form.controls['collecteur'].reset();
   }
 
 }

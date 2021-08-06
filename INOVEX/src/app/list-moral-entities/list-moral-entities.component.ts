@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {moralEntitiesService} from "../services/moralentities.service";
 import Swal from 'sweetalert2';
 import {moralEntity} from "../../models/moralEntity.model";
-import {NgForm} from "@angular/forms";
 
 @Component({
   selector: 'app-list-moral-entities',

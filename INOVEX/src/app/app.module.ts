@@ -10,6 +10,7 @@ import {moralEntitiesService} from "./services/moralentities.service";
 import { ListMoralEntitiesComponent } from './list-moral-entities/list-moral-entities.component';
 import { CategoriesComponent } from './categories/categories.component';
 import { ListCategoriesComponent } from './list-categories/list-categories.component';
+import {categoriesService} from "./services/categories.service";
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { ListCategoriesComponent } from './list-categories/list-categories.compo
     HttpClientModule
   ],
   providers: [
-    moralEntitiesService
+    moralEntitiesService,
+    categoriesService
   ],
   bootstrap: [AppComponent]
 })

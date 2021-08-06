@@ -40,7 +40,7 @@ export class moralEntitiesService {
         .put<any>(requete,requestOptions);
     }
 
-    //récupérer les clients
+    //récupérer le dernier code
     getLastCode(Code : string) {
       let requete = "http://"+this.ip+":"+this.portAPI+"/moralEntitieLastCode?Code="+Code;
       console.log(requete);
