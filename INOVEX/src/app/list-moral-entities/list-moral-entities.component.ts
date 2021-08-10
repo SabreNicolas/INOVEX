@@ -10,13 +10,14 @@ import {moralEntity} from "../../models/moralEntity.model";
 })
 export class ListMoralEntitiesComponent implements OnInit {
 
-  public moralEntities : moralEntity[] | undefined;
+  public moralEntities : moralEntity[];
   public debCode : string;
   public listId : number[];
 
   constructor(private moralEntitiesService : moralEntitiesService) {
     this.debCode = '';
     this.listId = [];
+    this.moralEntities = [];
   }
 
   ngOnInit(): void {

@@ -3,5 +3,11 @@ body{
   background: url("assets/factory-draw.svg") fixed no-repeat bottom right, url("assets/inova-logo.svg") fixed no-repeat bottom left 0.5em;
 }
 
+.tableFixed thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
 .table-hover>tbody>tr>td {
 }
