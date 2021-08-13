@@ -9,4 +9,5 @@ export interface moralEntity{
   UnitPrice : number;
   produit : string;
   collecteur : string;
+  productId : number;
 }

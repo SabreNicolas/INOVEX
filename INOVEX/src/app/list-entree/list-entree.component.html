@@ -74,7 +74,7 @@
             <tbody *ngFor="let mr of moralEntities">
             <tr class="table-light">
                 <td>{{mr.Name}}</td>
-                <td *ngFor="let day of listDays"><input type="text" id="{{mr.Code}}" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm"></td>
+                <td *ngFor="let day of listDays"><input type="text" id="{{mr.Id}}-{{mr.productId}}-{{day}}" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm"></td>
             </tr>
             </tbody>
         </table>

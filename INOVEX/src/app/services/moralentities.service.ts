@@ -107,6 +107,33 @@ export class moralEntitiesService {
         .put<any>(requete,requestOptions);
     }
 
+    //insérer une mesure
+    createMeasure(EntryDate : string, Value : number, ProductId : number, ProducerId : number){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/Measure?EntryDate="+EntryDate+"&Value="+Value+"&ProductId="+ProductId+"&ProducerId="+ProducerId;
+        console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<any>(requete,requestOptions);
+    }
+
+    //récupérer les tonnages
+    getEntry(EntryDate : string, ProductId : number, ProducerId : number) {
+        let requete = "http://"+this.ip+":"+this.portAPI+"/Entrant/"+ProductId+"/"+ProducerId+"/"+EntryDate;
+        //console.log(requete);
+
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<any>(requete,requestOptions);
+    }
+
 
 
     //GETTER & SETTER

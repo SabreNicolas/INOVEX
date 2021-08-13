@@ -27,6 +27,7 @@ export class ListEntreeComponent implements OnInit {
     this.moralEntitiesService.getMoralEntities(this.debCode).subscribe((response)=>{
       // @ts-ignore
       this.moralEntities = response.data;
+      this.getValues();
     });
   }
 
@@ -56,6 +57,7 @@ export class ListEntreeComponent implements OnInit {
       })
     }
     this.listDays = this.getDays(this.dateDeb, this.dateFin);
+    this.getValues();
   }
 
   //récupérer les jours de la période
@@ -70,9 +72,41 @@ export class ListEntreeComponent implements OnInit {
     return arr;
   };
 
+
   //valider la saisie des tonnages
   validation(){
+    this.listDays.forEach(date =>
+        this.moralEntities.forEach(mr =>{
+          var value = (<HTMLInputElement>document.getElementById(mr.Id+'-'+mr.productId+'-'+date)).value.replace(',','.');
+          var valueInt : number = +value;
+          if (valueInt >0){
+            this.moralEntitiesService.createMeasure(date.substr(6,4)+'-'+date.substr(3,2)+'-'+date.substr(0,2),valueInt,mr.productId,mr.Id).subscribe((response)=>{
+              if (response == "Création du Measures OK"){
+                Swal.fire("Les valeurs ont été insérées avec succès !");
+              }
+              else {
+                Swal.fire({
+                  icon: 'error',
+                  text: 'Erreur lors de l\'insertion des valeurs ....',
+                })
+              }
+            });
+          }
+        })
+    );
+  }
 
+  //récupérer les tonnages en BDD
+  getValues(){
+    this.listDays.forEach(date =>
+        this.moralEntities.forEach(mr =>{
+          this.moralEntitiesService.getEntry(date.substr(6,4)+'-'+date.substr(3,2)+'-'+date.substr(0,2),mr.productId,mr.Id).subscribe((response)=>{
+            if (response.data[0] != undefined && response.data[0].Value!= 0){
+              (<HTMLInputElement>document.getElementById(mr.Id+'-'+mr.productId+'-'+date)).value = response.data[0].Value;
+            }
+          });
+        })
+    );
   }
 
   //changer les dates pour saisir hier
@@ -95,12 +129,48 @@ export class ListEntreeComponent implements OnInit {
 
   //changer les dates pour saisir la semaine en cours
   setCurrentWeek(form: NgForm){
-    Swal.fire("Semaine");
+    var date = new Date();
+    //le début de la semaine par défaut est dimanche (0)
+    var firstday = new Date(date.setDate(date.getDate() - date.getDay()+1));
+    var lastday = new Date(date.setDate(date.getDate() - date.getDay()+7));
+    var ddF = String(firstday.getDate()).padStart(2, '0');
+    var mmF = String(firstday.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyyF = firstday.getFullYear();
+    var firstDayOfWeek = yyyyF + '-' + mmF + '-' + ddF;
+    var ddL = String(lastday.getDate()).padStart(2, '0');
+    var mmL = String(lastday.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyyL = lastday.getFullYear();
+    var LastDayOfWeek = yyyyL + '-' + mmL + '-' + ddL;
+
+    (<HTMLInputElement>document.getElementById("dateDeb")).value = firstDayOfWeek;
+    (<HTMLInputElement>document.getElementById("dateFin")).value = LastDayOfWeek;
+    form.value['dateDeb'] = firstDayOfWeek;
+    form.value['dateFin'] = LastDayOfWeek;
+    this.setPeriod(form);
+    form.controls['dateDeb'].reset();
+    form.value['dateDeb']='';
+    form.controls['dateFin'].reset();
+    form.value['dateFin']='';
   }
 
   //changer les dates pour saisir le mois en cours
   setCurrentMonth(form: NgForm){
-    Swal.fire("Mois");
+    var date = new Date();
+    var mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = date.getFullYear();
+    var dd = String(new Date(yyyy, date.getMonth()+1, 0).getDate()).padStart(2, '0');
+
+    var Fisrtday = yyyy + '-' + mm + '-' + '01';
+    var Lastday = yyyy + '-' + mm + '-' + dd;
+    (<HTMLInputElement>document.getElementById("dateDeb")).value = Fisrtday;
+    (<HTMLInputElement>document.getElementById("dateFin")).value = Lastday;
+    form.value['dateDeb'] = Fisrtday;
+    form.value['dateFin'] = Lastday;
+    this.setPeriod(form);
+    form.controls['dateDeb'].reset();
+    form.value['dateDeb']='';
+    form.controls['dateFin'].reset();
+    form.value['dateFin']='';
   }
 
 
