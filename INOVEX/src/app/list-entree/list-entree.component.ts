@@ -96,6 +96,7 @@ export class ListEntreeComponent implements OnInit {
     );
   }
 
+  //TODO : afficher gif loading pendant la récup des données + change navbar width
   //récupérer les tonnages en BDD
   getValues(){
     this.listDays.forEach(date =>

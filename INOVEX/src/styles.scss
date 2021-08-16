@@ -3,9 +3,20 @@ body{
   background: url("assets/factory-draw.svg") fixed no-repeat bottom right, url("assets/inova-logo.svg") fixed no-repeat bottom left 0.5em;
 }
 
-.tableFixed thead th {
+thead th {
+  position: -webkit-sticky; /* for Safari */
   position: sticky;
   top: 0;
+}
+
+tbody td:first-child {
+  position: -webkit-sticky; /* for Safari */
+  position: sticky;
+  left: 0;
+}
+
+thead th:first-child {
+  left: 0;
   z-index: 1;
 }
 

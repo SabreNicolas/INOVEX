@@ -6,7 +6,8 @@
         <div class="row">
             <div class="col-sm-3">
                 <div class="form-group">
-                    <select id="produit" required class="form-select form-select-sm" aria-label=".form-select-sm example" name="produit" ngModel="201">
+                    <select id="produit" required class="form-select form-select-sm"
+                            aria-label=".form-select-sm example" name="produit" ngModel="201">
                         <option selected value="201">OM</option>
                         <option value="202">DIB/DEA</option>
                         <option value="203">DASRI</option>
@@ -17,7 +18,8 @@
             </div>
             <div class="col-sm-3">
                 <div class="form-group">
-                    <select id="collecteur" required class="form-select form-select-sm" aria-label=".form-select-sm example" name="collecteur" ngModel="01">
+                    <select id="collecteur" required class="form-select form-select-sm"
+                            aria-label=".form-select-sm example" name="collecteur" ngModel="01">
                         <option selected value="01">INOVA</option>
                         <option value="02">VEOLIA</option>
                         <option value="03">PAPREC</option>
@@ -44,10 +46,12 @@
                 <h5><label>Période :</label></h5>
                 <div class="row">
                     <div class="col-lg-3">
-                        <input type="date" id="dateDeb" class="form-control" placeholder="Date de début" name="dateDeb" ngModel>
+                        <input type="date" id="dateDeb" class="form-control" placeholder="Date de début" name="dateDeb"
+                               ngModel>
                     </div>
                     <div class="col-lg-3">
-                        <input type="date" id="dateFin" class="form-control" placeholder="Date de fin" name="dateFin" ngModel>
+                        <input type="date" id="dateFin" class="form-control" placeholder="Date de fin" name="dateFin"
+                               ngModel>
                     </div>
                     <div class="col-sm-3">
                         <div class="form-group">
@@ -60,24 +64,26 @@
                 </div>
             </div>
         </form>
+    </div>
 
-        <button id="changeAllPrice" class="btn btn-primary btn-lg float-right" (click)="validation()">Valider les tonnages</button>
-
-        <!--table de saisie-->
+    <!--table de saisie-->
+    <div class="table-style">
         <table class="table table-hover tableFixed" *ngIf="listDays && moralEntities">
             <thead>
-            <tr>
-                <th scope="col">Nom</th>
+            <tr class="table-secondary">
+                <th scope="col"><button class="btn btn-success"(click)="validation()">Valider les tonnages</button></th>
                 <th *ngFor="let day of listDays" scope="col">{{day}}</th>
             </tr>
             </thead>
             <tbody *ngFor="let mr of moralEntities">
             <tr class="table-light">
-                <td>{{mr.Name}}</td>
-                <td *ngFor="let day of listDays"><input type="text" id="{{mr.Id}}-{{mr.productId}}-{{day}}" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm"></td>
+                <td class="fix"><strong>{{mr.Name}}</strong></td>
+                <td *ngFor="let day of listDays"><input type="text" id="{{mr.Id}}-{{mr.productId}}-{{day}}"
+                                                        class="form-control" aria-label="Small"
+                                                        aria-describedby="inputGroup-sizing-sm"></td>
             </tr>
             </tbody>
         </table>
-
     </div>
+
 </div>
