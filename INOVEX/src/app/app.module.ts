@@ -12,6 +12,9 @@ import { CategoriesComponent } from './categories/categories.component';
 import { ListCategoriesComponent } from './list-categories/list-categories.component';
 import {categoriesService} from "./services/categories.service";
 import { ListEntreeComponent } from './list-entree/list-entree.component';
+import { ListCompteursComponent } from './list-compteurs/list-compteurs.component';
+import { CompteursComponent } from './compteurs/compteurs.component';
+import { AnalysesComponent } from './analyses/analyses.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +23,10 @@ import { ListEntreeComponent } from './list-entree/list-entree.component';
     ListMoralEntitiesComponent,
     CategoriesComponent,
     ListCategoriesComponent,
-    ListEntreeComponent
+    ListEntreeComponent,
+    ListCompteursComponent,
+    CompteursComponent,
+    AnalysesComponent
   ],
   imports: [
     BrowserModule,

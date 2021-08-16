@@ -5,6 +5,9 @@ import {ListMoralEntitiesComponent} from "./list-moral-entities/list-moral-entit
 import {CategoriesComponent} from "./categories/categories.component";
 import {ListCategoriesComponent} from "./list-categories/list-categories.component";
 import {ListEntreeComponent} from "./list-entree/list-entree.component";
+import { CompteursComponent } from './compteurs/compteurs.component';
+import { ListCompteursComponent } from './list-compteurs/list-compteurs.component';
+import { AnalysesComponent } from './analyses/analyses.component';
 
 const routes: Routes = [
     {
@@ -20,6 +23,21 @@ const routes: Routes = [
     {
         path: 'entree',
         component : ListEntreeComponent
+    },
+
+    {
+        path: 'compteurs',
+        component: CompteursComponent
+    },
+
+    {
+        path : 'listCompteurs',
+        component: ListCompteursComponent
+    },
+
+    {
+        path: 'analyses',
+        component: AnalysesComponent
     },
 
 ];
