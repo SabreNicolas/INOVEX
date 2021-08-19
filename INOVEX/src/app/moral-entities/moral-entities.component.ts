@@ -64,7 +64,6 @@ export class MoralEntitiesComponent implements OnInit {
     form.value['adress']='';
     form.controls['unitPrice'].reset();
     form.value['unitPrice']='';
-    //TODO : reset default value select
     form.controls['produit'].reset();
     form.controls['collecteur'].reset();
   }

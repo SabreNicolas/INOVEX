@@ -50,7 +50,6 @@ export class CategoriesComponent implements OnInit {
     form.value['nom']='';
     form.controls['code'].reset();
     form.value['code']='';
-    //TODO : reset default value select
     form.controls['parent'].reset();
     form.value['parent']='0';
   }

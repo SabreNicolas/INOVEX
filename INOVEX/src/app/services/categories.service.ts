@@ -40,7 +40,7 @@ export class categoriesService {
 
     //récupérer les categories
     getCategories() {
-        let requete = "http://"+this.ip+":"+this.portAPI+"/Categories";
+        let requete = "http://"+this.ip+":"+this.portAPI+"/CategoriesCompteurs";
         console.log(requete);
 
 

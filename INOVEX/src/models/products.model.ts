@@ -1,0 +1,10 @@
+export interface product{
+    Id : number;
+    CreateDate : string;
+    LastModifiedDate : string;
+    Name : string;
+    Unit : string;
+    Enabled : number;
+    Code : string;
+    typeId : number;
+}

@@ -1,5 +1,6 @@
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Injectable} from "@angular/core";
+import {product} from "../../models/products.model";
 
 @Injectable()
 export class productsService {
@@ -52,8 +53,8 @@ export class productsService {
     }
 
     //récupérer les categories
-    getCategories() {
-        let requete = "http://"+this.ip+":"+this.portAPI+"/Categories";
+    getCompteurs(Code : string) {
+        let requete = "http://"+this.ip+":"+this.portAPI+"/Compteurs?Code="+Code;
         console.log(requete);
 
 
@@ -62,7 +63,34 @@ export class productsService {
         };
 
         return this.http
-            .get<any[]>(requete,requestOptions);
+            .get<product[]>(requete,requestOptions);
+    }
+
+    //récupérer les valeurs
+    getValueCompteurs(Date : string, Code : string) {
+        let requete = "http://"+this.ip+":"+this.portAPI+"/Compteurs/"+Code+"/"+Date;
+        //console.log(requete);
+
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<any>(requete,requestOptions);
+    }
+
+    //insérer une valeur de compteur
+    createMeasure(Date : string, Value : number, Code : string){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/SaisieMensuelle?Date="+Date+"&Value="+Value+"&Code="+Code;
+        console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<any>(requete,requestOptions);
     }
 
 
