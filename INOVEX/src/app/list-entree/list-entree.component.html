@@ -16,7 +16,7 @@
                     </select>
                 </div>
             </div>
-            <div class="col-sm-3">
+            <!--<div class="col-sm-3">
                 <div class="form-group">
                     <select id="collecteur" required class="form-select form-select-sm"
                             aria-label=".form-select-sm example" name="collecteur" ngModel="01">
@@ -32,7 +32,7 @@
                         <option value="10">SMETOM</option>
                     </select>
                 </div>
-            </div>
+            </div>-->
             <div class="col-sm-3">
                 <div class="form-group">
                     <button class="btn btn-success" (click)="setFilters()">Valider</button>
@@ -75,12 +75,16 @@
                 <th *ngFor="let day of listDays" scope="col">{{day}}</th>
             </tr>
             </thead>
-            <tbody *ngFor="let mr of moralEntities">
-            <tr class="table-light">
+            <tbody>
+            <tr class="table-light" *ngFor="let mr of moralEntities">
                 <td class="fix"><strong>{{mr.Name}}</strong></td>
                 <td *ngFor="let day of listDays"><input type="text" id="{{mr.Id}}-{{mr.productId}}-{{day}}"
                                                         class="form-control" aria-label="Small"
                                                         aria-describedby="inputGroup-sizing-sm"></td>
+            </tr>
+            <tr class="table-secondary" style="color: #044daa">
+                <td class="fix"><strong>Total</strong></td>
+                <td *ngFor="let day of listDays"><strong><p id="{{day}}"></p></strong></td>
             </tr>
             </tbody>
         </table>

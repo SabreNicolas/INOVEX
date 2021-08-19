@@ -16,11 +16,13 @@ export class ListEntreeComponent implements OnInit {
   public dateDeb : Date | undefined;
   public dateFin : Date | undefined;
   public listDays : string[];
+  public listTotal : number[];
 
   constructor(private moralEntitiesService : moralEntitiesService) {
     this.debCode = '';
     this.moralEntities = [];
     this.listDays = [];
+    this.listTotal = [];
   }
 
   ngOnInit(): void {
@@ -36,10 +38,10 @@ export class ListEntreeComponent implements OnInit {
     var produitElt = document.getElementById("produit");
     // @ts-ignore
     var produitSel = produitElt.options[produitElt.selectedIndex].value;
-    var collecteurElt = document.getElementById("collecteur");
+    //var collecteurElt = document.getElementById("collecteur");
     // @ts-ignore
-    var collecteurSel = collecteurElt.options[collecteurElt.selectedIndex].value;
-    this.debCode = produitSel+collecteurSel;
+    //var collecteurSel = collecteurElt.options[collecteurElt.selectedIndex].value;
+    this.debCode = produitSel;
     /*Fin de prise en commpte des filtres */
     this.ngOnInit();
   }
@@ -79,7 +81,7 @@ export class ListEntreeComponent implements OnInit {
         this.moralEntities.forEach(mr =>{
           var value = (<HTMLInputElement>document.getElementById(mr.Id+'-'+mr.productId+'-'+date)).value.replace(',','.');
           var valueInt : number = +value;
-          if (valueInt >0){
+          if (valueInt >0.0){
             this.moralEntitiesService.createMeasure(date.substr(6,4)+'-'+date.substr(3,2)+'-'+date.substr(0,2),valueInt,mr.productId,mr.Id).subscribe((response)=>{
               if (response == "Création du Measures OK"){
                 Swal.fire("Les valeurs ont été insérées avec succès !");
@@ -99,15 +101,24 @@ export class ListEntreeComponent implements OnInit {
   //TODO : afficher gif loading pendant la récup des données + change navbar width
   //récupérer les tonnages en BDD
   getValues(){
-    this.listDays.forEach(date =>
-        this.moralEntities.forEach(mr =>{
-          this.moralEntitiesService.getEntry(date.substr(6,4)+'-'+date.substr(3,2)+'-'+date.substr(0,2),mr.productId,mr.Id).subscribe((response)=>{
-            if (response.data[0] != undefined && response.data[0].Value!= 0){
-              (<HTMLInputElement>document.getElementById(mr.Id+'-'+mr.productId+'-'+date)).value = response.data[0].Value;
-            }
+    var tot = 0;
+    var i = 0;
+    this.listDays.forEach(date => {
+          this.moralEntities.forEach(mr => {
+            this.moralEntitiesService.getEntry(date.substr(6, 4) + '-' + date.substr(3, 2) + '-' + date.substr(0, 2), mr.productId, mr.Id).subscribe((response) => {
+              i++;
+              if (response.data[0] != undefined && response.data[0].Value != 0) {
+                (<HTMLInputElement>document.getElementById(mr.Id + '-' + mr.productId + '-' + date)).value = response.data[0].Value;
+                tot = +response.data[0].Value + tot;
+              }
+              if (i == this.moralEntities.length){
+                (<HTMLInputElement>document.getElementById(date)).innerHTML = String(tot).substr(0,7);
+                tot = 0;
+                i = 0;
+              }
+            });
           });
-        })
-    );
+    });
   }
 
   //changer les dates pour saisir hier
