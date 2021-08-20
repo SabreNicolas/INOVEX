@@ -8,6 +8,7 @@ import {ListEntreeComponent} from "./list-entree/list-entree.component";
 import { CompteursComponent } from './compteurs/compteurs.component';
 import { ListCompteursComponent } from './list-compteurs/list-compteurs.component';
 import { AnalysesComponent } from './analyses/analyses.component';
+import {ListSortantsComponent} from "./list-sortants/list-sortants.component";
 
 const routes: Routes = [
     {
@@ -28,6 +29,11 @@ const routes: Routes = [
     {
         path: 'entree',
         component : ListEntreeComponent
+    },
+
+    {
+        path: 'sortie',
+        component : ListSortantsComponent
     },
 
     {

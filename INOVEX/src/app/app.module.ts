@@ -16,6 +16,7 @@ import { ListEntreeComponent } from './list-entree/list-entree.component';
 import { ListCompteursComponent } from './list-compteurs/list-compteurs.component';
 import { CompteursComponent } from './compteurs/compteurs.component';
 import { AnalysesComponent } from './analyses/analyses.component';
+import { ListSortantsComponent } from './list-sortants/list-sortants.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { AnalysesComponent } from './analyses/analyses.component';
     ListEntreeComponent,
     ListCompteursComponent,
     CompteursComponent,
-    AnalysesComponent
+    AnalysesComponent,
+    ListSortantsComponent
   ],
   imports: [
     BrowserModule,
