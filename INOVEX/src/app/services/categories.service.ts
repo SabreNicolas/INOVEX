@@ -38,9 +38,23 @@ export class categoriesService {
             .put<any>(requete,requestOptions);
     }
 
-    //récupérer les categories
+    //récupérer les categories de compteurs
     getCategories() {
         let requete = "http://"+this.ip+":"+this.portAPI+"/CategoriesCompteurs";
+        console.log(requete);
+
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<category[]>(requete,requestOptions);
+    }
+
+    //récupérer les categories d'analyses
+    getCategoriesAnalyses() {
+        let requete = "http://"+this.ip+":"+this.portAPI+"/CategoriesAnalyses";
         console.log(requete);
 
 

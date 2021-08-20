@@ -52,7 +52,7 @@ export class productsService {
             .put<any>(requete,requestOptions);
     }
 
-    //récupérer les categories
+    //récupérer les compteurs
     getCompteurs(Code : string) {
         let requete = "http://"+this.ip+":"+this.portAPI+"/Compteurs?Code="+Code;
         console.log(requete);
@@ -66,7 +66,7 @@ export class productsService {
             .get<product[]>(requete,requestOptions);
     }
 
-    //récupérer les valeurs
+    //récupérer les valeurs de compteur
     getValueCompteurs(Date : string, Code : string) {
         let requete = "http://"+this.ip+":"+this.portAPI+"/Compteurs/"+Code+"/"+Date;
         //console.log(requete);
@@ -91,6 +91,34 @@ export class productsService {
 
         return this.http
             .put<any>(requete,requestOptions);
+    }
+
+    //récupérer les analyses
+    getAnalyses(Code : string) {
+        let requete = "http://"+this.ip+":"+this.portAPI+"/Analyses?Code="+Code;
+        console.log(requete);
+
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<product[]>(requete,requestOptions);
+    }
+
+    //récupérer les valeurs d'analyses,
+    getValueProducts(Date : string, Id : number) {
+        let requete = "http://"+this.ip+":"+this.portAPI+"/ValuesProducts/"+Id+"/"+Date;
+        //console.log(requete);
+
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<any>(requete,requestOptions);
     }
 
 
