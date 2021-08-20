@@ -11,6 +11,11 @@ import { AnalysesComponent } from './analyses/analyses.component';
 
 const routes: Routes = [
     {
+        path : '',
+        component : ListEntreeComponent
+    },
+
+    {
         path: 'clients',
         component: MoralEntitiesComponent
     },
