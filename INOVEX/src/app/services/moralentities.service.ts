@@ -30,7 +30,7 @@ export class moralEntitiesService {
     //création de client
     createMoralEntity(){
       let requete = "http://"+this.ip+":"+this.portAPI+"/moralEntitie?Name="+this._nom+"&Address="+this._adress+"&Code="+this._code+"&UnitPrice="+this._unitPrice;
-      console.log(requete);
+      //console.log(requete);
 
       const requestOptions = {
         headers: new HttpHeaders(this.headerDict),
@@ -43,7 +43,7 @@ export class moralEntitiesService {
     //récupérer le dernier code
     getLastCode(Code : string) {
       let requete = "http://"+this.ip+":"+this.portAPI+"/moralEntitieLastCode?Code="+Code;
-      console.log(requete);
+      //console.log(requete);
 
 
       const requestOptions = {
@@ -57,7 +57,7 @@ export class moralEntitiesService {
     //récupérer les clients
     getMoralEntities(Code : string) {
       let requete = "http://"+this.ip+":"+this.portAPI+"/moralEntities?Code="+Code;
-      console.log(requete);
+      //console.log(requete);
 
 
       const requestOptions = {
@@ -71,7 +71,7 @@ export class moralEntitiesService {
     //mettre à jour le code d'un client
     setCode(Code: string | null, Id: number){
       let requete = "http://"+this.ip+":"+this.portAPI+"/moralEntitieCode/"+Id+"?Code="+Code;
-      console.log(requete);
+      //console.log(requete);
 
       const requestOptions = {
         headers: new HttpHeaders(this.headerDict),
@@ -84,7 +84,7 @@ export class moralEntitiesService {
     //mettre à jour le prix d'un client
     setPrix(prix: string, Id: number){
       let requete = "http://"+this.ip+":"+this.portAPI+"/moralEntitieUnitPrice/"+Id+"?UnitPrice="+prix;
-      console.log(requete);
+      //console.log(requete);
 
       const requestOptions = {
         headers: new HttpHeaders(this.headerDict),
@@ -97,7 +97,7 @@ export class moralEntitiesService {
     //mettre à jour le enabled d'un client
     setEnabled(Id: number){
       let requete = "http://"+this.ip+":"+this.portAPI+"/moralEntitieEnabled/"+Id;
-      console.log(requete);
+      //console.log(requete);
 
       const requestOptions = {
         headers: new HttpHeaders(this.headerDict),
@@ -110,7 +110,7 @@ export class moralEntitiesService {
     //insérer une mesure
     createMeasure(EntryDate : string, Value : number, ProductId : number, ProducerId : number){
         let requete = "http://"+this.ip+":"+this.portAPI+"/Measure?EntryDate="+EntryDate+"&Value="+Value+"&ProductId="+ProductId+"&ProducerId="+ProducerId;
-        console.log(requete);
+        //console.log(requete);
 
         const requestOptions = {
             headers: new HttpHeaders(this.headerDict),

@@ -28,7 +28,7 @@ export class productsService {
     //récupérer le dernier code
     getLastCode(Code : string) {
         let requete = "http://"+this.ip+":"+this.portAPI+"/productLastCode?Code="+Code;
-        console.log(requete);
+        //console.log(requete);
 
 
         const requestOptions = {
@@ -42,7 +42,7 @@ export class productsService {
     //création du produit de type compteur
     createProduct(){
         let requete = "http://"+this.ip+":"+this.portAPI+"/Product?Name="+this._nom+"&Code="+this._code+"&typeId=4&Unit="+this._unit;
-        console.log(requete);
+        //console.log(requete);
 
         const requestOptions = {
             headers: new HttpHeaders(this.headerDict),
@@ -55,7 +55,7 @@ export class productsService {
     //récupérer les compteurs
     getCompteurs(Code : string) {
         let requete = "http://"+this.ip+":"+this.portAPI+"/Compteurs?Code="+Code;
-        console.log(requete);
+        //console.log(requete);
 
 
         const requestOptions = {
@@ -69,7 +69,7 @@ export class productsService {
     //récupérer les valeurs de compteur
     getValueCompteurs(Date : string, Code : string) {
         let requete = "http://"+this.ip+":"+this.portAPI+"/Compteurs/"+Code+"/"+Date;
-        console.log(requete);
+        //console.log(requete);
 
 
         const requestOptions = {
@@ -83,7 +83,7 @@ export class productsService {
     //insérer une valeur de compteur
     createMeasure(Date : string, Value : number, Code : string){
         let requete = "http://"+this.ip+":"+this.portAPI+"/SaisieMensuelle?Date="+Date+"&Value="+Value+"&Code="+Code;
-        console.log(requete);
+        //console.log(requete);
 
         const requestOptions = {
             headers: new HttpHeaders(this.headerDict),
@@ -96,7 +96,7 @@ export class productsService {
     //récupérer les analyses
     getAnalyses(Code : string) {
         let requete = "http://"+this.ip+":"+this.portAPI+"/Analyses?Code="+Code;
-        console.log(requete);
+        //console.log(requete);
 
 
         const requestOptions = {
@@ -110,7 +110,7 @@ export class productsService {
     //récupérer les sortants
     getSortants(Code : string) {
         let requete = "http://"+this.ip+":"+this.portAPI+"/Sortants?Code="+Code;
-        console.log(requete);
+        //console.log(requete);
 
 
         const requestOptions = {
@@ -121,7 +121,21 @@ export class productsService {
             .get<product[]>(requete,requestOptions);
     }
 
-    //récupérer les valeurs d'analyses, de sortants
+    //récupérer les consommables & autres
+    getConsos() {
+        let requete = "http://"+this.ip+":"+this.portAPI+"/Consos";
+        //console.log(requete);
+
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<product[]>(requete,requestOptions);
+    }
+
+    //récupérer les valeurs d'analyses, de sortants, de consommables
     getValueProducts(Date : string, Id : number) {
         let requete = "http://"+this.ip+":"+this.portAPI+"/ValuesProducts/"+Id+"/"+Date;
         //console.log(requete);

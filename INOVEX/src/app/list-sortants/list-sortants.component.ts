@@ -84,7 +84,7 @@ export class ListSortantsComponent implements OnInit {
       this.listProducts.forEach(pr => {
         this.productsService.getValueProducts(date.substr(6, 4) + '-' + date.substr(3, 2) + '-' + date.substr(0, 2), pr.Id).subscribe((response) => {
           if (response.data[0] != undefined && response.data[0].Value != 0) {
-            (<HTMLInputElement>document.getElementById(pr.Code + '-' + date)).value = response.data[0].Value;
+            (<HTMLInputElement>document.getElementById(pr.Id + '-' + date)).value = response.data[0].Value;
           }
         });
       });
@@ -95,7 +95,7 @@ export class ListSortantsComponent implements OnInit {
   validation(){
     this.listDays.forEach(date => {
       this.listProducts.forEach(pr =>{
-        var value = (<HTMLInputElement>document.getElementById(pr.Code+'-'+date)).value.replace(',','.');
+        var value = (<HTMLInputElement>document.getElementById(pr.Id+'-'+date)).value.replace(',','.');
         var valueInt : number = +value;
         if (valueInt >0.0){
           this.mrService.createMeasure(date.substr(6,4)+'-'+date.substr(3,2)+'-'+date.substr(0,2),valueInt,pr.Id,0).subscribe((response)=>{

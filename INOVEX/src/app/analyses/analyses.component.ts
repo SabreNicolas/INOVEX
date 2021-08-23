@@ -35,7 +35,6 @@ export class AnalysesComponent implements OnInit {
     this.productsService.getAnalyses(this.Code).subscribe((response)=>{
       // @ts-ignore
       this.listAnalyses = response.data;
-      console.log(this.listAnalyses)
       this.getValues();
     });
   }
