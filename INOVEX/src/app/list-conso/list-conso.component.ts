@@ -88,7 +88,6 @@ export class ListConsoComponent implements OnInit {
       this.listConsos.forEach(con => {
         this.productsService.getValueProducts(day.substr(6, 4) + '-' + day.substr(3, 2) + '-' + day.substr(0, 2),con.Id).subscribe((response) => {
           if (response.data[0] != undefined && response.data[0].Value != 0) {
-            console.log(response.data);
             (<HTMLInputElement>document.getElementById(con.Id + '-' + day)).value = response.data[0].Value;
           }
         });
