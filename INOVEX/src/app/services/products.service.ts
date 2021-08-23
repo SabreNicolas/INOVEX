@@ -69,7 +69,7 @@ export class productsService {
     //récupérer les valeurs de compteur
     getValueCompteurs(Date : string, Code : string) {
         let requete = "http://"+this.ip+":"+this.portAPI+"/Compteurs/"+Code+"/"+Date;
-        //console.log(requete);
+        console.log(requete);
 
 
         const requestOptions = {
@@ -107,7 +107,21 @@ export class productsService {
             .get<product[]>(requete,requestOptions);
     }
 
-    //récupérer les valeurs d'analyses,
+    //récupérer les sortants
+    getSortants(Code : string) {
+        let requete = "http://"+this.ip+":"+this.portAPI+"/Sortants?Code="+Code;
+        console.log(requete);
+
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<product[]>(requete,requestOptions);
+    }
+
+    //récupérer les valeurs d'analyses, de sortants
     getValueProducts(Date : string, Id : number) {
         let requete = "http://"+this.ip+":"+this.portAPI+"/ValuesProducts/"+Id+"/"+Date;
         //console.log(requete);

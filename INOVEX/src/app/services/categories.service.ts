@@ -66,6 +66,20 @@ export class categoriesService {
             .get<category[]>(requete,requestOptions);
     }
 
+    //récupérer les categories de sortants
+    getCategoriesSortants() {
+        let requete = "http://"+this.ip+":"+this.portAPI+"/CategoriesSortants";
+        console.log(requete);
+
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<category[]>(requete,requestOptions);
+    }
+
     //GETTER & SETTER
     get nom(): string {
         return this._nom;

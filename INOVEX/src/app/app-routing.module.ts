@@ -9,6 +9,7 @@ import { CompteursComponent } from './compteurs/compteurs.component';
 import { ListCompteursComponent } from './list-compteurs/list-compteurs.component';
 import { AnalysesComponent } from './analyses/analyses.component';
 import {ListSortantsComponent} from "./list-sortants/list-sortants.component";
+import {ListConsoComponent} from "./list-conso/list-conso.component";
 
 const routes: Routes = [
     {
@@ -49,6 +50,11 @@ const routes: Routes = [
     {
         path: 'analyses',
         component: AnalysesComponent
+    },
+
+    {
+        path : 'conso',
+        component : ListConsoComponent
     },
 
 ];
