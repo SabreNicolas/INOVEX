@@ -20,9 +20,25 @@ body{
   z-index: 1;
 }
 
-.table-hover>tbody>tr>td {
+a {
+  font-size: large;
 }
 
-a{
-  font-size: large;
+.rapportsList {
+  display: flex;
+  margin: 0 auto;
+  width: max-content;
+}
+
+.card {
+  display: flex;
+  margin-top: 2em;
+}
+
+a, a:hover, a:visited{
+  text-decoration: none;
+}
+
+.card:hover{
+  background-color: lightgray;
 }

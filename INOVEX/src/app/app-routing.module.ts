@@ -10,6 +10,7 @@ import { ListCompteursComponent } from './list-compteurs/list-compteurs.componen
 import { AnalysesComponent } from './analyses/analyses.component';
 import {ListSortantsComponent} from "./list-sortants/list-sortants.component";
 import {ListConsoComponent} from "./list-conso/list-conso.component";
+import {ListRapportsComponent} from "./list-rapports/list-rapports.component";
 
 const routes: Routes = [
     {
@@ -55,6 +56,11 @@ const routes: Routes = [
     {
         path : 'conso',
         component : ListConsoComponent
+    },
+
+    {
+        path : 'rapports',
+        component : ListRapportsComponent
     },
 
 ];
