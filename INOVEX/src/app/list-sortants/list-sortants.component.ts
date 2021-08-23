@@ -5,6 +5,7 @@ import { category } from 'src/models/categories.model';
 import Swal from 'sweetalert2';
 import {product} from "../../models/products.model";
 import {NgForm} from "@angular/forms";
+import {moralEntitiesService} from "../services/moralentities.service";
 
 @Component({
   selector: 'app-list-sortants',
@@ -20,7 +21,7 @@ export class ListSortantsComponent implements OnInit {
   public dateFin : Date | undefined;
   public listDays : string[];
 
-  constructor(private productsService : productsService, private categoriesService : categoriesService) {
+  constructor(private productsService : productsService, private categoriesService : categoriesService, private mrService : moralEntitiesService) {
     this.debCode = '';
     this.listProducts = [];
     this.listDays = [];
@@ -92,7 +93,25 @@ export class ListSortantsComponent implements OnInit {
 
   //valider les saisies
   validation(){
-
+    this.listDays.forEach(date => {
+      this.listProducts.forEach(pr =>{
+        var value = (<HTMLInputElement>document.getElementById(pr.Code+'-'+date)).value.replace(',','.');
+        var valueInt : number = +value;
+        if (valueInt >0.0){
+          this.mrService.createMeasure(date.substr(6,4)+'-'+date.substr(3,2)+'-'+date.substr(0,2),valueInt,pr.Id,0).subscribe((response)=>{
+            if (response == "Création du Measures OK"){
+              Swal.fire("Les valeurs ont été insérées avec succès !");
+            }
+            else {
+              Swal.fire({
+                icon: 'error',
+                text: 'Erreur lors de l\'insertion des valeurs ....',
+              })
+            }
+          });
+        }
+      })
+    });
   }
 
   //changer les dates pour saisir hier
