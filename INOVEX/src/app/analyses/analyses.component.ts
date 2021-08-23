@@ -78,6 +78,7 @@ export class AnalysesComponent implements OnInit {
         if (response.data[0] != undefined && response.data[0].Value != 0) {
           (<HTMLInputElement>document.getElementById(an.Id + '-' + this.listDays)).value = response.data[0].Value;
         }
+        else (<HTMLInputElement>document.getElementById(an.Id + '-' + this.listDays)).value = '';
       });
     });
   }

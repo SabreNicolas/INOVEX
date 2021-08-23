@@ -111,6 +111,7 @@ export class ListEntreeComponent implements OnInit {
                 (<HTMLInputElement>document.getElementById(mr.Id + '-' + mr.productId + '-' + date)).value = response.data[0].Value;
                 tot = +response.data[0].Value + tot;
               }
+              else (<HTMLInputElement>document.getElementById(mr.Id + '-' + mr.productId + '-' + date)).value = '';
               if (i == this.moralEntities.length){
                 (<HTMLInputElement>document.getElementById(date)).innerHTML = String(tot).substr(0,7);
                 tot = 0;

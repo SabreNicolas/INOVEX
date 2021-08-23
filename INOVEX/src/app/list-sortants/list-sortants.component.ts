@@ -86,6 +86,7 @@ export class ListSortantsComponent implements OnInit {
           if (response.data[0] != undefined && response.data[0].Value != 0) {
             (<HTMLInputElement>document.getElementById(pr.Id + '-' + date)).value = response.data[0].Value;
           }
+          else (<HTMLInputElement>document.getElementById(pr.Id + '-' + date)).value = '';
         });
       });
     });

@@ -90,6 +90,7 @@ export class ListConsoComponent implements OnInit {
           if (response.data[0] != undefined && response.data[0].Value != 0) {
             (<HTMLInputElement>document.getElementById(con.Id + '-' + day)).value = response.data[0].Value;
           }
+          else (<HTMLInputElement>document.getElementById(con.Id + '-' + day)).value = '';
         });
       });
     });
