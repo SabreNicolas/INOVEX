@@ -3,6 +3,7 @@ import {moralEntitiesService} from "../services/moralentities.service";
 import Swal from 'sweetalert2';
 import {moralEntity} from "../../models/moralEntity.model";
 import {NgForm} from "@angular/forms";
+import {delay} from "rxjs/operators";
 
 @Component({
   selector: 'app-list-entree',
@@ -17,12 +18,14 @@ export class ListEntreeComponent implements OnInit {
   public dateFin : Date | undefined;
   public listDays : string[];
   public listTotal : number[];
+  public monthCall : number;
 
   constructor(private moralEntitiesService : moralEntitiesService) {
     this.debCode = '';
     this.moralEntities = [];
     this.listDays = [];
     this.listTotal = [];
+    this.monthCall = 0;
   }
 
   ngOnInit(): void {
@@ -46,21 +49,22 @@ export class ListEntreeComponent implements OnInit {
     this.ngOnInit();
   }
 
-  setPeriod(form: NgForm){
+  setPeriod(form: NgForm) {
     this.listDays = [];
     this.dateDeb = new Date(form.value['dateDeb']);
     this.dateFin = new Date(form.value['dateFin']);
-    if(this.dateFin < this.dateDeb){
+    if (this.dateFin < this.dateDeb) {
       form.controls['dateFin'].reset();
-      form.value['dateFin']='';
+      form.value['dateFin'] = '';
       Swal.fire({
         icon: 'error',
         text: 'La date de Fin est inférieure à la date de Départ !',
       })
     }
     this.listDays = this.getDays(this.dateDeb, this.dateFin);
-    this.getValues();
+    this.getValues()
   }
+
 
   //récupérer les jours de la période
   getDays(start : Date, end : Date) {
@@ -103,6 +107,7 @@ export class ListEntreeComponent implements OnInit {
   getValues(){
     var tot = 0;
     var i = 0;
+    if (this.monthCall == 1) this.loading();
     this.listDays.forEach(date => {
           this.moralEntities.forEach(mr => {
             this.moralEntitiesService.getEntry(date.substr(6, 4) + '-' + date.substr(3, 2) + '-' + date.substr(0, 2), mr.productId, mr.Id).subscribe((response) => {
@@ -119,6 +124,14 @@ export class ListEntreeComponent implements OnInit {
               }
             });
           });
+    });
+  }
+
+  loading(){
+    Swal.fire({
+      title:"Chargement en cours...",
+      timer: 12000,
+      showConfirmButton : false,
     });
   }
 
@@ -168,6 +181,7 @@ export class ListEntreeComponent implements OnInit {
 
   //changer les dates pour saisir le mois en cours
   setCurrentMonth(form: NgForm){
+    this.monthCall = 1;
     var date = new Date();
     var mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
     var yyyy = date.getFullYear();
@@ -184,6 +198,7 @@ export class ListEntreeComponent implements OnInit {
     form.value['dateDeb']='';
     form.controls['dateFin'].reset();
     form.value['dateFin']='';
+    this.monthCall = 0;
   }
 
 

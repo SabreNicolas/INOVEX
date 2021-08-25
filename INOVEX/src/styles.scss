@@ -33,6 +33,7 @@ a {
 .card {
   display: flex;
   margin-top: 2em;
+  width: 18rem;
 }
 
 a, a:hover, a:visited{
@@ -41,4 +42,12 @@ a, a:hover, a:visited{
 
 .card:hover{
   background-color: lightgray;
+}
+
+.loading{
+  display: flex;
+  align-content: center;
+  align-items: center;
+  width: max-content;
+  margin: auto;
 }

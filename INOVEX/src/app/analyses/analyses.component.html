@@ -50,9 +50,9 @@
             <tbody>
             <tr class="table-light" *ngFor="let an of listAnalyses">
                 <td class="fix"><strong>{{an.Name}}</strong></td>
-                <td *ngIf="listDays"><input type="text" id="{{an.Id}}-{{listDays}}"
-                                            class="form-control" aria-label="Small"
-                                            aria-describedby="inputGroup-sizing-sm"></td>
+                <td *ngIf="listDays">
+                    <input type="text" id="{{an.Id}}-{{listDays}}" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                </td>
             </tr>
             </tbody>
         </table>
