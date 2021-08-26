@@ -78,9 +78,12 @@
             <tbody>
             <tr class="table-light" *ngFor="let mr of moralEntities">
                 <td class="fix"><strong>{{mr.Name}}</strong></td>
-                <td *ngFor="let day of listDays"><input type="text" id="{{mr.Id}}-{{mr.productId}}-{{day}}"
-                                                        class="form-control" aria-label="Small"
-                                                        aria-describedby="inputGroup-sizing-sm"></td>
+                <td *ngFor="let day of listDays">
+                    <div class="flex">
+                        <input type="text" id="{{mr.Id}}-{{mr.productId}}-{{day}}" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                        <button class="btn btn-light" id="delete-{{mr.Id}}-{{mr.productId}}-{{day}}" (click)="delete(mr.Id,mr.productId,day)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                    </div>
+                </td>
             </tr>
             <tr class="table-secondary" style="color: #044daa">
                 <td class="fix"><strong>Total</strong></td>

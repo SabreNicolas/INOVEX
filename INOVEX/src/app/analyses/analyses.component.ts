@@ -104,4 +104,20 @@ export class AnalysesComponent implements OnInit {
     })
   }
 
+  //mettre à 0 la value pour modificiation
+  delete(Id : number, date : string){
+    this.mrService.createMeasure(date.substr(6,4)+'-'+date.substr(3,2)+'-'+date.substr(0,2),0,Id,0).subscribe((response)=>{
+      if (response == "Création du Measures OK"){
+        Swal.fire("La valeur a bien été supprimé !");
+        (<HTMLInputElement>document.getElementById(Id + '-' + date)).value = '';
+      }
+      else {
+        Swal.fire({
+          icon: 'error',
+          text: 'Erreur lors de la suppression de la valeur ....',
+        })
+      }
+    });
+  }
+
 }

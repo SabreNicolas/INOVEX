@@ -103,4 +103,20 @@ export class ListCompteursComponent implements OnInit {
     });
   }
 
+  //mettre à 0 la value pour modificiation
+  delete(Code : string, date : string){
+    this.productsService.createMeasure(date.substr(6,4)+'-'+date.substr(3,2)+'-'+date.substr(0,2),0,Code).subscribe((response)=>{
+      if (response == "Création du saisiemensuelle OK"){
+        Swal.fire("La valeur a bien été supprimé !");
+        (<HTMLInputElement>document.getElementById(Code + '-' + date)).value = '';
+      }
+      else {
+        Swal.fire({
+          icon: 'error',
+          text: 'Erreur lors de la suppression de la valeur ....',
+        })
+      }
+    });
+  }
+
 }

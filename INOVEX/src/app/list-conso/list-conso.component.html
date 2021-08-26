@@ -38,9 +38,12 @@
             <tbody>
             <tr class="table-light" *ngFor="let con of listConsos">
                 <td class="fix"><strong>{{con.Name}}</strong></td>
-                <td *ngFor="let day of listDays"><input type="text" id="{{con.Id}}-{{day}}"
-                                            class="form-control" aria-label="Small"
-                                            aria-describedby="inputGroup-sizing-sm"></td>
+                <td *ngFor="let day of listDays">
+                    <div class="flex">
+                        <input type="text" id="{{con.Id}}-{{day}}" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                        <button class="btn btn-light" id="delete-{{con.Id}}-{{day}}" (click)="delete(con.Id,day)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                    </div>
+                </td>
             </tr>
             </tbody>
         </table>

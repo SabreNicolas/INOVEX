@@ -201,6 +201,22 @@ export class ListEntreeComponent implements OnInit {
     this.monthCall = 0;
   }
 
+  //mettre à 0 la value pour modificiation
+  delete(Id : number, productId : number, date : string){
+    this.moralEntitiesService.createMeasure(date.substr(6,4)+'-'+date.substr(3,2)+'-'+date.substr(0,2),0,productId,Id).subscribe((response)=>{
+      if (response == "Création du Measures OK"){
+        Swal.fire("La valeur a bien été supprimé !");
+        (<HTMLInputElement>document.getElementById(Id + '-' + productId + '-' + date)).value = '';
+      }
+      else {
+        Swal.fire({
+          icon: 'error',
+          text: 'Erreur lors de la suppression de la valeur ....',
+        })
+      }
+    });
+  }
+
 
 }
 

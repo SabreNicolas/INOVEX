@@ -51,7 +51,10 @@
             <tr class="table-light" *ngFor="let an of listAnalyses">
                 <td class="fix"><strong>{{an.Name}}</strong></td>
                 <td *ngIf="listDays">
-                    <input type="text" id="{{an.Id}}-{{listDays}}" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                    <div class="flex">
+                        <input type="text" id="{{an.Id}}-{{listDays}}" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                        <button class="btn btn-light" id="delete-{{an.Id}}-{{listDays}}" (click)="delete(an.Id,listDays)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                    </div>
                 </td>
             </tr>
             </tbody>

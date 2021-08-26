@@ -50,9 +50,12 @@
             <tbody>
             <tr class="table-light" *ngFor="let cp of listCompteurs">
                 <td class="fix"><strong>{{cp.Name}}</strong></td>
-                <td *ngIf="listDays"><input type="text" id="{{cp.Code}}-{{listDays}}"
-                                                        class="form-control" aria-label="Small"
-                                                        aria-describedby="inputGroup-sizing-sm"></td>
+                <td *ngIf="listDays">
+                    <div class="flex">
+                        <input type="text" id="{{cp.Code}}-{{listDays}}" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                        <button class="btn btn-light" id="delete-{{cp.Code}}-{{listDays}}" (click)="delete(cp.Code,listDays)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                    </div>
+                </td>
             </tr>
             </tbody>
         </table>

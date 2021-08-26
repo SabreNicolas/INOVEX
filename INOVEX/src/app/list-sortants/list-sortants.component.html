@@ -57,9 +57,12 @@
             <tbody>
             <tr class="table-light" *ngFor="let pr of listProducts">
                 <td class="fix"><strong>{{pr.Name}}</strong></td>
-                <td *ngFor="let day of listDays"><input type="text" id="{{pr.Id}}-{{day}}"
-                                                        class="form-control" aria-label="Small"
-                                                        aria-describedby="inputGroup-sizing-sm"></td>
+                <td *ngFor="let day of listDays">
+                    <div class="flex">
+                        <input type="text" id="{{pr.Id}}-{{day}}" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                        <button class="btn btn-light" id="delete-{{pr.Id}}-{{day}}" (click)="delete(pr.Id,day)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                    </div>
+                </td>
             </tr>
             </tbody>
         </table>
