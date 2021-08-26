@@ -62,7 +62,7 @@ export class ListEntreeComponent implements OnInit {
       })
     }
     this.listDays = this.getDays(this.dateDeb, this.dateFin);
-    this.getValues()
+    this.getValues();
   }
 
 

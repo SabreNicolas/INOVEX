@@ -1,1 +1,78 @@
-<p>arrets works!</p>
+<div>
+
+    <!--Filtres de recherche-->
+    <div class="form-group">
+        <h5><label>Filtres :</label></h5>
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <select id="type" required class="form-select form-select-sm" aria-label=".form-select-sm example" name="type" ngModel>
+                        <option *ngFor="let arret of listArrets" selected value="{{arret.Id}}">{{arret.Name}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <button class="btn btn-success" (click)="setFilters()">Valider</button>
+                </div>
+            </div>
+        </div>
+
+        <!--Période-->
+        <form #f="ngForm">
+            <div class="form-group">
+                <h5><label>Période :</label></h5>
+                <div class="row">
+                    <div class="col-lg-3">
+                        <input required type="datetime-local" id="dateDeb" class="form-control" placeholder="Date de début" name="dateDeb"
+                               ngModel>
+                    </div>
+                    <div class="col-lg-3">
+                        <input required type="datetime-local" id="dateFin" class="form-control" placeholder="Date de fin" name="dateFin"
+                               ngModel>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <button class="btn btn-primary" type="submit" (click)="setDuree(f)">Calculer la durée</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!--formulaire de saisie-->
+    <div class="row" *ngIf="arretId">
+        <div class="col-sm-5 col-sm-offset-1">
+
+            <h3>Saisie {{arretName}}</h3>
+
+            <form ngNativeValidate (ngSubmit)="onSubmit(f)" #f="ngForm">
+
+                <div style="display: inline-flex" class="form-group">
+                    <label style="margin-right: 1em">Durée (en heures) :  </label>
+                    <p style="margin-right: 1em">{{duree}}</p>
+                    <div id="warning" *ngIf="duree == 0">
+                        <p> ATTENTION : Veuillez d'abord calculer la durée !</p>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="desc">Commentaire : * </label>
+                    <textarea class="form-control" required id="desc"  placeholder="Description de l'arrêt" name="desc" ngModel></textarea>
+                </div>
+
+                <p style="font-size: smaller; color: grey">* : Obligatoire</p>
+
+                <div class="form-group">
+                    <button class="btn btn-success btn-lg" type="submit">Valider</button>
+                    <button class="btn btn-danger btn-lg" routerLink="/">Annuler</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+
+</div>

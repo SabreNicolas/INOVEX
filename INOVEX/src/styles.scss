@@ -53,5 +53,15 @@ a, a:hover, a:visited{
 }
 
 .flex {
-  display: flex;
+  display: inline-flex;
+  width: 12em;
+}
+
+#warning {
+  background-color: red;
+  border: red solid 1px;
+  border-radius: 10px 10px 10px 10px;
+  width: max-content;
+  height: max-content;
+  font-weight: bold;
 }
