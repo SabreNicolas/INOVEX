@@ -11,6 +11,8 @@ import { AnalysesComponent } from './analyses/analyses.component';
 import {ListSortantsComponent} from "./list-sortants/list-sortants.component";
 import {ListConsoComponent} from "./list-conso/list-conso.component";
 import {ListRapportsComponent} from "./list-rapports/list-rapports.component";
+import {ArretsComponent} from "./arrets/arrets.component";
+import {ListArretsComponent} from "./list-arrets/list-arrets.component";
 
 const routes: Routes = [
     {
@@ -61,6 +63,16 @@ const routes: Routes = [
     {
         path : 'rapports',
         component : ListRapportsComponent
+    },
+
+    {
+        path : 'arrets',
+        component : ArretsComponent
+    },
+
+    {
+        path : 'listArrets',
+        component : ListArretsComponent
     },
 
 ];

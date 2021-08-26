@@ -19,6 +19,9 @@ import { AnalysesComponent } from './analyses/analyses.component';
 import { ListSortantsComponent } from './list-sortants/list-sortants.component';
 import { ListConsoComponent } from './list-conso/list-conso.component';
 import { ListRapportsComponent } from './list-rapports/list-rapports.component';
+import {arretsService} from "./services/arrets.service";
+import { ListArretsComponent } from './list-arrets/list-arrets.component';
+import { ArretsComponent } from './arrets/arrets.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +36,9 @@ import { ListRapportsComponent } from './list-rapports/list-rapports.component';
     AnalysesComponent,
     ListSortantsComponent,
     ListConsoComponent,
-    ListRapportsComponent
+    ListRapportsComponent,
+    ListArretsComponent,
+    ArretsComponent
   ],
   imports: [
     BrowserModule,
@@ -45,6 +50,7 @@ import { ListRapportsComponent } from './list-rapports/list-rapports.component';
     moralEntitiesService,
     categoriesService,
     productsService,
+    arretsService,
   ],
   bootstrap: [AppComponent]
 })
