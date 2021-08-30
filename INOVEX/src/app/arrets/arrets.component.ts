@@ -4,6 +4,7 @@ import {productsService} from "../services/products.service";
 import {product} from "../../models/products.model";
 import {NgForm} from "@angular/forms";
 import Swal from "sweetalert2";
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-arrets',
@@ -16,16 +17,24 @@ export class ArretsComponent implements OnInit {
   public arretName : string;
   public arretId : number;
   public dateDebut : Date | undefined;
+  public stringDateDebut : string;
   public dateFin : Date | undefined;
+  public stringDateFin : string;
   public duree : number;
   public dateSaisie : Date;
+  public stringDateSaisie : string;
+  public commentaire : string;
 
-  constructor(private arretsService : arretsService, private productsService : productsService,) {
+  constructor(private arretsService : arretsService, private productsService : productsService, private datePipe : DatePipe) {
     this.listArrets = [];
     this.arretId = 0;
     this.arretName = '';
     this.duree = 0;
     this.dateSaisie = new Date();
+    this.stringDateDebut = '';
+    this.stringDateFin = '';
+    this.stringDateSaisie = '';
+    this.commentaire = '';
   }
 
   ngOnInit(): void {
@@ -50,13 +59,43 @@ export class ArretsComponent implements OnInit {
   setDuree(form : NgForm){
     this.dateDebut = new Date(form.value['dateDeb']);
     this.dateFin = new Date(form.value['dateFin']);
+    if (this.dateFin < this.dateDebut) {
+      this.duree = 0;
+      form.controls['dateFin'].reset();
+      form.value['dateFin'] = '';
+      Swal.fire({
+        icon: 'error',
+        text: 'La date/heure de Fin est inférieure à la date/heure de Départ !',
+      })
+    }
     // @ts-ignore
-    this.duree = ((this.dateFin-this.dateDebut)/1000)/3600; //conversion de millisecondes vers heures
+    else this.duree = ((this.dateFin-this.dateDebut)/1000)/3600; //conversion de millisecondes vers heures
   }
 
   //création de l'arrêt en base
   onSubmit(form : NgForm){
-    alert("OK");
+    this.commentaire = form.value['desc'];
+    this.transformDateFormat();
+    this.arretsService.createArret(this.stringDateDebut,this.stringDateFin,this.duree,1,this.stringDateSaisie,this.commentaire,this.arretId).subscribe((response)=>{
+      if (response == "Création de l'arret OK"){
+        Swal.fire("L'arrêt a bien été créé !");
+      }
+      else {
+        Swal.fire({
+          icon: 'error',
+          text: 'Erreur lors de la création de l\'arrêt ....',
+        })
+      }
+    });
+  }
+
+  transformDateFormat(){
+    // @ts-ignore
+    this.stringDateDebut = this.datePipe.transform(this.dateDebut,'yyyy-MM-dd HH:mm');
+    // @ts-ignore
+    this.stringDateFin = this.datePipe.transform(this.dateFin,'yyyy-MM-dd HH:mm');
+    // @ts-ignore
+    this.stringDateSaisie = this.datePipe.transform(this.dateSaisie,'yyyy-MM-dd HH:mm');
   }
 
 }

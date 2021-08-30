@@ -22,6 +22,7 @@ import { ListRapportsComponent } from './list-rapports/list-rapports.component';
 import {arretsService} from "./services/arrets.service";
 import { ListArretsComponent } from './list-arrets/list-arrets.component';
 import { ArretsComponent } from './arrets/arrets.component';
+import {DatePipe} from "@angular/common";
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { ArretsComponent } from './arrets/arrets.component';
     categoriesService,
     productsService,
     arretsService,
+    DatePipe,
   ],
   bootstrap: [AppComponent]
 })
