@@ -66,6 +66,20 @@ export class productsService {
             .get<product[]>(requete,requestOptions);
     }
 
+    //récupérer les compteurs pour les arrêts
+    getCompteursArrets(Code : string) {
+        let requete = "http://"+this.ip+":"+this.portAPI+"/CompteursArrets?Code="+Code;
+        //console.log(requete);
+
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<product[]>(requete,requestOptions);
+    }
+
     //récupérer les valeurs de compteur
     getValueCompteurs(Date : string, Code : string) {
         let requete = "http://"+this.ip+":"+this.portAPI+"/Compteurs/"+Code+"/"+Date;

@@ -57,7 +57,7 @@ export class ListCompteursComponent implements OnInit {
     this.getValues();
   }
 
-  //changer les dates pour saisir le mois en cours
+  //changer les dates pour saisir le mois précédent
   setLastMonth(form: NgForm){
     var date = new Date();
     var mm = String(date.getMonth()).padStart(2, '0'); //January is 0!

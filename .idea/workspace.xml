@@ -2,11 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1885d076-f23c-4f25-b2eb-c01782a460b0" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/INOVEX/src/models/arrets.model.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/INOVEX/src/models/sumArret.model.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/INOVEX/src/app/app.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/INOVEX/src/app/app.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/INOVEX/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/INOVEX/src/app/app.module.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/INOVEX/src/app/arrets/arrets.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/INOVEX/src/app/arrets/arrets.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/INOVEX/src/app/list-arrets/list-arrets.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/INOVEX/src/app/list-arrets/list-arrets.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/INOVEX/src/app/list-arrets/list-arrets.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/INOVEX/src/app/list-arrets/list-arrets.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/INOVEX/src/app/list-compteurs/list-compteurs.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/INOVEX/src/app/list-compteurs/list-compteurs.component.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/INOVEX/src/app/services/arrets.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/INOVEX/src/app/services/arrets.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/INOVEX/src/app/services/products.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/INOVEX/src/app/services/products.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/INOVEX/src/styles.scss" beforeDir="false" afterPath="$PROJECT_DIR$/INOVEX/src/styles.scss" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,7 +80,7 @@
       <workItem from="1629122188008" duration="893000" />
       <workItem from="1629124457938" duration="8154000" />
       <workItem from="1629270271603" duration="59935000" />
-      <workItem from="1630312970019" duration="2894000" />
+      <workItem from="1630312970019" duration="11692000" />
     </task>
     <servers />
   </component>

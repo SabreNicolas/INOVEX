@@ -1,1 +1,73 @@
-<p>list-arrets works!</p>
+<div>
+    <div id="arrets">
+        <!--Période-->
+        <div id="arretsFiltres">
+            <form #f="ngForm">
+                <div class="form-group">
+                    <h5><label>Mois :</label></h5>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <input type="month" id="dateDeb" class="form-control" placeholder="Date de début" name="dateDeb"
+                                   ngModel>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <button class="btn btn-primary" type="submit" (click)="setPeriod(f)"><img src="assets/refresh.png"></button>
+                                <button style="margin-left: 0.5em" class="btn btn-dark" (click)="setLastMonth(f)">Mois précédent</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!--table des totaux-->
+        <div class="table-style" *ngIf="sumArrets.length > 1">
+            <table class="table table-primary">
+                <thead>
+                <tr>
+                    <th scope="col">Arrêt</th>
+                    <th scope="col">Durée Totale</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let arret of sumArrets">
+                    <td class="fix"><strong>{{arret.Name}}</strong></td>
+                    <td class="fix">{{arret.Duree}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+        <!--table de l'historique-->
+        <div class="table-style" *ngIf="listArrets.length > 1">
+            <table class="table table-hover tableFixed">
+                <thead>
+                <tr class="table-secondary">
+                    <th scope="col">Arrêt</th>
+                    <th scope="col">Date Début</th>
+                    <th scope="col">Heure Début</th>
+                    <th scope="col">Date Fin</th>
+                    <th scope="col">Heure Fin</th>
+                    <th scope="col">Durée (heures)</th>
+                    <th scope="col">Commentaire</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="table-light" *ngFor="let arret of listArrets">
+                    <td class="fix"><strong>{{arret.Name}}</strong></td>
+                    <td class="fix">{{arret.dateDebut}}</td>
+                    <td class="fix">{{arret.heureDebut}}</td>
+                    <td class="fix">{{arret.dateFin}}</td>
+                    <td class="fix">{{arret.heureFin}}</td>
+                    <td class="fix">{{arret.duree}}</td>
+                    <td class="fix">{{arret.description}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+</div>

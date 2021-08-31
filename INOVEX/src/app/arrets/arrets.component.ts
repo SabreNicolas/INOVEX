@@ -38,7 +38,7 @@ export class ArretsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.productsService.getCompteurs("303020").subscribe((response)=>{
+    this.productsService.getCompteursArrets("303020").subscribe((response)=>{
       // @ts-ignore
       this.listArrets = response.data;
     });
@@ -87,6 +87,10 @@ export class ArretsComponent implements OnInit {
         })
       }
     });
+    form.reset();
+    this.arretId = 0;
+    this.arretName = '';
+    this.duree = 0;
   }
 
   transformDateFormat(){
