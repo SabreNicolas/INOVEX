@@ -79,6 +79,25 @@ export class ArretsComponent implements OnInit {
     this.arretsService.createArret(this.stringDateDebut,this.stringDateFin,this.duree,1,this.stringDateSaisie,this.commentaire,this.arretId).subscribe((response)=>{
       if (response == "Création de l'arret OK"){
         Swal.fire("L'arrêt a bien été créé !");
+        //envoi d'un mail si arrêt intempestif
+        if(this.arretName.includes("intempestif")){
+          console.log(this.stringDateDebut);
+          this.arretsService.sendEmail(this.stringDateDebut.substr(8,2)+'-'+this.stringDateDebut.substr(5,2)+'-'+this.stringDateDebut.substr(0,4),this.stringDateDebut.substr(11,5),this.duree,this.arretName,this.commentaire).subscribe((response)=>{
+            if (response == "mail OK"){
+              Swal.fire("Un mail d'alerte à été envoyé !");
+            }
+            else {
+              Swal.fire({
+                icon: 'error',
+                text: 'Erreur lors de l\'envoi du mail ....',
+              })
+            }
+          });
+          form.reset();
+          this.arretId = 0;
+          this.arretName = '';
+          this.duree = 0;
+        }
       }
       else {
         Swal.fire({
@@ -87,10 +106,6 @@ export class ArretsComponent implements OnInit {
         })
       }
     });
-    form.reset();
-    this.arretId = 0;
-    this.arretName = '';
-    this.duree = 0;
   }
 
   transformDateFormat(){
