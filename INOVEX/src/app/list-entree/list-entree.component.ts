@@ -138,9 +138,13 @@ export class ListEntreeComponent implements OnInit {
   //changer les dates pour saisir hier
   setYesterday(form: NgForm){
     var date = new Date();
+    var yyyy = date.getFullYear();
     var dd = String(date.getDate() - 1).padStart(2, '0');
     var mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
-    var yyyy = date.getFullYear();
+    if(dd = '0'){
+      dd = String(new Date(yyyy, date.getMonth(), 0).getDate()).padStart(2, '0');
+      mm = String(date.getMonth()).padStart(2, '0');
+    }
     var day = yyyy + '-' + mm + '-' + dd;
     (<HTMLInputElement>document.getElementById("dateDeb")).value = day;
     (<HTMLInputElement>document.getElementById("dateFin")).value = day;
