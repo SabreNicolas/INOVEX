@@ -62,7 +62,6 @@ export class ListCompteursComponent implements OnInit {
     var date = new Date();
     var mm = String(date.getMonth()).padStart(2, '0'); //January is 0!
     var yyyy = date.getFullYear();
-    var dd = String(new Date(yyyy, date.getMonth()+1, 0).getDate()).padStart(2, '0');
 
     var Lastday = yyyy + '-' + mm;
     (<HTMLInputElement>document.getElementById("dateDeb")).value = Lastday;

@@ -30,6 +30,14 @@ export class ListArretsComponent implements OnInit {
     this.arretsService.getArretsType(this.stringDateDebut.substr(6, 4) + '-' + this.stringDateDebut.substr(3, 2)).subscribe((response)=>{
       // @ts-ignore
       this.sumArrets = response.data;
+      this.arretsService.getArretsSum1(this.stringDateDebut.substr(6, 4) + '-' + this.stringDateDebut.substr(3, 2)).subscribe((response)=>{
+        // @ts-ignore
+        this.sumArrets.push(response.data[0]);
+      });
+      this.arretsService.getArretsSum2(this.stringDateDebut.substr(6, 4) + '-' + this.stringDateDebut.substr(3, 2)).subscribe((response)=>{
+        // @ts-ignore
+        this.sumArrets.push(response.data[0]);
+      });
       this.arretsService.getArretsSum(this.stringDateDebut.substr(6, 4) + '-' + this.stringDateDebut.substr(3, 2)).subscribe((response)=>{
         // @ts-ignore
         this.sumArrets.push(response.data[0]);
@@ -46,12 +54,23 @@ export class ListArretsComponent implements OnInit {
     this.ngOnInit();
   }
 
-  //changer les dates pour visualiser le mois en dernier
+  //changer les dates pour visualiser le mois dernier
   setLastMonth(form: NgForm){
     var date = new Date();
     var mm = String(date.getMonth()).padStart(2, '0'); //January is 0!
     var yyyy = date.getFullYear();
-    var dd = String(new Date(yyyy, date.getMonth()+1, 0).getDate()).padStart(2, '0');
+
+    var Lastday = yyyy + '-' + mm;
+    (<HTMLInputElement>document.getElementById("dateDeb")).value = Lastday;
+    form.value['dateDeb'] = Lastday;
+    this.setPeriod(form);
+  }
+
+  //changer les dates pour visualiser le mois en cours
+  setCurrentMonth(form: NgForm){
+    var date = new Date();
+    var mm = String(date.getMonth()+1).padStart(2, '0'); //January is 0!
+    var yyyy = date.getFullYear();
 
     var Lastday = yyyy + '-' + mm;
     (<HTMLInputElement>document.getElementById("dateDeb")).value = Lastday;

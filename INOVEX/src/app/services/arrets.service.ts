@@ -71,6 +71,32 @@ export class arretsService {
             .get<sumArret>(requete,requestOptions);
     }
 
+    //récupérer la somme des arrêts pour un mois et pour 1
+    getArretsSum1(dateDebut : string){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/ArretsSum1/"+dateDebut;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<sumArret>(requete,requestOptions);
+    }
+
+    //récupérer la somme des arrêts pour un mois et pour 2
+    getArretsSum2(dateDebut : string){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/ArretsSum2/"+dateDebut;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<sumArret>(requete,requestOptions);
+    }
+
     //envoi d'un mail pour alerter
     sendEmail(dateDeb : string, heureDeb : string, duree : number, typeArret : string, commentaire : string){
         let requete = "http://"+this.ip+":"+this.portAPI+"/sendmail/"+dateDeb+"/"+heureDeb+"/"+duree+"/"+typeArret+"/"+commentaire;

@@ -13,6 +13,7 @@
                         <div class="col-sm-3">
                             <div class="form-group">
                                 <button class="btn btn-primary" type="submit" (click)="setPeriod(f)"><img src="assets/refresh.png"></button>
+                                <button style="margin-left: 0.5em" class="btn btn-info" (click)="setCurrentMonth(f)">Mois en cours</button>
                                 <button style="margin-left: 0.5em" class="btn btn-dark" (click)="setLastMonth(f)">Mois précédent</button>
                             </div>
                         </div>
@@ -22,7 +23,7 @@
         </div>
 
         <!--table des totaux-->
-        <div class="table-style" *ngIf="sumArrets.length > 1">
+        <div class="table-style" *ngIf="sumArrets.length > 3">
             <table class="table table-primary">
                 <thead>
                 <tr>
@@ -42,7 +43,7 @@
     </div>
 
         <!--table de l'historique-->
-        <div class="table-style" *ngIf="listArrets.length > 1">
+        <div class="table-style" *ngIf="listArrets.length > 0">
             <table class="table table-hover tableFixed">
                 <thead>
                 <tr class="table-secondary">

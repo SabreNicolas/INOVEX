@@ -121,7 +121,7 @@ export class ListSortantsComponent implements OnInit {
     var dd = String(date.getDate() - 1).padStart(2, '0');
     var mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
     var yyyy = date.getFullYear();
-    if(dd = '0'){
+    if(dd === '00'){
       dd = String(new Date(yyyy, date.getMonth(), 0).getDate()).padStart(2, '0');
       mm = String(date.getMonth()).padStart(2, '0');
     }
