@@ -13,6 +13,7 @@ import {ListConsoComponent} from "./list-conso/list-conso.component";
 import {ListRapportsComponent} from "./list-rapports/list-rapports.component";
 import {ArretsComponent} from "./arrets/arrets.component";
 import {ListArretsComponent} from "./list-arrets/list-arrets.component";
+import {AdminComponent} from "./admin/admin.component";
 
 const routes: Routes = [
     {
@@ -73,6 +74,11 @@ const routes: Routes = [
     {
         path : 'listArrets',
         component : ListArretsComponent
+    },
+
+    {
+        path : 'admin',
+        component : AdminComponent
     },
 
 ];

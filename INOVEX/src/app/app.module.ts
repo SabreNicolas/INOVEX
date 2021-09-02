@@ -23,6 +23,7 @@ import {arretsService} from "./services/arrets.service";
 import { ListArretsComponent } from './list-arrets/list-arrets.component';
 import { ArretsComponent } from './arrets/arrets.component';
 import {DatePipe} from "@angular/common";
+import { AdminComponent } from './admin/admin.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import {DatePipe} from "@angular/common";
     ListConsoComponent,
     ListRapportsComponent,
     ListArretsComponent,
-    ArretsComponent
+    ArretsComponent,
+    AdminComponent
   ],
   imports: [
     BrowserModule,
