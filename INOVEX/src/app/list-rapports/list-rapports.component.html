@@ -1,5 +1,5 @@
 <div class="rapportsList">
-    <a  href="file://srv-fic/PARTAGE/Commun_Noyelles/10 DEV INOVEX/FacturationOMDIB.xlsm" target="_blank">
+    <a  target="_self" (click)="download('http://srv-fic/rapports/FacturationOMDIB.xlsm')">
     <div class="card">
         <img src="assets/excel.png" class="card-img-top" alt="...">
         <div class="card-body">
@@ -8,7 +8,7 @@
     </div>
     </a>
 
-    <a href="assets/excel.png">
+    <a target="_self" (click)="download('http://srv-fic/rapports/FacturationDASRI.xlsm')">
     <div class="card">
         <img src="assets/excel.png" class="card-img-top" alt="...">
         <div class="card-body">
@@ -17,7 +17,7 @@
     </div>
     </a>
 
-    <a href="assets/excel.png">
+    <a target="_self" (click)="download('http://srv-fic/rapports/FacturationMachefer.xlsm')">
     <div class="card">
         <img src="assets/excel.png" class="card-img-top" alt="...">
         <div class="card-body">
@@ -25,10 +25,19 @@
         </div>
     </div>
     </a>
+
+    <a target="_self" (click)="download('http://srv-fic/rapports/Facturation_contrats_tonnage.xlsx')">
+        <div class="card">
+            <img src="assets/excel.png" class="card-img-top" alt="...">
+            <div class="card-body">
+                <p class="card-text">Facturation Contrats Tonnages</p>
+            </div>
+        </div>
+    </a>
 </div>
 
 <div class="rapportsList">
-    <a href="assets/excel.png">
+    <a target="_self" (click)="download('http://srv-fic/rapports/Synthese_Details.xlsx')">
         <div class="card">
             <img src="assets/excel.png" class="card-img-top" alt="...">
             <div class="card-body">
@@ -37,7 +46,7 @@
         </div>
     </a>
 
-    <a href="assets/excel.png">
+    <a target="_self" (click)="download('http://srv-fic/rapports/TB.xlsx')">
         <div class="card">
             <img src="assets/excel.png" class="card-img-top" alt="...">
             <div class="card-body">
@@ -46,31 +55,22 @@
         </div>
     </a>
 
-    <a href="assets/excel.png">
+    <a target="_self" (click)="download('http://srv-fic/rapports/Entre%CC%81esSorties.xlsm')">
         <div class="card">
             <img src="assets/excel.png" class="card-img-top" alt="...">
             <div class="card-body">
-                <p class="card-text">Arrêts</p>
+                <p class="card-text">Entrées/Sorties Mois et Année</p>
             </div>
         </div>
     </a>
 </div>
 
 <div class="rapportsList">
-    <a href="assets/excel.png">
+    <a target="_self" (click)="download('http://srv-fic/rapports/Controle_des_Couts.xlsx')">
         <div class="card">
             <img src="assets/excel.png" class="card-img-top" alt="...">
             <div class="card-body">
-                <p class="card-text">Entrées/Sorties Mois</p>
-            </div>
-        </div>
-    </a>
-
-    <a href="assets/excel.png">
-        <div class="card">
-            <img src="assets/excel.png" class="card-img-top" alt="...">
-            <div class="card-body">
-                <p class="card-text">Entrées/Sorties Année</p>
+                <p class="card-text">Contrôle des coûts GER/EXP</p>
             </div>
         </div>
     </a>
