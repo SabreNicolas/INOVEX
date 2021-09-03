@@ -163,6 +163,20 @@ export class productsService {
             .get<any>(requete,requestOptions);
     }
 
+    //récupérer les produits par catégories => pour admin uniquement
+    getAllProductsByType(typeId : number) {
+        let requete = "http://"+this.ip+":"+this.portAPI+"/Products/"+typeId;
+        //console.log(requete);
+
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<product[]>(requete,requestOptions);
+    }
+
 
     //GETTER & SETTER
     get nom(): string {
