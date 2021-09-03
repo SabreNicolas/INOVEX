@@ -12,4 +12,8 @@ export class ListRapportsComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  download(url : string){
+    window.location.assign(url);
+  }
+
 }
