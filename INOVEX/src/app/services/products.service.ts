@@ -177,6 +177,32 @@ export class productsService {
             .get<product[]>(requete,requestOptions);
     }
 
+    //mettre à jour le enabled d'un produit
+    setEnabled(Id: number, enabled : number){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/productEnabled/"+Id+"/"+enabled;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<any>(requete,requestOptions);
+    }
+
+    //mettre à jour l'unité d'un produit
+    setUnit(unit: string, Id: number){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/productUnit/"+Id+"?Unit="+unit;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<any>(requete,requestOptions);
+    }
+
 
     //GETTER & SETTER
     get nom(): string {
