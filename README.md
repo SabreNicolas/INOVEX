@@ -4,7 +4,7 @@
 ### Node.js : https://nodejs.org/en/download/
 ### npm : npm install -g npm@latest
 ### angular/cli : npm install -g @angular/cli
-### npm i pour installer l'intégralité des dépendances du projet (être à l'ibtérieur du projet)
+### npm i pour installer l'intégralité des dépendances du projet (être à l'intérieur du projet)
 
 
 # Lancer l'appli :
