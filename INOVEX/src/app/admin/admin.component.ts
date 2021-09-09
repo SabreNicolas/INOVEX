@@ -13,10 +13,12 @@ export class AdminComponent implements OnInit {
 
   public typeId : number;
   public listProducts : product[];
+  public name : string;
 
   constructor(private productsService : productsService) {
     this.typeId = 0;
     this.listProducts = [];
+    this.name ="";
   }
 
   ngOnInit(): void {
@@ -32,14 +34,15 @@ export class AdminComponent implements OnInit {
     var typeElt = document.getElementById("type");
     // @ts-ignore
     var typeSel = typeElt.options[typeElt.selectedIndex].value;
-
+    var name = (<HTMLInputElement>document.getElementById('name')).value;
     this.typeId = typeSel;
+    this.name = name;
     /*Fin de prise en commpte des filtres */
     this.getProducts();
   }
 
   getProducts(){
-    this.productsService.getAllProductsByType(this.typeId).subscribe((response)=>{
+    this.productsService.getAllProductsByType(this.typeId,this.name).subscribe((response)=>{
       // @ts-ignore
       this.listProducts = response.data;
     });

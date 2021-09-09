@@ -164,8 +164,8 @@ export class productsService {
     }
 
     //récupérer les produits par catégories => pour admin uniquement
-    getAllProductsByType(typeId : number) {
-        let requete = "http://"+this.ip+":"+this.portAPI+"/Products/"+typeId;
+    getAllProductsByType(typeId : number, name : string) {
+        let requete = "http://"+this.ip+":"+this.portAPI+"/Products/"+typeId+"?Name="+name;
         //console.log(requete);
 
 
