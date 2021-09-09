@@ -14,11 +14,13 @@ export class AdminComponent implements OnInit {
   public typeId : number;
   public listProducts : product[];
   public name : string;
+  public listId : number[];
 
   constructor(private productsService : productsService) {
     this.typeId = 0;
     this.listProducts = [];
     this.name ="";
+    this.listId = [];
   }
 
   ngOnInit(): void {
@@ -80,6 +82,55 @@ export class AdminComponent implements OnInit {
       }
     });
     this.getProducts();
+  }
+
+  //mise à jour du type
+  setType(PR : product){
+    var type = prompt('2 pour Consommable, 3 pour Niveau, 4 pour Compteur, 5 pour Sortie, 6 pour Analyse',String(PR.typeId));
+    // @ts-ignore
+    this.productsService.setType(type,PR.Id).subscribe((response)=>{
+      if (response == "Changement de catégorie du produit OK"){
+        Swal.fire("Le type a été changé !");
+      }
+      else {
+        Swal.fire({
+          icon: 'error',
+          text: 'Erreur lors de la mise à jour du type ....',
+        })
+      }
+    });
+    this.getProducts();
+  }
+
+  //permet de stocker les Id des products pour lesquelles il faut changer le type
+  addPr(Id : number){
+    // @ts-ignore
+    if (document.getElementById(""+Id).checked == true) {
+      this.listId.push(Id);
+    }
+    else this.listId.splice(this.listId.indexOf(Id),1);
+  }
+
+  changeAllType(){
+    var prix = prompt('2 pour Consommable, 3 pour Niveau, 4 pour Compteur, 5 pour Sortie, 6 pour Analyse','0');
+    for(var i= 0; i < this.listId.length; i++)
+    {
+      // @ts-ignore
+      this.productsService.setType(prix,this.listId[i]).subscribe((response)=>{
+        if (response == "Changement de catégorie du produit OK"){
+          Swal.fire("Le type a été changé !");
+        }
+        else {
+          Swal.fire({
+            icon: 'error',
+            text: 'Erreur lors de la mise à jour du type ....',
+          })
+        }
+      });
+      this.getProducts();
+    }
+    this.listId = [];
+    Swal.fire("Le Prix a été mis à jour !");
   }
 
 }

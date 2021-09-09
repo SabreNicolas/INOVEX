@@ -203,6 +203,19 @@ export class productsService {
             .put<any>(requete,requestOptions);
     }
 
+    //mettre à jour le type d'un produit
+    setType(type: number, Id: number){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/productType/"+Id+"/"+type;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<any>(requete,requestOptions);
+    }
+
 
     //GETTER & SETTER
     get nom(): string {
