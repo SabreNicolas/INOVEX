@@ -164,8 +164,8 @@ export class productsService {
     }
 
     //récupérer les produits par catégories => pour admin uniquement
-    getAllProductsByType(typeId : number) {
-        let requete = "http://"+this.ip+":"+this.portAPI+"/Products/"+typeId;
+    getAllProductsByType(typeId : number, name : string) {
+        let requete = "http://"+this.ip+":"+this.portAPI+"/Products/"+typeId+"?Name="+name;
         //console.log(requete);
 
 
@@ -193,6 +193,19 @@ export class productsService {
     //mettre à jour l'unité d'un produit
     setUnit(unit: string, Id: number){
         let requete = "http://"+this.ip+":"+this.portAPI+"/productUnit/"+Id+"?Unit="+unit;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<any>(requete,requestOptions);
+    }
+
+    //mettre à jour le type d'un produit
+    setType(type: number, Id: number){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/productType/"+Id+"/"+type;
         //console.log(requete);
 
         const requestOptions = {
