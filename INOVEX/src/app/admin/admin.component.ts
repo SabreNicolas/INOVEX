@@ -138,7 +138,7 @@ export class AdminComponent implements OnInit {
       this.getProducts();
     }
     this.listId = [];
-    Swal.fire("Le Prix a été mis à jour !");
+    Swal.fire("Le type a été mis à jour !");
   }
 
 }
