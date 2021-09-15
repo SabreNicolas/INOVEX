@@ -111,12 +111,6 @@ export class ListSortantsComponent implements OnInit {
             }
           });
         }
-        else {
-          Swal.fire({
-            icon: 'error',
-            text: 'Un 0 a été saisi, il ne sera pas pris en compte ... Veuillez utiliser la poubelle pour supprimer la valeur !',
-          })
-        }
       })
     });
   }
