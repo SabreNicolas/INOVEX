@@ -54,7 +54,7 @@ export class moralEntitiesService {
         .get<any>(requete,requestOptions);
     }
 
-    //récupérer les clients
+    //récupérer les clients avec Enabled à 1 (pour la saisie)
     getMoralEntities(Code : string) {
       let requete = "http://"+this.ip+":"+this.portAPI+"/moralEntities?Code="+Code;
       //console.log(requete);
@@ -66,6 +66,20 @@ export class moralEntitiesService {
 
       return this.http
         .get<moralEntity[]>(requete,requestOptions);
+    }
+
+    //récupérer les clients
+    getMoralEntitiesAll(Code : string) {
+        let requete = "http://"+this.ip+":"+this.portAPI+"/moralEntitiesAll?Code="+Code;
+        //console.log(requete);
+
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<moralEntity[]>(requete,requestOptions);
     }
 
     //mettre à jour le code d'un client
@@ -95,8 +109,8 @@ export class moralEntitiesService {
     }
 
     //mettre à jour le enabled d'un client
-    setEnabled(Id: number){
-      let requete = "http://"+this.ip+":"+this.portAPI+"/moralEntitieEnabled/"+Id;
+    setEnabled(Id: number, Enabled : number){
+      let requete = "http://"+this.ip+":"+this.portAPI+"/moralEntitieEnabled/"+Id+"/"+Enabled;
       //console.log(requete);
 
       const requestOptions = {

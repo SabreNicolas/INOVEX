@@ -21,7 +21,7 @@ export class ListMoralEntitiesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.moralEntitiesService.getMoralEntities(this.debCode).subscribe((response)=>{
+    this.moralEntitiesService.getMoralEntitiesAll(this.debCode).subscribe((response)=>{
       // @ts-ignore
       this.moralEntities = response.data;
     });
@@ -76,15 +76,15 @@ export class ListMoralEntitiesComponent implements OnInit {
   }
 
   //désactiver un client
-  setDisabled(idMR : number){
-    this.moralEntitiesService.setEnabled(idMR).subscribe((response)=>{
-      if (response == "Désactivation du client OK"){
-        Swal.fire("Le client a été désactivé !");
+  setVisibility(idMr : number, visibility : number){
+    this.moralEntitiesService.setEnabled(idMr,visibility).subscribe((response)=>{
+      if (response == "Changement de visibilité du client OK"){
+        Swal.fire("La visibilité du client a bien été changé !");
       }
       else {
         Swal.fire({
           icon: 'error',
-          text: 'Erreur lors de la désactivation du client ....',
+          text: 'Erreur lors du changement de visibilité du client ....',
         })
       }
     });

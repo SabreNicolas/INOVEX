@@ -88,6 +88,10 @@ export class AdminComponent implements OnInit {
   setType(PR : product){
     var type = prompt('2 pour Consommable, 3 pour Niveau, 4 pour Compteur, 5 pour Sortie, 6 pour Analyse',String(PR.typeId));
     // @ts-ignore
+    if (type < 1) {
+      return; //break out of the function early
+    }
+    // @ts-ignore
     this.productsService.setType(type,PR.Id).subscribe((response)=>{
       if (response == "Changement de catégorie du produit OK"){
         Swal.fire("Le type a été changé !");
@@ -112,11 +116,15 @@ export class AdminComponent implements OnInit {
   }
 
   changeAllType(){
-    var prix = prompt('2 pour Consommable, 3 pour Niveau, 4 pour Compteur, 5 pour Sortie, 6 pour Analyse','0');
+    var type = prompt('2 pour Consommable, 3 pour Niveau, 4 pour Compteur, 5 pour Sortie, 6 pour Analyse','0');
+    // @ts-ignore
+    if (type < 1) {
+      return; //break out of the function early
+    }
     for(var i= 0; i < this.listId.length; i++)
     {
       // @ts-ignore
-      this.productsService.setType(prix,this.listId[i]).subscribe((response)=>{
+      this.productsService.setType(type,this.listId[i]).subscribe((response)=>{
         if (response == "Changement de catégorie du produit OK"){
           Swal.fire("Le type a été changé !");
         }
@@ -130,7 +138,7 @@ export class AdminComponent implements OnInit {
       this.getProducts();
     }
     this.listId = [];
-    Swal.fire("Le Prix a été mis à jour !");
+    Swal.fire("Le type a été mis à jour !");
   }
 
 }
