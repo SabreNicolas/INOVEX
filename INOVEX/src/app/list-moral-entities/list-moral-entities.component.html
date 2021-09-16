@@ -52,6 +52,7 @@
           <th scope="col">Type Déchets</th>
           <th scope="col">Prix Unitaire</th>
           <th scope="col">#</th>
+          <th scope="col">#</th>
           <th scope="col">Visibilité</th>
         </tr>
         </thead>
@@ -66,6 +67,9 @@
           <td>{{mr.Address}}</td>
           <td>{{mr.produit}} - {{mr.collecteur}}</td>
           <td>{{mr.UnitPrice}}</td>
+          <td><button id="setName" (click)="setName(mr)" class="btn btn-primary">
+            Changer le Nom
+          </button></td>
           <td><button id="setPrice" (click)="setPrice(mr)" class="btn btn-primary">
             Changer le Prix
           </button></td>

@@ -33,8 +33,8 @@ export class arretsService {
     }
 
     //récupérer l'historique des arrêts pour un mois
-    getArrets(dateDebut : string){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/Arrets/"+dateDebut;
+    getArrets(dateDebut : string, dateFin : string){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/Arrets/"+dateDebut+"/"+dateFin;
         //console.log(requete);
 
         const requestOptions = {
@@ -46,8 +46,8 @@ export class arretsService {
     }
 
     //récupérer la somme des arrêts par type pour un mois
-    getArretsType(dateDebut : string){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/ArretsSumGroup/"+dateDebut;
+    getArretsType(dateDebut : string, dateFin : string){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/ArretsSumGroup/"+dateDebut+"/"+dateFin;
         //console.log(requete);
 
         const requestOptions = {
@@ -59,8 +59,8 @@ export class arretsService {
     }
 
     //récupérer la somme des arrêts pour un mois
-    getArretsSum(dateDebut : string){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/ArretsSum/"+dateDebut;
+    getArretsSum(dateDebut : string, dateFin : string){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/ArretsSum/"+dateDebut+"/"+dateFin;
         //console.log(requete);
 
         const requestOptions = {
@@ -72,8 +72,8 @@ export class arretsService {
     }
 
     //récupérer la somme des arrêts pour un mois et pour 1
-    getArretsSum1(dateDebut : string){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/ArretsSum1/"+dateDebut;
+    getArretsSum1(dateDebut : string, dateFin : string){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/ArretsSum1/"+dateDebut+"/"+dateFin;
         //console.log(requete);
 
         const requestOptions = {
@@ -85,8 +85,8 @@ export class arretsService {
     }
 
     //récupérer la somme des arrêts pour un mois et pour 2
-    getArretsSum2(dateDebut : string){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/ArretsSum2/"+dateDebut;
+    getArretsSum2(dateDebut : string, dateFin : string){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/ArretsSum2/"+dateDebut+"/"+dateFin;
         //console.log(requete);
 
         const requestOptions = {

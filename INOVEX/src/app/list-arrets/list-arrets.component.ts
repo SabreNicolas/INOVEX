@@ -3,6 +3,7 @@ import {arretsService} from "../services/arrets.service";
 import {arret} from "../../models/arrets.model";
 import {NgForm} from "@angular/forms";
 import {sumArret} from "../../models/sumArret.model";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-list-arrets',
@@ -14,68 +15,104 @@ export class ListArretsComponent implements OnInit {
   public listArrets : arret[];
   public sumArrets : sumArret[];
   public stringDateDebut : string;
+  public stringDateFin : string;
+  public dateDeb : Date | undefined;
+  public dateFin : Date | undefined;
 
   constructor(private arretsService : arretsService) {
     this.listArrets = [];
     this.sumArrets = [];
     this.stringDateDebut = '';
+    this.stringDateFin = '';
   }
 
   ngOnInit(): void {
-    this.arretsService.getArrets(this.stringDateDebut.substr(6, 4) + '-' + this.stringDateDebut.substr(3, 2)).subscribe((response)=>{
+    this.arretsService.getArrets(this.stringDateDebut,this.stringDateFin).subscribe((response)=>{
       // @ts-ignore
       this.listArrets = response.data;
     });
 
-    this.arretsService.getArretsType(this.stringDateDebut.substr(6, 4) + '-' + this.stringDateDebut.substr(3, 2)).subscribe((response)=>{
+    this.arretsService.getArretsType(this.stringDateDebut,this.stringDateFin).subscribe((response)=>{
       // @ts-ignore
       this.sumArrets = response.data;
-      this.arretsService.getArretsSum1(this.stringDateDebut.substr(6, 4) + '-' + this.stringDateDebut.substr(3, 2)).subscribe((response)=>{
+      this.arretsService.getArretsSum1(this.stringDateDebut,this.stringDateFin).subscribe((response)=>{
         // @ts-ignore
         this.sumArrets.push(response.data[0]);
       });
-      this.arretsService.getArretsSum2(this.stringDateDebut.substr(6, 4) + '-' + this.stringDateDebut.substr(3, 2)).subscribe((response)=>{
+      this.arretsService.getArretsSum2(this.stringDateDebut,this.stringDateFin).subscribe((response)=>{
         // @ts-ignore
         this.sumArrets.push(response.data[0]);
       });
-      this.arretsService.getArretsSum(this.stringDateDebut.substr(6, 4) + '-' + this.stringDateDebut.substr(3, 2)).subscribe((response)=>{
+      this.arretsService.getArretsSum(this.stringDateDebut,this.stringDateFin).subscribe((response)=>{
         // @ts-ignore
         this.sumArrets.push(response.data[0]);
       });
     });
   }
 
-  setPeriod(form: NgForm){
-    var date = new Date(form.value['dateDeb']);
+  setPeriod(form: NgForm) {
+    this.dateDeb = new Date(form.value['dateDeb']);
+    this.dateFin = new Date(form.value['dateFin']);
+    if (this.dateFin < this.dateDeb) {
+      form.controls['dateFin'].reset();
+      form.value['dateFin'] = '';
+      Swal.fire({
+        icon: 'error',
+        text: 'La date de Fin est inférieure à la date de Départ !',
+      })
+    }
+    else {
+      var mmF = String(this.dateDeb.getMonth() + 1).padStart(2, '0'); //January is 0!
+      var yyyyF = this.dateDeb.getFullYear();
+      var ddF = String(this.dateDeb.getDate()).padStart(2, '0');
+      this.stringDateDebut = yyyyF + '-' + mmF + '-' + ddF;
+      var mmL = String(this.dateFin.getMonth() + 1).padStart(2, '0'); //January is 0!
+      var yyyyL = this.dateFin.getFullYear();
+      var ddL = String(this.dateFin.getDate()).padStart(2, '0');
+      this.stringDateFin = yyyyL + '-' + mmL + '-' + ddL;
+      this.ngOnInit();
+    }
+  }
+
+
+  //changer les dates pour afficher le mois en cours
+  setCurrentMonth(form: NgForm){
+    var date = new Date();
     var mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
     var yyyy = date.getFullYear();
     var dd = String(new Date(yyyy, date.getMonth()+1, 0).getDate()).padStart(2, '0');
-    this.stringDateDebut = dd + '/' + mm + '/' + yyyy;
-    this.ngOnInit();
+
+    var Fisrtday = yyyy + '-' + mm + '-' + '01';
+    var Lastday = yyyy + '-' + mm + '-' + dd;
+    (<HTMLInputElement>document.getElementById("dateDeb")).value = Fisrtday;
+    (<HTMLInputElement>document.getElementById("dateFin")).value = Lastday;
+    form.value['dateDeb'] = Fisrtday;
+    form.value['dateFin'] = Lastday;
+    this.setPeriod(form);
+    form.controls['dateDeb'].reset();
+    form.value['dateDeb']='';
+    form.controls['dateFin'].reset();
+    form.value['dateFin']='';
   }
 
-  //changer les dates pour visualiser le mois dernier
+  //changer les dates pour afficher le mois en dernier
   setLastMonth(form: NgForm){
     var date = new Date();
     var mm = String(date.getMonth()).padStart(2, '0'); //January is 0!
     var yyyy = date.getFullYear();
+    var dd = String(new Date(yyyy, date.getMonth(), 0).getDate()).padStart(2, '0');
 
-    var Lastday = yyyy + '-' + mm;
-    (<HTMLInputElement>document.getElementById("dateDeb")).value = Lastday;
-    form.value['dateDeb'] = Lastday;
+    var Fisrtday = yyyy + '-' + mm + '-' + '01';
+    var Lastday = yyyy + '-' + mm + '-' + dd;
+    (<HTMLInputElement>document.getElementById("dateDeb")).value = Fisrtday;
+    (<HTMLInputElement>document.getElementById("dateFin")).value = Lastday;
+    form.value['dateDeb'] = Fisrtday;
+    form.value['dateFin'] = Lastday;
     this.setPeriod(form);
-  }
-
-  //changer les dates pour visualiser le mois en cours
-  setCurrentMonth(form: NgForm){
-    var date = new Date();
-    var mm = String(date.getMonth()+1).padStart(2, '0'); //January is 0!
-    var yyyy = date.getFullYear();
-
-    var Lastday = yyyy + '-' + mm;
-    (<HTMLInputElement>document.getElementById("dateDeb")).value = Lastday;
-    form.value['dateDeb'] = Lastday;
-    this.setPeriod(form);
+    form.controls['dateDeb'].reset();
+    form.value['dateDeb']='';
+    form.controls['dateFin'].reset();
+    form.value['dateFin']='';
   }
 
 }

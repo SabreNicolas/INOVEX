@@ -4,16 +4,20 @@
         <div id="arretsFiltres">
             <form #f="ngForm">
                 <div class="form-group">
-                    <h5><label>Mois :</label></h5>
+                    <h5><label>Période :</label></h5>
                     <div class="row">
                         <div class="col-lg-3">
-                            <input type="month" id="dateDeb" class="form-control" placeholder="Date de début" name="dateDeb"
+                            <input type="date" id="dateDeb" class="form-control" placeholder="Date de début" name="dateDeb"
+                                   ngModel>
+                        </div>
+                        <div class="col-lg-3">
+                            <input type="date" id="dateFin" class="form-control" placeholder="Date de fin" name="dateFin"
                                    ngModel>
                         </div>
                         <div class="col-sm-3">
                             <div class="form-group">
                                 <button class="btn btn-primary" type="submit" (click)="setPeriod(f)"><img src="assets/refresh.png"></button>
-                                <button style="margin-left: 0.5em" class="btn btn-info" (click)="setCurrentMonth(f)">Mois en cours</button>
+                                <button style="margin-left: 0.5em" class="btn btn-dark" (click)="setCurrentMonth(f)">Mois en cours</button>
                                 <button style="margin-left: 0.5em" class="btn btn-dark" (click)="setLastMonth(f)">Mois précédent</button>
                             </div>
                         </div>
