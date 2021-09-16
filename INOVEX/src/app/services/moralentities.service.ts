@@ -108,6 +108,19 @@ export class moralEntitiesService {
         .put<any>(requete,requestOptions);
     }
 
+    //mettre à jour le nom d'un client
+    setName(name: string, Id: number){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/moralEntitieName/"+Id+"?Name="+name;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<any>(requete,requestOptions);
+    }
+
     //mettre à jour le enabled d'un client
     setEnabled(Id: number, Enabled : number){
       let requete = "http://"+this.ip+":"+this.portAPI+"/moralEntitieEnabled/"+Id+"/"+Enabled;

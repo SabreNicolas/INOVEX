@@ -75,6 +75,27 @@ export class ListMoralEntitiesComponent implements OnInit {
     this.ngOnInit();
   }
 
+  //mise à jour du nom d'un client
+  setName(MR : moralEntity){
+    var name = prompt('Veuillez saisir un Nom',String(MR.Name));
+    if (name == null) {
+      return; //break out of the function early
+    }
+    // @ts-ignore
+    this.moralEntitiesService.setName(name,MR.Id).subscribe((response)=>{
+      if (response == "Changement de nom du client OK"){
+        Swal.fire("Le Nom a été mis à jour !");
+      }
+      else {
+        Swal.fire({
+          icon: 'error',
+          text: 'Erreur lors de la mise à jour du Nom ....',
+        })
+      }
+    });
+    this.ngOnInit();
+  }
+
   //désactiver un client
   setVisibility(idMr : number, visibility : number){
     this.moralEntitiesService.setEnabled(idMr,visibility).subscribe((response)=>{
