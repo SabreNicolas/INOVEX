@@ -149,6 +149,20 @@ export class productsService {
             .get<product[]>(requete,requestOptions);
     }
 
+    //récupérer les containers
+    getContainers() {
+        let requete = "http://"+this.ip+":"+this.portAPI+"/Container";
+        //console.log(requete);
+
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<product[]>(requete,requestOptions);
+    }
+
     //récupérer les valeurs d'analyses, de sortants, de consommables
     getValueProducts(Date : string, Id : number) {
         let requete = "http://"+this.ip+":"+this.portAPI+"/ValuesProducts/"+Id+"/"+Date;
