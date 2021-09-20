@@ -161,6 +161,19 @@ export class moralEntitiesService {
             .get<any>(requete,requestOptions);
     }
 
+    //récupérer la somme des tonnages
+    getTotal(EntryDate : string, dechet : string) {
+        let requete = "http://"+this.ip+":"+this.portAPI+"/TotalMeasures/"+dechet+"/"+EntryDate;
+        console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<any>(requete,requestOptions);
+    }
+
 
 
     //GETTER & SETTER

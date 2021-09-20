@@ -23,7 +23,7 @@ export class ListEntreeComponent implements OnInit {
   public containerDasri : product | undefined;
 
   constructor(private moralEntitiesService : moralEntitiesService, private productsService : productsService) {
-    this.debCode = '';
+    this.debCode = '20';
     this.moralEntities = [];
     this.listDays = [];
     this.listTotal = [];
@@ -116,25 +116,22 @@ export class ListEntreeComponent implements OnInit {
 
   //récupérer les tonnages en BDD
   getValues(){
-    var tot = 0;
-    var i = 0;
     if (this.monthCall == 1) this.loading();
     this.listDays.forEach(date => {
-          this.moralEntities.forEach(mr => {
-            this.moralEntitiesService.getEntry(date.substr(6, 4) + '-' + date.substr(3, 2) + '-' + date.substr(0, 2), mr.productId, mr.Id).subscribe((response) => {
-              i++;
-              if (response.data[0] != undefined && response.data[0].Value != 0) {
-                (<HTMLInputElement>document.getElementById(mr.Id + '-' + mr.productId + '-' + date)).value = response.data[0].Value;
-                tot = +response.data[0].Value + tot;
-              }
-              else (<HTMLInputElement>document.getElementById(mr.Id + '-' + mr.productId + '-' + date)).value = '';
-              if (i == this.moralEntities.length){
-                (<HTMLInputElement>document.getElementById(date)).innerHTML = String(tot).substr(0,7);
-                tot = 0;
-                i = 0;
-              }
-            });
-          });
+      this.moralEntities.forEach(mr => {
+        this.moralEntitiesService.getEntry(date.substr(6, 4) + '-' + date.substr(3, 2) + '-' + date.substr(0, 2), mr.productId, mr.Id).subscribe((response) => {
+          if (response.data[0] != undefined && response.data[0].Value != 0) {
+            (<HTMLInputElement>document.getElementById(mr.Id + '-' + mr.productId + '-' + date)).value = response.data[0].Value;
+          }
+          else (<HTMLInputElement>document.getElementById(mr.Id + '-' + mr.productId + '-' + date)).value = '';
+        });
+      });
+      this.moralEntitiesService.getTotal(date.substr(6, 4) + '-' + date.substr(3, 2) + '-' + date.substr(0, 2), this.debCode).subscribe((response) => {
+        if (response.data[0] != undefined && response.data[0].Total != 0) {
+          (<HTMLInputElement>document.getElementById(date)).innerHTML = response.data[0].Total;
+        }
+        else (<HTMLInputElement>document.getElementById(date)).innerHTML = '0';
+      });
     });
   }
 
