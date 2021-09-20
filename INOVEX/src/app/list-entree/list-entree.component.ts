@@ -3,7 +3,8 @@ import {moralEntitiesService} from "../services/moralentities.service";
 import Swal from 'sweetalert2';
 import {moralEntity} from "../../models/moralEntity.model";
 import {NgForm} from "@angular/forms";
-import {delay} from "rxjs/operators";
+import {productsService} from "../services/products.service";
+import {product} from "../../models/products.model";
 
 @Component({
   selector: 'app-list-entree',
@@ -19,9 +20,10 @@ export class ListEntreeComponent implements OnInit {
   public listDays : string[];
   public listTotal : number[];
   public monthCall : number;
+  public containerDasri : product | undefined;
 
-  constructor(private moralEntitiesService : moralEntitiesService) {
-    this.debCode = '';
+  constructor(private moralEntitiesService : moralEntitiesService, private productsService : productsService) {
+    this.debCode = '20';
     this.moralEntities = [];
     this.listDays = [];
     this.listTotal = [];
@@ -29,11 +31,20 @@ export class ListEntreeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.containerDasri = undefined;
     this.moralEntitiesService.getMoralEntities(this.debCode).subscribe((response)=>{
       // @ts-ignore
       this.moralEntities = response.data;
       this.getValues();
     });
+    //Récupération du produit container DASRI
+    if (this.debCode == '203'){
+      this.productsService.getContainers().subscribe((response)=>{
+        // @ts-ignore
+        this.containerDasri = response.data[0];
+        this.getValuesContainer();
+      });
+    }
   }
 
   setFilters(){
@@ -63,6 +74,7 @@ export class ListEntreeComponent implements OnInit {
     }
     this.listDays = this.getDays(this.dateDeb, this.dateFin);
     this.getValues();
+    this.getValuesContainer();
   }
 
 
@@ -102,30 +114,104 @@ export class ListEntreeComponent implements OnInit {
     );
   }
 
-
   //récupérer les tonnages en BDD
   getValues(){
-    var tot = 0;
-    var i = 0;
     if (this.monthCall == 1) this.loading();
     this.listDays.forEach(date => {
-          this.moralEntities.forEach(mr => {
-            this.moralEntitiesService.getEntry(date.substr(6, 4) + '-' + date.substr(3, 2) + '-' + date.substr(0, 2), mr.productId, mr.Id).subscribe((response) => {
-              i++;
-              if (response.data[0] != undefined && response.data[0].Value != 0) {
-                (<HTMLInputElement>document.getElementById(mr.Id + '-' + mr.productId + '-' + date)).value = response.data[0].Value;
-                tot = +response.data[0].Value + tot;
-              }
-              else (<HTMLInputElement>document.getElementById(mr.Id + '-' + mr.productId + '-' + date)).value = '';
-              if (i == this.moralEntities.length){
-                (<HTMLInputElement>document.getElementById(date)).innerHTML = String(tot).substr(0,7);
-                tot = 0;
-                i = 0;
-              }
-            });
-          });
+      this.moralEntities.forEach(mr => {
+        this.moralEntitiesService.getEntry(date.substr(6, 4) + '-' + date.substr(3, 2) + '-' + date.substr(0, 2), mr.productId, mr.Id).subscribe((response) => {
+          if (response.data[0] != undefined && response.data[0].Value != 0) {
+            (<HTMLInputElement>document.getElementById(mr.Id + '-' + mr.productId + '-' + date)).value = response.data[0].Value;
+          }
+          else (<HTMLInputElement>document.getElementById(mr.Id + '-' + mr.productId + '-' + date)).value = '';
+        });
+      });
+      this.moralEntitiesService.getTotal(date.substr(6, 4) + '-' + date.substr(3, 2) + '-' + date.substr(0, 2), this.debCode).subscribe((response) => {
+        if (response.data[0] != undefined && response.data[0].Total != 0) {
+          (<HTMLInputElement>document.getElementById(date)).innerHTML = response.data[0].Total;
+        }
+        else (<HTMLInputElement>document.getElementById(date)).innerHTML = '0';
+      });
     });
   }
+
+  //mettre à 0 la value pour modificiation
+  delete(Id : number, productId : number, date : string){
+    this.moralEntitiesService.createMeasure(date.substr(6,4)+'-'+date.substr(3,2)+'-'+date.substr(0,2),0,productId,Id).subscribe((response)=>{
+      if (response == "Création du Measures OK"){
+        Swal.fire("La valeur a bien été supprimé !");
+        (<HTMLInputElement>document.getElementById(Id + '-' + productId + '-' + date)).value = '';
+      }
+      else {
+        Swal.fire({
+          icon: 'error',
+          text: 'Erreur lors de la suppression de la valeur ....',
+        })
+      }
+    });
+  }
+
+  /*
+  CONTAINERS DASRI
+   */
+  //récupérer les valeurs en BDD pour Container DASRI
+  getValuesContainer(){
+    this.listDays.forEach(date => {
+      // @ts-ignore
+      this.productsService.getValueProducts(date.substr(6, 4) + '-' + date.substr(3, 2) + '-' + date.substr(0, 2), this.containerDasri.Id).subscribe((response) => {
+        if (response.data[0] != undefined && response.data[0].Value != 0) {
+          // @ts-ignore
+          (<HTMLInputElement>document.getElementById(this.containerDasri.Id + '-' + date)).value = response.data[0].Value;
+        }
+        else { // @ts-ignore
+          (<HTMLInputElement>document.getElementById(this.containerDasri.Id + '-' + date)).value = '';
+        }
+      });
+    });
+  }
+
+  //valider la saisie des Containers DASRI
+  validationContainer(){
+    this.listDays.forEach(date => {
+      // @ts-ignore
+      var value = (<HTMLInputElement>document.getElementById(this.containerDasri.Id+'-'+date)).value;
+      var valueInt : number = +value;
+      if (valueInt >0.0){
+        // @ts-ignore
+        this.moralEntitiesService.createMeasure(date.substr(6,4)+'-'+date.substr(3,2)+'-'+date.substr(0,2),valueInt,this.containerDasri.Id,0).subscribe((response)=>{
+          if (response == "Création du Measures OK"){
+            Swal.fire("Les valeurs de Containers ont été insérées avec succès !");
+          }
+          else {
+            Swal.fire({
+              icon: 'error',
+              text: 'Erreur lors de l\'insertion des valeurs ....',
+            })
+          }
+        });
+      }
+    });
+  }
+
+  //mettre à 0 la value pour modificiation
+  deleteContainer(Id : number, date : string){
+    this.moralEntitiesService.createMeasure(date.substr(6,4)+'-'+date.substr(3,2)+'-'+date.substr(0,2),0,Id,0).subscribe((response)=>{
+      if (response == "Création du Measures OK"){
+        Swal.fire("La valeur a bien été supprimé !");
+        (<HTMLInputElement>document.getElementById(Id + '-' + date)).value = '';
+      }
+      else {
+        Swal.fire({
+          icon: 'error',
+          text: 'Erreur lors de la suppression de la valeur ....',
+        })
+      }
+    });
+  }
+
+  /*
+  FIN CONTAINERS DASRI
+   */
 
   loading(){
     Swal.fire({
@@ -203,22 +289,6 @@ export class ListEntreeComponent implements OnInit {
     form.controls['dateFin'].reset();
     form.value['dateFin']='';
     this.monthCall = 0;
-  }
-
-  //mettre à 0 la value pour modificiation
-  delete(Id : number, productId : number, date : string){
-    this.moralEntitiesService.createMeasure(date.substr(6,4)+'-'+date.substr(3,2)+'-'+date.substr(0,2),0,productId,Id).subscribe((response)=>{
-      if (response == "Création du Measures OK"){
-        Swal.fire("La valeur a bien été supprimé !");
-        (<HTMLInputElement>document.getElementById(Id + '-' + productId + '-' + date)).value = '';
-      }
-      else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Erreur lors de la suppression de la valeur ....',
-        })
-      }
-    });
   }
 
 
