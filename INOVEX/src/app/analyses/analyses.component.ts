@@ -17,13 +17,13 @@ export class AnalysesComponent implements OnInit {
   public listCategories : category[];
   public listAnalyses : product [];
   public Code : string;
-  public listDays : string;
+  public listDays : string[];
 
   constructor(private productsService : productsService, private categoriesService : categoriesService, private mrService : moralEntitiesService) {
     this.listCategories = [];
     this.listAnalyses = [];
     this.Code = '';
-    this.listDays = '';
+    this.listDays = [];
   }
 
   ngOnInit(): void {
@@ -49,12 +49,12 @@ export class AnalysesComponent implements OnInit {
   }
 
   setPeriod(form: NgForm){
-    this.listDays = '';
+    this.listDays = [];
     var date = new Date(form.value['dateDeb']);
     var mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
     var yyyy = date.getFullYear();
     var dd = String(new Date(yyyy, date.getMonth()+1, 0).getDate()).padStart(2, '0');
-    this.listDays = dd + '/' + mm + '/' + yyyy;
+    this.listDays.push(dd + '/' + mm + '/' + yyyy);
     this.getValues();
   }
 
@@ -70,14 +70,46 @@ export class AnalysesComponent implements OnInit {
     this.setPeriod(form);
   }
 
+  //afficher le dernier jour de chaque mois de l'année en cours
+  setYear(){
+    this.listDays = [];
+    var date = new Date();
+    var yyyy = date.getFullYear();
+    for (let i = 1; i < 13; i++) {
+      var dd = String(new Date(yyyy, i, 0).getDate()).padStart(2, '0');
+      if(i<10){
+        this.listDays.push(dd + '/' + 0+i + '/' + yyyy);
+      }
+      else this.listDays.push(dd + '/' + i + '/' + yyyy);
+    }
+    this.getValues();
+  }
+
+  //afficher le dernier jour de chaque mois de l'année en cours
+  setLastYear(){
+    this.listDays = [];
+    var date = new Date();
+    var yyyy = date.getFullYear()-1;
+    for (let i = 1; i < 13; i++) {
+      var dd = String(new Date(yyyy, i, 0).getDate()).padStart(2, '0');
+      if(i<10){
+        this.listDays.push(dd + '/' + 0+i + '/' + yyyy);
+      }
+      else this.listDays.push(dd + '/' + i + '/' + yyyy);
+    }
+    this.getValues();
+  }
+
   //récupérer les valeurs en BDD
   getValues() {
     this.listAnalyses.forEach(an => {
-      this.productsService.getValueProducts(this.listDays.substr(6, 4) + '-' + this.listDays.substr(3, 2) + '-' + this.listDays.substr(0, 2),an.Id).subscribe((response) => {
-        if (response.data[0] != undefined && response.data[0].Value != 0) {
-          (<HTMLInputElement>document.getElementById(an.Id + '-' + this.listDays)).value = response.data[0].Value;
-        }
-        else (<HTMLInputElement>document.getElementById(an.Id + '-' + this.listDays)).value = '';
+      this.listDays.forEach(day => {
+        this.productsService.getValueProducts(day.substr(6, 4) + '-' + day.substr(3, 2) + '-' + day.substr(0, 2),an.Id).subscribe((response) => {
+          if (response.data[0] != undefined && response.data[0].Value != 0) {
+            (<HTMLInputElement>document.getElementById(an.Id + '-' + day)).value = response.data[0].Value;
+          }
+          else (<HTMLInputElement>document.getElementById(an.Id + '-' + day)).value = '';
+        });
       });
     });
   }
@@ -85,21 +117,23 @@ export class AnalysesComponent implements OnInit {
   //valider les saisies
   validation(){
     this.listAnalyses.forEach(an =>{
-      var value = (<HTMLInputElement>document.getElementById(an.Id+'-'+this.listDays)).value.replace(',','.');
-      var valueInt : number = +value;
-      if (valueInt >0.0){
-        this.mrService.createMeasure(this.listDays.substr(6,4)+'-'+this.listDays.substr(3,2)+'-'+this.listDays.substr(0,2),valueInt,an.Id,0).subscribe((response)=>{
-          if (response == "Création du Measures OK"){
-            Swal.fire("Les valeurs ont été insérées avec succès !");
-          }
-          else {
-            Swal.fire({
-              icon: 'error',
-              text: 'Erreur lors de l\'insertion des valeurs ....',
-            })
-          }
-        });
-      }
+      this.listDays.forEach(day =>{
+        var value = (<HTMLInputElement>document.getElementById(an.Id+'-'+day)).value.replace(',','.');
+        var valueInt : number = +value;
+        if (valueInt >0.0){
+          this.mrService.createMeasure(day.substr(6,4)+'-'+day.substr(3,2)+'-'+day.substr(0,2),valueInt,an.Id,0).subscribe((response)=>{
+            if (response == "Création du Measures OK"){
+              Swal.fire("Les valeurs ont été insérées avec succès !");
+            }
+            else {
+              Swal.fire({
+                icon: 'error',
+                text: 'Erreur lors de l\'insertion des valeurs ....',
+              })
+            }
+          });
+        }
+      });
     })
   }
 
