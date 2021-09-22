@@ -5,6 +5,8 @@ import {moralEntity} from "../../models/moralEntity.model";
 import {NgForm} from "@angular/forms";
 import {productsService} from "../services/products.service";
 import {product} from "../../models/products.model";
+import { saveAs } from 'file-saver';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-list-entree',
@@ -122,8 +124,11 @@ export class ListEntreeComponent implements OnInit {
         this.moralEntitiesService.getEntry(date.substr(6, 4) + '-' + date.substr(3, 2) + '-' + date.substr(0, 2), mr.productId, mr.Id).subscribe((response) => {
           if (response.data[0] != undefined && response.data[0].Value != 0) {
             (<HTMLInputElement>document.getElementById(mr.Id + '-' + mr.productId + '-' + date)).value = response.data[0].Value;
+            (<HTMLInputElement>document.getElementById('export-'+mr.Id + '-' + mr.productId + '-' + date)).innerHTML = response.data[0].Value;
           }
-          else (<HTMLInputElement>document.getElementById(mr.Id + '-' + mr.productId + '-' + date)).value = '';
+          else {
+            (<HTMLInputElement>document.getElementById(mr.Id + '-' + mr.productId + '-' + date)).value = '';
+          }
         });
       });
       this.moralEntitiesService.getTotal(date.substr(6, 4) + '-' + date.substr(3, 2) + '-' + date.substr(0, 2), this.debCode).subscribe((response) => {
@@ -289,6 +294,21 @@ export class ListEntreeComponent implements OnInit {
     form.controls['dateFin'].reset();
     form.value['dateFin']='';
     this.monthCall = 0;
+  }
+
+
+  //Export de la table dans fichier EXCEL
+  exportExcel(){
+    /* table id is passed over here */
+    let element = document.getElementById('listEntree');
+    const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
+
+    /* generate workbook and add the worksheet */
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+    /* save to file */
+    XLSX.writeFile(wb, 'entrants.xlsx');
   }
 
 

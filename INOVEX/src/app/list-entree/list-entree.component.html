@@ -64,6 +64,9 @@
                 </div>
             </div>
         </form>
+
+        <button id="exportExcel" class="btn btn-outline-success btn-lg float-right" (click)="exportExcel()">Excel</button>
+
     </div>
 
 
@@ -92,7 +95,7 @@
     
     <!--table de saisie-->
     <div class="table-style">
-        <table class="table table-hover tableFixed" *ngIf="listDays && moralEntities">
+        <table class="table table-hover tableFixed" id="listEntree" *ngIf="listDays && moralEntities">
             <thead>
             <tr class="table-secondary">
                 <th scope="col"><button class="btn btn-success"(click)="validation()">Valider les tonnages</button></th>
@@ -103,6 +106,8 @@
             <tr class="table-light" *ngFor="let mr of moralEntities">
                 <td class="fix"><strong>{{mr.Name}}</strong></td>
                 <td *ngFor="let day of listDays">
+                    <!-- Balise caché avec la valeur pour export Excel car impossible d'exporter valeurs si inputs dans table -->
+                    <p style="display: none" id="export-{{mr.Id}}-{{mr.productId}}-{{day}}"></p>
                     <div class="flex">
                         <input type="text" id="{{mr.Id}}-{{mr.productId}}-{{day}}" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
                         <button class="btn btn-light" id="delete-{{mr.Id}}-{{mr.productId}}-{{day}}" (click)="delete(mr.Id,mr.productId,day)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
