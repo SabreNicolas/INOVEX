@@ -97,6 +97,19 @@ export class arretsService {
             .get<sumArret>(requete,requestOptions);
     }
 
+    //delete arret
+    deleteArret(id : number){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/DeleteArret/"+id;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .delete<any>(requete,requestOptions);
+    }
+
     //envoi d'un mail pour alerter
     sendEmail(dateDeb : string, heureDeb : string, duree : number, typeArret : string, commentaire : string){
         let requete = "http://"+this.ip+":"+this.portAPI+"/sendmail/"+dateDeb+"/"+heureDeb+"/"+duree+"/"+typeArret+"/"+commentaire;

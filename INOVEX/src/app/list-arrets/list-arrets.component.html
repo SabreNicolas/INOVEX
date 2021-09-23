@@ -51,6 +51,7 @@
             <table class="table table-hover tableFixed">
                 <thead>
                 <tr class="table-secondary">
+                    <th scope="col">#</th>
                     <th scope="col">Arrêt</th>
                     <th scope="col">Date Début</th>
                     <th scope="col">Heure Début</th>
@@ -62,6 +63,7 @@
                 </thead>
                 <tbody>
                 <tr class="table-light" *ngFor="let arret of listArrets">
+                    <td class="fix"><button class="btn btn-light" (click)="delete(arret.Id)"><i style="color: red" class="fa fa-trash-o" aria-hidden="true"></i></button></td>
                     <td class="fix"><strong>{{arret.Name}}</strong></td>
                     <td class="fix">{{arret.dateDebut}}</td>
                     <td class="fix">{{arret.heureDebut}}</td>
