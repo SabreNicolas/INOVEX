@@ -1,4 +1,5 @@
 export interface arret{
+    Id : number;
     Name : string;
     dateDebut : string;
     heureDebut : string;

@@ -115,4 +115,20 @@ export class ListArretsComponent implements OnInit {
     form.value['dateFin']='';
   }
 
+  //Suppression d'un arret
+  delete(id : number){
+    this.arretsService.deleteArret(id).subscribe((response)=>{
+      if (response == "Suppression de l'arrêt OK"){
+        Swal.fire("L'arrêt a bien été supprimé !");
+        this.ngOnInit();
+      }
+      else {
+        Swal.fire({
+          icon: 'error',
+          text: 'Erreur lors de la suppression de l\'arrêt ....',
+        })
+      }
+    });
+  }
+
 }
