@@ -2,8 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MoralEntitiesComponent } from './moral-entities/moral-entities.component';
 import {ListMoralEntitiesComponent} from "./list-moral-entities/list-moral-entities.component";
-import {CategoriesComponent} from "./categories/categories.component";
-import {ListCategoriesComponent} from "./list-categories/list-categories.component";
 import {ListEntreeComponent} from "./list-entree/list-entree.component";
 import { CompteursComponent } from './compteurs/compteurs.component';
 import { ListCompteursComponent } from './list-compteurs/list-compteurs.component';
@@ -14,6 +12,10 @@ import {ListRapportsComponent} from "./list-rapports/list-rapports.component";
 import {ArretsComponent} from "./arrets/arrets.component";
 import {ListArretsComponent} from "./list-arrets/list-arrets.component";
 import {AdminComponent} from "./admin/admin.component";
+import {AdminGlobalComponent} from "./admin-global/admin-global.component";
+import {SortantsComponent} from "./sortants/sortants.component";
+import {ConsoComponent} from "./conso/conso.component";
+import {NewAnalyseComponent} from "./new-analyse/new-analyse.component";
 
 const routes: Routes = [
     {
@@ -39,11 +41,6 @@ const routes: Routes = [
     {
         path: 'sortie',
         component : ListSortantsComponent
-    },
-
-    {
-        path: 'compteurs',
-        component: CompteursComponent
     },
 
     {
@@ -78,7 +75,15 @@ const routes: Routes = [
 
     {
         path : 'admin',
-        component : AdminComponent
+        component : AdminGlobalComponent,
+        children: [
+            { path: '', component:  AdminComponent },
+            { path: 'modification', component:  AdminComponent },
+            { path: 'newCompteur', component:  CompteursComponent },
+            { path: 'newSortant', component:  SortantsComponent },
+            { path: 'newAnalyse', component:  NewAnalyseComponent },
+            { path: 'newConso', component:  ConsoComponent },
+        ]
     },
 
 ];

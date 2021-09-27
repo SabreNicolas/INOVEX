@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import {category} from "../../models/categories.model";
+import {NgForm} from "@angular/forms";
+import Swal from "sweetalert2";
 import {productsService} from "../services/products.service";
 import {categoriesService} from "../services/categories.service";
-import { category } from 'src/models/categories.model';
-import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-compteurs',
-  templateUrl: './compteurs.component.html',
-  styleUrls: ['./compteurs.component.scss']
+  selector: 'app-new-analyse',
+  templateUrl: './new-analyse.component.html',
+  styleUrls: ['./new-analyse.component.scss']
 })
-export class CompteursComponent implements OnInit {
+export class NewAnalyseComponent implements OnInit {
 
   public listCategories : category[];
   public Code : string;
@@ -19,11 +19,11 @@ export class CompteursComponent implements OnInit {
   constructor(private productsService : productsService, private categoriesService : categoriesService) {
     this.listCategories = [];
     this.Code = "";
-    this.typeId = 4; // 4 for compteur
+    this.typeId = 6; // 6 for analyse
   }
 
   ngOnInit(): void {
-    this.categoriesService.getCategories().subscribe((response)=>{
+    this.categoriesService.getCategoriesAnalyses().subscribe((response)=>{
       // @ts-ignore
       this.listCategories = response.data;
     });
@@ -50,12 +50,12 @@ export class CompteursComponent implements OnInit {
 
       this.productsService.createProduct(this.typeId).subscribe((response)=>{
         if (response == "Création du produit OK"){
-          Swal.fire("Le compteur a bien été créé !");
+          Swal.fire("L'analyse a bien été créé !");
         }
         else {
           Swal.fire({
             icon: 'error',
-            text: 'Erreur lors de la création du compteur ....',
+            text: 'Erreur lors de la création de l\'analyse ....',
           })
         }
       });
