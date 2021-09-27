@@ -6,11 +6,11 @@ import {productsService} from "../services/products.service";
 import {categoriesService} from "../services/categories.service";
 
 @Component({
-  selector: 'app-sortants',
-  templateUrl: './sortants.component.html',
-  styleUrls: ['./sortants.component.scss']
+  selector: 'app-new-analyse',
+  templateUrl: './new-analyse.component.html',
+  styleUrls: ['./new-analyse.component.scss']
 })
-export class SortantsComponent implements OnInit {
+export class NewAnalyseComponent implements OnInit {
 
   public listCategories : category[];
   public Code : string;
@@ -19,11 +19,11 @@ export class SortantsComponent implements OnInit {
   constructor(private productsService : productsService, private categoriesService : categoriesService) {
     this.listCategories = [];
     this.Code = "";
-    this.typeId = 5; // 5 for sortants
+    this.typeId = 6; // 6 for analyse
   }
 
   ngOnInit(): void {
-    this.categoriesService.getCategoriesSortants().subscribe((response)=>{
+    this.categoriesService.getCategoriesAnalyses().subscribe((response)=>{
       // @ts-ignore
       this.listCategories = response.data;
     });
@@ -50,12 +50,12 @@ export class SortantsComponent implements OnInit {
 
       this.productsService.createProduct(this.typeId).subscribe((response)=>{
         if (response == "Création du produit OK"){
-          Swal.fire("Le sortant a bien été créé !");
+          Swal.fire("L'analyse a bien été créé !");
         }
         else {
           Swal.fire({
             icon: 'error',
-            text: 'Erreur lors de la création du sortant ....',
+            text: 'Erreur lors de la création de l\'analyse ....',
           })
         }
       });

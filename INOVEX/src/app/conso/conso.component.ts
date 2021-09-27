@@ -6,11 +6,11 @@ import {productsService} from "../services/products.service";
 import {categoriesService} from "../services/categories.service";
 
 @Component({
-  selector: 'app-sortants',
-  templateUrl: './sortants.component.html',
-  styleUrls: ['./sortants.component.scss']
+  selector: 'app-conso',
+  templateUrl: './conso.component.html',
+  styleUrls: ['./conso.component.scss']
 })
-export class SortantsComponent implements OnInit {
+export class ConsoComponent implements OnInit {
 
   public listCategories : category[];
   public Code : string;
@@ -19,14 +19,10 @@ export class SortantsComponent implements OnInit {
   constructor(private productsService : productsService, private categoriesService : categoriesService) {
     this.listCategories = [];
     this.Code = "";
-    this.typeId = 5; // 5 for sortants
+    this.typeId = 2; // 2 for conso
   }
 
   ngOnInit(): void {
-    this.categoriesService.getCategoriesSortants().subscribe((response)=>{
-      // @ts-ignore
-      this.listCategories = response.data;
-    });
   }
 
   onSubmit(form : NgForm){
@@ -50,12 +46,12 @@ export class SortantsComponent implements OnInit {
 
       this.productsService.createProduct(this.typeId).subscribe((response)=>{
         if (response == "Création du produit OK"){
-          Swal.fire("Le sortant a bien été créé !");
+          Swal.fire("Le consommable a bien été créé !");
         }
         else {
           Swal.fire({
             icon: 'error',
-            text: 'Erreur lors de la création du sortant ....',
+            text: 'Erreur lors de la création du consommable ....',
           })
         }
       });

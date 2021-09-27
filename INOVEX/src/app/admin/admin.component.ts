@@ -24,10 +24,6 @@ export class AdminComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // @ts-ignore
-    while (mdp != "admin") {
-      var mdp = prompt("Veuillez saisir le mot de passe pour accéder à l'interface d'Administration :");
-    }
     this.getProducts();
   }
 

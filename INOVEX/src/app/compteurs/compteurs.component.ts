@@ -14,10 +14,12 @@ export class CompteursComponent implements OnInit {
 
   public listCategories : category[];
   public Code : string;
+  public typeId : number;
 
   constructor(private productsService : productsService, private categoriesService : categoriesService) {
     this.listCategories = [];
     this.Code = "";
+    this.typeId = 4; // 4 for compteur
   }
 
   ngOnInit(): void {
@@ -42,11 +44,11 @@ export class CompteursComponent implements OnInit {
         this.productsService.code = String(CodeCast+1);
       }
       else {
-        this.productsService.code = this.Code + '000001';
+        this.productsService.code = this.Code + '0001';
 
       }
 
-      this.productsService.createProduct().subscribe((response)=>{
+      this.productsService.createProduct(this.typeId).subscribe((response)=>{
         if (response == "Création du produit OK"){
           Swal.fire("Le compteur a bien été créé !");
         }

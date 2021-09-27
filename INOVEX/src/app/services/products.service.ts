@@ -40,8 +40,8 @@ export class productsService {
     }
 
     //création du produit de type compteur
-    createProduct(){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/Product?Name="+this._nom+"&Code="+this._code+"&typeId=4&Unit="+this._unit;
+    createProduct(typeId : number){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/Product?Name="+this._nom+"&Code="+this._code+"&typeId="+typeId+"&Unit="+this._unit;
         //console.log(requete);
 
         const requestOptions = {

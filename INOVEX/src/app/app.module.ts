@@ -24,6 +24,10 @@ import { ListArretsComponent } from './list-arrets/list-arrets.component';
 import { ArretsComponent } from './arrets/arrets.component';
 import {DatePipe} from "@angular/common";
 import { AdminComponent } from './admin/admin.component';
+import { AdminGlobalComponent } from './admin-global/admin-global.component';
+import { SortantsComponent } from './sortants/sortants.component';
+import { NewAnalyseComponent } from './new-analyse/new-analyse.component';
+import { ConsoComponent } from './conso/conso.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +45,11 @@ import { AdminComponent } from './admin/admin.component';
     ListRapportsComponent,
     ListArretsComponent,
     ArretsComponent,
-    AdminComponent
+    AdminComponent,
+    AdminGlobalComponent,
+    SortantsComponent,
+    NewAnalyseComponent,
+    ConsoComponent
   ],
   imports: [
     BrowserModule,
