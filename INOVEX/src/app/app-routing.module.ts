@@ -16,6 +16,7 @@ import {AdminGlobalComponent} from "./admin-global/admin-global.component";
 import {SortantsComponent} from "./sortants/sortants.component";
 import {ConsoComponent} from "./conso/conso.component";
 import {NewAnalyseComponent} from "./new-analyse/new-analyse.component";
+import {CategoriesComponent} from "./categories/categories.component";
 
 const routes: Routes = [
     {
@@ -83,6 +84,7 @@ const routes: Routes = [
             { path: 'newSortant', component:  SortantsComponent },
             { path: 'newAnalyse', component:  NewAnalyseComponent },
             { path: 'newConso', component:  ConsoComponent },
+            { path: 'newCategorie', component: CategoriesComponent},
         ]
     },
 
