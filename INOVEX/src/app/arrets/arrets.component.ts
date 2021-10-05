@@ -74,8 +74,15 @@ export class ArretsComponent implements OnInit {
 
   //création de l'arrêt en base
   onSubmit(form : NgForm){
+    /*
+    * DEBUT suppression des caractères suppression
+    * */
     this.commentaire = form.value['desc'];
-    this.commentaire = this.commentaire.replace("'"," ");
+    this.commentaire = this.commentaire.replace("'"," ").toLowerCase();
+    this.commentaire = this.commentaire.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g," ");
+    /*
+    * FIN suppression des caractères suppression
+    * */
     this.transformDateFormat();
     this.arretsService.createArret(this.stringDateDebut,this.stringDateFin,this.duree,1,this.stringDateSaisie,this.commentaire,this.arretId).subscribe((response)=>{
       if (response == "Création de l'arret OK"){
