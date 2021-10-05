@@ -5,7 +5,6 @@ import {moralEntity} from "../../models/moralEntity.model";
 import {NgForm} from "@angular/forms";
 import {productsService} from "../services/products.service";
 import {product} from "../../models/products.model";
-import { saveAs } from 'file-saver';
 import * as XLSX from 'xlsx';
 
 @Component({
@@ -301,11 +300,11 @@ export class ListEntreeComponent implements OnInit {
   exportExcel(){
     /* table id is passed over here */
     let element = document.getElementById('listEntree');
-    const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
+    const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element,{raw:false,dateNF:'mm/dd/yyyy'}); //Attention les jours sont considérés comme mois !!!!
 
     /* generate workbook and add the worksheet */
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+    XLSX.utils.book_append_sheet(wb, ws, 'Entrants');
 
     /* save to file */
     XLSX.writeFile(wb, 'entrants.xlsx');
