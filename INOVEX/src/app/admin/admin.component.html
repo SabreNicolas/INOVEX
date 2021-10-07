@@ -62,10 +62,10 @@
             <td><button id="setType" (click)="setType(pr)" class="btn btn-primary">
                 Changer le type
             </button></td>
-            <td *ngIf="pr.Enabled == 1"><button id="setDisabled" (click)="setVisibility(pr.Id,0)" class="btn btn-outline-danger">
+            <td *ngIf="pr.Enabled == 0"><button id="setDisabled" (click)="setVisibility(pr.Id,1)" class="btn btn-outline-danger">
                 <i style="color: red" class="fa fa-eye-slash"></i>
             </button></td>
-            <td *ngIf="pr.Enabled == 0"><button id="setEnabled" (click)="setVisibility(pr.Id,1)" class="btn btn-outline-success">
+            <td *ngIf="pr.Enabled == 1"><button id="setEnabled" (click)="setVisibility(pr.Id,0)" class="btn btn-outline-success">
                 <i style="color: green" class="fa fa-eye"></i>
             </button></td>
         </tr>
