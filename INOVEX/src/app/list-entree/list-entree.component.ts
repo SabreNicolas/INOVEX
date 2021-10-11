@@ -113,6 +113,7 @@ export class ListEntreeComponent implements OnInit {
           }
         })
     );
+    this.getTotaux();
   }
 
   //récupérer les tonnages en BDD
@@ -130,6 +131,13 @@ export class ListEntreeComponent implements OnInit {
           }
         });
       });
+      this.getTotaux();
+    });
+  }
+
+  //récpérer les totaux
+  getTotaux(){
+    this.listDays.forEach(date => {
       this.moralEntitiesService.getTotal(date.substr(6, 4) + '-' + date.substr(3, 2) + '-' + date.substr(0, 2), this.debCode).subscribe((response) => {
         if (response.data[0] != undefined && response.data[0].Total != 0) {
           (<HTMLInputElement>document.getElementById(date)).innerHTML = response.data[0].Total;
@@ -153,6 +161,7 @@ export class ListEntreeComponent implements OnInit {
         })
       }
     });
+    this.getTotaux();
   }
 
   /*
