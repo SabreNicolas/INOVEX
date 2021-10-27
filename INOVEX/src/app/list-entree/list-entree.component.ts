@@ -24,7 +24,7 @@ export class ListEntreeComponent implements OnInit {
   public containerDasri : product | undefined;
 
   constructor(private moralEntitiesService : moralEntitiesService, private productsService : productsService) {
-    this.debCode = '20';
+    this.debCode = '3';
     this.moralEntities = [];
     this.listDays = [];
     this.listTotal = [];
