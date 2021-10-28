@@ -28,6 +28,7 @@ import { AdminGlobalComponent } from './admin-global/admin-global.component';
 import { SortantsComponent } from './sortants/sortants.component';
 import { NewAnalyseComponent } from './new-analyse/new-analyse.component';
 import { ConsoComponent } from './conso/conso.component';
+import { ListQseComponent } from './list-qse/list-qse.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { ConsoComponent } from './conso/conso.component';
     AdminGlobalComponent,
     SortantsComponent,
     NewAnalyseComponent,
-    ConsoComponent
+    ConsoComponent,
+    ListQseComponent
   ],
   imports: [
     BrowserModule,
