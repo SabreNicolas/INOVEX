@@ -17,7 +17,7 @@ export class moralEntitiesService {
         'Access-Control-Allow-Origin' : '*'
     }
     private portAPI = 3000;
-    private ip = "192.168.172.17";
+    private ip = "127.0.0.1";
 
     constructor(private http: HttpClient) {
         this.httpClient = http;
@@ -147,7 +147,7 @@ export class moralEntitiesService {
             .put<any>(requete,requestOptions);
     }
 
-    //récupérer les tonnages
+    //récupérer les tonnages ou valeurs qse
     getEntry(EntryDate : string, ProductId : number, ProducerId : number) {
         let requete = "http://"+this.ip+":"+this.portAPI+"/Entrant/"+ProductId+"/"+ProducerId+"/"+EntryDate;
         //console.log(requete);
@@ -160,6 +160,7 @@ export class moralEntitiesService {
         return this.http
             .get<any>(requete,requestOptions);
     }
+
 
     //récupérer la somme des tonnages
     getTotal(EntryDate : string, dechet : string) {

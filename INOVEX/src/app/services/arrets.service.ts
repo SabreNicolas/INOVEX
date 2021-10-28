@@ -13,7 +13,7 @@ export class arretsService {
         'Access-Control-Allow-Origin' : '*'
     }
     private portAPI = 3000;
-    private ip = "192.168.172.17";
+    private ip = "127.0.0.1";
 
     constructor(private http: HttpClient) {
         this.httpClient = http;

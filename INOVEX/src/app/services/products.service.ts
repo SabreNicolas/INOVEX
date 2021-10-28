@@ -16,7 +16,7 @@ export class productsService {
         'Access-Control-Allow-Origin' : '*'
     }
     private portAPI = 3000;
-    private ip = "192.168.172.17";
+    private ip = "127.0.0.1";
 
     constructor(private http: HttpClient) {
         this.httpClient = http;
@@ -66,6 +66,20 @@ export class productsService {
             .get<product[]>(requete,requestOptions);
     }
 
+     //récupérer les qse
+     getQse() {
+        let requete = "http://"+this.ip+":"+this.portAPI+"/qse";
+        // console.log(requete);
+        
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<product[]>(requete,requestOptions);
+            
+    }
+
     //récupérer les compteurs pour les arrêts
     getCompteursArrets(Code : string) {
         let requete = "http://"+this.ip+":"+this.portAPI+"/CompteursArrets?Code="+Code;
@@ -85,6 +99,19 @@ export class productsService {
         let requete = "http://"+this.ip+":"+this.portAPI+"/Compteurs/"+Code+"/"+Date;
         //console.log(requete);
 
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<any>(requete,requestOptions);
+    }
+
+    //récupérer les valeurs de qse
+    getValueQse(Date : string, Code : string) {
+        let requete = "http://"+this.ip+":"+this.portAPI+"/qse/"+Code+"/"+Date;
+        //console.log(requete);
 
         const requestOptions = {
             headers: new HttpHeaders(this.headerDict),

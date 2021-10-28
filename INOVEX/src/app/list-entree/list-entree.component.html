@@ -2,7 +2,7 @@
 
     <!--Filtres de recherche-->
     <div class="form-group">
-        <h5><label>Filtres :</label></h5>
+        <h5 style="margin-top: 5px;"><label>Filtres :</label></h5>
         <div class="row">
             <div class="col-sm-3">
                 <div class="form-group">
@@ -53,7 +53,7 @@
                         <input type="date" id="dateFin" class="form-control" placeholder="Date de fin" name="dateFin"
                                ngModel>
                     </div>
-                    <div class="col-sm-3">
+                    <div class="col-sm-4">
                         <div class="form-group">
                             <button class="btn btn-primary" type="submit" (click)="setPeriod(f)"><img src="assets/refresh.png"></button>
                             <button style="margin-left: 0.5em" class="btn btn-warning" (click)="setYesterday(f)">Hier</button>
@@ -107,7 +107,7 @@
                 <td class="fix"><strong>{{mr.Name}}</strong></td>
                 <td *ngFor="let day of listDays">
                     <!-- Balise caché avec la valeur pour export Excel car impossible d'exporter valeurs si inputs dans table -->
-                    <p style="display: none" id="export-{{mr.Id}}-{{mr.productId}}-{{day}}"></p>
+                    <p style="display: none;" id="export-{{mr.Id}}-{{mr.productId}}-{{day}}"></p>
                     <div class="flex">
                         <input type="text" id="{{mr.Id}}-{{mr.productId}}-{{day}}" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
                         <button class="btn btn-light" id="delete-{{mr.Id}}-{{mr.productId}}-{{day}}" (click)="delete(mr.Id,mr.productId,day)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
