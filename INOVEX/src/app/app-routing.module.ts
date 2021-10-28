@@ -17,6 +17,7 @@ import {SortantsComponent} from "./sortants/sortants.component";
 import {ConsoComponent} from "./conso/conso.component";
 import {NewAnalyseComponent} from "./new-analyse/new-analyse.component";
 import {CategoriesComponent} from "./categories/categories.component";
+import { ListQseComponent } from './list-qse/list-qse.component';
 
 const routes: Routes = [
     {
@@ -47,6 +48,11 @@ const routes: Routes = [
     {
         path : 'listCompteurs',
         component: ListCompteursComponent
+    },
+
+    {
+        path : 'qse',
+        component: ListQseComponent
     },
 
     {
