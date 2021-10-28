@@ -13,13 +13,11 @@ import { productsService } from '../services/products.service';
 export class ListQseComponent implements OnInit {
 
   public listQse : product [];
-  public Code: string;
   public listDays : string;
 
 
   constructor(private productsService : productsService, private moralEntitiesService: moralEntitiesService) { 
     this.listQse = [];
-    this.Code = '';
     this.listDays = '';
   }
 

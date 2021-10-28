@@ -16,7 +16,7 @@ export class productsService {
         'Access-Control-Allow-Origin' : '*'
     }
     private portAPI = 3000;
-    private ip = "127.0.0.1";
+    private ip = "192.168.172.17";
 
     constructor(private http: HttpClient) {
         this.httpClient = http;
