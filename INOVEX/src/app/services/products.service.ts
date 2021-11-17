@@ -148,6 +148,20 @@ export class productsService {
             .get<product[]>(requete,requestOptions);
     }
 
+    //récupérer les dépassements 1/2 heures
+    getDep() {
+        let requete = "http://"+this.ip+":"+this.portAPI+"/AnalysesDep";
+        //console.log(requete);
+
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<product[]>(requete,requestOptions);
+    }
+
     //récupérer les sortants
     getSortants(Code : string) {
         let requete = "http://"+this.ip+":"+this.portAPI+"/Sortants?Code="+Code;

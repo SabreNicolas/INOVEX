@@ -2,6 +2,8 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Injectable} from "@angular/core";
 import {arret} from "../../models/arrets.model";
 import {sumArret} from "../../models/sumArret.model";
+import {depassement} from "../../models/depassement.model";
+import {sumDepassement} from "../../models/sumDepassement.model";
 
 @Injectable()
 export class arretsService {
@@ -18,6 +20,93 @@ export class arretsService {
     constructor(private http: HttpClient) {
         this.httpClient = http;
     }
+
+
+    /**
+     * DEPASSEMENTS
+     */
+
+    //insérer un dépassement
+    createDepassement(dateDebut : string, dateFin : string, duree : number, idUser : number, dateSaisie : string, description : string, productId : number){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/Depassement?dateDebut="+dateDebut+"&dateFin="+dateFin+"&duree="+duree+"&user="+idUser+"&dateSaisie="+dateSaisie+"&description="+description+"&productId="+productId;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<any>(requete,requestOptions);
+    }
+
+    //récupérer l'historique des arrêts pour un mois
+    getDepassements(dateDebut : string, dateFin : string){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/Depassements/"+dateDebut+"/"+dateFin;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<depassement[]>(requete,requestOptions);
+    }
+
+    //récupérer la somme des dépassements pour un mois
+    getDepassementsSum(dateDebut : string, dateFin : string){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/DepassementsSum/"+dateDebut+"/"+dateFin;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<sumDepassement>(requete,requestOptions);
+    }
+
+    //récupérer la somme des dépassements pour un mois et pour 1
+    getDepassementsSum1(dateDebut : string, dateFin : string){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/DepassementsSum1/"+dateDebut+"/"+dateFin;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<sumDepassement>(requete,requestOptions);
+    }
+
+    //récupérer la somme des dépassements pour un mois et pour 2
+    getDepassementsSum2(dateDebut : string, dateFin : string){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/DepassementsSum2/"+dateDebut+"/"+dateFin;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<sumDepassement>(requete,requestOptions);
+    }
+
+    //delete dépassements
+    deleteDepassement(id : number){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/DeleteDepassement/"+id;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .delete<any>(requete,requestOptions);
+    }
+
+    /**
+     * ARRETS
+     */
 
     //insérer un arrêt
     createArret(dateDebut : string, dateFin : string, duree : number, idUser : number, dateSaisie : string, description : string, productId : number){
@@ -42,7 +131,7 @@ export class arretsService {
         };
 
         return this.http
-            .get<arret>(requete,requestOptions);
+            .get<arret[]>(requete,requestOptions);
     }
 
     //récupérer la somme des arrêts par type pour un mois

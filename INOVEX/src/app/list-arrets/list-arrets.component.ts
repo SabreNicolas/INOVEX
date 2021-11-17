@@ -4,6 +4,9 @@ import {arret} from "../../models/arrets.model";
 import {NgForm} from "@angular/forms";
 import {sumArret} from "../../models/sumArret.model";
 import Swal from "sweetalert2";
+import {ActivatedRoute, Router} from "@angular/router";
+import {depassement} from "../../models/depassement.model";
+import {sumDepassement} from "../../models/sumDepassement.model";
 
 @Component({
   selector: 'app-list-arrets',
@@ -12,42 +15,75 @@ import Swal from "sweetalert2";
 })
 export class ListArretsComponent implements OnInit {
 
-  public listArrets : arret[];
-  public sumArrets : sumArret[];
+  public listArretsDepassements : any[];
+  public sumArretsDepassements : any[];
   public stringDateDebut : string;
   public stringDateFin : string;
   public dateDeb : Date | undefined;
   public dateFin : Date | undefined;
+  public isArret : boolean = false; // 'true' si on saisie des arrêts et 'false' si dépassements
 
-  constructor(private arretsService : arretsService) {
-    this.listArrets = [];
-    this.sumArrets = [];
+  constructor(private arretsService : arretsService, private route : ActivatedRoute, private router : Router) {
+    //this.router.routeReuseStrategy.shouldReuseRoute = () => false; //permet de recharger le component au changement de paramètre
+    this.listArretsDepassements = [];
+    this.sumArretsDepassements = [];
     this.stringDateDebut = '';
     this.stringDateFin = '';
+    this.route.queryParams.subscribe(params => {
+      if(params.isArret.includes('true')){
+        this.isArret = true;
+      }
+      else this.isArret = false;
+    });
   }
 
   ngOnInit(): void {
-    this.arretsService.getArrets(this.stringDateDebut,this.stringDateFin).subscribe((response)=>{
-      // @ts-ignore
-      this.listArrets = response.data;
-    });
+    if (this.isArret == true) {
+      this.arretsService.getArrets(this.stringDateDebut, this.stringDateFin).subscribe((response) => {
+        // @ts-ignore
+        this.listArretsDepassements = response.data;
+      });
 
-    this.arretsService.getArretsType(this.stringDateDebut,this.stringDateFin).subscribe((response)=>{
-      // @ts-ignore
-      this.sumArrets = response.data;
-      this.arretsService.getArretsSum1(this.stringDateDebut,this.stringDateFin).subscribe((response)=>{
+      this.arretsService.getArretsType(this.stringDateDebut, this.stringDateFin).subscribe((response) => {
         // @ts-ignore
-        this.sumArrets.push(response.data[0]);
+        this.sumArretsDepassements = response.data;
+        this.arretsService.getArretsSum1(this.stringDateDebut, this.stringDateFin).subscribe((response) => {
+          // @ts-ignore
+          this.sumArretsDepassements.push(response.data[0]);
+        });
+        this.arretsService.getArretsSum2(this.stringDateDebut, this.stringDateFin).subscribe((response) => {
+          // @ts-ignore
+          this.sumArretsDepassements.push(response.data[0]);
+        });
+        this.arretsService.getArretsSum(this.stringDateDebut, this.stringDateFin).subscribe((response) => {
+          // @ts-ignore
+          this.sumArretsDepassements.push(response.data[0]);
+        });
       });
-      this.arretsService.getArretsSum2(this.stringDateDebut,this.stringDateFin).subscribe((response)=>{
+    }
+
+    /**
+     * Dépassements 1/2 heures
+     */
+    else {
+      this.arretsService.getDepassements(this.stringDateDebut, this.stringDateFin).subscribe((response) => {
         // @ts-ignore
-        this.sumArrets.push(response.data[0]);
+        this.listArretsDepassements = response.data;
       });
-      this.arretsService.getArretsSum(this.stringDateDebut,this.stringDateFin).subscribe((response)=>{
+
+      this.arretsService.getDepassementsSum1(this.stringDateDebut, this.stringDateFin).subscribe((response) => {
         // @ts-ignore
-        this.sumArrets.push(response.data[0]);
+        this.sumArretsDepassements = response.data;
+        this.arretsService.getDepassementsSum2(this.stringDateDebut, this.stringDateFin).subscribe((response) => {
+          // @ts-ignore
+          this.sumArretsDepassements.push(response.data[0]);
+        });
+        this.arretsService.getDepassementsSum(this.stringDateDebut, this.stringDateFin).subscribe((response) => {
+          // @ts-ignore
+          this.sumArretsDepassements.push(response.data[0]);
+        });
       });
-    });
+    }
   }
 
   setPeriod(form: NgForm) {
@@ -117,18 +153,36 @@ export class ListArretsComponent implements OnInit {
 
   //Suppression d'un arret
   delete(id : number){
-    this.arretsService.deleteArret(id).subscribe((response)=>{
-      if (response == "Suppression de l'arrêt OK"){
-        Swal.fire("L'arrêt a bien été supprimé !");
-        this.ngOnInit();
-      }
-      else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Erreur lors de la suppression de l\'arrêt ....',
-        })
-      }
-    });
+    if (this.isArret == true) {
+      this.arretsService.deleteArret(id).subscribe((response) => {
+        if (response == "Suppression de l'arrêt OK") {
+          Swal.fire("L'arrêt a bien été supprimé !");
+          this.ngOnInit();
+        } else {
+          Swal.fire({
+            icon: 'error',
+            text: 'Erreur lors de la suppression de l\'arrêt ....',
+          })
+        }
+      });
+    }
+
+    /**
+     * Dépassements 1/2 heures
+     */
+    else {
+      this.arretsService.deleteDepassement(id).subscribe((response) => {
+        if (response == "Suppression du DEP OK") {
+          Swal.fire("Le dépassement a bien été supprimé !");
+          this.ngOnInit();
+        } else {
+          Swal.fire({
+            icon: 'error',
+            text: 'Erreur lors de la suppression du dépassement ....',
+          })
+        }
+      });
+    }
   }
 
 }
