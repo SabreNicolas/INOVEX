@@ -8,4 +8,7 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'INOVEX';
   collapsed = true;
+
+  constructor() {
+  }
 }

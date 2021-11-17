@@ -29,6 +29,8 @@ import { SortantsComponent } from './sortants/sortants.component';
 import { NewAnalyseComponent } from './new-analyse/new-analyse.component';
 import { ConsoComponent } from './conso/conso.component';
 import { ListQseComponent } from './list-qse/list-qse.component';
+import { AcceuilComponent } from './acceuil/acceuil.component';
+import { SaisieGlobalComponent } from './saisie-global/saisie-global.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +53,9 @@ import { ListQseComponent } from './list-qse/list-qse.component';
     SortantsComponent,
     NewAnalyseComponent,
     ConsoComponent,
-    ListQseComponent
+    ListQseComponent,
+    AcceuilComponent,
+    SaisieGlobalComponent
   ],
   imports: [
     BrowserModule,

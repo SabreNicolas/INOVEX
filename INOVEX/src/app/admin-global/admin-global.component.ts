@@ -11,7 +11,7 @@ export class AdminGlobalComponent implements OnInit {
 
   ngOnInit(): void {
     // @ts-ignore
-    while (mdp != "admin") {
+    while (mdp != "!kerlan!2021") {
       var mdp = prompt("Veuillez saisir le mot de passe pour accéder à l'interface d'Administration :");
     }
   }

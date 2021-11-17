@@ -27,7 +27,7 @@
         </div>
 
         <!--table des totaux-->
-        <div class="table-style" *ngIf="sumArrets.length > 3">
+        <div class="table-style" *ngIf="sumArretsDepassements.length > 2">
             <table class="table table-primary">
                 <thead>
                 <tr>
@@ -36,7 +36,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr *ngFor="let arret of sumArrets">
+                <tr *ngFor="let arret of sumArretsDepassements">
                     <td class="fix"><strong>{{arret.Name}}</strong></td>
                     <td class="fix">{{arret.Duree}}</td>
                 </tr>
@@ -47,7 +47,7 @@
     </div>
 
         <!--table de l'historique-->
-        <div class="table-style" *ngIf="listArrets.length > 0">
+        <div class="table-style" *ngIf="listArretsDepassements.length > 0">
             <table class="table table-hover tableFixed">
                 <thead>
                 <tr class="table-secondary">
@@ -62,7 +62,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr class="table-light" *ngFor="let arret of listArrets">
+                <tr class="table-light" *ngFor="let arret of listArretsDepassements">
                     <td class="fix"><button class="btn btn-light" (click)="delete(arret.Id)"><i style="color: red" class="fa fa-trash-o" aria-hidden="true"></i></button></td>
                     <td class="fix"><strong>{{arret.Name}}</strong></td>
                     <td class="fix">{{arret.dateDebut}}</td>

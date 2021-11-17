@@ -18,11 +18,31 @@ import {ConsoComponent} from "./conso/conso.component";
 import {NewAnalyseComponent} from "./new-analyse/new-analyse.component";
 import {CategoriesComponent} from "./categories/categories.component";
 import { ListQseComponent } from './list-qse/list-qse.component';
+import {AppComponent} from "./app.component";
+import {AcceuilComponent} from "./acceuil/acceuil.component";
+import {SaisieGlobalComponent} from "./saisie-global/saisie-global.component";
 
 const routes: Routes = [
+
+    {
+        path : 'saisie',
+        component : SaisieGlobalComponent,
+        children: [
+            { path: '', component:  ListEntreeComponent },
+            { path: 'listClients', component: ListMoralEntitiesComponent },
+            { path: 'entree', component : ListEntreeComponent },
+            { path: 'sortie', component : ListSortantsComponent },
+            { path : 'listCompteurs', component: ListCompteursComponent },
+            { path: 'analyses', component: AnalysesComponent },
+            { path : 'conso', component : ListConsoComponent },
+            { path : 'arrets', component : ArretsComponent },
+            { path : 'listArrets', component : ListArretsComponent },
+        ]
+    },
+
     {
         path : '',
-        component : ListEntreeComponent
+        component : AcceuilComponent
     },
 
     {
@@ -31,54 +51,16 @@ const routes: Routes = [
     },
 
     {
-        path: 'listClients',
-        component: ListMoralEntitiesComponent
-    },
-
-    {
-        path: 'entree',
-        component : ListEntreeComponent
-    },
-
-    {
-        path: 'sortie',
-        component : ListSortantsComponent
-    },
-
-    {
-        path : 'listCompteurs',
-        component: ListCompteursComponent
-    },
-
-    {
         path : 'qse',
         component: ListQseComponent
     },
 
-    {
-        path: 'analyses',
-        component: AnalysesComponent
-    },
-
-    {
-        path : 'conso',
-        component : ListConsoComponent
-    },
 
     {
         path : 'rapports',
         component : ListRapportsComponent
     },
 
-    {
-        path : 'arrets',
-        component : ArretsComponent
-    },
-
-    {
-        path : 'listArrets',
-        component : ListArretsComponent
-    },
 
     {
         path : 'admin',
@@ -91,6 +73,7 @@ const routes: Routes = [
             { path: 'newAnalyse', component:  NewAnalyseComponent },
             { path: 'newConso', component:  ConsoComponent },
             { path: 'newCategorie', component: CategoriesComponent},
+            { path: 'clients', component: MoralEntitiesComponent},
         ]
     },
 
