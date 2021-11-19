@@ -21,6 +21,8 @@ import { ListQseComponent } from './list-qse/list-qse.component';
 import {AppComponent} from "./app.component";
 import {AcceuilComponent} from "./acceuil/acceuil.component";
 import {SaisieGlobalComponent} from "./saisie-global/saisie-global.component";
+import {LoginComponent} from "./login/login.component";
+import {UserComponent} from "./user/user.component";
 
 const routes: Routes = [
 
@@ -55,6 +57,15 @@ const routes: Routes = [
         component: ListQseComponent
     },
 
+    {
+        path : 'login',
+        component : LoginComponent
+    },
+
+    {
+        path : 'user',
+        component : UserComponent
+    },
 
     {
         path : 'rapports',

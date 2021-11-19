@@ -31,6 +31,8 @@ import { ConsoComponent } from './conso/conso.component';
 import { ListQseComponent } from './list-qse/list-qse.component';
 import { AcceuilComponent } from './acceuil/acceuil.component';
 import { SaisieGlobalComponent } from './saisie-global/saisie-global.component';
+import { LoginComponent } from './login/login.component';
+import { UserComponent } from './user/user.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +57,9 @@ import { SaisieGlobalComponent } from './saisie-global/saisie-global.component';
     ConsoComponent,
     ListQseComponent,
     AcceuilComponent,
-    SaisieGlobalComponent
+    SaisieGlobalComponent,
+    LoginComponent,
+    UserComponent
   ],
   imports: [
     BrowserModule,

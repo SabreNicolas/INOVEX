@@ -1,0 +1,66 @@
+<h1 class="creation">Création d'un utilisateur :</h1>
+
+<div class="row">
+    <div class="col-sm-5 col-sm-offset-1">
+
+        <form ngNativeValidate  #f="ngForm">
+
+            <div class="form-group">
+                <label for="nom">Nom : </label>
+                <input required type="text" id="nom" class="form-control" placeholder="Nom" name="nom" ngModel>
+            </div>
+
+            <div class="form-group">
+                <label for="prenom">Prénom : </label>
+                <input required type="text" id="prenom" class="form-control" placeholder="Prénom" name="prenom" ngModel>
+            </div>
+
+            <div class="form-group">
+                <label for="identifiant">Identifiant : </label>
+                <input required type="text" id="identifiant" class="form-control" placeholder="Identifiant" name="identifiant" ngModel>
+            </div>
+
+            <p>Droits :</p>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="rondier" name="rondier" ngModel>
+                <label class="form-check-label" for="rondier">
+                    Rondier
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="saisie" name="saisie" ngModel>
+                <label class="form-check-label" for="Saisie">
+                    Saisie
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="qse" name="qse" ngModel>
+                <label class="form-check-label" for="qse">
+                   QSE
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="rapports" name="rapports" ngModel>
+                <label class="form-check-label" for="rapports">
+                    Rapports
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="admin" name="admin" ngModel>
+                <label class="form-check-label" for="admin">
+                    Admin
+                </label>
+            </div>
+
+            <div class="form-group">
+                <button class="btn btn-success btn-lg" type="submit">Valider</button>
+            </div>
+
+        </form>
+    </div>
+</div>
