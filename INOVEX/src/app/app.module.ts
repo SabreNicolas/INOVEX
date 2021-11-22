@@ -33,6 +33,7 @@ import { AcceuilComponent } from './acceuil/acceuil.component';
 import { SaisieGlobalComponent } from './saisie-global/saisie-global.component';
 import { LoginComponent } from './login/login.component';
 import { UserComponent } from './user/user.component';
+import {loginService} from "./services/login.service";
 
 @NgModule({
   declarations: [
@@ -73,6 +74,7 @@ import { UserComponent } from './user/user.component';
     productsService,
     arretsService,
     DatePipe,
+    loginService,
   ],
   bootstrap: [AppComponent]
 })

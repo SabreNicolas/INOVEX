@@ -112,6 +112,7 @@ a, a:hover, a:visited{
 .cardAccueil{
   width: 17rem;
   height: 22rem;
+  cursor: default !important;
 }
 
 .btnRetour{
@@ -127,8 +128,8 @@ a, a:hover, a:visited{
 }
 
 .form-control{
-  width: 20em;
-  height: 3em;
+  /*width: 20em;*/
+  /*height: 3em;*/
   background-color: lightgray;
 }
 
@@ -147,7 +148,9 @@ a, a:hover, a:visited{
 .input-group-prepend{
   border-radius: 0px 5px 5px 0px !important;
   overflow: hidden;
+  height: 2.37em;
 }
+
 
 
 .eyeLogin:hover{

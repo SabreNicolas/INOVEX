@@ -85,6 +85,7 @@ const routes: Routes = [
             { path: 'newConso', component:  ConsoComponent },
             { path: 'newCategorie', component: CategoriesComponent},
             { path: 'clients', component: MoralEntitiesComponent},
+            { path : 'newUser', component : UserComponent},
         ]
     },
 
