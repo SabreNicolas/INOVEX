@@ -17,7 +17,9 @@
 
             <div class="form-group">
                 <label for="identifiant">Identifiant : </label>
-                <input required type="text" id="identifiant" class="form-control" placeholder="Identifiant" name="identifiant" ngModel>
+                <input [class]="loginUsed ? 'used' : 'notUsed'" required (focusout)="verifLogin(f)" type="text" id="identifiant" class="form-control" placeholder="Identifiant" name="identifiant" ngModel>
+                <p style="color: red" *ngIf="loginUsed">Identifiant déjà utilisé ....</p>
+                <p style="color: green" *ngIf="!loginUsed && login.length > 0">Identifiant valide</p>
             </div>
 
             <p>Droits :</p>
@@ -58,7 +60,7 @@
             </div>
 
             <div class="form-group">
-                <button class="btn btn-success btn-lg" type="submit">Valider</button>
+                <button class="btn btn-success btn-lg" type="submit" [disabled]="loginUsed">Valider</button>
             </div>
 
         </form>

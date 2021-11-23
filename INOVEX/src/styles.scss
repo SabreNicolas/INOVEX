@@ -1,6 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 body{
-  background: url("assets/factory-draw.svg") fixed no-repeat bottom right, url("assets/INOVA.png") fixed no-repeat bottom left 0.5em;
+  background: url("assets/Usine2_40.png") fixed no-repeat bottom right, url("assets/INOVA.png") fixed no-repeat bottom left 0.5em;
 }
 
 .tableFixed > thead th {
@@ -80,7 +80,7 @@ a, a:hover, a:visited{
   align-items: center !important;
   /*margin-top: 17.5em;*/
   /*position: relative;*/
-  height: 100vh;
+  height: 85vh;
 }
 
 .card{
@@ -102,7 +102,11 @@ a, a:hover, a:visited{
 .btnAccueil{
   width: 12em;
   height: 3em;
+}
 
+.btnAccueil:disabled{
+  pointer-events: all !important;
+  cursor: not-allowed;
 }
 
 .card-textAccueil{
@@ -163,4 +167,25 @@ a, a:hover, a:visited{
   margin-bottom: 1em;
   color: #134592;
   font-weight: bold;
+}
+
+.notUsed{
+  border : solid green 1px
+}
+
+.used{
+  border : solid red 1px
+}
+
+.gestionUser{
+  display: flex;
+  font-weight: bold;
+  color: #134592;
+  justify-content: right;
+  height: 5vh;
+  align-items: center;
+}
+
+.clickable:hover{
+  cursor: pointer;
 }

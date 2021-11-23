@@ -34,6 +34,8 @@ import { SaisieGlobalComponent } from './saisie-global/saisie-global.component';
 import { LoginComponent } from './login/login.component';
 import { UserComponent } from './user/user.component';
 import {loginService} from "./services/login.service";
+import { ListUsersComponent } from './list-users/list-users.component';
+import { GestionUserComponent } from './gestion-user/gestion-user.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +62,9 @@ import {loginService} from "./services/login.service";
     AcceuilComponent,
     SaisieGlobalComponent,
     LoginComponent,
-    UserComponent
+    UserComponent,
+    ListUsersComponent,
+    GestionUserComponent
   ],
   imports: [
     BrowserModule,

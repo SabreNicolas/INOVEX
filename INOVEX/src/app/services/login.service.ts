@@ -1,5 +1,8 @@
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Injectable} from "@angular/core";
+import {moralEntity} from "../../models/moralEntity.model";
+import {UserComponent} from "../user/user.component";
+import {user} from "../../models/user.model";
 
 @Injectable()
 export class loginService {
@@ -28,6 +31,34 @@ export class loginService {
 
         return this.http
             .put<any>(requete,requestOptions);
+    }
+
+    //récupérer le login pour voir si il est déjà utilisé
+    getLogin(login : string) {
+        let requete = "http://"+this.ip+":"+this.portAPI+"/User/"+login;
+        //console.log(requete);
+
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<user>(requete,requestOptions);
+    }
+
+    //récupérer l'utilisateur qui se connecte
+    getUserLoged(login : string, pwd : string) {
+        let requete = "http://"+this.ip+":"+this.portAPI+"/User/"+login+"/"+pwd;
+        //console.log(requete);
+
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<user>(requete,requestOptions);
     }
 
 

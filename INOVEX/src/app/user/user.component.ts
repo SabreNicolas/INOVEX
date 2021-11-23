@@ -20,6 +20,7 @@ export class UserComponent implements OnInit {
   public isQSE : number;//0 ou 1
   public isRapport : number;//0 ou 1
   public isAdmin : number;//0 ou 1
+  public loginUsed : boolean;
 
   constructor(private loginService : loginService) {
     this.nom = '';
@@ -32,6 +33,7 @@ export class UserComponent implements OnInit {
     this.isQSE = 0;
     this.isRapport = 0;
     this.isAdmin = 0;
+    this.loginUsed = false;
 
   }
 
@@ -91,8 +93,22 @@ export class UserComponent implements OnInit {
     form.value['nom']='';
     form.controls['prenom'].reset();
     form.value['prenom']='';
-    form.controls['login'].reset();
-    form.value['login']='';
+    form.controls['identifiant'].reset();
+    form.value['identifiant']='';
+  }
+
+  verifLogin(form : NgForm){
+    var login = form.value['identifiant'];
+    this.loginService.getLogin(login).subscribe((response)=>{
+      // @ts-ignore
+      if(response.data.length > 0) {
+        this.loginUsed = true;
+      }
+      else {
+        this.loginUsed = false;
+        this.login = login;
+      }
+    });
   }
 
 }

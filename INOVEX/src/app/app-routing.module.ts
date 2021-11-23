@@ -43,7 +43,7 @@ const routes: Routes = [
     },
 
     {
-        path : '',
+        path : 'acceuil',
         component : AcceuilComponent
     },
 
@@ -58,7 +58,7 @@ const routes: Routes = [
     },
 
     {
-        path : 'login',
+        path : '',
         component : LoginComponent
     },
 
