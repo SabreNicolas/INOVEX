@@ -36,6 +36,7 @@ import { UserComponent } from './user/user.component';
 import {loginService} from "./services/login.service";
 import { ListUsersComponent } from './list-users/list-users.component';
 import { GestionUserComponent } from './gestion-user/gestion-user.component';
+import {AuthGuard} from "./services/auth-guard.service";
 
 @NgModule({
   declarations: [
@@ -79,6 +80,7 @@ import { GestionUserComponent } from './gestion-user/gestion-user.component';
     arretsService,
     DatePipe,
     loginService,
+    AuthGuard,
   ],
   bootstrap: [AppComponent]
 })

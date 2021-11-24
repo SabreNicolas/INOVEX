@@ -23,37 +23,44 @@ import {AcceuilComponent} from "./acceuil/acceuil.component";
 import {SaisieGlobalComponent} from "./saisie-global/saisie-global.component";
 import {LoginComponent} from "./login/login.component";
 import {UserComponent} from "./user/user.component";
+import {ListUsersComponent} from "./list-users/list-users.component";
+import {GestionUserComponent} from "./gestion-user/gestion-user.component";
+import {AuthGuard} from "./services/auth-guard.service";
 
 const routes: Routes = [
 
     {
         path : 'saisie',
+        canActivate: [AuthGuard],
         component : SaisieGlobalComponent,
         children: [
-            { path: '', component:  ListEntreeComponent },
-            { path: 'listClients', component: ListMoralEntitiesComponent },
-            { path: 'entree', component : ListEntreeComponent },
-            { path: 'sortie', component : ListSortantsComponent },
-            { path : 'listCompteurs', component: ListCompteursComponent },
-            { path: 'analyses', component: AnalysesComponent },
-            { path : 'conso', component : ListConsoComponent },
-            { path : 'arrets', component : ArretsComponent },
-            { path : 'listArrets', component : ListArretsComponent },
+            { path: '', canActivate: [AuthGuard], component:  ListEntreeComponent },
+            { path: 'listClients', canActivate: [AuthGuard], component: ListMoralEntitiesComponent },
+            { path: 'entree', canActivate: [AuthGuard], component : ListEntreeComponent },
+            { path: 'sortie', canActivate: [AuthGuard], component : ListSortantsComponent },
+            { path : 'listCompteurs', canActivate: [AuthGuard], component: ListCompteursComponent },
+            { path: 'analyses', canActivate: [AuthGuard], component: AnalysesComponent },
+            { path : 'conso', canActivate: [AuthGuard], component : ListConsoComponent },
+            { path : 'arrets', canActivate: [AuthGuard], component : ArretsComponent },
+            { path : 'listArrets', canActivate: [AuthGuard], component : ListArretsComponent },
         ]
     },
 
     {
         path : 'acceuil',
+        canActivate: [AuthGuard],
         component : AcceuilComponent
     },
 
     {
         path: 'clients',
+        canActivate: [AuthGuard],
         component: MoralEntitiesComponent
     },
 
     {
         path : 'qse',
+        canActivate: [AuthGuard],
         component: ListQseComponent
     },
 
@@ -63,29 +70,33 @@ const routes: Routes = [
     },
 
     {
-        path : 'user',
-        component : UserComponent
+        path : 'rapports',
+        canActivate: [AuthGuard],
+        component : ListRapportsComponent
     },
 
     {
-        path : 'rapports',
-        component : ListRapportsComponent
+        path : 'gestionUser',
+        canActivate: [AuthGuard],
+        component : GestionUserComponent
     },
 
 
     {
         path : 'admin',
+        canActivate: [AuthGuard],
         component : AdminGlobalComponent,
         children: [
-            { path: '', component:  AdminComponent },
-            { path: 'modification', component:  AdminComponent },
-            { path: 'newCompteur', component:  CompteursComponent },
-            { path: 'newSortant', component:  SortantsComponent },
-            { path: 'newAnalyse', component:  NewAnalyseComponent },
-            { path: 'newConso', component:  ConsoComponent },
-            { path: 'newCategorie', component: CategoriesComponent},
-            { path: 'clients', component: MoralEntitiesComponent},
-            { path : 'newUser', component : UserComponent},
+            { path: '', canActivate: [AuthGuard], component:  AdminComponent },
+            { path: 'modification', canActivate: [AuthGuard], component:  AdminComponent },
+            { path: 'newCompteur', canActivate: [AuthGuard], component:  CompteursComponent },
+            { path: 'newSortant', canActivate: [AuthGuard], component:  SortantsComponent },
+            { path: 'newAnalyse', canActivate: [AuthGuard], component:  NewAnalyseComponent },
+            { path: 'newConso', canActivate: [AuthGuard], component:  ConsoComponent },
+            { path: 'newCategorie', canActivate: [AuthGuard], component: CategoriesComponent},
+            { path: 'clients', canActivate: [AuthGuard], component: MoralEntitiesComponent},
+            { path: 'newUser', canActivate: [AuthGuard], component: UserComponent},
+            { path: 'users', canActivate: [AuthGuard], component: ListUsersComponent},
         ]
     },
 

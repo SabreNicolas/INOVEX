@@ -102,9 +102,16 @@ a, a:hover, a:visited{
 .btnAccueil{
   width: 12em;
   height: 3em;
+  transform: scale(1);
+  transition-property: transform;
+  transition-duration: 400ms;
 }
 
-.btnAccueil:disabled{
+.btnAccueil:hover{
+  transform: scale(1.15);
+}
+
+.btn:disabled{
   pointer-events: all !important;
   cursor: not-allowed;
 }

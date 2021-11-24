@@ -4,7 +4,7 @@
         {{nom | uppercase}} {{prenom}}
     </a>
     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-        <a class="dropdown-item clickable" >Gestion du Compte</a>
+        <a class="dropdown-item clickable" (click)="navigate('/gestionUser')">Gestion du Compte</a>
         <a class="dropdown-item clickable" (click)="logout()"><i class="fas fa-sign-out-alt"></i>Déconnexion</a>
     </div>
 </div>

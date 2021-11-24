@@ -61,5 +61,18 @@ export class loginService {
             .get<user>(requete,requestOptions);
     }
 
+    //Mise à jour mot de pase utilisateur
+    updatePwd(login : string, pwd : string){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/User/"+login+"/"+pwd;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<any>(requete,requestOptions);
+    }
+
 
 }
