@@ -1,1 +1,81 @@
-<p>list-users works!</p>
+<div>
+
+    <!--Filtres de recherche-->
+    <div class="form-group">
+        <h5><label>Identifiant :</label></h5>
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <div class="form-group">
+                        <input type="text" id="login" class="form-control" placeholder="Identifiant" name="login" ngModel>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <div class="form-group">
+                        <button class="btn btn-success" (click)="setFilters()">Valider</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--table des users-->
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">Nom</th>
+            <th scope="col">Prénom</th>
+            <th scope="col">Identifiant</th>
+            <th scope="col">Mot de Passe</th>
+            <th scope="col">Rondier</th>
+            <th scope="col">Saisie</th>
+            <th scope="col">QSE</th>
+            <th scope="col">Rapports</th>
+            <th scope="col">Admin</th>
+        </tr>
+        </thead>
+        <tbody *ngFor="let user of listUsers">
+        <tr class="table-light">
+            <td>{{user.Nom}}</td>
+            <td>{{user.Prenom}}</td>
+            <td>{{user.login}}</td>
+            <td><button id="setPrice" (click)="resetPwd(user.login)" class="btn btn-primary">
+                Reset mot de passe
+            </button></td>
+            <td *ngIf="user.isRondier == false"><button (click)="changeRondier(user.login,1)" id="setRondier" class="btn btn-outline-danger">
+                <i style="color: red" class="fas fa-times-circle"></i>
+            </button></td>
+            <td *ngIf="user.isRondier == true"><button (click)="changeRondier(user.login,0)" id="setNotRondier" class="btn btn-outline-success">
+                <i style="color: green" class="fas fa-check"></i>
+            </button></td>
+            <td *ngIf="user.isSaisie == false"><button (click)="changeSaisie(user.login,1)" id="setSaisie" class="btn btn-outline-danger">
+                <i style="color: red" class="fas fa-times-circle"></i>
+            </button></td>
+            <td *ngIf="user.isSaisie == true"><button (click)="changeSaisie(user.login,0)"id="setNotSaisie" class="btn btn-outline-success">
+                <i style="color: green" class="fas fa-check"></i>
+            </button></td>
+            <td *ngIf="user.isQSE == false"><button (click)="changeQSE(user.login,1)" id="setQSE" class="btn btn-outline-danger">
+                <i style="color: red" class="fas fa-times-circle"></i>
+            </button></td>
+            <td *ngIf="user.isQSE == true"><button (click)="changeQSE(user.login,0)" id="setNotQSE" class="btn btn-outline-success">
+                <i style="color: green" class="fas fa-check"></i>
+            </button></td>
+            <td *ngIf="user.isRapport == false"><button (click)="changeRapport(user.login,1)" id="setRapport" class="btn btn-outline-danger">
+                <i style="color: red" class="fas fa-times-circle"></i>
+            </button></td>
+            <td *ngIf="user.isRapport == true"><button (click)="changeRapport(user.login,0)" id="setNotRapport" class="btn btn-outline-success">
+                <i style="color: green" class="fas fa-check"></i>
+            </button></td>
+            <td *ngIf="user.isAdmin == false"><button (click)="changeAdmin(user.login,1)" id="setAdmin" class="btn btn-outline-danger">
+                <i style="color: red" class="fas fa-times-circle"></i>
+            </button></td>
+            <td *ngIf="user.isAdmin == true"><button (click)="changeAdmin(user.login,0)" id="setNotAdmin" class="btn btn-outline-success">
+                <i style="color: green" class="fas fa-check"></i>
+            </button></td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>

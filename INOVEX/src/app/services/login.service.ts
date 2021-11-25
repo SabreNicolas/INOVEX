@@ -1,7 +1,5 @@
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Injectable} from "@angular/core";
-import {moralEntity} from "../../models/moralEntity.model";
-import {UserComponent} from "../user/user.component";
 import {user} from "../../models/user.model";
 
 @Injectable()
@@ -31,6 +29,20 @@ export class loginService {
 
         return this.http
             .put<any>(requete,requestOptions);
+    }
+
+    //récupérer la list des utilisateurs
+    getAllUsers(loginLike : string) {
+        let requete = "http://"+this.ip+":"+this.portAPI+"/Users?login="+loginLike;
+        //console.log(requete);
+
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<user[]>(requete,requestOptions);
     }
 
     //récupérer le login pour voir si il est déjà utilisé
@@ -64,6 +76,71 @@ export class loginService {
     //Mise à jour mot de pase utilisateur
     updatePwd(login : string, pwd : string){
         let requete = "http://"+this.ip+":"+this.portAPI+"/User/"+login+"/"+pwd;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<any>(requete,requestOptions);
+    }
+
+    //Mise à jour droit rondier
+    updateRondier(login : string, droit : number){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/UserRondier/"+login+"/"+droit;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<any>(requete,requestOptions);
+    }
+
+    //Mise à jour droit saisie
+    updateSaisie(login : string, droit : number){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/UserSaisie/"+login+"/"+droit;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<any>(requete,requestOptions);
+    }
+
+    //Mise à jour droit qse
+    updateQSE(login : string, droit : number){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/UserQSE/"+login+"/"+droit;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<any>(requete,requestOptions);
+    }
+
+    ///Mise à jour droit rapport
+    updateRapport(login : string, droit : number){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/UserRapport/"+login+"/"+droit;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<any>(requete,requestOptions);
+    }
+
+    //Mise à jour droit admin
+    updateAdmin(login : string, droit : number){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/UserAdmin/"+login+"/"+droit;
         //console.log(requete);
 
         const requestOptions = {

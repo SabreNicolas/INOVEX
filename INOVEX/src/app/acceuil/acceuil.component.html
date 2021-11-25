@@ -1,7 +1,7 @@
 <div class="gestionUser">
     <i class="fas fa-user"></i>
     <a class="nav-link dropdown-toggle" id="navbarDropdownUser" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        {{nom | uppercase}} {{prenom}}
+        {{prenom}} {{nom | uppercase}}
     </a>
     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
         <a class="dropdown-item clickable" (click)="navigate('/gestionUser')">Gestion du Compte</a>
