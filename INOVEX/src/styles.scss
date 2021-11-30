@@ -1,6 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 body{
-  background: url("assets/Usine2_40.png") fixed no-repeat bottom right, url("assets/INOVA.png") fixed no-repeat bottom left 0.5em;
+  background: url("assets/INOVA.png") fixed no-repeat bottom left 0.5em, linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url("assets/Usine2_40.png") fixed no-repeat bottom right;
 }
 
 .tableFixed > thead th {
@@ -105,6 +105,7 @@ a, a:hover, a:visited{
   transform: scale(1);
   transition-property: transform;
   transition-duration: 400ms;
+  background-color: #bcbccc !important;
 }
 
 .btnAccueil:hover{
@@ -124,6 +125,22 @@ a, a:hover, a:visited{
   width: 17rem;
   height: 22rem;
   cursor: default !important;
+}
+
+.cardSaisie{
+  background-color: #Fb6019 !important;
+}
+
+.cardQSE{
+  background-color: #2cb6aa !important;
+}
+
+.cardRapports{
+  background-color: #73b843 !important;
+}
+
+.cardAdmin{
+  background-color: #22498c !important;
 }
 
 .btnRetour{

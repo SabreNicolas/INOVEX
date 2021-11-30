@@ -129,4 +129,21 @@ export class ListUsersComponent implements OnInit {
     this.ngOnInit();
   }
 
+  //suppression d'un user
+  deleteUser(id : number){
+    this.loginService.deleteUser(id).subscribe((response)=>{
+      if (response == "Suppression du user OK"){
+        Swal.fire("L'utilisateur a bien été supprimé !");
+      }
+      else {
+        Swal.fire({
+          icon: 'error',
+          text: 'Erreur lors de la suppression de l\'utilisateur....',
+        })
+      }
+    });
+    this.ngOnInit();
+  }
+
+
 }

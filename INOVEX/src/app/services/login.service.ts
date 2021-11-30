@@ -151,5 +151,18 @@ export class loginService {
             .put<any>(requete,requestOptions);
     }
 
+    //delete user
+    deleteUser(id : number){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/user/"+id;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .delete<any>(requete,requestOptions);
+    }
+
 
 }

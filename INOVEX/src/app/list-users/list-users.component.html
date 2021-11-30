@@ -34,6 +34,7 @@
             <th scope="col">QSE</th>
             <th scope="col">Rapports</th>
             <th scope="col">Admin</th>
+            <th scope="col">#</th>
         </tr>
         </thead>
         <tbody *ngFor="let user of listUsers">
@@ -73,6 +74,9 @@
             </button></td>
             <td *ngIf="user.isAdmin == true"><button (click)="changeAdmin(user.login,0)" id="setNotAdmin" class="btn btn-outline-success">
                 <i style="color: green" class="fas fa-check"></i>
+            </button></td>
+            <td><button (click)="deleteUser(user.Id)" id="deleteUser" class="btn btn-light">
+                <i class="fa fa-trash-o" aria-hidden="true"></i>
             </button></td>
         </tr>
         </tbody>
