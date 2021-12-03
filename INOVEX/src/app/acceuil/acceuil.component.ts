@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from "@angular/router";
 import {user} from "../../models/user.model";
-import {Md5} from "ts-md5";
 
 @Component({
   selector: 'app-acceuil',
@@ -57,6 +56,7 @@ export class AcceuilComponent implements OnInit {
       // @ts-ignore
       this.isAdmin = this.userLogged['isAdmin'];
     }
+
   }
 
   navigate(route : string){
