@@ -1,35 +1,53 @@
+<div class="headerAcceuil">
+    <div class="blocLogoInovex">
+        <img class="logoInovex" src="assets/inovex.png">
+    </div>
+
+    <div class="gestionUser">
+        <i class="fas fa-user"></i>
+        <a class="nav-link dropdown-toggle" id="navbarDropdownUser" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{prenom}} {{nom | uppercase}}
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item clickable" (click)="navigate('/gestionUser')">Gestion du Compte</a>
+            <a class="dropdown-item clickable" (click)="logout()"><i class="fas fa-sign-out-alt"></i>Déconnexion</a>
+        </div>
+    </div>
+</div>
+
+
 <div class="blocCards">
 
-        <div class="card text-white bg-primary cardAccueil">
+        <div class="card text-white bg-primary cardAccueil cardSaisie">
             <div class="card-body text-center">
                 <h2 class="card-title">Saisie</h2>
                 <p class="card-text card-textAccueil">Saisir les différentes données</p>
-                <a routerLink="saisie" target="_blank"> <button  type="button" class="btn btn-danger btnAccueil">Accéder</button></a>
+                <a> <button [disabled]="!isSaisie" (click)="navigate('/saisie')" type="button" class="btn btn-light btnAccueil">Accéder</button></a>
             </div>
         </div>
 
-        <div class="card text-white bg-primary cardAccueil">
+        <div class="card text-white bg-primary cardAccueil cardQSE">
             <div class="card-body text-center">
                 <h2 class="card-title">QSE</h2>
                 <p class="card-text card-textAccueil">Saisir les différents objectifs pour le tableau de bord QSE</p>
-                <a routerLink="qse" target="_blank"> <button  type="button" class="btn btn-secondary btnAccueil">Accéder</button></a>
+                <a> <button [disabled]="!isQSE" (click)="navigate('/qse')" type="button" class="btn btn-light btnAccueil">Accéder</button></a>
             </div>
         </div>
 
 
-        <div class="card text-white bg-primary cardAccueil">
+        <div class="card text-white bg-primary cardAccueil cardRapports">
             <div class="card-body text-center">
                 <h2 class="card-title">Rapports</h2>
                 <p class="card-text card-textAccueil">Consultation des rapports d'activité</p>
-                <a routerLink="rapports" target="_blank"> <button  type="button" class="btn btn-success btnAccueil">Accéder</button></a>
+                <a> <button [disabled]="!isRapport" (click)="navigate('/rapports')" type="button" class="btn btn-light btnAccueil">Accéder</button></a>
             </div>
         </div>
 
-        <div class="card text-white bg-primary cardAccueil">
+        <div class="card text-white bg-primary cardAccueil cardAdmin">
             <div class="card-body text-center">
                 <h2 class="card-title">Administration</h2>
                 <p class="card-text card-textAccueil">Création et modification des différents éléments</p>
-                <a routerLink="admin" target="_blank"> <button  type="button" class="btn btn-info btnAccueil">Accéder</button></a>
+                <a> <button [disabled]="!isAdmin" (click)="navigate('/admin')" type="button" class="btn btn-light btnAccueil">Accéder</button></a>
             </div>
         </div>
 

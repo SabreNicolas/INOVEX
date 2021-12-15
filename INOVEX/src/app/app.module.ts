@@ -33,6 +33,10 @@ import { AcceuilComponent } from './acceuil/acceuil.component';
 import { SaisieGlobalComponent } from './saisie-global/saisie-global.component';
 import { LoginComponent } from './login/login.component';
 import { UserComponent } from './user/user.component';
+import {loginService} from "./services/login.service";
+import { ListUsersComponent } from './list-users/list-users.component';
+import { GestionUserComponent } from './gestion-user/gestion-user.component';
+import {AuthGuard} from "./services/auth-guard.service";
 
 @NgModule({
   declarations: [
@@ -59,7 +63,9 @@ import { UserComponent } from './user/user.component';
     AcceuilComponent,
     SaisieGlobalComponent,
     LoginComponent,
-    UserComponent
+    UserComponent,
+    ListUsersComponent,
+    GestionUserComponent
   ],
   imports: [
     BrowserModule,
@@ -73,6 +79,8 @@ import { UserComponent } from './user/user.component';
     productsService,
     arretsService,
     DatePipe,
+    loginService,
+    AuthGuard,
   ],
   bootstrap: [AppComponent]
 })

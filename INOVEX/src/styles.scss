@@ -1,6 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 body{
-  background: url("assets/factory-draw.svg") fixed no-repeat bottom right, url("assets/INOVA.png") fixed no-repeat bottom left 0.5em;
+  background: url("assets/INOVA.png") fixed no-repeat bottom left 0.5em, linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url("assets/Usine2_40.png") fixed no-repeat bottom right;
 }
 
 .tableFixed > thead th {
@@ -80,7 +80,7 @@ a, a:hover, a:visited{
   align-items: center !important;
   /*margin-top: 17.5em;*/
   /*position: relative;*/
-  height: 100vh;
+  height: 85vh;
 }
 
 .card{
@@ -102,7 +102,19 @@ a, a:hover, a:visited{
 .btnAccueil{
   width: 12em;
   height: 3em;
+  transform: scale(1);
+  transition-property: transform;
+  transition-duration: 400ms;
+  background-color: #bcbccc !important;
+}
 
+.btnAccueil:hover{
+  transform: scale(1.15);
+}
+
+.btn:disabled{
+  pointer-events: all !important;
+  cursor: not-allowed;
 }
 
 .card-textAccueil{
@@ -112,6 +124,23 @@ a, a:hover, a:visited{
 .cardAccueil{
   width: 17rem;
   height: 22rem;
+  cursor: default !important;
+}
+
+.cardSaisie{
+  background-color: #Fb6019 !important;
+}
+
+.cardQSE{
+  background-color: #2cb6aa !important;
+}
+
+.cardRapports{
+  background-color: #73b843 !important;
+}
+
+.cardAdmin{
+  background-color: #22498c !important;
 }
 
 .btnRetour{
@@ -127,8 +156,8 @@ a, a:hover, a:visited{
 }
 
 .form-control{
-  width: 20em;
-  height: 3em;
+  /*width: 20em;*/
+  /*height: 3em;*/
   background-color: lightgray;
 }
 
@@ -147,7 +176,9 @@ a, a:hover, a:visited{
 .input-group-prepend{
   border-radius: 0px 5px 5px 0px !important;
   overflow: hidden;
+  height: 2.37em;
 }
+
 
 
 .eyeLogin:hover{
@@ -160,4 +191,38 @@ a, a:hover, a:visited{
   margin-bottom: 1em;
   color: #134592;
   font-weight: bold;
+}
+
+.notUsed{
+  border : solid green 1px
+}
+
+.used{
+  border : solid red 1px
+}
+
+.gestionUser{
+  display: flex;
+  font-weight: bold;
+  color: #134592;
+  justify-content: right;
+  height: 5vh;
+  align-items: center;
+}
+
+.clickable:hover{
+  cursor: pointer;
+}
+
+.headerAcceuil{
+  display: flex;
+}
+
+.blocLogoInovex{
+  width: 90%;
+}
+
+.logoInovex{
+  width: 15%;
+  margin-left: 0.5em;
 }

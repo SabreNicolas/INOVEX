@@ -1,7 +1,7 @@
 <button routerLink="" class="btn btn-outline-primary btn-lg btnRetour"><i class="fa fa-home"></i> Accueil</button>
 
 <div class="rapportsList">
-    <a  target="_self" (click)="download('http://srv-fic/rapports/FacturationOMDIB.xlsm')">
+    <a  target="_self" (click)="download('http://192.168.172.15/rapports/FacturationOMDIB.xlsm')">
     <div class="card">
         <img src="assets/excel.png" class="card-img-top" alt="...">
         <div class="card-body">
@@ -10,7 +10,7 @@
     </div>
     </a>
 
-    <a target="_self" (click)="download('http://srv-fic/rapports/FacturationDASRI.xlsm')">
+    <a target="_self" (click)="download('http://192.168.172.15/rapports/FacturationDASRI.xlsm')">
     <div class="card">
         <img src="assets/excel.png" class="card-img-top" alt="...">
         <div class="card-body">
@@ -19,7 +19,7 @@
     </div>
     </a>
 
-    <a target="_self" (click)="download('http://srv-fic/rapports/FacturationMachefer.xlsm')">
+    <a target="_self" (click)="download('http://192.168.172.15/rapports/FacturationMachefer.xlsm')">
     <div class="card">
         <img src="assets/excel.png" class="card-img-top" alt="...">
         <div class="card-body">
@@ -28,7 +28,7 @@
     </div>
     </a>
 
-    <a target="_self" (click)="download('http://srv-fic/rapports/Facturation_contrats_tonnage.xlsx')">
+    <a target="_self" (click)="download('http://192.168.172.15/rapports/Facturation_contrats_tonnage.xlsx')">
         <div class="card">
             <img src="assets/excel.png" class="card-img-top" alt="...">
             <div class="card-body">
@@ -36,10 +36,8 @@
             </div>
         </div>
     </a>
-</div>
 
-<div class="rapportsList">
-    <a target="_self" (click)="download('http://srv-fic/rapports/Synthese_Details_.xlsx')">
+    <a target="_self" (click)="download('http://192.168.172.15/rapports/Synthese_Details_.xlsx')">
         <div class="card">
             <img src="assets/excel.png" class="card-img-top" alt="...">
             <div class="card-body">
@@ -47,8 +45,11 @@
             </div>
         </div>
     </a>
+</div>
 
-    <a target="_self" (click)="download('http://srv-fic/rapports/TB_.xlsx')">
+<div class="rapportsList">
+
+    <a target="_self" (click)="download('http://192.168.172.15/rapports/TB_.xlsx')">
         <div class="card">
             <img src="assets/excel.png" class="card-img-top" alt="...">
             <div class="card-body">
@@ -57,7 +58,7 @@
         </div>
     </a>
 
-    <a target="_self" (click)="download('http://srv-fic/rapports/Entre%CC%81esSorties.xlsm')">
+    <a target="_self" (click)="download('http://192.168.172.15/rapports/Entre%CC%81esSorties.xlsm')">
         <div class="card">
             <img src="assets/excel.png" class="card-img-top" alt="...">
             <div class="card-body">
@@ -66,7 +67,7 @@
         </div>
     </a>
 
-    <a target="_self" (click)="download('http://srv-fic/rapports/Entre%CC%81esSorties_DASRI.xlsm')">
+    <a target="_self" (click)="download('http://192.168.172.15/rapports/Entre%CC%81esSorties_DASRI.xlsm')">
         <div class="card">
             <img src="assets/excel.png" class="card-img-top" alt="...">
             <div class="card-body">
@@ -74,10 +75,8 @@
             </div>
         </div>
     </a>
-</div>
 
-<div class="rapportsList">
-    <a target="_self" (click)="download('http://srv-fic/rapports/Controle_des_Couts.xlsx')">
+    <a target="_self" (click)="download('http://192.168.172.15/rapports/Controle_des_Couts.xlsx')">
         <div class="card">
             <img src="assets/excel.png" class="card-img-top" alt="...">
             <div class="card-body">
@@ -85,8 +84,11 @@
             </div>
         </div>
     </a>
+</div>
 
-    <a target="_self" (click)="download('http://srv-fic/rapports/QSE.xlsx')">
+<div class="rapportsList">
+
+    <a target="_self" (click)="download('http://192.168.172.15/rapports/QSE.xlsx')">
         <div class="card">
             <img src="assets/excel.png" class="card-img-top" alt="...">
             <div class="card-body">
@@ -95,7 +97,7 @@
         </div>
     </a>
 
-    <a target="_self" (click)="download('http://srv-fic/rapports/Revue énergétique.xlsx')">
+    <a target="_self" (click)="download('http://192.168.172.15/rapports/Revue énergétique.xlsx')">
         <div class="card">
             <img src="assets/excel.png" class="card-img-top" alt="...">
             <div class="card-body">
@@ -103,4 +105,25 @@
             </div>
         </div>
     </a>
+
+    <a target="_self" (click)="download('http://192.168.172.15/rapports/Recap_arrets.xlsx')">
+        <div class="card">
+            <img src="assets/excel.png" class="card-img-top" alt="...">
+            <div class="card-body">
+                <p class="card-text">Récapitulatif des Arrêts</p>
+            </div>
+        </div>
+    </a>
+
+    <a target="_self" (click)="download('http://192.168.172.15/rapports/Recap_depassements.xlsx')">
+        <div class="card">
+            <img src="assets/excel.png" class="card-img-top" alt="...">
+            <div class="card-body">
+                <p class="card-text">Récapitulatif des Dépassements</p>
+            </div>
+        </div>
+    </a>
 </div>
+
+
+

@@ -144,7 +144,7 @@ export class ArretsComponent implements OnInit {
         } else {
           Swal.fire({
             icon: 'error',
-            text: 'Erreur lors de la création de l\'arrêt .... Un même arrêt existe peut-être déjà pour ce jour',
+            text: 'Erreur lors de la création de l\'arrêt ....',
           })
         }
       });

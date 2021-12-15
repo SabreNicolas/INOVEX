@@ -1,12 +1,12 @@
 <div class="blockLogin">
 
-    <form>
+    <form ngNativeValidate  (ngSubmit)="onSubmit(f)" #f="ngForm">
         <p class="Bienvenue">Bienvenue sur <br>Inovex</p>
         <div class="form-group">
-            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="identifiant">
+            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="identifiant" name="identifiant" ngModel>
         </div>
         <div class="input-group">
-            <input [type]="hide ? 'password' : 'text'" class="form-control" id="exampleInputPassword1" placeholder="Mot de passe">
+            <input [type]="hide ? 'password' : 'text'" class="form-control" id="exampleInputPassword1" placeholder="Mot de passe" name="pwd" ngModel>
             <div class="input-group-prepend">
                 <div class="input-group-text">
                     <a class="eyeLogin" (click)="changeVisibility()">
@@ -16,6 +16,7 @@
                 </div>
             </div>
         </div>
+        <p style="color: red" *ngIf="loginKO">Connexion Refusée .... <br>Veuillez vérifier vos informations de connexion !</p>
         <button type="submit" class="btn btn-primary connexion">Connexion</button>
     </form>
 </div>

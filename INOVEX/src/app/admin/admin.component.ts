@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {productsService} from "../services/products.service";
 import Swal from 'sweetalert2';
 import {product} from "../../models/products.model";
-import {moralEntity} from "../../models/moralEntity.model";
 
 @Component({
   selector: 'app-admin',
@@ -17,7 +16,7 @@ export class AdminComponent implements OnInit {
   public listId : number[];
 
   constructor(private productsService : productsService) {
-    this.typeId = 0;
+    this.typeId = 4;
     this.listProducts = [];
     this.name ="";
     this.listId = [];
