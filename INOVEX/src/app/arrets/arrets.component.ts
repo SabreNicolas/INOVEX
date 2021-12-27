@@ -176,4 +176,6 @@ export class ArretsComponent implements OnInit {
     this.stringDateSaisie = this.datePipe.transform(this.dateSaisie,'yyyy-MM-dd HH:mm');
   }
 
+
+
 }
