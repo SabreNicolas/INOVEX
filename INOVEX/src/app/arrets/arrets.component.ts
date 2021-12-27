@@ -34,7 +34,7 @@ export class ArretsComponent implements OnInit {
   public isArret : boolean = false; // 'true' si on saisie des arrêts et 'false' si dépassements
 
   constructor(private arretsService : arretsService, private productsService : productsService, private datePipe : DatePipe, private route : ActivatedRoute, private router : Router) {
-    //this.router.routeReuseStrategy.shouldReuseRoute = () => false; //permet de recharger le component au changement de paramètre
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false; //permet de recharger le component au changement de paramètre
     this.listArrets = [];
     this.arretId = 0;
     this.arretName = '';
