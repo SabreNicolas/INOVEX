@@ -1,7 +1,7 @@
 <div>
 
     <!--Filtres de recherche-->
-    <div class="form-group">
+    <div class="form-group blockFiltres">
         <h5 style="margin-top: 5px;"><label>Filtres :</label></h5>
         <div class="row">
             <div class="col-sm-3">
@@ -65,7 +65,7 @@
             </div>
         </form>
 
-        <button id="exportExcel" class="btn btn-outline-success btn-lg float-right" (click)="exportExcel()">Excel</button>
+        <button id="exportExcel" class="btn btn-outline-success btn-lg float-left" (click)="exportExcel()">Excel</button>
 
     </div>
 
@@ -92,7 +92,7 @@
             </tbody>
         </table>
     </div>
-    
+
     <!--table de saisie-->
     <div class="table-style">
         <table class="table table-hover tableFixed" id="listEntree" *ngIf="listDays && moralEntities">

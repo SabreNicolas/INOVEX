@@ -7,6 +7,7 @@ body{
   position: -webkit-sticky; /* for Safari */
   position: sticky;
   top: 0;
+  z-index : 2;
 }
 
 .tableFixed > tbody td:first-child {
@@ -17,6 +18,10 @@ body{
 
 .tableFixed > thead th:first-child {
   left: 0;
+  z-index: 3;
+}
+
+.tableFixed > tbody td {
   z-index: 1;
 }
 
@@ -179,12 +184,9 @@ a, a:hover, a:visited{
   height: 2.37em;
 }
 
-
-
 .eyeLogin:hover{
   cursor: pointer;
 }
-
 
 .creation{
   margin-top: 1em;
@@ -226,3 +228,4 @@ a, a:hover, a:visited{
   width: 15%;
   margin-left: 0.5em;
 }
+
