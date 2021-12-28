@@ -18,7 +18,6 @@ import {ConsoComponent} from "./conso/conso.component";
 import {NewAnalyseComponent} from "./new-analyse/new-analyse.component";
 import {CategoriesComponent} from "./categories/categories.component";
 import { ListQseComponent } from './list-qse/list-qse.component';
-import {AppComponent} from "./app.component";
 import {AcceuilComponent} from "./acceuil/acceuil.component";
 import {SaisieGlobalComponent} from "./saisie-global/saisie-global.component";
 import {LoginComponent} from "./login/login.component";
@@ -26,6 +25,7 @@ import {UserComponent} from "./user/user.component";
 import {ListUsersComponent} from "./list-users/list-users.component";
 import {GestionUserComponent} from "./gestion-user/gestion-user.component";
 import {AuthGuard} from "./services/auth-guard.service";
+import {PciComponent} from "./pci/pci.component";
 
 const routes: Routes = [
 
@@ -43,6 +43,7 @@ const routes: Routes = [
             { path : 'conso', canActivate: [AuthGuard], component : ListConsoComponent },
             { path : 'arrets', canActivate: [AuthGuard], component : ArretsComponent },
             { path : 'listArrets', canActivate: [AuthGuard], component : ListArretsComponent },
+            { path : 'pci', canActivate: [AuthGuard], component : PciComponent },
         ]
     },
 

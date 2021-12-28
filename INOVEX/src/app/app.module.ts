@@ -37,6 +37,7 @@ import {loginService} from "./services/login.service";
 import { ListUsersComponent } from './list-users/list-users.component';
 import { GestionUserComponent } from './gestion-user/gestion-user.component';
 import {AuthGuard} from "./services/auth-guard.service";
+import { PciComponent } from './pci/pci.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import {AuthGuard} from "./services/auth-guard.service";
     LoginComponent,
     UserComponent,
     ListUsersComponent,
-    GestionUserComponent
+    GestionUserComponent,
+    PciComponent
   ],
   imports: [
     BrowserModule,
