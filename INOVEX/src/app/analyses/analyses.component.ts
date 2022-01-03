@@ -58,11 +58,19 @@ export class AnalysesComponent implements OnInit {
     this.getValues();
   }
 
-  //changer les dates pour saisir le mois en cours
+  //changer les dates pour saisir le mois précédent
   setLastMonth(form: NgForm){
     var date = new Date();
-    var mm = String(date.getMonth()).padStart(2, '0'); //January is 0!
-    var yyyy = date.getFullYear();
+    var mm : String;
+    var yyyy : number;
+    if (date.getMonth() === 0){
+      mm = "12";
+      yyyy = date.getFullYear()-1;
+    }
+    else {
+      mm = String(date.getMonth()).padStart(2, '0'); //January is 0!
+      yyyy = date.getFullYear();
+    }
 
     var Lastday = yyyy + '-' + mm;
     (<HTMLInputElement>document.getElementById("dateDeb")).value = Lastday;
