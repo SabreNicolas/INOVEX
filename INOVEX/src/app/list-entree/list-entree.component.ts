@@ -118,7 +118,6 @@ export class ListEntreeComponent implements OnInit {
 
   //récupérer les tonnages en BDD
   getValues(){
-    if (this.monthCall == 1) this.loading();
     this.listDays.forEach(date => {
       this.moralEntities.forEach(mr => {
         this.moralEntitiesService.getEntry(date.substr(6, 4) + '-' + date.substr(3, 2) + '-' + date.substr(0, 2), mr.productId, mr.Id).subscribe((response) => {
@@ -227,15 +226,26 @@ export class ListEntreeComponent implements OnInit {
    */
 
   loading(){
-    Swal.fire({
-      title:"Chargement en cours...",
-      timer: 12000,
-      showConfirmButton : false,
-    });
+    var element = document.getElementById('spinner');
+    // @ts-ignore
+    element.classList.add('loader');
+    var element = document.getElementById('spinnerBloc');
+    // @ts-ignore
+    element.classList.add('loaderBloc');
+  }
+
+  removeloading(){
+    var element = document.getElementById('spinner');
+    // @ts-ignore
+    element.classList.remove('loader');
+    var element = document.getElementById('spinnerBloc');
+    // @ts-ignore
+    element.classList.remove('loaderBloc');
   }
 
   //changer les dates pour saisir hier
   setYesterday(form: NgForm){
+    this.removeloading();
     var date = new Date();
     var yyyy = date.getFullYear();
     var dd = String(date.getDate() - 1).padStart(2, '0');
@@ -258,6 +268,7 @@ export class ListEntreeComponent implements OnInit {
 
   //changer les dates pour saisir la semaine en cours
   setCurrentWeek(form: NgForm){
+    this.removeloading();
     var date = new Date();
     //le début de la semaine par défaut est dimanche (0)
     var firstday = new Date(date.setDate(date.getDate() - date.getDay()+1));
@@ -284,7 +295,7 @@ export class ListEntreeComponent implements OnInit {
 
   //changer les dates pour saisir le mois en cours
   setCurrentMonth(form: NgForm){
-    this.monthCall = 1;
+    this.loading();
     var date = new Date();
     var mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
     var yyyy = date.getFullYear();
@@ -301,7 +312,7 @@ export class ListEntreeComponent implements OnInit {
     form.value['dateDeb']='';
     form.controls['dateFin'].reset();
     form.value['dateFin']='';
-    this.monthCall = 0;
+    this.removeloading();
   }
 
 
