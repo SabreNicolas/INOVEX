@@ -25,7 +25,6 @@ import {UserComponent} from "./user/user.component";
 import {ListUsersComponent} from "./list-users/list-users.component";
 import {GestionUserComponent} from "./gestion-user/gestion-user.component";
 import {AuthGuard} from "./services/auth-guard.service";
-import {PciComponent} from "./pci/pci.component";
 
 const routes: Routes = [
 
@@ -43,7 +42,6 @@ const routes: Routes = [
             { path : 'conso', canActivate: [AuthGuard], component : ListConsoComponent },
             { path : 'arrets', canActivate: [AuthGuard], component : ArretsComponent },
             { path : 'listArrets', canActivate: [AuthGuard], component : ListArretsComponent },
-            { path : 'pci', canActivate: [AuthGuard], component : PciComponent },
         ]
     },
 

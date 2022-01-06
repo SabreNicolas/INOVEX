@@ -2,8 +2,8 @@
 
     <!--Filtres de recherche-->
     <div class="form-group blockFiltres">
-        <h5><label>Filtres :</label></h5>
-        <div class="row">
+        <h5 *ngIf="!isPCI"><label>Filtres :</label></h5>
+        <div *ngIf="!isPCI" class="row">
             <div class="col-sm-3">
                 <div class="form-group">
                     <select id="categorie" required class="form-select form-select-sm" aria-label=".form-select-sm example" name="categorie" ngModel>

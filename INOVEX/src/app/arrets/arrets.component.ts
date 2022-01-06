@@ -47,19 +47,16 @@ export class ArretsComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       if(params.isArret.includes('true')){
         this.isArret = true;
+        this.getProductsArrets("303020");
       }
-      else this.isArret = false;
+      /**
+       * Dépassements 1/2 heures
+       */
+      else {
+        this.isArret = false;
+        this.getProductsDep("60104");
+      }
     });
-
-    if (this.isArret == true) {
-      this.getProductsArrets("303020");
-    }
-    /**
-     * Dépassements 1/2 heures
-     */
-    else {
-      this.getProductsDep("60104");
-    }
   }
 
   ngOnInit(): void {
