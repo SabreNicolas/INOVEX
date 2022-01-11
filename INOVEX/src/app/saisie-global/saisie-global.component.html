@@ -40,7 +40,7 @@
             </li>-->
 
             <li class="nav-item dropdown">
-                <a routerLink="analyses" class="nav-link" id="navbarDropdownAnalyse" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a routerLink="analyses" [queryParams]="{ pci: 'false'}" class="nav-link" id="navbarDropdownAnalyse" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Analyses
                 </a>
             </li>
@@ -48,6 +48,12 @@
             <li class="nav-item dropdown">
                 <a routerLink="conso" class="nav-link" id="navbarDropdownConso" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Consommables & Autres
+                </a>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a routerLink="analyses" [queryParams]="{ pci: 'true'}" class="nav-link" id="navbarDropdownPCI" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    PCI
                 </a>
             </li>
 
@@ -87,6 +93,6 @@
     </div>
 </nav>
 
-<div style="margin-left: 0.5em;">
+<div style="margin-left: 0.5em; margin-top: 7%">
     <router-outlet></router-outlet>
 </div>

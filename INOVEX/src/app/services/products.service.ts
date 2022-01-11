@@ -190,6 +190,20 @@ export class productsService {
             .get<product[]>(requete,requestOptions);
     }
 
+    //récupérer les produits pour le PCI
+    getPCI() {
+        let requete = "http://"+this.ip+":"+this.portAPI+"/pci";
+        //console.log(requete);
+
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<product[]>(requete,requestOptions);
+    }
+
     //récupérer les containers
     getContainers() {
         let requete = "http://"+this.ip+":"+this.portAPI+"/Container";

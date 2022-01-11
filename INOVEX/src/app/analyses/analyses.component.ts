@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import {NgForm} from "@angular/forms";
 import {product} from "../../models/products.model";
 import {moralEntitiesService} from "../services/moralentities.service";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-analyses',
@@ -18,15 +19,30 @@ export class AnalysesComponent implements OnInit {
   public listAnalyses : product [];
   public Code : string;
   public listDays : string[];
+  public isPCI : boolean = false; // 'true' si on saisie des pci et 'false' si analyses
 
-  constructor(private productsService : productsService, private categoriesService : categoriesService, private mrService : moralEntitiesService) {
+  constructor(private productsService : productsService, private categoriesService : categoriesService, private mrService : moralEntitiesService, private route : ActivatedRoute, private router : Router) {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false; //permet de recharger le component au changement de paramètre
     this.listCategories = [];
     this.listAnalyses = [];
     this.Code = '';
     this.listDays = [];
+    this.route.queryParams.subscribe(params => {
+      if(params.pci.includes('true')){
+        this.isPCI = true;
+        this.getPCI();
+      }
+      else {
+        this.isPCI = false;
+        this.getAnalyses();
+      }
+    });
   }
 
   ngOnInit(): void {
+  }
+
+  getAnalyses(){
     this.categoriesService.getCategoriesAnalyses().subscribe((response)=>{
       // @ts-ignore
       this.listCategories = response.data;
@@ -39,13 +55,21 @@ export class AnalysesComponent implements OnInit {
     });
   }
 
+  getPCI(){
+    this.productsService.getPCI().subscribe((response)=>{
+      // @ts-ignore
+      this.listAnalyses = response.data;
+      this.getValues();
+    });
+  }
+
   setFilters(){
     var codeCat = document.getElementById("categorie");
     // @ts-ignore
     var codeCatSel = codeCat.options[codeCat.selectedIndex].value;
     this.Code = codeCatSel;
     /*Fin de prise en commpte des filtres */
-    this.ngOnInit();
+    this.getAnalyses();
   }
 
   setPeriod(form: NgForm){
@@ -58,11 +82,19 @@ export class AnalysesComponent implements OnInit {
     this.getValues();
   }
 
-  //changer les dates pour saisir le mois en cours
+  //changer les dates pour saisir le mois précédent
   setLastMonth(form: NgForm){
     var date = new Date();
-    var mm = String(date.getMonth()).padStart(2, '0'); //January is 0!
-    var yyyy = date.getFullYear();
+    var mm : String;
+    var yyyy : number;
+    if (date.getMonth() === 0){
+      mm = "12";
+      yyyy = date.getFullYear()-1;
+    }
+    else {
+      mm = String(date.getMonth()).padStart(2, '0'); //January is 0!
+      yyyy = date.getFullYear();
+    }
 
     var Lastday = yyyy + '-' + mm;
     (<HTMLInputElement>document.getElementById("dateDeb")).value = Lastday;

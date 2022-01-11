@@ -29,7 +29,7 @@ export class MoralEntitiesComponent implements OnInit {
     else this.moralEntitiesService.adress = form.value['adress'];
 
     this.moralEntitiesService.nom = form.value['nom'];
-    this.moralEntitiesService.unitPrice = form.value['unitPrice'].replace(',','.');
+    this.moralEntitiesService.unitPrice = +form.value['unitPrice'].toString().replace(',','.');
     this.code = form.value['produit']+form.value['collecteur'];
     this.moralEntitiesService.getLastCode(this.code).subscribe((response)=>{
       if (response.data.length > 0){

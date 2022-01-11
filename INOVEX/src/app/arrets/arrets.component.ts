@@ -34,7 +34,7 @@ export class ArretsComponent implements OnInit {
   public isArret : boolean = false; // 'true' si on saisie des arrêts et 'false' si dépassements
 
   constructor(private arretsService : arretsService, private productsService : productsService, private datePipe : DatePipe, private route : ActivatedRoute, private router : Router) {
-    //this.router.routeReuseStrategy.shouldReuseRoute = () => false; //permet de recharger le component au changement de paramètre
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false; //permet de recharger le component au changement de paramètre
     this.listArrets = [];
     this.arretId = 0;
     this.arretName = '';
@@ -47,19 +47,16 @@ export class ArretsComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       if(params.isArret.includes('true')){
         this.isArret = true;
+        this.getProductsArrets("303020");
       }
-      else this.isArret = false;
+      /**
+       * Dépassements 1/2 heures
+       */
+      else {
+        this.isArret = false;
+        this.getProductsDep("60104");
+      }
     });
-
-    if (this.isArret == true) {
-      this.getProductsArrets("303020");
-    }
-    /**
-     * Dépassements 1/2 heures
-     */
-    else {
-      this.getProductsDep("60104");
-    }
   }
 
   ngOnInit(): void {
@@ -123,8 +120,8 @@ export class ArretsComponent implements OnInit {
       this.arretsService.createArret(this.stringDateDebut, this.stringDateFin, this.duree, 1, this.stringDateSaisie, this.commentaire, this.arretId).subscribe((response) => {
         if (response == "Création de l'arret OK") {
           Swal.fire("L'arrêt a bien été créé !");
-          //envoi d'un mail si arrêt intempestif
-          if (this.arretName.includes("intempestif")) {
+          //envoi d'un mail si arrêt intempestif ou arrêt GTA
+          if (this.arretName.includes("intempestif") || this.arretName.includes("GTA")) {
             console.log(this.stringDateDebut);
             this.arretsService.sendEmail(this.stringDateDebut.substr(8, 2) + '-' + this.stringDateDebut.substr(5, 2) + '-' + this.stringDateDebut.substr(0, 4), this.stringDateDebut.substr(11, 5), this.duree, this.arretName, this.commentaire).subscribe((response) => {
               if (response == "mail OK") {
@@ -175,5 +172,7 @@ export class ArretsComponent implements OnInit {
     // @ts-ignore
     this.stringDateSaisie = this.datePipe.transform(this.dateSaisie,'yyyy-MM-dd HH:mm');
   }
+
+
 
 }

@@ -18,7 +18,6 @@ import {ConsoComponent} from "./conso/conso.component";
 import {NewAnalyseComponent} from "./new-analyse/new-analyse.component";
 import {CategoriesComponent} from "./categories/categories.component";
 import { ListQseComponent } from './list-qse/list-qse.component';
-import {AppComponent} from "./app.component";
 import {AcceuilComponent} from "./acceuil/acceuil.component";
 import {SaisieGlobalComponent} from "./saisie-global/saisie-global.component";
 import {LoginComponent} from "./login/login.component";

@@ -24,7 +24,7 @@ export class ListArretsComponent implements OnInit {
   public isArret : boolean = false; // 'true' si on saisie des arrêts et 'false' si dépassements
 
   constructor(private arretsService : arretsService, private route : ActivatedRoute, private router : Router) {
-    //this.router.routeReuseStrategy.shouldReuseRoute = () => false; //permet de recharger le component au changement de paramètre
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false; //permet de recharger le component au changement de paramètre
     this.listArretsDepassements = [];
     this.sumArretsDepassements = [];
     this.stringDateDebut = '';
