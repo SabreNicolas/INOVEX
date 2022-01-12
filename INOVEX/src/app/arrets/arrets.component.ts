@@ -163,11 +163,11 @@ export class ArretsComponent implements OnInit {
                 })
               }
             });
-            form.reset();
-            this.arretId = 0;
-            this.arretName = '';
-            this.duree = 0;
           }
+          form.reset();
+          this.arretId = 0;
+          this.arretName = '';
+          this.duree = 0;
         } else {
           Swal.fire({
             icon: 'error',
@@ -184,6 +184,10 @@ export class ArretsComponent implements OnInit {
       this.arretsService.createDepassement(this.stringDateDebut, this.stringDateFin, this.duree, this.IdUser, this.stringDateSaisie, this.commentaire, this.arretId).subscribe((response) => {
         if (response == "Création du DEP OK") {
           Swal.fire("Le dépassement a bien été créé !");
+          form.reset();
+          this.arretId = 0;
+          this.arretName = '';
+          this.duree = 0;
         } else {
           Swal.fire({
             icon: 'error',
