@@ -6,6 +6,7 @@ import {NgForm} from "@angular/forms";
 import Swal from "sweetalert2";
 import { DatePipe } from '@angular/common';
 import {ActivatedRoute, Router} from "@angular/router";
+import {user} from "../../models/user.model";
 
 @Component({
   selector: 'app-arrets',
@@ -20,6 +21,8 @@ import {ActivatedRoute, Router} from "@angular/router";
 
 export class ArretsComponent implements OnInit {
 
+  private userLogged : user | undefined;
+  public IdUser : number;
   public listArrets : product[];
   public arretName : string;
   public arretId : number;
@@ -31,10 +34,12 @@ export class ArretsComponent implements OnInit {
   public dateSaisie : Date;
   public stringDateSaisie : string;
   public commentaire : string;
+  public isTotal : boolean = false;
   public isArret : boolean = false; // 'true' si on saisie des arrêts et 'false' si dépassements
 
   constructor(private arretsService : arretsService, private productsService : productsService, private datePipe : DatePipe, private route : ActivatedRoute, private router : Router) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false; //permet de recharger le component au changement de paramètre
+    this.IdUser = 0;
     this.listArrets = [];
     this.arretId = 0;
     this.arretName = '';
@@ -43,7 +48,7 @@ export class ArretsComponent implements OnInit {
     this.stringDateDebut = '';
     this.stringDateFin = '';
     this.stringDateSaisie = '';
-    this.commentaire = '';
+    this.commentaire = '_';
     this.route.queryParams.subscribe(params => {
       if(params.isArret.includes('true')){
         this.isArret = true;
@@ -60,6 +65,14 @@ export class ArretsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    //Réupération de l'Id du user connecté
+    var userLogged = localStorage.getItem('user');
+    if (typeof userLogged === "string") {
+      var userLoggedParse = JSON.parse(userLogged);
+      this.userLogged = userLoggedParse;
+      // @ts-ignore
+      this.IdUser = this.userLogged['Id'];
+    }
   }
 
   getProductsArrets(Code : string){
@@ -85,6 +98,12 @@ export class ArretsComponent implements OnInit {
     this.arretId = type.options[type.selectedIndex].value;
     /*Fin de prise en commpte des filtres */
     this.ngOnInit();
+
+    //Vérification de si on saisie un total ou non pour affcher le bon formulaire
+    if (this.arretName.includes("Total -")){
+      this.isTotal = true;
+    }
+    else this.isTotal = false;
   }
 
   //calcul de la durée de l'arrêt en heure
@@ -106,18 +125,29 @@ export class ArretsComponent implements OnInit {
 
   //création de l'arrêt/dépassement en base
   onSubmit(form : NgForm){
-    /*
-    * DEBUT suppression des caractères suppression
-    * */
-    this.commentaire = form.value['desc'];
-    this.commentaire = this.commentaire.replace("'"," ").toLowerCase();
-    this.commentaire = this.commentaire.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g," ");
-    /*
-    * FIN suppression des caractères suppression
-    * */
+    //SI pas TOTAL DEP on récupére le commentaire (les dates sont déjà stockées lors du calcul de la durée)
+    if(!this.isTotal) {
+      /*
+      * DEBUT suppression des caractères suppression
+      * */
+      this.commentaire = form.value['desc'];
+      console.log(form.value);
+      this.commentaire = this.commentaire.replace("'", " ").toLowerCase();
+      this.commentaire = this.commentaire.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, " ");
+      /*
+      * FIN suppression des caractères suppression
+      * */
+    }
+    //Sinon on stocke les dates (dateDebut = dateFin)
+    else{
+      this.dateDebut = new Date(form.value['dateSaisie']);
+      this.dateFin = this.dateDebut;
+      this.commentaire = '_';
+    }
+
     this.transformDateFormat();
     if (this.isArret == true) {
-      this.arretsService.createArret(this.stringDateDebut, this.stringDateFin, this.duree, 1, this.stringDateSaisie, this.commentaire, this.arretId).subscribe((response) => {
+      this.arretsService.createArret(this.stringDateDebut, this.stringDateFin, this.duree, this.IdUser, this.stringDateSaisie, this.commentaire, this.arretId).subscribe((response) => {
         if (response == "Création de l'arret OK") {
           Swal.fire("L'arrêt a bien été créé !");
           //envoi d'un mail si arrêt intempestif ou arrêt GTA
@@ -151,7 +181,7 @@ export class ArretsComponent implements OnInit {
      * Dépassements 1/2 heures
      */
     else {
-      this.arretsService.createDepassement(this.stringDateDebut, this.stringDateFin, this.duree, 1, this.stringDateSaisie, this.commentaire, this.arretId).subscribe((response) => {
+      this.arretsService.createDepassement(this.stringDateDebut, this.stringDateFin, this.duree, this.IdUser, this.stringDateSaisie, this.commentaire, this.arretId).subscribe((response) => {
         if (response == "Création du DEP OK") {
           Swal.fire("Le dépassement a bien été créé !");
         } else {
@@ -174,5 +204,9 @@ export class ArretsComponent implements OnInit {
   }
 
 
+  updateDuree(form : NgForm){
+    var duree = form.value['duree'];
+    this.duree = duree;
+  }
 
 }

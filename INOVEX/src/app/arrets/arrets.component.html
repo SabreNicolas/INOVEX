@@ -17,7 +17,10 @@
                 </div>
             </div>
         </div>
+    </div>
 
+    <!--formulaire de saisie avec calcul de la durée et commentaire-->
+    <div class="row" *ngIf="arretId && !isTotal">
         <!--Période-->
         <form #f="ngForm">
             <div class="form-group">
@@ -39,15 +42,12 @@
                 </div>
             </div>
         </form>
-    </div>
 
-    <!--formulaire de saisie-->
-    <div class="row" *ngIf="arretId">
         <div class="col-sm-5 col-sm-offset-1">
 
             <h3>Saisie {{arretName}}</h3>
 
-            <form ngNativeValidate (ngSubmit)="onSubmit(f)" #f="ngForm">
+            <form (ngSubmit)="onSubmit(fnotTot)" #fnotTot="ngForm">
 
                 <div style="display: inline-flex" class="form-group">
                     <label style="margin-right: 1em">Durée (en heures) :  </label>
@@ -61,6 +61,33 @@
                 <div class="form-group">
                     <label for="desc">Commentaire (pas de caractères spéciaux ni majuscules SVP) : * </label>
                     <textarea class="form-control" required id="desc"  placeholder="Description ..." name="desc" ngModel></textarea>
+                </div>
+
+                <p style="font-size: smaller; color: grey">* : Obligatoire</p>
+
+                <div class="form-group">
+                    <button [disabled]="duree < 0.001" class="btn btn-success btn-lg" type="submit">Valider</button>
+                    <button class="btn btn-danger btn-lg" routerLink="/">Annuler</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <!--formulaire de saisie avec input pour durée ===> Utilisé si daisie du total pour dépassement 1/2H-->
+    <div class="row" *ngIf="arretId && isTotal">
+        <div class="col-sm-5 col-sm-offset-1">
+            <h3>Saisie {{arretName}}</h3>
+            <form (ngSubmit)="onSubmit(fTot)" #fTot="ngForm">
+
+                <div style="display: inline-flex; width: 90%" class="form-group">
+                    <label style="margin-right: 1em;width: 40%">Date : *</label>
+                    <input type="date" id="dateSaisie" class="form-control" placeholder="Date" name="dateSaisie" required ngModel>
+                </div>
+
+                <div style="display: inline-flex; width: 90%" class="form-group">
+                    <label style="margin-right: 1em;width: 40%">Durée (en heures) : *</label>
+                    <input (keyup)="updateDuree(fTot)" type="text" id="value" class="form-control" placeholder="Valeur" name="duree" required ngModel>
                 </div>
 
                 <p style="font-size: smaller; color: grey">* : Obligatoire</p>
