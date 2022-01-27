@@ -78,10 +78,6 @@ export class ListArretsComponent implements OnInit {
           // @ts-ignore
           this.sumArretsDepassements.push(response.data[0]);
         });
-        this.arretsService.getDepassementsSum(this.stringDateDebut, this.stringDateFin).subscribe((response) => {
-          // @ts-ignore
-          this.sumArretsDepassements.push(response.data[0]);
-        });
       });
     }
   }
@@ -134,8 +130,16 @@ export class ListArretsComponent implements OnInit {
   //changer les dates pour afficher le mois en dernier
   setLastMonth(form: NgForm){
     var date = new Date();
-    var mm = String(date.getMonth()).padStart(2, '0'); //January is 0!
-    var yyyy = date.getFullYear();
+    var mm : String;
+    var yyyy : number;
+    if (date.getMonth() === 0){
+      mm = "12";
+      yyyy = date.getFullYear()-1;
+    }
+    else {
+      mm = String(date.getMonth()).padStart(2, '0'); //January is 0!
+      yyyy = date.getFullYear();
+    }
     var dd = String(new Date(yyyy, date.getMonth(), 0).getDate()).padStart(2, '0');
 
     var Fisrtday = yyyy + '-' + mm + '-' + '01';
