@@ -131,7 +131,6 @@ export class ArretsComponent implements OnInit {
       * DEBUT suppression des caractères suppression
       * */
       this.commentaire = form.value['desc'];
-      console.log(form.value);
       this.commentaire = this.commentaire.replace("'", " ").toLowerCase();
       this.commentaire = this.commentaire.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, " ");
       /*
