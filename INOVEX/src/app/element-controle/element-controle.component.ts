@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {NgForm} from "@angular/forms";
 
 @Component({
   selector: 'app-element-controle',
@@ -12,4 +13,8 @@ export class ElementControleComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  //Création éléments contrôle
+  onSubmit(form : NgForm) {
+    alert("lol");
+  }
 }

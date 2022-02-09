@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {NgForm} from "@angular/forms";
 
 @Component({
   selector: 'app-zone-controle',
@@ -10,6 +11,11 @@ export class ZoneControleComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  //création zone de controle
+  onSubmit(form : NgForm) {
+    alert("lol");
   }
 
 }
