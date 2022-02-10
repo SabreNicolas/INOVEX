@@ -16,4 +16,17 @@ export class rondierService {
     constructor(private http: HttpClient) {
         this.httpClient = http;
     }
+
+    //création du badge
+    createBadge(uid : string){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/Badge?uid="+uid;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<any>(requete,requestOptions);
+    }
 }
