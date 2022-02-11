@@ -43,6 +43,8 @@ import { ListBadgesComponent } from './list-badges/list-badges.component';
 import { GestionBadgeComponent } from './gestion-badge/gestion-badge.component';
 import { ZoneControleComponent } from './zone-controle/zone-controle.component';
 import { ElementControleComponent } from './element-controle/element-controle.component';
+import { ListZonesComponent } from './list-zones/list-zones.component';
+import { ListElementsComponent } from './list-elements/list-elements.component';
 
 @NgModule({
   declarations: [
@@ -76,7 +78,9 @@ import { ElementControleComponent } from './element-controle/element-controle.co
     ListBadgesComponent,
     GestionBadgeComponent,
     ZoneControleComponent,
-    ElementControleComponent
+    ElementControleComponent,
+    ListZonesComponent,
+    ListElementsComponent
   ],
   imports: [
     BrowserModule,

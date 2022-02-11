@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import {rondierService} from "../services/rondier.service";
+import {badge} from "../../models/badge.model";
+import {badgeAffect} from "../../models/badgeAffect.model";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-list-badges',
@@ -7,9 +11,44 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ListBadgesComponent implements OnInit {
 
-  constructor() { }
+  public listBadgeLibre : badge[];
+  public listBadgeUser : badgeAffect[];
+  public listBadgeZone : badgeAffect[];
+
+  constructor(private rondierService : rondierService) {
+    this.listBadgeLibre = [];
+    this.listBadgeUser = [];
+    this.listBadgeZone = [];
+  }
 
   ngOnInit(): void {
+    this.rondierService.listBadgeNonAffect().subscribe((response)=>{
+      // @ts-ignore
+      this.listBadgeLibre = response.data;
+      this.rondierService.listBadgeUser().subscribe((response)=>{
+        // @ts-ignore
+        this.listBadgeUser = response.data;
+        this.rondierService.listBadgeZone().subscribe((response)=>{
+          // @ts-ignore
+          this.listBadgeZone = response.data;
+        });
+      });
+    });
+  }
+
+  setActivation(badgeId : number, enabled : number){
+    this.rondierService.updateEnabled(badgeId,enabled).subscribe((response)=>{
+      if (response == "Mise à jour de l'activation OK"){
+        Swal.fire("L'état d'activation a été mis à jour !");
+      }
+      else {
+        Swal.fire({
+          icon: 'error',
+          text: 'Erreur lors du changement de l\'état d\'activation ....',
+        })
+      }
+    });
+    this.ngOnInit();
   }
 
 }
