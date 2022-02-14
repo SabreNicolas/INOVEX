@@ -31,6 +31,7 @@ import {ZoneControleComponent} from "./zone-controle/zone-controle.component";
 import {ElementControleComponent} from "./element-controle/element-controle.component";
 import {ListZonesComponent} from "./list-zones/list-zones.component";
 import {ListElementsComponent} from "./list-elements/list-elements.component";
+import {GestionBadgeComponent} from "./gestion-badge/gestion-badge.component";
 
 const routes: Routes = [
 
@@ -104,6 +105,7 @@ const routes: Routes = [
             { path: 'users', canActivate: [AuthGuard], component: ListUsersComponent},
             { path: 'newBadge', canActivate: [AuthGuard], component: BadgeComponent},
             { path: 'badges', canActivate: [AuthGuard], component: ListBadgesComponent},
+            { path: 'gestionBadge', canActivate: [AuthGuard], component: GestionBadgeComponent},
             { path: 'newZone', canActivate: [AuthGuard], component: ZoneControleComponent},
             { path: 'zones', canActivate: [AuthGuard], component: ListZonesComponent},
             { path: 'newElement', canActivate: [AuthGuard], component: ElementControleComponent},

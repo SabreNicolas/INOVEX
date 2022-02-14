@@ -3,6 +3,8 @@ import {Injectable} from "@angular/core";
 import {zone} from "../../models/zone.model";
 import {badge} from "../../models/badge.model";
 import {badgeAffect} from "../../models/badgeAffect.model";
+import {user} from "../../models/user.model";
+import {element} from "../../models/element.model";
 
 @Injectable()
 export class rondierService {
@@ -89,6 +91,32 @@ export class rondierService {
             .put<any>(requete,requestOptions);
     }
 
+    //Update affectation
+    updateAffect(id : number, idAffect : number, typeAffect : string){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/BadgeAffectation/"+id+"/"+typeAffect+"/"+idAffect;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<any>(requete,requestOptions);
+    }
+
+    //Update affectation => rendre le badge libre
+    updateAffectLibre(id : number){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/BadgeDeleteAffectation/"+id;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<any>(requete,requestOptions);
+    }
+
 
     /*
     FIN BADGE
@@ -114,6 +142,19 @@ export class rondierService {
     //liste des zones de controle
     listZone(){
         let requete = "http://"+this.ip+":"+this.portAPI+"/zones";
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<zone[]>(requete,requestOptions);
+    }
+
+    //liste des zones de controle libres
+    listZoneLibre(){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/ZonesLibre";
         //console.log(requete);
 
         const requestOptions = {
@@ -161,8 +202,35 @@ export class rondierService {
             .put<any>(requete,requestOptions);
     }
 
+    //liste des elements de controle d'une zone de controle
+    listElementofZone(zoneId : number){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/elementsOfZone/"+zoneId;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<element[]>(requete,requestOptions);
+    }
+
+
 
     /*
     FIN ELEMENT DE CONTROLE
      */
+
+    //liste des users sans badge
+    listUserLibre(){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/UsersLibre";
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<user[]>(requete,requestOptions);
+    }
 }

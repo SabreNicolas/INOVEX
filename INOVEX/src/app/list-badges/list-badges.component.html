@@ -10,6 +10,7 @@
                 <th scope="col">Utilisateur</th>
                 <th scope="col">Zone</th>
                 <th scope="col">Etat d'activation</th>
+                <th scope="col">Retirer Affectation</th>
             </tr>
             </thead>
             <!--BADGES LIBRES-->
@@ -20,23 +21,25 @@
                 <td></td>
                 <td></td>
                 <td></td>
+                <td></td>
             </tr>
             </tbody>
             <tbody *ngFor="let b of listBadgeLibre">
             <tr class="table-light">
                 <td>{{b.Id}}</td>
-                <td><button id="setUser" class="btn btn-primary">
+                <td><button id="setUser" class="btn btn-primary" routerLink="../gestionBadge" [queryParams]="{ isUser: 'true', badgeId: b.Id}">
                     Affecter à un utilisateur
                 </button></td>
-                <td><button id="setZone" class="btn btn-primary">
+                <td><button id="setZone" class="btn btn-primary" routerLink="../gestionBadge" [queryParams]="{ isUser: 'false', badgeId: b.Id}">
                     Affecter à une zone
                 </button></td>
                 <td *ngIf="b.isEnabled == false"><button id="setDisabled" (click)="setActivation(b.Id,1)" class="btn btn-outline-danger">
-                    <i style="color: red" class="fa fa-times-circle"></i>
+                    <i class="fa fa-times-circle"></i>
                 </button></td>
                 <td *ngIf="b.isEnabled == true"><button id="setEnabled" (click)="setActivation(b.Id,0)" class="btn btn-outline-success">
-                    <i style="color: green" class="fa fa-check-circle" aria-hidden="true"></i>
+                    <i class="fa fa-check-circle" aria-hidden="true"></i>
                 </button></td>
+                <td></td>
             </tr>
             </tbody>
             <br>
@@ -49,6 +52,7 @@
                 <td></td>
                 <td></td>
                 <td></td>
+                <td></td>
             </tr>
             </tbody>
             <tbody *ngFor="let b of listBadgeUser">
@@ -57,11 +61,15 @@
                 <td>{{b.affect}}</td>
                 <td>/</td>
                 <td *ngIf="b.isEnabled == false"><button id="setDisabledUser" (click)="setActivation(b.Id,1)" class="btn btn-outline-danger">
-                    <i style="color: red" class="fa fa-times-circle"></i>
+                    <i class="fa fa-times-circle"></i>
                 </button></td>
                 <td *ngIf="b.isEnabled == true"><button id="setEnabledUser" (click)="setActivation(b.Id,0)" class="btn btn-outline-success">
-                    <i style="color: green" class="fa fa-check-circle" aria-hidden="true"></i>
+                    <i class="fa fa-check-circle" aria-hidden="true"></i>
                 </button></td>
+                <td><button id="resetAffectationUser" (click)="resetAffectation(b.Id)" class="btn btn btn-outline-primary">
+                    <i class="fa fa-ban" aria-hidden="true"></i>
+                </button></td>
+
             </tr>
             </tbody>
             <br>
@@ -74,6 +82,7 @@
                 <td></td>
                 <td></td>
                 <td></td>
+                <td></td>
             </tr>
             </tbody>
             <tbody *ngFor="let b of listBadgeZone">
@@ -82,10 +91,13 @@
                 <td>/</td>
                 <td>{{b.affect}}</td>
                 <td *ngIf="b.isEnabled == false"><button id="setDisabledZone" (click)="setActivation(b.Id,1)" class="btn btn-outline-danger">
-                    <i style="color: red" class="fa fa-times-circle"></i>
+                    <i class="fa fa-times-circle"></i>
                 </button></td>
                 <td *ngIf="b.isEnabled == true"><button id="setEnabledZone" (click)="setActivation(b.Id,0)" class="btn btn-outline-success">
-                    <i style="color: green" class="fa fa-check-circle" aria-hidden="true"></i>
+                    <i class="fa fa-check-circle" aria-hidden="true"></i>
+                </button></td>
+                <td><button id="resetAffectationZone" (click)="resetAffectation(b.Id)" class="btn btn btn-outline-primary">
+                    <i class="fa fa-ban" aria-hidden="true"></i>
                 </button></td>
             </tr>
             </tbody>

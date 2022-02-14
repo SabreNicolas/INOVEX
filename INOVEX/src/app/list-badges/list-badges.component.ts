@@ -51,4 +51,21 @@ export class ListBadgesComponent implements OnInit {
     this.ngOnInit();
   }
 
+  resetAffectation(badgeId : number){
+    this.rondierService.updateAffectLibre(badgeId).subscribe((response)=>{
+      if (response == "Mise à jour de l'affectation OK"){
+        Swal.fire("L'affectation a été retiré avec succés !");
+      }
+      else {
+        Swal.fire({
+          icon: 'error',
+          text: 'Erreur.... Impossible de retirer l\'affectation du badge',
+        })
+      }
+    });
+    this.ngOnInit();
+  }
+
+
+
 }
