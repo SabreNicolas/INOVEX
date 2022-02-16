@@ -39,6 +39,19 @@ export class rondierService {
             .put<any>(requete,requestOptions);
     }
 
+    //récupération du dernier Id inséré
+    lastIdBadge(){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/BadgeLastId";
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<number>(requete,requestOptions);
+    }
+
     //liste des badges non affectés
     listBadgeNonAffect(){
         let requete = "http://"+this.ip+":"+this.portAPI+"/BadgesLibre";

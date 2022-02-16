@@ -21,6 +21,7 @@ export class ListBadgesComponent implements OnInit {
     this.listBadgeZone = [];
   }
 
+
   ngOnInit(): void {
     this.rondierService.listBadgeNonAffect().subscribe((response)=>{
       // @ts-ignore

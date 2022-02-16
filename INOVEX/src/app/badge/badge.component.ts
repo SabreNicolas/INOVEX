@@ -24,12 +24,15 @@ export class BadgeComponent implements OnInit {
     this.uid = form.value['idBadge'];
     this.rondierService.createBadge(this.uid).subscribe((response)=>{
       if (response == "Création du badge OK"){
-        Swal.fire("Le badge a bien été créé !");
+        this.rondierService.lastIdBadge().subscribe((response)=>{
+          // @ts-ignore
+          Swal.fire("Badge créé avec succés, il porte le numéro : "+response.data[0].Id);
+        });
       }
       else {
         Swal.fire({
           icon: 'error',
-          text: 'Erreur lors de la création du badge ....',
+          text: 'Erreur lors de la création du badge .... Identifiant déjà utilisé',
         })
       }
     });

@@ -46,8 +46,6 @@ export class ZoneControleComponent implements OnInit {
   resetFields(form: NgForm){
     form.controls['nom'].reset();
     form.value['nom']='';
-    form.controls['commentaire'].reset();
-    form.value['commentaire']='';
   }
 
 }
