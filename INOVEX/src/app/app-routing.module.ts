@@ -32,6 +32,7 @@ import {ElementControleComponent} from "./element-controle/element-controle.comp
 import {ListZonesComponent} from "./list-zones/list-zones.component";
 import {ListElementsComponent} from "./list-elements/list-elements.component";
 import {GestionBadgeComponent} from "./gestion-badge/gestion-badge.component";
+import {PermisFeuComponent} from "./permis-feu/permis-feu.component";
 
 const routes: Routes = [
 
@@ -110,6 +111,7 @@ const routes: Routes = [
             { path: 'zones', canActivate: [AuthGuard], component: ListZonesComponent},
             { path: 'newElement', canActivate: [AuthGuard], component: ElementControleComponent},
             { path: 'elements', canActivate: [AuthGuard], component: ListElementsComponent},
+            { path: 'permisFeu', canActivate: [AuthGuard], component: PermisFeuComponent},
         ]
     },
 

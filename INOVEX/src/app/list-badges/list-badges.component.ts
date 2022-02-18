@@ -3,6 +3,7 @@ import {rondierService} from "../services/rondier.service";
 import {badge} from "../../models/badge.model";
 import {badgeAffect} from "../../models/badgeAffect.model";
 import Swal from "sweetalert2";
+import {permisFeu} from "../../models/permisFeu.model";
 
 @Component({
   selector: 'app-list-badges',
@@ -14,11 +15,13 @@ export class ListBadgesComponent implements OnInit {
   public listBadgeLibre : badge[];
   public listBadgeUser : badgeAffect[];
   public listBadgeZone : badgeAffect[];
+  public listPermisFeu : permisFeu[];
 
   constructor(private rondierService : rondierService) {
     this.listBadgeLibre = [];
     this.listBadgeUser = [];
     this.listBadgeZone = [];
+    this.listPermisFeu = [];
   }
 
 
@@ -32,6 +35,11 @@ export class ListBadgesComponent implements OnInit {
         this.rondierService.listBadgeZone().subscribe((response)=>{
           // @ts-ignore
           this.listBadgeZone = response.data;
+
+          this.rondierService.listPermisFeu().subscribe((response)=>{
+            // @ts-ignore
+            this.listPermisFeu = response.data;
+          });
         });
       });
     });

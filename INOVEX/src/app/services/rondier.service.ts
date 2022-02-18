@@ -5,6 +5,7 @@ import {badge} from "../../models/badge.model";
 import {badgeAffect} from "../../models/badgeAffect.model";
 import {user} from "../../models/user.model";
 import {element} from "../../models/element.model";
+import {permisFeu} from "../../models/permisFeu.model";
 
 @Injectable()
 export class rondierService {
@@ -233,6 +234,45 @@ export class rondierService {
     /*
     FIN ELEMENT DE CONTROLE
      */
+
+
+    /*
+    PERMIS DE FEU
+     */
+
+    //création du permis de feu
+    //?dateHeureDeb=dggd&dateHeureFin=fff&badgeId=1
+    createPermisFeu(dateHeureDeb : string, dateHeureFin : string, badgeId : number){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/PermisFeu?dateHeureDeb="+dateHeureDeb+"&dateHeureFin="+dateHeureFin+"&badgeId="+badgeId;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<any>(requete,requestOptions);
+    }
+
+    //liste des permis de feu en cours
+    listPermisFeu(){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/PermisFeu";
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<permisFeu[]>(requete,requestOptions);
+    }
+
+
+
+    /*
+    FIN PERMIS DE FEU
+     */
+
 
     //liste des users sans badge
     listUserLibre(){

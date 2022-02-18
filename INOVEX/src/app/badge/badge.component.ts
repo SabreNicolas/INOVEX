@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {NgForm} from "@angular/forms";
 import {rondierService} from "../services/rondier.service";
 import Swal from "sweetalert2";
+import {permisFeu} from "../../models/permisFeu.model";
 
 @Component({
   selector: 'app-badge',

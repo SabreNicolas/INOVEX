@@ -45,6 +45,7 @@ import { ZoneControleComponent } from './zone-controle/zone-controle.component';
 import { ElementControleComponent } from './element-controle/element-controle.component';
 import { ListZonesComponent } from './list-zones/list-zones.component';
 import { ListElementsComponent } from './list-elements/list-elements.component';
+import { PermisFeuComponent } from './permis-feu/permis-feu.component';
 
 @NgModule({
   declarations: [
@@ -80,7 +81,8 @@ import { ListElementsComponent } from './list-elements/list-elements.component';
     ZoneControleComponent,
     ElementControleComponent,
     ListZonesComponent,
-    ListElementsComponent
+    ListElementsComponent,
+    PermisFeuComponent
   ],
   imports: [
     BrowserModule,
