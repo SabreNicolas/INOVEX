@@ -242,7 +242,7 @@ export class rondierService {
 
     //création du permis de feu
     //?dateHeureDeb=dggd&dateHeureFin=fff&badgeId=1
-    createPermisFeu(dateHeureDeb : string, dateHeureFin : string, badgeId : number){
+    createPermisFeu(dateHeureDeb: string | null, dateHeureFin: string | null, badgeId: number){
         let requete = "http://"+this.ip+":"+this.portAPI+"/PermisFeu?dateHeureDeb="+dateHeureDeb+"&dateHeureFin="+dateHeureFin+"&badgeId="+badgeId;
         //console.log(requete);
 
