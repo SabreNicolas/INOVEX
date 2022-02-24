@@ -22,6 +22,8 @@ export class ElementControleComponent implements OnInit {
   private unit : string;
   private defaultValue : number;
   private isRegulateur : number;//1 pour oui et 0 pour non
+  private listValues : string;
+  public needListValues : boolean;
 
   constructor(private rondierService : rondierService) {
     this.listZone = [];
@@ -35,6 +37,8 @@ export class ElementControleComponent implements OnInit {
     this.unit = "_";
     this.defaultValue = 0;
     this.isRegulateur = 0;
+    this.needListValues = false;
+    this.listValues = "";
   }
 
   ngOnInit(): void {
@@ -42,6 +46,16 @@ export class ElementControleComponent implements OnInit {
       // @ts-ignore
       this.listZone = response.data;
     });
+  }
+
+  //permet de savoir si il est nécessaire ou non d'afficher le champ de list des valeurs possibles
+  changeType(form : NgForm){
+    this.typeChamp = form.value['champ'];
+    // @ts-ignore
+    if(this.typeChamp === "3" || this.typeChamp === "4"){
+      this.needListValues = true;
+    }
+    else this.needListValues = false;
   }
 
   //Création éléments contrôle
@@ -54,12 +68,14 @@ export class ElementControleComponent implements OnInit {
     if(form.value['valeurMax'].length > 0){
       this.valeurMax = (form.value['valeurMax'].replace(',','.'));
     }
-    this.typeChamp = form.value['champ'];
     if(form.value['unit'].length > 0){
       this.unit = form.value['unit'];
     }
     if(form.value['valeurDef'].length > 0){
       this.defaultValue = (form.value['valeurDef'].replace(',','.'));
+    }
+    if(this.needListValues){
+      this.listValues = form.value['listValues'];
     }
     //Gestion des boolean
     var four = document.getElementsByName('four');
@@ -74,7 +90,7 @@ export class ElementControleComponent implements OnInit {
       this.isRegulateur = 1;
     }
 
-    this.rondierService.createElement(this.zoneId, this.nom, this.valeurMin, this.valeurMax, this.typeChamp, this.isFour, this.isGlobal, this.unit, this.defaultValue, this.isRegulateur).subscribe((response)=>{
+    this.rondierService.createElement(this.zoneId, this.nom, this.valeurMin, this.valeurMax, this.typeChamp, this.isFour, this.isGlobal, this.unit, this.defaultValue, this.isRegulateur,this.listValues).subscribe((response)=>{
       if (response == "Création de l'élément OK"){
         Swal.fire("L'élément de contrôle a bien été créé !");
       }

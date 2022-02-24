@@ -203,9 +203,9 @@ export class rondierService {
      */
 
     //création de l'élément de controle
-    //?zoneId=1&nom=ddd&valeurMin=1.4&valeurMax=2.5&typeChamp=1&isFour=0&isGlobal=1&unit=tonnes&defaultValue=1.7&isRegulateur=0
-    createElement(zoneId : number, nom : string, valeurMin : number, valeurMax : number, typeChamp : number, isFour : number, isGlobal : number, unit : string, defaultValue : number, isRegulateur : number){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/element?zoneId="+zoneId+"&nom="+nom+"&valeurMin="+valeurMin+"&valeurMax="+valeurMax+"&typeChamp="+typeChamp+"&isFour="+isFour+"&isGlobal="+isGlobal+"&unit="+unit+"&defaultValue="+defaultValue+"&isRegulateur="+isRegulateur;
+    //?zoneId=1&nom=ddd&valeurMin=1.4&valeurMax=2.5&typeChamp=1&isFour=0&isGlobal=1&unit=tonnes&defaultValue=1.7&isRegulateur=0&listValues=1;2;3
+    createElement(zoneId : number, nom : string, valeurMin : number, valeurMax : number, typeChamp : number, isFour : number, isGlobal : number, unit : string, defaultValue : number, isRegulateur : number, listValues : string){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/element?zoneId="+zoneId+"&nom="+nom+"&valeurMin="+valeurMin+"&valeurMax="+valeurMax+"&typeChamp="+typeChamp+"&isFour="+isFour+"&isGlobal="+isGlobal+"&unit="+unit+"&defaultValue="+defaultValue+"&isRegulateur="+isRegulateur+"&listValues="+listValues;
         //console.log(requete);
 
         const requestOptions = {
