@@ -22,3 +22,6 @@
 
 # Créer un Component :
 `ng generate component nomComponent`
+
+# ATTENTION lors de la création d'un service :
+`ajouter ce service dans le tableau des providers du fichier app.module.ts`

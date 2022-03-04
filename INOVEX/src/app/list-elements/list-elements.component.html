@@ -1,0 +1,55 @@
+<div *ngIf="listElements">
+
+    <div class="form-group blockFiltres">
+
+        <h5><label>Zone de contrôle :</label></h5>
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <select class="form-select form-select-sm" aria-label=".form-select-sm example" id="zone">
+                        <option *ngFor="let z of listZone" value="{{z.Id}}">{{z.nom}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <button class="btn btn-success" (click)="setFilters()">Valider</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="table-style">
+        <!--table des élements de contrôle-->
+        <table class="table table-hover tableFixed">
+            <thead>
+            <tr class="table-secondary">
+                <th scope="col">Nom</th>
+                <th scope="col">Type de champ</th>
+                <th scope="col">Valeurs Bornes</th>
+                <th scope="col">Valeur par défaut</th>
+                <th scope="col">Unité</th>
+                <th style="text-align: center" scope="col">Est un régulateur ?</th>
+                <th style="text-align: center" scope="col">Est commun aux 2 fours ?</th>
+            </tr>
+            </thead>
+            <tbody *ngFor="let e of listElements">
+            <tr class="table-light" [ngSwitch]="e.typeChamp">
+                <td>{{e.nom}}</td>
+                <td *ngSwitchCase=1 style="color: blue">Curseur</td>
+                <td *ngSwitchCase=2 style="color: #73b843">Saisie Libre</td>
+                <td *ngSwitchCase=3 style="color: magenta">Case à Cocher</td>
+                <td *ngSwitchCase=4 style="color: #Fb6019">Menu de Sélection</td>
+                <td>{{e.valeurMin}} - {{e.valeurMax}}</td>
+                <td>{{e.defaultValue}}</td>
+                <td>{{e.unit}}</td>
+                <td style="text-align: center" *ngIf="e.isRegulateur"><i style="color: green" class="fa fa-check" aria-hidden="true"></i></td>
+                <td style="text-align: center" *ngIf="!e.isRegulateur"><i style="color: red" class="fa fa-times" aria-hidden="true"></i></td>
+                <td style="text-align: center" *ngIf="e.isFour"><i style="color: green" class="fa fa-check" aria-hidden="true"></i></td>
+                <td style="text-align: center" *ngIf="!e.isFour"><i style="color: red" class="fa fa-times" aria-hidden="true"></i></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

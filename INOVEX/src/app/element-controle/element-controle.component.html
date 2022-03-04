@@ -1,0 +1,90 @@
+<h1 class="creation">Création d'un élément de contrôle :</h1>
+
+<div class="row">
+    <div class="col-sm-5 col-sm-offset-1">
+
+        <form ngNativeValidate  (ngSubmit)="onSubmit(f)" #f="ngForm">
+
+            <div class="form-group">
+                <label for="nom">Nom : *</label>
+                <input required type="text" id="nom" class="form-control" placeholder="Nom" name="nom" ngModel>
+            </div>
+
+            <div class="form-group">
+                <label>Zone de contrôle : *</label>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <select required class="form-select form-select-sm" aria-label=".form-select-sm example" name="zone" ngModel>
+                                <option *ngFor="let z of listZone" value="{{z.Id}}">{{z.nom}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="valeurMin">Valeur minimale : </label>
+                <input id="valeurMin" class="form-control" placeholder="Valeur minimale" name="valeurMin" ngModel>
+            </div>
+
+            <div class="form-group">
+                <label for="valeurMax">Valeur maximale : </label>
+                <input id="valeurMax" class="form-control" placeholder="Valeur maximale" name="valeurMax" ngModel>
+            </div>
+
+            <div class="form-group">
+                <label for="unit">Unité : </label>
+                <input id="unit" class="form-control" placeholder="Unité" name="unit" ngModel>
+            </div>
+
+            <div class="form-group">
+                <label for="valeurDef">Valeur par défaut : </label>
+                <input id="valeurDef" class="form-control" placeholder="Valeur par défaut" name="valeurDef" ngModel>
+            </div>
+
+            <div class="form-group">
+                <label>Type de champ : *</label>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <select required class="form-select form-select-sm" aria-label=".form-select-sm example" name="champ" (ngModelChange)="changeType(f)" ngModel="2">
+                                <option value="1">Curseur</option>
+                                <option selected value="2">Saisie libre</option>
+                                <option value="3">Case à cocher</option>
+                                <option value="4">Menu de sélection</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="needListValues" class="form-group">
+                <label for="listValues">Liste des valeurs possibles : * (Merci de séparer les valeurs par un <strong>espace</strong>)</label>
+                <input required id="listValues" class="form-control" placeholder="Valeurs possibles" name="listValues" ngModel>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="regulateur" name="regulateur" ngModel>
+                <label class="form-check-label" for="regulateur">
+                    Est un régulateur
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="four" name="four" ngModel>
+                <label class="form-check-label" for="four">
+                    Existe pour les deux fours
+                </label>
+            </div>
+
+            <p style="font-size: smaller; color: grey">* : Obligatoire</p>
+
+            <div class="form-group">
+                <button class="btn btn-success btn-lg" type="submit">Valider</button>
+                <button class="btn btn-danger btn-lg" onclick="window.location.replace('/admin')">Annuler</button>
+            </div>
+
+        </form>
+    </div>
+</div>

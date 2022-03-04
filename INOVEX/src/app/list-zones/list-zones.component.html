@@ -1,0 +1,24 @@
+<div *ngIf="listZone">
+
+    <div class="table-style">
+        <!--table des zones de controle-->
+        <table class="table table-hover tableFixed">
+            <thead>
+            <tr class="table-secondary">
+                <th scope="col">Nom</th>
+                <th scope="col">Commentaire</th>
+                <th scope="col">Edition</th>
+            </tr>
+            </thead>
+            <tbody *ngFor="let z of listZone">
+            <tr class="table-light">
+                <td>{{z.nom}}</td>
+                <td>{{z.commentaire}}</td>
+                <td><button id="setDisabled" (click)="setComment(z)" class="btn btn-outline-primary">
+                    <i class="fa fa-pencil"></i>
+                </button></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

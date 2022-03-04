@@ -37,6 +37,15 @@ import {loginService} from "./services/login.service";
 import { ListUsersComponent } from './list-users/list-users.component';
 import { GestionUserComponent } from './gestion-user/gestion-user.component';
 import {AuthGuard} from "./services/auth-guard.service";
+import {rondierService} from "./services/rondier.service";
+import { BadgeComponent } from './badge/badge.component';
+import { ListBadgesComponent } from './list-badges/list-badges.component';
+import { GestionBadgeComponent } from './gestion-badge/gestion-badge.component';
+import { ZoneControleComponent } from './zone-controle/zone-controle.component';
+import { ElementControleComponent } from './element-controle/element-controle.component';
+import { ListZonesComponent } from './list-zones/list-zones.component';
+import { ListElementsComponent } from './list-elements/list-elements.component';
+import { PermisFeuComponent } from './permis-feu/permis-feu.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +74,15 @@ import {AuthGuard} from "./services/auth-guard.service";
     LoginComponent,
     UserComponent,
     ListUsersComponent,
-    GestionUserComponent
+    GestionUserComponent,
+    BadgeComponent,
+    ListBadgesComponent,
+    GestionBadgeComponent,
+    ZoneControleComponent,
+    ElementControleComponent,
+    ListZonesComponent,
+    ListElementsComponent,
+    PermisFeuComponent
   ],
   imports: [
     BrowserModule,
@@ -81,6 +98,7 @@ import {AuthGuard} from "./services/auth-guard.service";
     DatePipe,
     loginService,
     AuthGuard,
+    rondierService,
   ],
   bootstrap: [AppComponent]
 })

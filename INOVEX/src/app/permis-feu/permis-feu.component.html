@@ -1,0 +1,42 @@
+<h1 class="creation">Création d'un permis de feu :</h1>
+
+<div class="row">
+    <div class="col-sm-5 col-sm-offset-1">
+
+        <form ngNativeValidate  (ngSubmit)="onSubmit(f)" #f="ngForm">
+
+            <div class="form-group">
+                <label>Badge : *</label>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <select required class="form-select form-select-sm" aria-label=".form-select-sm example" name="badge" ngModel>
+                                <option *ngFor="let b of listBadge" value="{{b.Id}}">{{b.Id}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="dateHeureDeb">Début du permis de feu : *</label>
+                <p style="font-size: smaller; color: grey">Valable 24 heures</p>
+                <input required type="datetime-local" id="dateHeureDeb" class="form-control" name="dateHeureDeb" (ngModelChange)="generateDateHeureFin(f)" ngModel>
+            </div>
+
+            <div class="form-group" *ngIf="dateHeureFin.length > 0">
+                <label>Fin du permis de feu : </label>
+                <p>{{dateHeureFin}}</p>
+
+            </div>
+
+            <p style="font-size: smaller; color: grey">* : Obligatoire</p>
+
+            <div class="form-group">
+                <button class="btn btn-success btn-lg" type="submit">Valider</button>
+                <button class="btn btn-danger btn-lg" onclick="window.location.replace('/admin/badges')">Annuler</button>
+            </div>
+
+        </form>
+    </div>
+</div>
