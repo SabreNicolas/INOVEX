@@ -25,6 +25,14 @@ import {UserComponent} from "./user/user.component";
 import {ListUsersComponent} from "./list-users/list-users.component";
 import {GestionUserComponent} from "./gestion-user/gestion-user.component";
 import {AuthGuard} from "./services/auth-guard.service";
+import {BadgeComponent} from "./badge/badge.component";
+import {ListBadgesComponent} from "./list-badges/list-badges.component";
+import {ZoneControleComponent} from "./zone-controle/zone-controle.component";
+import {ElementControleComponent} from "./element-controle/element-controle.component";
+import {ListZonesComponent} from "./list-zones/list-zones.component";
+import {ListElementsComponent} from "./list-elements/list-elements.component";
+import {GestionBadgeComponent} from "./gestion-badge/gestion-badge.component";
+import {PermisFeuComponent} from "./permis-feu/permis-feu.component";
 
 const routes: Routes = [
 
@@ -96,6 +104,14 @@ const routes: Routes = [
             { path: 'clients', canActivate: [AuthGuard], component: MoralEntitiesComponent},
             { path: 'newUser', canActivate: [AuthGuard], component: UserComponent},
             { path: 'users', canActivate: [AuthGuard], component: ListUsersComponent},
+            { path: 'newBadge', canActivate: [AuthGuard], component: BadgeComponent},
+            { path: 'badges', canActivate: [AuthGuard], component: ListBadgesComponent},
+            { path: 'gestionBadge', canActivate: [AuthGuard], component: GestionBadgeComponent},
+            { path: 'newZone', canActivate: [AuthGuard], component: ZoneControleComponent},
+            { path: 'zones', canActivate: [AuthGuard], component: ListZonesComponent},
+            { path: 'newElement', canActivate: [AuthGuard], component: ElementControleComponent},
+            { path: 'elements', canActivate: [AuthGuard], component: ListElementsComponent},
+            { path: 'permisFeu', canActivate: [AuthGuard], component: PermisFeuComponent},
         ]
     },
 

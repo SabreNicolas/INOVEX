@@ -10,6 +10,7 @@ export class AdminGlobalComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    window.parent.document.title = 'INOVEX - Admin';
   }
 
 }

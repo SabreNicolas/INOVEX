@@ -22,6 +22,7 @@ export class ListQseComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    window.parent.document.title = 'INOVEX - QSE';
     this.productsService.getQse().subscribe((response)=>{
       // @ts-ignore
       this.listQse = response.data;
