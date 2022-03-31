@@ -20,6 +20,14 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <button style="margin-left: 0.5em" class="btn btn-outline-success" (click)="setYear()">Année en cours</button>
+                        <button style="margin-left: 0.5em" class="btn btn-outline-success" (click)="setLastYear()">Année précédente</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </form>
     <!--table de saisie-->
@@ -28,7 +36,7 @@
             <thead>
                 <tr class="table-secondary">
                     <th scope="col"><button class="btn btn-success" (click)="validation()">Valider les valeurs</button></th>
-                    <th scope="col">{{listDays}}</th>
+                    <th scope="col" *ngFor="let day of listDays">{{day}}</th>
                 </tr>
             </thead>
             <tbody>
@@ -36,10 +44,10 @@
                     <td class="fix">
                         <strong>{{qse.Name}}</strong>
                     </td>
-                    <td *ngIf="listDays">
+                    <td *ngFor="let day of listDays">
                         <div class="flex">
-                            <input type="text" id="{{qse.Code}}-{{listDays}}" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                            <button class="btn btn-light" id="delete-{{qse.Code}}-{{listDays}}"  (click)="delete(qse.Id,listDays,qse.Code)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                            <input type="text" id="{{qse.Code}}-{{day}}" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                            <button class="btn btn-light" id="delete-{{qse.Code}}-{{day}}"  (click)="delete(qse.Id,day,qse.Code)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
                         </div>
                     </td>
                 </tr>
