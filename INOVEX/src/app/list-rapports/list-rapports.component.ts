@@ -10,6 +10,7 @@ export class ListRapportsComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    window.parent.document.title = 'INOVEX - Rapports';
   }
 
   download(url : string){

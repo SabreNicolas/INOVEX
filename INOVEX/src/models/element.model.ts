@@ -10,4 +10,5 @@ export interface element{
     unit : string;
     defaultValue : number;
     isRegulateur : number;
+    listValues : string;
 }

@@ -33,6 +33,7 @@ export class AcceuilComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    window.parent.document.title = 'INOVEX';
     var userLogged = localStorage.getItem('user');
     if (typeof userLogged === "string") {
       var userLoggedParse = JSON.parse(userLogged);
