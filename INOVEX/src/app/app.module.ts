@@ -46,6 +46,9 @@ import { ElementControleComponent } from './element-controle/element-controle.co
 import { ListZonesComponent } from './list-zones/list-zones.component';
 import { ListElementsComponent } from './list-elements/list-elements.component';
 import { PermisFeuComponent } from './permis-feu/permis-feu.component';
+import { ReportingRondeComponent } from './reporting-ronde/reporting-ronde.component';
+import { ModeOperatoireComponent } from './mode-operatoire/mode-operatoire.component';
+import { ListModeOperatoireComponent } from './list-mode-operatoire/list-mode-operatoire.component';
 
 @NgModule({
   declarations: [
@@ -82,7 +85,10 @@ import { PermisFeuComponent } from './permis-feu/permis-feu.component';
     ElementControleComponent,
     ListZonesComponent,
     ListElementsComponent,
-    PermisFeuComponent
+    PermisFeuComponent,
+    ReportingRondeComponent,
+    ModeOperatoireComponent,
+    ListModeOperatoireComponent
   ],
   imports: [
     BrowserModule,

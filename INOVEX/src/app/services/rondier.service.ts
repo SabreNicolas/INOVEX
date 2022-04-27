@@ -6,6 +6,9 @@ import {badgeAffect} from "../../models/badgeAffect.model";
 import {user} from "../../models/user.model";
 import {element} from "../../models/element.model";
 import {permisFeu} from "../../models/permisFeu.model";
+import {modeOP} from "../../models/modeOP.models";
+import {ronde} from "../../models/ronde.models";
+import {mesureRonde} from "../../models/mesureRonde.model";
 
 @Injectable()
 export class rondierService {
@@ -242,8 +245,8 @@ export class rondierService {
 
     //création du permis de feu
     //?dateHeureDeb=dggd&dateHeureFin=fff&badgeId=1
-    createPermisFeu(dateHeureDeb: string | null, dateHeureFin: string | null, badgeId: number){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/PermisFeu?dateHeureDeb="+dateHeureDeb+"&dateHeureFin="+dateHeureFin+"&badgeId="+badgeId;
+    createPermisFeu(dateHeureDeb: string | null, dateHeureFin: string | null, badgeId: number, zone : string, isPermisFeu : boolean){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/PermisFeu?dateHeureDeb="+dateHeureDeb+"&dateHeureFin="+dateHeureFin+"&badgeId="+badgeId+"&zone="+zone+"&isPermisFeu="+isPermisFeu;
         //console.log(requete);
 
         const requestOptions = {
@@ -271,6 +274,90 @@ export class rondierService {
 
     /*
     FIN PERMIS DE FEU
+     */
+
+    /*
+    MODE OP
+     */
+    //création du mode OP
+    //?nom=dggd&fichier=fff&zoneId=1
+    createModeOP(nom: string, fichier: File | null, zoneId: number){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/modeOP?nom="+nom+"&fichier="+fichier+"&zoneId="+zoneId;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<any>(requete,requestOptions);
+    }
+
+    //liste des modeOP
+    listModeOP(){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/modeOPs";
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<modeOP[]>(requete,requestOptions);
+    }
+
+    //delete modeOP
+    deleteModeOP(id : number){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/modeOP/"+id;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .delete<any>(requete,requestOptions);
+    }
+
+
+    /*
+    FIN MODE OP
+     */
+
+
+    /*
+    RONDE
+     */
+
+    //liste des modeOP
+    listRonde(date : string){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/Rondes?date="+date;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<ronde[]>(requete,requestOptions);
+    }
+
+    //Reporting d'une ronde
+    reportingRonde(idRonde : number){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/reportingRonde/"+idRonde;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<mesureRonde[]>(requete,requestOptions);
+    }
+
+
+    /*
+    FIN RONDE
      */
 
 

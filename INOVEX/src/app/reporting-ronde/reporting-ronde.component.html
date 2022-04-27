@@ -1,0 +1,78 @@
+<div>
+    <div>
+        <!--date-->
+        <form #f="ngForm">
+            <div class="form-group">
+                <h5><label>Jour :</label></h5>
+                <div class="row">
+                    <div class="col-lg-3">
+                        <input type="date" id="dateDeb" class="form-control" placeholder="Date de début" name="dateDeb" ngModel>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <button class="btn btn-primary" type="submit" (click)="setPeriod(f)"><img src="assets/refresh.png"></button>
+                            <button style="margin-left: 0.5em" class="btn btn-warning" (click)="setYesterday(f)">Hier</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!--table des rondes-->
+    <div class="table-style">
+        <table class="table table-hover tableFixed">
+            <thead>
+            <tr class="table-secondary">
+                <th scope="col">Date et Heure de Début</th>
+                <th scope="col">Quart</th>
+                <th scope="col">Commentaire</th>
+                <th scope="col">Image</th>
+                <th style="text-align: center" scope="col">Terminé ?</th>
+                <th scope="col">Auteur de la ronde</th>
+            </tr>
+            </thead>
+            <tbody *ngFor="let r of listRonde">
+            <tr class="table-light" [ngSwitch]="r.quart" (click)="getReporting(r.Id)">
+                <td>{{r.dateHeure}}</td>
+                <td *ngSwitchCase=1>Matin</td>
+                <td *ngSwitchCase=2>Après-midi</td>
+                <td *ngSwitchCase=3>Nuit</td>
+                <td>{{r.commentaire}}</td>
+                <td>{{r.image}}</td>
+                <td style="text-align: center" *ngIf="r.isFinished"><i style="color: green" class="fa fa-check" aria-hidden="true"></i></td>
+                <td style="text-align: center" *ngIf="!r.isFinished"><i style="color: red" class="fa fa-times" aria-hidden="true"></i></td>
+                <td>{{r.Prenom}} {{r.Nom}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+
+
+<div *ngIf="listReporting.length > 0">
+    <!--table du reporting de la ronde-->
+    <div class="table-style">
+        <table class="table table-hover tableFixed">
+            <thead>
+            <tr class="table-secondary">
+                <th scope="col">Zone de contrôle</th>
+                <th scope="col">Element de contrôle</th>
+                <th scope="col">Valeur</th>
+                <th scope="col">Mode Régulateur</th>
+            </tr>
+            </thead>
+            <tbody *ngFor="let r of listReporting">
+            <tr class="table-light">
+                <td>{{r.nomZone}}</td>
+                <td>{{r.nom}}</td>
+                <td>{{r.value}}</td>
+                <td>{{r.modeRegulateur}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>

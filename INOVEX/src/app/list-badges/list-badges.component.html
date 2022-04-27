@@ -1,36 +1,74 @@
 <!--ATTENTION-->
 <!--Mauvaise pratique de mettre le style directement dans les balises HTML-->
 <!--A faire le moins possible-->
-<div *ngIf="listPermisFeu" style="width: 33%; margin-top: 1%">
-
-    <div style="display: inline-flex; width: 100%">
-        <div style="width: 87%">
-            <h5>Permis de feu en cours :</h5>
+<div *ngIf="listPermisFeu" style="display: flex; justify-content: space-around; margin-top: 1%;">
+    <!--PERMIS DE FEU-->
+     <div>
+         <div style="display: inline-flex; width: 100%">
+             <div style="width: 87%">
+                 <h5>Permis de feu en cours :</h5>
+             </div>
+             <button class="btn btn btn-outline-warning" routerLink="../permisFeu" [queryParams]="{ isPermisFeu: 'true'}">
+                 +<i class="fa fa-fire-extinguisher" aria-hidden="true"></i>
+             </button>
+         </div>
+         <!--table des permis de feu-->
+        <div class="table-style">
+            <table class="table table-primary">
+                <thead>
+                <tr>
+                    <th scope="col">Numéro de badge</th>
+                    <th scope="col">Début</th>
+                    <th scope="col">Fin</th>
+                    <th scope="col">Zone</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let permis of listPermisFeu">
+                    <td *ngIf="permis.isPermisFeu" class="fix">{{permis.badgeId}}</td>
+                    <td *ngIf="permis.isPermisFeu" class="fix">{{permis.dateHeureDeb}}</td>
+                    <td *ngIf="permis.isPermisFeu" class="fix">{{permis.dateHeureFin}}</td>
+                    <td *ngIf="permis.isPermisFeu" class="fix">{{permis.zone}}</td>
+                </tr>
+                </tbody>
+            </table>
         </div>
-        <button class="btn btn btn-outline-warning" routerLink="../permisFeu">
-            +<i class="fa fa-fire-extinguisher" aria-hidden="true"></i>
-        </button>
     </div>
-    <!--table des permis de feu-->
-    <div class="table-style">
-        <table class="table table-primary">
-            <thead>
-            <tr>
-                <th scope="col">Début</th>
-                <th scope="col">Fin</th>
-                <th scope="col">Numéro de badge</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let permis of listPermisFeu">
-                <td class="fix">{{permis.dateHeureDeb}}</td>
-                <td class="fix">{{permis.dateHeureFin}}</td>
-                <td class="fix">{{permis.badgeId}}</td>
-            </tr>
-            </tbody>
-        </table>
+
+    <!--ZONE DE CONSIGNATION-->
+    <div>
+        <div style="display: inline-flex; width: 100%">
+            <div style="width: 87%">
+                <h5>Zones de consignation en cours :</h5>
+            </div>
+            <button class="btn btn btn-outline-warning" routerLink="../permisFeu" [queryParams]="{ isPermisFeu: 'false'}">
+                +<i class="fa fa-ban" aria-hidden="true"></i>
+            </button>
+        </div>
+        <!--table des zones de consignation-->
+        <div class="table-style">
+            <table class="table table-primary">
+                <thead>
+                <tr>
+                    <th scope="col">Numéro de badge</th>
+                    <th scope="col">Début</th>
+                    <th scope="col">Fin</th>
+                    <th scope="col">Zone</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let permis of listPermisFeu">
+                    <td *ngIf="!permis.isPermisFeu" class="fix">{{permis.badgeId}}</td>
+                    <td *ngIf="!permis.isPermisFeu" class="fix">{{permis.dateHeureDeb}}</td>
+                    <td *ngIf="!permis.isPermisFeu" class="fix">{{permis.dateHeureFin}}</td>
+                    <td *ngIf="!permis.isPermisFeu" class="fix">{{permis.zone}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
+
 
 <div *ngIf="listBadgeLibre || listBadgeUser || listBadgeZone">
 
