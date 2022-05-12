@@ -116,11 +116,26 @@ export class ListEntreeComponent implements OnInit {
     this.getTotaux();
   }
 
-  //récupérer les tonnages en BDD
-  getValues(){
-    this.listDays.forEach(date => {
-      this.moralEntities.forEach(mr => {
+  //Fonction pour attendre
+  wait(ms : number) {
+    return new Promise(resolve => {
+      setTimeout(resolve, ms);
+    });
+  }
+
+
+  async getValues(){
+    let i = 0;
+    for (const date of this.listDays){
+      for (const mr of this.moralEntities){
+        i++;
+        //temporisation toutes les 400 req pour libérer de l'espace
+        if(i >= 400){
+          i=0;
+          await this.wait(500);
+        }
         this.moralEntitiesService.getEntry(date.substr(6, 4) + '-' + date.substr(3, 2) + '-' + date.substr(0, 2), mr.productId, mr.Id).subscribe((response) => {
+          //i++;
           if (response.data[0] != undefined && response.data[0].Value != 0) {
             (<HTMLInputElement>document.getElementById(mr.Id + '-' + mr.productId + '-' + date)).value = response.data[0].Value;
             (<HTMLInputElement>document.getElementById('export-'+mr.Id + '-' + mr.productId + '-' + date)).innerHTML = response.data[0].Value;
@@ -129,9 +144,9 @@ export class ListEntreeComponent implements OnInit {
             (<HTMLInputElement>document.getElementById(mr.Id + '-' + mr.productId + '-' + date)).value = '';
           }
         });
-      });
+      }
       this.getTotaux();
-    });
+    }
   }
 
   //récpérer les totaux
