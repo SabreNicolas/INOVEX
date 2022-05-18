@@ -231,11 +231,28 @@ export class rondierService {
         return this.http
             .get<element[]>(requete,requestOptions);
     }
-
+    /*
+    FIN ELEMENT DE CONTROLE
+     */
 
 
     /*
-    FIN ELEMENT DE CONTROLE
+    MESURE RONDIER
+     */
+    //Update value element de controle sur une ronde
+    updateMesureRondier(id: number, value: string | null){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/updateMesureRonde?id="+id+"&value="+value;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<any>(requete,requestOptions);
+    }
+    /*
+    FIN MESURE RONDIER
      */
 
 
@@ -353,6 +370,32 @@ export class rondierService {
 
         return this.http
             .get<mesureRonde[]>(requete,requestOptions);
+    }
+
+    //Cloture de la ronde
+    closeRonde(id : number){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/closeRondeEnCours?id="+id;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<any>(requete,requestOptions);
+    }
+
+    //delete ronde
+    deleteRonde(id : number){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/deleteRonde?id="+id;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .delete<any>(requete,requestOptions);
     }
 
 

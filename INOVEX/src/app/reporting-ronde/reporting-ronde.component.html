@@ -30,6 +30,7 @@
                 <th scope="col">Image</th>
                 <th style="text-align: center" scope="col">Terminé ?</th>
                 <th scope="col">Auteur de la ronde</th>
+                <th></th>
             </tr>
             </thead>
             <tbody *ngFor="let r of listRonde">
@@ -41,8 +42,17 @@
                 <td>{{r.commentaire}}</td>
                 <td>{{r.image}}</td>
                 <td style="text-align: center" *ngIf="r.isFinished"><i style="color: green" class="fa fa-check" aria-hidden="true"></i></td>
-                <td style="text-align: center" *ngIf="!r.isFinished"><i style="color: red" class="fa fa-times" aria-hidden="true"></i></td>
+                <td style="text-align: center" *ngIf="!r.isFinished">
+                    <button id="closeRonde" (click)="clotureRonde(r.Id)" class="btn btn btn-outline-danger">
+                        <i style="color: red" class="fa fa-times" aria-hidden="true"></i>
+                    </button>
+                </td>
                 <td>{{r.Prenom}} {{r.Nom}}</td>
+                <td>
+                    <button class="btn btn-light" (click)="deleteRonde(r.Id)">
+                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                    </button>
+                </td>
             </tr>
             </tbody>
         </table>
@@ -62,14 +72,20 @@
                 <th scope="col">Element de contrôle</th>
                 <th scope="col">Valeur</th>
                 <th scope="col">Mode Régulateur</th>
+                <th></th>
             </tr>
             </thead>
             <tbody *ngFor="let r of listReporting">
-            <tr class="table-light">
-                <td><strong>{{r.nomZone}}</strong></td>
+            <tr class="table-light" [ngStyle]="{'color': (r.value=='') ? 'red' : 'green'}">
+                <td style="color: #044daa"><strong>{{r.nomZone}}</strong></td>
                 <td><strong>{{r.nom}}</strong></td>
                 <td>{{r.value}}</td>
-                <td>{{r.modeRegulateur}}</td>
+                <td>{{ r.modeRegulateur == 'undefined' ? '/' : r.modeRegulateur }}</td>
+                <td>
+                    <button class="btn btn-light" (click)="updateValueElement(r)">
+                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    </button>
+                </td>
             </tr>
             </tbody>
         </table>

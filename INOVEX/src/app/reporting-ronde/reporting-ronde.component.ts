@@ -28,6 +28,7 @@ export class ReportingRondeComponent implements OnInit {
       // @ts-ignore
       this.listRonde = response.data;
     });
+    this.listReporting = [];
   }
 
   setPeriod(form: NgForm) {
@@ -63,5 +64,35 @@ export class ReportingRondeComponent implements OnInit {
       this.listReporting = response.data;
     });
   }
+
+  deleteRonde(id : number){
+    this.rondierService.deleteRonde(id).subscribe((response)=>{
+      if (response == "Suppression de la ronde OK"){
+        Swal.fire("La ronde a bien été supprimé !");
+        this.ngOnInit();
+      }
+    });
+  }
+
+  clotureRonde(id : number){
+    this.rondierService.closeRonde(id).subscribe((response)=>{
+      if (response == "Cloture de la ronde OK"){
+        Swal.fire("La ronde a bien été cloturé !");
+        this.ngOnInit();
+      }
+    });
+  }
+
+  updateValueElement(r : mesureRonde){
+    var value = prompt('Veuillez saisir une valeur',r.value);
+    this.rondierService.updateMesureRondier(r.Id,value).subscribe((response)=>{
+      if (response == "Mise à jour de la valeur OK"){
+        Swal.fire("La valeur a bien été mis à jour !");
+        this.ngOnInit();
+        this.getReporting(r.rondeId);
+      }
+    });
+  }
+
 
 }

@@ -24,6 +24,7 @@ export class ElementControleComponent implements OnInit {
   private isRegulateur : number;//1 pour oui et 0 pour non
   private listValues : string;
   public needListValues : boolean;
+  public needBornes : boolean;
 
   constructor(private rondierService : rondierService) {
     this.listZone = [];
@@ -38,6 +39,7 @@ export class ElementControleComponent implements OnInit {
     this.defaultValue = 0;
     this.isRegulateur = 0;
     this.needListValues = false;
+    this.needBornes = false;
     this.listValues = "";
   }
 
@@ -52,22 +54,24 @@ export class ElementControleComponent implements OnInit {
   changeType(form : NgForm){
     this.typeChamp = form.value['champ'];
     // @ts-ignore
+    //si menu de sléection ou case à cocher on affiche le champ de list valeurs possibles
     if(this.typeChamp === "3" || this.typeChamp === "4"){
       this.needListValues = true;
     }
     else this.needListValues = false;
+
+    // @ts-ignore
+    //si menu de cursur on affiche les valeurs min et max
+    if(this.typeChamp === "1"){
+      this.needBornes = true;
+    }
+    else this.needBornes = false;
   }
 
   //Création éléments contrôle
   onSubmit(form : NgForm) {
     this.nom = form.value['nom'];
     this.zoneId = form.value['zone'];
-    if(form.value['valeurMin'].length > 0){
-      this.valeurMin = (form.value['valeurMin'].replace(',','.'));
-    }
-    if(form.value['valeurMax'].length > 0){
-      this.valeurMax = (form.value['valeurMax'].replace(',','.'));
-    }
     if(form.value['unit'].length > 0){
       this.unit = form.value['unit'];
     }
@@ -76,6 +80,14 @@ export class ElementControleComponent implements OnInit {
     }
     if(this.needListValues){
       this.listValues = form.value['listValues'];
+    }
+    if(this.needBornes){
+      if(form.value['valeurMin'].length > 0){
+        this.valeurMin = (form.value['valeurMin'].replace(',','.'));
+      }
+      if(form.value['valeurMax'].length > 0){
+        this.valeurMax = (form.value['valeurMax'].replace(',','.'));
+      }
     }
     //Gestion des boolean
     var four = document.getElementsByName('four');
