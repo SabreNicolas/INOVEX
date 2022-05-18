@@ -13,7 +13,7 @@ export class ElementControleComponent implements OnInit {
 
   public listZone : zone[];
   private nom : string;
-  private zoneId : number;
+  private zoneId : number[];
   private valeurMin : number;
   private valeurMax : number;
   private typeChamp : number;
@@ -29,7 +29,7 @@ export class ElementControleComponent implements OnInit {
   constructor(private rondierService : rondierService) {
     this.listZone = [];
     this.nom = "";
-    this.zoneId = 0;
+    this.zoneId = [];
     this.valeurMin = 0;
     this.valeurMax = 0;
     this.typeChamp = 2;
@@ -102,16 +102,18 @@ export class ElementControleComponent implements OnInit {
       this.isRegulateur = 1;
     }
 
-    this.rondierService.createElement(this.zoneId, this.nom, this.valeurMin, this.valeurMax, this.typeChamp, this.isFour, this.isGlobal, this.unit, this.defaultValue, this.isRegulateur,this.listValues).subscribe((response)=>{
-      if (response == "Création de l'élément OK"){
-        Swal.fire("L'élément de contrôle a bien été créé !");
-      }
-      else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Erreur lors de la création de l\'élément de contrôle ....',
-        })
-      }
+    this.zoneId.forEach(zoneId =>{
+        this.rondierService.createElement(zoneId, this.nom, this.valeurMin, this.valeurMax, this.typeChamp, this.isFour, this.isGlobal, this.unit, this.defaultValue, this.isRegulateur,this.listValues).subscribe((response)=>{
+          if (response == "Création de l'élément OK"){
+            Swal.fire("L'élément de contrôle a bien été créé !");
+          }
+          else {
+            Swal.fire({
+              icon: 'error',
+              text: 'Erreur lors de la création de l\'élément de contrôle ....',
+            })
+          }
+        });
     });
 
     this.resetFields(form);
@@ -128,6 +130,8 @@ export class ElementControleComponent implements OnInit {
     (<HTMLInputElement>four[0]).checked = false;
     (<HTMLInputElement>regulateur[0]).checked = false;
   }
+
+
 
 
 }
