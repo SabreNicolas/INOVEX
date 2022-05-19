@@ -30,6 +30,8 @@
                 <th scope="col">Image</th>
                 <th style="text-align: center" scope="col">Terminé ?</th>
                 <th scope="col">Auteur de la ronde</th>
+                <th scope="col">Four 1 en Fonctionnement ?</th>
+                <th scope="col">Four 2 en Fonctionnement ?</th>
                 <th></th>
             </tr>
             </thead>
@@ -48,6 +50,10 @@
                     </button>
                 </td>
                 <td>{{r.Prenom}} {{r.Nom}}</td>
+                <td style="text-align: center" *ngIf="r.fonctFour1 === 1"><i style="color: green" class="fa fa-check" aria-hidden="true"></i></td>
+                <td style="text-align: center" *ngIf="r.fonctFour1 === 0"><i style="color: red" class="fa fa-times" aria-hidden="true"></i></td>
+                <td style="text-align: center" *ngIf="r.fonctFour2 === 1"><i style="color: green" class="fa fa-check" aria-hidden="true"></i></td>
+                <td style="text-align: center" *ngIf="r.fonctFour2 === 0"><i style="color: red" class="fa fa-times" aria-hidden="true"></i></td>
                 <td>
                     <button class="btn btn-light" (click)="deleteRonde(r.Id)">
                         <i class="fa fa-trash-o" aria-hidden="true"></i>

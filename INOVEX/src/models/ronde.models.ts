@@ -7,4 +7,6 @@ export interface ronde{
     isFinished : boolean;
     Nom : string;
     Prenom : string;
+    fonctFour1 : number;
+    fonctFour2 : number;
 }

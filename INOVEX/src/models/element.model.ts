@@ -5,8 +5,6 @@ export interface element{
     valeurMin : number;
     valeurMax : number;
     typeChamp : number;
-    isFour : number;
-    isGlobal : number;
     unit : string;
     defaultValue : number;
     isRegulateur : number;

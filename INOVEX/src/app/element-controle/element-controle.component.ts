@@ -17,8 +17,6 @@ export class ElementControleComponent implements OnInit {
   private valeurMin : number;
   private valeurMax : number;
   private typeChamp : number;
-  private isFour : number; //1 pour oui et 0 pour non
-  private isGlobal : number;//1 pour oui et 0 pour non
   private unit : string;
   private defaultValue : number;
   private isRegulateur : number;//1 pour oui et 0 pour non
@@ -33,8 +31,6 @@ export class ElementControleComponent implements OnInit {
     this.valeurMin = 0;
     this.valeurMax = 0;
     this.typeChamp = 2;
-    this.isFour = 0;
-    this.isGlobal = 0;
     this.unit = "_";
     this.defaultValue = 0;
     this.isRegulateur = 0;
@@ -90,20 +86,13 @@ export class ElementControleComponent implements OnInit {
       }
     }
     //Gestion des boolean
-    var four = document.getElementsByName('four');
     var regulateur = document.getElementsByName('regulateur');
-
-    if ((<HTMLInputElement>four[0]).checked) {
-      this.isFour = 1;
-    }
-    else this.isGlobal = 1;
-
     if ((<HTMLInputElement>regulateur[0]).checked) {
       this.isRegulateur = 1;
     }
 
     this.zoneId.forEach(zoneId =>{
-        this.rondierService.createElement(zoneId, this.nom, this.valeurMin, this.valeurMax, this.typeChamp, this.isFour, this.isGlobal, this.unit, this.defaultValue, this.isRegulateur,this.listValues).subscribe((response)=>{
+        this.rondierService.createElement(zoneId, this.nom, this.valeurMin, this.valeurMax, this.typeChamp, this.unit, this.defaultValue, this.isRegulateur,this.listValues).subscribe((response)=>{
           if (response == "Création de l'élément OK"){
             Swal.fire("L'élément de contrôle a bien été créé !");
           }
@@ -122,8 +111,6 @@ export class ElementControleComponent implements OnInit {
   //TODO : reset le formulaire après saisie => pb si reset et pas de saisie alors erreur (si saisie OK)
   resetFields(form: NgForm){
     this.isRegulateur = 0;
-    this.isFour = 0;
-    this.isGlobal = 0;
     //form.reset();
     var four = document.getElementsByName('four');
     var regulateur = document.getElementsByName('regulateur');
