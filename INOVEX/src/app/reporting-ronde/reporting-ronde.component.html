@@ -42,7 +42,7 @@
                 <td *ngSwitchCase=2>Après-midi</td>
                 <td *ngSwitchCase=3>Nuit</td>
                 <td>{{r.commentaire}}</td>
-                <td>{{r.image}}</td>
+                <td (click)="downloadImage(r)">{{r.image}}</td>
                 <td style="text-align: center" *ngIf="r.isFinished"><i style="color: green" class="fa fa-check" aria-hidden="true"></i></td>
                 <td style="text-align: center" *ngIf="!r.isFinished">
                     <button id="closeRonde" (click)="clotureRonde(r.Id)" class="btn btn btn-outline-danger">

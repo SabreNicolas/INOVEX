@@ -4,6 +4,7 @@ import {ronde} from "../../models/ronde.models";
 import {NgForm} from "@angular/forms";
 import Swal from "sweetalert2";
 import {mesureRonde} from "../../models/mesureRonde.model";
+import {saveAs} from "file-saver";
 
 @Component({
   selector: 'app-reporting-ronde',
@@ -35,6 +36,8 @@ export class ReportingRondeComponent implements OnInit {
     this.rondierService.listRonde(this.dateDeb).subscribe((response)=>{
       // @ts-ignore
       this.listRonde = response.data;
+      // @ts-ignore
+      console.log(response.data);
     });
     this.listReporting = [];
   }
@@ -100,6 +103,29 @@ export class ReportingRondeComponent implements OnInit {
         this.getReporting(r.rondeId);
       }
     });
+  }
+
+  downloadImage(blobImage : ronde){
+    console.log(blobImage.image);
+    let json = blobImage.image;
+    // @ts-ignore
+    let data = json.data;
+    console.log("data : "+data);
+    // @ts-ignore
+    let test = new Blob([new Uint8Array(json.data)], { type: 'image/jpg' });
+    console.log(json);
+    var reader = new FileReader();
+    reader.addEventListener("loadend", function() {
+      // reader.result contient le contenu du
+      // blob sous la forme d'un tableau typé
+      console.log(reader.result);
+    });
+    var testBuffer = reader.readAsArrayBuffer(test);
+    // @ts-ignore
+    var url= window.URL.createObjectURL(test);
+    window.open(url);
+
+
   }
 
 
