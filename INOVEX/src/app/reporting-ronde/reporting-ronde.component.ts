@@ -18,7 +18,15 @@ export class ReportingRondeComponent implements OnInit {
 
   constructor(private rondierService : rondierService) {
     this.listRonde = [];
-    this.dateDeb = "";
+    //mettre hier comme date par défaut
+    var dt = new Date();
+    dt.setDate(dt.getDate());
+    var dd = String(dt.getDate() - 1).padStart(2, '0');
+    var mm = String(dt.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = dt.getFullYear();
+    var day = dd + '/' + mm + '/' + yyyy;
+    this.dateDeb = day;
+    //fin gestion date défaut
     this.listReporting = [];
   }
 
