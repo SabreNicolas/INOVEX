@@ -14,10 +14,11 @@
          </div>
          <!--table des permis de feu-->
         <div class="table-style">
-            <table class="table table-primary">
+            <table class="table table-primary table-bordered">
                 <thead>
                 <tr>
                     <th scope="col">Numéro de badge</th>
+                    <th scope="col">Numéro de Permis de Feu</th>
                     <th scope="col">Début</th>
                     <th scope="col">Fin</th>
                     <th scope="col">Zone</th>
@@ -26,6 +27,7 @@
                 <tbody>
                 <tr *ngFor="let permis of listPermisFeu">
                     <td *ngIf="permis.isPermisFeu" class="fix">{{permis.badgeId}}</td>
+                    <td *ngIf="permis.isPermisFeu" class="fix">{{permis.numero}}</td>
                     <td *ngIf="permis.isPermisFeu" class="fix">{{permis.dateHeureDeb}}</td>
                     <td *ngIf="permis.isPermisFeu" class="fix">{{permis.dateHeureFin}}</td>
                     <td *ngIf="permis.isPermisFeu" class="fix">{{permis.zone}}</td>
@@ -47,7 +49,7 @@
         </div>
         <!--table des zones de consignation-->
         <div class="table-style">
-            <table class="table table-primary">
+            <table class="table table-primary table-bordered">
                 <thead>
                 <tr>
                     <th scope="col">Numéro de badge</th>

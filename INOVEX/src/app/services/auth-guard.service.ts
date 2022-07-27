@@ -39,6 +39,13 @@ export class AuthGuard implements CanActivate {
                     }
                     else this.router.navigate(['/']);
                 }
+                //test pour rondier
+                else if (this.location.path() === '/reporting') {
+                    if (userLoggedParse['isRondier'] === 1){
+                        return true;
+                    }
+                    else this.router.navigate(['/']);
+                }
                 //test pour rapports
                 else if (this.location.path() === '/rapports') {
                     if (userLoggedParse['isRapport'] === 1){

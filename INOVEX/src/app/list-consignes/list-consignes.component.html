@@ -1,0 +1,28 @@
+<div *ngIf="listConsignes">
+
+
+    <div class="table-style">
+        <!--table des consignes-->
+        <table class="table table-hover tableFixed">
+            <thead>
+            <tr class="table-secondary">
+                <th scope="col">Consigne</th>
+                <th scope="col">Date de Fin de validité</th>
+                <th scope="col">Type</th>
+                <th scope="col">#</th>
+            </tr>
+            </thead>
+            <tbody *ngFor="let consigne of listConsignes">
+            <tr class="table-light" [ngSwitch]="consigne.type">
+                <td>{{consigne.commentaire}}</td>
+                <td>{{consigne.dateHeureFin}}</td>
+                <td *ngSwitchCase=1 style="color: blue">Jour</td>
+                <td *ngSwitchCase=2 style="color: orange">Sécurité</td>
+                <td><button (click)="deleteConsigne(consigne.id)" id="deleteConsigne" class="btn btn-light">
+                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                </button></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

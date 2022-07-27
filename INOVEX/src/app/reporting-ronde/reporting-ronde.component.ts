@@ -4,7 +4,10 @@ import {ronde} from "../../models/ronde.models";
 import {NgForm} from "@angular/forms";
 import Swal from "sweetalert2";
 import {mesureRonde} from "../../models/mesureRonde.model";
-import {saveAs} from "file-saver";
+import {anomalie} from "../../models/anomalie.model";
+import {elementsOfZone} from "../../models/elementsOfZone.model";
+import {permisFeuValidation} from "../../models/permisfeu-validation.model";
+import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-reporting-ronde',
@@ -14,12 +17,17 @@ import {saveAs} from "file-saver";
 export class ReportingRondeComponent implements OnInit {
 
   public listRonde : ronde[];
-  public dateDeb : String;
+  public dateDeb : String | undefined;
   public listReporting : mesureRonde[];
+  public listAnomalie : anomalie[];
+  public listElementsOfZone : elementsOfZone[];
+  public listPermisFeuValidation : permisFeuValidation[];
+  public isAdmin;
+  public test : SafeUrl | undefined;
 
-  constructor(private rondierService : rondierService) {
+  constructor(private rondierService : rondierService, private sanitizer: DomSanitizer) {
     this.listRonde = [];
-    //mettre hier comme date par défaut
+    /*//mettre hier comme date par défaut
     var dt = new Date();
     dt.setDate(dt.getDate());
     var dd = String(dt.getDate() - 1).padStart(2, '0');
@@ -27,19 +35,55 @@ export class ReportingRondeComponent implements OnInit {
     var yyyy = dt.getFullYear();
     var day = dd + '/' + mm + '/' + yyyy;
     this.dateDeb = day;
-    //fin gestion date défaut
+    //fin gestion date défaut*/
     this.listReporting = [];
+    this.listAnomalie = [];
+    this.listElementsOfZone = [];
+    this.listPermisFeuValidation = [];
+    //Récupération de l'utilisateur pour vérifier si il est admin => permettre suppression ronde si admin
+    var userLogged = localStorage.getItem('user');
+    if (typeof userLogged === "string") {
+      var userLoggedParse = JSON.parse(userLogged);
+      // @ts-ignore
+      this.isAdmin = userLoggedParse['isAdmin'];
+    }
   }
 
   ngOnInit(): void {
+    this.listAnomalie = [];
+    this.listReporting = [];
     // @ts-ignore
+    // retourne 3 rondes par jour, 1 pour le matin, 1 pour l'aprem et 1 pour la nuit
     this.rondierService.listRonde(this.dateDeb).subscribe((response)=>{
       // @ts-ignore
       this.listRonde = response.data;
-      // @ts-ignore
-      console.log(response.data);
+      //Récupération des zones et de leurs éléments
+      this.rondierService.listZonesAndElements().subscribe((response)=>{
+        // @ts-ignore
+        this.listElementsOfZone = response.BadgeAndElementsOfZone;
+        this.listRonde.forEach(ronde =>{
+          //Récupération des éléments et leurs valeurs sur la ronde
+          this.rondierService.reportingRonde(ronde.Id).subscribe((response)=>{
+            // @ts-ignore
+            response.data.forEach(reporting =>{
+              this.listReporting.push(reporting);
+            });
+            //Récupération des anomalies sur la ronde
+            this.rondierService.listAnomalies(ronde.Id).subscribe((response)=>{
+              // @ts-ignore
+              response.data.forEach(anomalie =>{
+                this.listAnomalie.push(anomalie);
+              });
+            });
+          });
+        });
+      });
+      //Récupération des validations de permis de feu
+      this.rondierService.listPermisFeuValidation(this.dateDeb).subscribe((response)=>{
+        // @ts-ignore
+        this.listPermisFeuValidation = response.data;
+      });
     });
-    this.listReporting = [];
   }
 
   setPeriod(form: NgForm) {
@@ -69,18 +113,27 @@ export class ReportingRondeComponent implements OnInit {
     this.setPeriod(form);
   }
 
-  getReporting(id : number){
-    this.rondierService.reportingRonde(id).subscribe((response)=>{
-      // @ts-ignore
-      this.listReporting = response.data;
-    });
-  }
-
   deleteRonde(id : number){
-    this.rondierService.deleteRonde(id).subscribe((response)=>{
-      if (response == "Suppression de la ronde OK"){
-        Swal.fire("La ronde a bien été supprimé !");
-        this.ngOnInit();
+    Swal.fire({
+      title: 'Etes vous certain de vouloir supprimer cette ronde ?',
+      showDenyButton: true,
+      showCancelButton: false,
+      confirmButtonText: 'Oui',
+      denyButtonText: 'Non',
+      customClass: {
+        actions: 'my-actions',
+        cancelButton: 'order-1 right-gap',
+        confirmButton: 'order-2',
+        denyButton: 'order-3',
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.rondierService.deleteRonde(id).subscribe((response)=>{
+          if (response == "Suppression de la ronde OK"){
+            Swal.fire("La ronde a bien été supprimé !");
+            this.ngOnInit();
+          }
+        });
       }
     });
   }
@@ -100,32 +153,47 @@ export class ReportingRondeComponent implements OnInit {
       if (response == "Mise à jour de la valeur OK"){
         Swal.fire("La valeur a bien été mis à jour !");
         this.ngOnInit();
-        this.getReporting(r.rondeId);
       }
     });
   }
 
-  downloadImage(blobImage : ronde){
-    console.log(blobImage.image);
-    let json = blobImage.image;
+  /*downloadImage(anomalie : anomalie){
+    // Obtain a blob: URL for the image data.
+    var binary = '';
     // @ts-ignore
-    let data = json.data;
-    console.log("data : "+data);
+    var arrayBufferView = new Uint8Array(anomalie.photo.data);
+    console.log(arrayBufferView);
+    var len =  arrayBufferView.byteLength;
+    for (var i = 0; i < len; i++) {
+      binary += String.fromCharCode(  arrayBufferView[ i ] );
+    }
+    var blob = new Blob( [ arrayBufferView ], { type: "image/jpeg" } );
+    var urlCreator = window.URL || window.webkitURL;
+    var imageUrl = urlCreator.createObjectURL( blob );
+    console.log(blob);
+    console.log(imageUrl);
+    var img = document.getElementById( "image" );
     // @ts-ignore
-    let test = new Blob([new Uint8Array(json.data)], { type: 'image/jpg' });
-    console.log(json);
-    var reader = new FileReader();
-    reader.addEventListener("loadend", function() {
-      // reader.result contient le contenu du
-      // blob sous la forme d'un tableau typé
-      console.log(reader.result);
-    });
-    var testBuffer = reader.readAsArrayBuffer(test);
-    // @ts-ignore
-    var url= window.URL.createObjectURL(test);
-    window.open(url);
+    img.src = imageUrl;
+  }*/
 
-
+  downloadImage(anomalie : anomalie) {
+    var binary = '';
+    // @ts-ignore
+    var arrayBufferView = new Uint8Array(anomalie.photo.data);
+    console.log(arrayBufferView);
+    var len =  arrayBufferView.byteLength;
+    for (var i = 0; i < len; i++) {
+      binary += String.fromCharCode(  arrayBufferView[ i ] );
+    }
+    //console.log(blob);
+    var blob = new Blob( [ arrayBufferView ], { type: "image/jpeg" } );
+    console.log(blob);
+    let objectURL = 'data:image/jpg;base64,' + blob;
+    var urlCreator = window.URL || window.webkitURL;
+    var imageUrl = urlCreator.createObjectURL( blob );
+    console.log(imageUrl);
+    this.test = this.sanitizer.bypassSecurityTrustUrl(imageUrl);
   }
 
 

@@ -14,7 +14,7 @@ import {NgForm} from "@angular/forms";
 export class ListCompteursComponent implements OnInit {
 
   public listCategories : category[];
-  public listCompteurs : product [];
+  public listCompteurs : product[];
   public Code : string;
   public listDays : string[];
 

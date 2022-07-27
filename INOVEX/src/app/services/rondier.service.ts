@@ -9,9 +9,14 @@ import {permisFeu} from "../../models/permisFeu.model";
 import {modeOP} from "../../models/modeOP.models";
 import {ronde} from "../../models/ronde.models";
 import {mesureRonde} from "../../models/mesureRonde.model";
+import {consigne} from "../../models/consigne.model";
+import {anomalie} from "../../models/anomalie.model";
+import {elementsOfZone} from "../../models/elementsOfZone.model";
+import {permisFeuValidation} from "../../models/permisfeu-validation.model";
 
 @Injectable()
 export class rondierService {
+
 
     httpClient: HttpClient;
     private headerDict = {
@@ -206,9 +211,9 @@ export class rondierService {
      */
 
     //création de l'élément de controle
-    //?zoneId=1&nom=ddd&valeurMin=1.4&valeurMax=2.5&typeChamp=1&isFour=0&isGlobal=1&unit=tonnes&defaultValue=1.7&isRegulateur=0&listValues=1;2;3
-    createElement(zoneId : number, nom : string, valeurMin : number, valeurMax : number, typeChamp : number, unit : string, defaultValue : number, isRegulateur : number, listValues : string){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/element?zoneId="+zoneId+"&nom="+nom+"&valeurMin="+valeurMin+"&valeurMax="+valeurMax+"&typeChamp="+typeChamp+"&unit="+unit+"&defaultValue="+defaultValue+"&isRegulateur="+isRegulateur+"&listValues="+listValues;
+    //?zoneId=1&nom=ddd&valeurMin=1.4&valeurMax=2.5&typeChamp=1&isFour=0&isGlobal=1&unit=tonnes&defaultValue=1.7&isRegulateur=0&listValues=1;2;3&isCompteur=1
+    createElement(zoneId : number, nom : string, valeurMin : number, valeurMax : number, typeChamp : number, unit : string, defaultValue : number, isRegulateur : number, listValues : string, isCompteur : number){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/element?zoneId="+zoneId+"&nom="+nom+"&valeurMin="+valeurMin+"&valeurMax="+valeurMax+"&typeChamp="+typeChamp+"&unit="+unit+"&defaultValue="+defaultValue+"&isRegulateur="+isRegulateur+"&listValues="+listValues+"&isCompteur="+isCompteur;
         //console.log(requete);
 
         const requestOptions = {
@@ -218,6 +223,47 @@ export class rondierService {
         return this.http
             .put<any>(requete,requestOptions);
     }
+
+    //update de l'élément de controle ayant comme id
+    //?zoneId=1&nom=ddd&valeurMin=1.4&valeurMax=2.5&typeChamp=1&isFour=0&isGlobal=1&unit=tonnes&defaultValue=1.7&isRegulateur=0&listValues=1;2;3&isCompteur=1
+    updateElement(Id : number, zoneId : number, nom : string, valeurMin : number, valeurMax : number, typeChamp : number, unit : string, defaultValue : number, isRegulateur : number, listValues : string, isCompteur : number){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/updateElement/"+Id+"?zoneId="+zoneId+"&nom="+nom+"&valeurMin="+valeurMin+"&valeurMax="+valeurMax+"&typeChamp="+typeChamp+"&unit="+unit+"&defaultValue="+defaultValue+"&isRegulateur="+isRegulateur+"&listValues="+listValues+"&isCompteur="+isCompteur;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<any>(requete,requestOptions);
+    }
+
+    //delete 1 élément de controle
+    deleteElement(Id : number){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/deleteElement?id="+Id;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .delete<any>(requete,requestOptions);
+    }
+
+    //Récupérer 1 élément
+    getOneElement(Id : number){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/element/"+Id;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<element>(requete,requestOptions);
+    }
+
 
     //liste des elements de controle d'une zone de controle
     listElementofZone(zoneId : number){
@@ -231,6 +277,34 @@ export class rondierService {
         return this.http
             .get<element[]>(requete,requestOptions);
     }
+
+    //liste des elements de controle de type compteur
+    listElementCompteur(){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/elementsCompteur";
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<element[]>(requete,requestOptions);
+    }
+
+
+    //liste des zones et leurs éléments
+    listZonesAndElements(){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/BadgeAndElementsOfZone";
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<elementsOfZone[]>(requete,requestOptions);
+    }
+
     /*
     FIN ELEMENT DE CONTROLE
      */
@@ -251,6 +325,21 @@ export class rondierService {
         return this.http
             .put<any>(requete,requestOptions);
     }
+
+    //Récupérer la valeur pour un élément de contrôle et une date (quart de nuit => dernier de la journée)
+    //?id=111&date=dhdhdh
+    valueElementDay(id: number, date: string){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/valueElementDay?id="+id+"&date="+date;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<any>(requete,requestOptions);
+    }
+
     /*
     FIN MESURE RONDIER
      */
@@ -261,9 +350,9 @@ export class rondierService {
      */
 
     //création du permis de feu
-    //?dateHeureDeb=dggd&dateHeureFin=fff&badgeId=1
-    createPermisFeu(dateHeureDeb: string | null, dateHeureFin: string | null, badgeId: number, zone : string, isPermisFeu : boolean){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/PermisFeu?dateHeureDeb="+dateHeureDeb+"&dateHeureFin="+dateHeureFin+"&badgeId="+badgeId+"&zone="+zone+"&isPermisFeu="+isPermisFeu;
+    //?dateHeureDeb=dggd&dateHeureFin=fff&badgeId=1?numero=ehgeheh
+    createPermisFeu(dateHeureDeb: string | null, dateHeureFin: string | null, badgeId: number, zone : string, isPermisFeu : boolean, numero : string){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/PermisFeu?dateHeureDeb="+dateHeureDeb+"&dateHeureFin="+dateHeureFin+"&badgeId="+badgeId+"&zone="+zone+"&isPermisFeu="+isPermisFeu+"&numero="+numero;
         //console.log(requete);
 
         const requestOptions = {
@@ -287,6 +376,19 @@ export class rondierService {
             .get<permisFeu[]>(requete,requestOptions);
     }
 
+    //liste des validation de permis de feu
+    //?dateHeure=xshhshx
+    listPermisFeuValidation(dateHeure: String | undefined){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/PermisFeuVerification?dateHeure="+dateHeure;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<permisFeuValidation[]>(requete,requestOptions);
+    }
 
 
     /*
@@ -346,7 +448,7 @@ export class rondierService {
     RONDE
      */
 
-    //liste des modeOP
+    //liste des rondes pour une date donnée
     listRonde(date : string){
         let requete = "http://"+this.ip+":"+this.portAPI+"/Rondes?date="+date;
         //console.log(requete);
@@ -416,4 +518,73 @@ export class rondierService {
         return this.http
             .get<user[]>(requete,requestOptions);
     }
+
+    /*
+    CONSIGNES
+     */
+    //création d'une consigne
+    //?commentaire=dggd&dateFin=fff&type=1
+    createConsigne(desc: string, type: number, dateFin: string | null){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/consigne?commentaire="+desc+"&dateFin="+dateFin+"&type="+type;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<any>(requete,requestOptions);
+    }
+
+    //liste des consignes en cours de validité
+    listConsignes(){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/consignes";
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<consigne[]>(requete,requestOptions);
+    }
+
+    //delete consigne
+    deleteConsigne(id : number){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/consigne/"+id;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .delete<any>(requete,requestOptions);
+    }
+
+    /*
+    FIN CONSIGNES
+     */
+
+
+    /*
+    ANOMALIES
+     */
+
+    //liste des anomalies sur une ronde
+    listAnomalies(id : number){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/anomalies/"+id;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<anomalie[]>(requete,requestOptions);
+    }
+
+    /*
+    FIN ANOMALIES
+     */
 }

@@ -9,4 +9,5 @@ export interface element{
     defaultValue : number;
     isRegulateur : number;
     listValues : string;
+    isCompteur : number;
 }

@@ -9,4 +9,6 @@ export interface ronde{
     Prenom : string;
     fonctFour1 : number;
     fonctFour2 : number;
+    nomChef : string;
+    prenomChef : string;
 }

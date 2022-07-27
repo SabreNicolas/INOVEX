@@ -32,12 +32,14 @@
             <thead>
             <tr class="table-secondary">
                 <th scope="col"><button class="btn btn-success"(click)="validation()">Valider les valeurs</button></th>
+                <th scope="col">Unité</th>
                 <th *ngFor="let day of listDays" scope="col">{{day}}</th>
             </tr>
             </thead>
             <tbody>
             <tr class="table-light" *ngFor="let con of listConsos">
                 <td class="fix"><strong>{{con.Name}}</strong></td>
+                <td class="fix">{{con.Unit}}</td>
                 <td *ngFor="let day of listDays">
                     <div class="flex">
                         <input type="text" id="{{con.Id}}-{{day}}" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">

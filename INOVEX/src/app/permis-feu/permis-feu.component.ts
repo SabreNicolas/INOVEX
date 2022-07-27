@@ -20,6 +20,7 @@ export class PermisFeuComponent implements OnInit {
   public badgeId : number;
   public isPermisFeu : boolean = false;
   public zone : string;
+  public numero : string;
 
   constructor(private rondierService : rondierService, private datePipe : DatePipe, private route : ActivatedRoute, private router : Router) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false; //permet de recharger le component au changement de paramètre
@@ -29,6 +30,7 @@ export class PermisFeuComponent implements OnInit {
     this.dateHeureFinFormatBDD = "";
     this.badgeId = 0;
     this.zone = "";
+    this.numero = "";
     this.route.queryParams.subscribe(params => {
       if(params.isPermisFeu.includes('true')){
         this.isPermisFeu = true;
@@ -48,18 +50,19 @@ export class PermisFeuComponent implements OnInit {
   onSubmit(form : NgForm) {
     this.badgeId = form.value['badge'];
     this.zone = form.value['zone'];
+    this.numero = form.value['num'];
     //SI zone de consignation on récupère la date de fin depuis le champ (sinon déjà récupéré
     if(!this.isPermisFeu){
       this.dateHeureFinFormatBDD = this.datePipe.transform(form.value['dateHeureFin'], 'yyyy-MM-dd HH:mm');
     }
-    this.rondierService.createPermisFeu(this.dateHeureDeb,this.dateHeureFinFormatBDD,this.badgeId,this.zone,this.isPermisFeu).subscribe((response)=>{
+    this.rondierService.createPermisFeu(this.dateHeureDeb,this.dateHeureFinFormatBDD,this.badgeId,this.zone,this.isPermisFeu,this.numero).subscribe((response)=>{
       if (response == "Création du permis de feu OK"){
-        Swal.fire("Le permis de feu a bien été créé !");
+        Swal.fire("Le permis de feu/zone de consignation a bien été créé !");
       }
       else {
         Swal.fire({
           icon: 'error',
-          text: 'Erreur lors de la création du permis de feu ....',
+          text: 'Erreur lors de la création du permis de feu/zone de consignation ....',
         })
       }
     });

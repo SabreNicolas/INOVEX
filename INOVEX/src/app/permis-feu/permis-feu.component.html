@@ -19,6 +19,11 @@
                 </div>
             </div>
 
+            <div *ngIf="isPermisFeu" class="form-group">
+                <label for="zone">Numéro de Permis de feu :</label>
+                <input required type="text" id="num" class="form-control" placeholder="Numéro" name="num" ngModel>
+            </div>
+
             <div class="form-group">
                 <label for="zone">Préciser la zone : *</label>
                 <input required type="text" id="zone" class="form-control" placeholder="Zone" name="zone" ngModel>

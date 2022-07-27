@@ -36,6 +36,7 @@
             <thead>
                 <tr class="table-secondary">
                     <th scope="col"><button class="btn btn-success" (click)="validation()">Valider les valeurs</button></th>
+                    <th scope="col">Unité</th>
                     <th scope="col" *ngFor="let day of listDays">{{day}}</th>
                 </tr>
             </thead>
@@ -44,6 +45,7 @@
                     <td class="fix">
                         <strong>{{qse.Name}}</strong>
                     </td>
+                    <td class="fix">{{qse.Unit}}</td>
                     <td *ngFor="let day of listDays">
                         <div class="flex">
                             <input type="text" id="{{qse.Code}}-{{day}}" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
