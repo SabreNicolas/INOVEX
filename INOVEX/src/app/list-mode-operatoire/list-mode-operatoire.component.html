@@ -7,6 +7,7 @@
             <th scope="col">Mode Opératoire</th>
             <th scope="col">Zone</th>
             <th scope="col">#</th>
+            <th scope="col">#</th>
         </tr>
         </thead>
         <tbody *ngFor="let modeOP of listModeOP">
@@ -16,6 +17,8 @@
             <td><button (click)="deleteModeOP(modeOP.Id)" id="deleteMode" class="btn btn-light">
                 <i class="fa fa-trash-o" aria-hidden="true"></i>
             </button></td>
+            <td><button (click)="downloadModeOP(modeOP)" id="DLMode" class="btn btn-primary">
+            Visualiser le Mode Opératoire</button></td>
         </tr>
         </tbody>
     </table>

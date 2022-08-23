@@ -178,22 +178,11 @@ export class ReportingRondeComponent implements OnInit {
   }*/
 
   downloadImage(anomalie : anomalie) {
-    var binary = '';
     // @ts-ignore
-    var arrayBufferView = new Uint8Array(anomalie.photo.data);
-    console.log(arrayBufferView);
-    var len =  arrayBufferView.byteLength;
-    for (var i = 0; i < len; i++) {
-      binary += String.fromCharCode(  arrayBufferView[ i ] );
-    }
-    //console.log(blob);
-    var blob = new Blob( [ arrayBufferView ], { type: "image/jpeg" } );
-    console.log(blob);
-    let objectURL = 'data:image/jpg;base64,' + blob;
-    var urlCreator = window.URL || window.webkitURL;
-    var imageUrl = urlCreator.createObjectURL( blob );
-    console.log(imageUrl);
-    this.test = this.sanitizer.bypassSecurityTrustUrl(imageUrl);
+    var byteArray = new Uint8Array(anomalie.photo.data);
+    var blob = new Blob([byteArray], {type: "image/png"});
+    var fileURL = URL.createObjectURL(blob);
+    window.open(fileURL, '_blank');
   }
 
 

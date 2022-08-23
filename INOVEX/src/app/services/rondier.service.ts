@@ -400,16 +400,25 @@ export class rondierService {
      */
     //création du mode OP
     //?nom=dggd&fichier=fff&zoneId=1
-    createModeOP(nom: string, fichier: File | null, zoneId: number){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/modeOP?nom="+nom+"&fichier="+fichier+"&zoneId="+zoneId;
-        //console.log(requete);
+    createModeOP(nom: string, fichier: File | undefined, zoneId: number){
+        //utilisation de formData pour conserver le format du fichier
+        const formData = new FormData();
+        // @ts-ignore
+        formData.append('fichier', fichier, fichier.name);
+        let requete = "http://"+this.ip+":"+this.portAPI+"/modeOP?nom="+nom+"&zoneId="+zoneId;
+        //console.log(fichier);
+
+        const headers = new HttpHeaders();
+        // @ts-ignore
+        headers.append('Content-Type', null);
+        headers.append('Accept', 'application/json');
 
         const requestOptions = {
-            headers: new HttpHeaders(this.headerDict),
+            headers: headers,
         };
 
         return this.http
-            .put<any>(requete,requestOptions);
+            .post<any>(requete,formData,requestOptions);
     }
 
     //liste des modeOP

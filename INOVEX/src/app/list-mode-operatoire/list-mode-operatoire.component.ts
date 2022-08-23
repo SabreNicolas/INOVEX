@@ -39,4 +39,13 @@ export class ListModeOperatoireComponent implements OnInit {
     this.ngOnInit();
   }
 
+  //Affichage d'un mode opératoire
+  downloadModeOP(modeOp : modeOP){
+    // @ts-ignore
+    var byteArray = new Uint8Array(modeOp.fichier.data);
+    var blob = new Blob([byteArray], {type: "application/pdf"});
+    var fileURL = URL.createObjectURL(blob);
+    window.open(fileURL, '_blank');
+  }
+
 }

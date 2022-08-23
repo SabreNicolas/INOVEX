@@ -12,7 +12,7 @@ import Swal from "sweetalert2";
 export class ModeOperatoireComponent implements OnInit {
 
   public listZone : zone[];
-  fileToUpload: File | null = null;
+  fileToUpload: File | undefined;
   private nom : string;
   private zoneId : number;
 
@@ -48,11 +48,27 @@ export class ModeOperatoireComponent implements OnInit {
     this.resetFields(form);
   }
 
+  /*DEBUT INSERTION FICHIER*/
+
+  //Method déclenché dès que le fichier sélectionné change
   //Stockage du fichier chaque fois qu'un fichier est upload
   saveFile(event : Event) {
+    //Récupération du fichier dans l'input
     // @ts-ignore
     this.fileToUpload = (<HTMLInputElement>event.target).files[0];
+    // @ts-ignore
+    //console.log((<HTMLInputElement>event.target).files[0]);
+
+    // @ts-ignore
+    if (event.target.value) {
+      // @ts-ignore
+      const file = event.target.files[0];
+      const type = file.type;
+      this.fileToUpload = file;
+    } else Swal.fire('Aucun fichier choisi....')
   }
+
+  /*FIN INSERTION FICHIER*/
 
   resetFields(form: NgForm){
     form.controls['nom'].reset();
