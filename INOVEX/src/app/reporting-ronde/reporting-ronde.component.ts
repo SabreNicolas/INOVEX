@@ -50,6 +50,8 @@ export class ReportingRondeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    window.parent.document.title = 'INOVEX - Rondier';
+
     this.listAnomalie = [];
     this.listReporting = [];
     // @ts-ignore
@@ -149,6 +151,9 @@ export class ReportingRondeComponent implements OnInit {
 
   updateValueElement(r : mesureRonde){
     var value = prompt('Veuillez saisir une valeur',r.value);
+    if (value == null) {
+      return; //break out of the function early
+    }
     this.rondierService.updateMesureRondier(r.Id,value).subscribe((response)=>{
       if (response == "Mise à jour de la valeur OK"){
         Swal.fire("La valeur a bien été mis à jour !");
