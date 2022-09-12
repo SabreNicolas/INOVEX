@@ -41,7 +41,7 @@ export class ListMoralEntitiesComponent implements OnInit {
   }
 
   //mise à jour du code d'un client
-  setCode(MR : moralEntity){
+  /*setCode(MR : moralEntity){
     var code = prompt('Veuillez saisir un Code',MR.Code);
     this.moralEntitiesService.setCode(code,MR.Id).subscribe((response)=>{
       if (response == "Mise à jour du code OK"){
@@ -55,24 +55,26 @@ export class ListMoralEntitiesComponent implements OnInit {
       }
     });
     this.ngOnInit();
-  }
+  }*/
 
   //mise à jour du prix d'un client
   setPrice(MR : moralEntity){
     var prix = prompt('Veuillez saisir un Prix',String(MR.UnitPrice));
-    // @ts-ignore
-    this.moralEntitiesService.setPrix(prix.replace(',','.'),MR.Id).subscribe((response)=>{
-      if (response == "Mise à jour du prix unitaire OK"){
-        Swal.fire("Le Prix a été mis à jour !");
-      }
-      else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Erreur lors de la mise à jour du Prix ....',
-        })
-      }
-    });
-    this.ngOnInit();
+    if(prix != null){
+      // @ts-ignore
+      this.moralEntitiesService.setPrix(prix.replace(',','.'),MR.Id).subscribe((response)=>{
+        if (response == "Mise à jour du prix unitaire OK"){
+          Swal.fire("Le Prix a été mis à jour !");
+        }
+        else {
+          Swal.fire({
+            icon: 'error',
+            text: 'Erreur lors de la mise à jour du Prix ....',
+          })
+        }
+      });
+      this.ngOnInit();
+    }
   }
 
   //mise à jour du nom d'un client

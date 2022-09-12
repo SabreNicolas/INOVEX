@@ -26,19 +26,21 @@ export class ListZonesComponent implements OnInit {
   //mis à jour du commentaire d'une zone
   setComment(zone : zone){
     var commentaire = prompt('Veuillez saisir un Commentaire',String(zone.commentaire));
-    // @ts-ignore
-    this.rondierService.updateCommentaire(zone.Id,commentaire).subscribe((response)=>{
-      if (response == "Mise à jour du commentaire OK"){
-        Swal.fire("Le Commentaire a été mis à jour !");
-      }
-      else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Erreur lors de la mise à jour du Commentaire ....',
-        })
-      }
-    });
-    this.ngOnInit();
+    if (commentaire != null){
+      // @ts-ignore
+      this.rondierService.updateCommentaire(zone.Id,commentaire).subscribe((response)=>{
+        if (response == "Mise à jour du commentaire OK"){
+          Swal.fire("Le Commentaire a été mis à jour !");
+        }
+        else {
+          Swal.fire({
+            icon: 'error',
+            text: 'Erreur lors de la mise à jour du Commentaire ....',
+          })
+        }
+      });
+      this.ngOnInit();
+    }
   }
 
 }
