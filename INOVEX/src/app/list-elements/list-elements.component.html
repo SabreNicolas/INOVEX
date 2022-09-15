@@ -26,6 +26,7 @@
             <thead>
             <tr class="table-secondary">
                 <th scope="col">Nom</th>
+                <th scope="col">Ordre dans la zone</th>
                 <th scope="col">Type de champ</th>
                 <th scope="col">Valeurs Bornes</th>
                 <th scope="col">Valeur par défaut</th>
@@ -40,6 +41,7 @@
             <tbody *ngFor="let e of listElements">
             <tr class="table-light" [ngSwitch]="e.typeChamp">
                 <td>{{e.nom}}</td>
+                <td>{{e.ordre}}</td>
                 <td *ngSwitchCase=1 style="color: blue">Curseur</td>
                 <td *ngSwitchCase=2 style="color: #73b843">Saisie Libre</td>
                 <td *ngSwitchCase=3 style="color: magenta">Case à Cocher</td>

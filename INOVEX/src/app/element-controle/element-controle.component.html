@@ -15,8 +15,22 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <select required id="zone" class="select" aria-label=".form-select-sm example" name="zone" ngModel multiple [(ngModel)]="zoneId">
+                            <select required id="zone" class="select" aria-label=".form-select-sm example" name="zone" ngModel multiple [(ngModel)]="zoneId" (change)="getElements()">
                                 <option *ngFor="let z of listZone" value="{{z.Id}}">{{z.nom}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="zoneId.length < 2" class="form-group">
+                <label>Ordre : * <strong>(Veuillez choisir après quel élément placer celui en cours de création)</strong></label>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <select required id="ordreElem" class="select" aria-label=".form-select-sm example" name="ordreElem" ngModel [(ngModel)]="ordreElem">
+                                <option value=0>--DEBUT DE LA ZONE--</option>
+                                <option *ngFor="let e of listElement" value={{e.ordre}}>{{e.ordre}} - {{e.nom}}</option>
                             </select>
                         </div>
                     </div>
