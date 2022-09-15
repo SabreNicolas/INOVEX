@@ -214,14 +214,25 @@ export class ElementControleComponent implements OnInit {
 
   //Mise à jour de l'element
   update(){
-    this.rondierService.updateElement(this.elementId, this.zoneId[0], this.nom, this.valeurMin, this.valeurMax, this.typeChamp, this.unit, this.defaultValue, this.isRegulateur, this.listValues, this.isCompteur).subscribe((response)=>{
-      if (response == "Mise à jour de l'element OK"){
-        Swal.fire("L'élément de contrôle a bien été mis à jour !");
+    this.rondierService.updateOrdreElement(this.zoneId[0],this.ordreElem).subscribe((response)=>{
+      // @ts-ignore
+      if (response == "Mise à jour des ordres OK"){
+        this.rondierService.updateElement(this.elementId, this.zoneId[0], this.nom, this.valeurMin, this.valeurMax, this.typeChamp, this.unit, this.defaultValue, this.isRegulateur, this.listValues, this.isCompteur,Number(this.ordreElem)+1).subscribe((response)=>{
+          if (response == "Mise à jour de l'element OK"){
+            Swal.fire("L'élément de contrôle a bien été mis à jour !");
+          }
+          else {
+            Swal.fire({
+              icon: 'error',
+              text: 'Erreur lors de la mise à jour de l\'élément de contrôle ....',
+            })
+          }
+        });
       }
       else {
         Swal.fire({
           icon: 'error',
-          text: 'Erreur lors de la mise à jour de l\'élément de contrôle ....',
+          text: 'Erreur lors de la création de l\'élément de contrôle ....',
         })
       }
     });
