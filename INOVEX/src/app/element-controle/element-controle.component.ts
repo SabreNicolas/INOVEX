@@ -214,29 +214,40 @@ export class ElementControleComponent implements OnInit {
 
   //Mise à jour de l'element
   update(){
-    this.rondierService.updateOrdreElement(this.zoneId[0],this.ordreElem).subscribe((response)=>{
-      // @ts-ignore
-      if (response == "Mise à jour des ordres OK"){
-        this.rondierService.updateElement(this.elementId, this.zoneId[0], this.nom, this.valeurMin, this.valeurMax, this.typeChamp, this.unit, this.defaultValue, this.isRegulateur, this.listValues, this.isCompteur,Number(this.ordreElem)+1).subscribe((response)=>{
-          if (response == "Mise à jour de l'element OK"){
-            Swal.fire("L'élément de contrôle a bien été mis à jour !");
-          }
-          else {
-            Swal.fire({
-              icon: 'error',
-              text: 'Erreur lors de la mise à jour de l\'élément de contrôle ....',
-            })
-          }
-        });
+    //Permet de ne pas mettre à jour les ordres si on ne change pas la position dans la zone
+    if(this.element.ordre != this.ordreElem + 1){
+      this.rondierService.updateOrdreElement(this.zoneId[0],this.ordreElem).subscribe((response)=>{
+        // @ts-ignore
+        if (response == "Mise à jour des ordres OK"){
+          this.updateElement(Number(this.ordreElem)+1);
+        }
+        else {
+          Swal.fire({
+            icon: 'error',
+            text: 'Erreur lors de la création de l\'élément de contrôle ....',
+          })
+        }
+      });
+    }
+    else{
+      this.updateElement(this.element.ordre);
+    }
+  }
+
+  updateElement(ordre : number){
+    this.rondierService.updateElement(this.elementId, this.zoneId[0], this.nom, this.valeurMin, this.valeurMax, this.typeChamp, this.unit, this.defaultValue, this.isRegulateur, this.listValues, this.isCompteur,ordre).subscribe((response)=>{
+      if (response == "Mise à jour de l'element OK"){
+        Swal.fire("L'élément de contrôle a bien été mis à jour !");
       }
       else {
         Swal.fire({
           icon: 'error',
-          text: 'Erreur lors de la création de l\'élément de contrôle ....',
+          text: 'Erreur lors de la mise à jour de l\'élément de contrôle ....',
         })
       }
     });
   }
+
 
   //TODO : reset le formulaire après saisie => pb si reset et pas de saisie alors erreur (si saisie OK)
   resetFields(form: NgForm){
