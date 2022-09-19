@@ -13,4 +13,8 @@ export class AdminGlobalComponent implements OnInit {
     window.parent.document.title = 'INOVEX - Admin';
   }
 
+  download(file : string){
+    window.open(file, '_blank');
+  }
+
 }

@@ -15,7 +15,9 @@ export class ListBadgesComponent implements OnInit {
   public listBadgeLibre : badge[];
   public listBadgeUser : badgeAffect[];
   public listBadgeZone : badgeAffect[];
+  //contient les permis de feu et zone de consignation => si isPermisFeu = 0 alors zone de consignation
   public listPermisFeu : permisFeu[];
+
 
   constructor(private rondierService : rondierService) {
     this.listBadgeLibre = [];

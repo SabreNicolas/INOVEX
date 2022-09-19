@@ -6,16 +6,16 @@
         <form ngNativeValidate  (ngSubmit)="onSubmit(f)" #f="ngForm">
 
             <div class="form-group">
-                <label for="nom">Nom : *</label>
-                <input required type="text" id="nom" class="form-control" placeholder="Nom" name="nom" ngModel>
+                <label for="nom">Nom : * <strong>(Si l'élément est un Compteur, merci de préciser le même nom que sur la partie saisie d'INOVEX)</strong></label>
+                <input required type="text" id="nom" class="form-control" placeholder="Nom" name="nom" ngModel [(ngModel)]="nom">
             </div>
 
             <div class="form-group">
-                <label>Zone de contrôle : *</label>
+                <label>Zone de contrôle : * <strong>(Maintenir la touche "Ctrl" pour une sélection multiple)</strong></label>
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <select required class="form-select form-select-sm" aria-label=".form-select-sm example" name="zone" ngModel>
+                            <select required id="zone" class="select" aria-label=".form-select-sm example" name="zone" ngModel multiple [(ngModel)]="zoneId" (change)="getElements()">
                                 <option *ngFor="let z of listZone" value="{{z.Id}}">{{z.nom}}</option>
                             </select>
                         </div>
@@ -23,24 +23,18 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                <label for="valeurMin">Valeur minimale : </label>
-                <input id="valeurMin" class="form-control" placeholder="Valeur minimale" name="valeurMin" ngModel>
-            </div>
-
-            <div class="form-group">
-                <label for="valeurMax">Valeur maximale : </label>
-                <input id="valeurMax" class="form-control" placeholder="Valeur maximale" name="valeurMax" ngModel>
-            </div>
-
-            <div class="form-group">
-                <label for="unit">Unité : </label>
-                <input id="unit" class="form-control" placeholder="Unité" name="unit" ngModel>
-            </div>
-
-            <div class="form-group">
-                <label for="valeurDef">Valeur par défaut : </label>
-                <input id="valeurDef" class="form-control" placeholder="Valeur par défaut" name="valeurDef" ngModel>
+            <div *ngIf="zoneId.length < 2" class="form-group">
+                <label>Ordre : * <strong>(Veuillez choisir après quel élément placer celui en cours de création)</strong></label>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <select required id="ordreElem" class="select" aria-label=".form-select-sm example" name="ordreElem" ngModel [(ngModel)]="ordreElem">
+                                <option value=0>--DEBUT DE LA ZONE--</option>
+                                <option *ngFor="let e of listElement" value={{e.ordre}}>{{e.ordre}} - {{e.nom}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="form-group">
@@ -48,7 +42,7 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <select required class="form-select form-select-sm" aria-label=".form-select-sm example" name="champ" (ngModelChange)="changeType(f)" ngModel="2">
+                            <select required class="form-select form-select-sm" aria-label=".form-select-sm example" name="champ" (ngModelChange)="changeType(f)" ngModel="2" [(ngModel)]="typeChamp">
                                 <option value="1">Curseur</option>
                                 <option selected value="2">Saisie libre</option>
                                 <option value="3">Case à cocher</option>
@@ -59,9 +53,29 @@
                 </div>
             </div>
 
+            <div class="form-group">
+                <label for="valeurDef">Valeur par défaut : </label>
+                <input id="valeurDef" class="form-control" placeholder="Valeur par défaut" name="valeurDef" ngModel [(ngModel)]="defaultValue">
+            </div>
+
+            <div class="form-group">
+                <label for="unit">Unité : </label>
+                <input id="unit" class="form-control" placeholder="Unité" name="unit" ngModel [(ngModel)]="unit">
+            </div>
+
+            <div *ngIf="needBornes" class="form-group">
+                <label for="valeurMin">Valeur minimale : </label>
+                <input id="valeurMin" class="form-control" placeholder="Valeur minimale" name="valeurMin" ngModel [(ngModel)]="valeurMin">
+            </div>
+
+            <div *ngIf="needBornes" class="form-group">
+                <label for="valeurMax">Valeur maximale : </label>
+                <input id="valeurMax" class="form-control" placeholder="Valeur maximale" name="valeurMax" ngModel [(ngModel)]="valeurMax">
+            </div>
+
             <div *ngIf="needListValues" class="form-group">
                 <label for="listValues">Liste des valeurs possibles : * (Merci de séparer les valeurs par un <strong>espace</strong>)</label>
-                <input required id="listValues" class="form-control" placeholder="Valeurs possibles" name="listValues" ngModel>
+                <input required id="listValues" class="form-control" placeholder="Valeurs possibles" name="listValues" ngModel [(ngModel)]="listValues">
             </div>
 
             <div class="form-check">
@@ -72,9 +86,9 @@
             </div>
 
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="four" name="four" ngModel>
-                <label class="form-check-label" for="four">
-                    Existe pour les deux fours
+                <input class="form-check-input" type="checkbox" value="" id="compteur" name="compteur" ngModel>
+                <label class="form-check-label" for="regulateur">
+                    Est un compteur
                 </label>
             </div>
 

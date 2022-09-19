@@ -64,6 +64,9 @@ export class AdminComponent implements OnInit {
   //mise à jour de l'unité
   setUnit(PR : product){
     var unit = prompt('Veuillez saisir une unité',String(PR.Unit));
+    if (unit == null) {
+      return; //break out of the function early
+    }
     // @ts-ignore
     this.productsService.setUnit(unit,PR.Id).subscribe((response)=>{
       if (response == "Mise à jour de l'unité OK"){
@@ -83,7 +86,7 @@ export class AdminComponent implements OnInit {
   setType(PR : product){
     var type = prompt('2 pour Consommable, 3 pour Niveau, 4 pour Compteur, 5 pour Sortie, 6 pour Analyse',String(PR.typeId));
     // @ts-ignore
-    if (type < 1) {
+    if (type < 1 ) {
       return; //break out of the function early
     }
     // @ts-ignore

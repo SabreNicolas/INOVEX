@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {zone} from "../../models/zone.model";
 import {rondierService} from "../services/rondier.service";
 import {element} from "../../models/element.model";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-list-elements',
@@ -39,6 +40,22 @@ export class ListElementsComponent implements OnInit {
     // @ts-ignore
     this.zoneId = zoneSel;
     /*Fin de prise en commpte des filtres */
+    this.ngOnInit();
+  }
+
+  //suppression d'un element de controle
+  deleteElement(id : number){
+    this.rondierService.deleteElement(id).subscribe((response)=>{
+      if (response == "Suppression de l'élément OK"){
+        Swal.fire("L'élément de contrôle a bien été supprimé !");
+      }
+      else {
+        Swal.fire({
+          icon: 'error',
+          text: 'Erreur lors de la suppression de l\'élément de contrôle....',
+        })
+      }
+    });
     this.ngOnInit();
   }
 

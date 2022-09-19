@@ -33,6 +33,12 @@ import {ListZonesComponent} from "./list-zones/list-zones.component";
 import {ListElementsComponent} from "./list-elements/list-elements.component";
 import {GestionBadgeComponent} from "./gestion-badge/gestion-badge.component";
 import {PermisFeuComponent} from "./permis-feu/permis-feu.component";
+import {ReportingRondeComponent} from "./reporting-ronde/reporting-ronde.component";
+import {ModeOperatoireComponent} from "./mode-operatoire/mode-operatoire.component";
+import {ListModeOperatoireComponent} from "./list-mode-operatoire/list-mode-operatoire.component";
+import {ListConsignesComponent} from "./list-consignes/list-consignes.component";
+import {ConsigneComponent} from "./consigne/consigne.component";
+import {RondierFinMoisComponent} from "./rondier-fin-mois/rondier-fin-mois.component";
 
 const routes: Routes = [
 
@@ -88,6 +94,11 @@ const routes: Routes = [
         component : GestionUserComponent
     },
 
+    {
+        path : 'reporting',
+        canActivate: [AuthGuard],
+        component : ReportingRondeComponent
+    },
 
     {
         path : 'admin',
@@ -112,6 +123,12 @@ const routes: Routes = [
             { path: 'newElement', canActivate: [AuthGuard], component: ElementControleComponent},
             { path: 'elements', canActivate: [AuthGuard], component: ListElementsComponent},
             { path: 'permisFeu', canActivate: [AuthGuard], component: PermisFeuComponent},
+            { path: 'reporting', canActivate: [AuthGuard], component: ReportingRondeComponent},
+            { path: 'newModeOP', canActivate: [AuthGuard], component: ModeOperatoireComponent},
+            { path: 'modesOP', canActivate: [AuthGuard], component: ListModeOperatoireComponent},
+            { path: 'newConsigne', canActivate: [AuthGuard], component: ConsigneComponent},
+            { path: 'consignes', canActivate: [AuthGuard], component: ListConsignesComponent},
+            { path: 'finMois', canActivate: [AuthGuard], component: RondierFinMoisComponent},
         ]
     },
 

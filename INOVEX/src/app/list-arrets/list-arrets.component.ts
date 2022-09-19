@@ -1,12 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {arretsService} from "../services/arrets.service";
-import {arret} from "../../models/arrets.model";
 import {NgForm} from "@angular/forms";
-import {sumArret} from "../../models/sumArret.model";
 import Swal from "sweetalert2";
 import {ActivatedRoute, Router} from "@angular/router";
-import {depassement} from "../../models/depassement.model";
-import {sumDepassement} from "../../models/sumDepassement.model";
 
 @Component({
   selector: 'app-list-arrets',
