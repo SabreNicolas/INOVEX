@@ -200,6 +200,19 @@ export class rondierService {
             .put<any>(requete,requestOptions);
     }
 
+    //Mise à jour du nom d'une zone de contrôle
+    updateNomZone(zoneId : number, nom : string){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/zoneNom/"+zoneId+"/"+nom;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<any>(requete,requestOptions);
+    }
+
 
     /*
     FIN ZONE DE CONTROLE
@@ -211,9 +224,9 @@ export class rondierService {
      */
 
     //création de l'élément de controle
-    //?zoneId=1&nom=ddd&valeurMin=1.4&valeurMax=2.5&typeChamp=1&isFour=0&isGlobal=1&unit=tonnes&defaultValue=1.7&isRegulateur=0&listValues=1;2;3&isCompteur=1
-    createElement(zoneId : number, nom : string, valeurMin : number, valeurMax : number, typeChamp : number, unit : string, defaultValue : number, isRegulateur : number, listValues : string, isCompteur : number){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/element?zoneId="+zoneId+"&nom="+nom+"&valeurMin="+valeurMin+"&valeurMax="+valeurMax+"&typeChamp="+typeChamp+"&unit="+unit+"&defaultValue="+defaultValue+"&isRegulateur="+isRegulateur+"&listValues="+listValues+"&isCompteur="+isCompteur;
+    //?zoneId=1&nom=ddd&valeurMin=1.4&valeurMax=2.5&typeChamp=1&isFour=0&isGlobal=1&unit=tonnes&defaultValue=1.7&isRegulateur=0&listValues=1;2;3&isCompteur=1&ordre=5
+    createElement(zoneId : number, nom : string, valeurMin : number, valeurMax : number, typeChamp : number, unit : string, defaultValue : number, isRegulateur : number, listValues : string, isCompteur : number, ordre : number){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/element?zoneId="+zoneId+"&nom="+nom+"&valeurMin="+valeurMin+"&valeurMax="+valeurMax+"&typeChamp="+typeChamp+"&unit="+unit+"&defaultValue="+defaultValue+"&isRegulateur="+isRegulateur+"&listValues="+listValues+"&isCompteur="+isCompteur+"&ordre="+ordre;
         //console.log(requete);
 
         const requestOptions = {
@@ -225,9 +238,23 @@ export class rondierService {
     }
 
     //update de l'élément de controle ayant comme id
-    //?zoneId=1&nom=ddd&valeurMin=1.4&valeurMax=2.5&typeChamp=1&isFour=0&isGlobal=1&unit=tonnes&defaultValue=1.7&isRegulateur=0&listValues=1;2;3&isCompteur=1
-    updateElement(Id : number, zoneId : number, nom : string, valeurMin : number, valeurMax : number, typeChamp : number, unit : string, defaultValue : number, isRegulateur : number, listValues : string, isCompteur : number){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/updateElement/"+Id+"?zoneId="+zoneId+"&nom="+nom+"&valeurMin="+valeurMin+"&valeurMax="+valeurMax+"&typeChamp="+typeChamp+"&unit="+unit+"&defaultValue="+defaultValue+"&isRegulateur="+isRegulateur+"&listValues="+listValues+"&isCompteur="+isCompteur;
+    //?zoneId=1&nom=ddd&valeurMin=1.4&valeurMax=2.5&typeChamp=1&isFour=0&isGlobal=1&unit=tonnes&defaultValue=1.7&isRegulateur=0&listValues=1;2;3&isCompteur=1&ordre=5
+    updateElement(Id : number, zoneId : number, nom : string, valeurMin : number, valeurMax : number, typeChamp : number, unit : string, defaultValue : number, isRegulateur : number, listValues : string, isCompteur : number, ordre : number){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/updateElement/"+Id+"?zoneId="+zoneId+"&nom="+nom+"&valeurMin="+valeurMin+"&valeurMax="+valeurMax+"&typeChamp="+typeChamp+"&unit="+unit+"&defaultValue="+defaultValue+"&isRegulateur="+isRegulateur+"&listValues="+listValues+"&isCompteur="+isCompteur+"&ordre="+ordre;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<any>(requete,requestOptions);
+    }
+
+    //update de l'ordre des éléments ayant un ordre suppérieur à x pour une zone
+    //?zoneId=1&ordre=2
+    updateOrdreElement(zoneId : number, ordre : number){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/updateOrdreElement/?zoneId="+zoneId+"&maxOrdre="+ordre;
         //console.log(requete);
 
         const requestOptions = {

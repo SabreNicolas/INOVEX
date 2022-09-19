@@ -10,4 +10,5 @@ export interface element{
     isRegulateur : number;
     listValues : string;
     isCompteur : number;
+    ordre : number;
 }

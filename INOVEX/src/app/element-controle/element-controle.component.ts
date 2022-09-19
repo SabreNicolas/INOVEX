@@ -16,6 +16,8 @@ export class ElementControleComponent implements OnInit {
   public listZone : zone[];
   public nom : string;
   public zoneId : number[];
+  public listElement : element[];
+  public ordreElem : number;
   public valeurMin : number;
   public valeurMax : number;
   public typeChamp : number;
@@ -38,6 +40,8 @@ export class ElementControleComponent implements OnInit {
     this.listZone = [];
     this.nom = "";
     this.zoneId = [];
+    this.listElement = [];
+    this.ordreElem = 99;
     this.valeurMin = 0;
     this.valeurMax = 0;
     this.typeChamp = 2;
@@ -81,6 +85,8 @@ export class ElementControleComponent implements OnInit {
           this.isRegulateur = this.element.isRegulateur;
           this.isCompteur = this.element.isCompteur;
           this.listValues = this.element.listValues;
+          this.getElements();
+          this.ordreElem = this.element.ordre-1;
           this.changeType(null);
           //Gestion du mode regulateur
           if (this.isRegulateur == 1) {
@@ -129,10 +135,21 @@ export class ElementControleComponent implements OnInit {
     }
   }
 
+  //Récupération des éléments de la zone par ordre
+  getElements(){
+    this.rondierService.listElementofZone(this.zoneId[0]).subscribe((response)=>{
+      // @ts-ignore
+      this.listElement = response.data;
+    });
+  }
+
   //Création éléments contrôle
   onSubmit(form : NgForm) {
     this.nom = form.value['nom'];
     this.zoneId = form.value['zone'];
+    if(this.zoneId.length < 2){
+      this.ordreElem = form.value['ordreElem'];
+    }
     if(form.value['unit'].length > 0){
       this.unit = form.value['unit'];
     }
@@ -166,9 +183,20 @@ export class ElementControleComponent implements OnInit {
     }
     else{
       this.zoneId.forEach(zoneId =>{
-        this.rondierService.createElement(zoneId, this.nom, this.valeurMin, this.valeurMax, this.typeChamp, this.unit, this.defaultValue, this.isRegulateur,this.listValues,this.isCompteur).subscribe((response)=>{
-          if (response == "Création de l'élément OK"){
-            Swal.fire("L'élément de contrôle a bien été créé !");
+        this.rondierService.updateOrdreElement(zoneId,this.ordreElem).subscribe((response)=>{
+          // @ts-ignore
+          if (response == "Mise à jour des ordres OK"){
+            this.rondierService.createElement(zoneId, this.nom, this.valeurMin, this.valeurMax, this.typeChamp, this.unit, this.defaultValue, this.isRegulateur,this.listValues,this.isCompteur, Number(this.ordreElem)+1).subscribe((response)=>{
+              if (response == "Création de l'élément OK"){
+                Swal.fire("L'élément de contrôle a bien été créé !");
+              }
+              else {
+                Swal.fire({
+                  icon: 'error',
+                  text: 'Erreur lors de la création de l\'élément de contrôle ....',
+                })
+              }
+            });
           }
           else {
             Swal.fire({
@@ -186,7 +214,28 @@ export class ElementControleComponent implements OnInit {
 
   //Mise à jour de l'element
   update(){
-    this.rondierService.updateElement(this.elementId, this.zoneId[0], this.nom, this.valeurMin, this.valeurMax, this.typeChamp, this.unit, this.defaultValue, this.isRegulateur, this.listValues, this.isCompteur).subscribe((response)=>{
+    //Permet de ne pas mettre à jour les ordres si on ne change pas la position dans la zone
+    if(this.element.ordre != this.ordreElem + 1){
+      this.rondierService.updateOrdreElement(this.zoneId[0],this.ordreElem).subscribe((response)=>{
+        // @ts-ignore
+        if (response == "Mise à jour des ordres OK"){
+          this.updateElement(Number(this.ordreElem)+1);
+        }
+        else {
+          Swal.fire({
+            icon: 'error',
+            text: 'Erreur lors de la création de l\'élément de contrôle ....',
+          })
+        }
+      });
+    }
+    else{
+      this.updateElement(this.element.ordre);
+    }
+  }
+
+  updateElement(ordre : number){
+    this.rondierService.updateElement(this.elementId, this.zoneId[0], this.nom, this.valeurMin, this.valeurMax, this.typeChamp, this.unit, this.defaultValue, this.isRegulateur, this.listValues, this.isCompteur,ordre).subscribe((response)=>{
       if (response == "Mise à jour de l'element OK"){
         Swal.fire("L'élément de contrôle a bien été mis à jour !");
       }
@@ -199,9 +248,12 @@ export class ElementControleComponent implements OnInit {
     });
   }
 
+
   //TODO : reset le formulaire après saisie => pb si reset et pas de saisie alors erreur (si saisie OK)
   resetFields(form: NgForm){
     this.isRegulateur = 0;
+    this.zoneId = [];
+    form.value['zone'] = null;
     //form.reset();
     var four = document.getElementsByName('four');
     var regulateur = document.getElementsByName('regulateur');
