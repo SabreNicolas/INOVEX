@@ -10,7 +10,7 @@ export class SaisieGlobalComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    window.parent.document.title = 'INOVEX - Saisie';
+    window.parent.document.title = 'PAPREX - Saisie';
   }
 
 }

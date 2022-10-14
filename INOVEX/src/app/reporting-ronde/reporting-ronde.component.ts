@@ -50,7 +50,7 @@ export class ReportingRondeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    window.parent.document.title = 'INOVEX - Rondier';
+    window.parent.document.title = 'PAPREX - Rondier';
 
     this.listAnomalie = [];
     this.listReporting = [];
