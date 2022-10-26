@@ -109,7 +109,7 @@
                 <tr class="table-warning" *ngFor="let element of elementsOfOneZone.elements">
                     <td>{{element.nom}}</td>
                     <td *ngFor="let ronde of listRonde" style="text-align: center">
-                        <div style="display: flex; flex-direction: column;" *ngFor="let reporting of listReporting">
+                        <!--<div style="display: flex; flex-direction: column;" *ngFor="let reporting of listReporting">
                             <p *ngIf="reporting.nomZone == elementsOfOneZone.zone && reporting.rondeId == ronde.Id && reporting.elementId == element.Id && reporting.value != '/'">
                                 {{reporting.value}} {{element.unit}}
                                 <button class="btn btn-warning btn-sm" (click)="updateValueElement(reporting)">
@@ -122,8 +122,12 @@
                                 <button class="btn btn-warning btn-sm" (click)="updateValueElement(reporting)">
                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                 </button>
+                            </div>-->
+                            <div style="display: flex; flex-direction: column;">
+                                <p id="{{ronde.Id}}-{{element.Id}}"></p>
+                                <p id="{{ronde.Id}}-{{element.Id}}-Regulateur" style="color: #22498c; display: none"></p>
                             </div>
-                        </div>
+                        <!--</div>-->
                     </td>
                 </tr>
             </tbody>

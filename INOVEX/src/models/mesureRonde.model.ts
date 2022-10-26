@@ -6,4 +6,5 @@ export interface mesureRonde{
     modeRegulateur : string;
     nomZone : string;
     rondeId : number;
+    unit : string;
 }
