@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import {rondierService} from "../services/rondier.service";
 import {ronde} from "../../models/ronde.models";
 import {NgForm} from "@angular/forms";
@@ -18,14 +18,13 @@ export class ReportingRondeComponent implements OnInit {
 
   public listRonde : ronde[];
   public dateDeb : String | undefined;
-  public listReporting : mesureRonde[];
   public listAnomalie : anomalie[];
   public listElementsOfZone : elementsOfZone[];
   public listPermisFeuValidation : permisFeuValidation[];
   public isAdmin;
   public test : SafeUrl | undefined;
 
-  constructor(private rondierService : rondierService, private sanitizer: DomSanitizer) {
+  constructor(private rondierService : rondierService, private elementRef : ElementRef) {
     this.listRonde = [];
     /*//mettre hier comme date par défaut
     var dt = new Date();
@@ -36,7 +35,6 @@ export class ReportingRondeComponent implements OnInit {
     var day = dd + '/' + mm + '/' + yyyy;
     this.dateDeb = day;
     //fin gestion date défaut*/
-    this.listReporting = [];
     this.listAnomalie = [];
     this.listElementsOfZone = [];
     this.listPermisFeuValidation = [];
@@ -53,38 +51,84 @@ export class ReportingRondeComponent implements OnInit {
     window.parent.document.title = 'PAPREX - Rondier';
 
     this.listAnomalie = [];
-    this.listReporting = [];
-    // @ts-ignore
+    //this.listReporting = [];
     // retourne 3 rondes par jour, 1 pour le matin, 1 pour l'aprem et 1 pour la nuit
-    this.rondierService.listRonde(this.dateDeb).subscribe((response)=>{
+    if(this.dateDeb != undefined){
       // @ts-ignore
-      this.listRonde = response.data;
-      //Récupération des zones et de leurs éléments
-      this.rondierService.listZonesAndElements().subscribe((response)=>{
+      this.rondierService.listRonde(this.dateDeb).subscribe((response)=>{
         // @ts-ignore
-        this.listElementsOfZone = response.BadgeAndElementsOfZone;
-        this.listRonde.forEach(ronde =>{
-          //Récupération des éléments et leurs valeurs sur la ronde
-          this.rondierService.reportingRonde(ronde.Id).subscribe((response)=>{
-            // @ts-ignore
-            response.data.forEach(reporting =>{
-              this.listReporting.push(reporting);
-            });
-            //Récupération des anomalies sur la ronde
-            this.rondierService.listAnomalies(ronde.Id).subscribe((response)=>{
+        this.listRonde = response.data;
+        //Récupération des zones et de leurs éléments
+        this.rondierService.listZonesAndElements().subscribe((response)=>{
+          // @ts-ignore
+          this.listElementsOfZone = response.BadgeAndElementsOfZone;
+          this.listRonde.forEach(async ronde =>{
+            await this.await(500);
+            //Récupération des éléments et leurs valeurs sur la ronde
+            this.rondierService.reportingRonde(ronde.Id).subscribe((response)=>{
               // @ts-ignore
-              response.data.forEach(anomalie =>{
-                this.listAnomalie.push(anomalie);
+              response.data.forEach(reporting =>{
+                let champValue = document.getElementById(ronde.Id+"-"+reporting.elementId);
+                //SI on a un mode regulateur on affiche le champ et on affiche le mode
+                if(reporting.modeRegulateur != "undefined"){
+                  let champRegul = document.getElementById(ronde.Id+"-"+reporting.elementId+"-Regulateur");
+                  let champValue = document.getElementById(ronde.Id+"-"+reporting.elementId);
+                  // @ts-ignore
+                  champRegul.style.display = "block";
+                  // @ts-ignore
+                  champRegul.innerText = reporting.modeRegulateur;
+                }
+                //On affiche la valeur uniquement si elle a été saisie
+                if(reporting.value != "/"){
+                  // @ts-ignore
+                  champValue.innerHTML = ""+reporting.value + " " + reporting.unit
+
+                  //Création du button d'update de la valeur
+                  const button = document.createElement("button");
+                  button.className = "btn btn-warning btn-sm";
+                  button.id = "update"+reporting.Id;
+                  const i = document.createElement("i");
+                  i.className = "fa fa-pencil-square-o";
+                  button.appendChild(i);
+                  button.addEventListener('click', (e) =>{
+                    this.updateValueElement(reporting.Id,reporting.value);
+                  });
+                  // @ts-ignore
+                  champValue.appendChild(button);
+                  //FIN Création du button
+
+                }
+                //Sinon on surligne en rouge et on précise que ce n'est pas saisie
+                else {
+                  // @ts-ignore
+                  champValue.style.backgroundColor = "red";
+                  // @ts-ignore
+                  champValue.innerText = "NON SAISIE";
+                }
+              });
+              //Récupération des anomalies sur la ronde
+              this.rondierService.listAnomalies(ronde.Id).subscribe((response)=>{
+                // @ts-ignore
+                response.data.forEach(anomalie =>{
+                  this.listAnomalie.push(anomalie);
+                });
               });
             });
           });
         });
+        //Récupération des validations de permis de feu
+        this.rondierService.listPermisFeuValidation(this.dateDeb).subscribe((response)=>{
+          // @ts-ignore
+          this.listPermisFeuValidation = response.data;
+        });
       });
-      //Récupération des validations de permis de feu
-      this.rondierService.listPermisFeuValidation(this.dateDeb).subscribe((response)=>{
-        // @ts-ignore
-        this.listPermisFeuValidation = response.data;
-      });
+    }
+    
+  }
+
+  await(ms : number){
+    return new Promise(resolve => {
+      setTimeout(resolve,ms);
     });
   }
 
@@ -149,12 +193,12 @@ export class ReportingRondeComponent implements OnInit {
     });
   }
 
-  updateValueElement(r : mesureRonde){
-    var value = prompt('Veuillez saisir une valeur',r.value);
+  updateValueElement(Id : number,Val : string){
+    var value = prompt('Veuillez saisir une valeur',Val);
     if (value == null) {
       return; //break out of the function early
     }
-    this.rondierService.updateMesureRondier(r.Id,value).subscribe((response)=>{
+    this.rondierService.updateMesureRondier(Id,value).subscribe((response)=>{
       if (response == "Mise à jour de la valeur OK"){
         Swal.fire("La valeur a bien été mis à jour !");
         this.ngOnInit();
