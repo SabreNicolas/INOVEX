@@ -78,33 +78,33 @@ export class ReportingRondeComponent implements OnInit {
                   // @ts-ignore
                   champRegul.innerText = reporting.modeRegulateur;
                 }
+                let champValueContenu;
                 //On affiche la valeur uniquement si elle a été saisie
                 if(reporting.value != "/"){
-                  // @ts-ignore
-                  champValue.innerHTML = ""+reporting.value + " " + reporting.unit
-
-                  //Création du button d'update de la valeur
-                  const button = document.createElement("button");
-                  button.className = "btn btn-warning btn-sm";
-                  button.id = "update"+reporting.Id;
-                  const i = document.createElement("i");
-                  i.className = "fa fa-pencil-square-o";
-                  button.appendChild(i);
-                  button.addEventListener('click', (e) =>{
-                    this.updateValueElement(reporting.Id,reporting.value);
-                  });
-                  // @ts-ignore
-                  champValue.appendChild(button);
-                  //FIN Création du button
-
+                  champValueContenu = ""+reporting.value + " " + reporting.unit + " ";
                 }
                 //Sinon on surligne en rouge et on précise que ce n'est pas saisie
                 else {
                   // @ts-ignore
                   champValue.style.backgroundColor = "red";
                   // @ts-ignore
-                  champValue.innerText = "NON SAISIE";
+                  champValueContenu = "NON SAISIE ";
                 }
+                // @ts-ignore
+                champValue.innerHTML = champValueContenu;
+                //Création du button d'update de la valeur
+                const button = document.createElement("button");
+                button.className = "btn btn-warning btn-sm";
+                button.id = "update"+reporting.Id;
+                const i = document.createElement("i");
+                i.className = "fa fa-pencil-square-o";
+                button.appendChild(i);
+                button.addEventListener('click', (e) =>{
+                  this.updateValueElement(reporting.Id,reporting.value);
+                });
+                // @ts-ignore
+                champValue.appendChild(button);
+                //FIN Création du button
               });
               //Récupération des anomalies sur la ronde
               this.rondierService.listAnomalies(ronde.Id).subscribe((response)=>{
