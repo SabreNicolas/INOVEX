@@ -92,19 +92,21 @@ export class ReportingRondeComponent implements OnInit {
                 }
                 // @ts-ignore
                 champValue.innerHTML = champValueContenu;
-                //Création du button d'update de la valeur
-                const button = document.createElement("button");
-                button.className = "btn btn-warning btn-sm";
-                button.id = "update"+reporting.Id;
-                const i = document.createElement("i");
-                i.className = "fa fa-pencil-square-o";
-                button.appendChild(i);
-                button.addEventListener('click', (e) =>{
-                  this.updateValueElement(reporting.Id,reporting.value);
-                });
-                // @ts-ignore
-                champValue.appendChild(button);
-                //FIN Création du button
+                //Création du button d'update de la valeur si utilisateur admin
+                if(this.isAdmin){
+                  const button = document.createElement("button");
+                  button.className = "btn btn-warning btn-sm";
+                  button.id = "update"+reporting.Id;
+                  const i = document.createElement("i");
+                  i.className = "fa fa-pencil-square-o";
+                  button.appendChild(i);
+                  button.addEventListener('click', (e) =>{
+                    this.updateValueElement(reporting.Id,reporting.value);
+                  });
+                  // @ts-ignore
+                  champValue.appendChild(button);
+                }
+                //FIN Création du button edit
               });
               //Récupération des anomalies sur la ronde
               this.rondierService.listAnomalies(ronde.Id).subscribe((response)=>{
