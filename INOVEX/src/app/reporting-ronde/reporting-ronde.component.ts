@@ -86,7 +86,7 @@ export class ReportingRondeComponent implements OnInit {
                   //On vérifie que la valeur est réglementaire (entre les bornes ou correspond à la valeur par défaut)
                   //Si curseur (type 1) => doit etre compris entre les bornes
                   if((reporting.typeChamp == "1") && (Number(reporting.value) < reporting.valeurMin || Number(reporting.value) > reporting.valeurMax)){
-                    //On utilise champValue pour afficher le medssage
+                    //On utilise champValue pour afficher le message
                     console.log(Number(reporting.value) + " "+ reporting.valeurMin+" "+reporting.valeurMax)
                     // @ts-ignore
                     champError.style.backgroundColor = "#ff726f";
