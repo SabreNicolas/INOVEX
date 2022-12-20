@@ -69,19 +69,38 @@ export class ReportingRondeComponent implements OnInit {
               // @ts-ignore
               response.data.forEach(reporting =>{
                 let champValue = document.getElementById(ronde.Id+"-"+reporting.elementId);
+                let champError = document.getElementById(ronde.Id+"-"+reporting.elementId+"-Error");
                 //SI on a un mode regulateur on affiche le champ et on affiche le mode
                 if(reporting.modeRegulateur != "undefined"){
                   let champRegul = document.getElementById(ronde.Id+"-"+reporting.elementId+"-Regulateur");
-                  let champValue = document.getElementById(ronde.Id+"-"+reporting.elementId);
+                  //let champValue = document.getElementById(ronde.Id+"-"+reporting.elementId);
                   // @ts-ignore
                   champRegul.style.display = "block";
                   // @ts-ignore
                   champRegul.innerText = reporting.modeRegulateur;
                 }
-                let champValueContenu;
+                let champValueContenu, champValueError;
                 //On affiche la valeur uniquement si elle a été saisie
                 if(reporting.value != "/"){
                   champValueContenu = ""+reporting.value + " " + reporting.unit + " ";
+                  //On vérifie que la valeur est réglementaire (entre les bornes ou correspond à la valeur par défaut)
+                  //Si curseur (type 1) => doit etre compris entre les bornes
+                  if((reporting.typeChamp == "1") && (Number(reporting.value) < reporting.valeurMin || Number(reporting.value) > reporting.valeurMax)){
+                    //On utilise champValue pour afficher le message
+                    console.log(Number(reporting.value) + " "+ reporting.valeurMin+" "+reporting.valeurMax)
+                    // @ts-ignore
+                    champError.style.backgroundColor = "#ff726f";
+                    // @ts-ignore
+                    champValueError = "ATTENTION, doit être compris entre "+reporting.valeurMin+" "+reporting.unit+" & "+reporting.valeurMax+" "+reporting.unit;
+                  }
+                  //Si pas curseur (différent de type 1) => doit etre égal à la valeur par défaut
+                  if(reporting.typeChamp !== "1" && reporting.value != reporting.defaultValue && reporting.defaultValue.length > 0){
+                    //On utilise champValue pour afficher le medssage
+                    // @ts-ignore
+                    champError.style.backgroundColor = "#ff726f";
+                    // @ts-ignore
+                    champValueError = "ATTENTION, la valeur par défaut est : "+reporting.defaultValue+" "+reporting.unit;
+                  }
                 }
                 //Sinon on surligne en rouge et on précise que ce n'est pas saisie
                 else {
@@ -92,6 +111,14 @@ export class ReportingRondeComponent implements OnInit {
                 }
                 // @ts-ignore
                 champValue.innerHTML = champValueContenu;
+                //On affiche le message d'erreur si nécessaire
+                if( (reporting.typeChamp == "1" && (Number(reporting.value) < reporting.valeurMin || Number(reporting.value) > reporting.valeurMax)) || (reporting.typeChamp !== "1" && reporting.value !== reporting.defaultValue && reporting.defaultValue.length > 0)){
+                  // @ts-ignore
+                  champError.innerHTML = champValueError;
+                  // @ts-ignore
+                  champError.style.display = "block"
+                }
+
                 //Création du button d'update de la valeur si utilisateur admin
                 if(this.isAdmin){
                   const button = document.createElement("button");
