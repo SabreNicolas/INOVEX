@@ -1,5 +1,6 @@
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Injectable} from "@angular/core";
+import { site } from "src/models/site.model";
 import {category} from "../../models/categories.model";
 
 @Injectable()
@@ -15,7 +16,7 @@ export class categoriesService {
         'Accept': 'application/json',
         'Access-Control-Allow-Origin' : '*'
     }
-    private portAPI = 3000;
+    private portAPI = 3100;
     private ip = "10.255.11.5";
 
     constructor(private http: HttpClient) {
@@ -79,6 +80,26 @@ export class categoriesService {
         return this.http
             .get<category[]>(requete,requestOptions);
     }
+
+    /*
+    ***** PARTIE CHOIX SITE POUR SUPER ADMIN
+    */
+
+    //récupérer les différents sites
+    getSites() {
+        let requete = "http://"+this.ip+":"+this.portAPI+"/sites";
+        //console.log(requete);
+
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<site[]>(requete,requestOptions);
+    }
+
+
 
     //GETTER & SETTER
     get nom(): string {
