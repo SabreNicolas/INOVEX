@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from "@angular/router";
 import {user} from "../../models/user.model";
-import {rondierService} from "../services/rondier.service";
 
 @Component({
   selector: 'app-acceuil',
@@ -21,7 +20,7 @@ export class AcceuilComponent implements OnInit {
   public isRapport : number;//0 ou 1
   public isAdmin : number;//0 ou 1
 
-  constructor(private router : Router, private rondierService : rondierService) {
+  constructor(private router : Router) {
     this.nom = '';
     this.prenom = '';
     this.MD5pwd ='';
