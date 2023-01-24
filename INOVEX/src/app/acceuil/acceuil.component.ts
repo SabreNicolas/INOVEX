@@ -23,6 +23,7 @@ export class AcceuilComponent implements OnInit {
   public isRapport : number;//0 ou 1
   public isAdmin : number;//0 ou 1
   public idUsine : number;
+  public localisation : string;
   public sites : site[];
 
   constructor(private router : Router, private categoriesService : categoriesService) {
@@ -36,6 +37,7 @@ export class AcceuilComponent implements OnInit {
     this.isRapport = 0;
     this.isAdmin = 0;
     this.idUsine = 0;
+    this.localisation='';
     this.sites = [];
   }
 
@@ -53,32 +55,7 @@ export class AcceuilComponent implements OnInit {
       //SI utilisateur GLOBAL alors choix du site à administrer/se connecter
       //Id 5 correspond à "GLOBAL"
       if (this.idUsine == 5) {
-
-        //Récupération des sites
-        this.categoriesService.getSites().subscribe((response)=>{
-          // @ts-ignore
-          this.sites = response.data;
-          //Construction des valeurs du menu select qui contient les sites
-          let listSites = {};
-          this.sites.forEach(site =>{
-            let id = String(site.id);
-            //@ts-ignore
-            listSites[id] = site.localisation;
-          });
-
-          Swal.fire({
-            title: 'Veuillez Choisir un site',
-            input: 'select',
-            //TODO list dynamqiue + stockage dans localStorage
-            //TODO empecher de faire le traiteemnt si on clique pas sur le bouton
-            //ordonner par ordre alpha les sites
-            inputOptions: listSites,
-            showCancelButton: false,
-          })
-          .then((result) => {
-            alert(result.value);
-          });
-        });
+        this.choixSite();
       }
       
       // @ts-ignore
@@ -99,6 +76,8 @@ export class AcceuilComponent implements OnInit {
       this.isSaisie = this.userLogged['isSaisie'];
       // @ts-ignore
       this.isAdmin = this.userLogged['isAdmin'];
+      // @ts-ignore
+      this.localisation = this.userLogged['localisation'];
     }
 
   }
@@ -113,6 +92,46 @@ export class AcceuilComponent implements OnInit {
   logout(){
     localStorage.removeItem('user');
     this.router.navigate(['/']);
+  }
+
+  choixSite(){
+    //Récupération des sites
+    this.categoriesService.getSites().subscribe((response)=>{
+      // @ts-ignore
+      this.sites = response.data;
+      //Construction des valeurs du menu select qui contient les sites
+      let listSites = {};
+      this.sites.forEach(site =>{
+        let id = String(site.id)+"_"+site.localisation;
+        //@ts-ignore
+        listSites[id] = site.localisation;
+      });
+
+      Swal.fire({
+        title: 'Veuillez Choisir un site',
+        input: 'select',
+        //TODO list dynamqiue + stockage dans localStorage
+        inputOptions: listSites,
+        showCancelButton: false,
+        confirmButtonText: "Valider",
+        allowOutsideClick: false,
+      })
+      .then((result) => {
+        let usine_localisation = result.value.split("_");
+        //Premier élément du tableau est l'idUsine
+        //@ts-ignore
+        this.userLogged['idUsine'] = usine_localisation[0];
+        //@ts-ignore
+        this.idUsine = this.userLogged['idUsine'];
+        //2e élément du tableau est la localisation géographiques
+        //@ts-ignore
+        this.userLogged['localisation'] = usine_localisation[1];
+        //@ts-ignore
+        this.localisation = this.userLogged['localisation'];
+        //ON met à jour le user dans le localstorage
+        localStorage.setItem('user',JSON.stringify(this.userLogged));
+      });
+    });
   }
 
 }
