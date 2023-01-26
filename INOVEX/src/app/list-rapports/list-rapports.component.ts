@@ -22,11 +22,11 @@ export class ListRapportsComponent implements OnInit {
     this.rapportsService.getRapports().subscribe((response)=>{
       // @ts-ignore
       this.listRapports = response.data;
-      console.log(this.listRapports);
     });
   }
 
   download(url : string){
+    alert(url);
     window.location.assign(url);
   }
 
