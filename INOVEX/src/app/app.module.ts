@@ -37,6 +37,7 @@ import {loginService} from "./services/login.service";
 import { ListUsersComponent } from './list-users/list-users.component';
 import { GestionUserComponent } from './gestion-user/gestion-user.component';
 import {AuthGuard} from "./services/auth-guard.service";
+import { rapportsService } from './services/rapports.service';
 
 @NgModule({
   declarations: [
@@ -81,6 +82,7 @@ import {AuthGuard} from "./services/auth-guard.service";
     DatePipe,
     loginService,
     AuthGuard,
+    rapportsService,
   ],
   bootstrap: [AppComponent]
 })
