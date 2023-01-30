@@ -30,9 +30,15 @@ a {
 }
 
 .rapportsList {
-  display: flex;
+  -webkit-column-count: 4; /* Chrome, Safari, Opera */
+  -moz-column-count: 4; /* Firefox */
+  column-count: 4;
   margin: 0 auto;
   width: max-content;
+}
+
+.rapportsLink {
+  -webkit-column-break-inside: avoid;
 }
 
 .card {

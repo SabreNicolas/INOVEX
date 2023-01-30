@@ -17,12 +17,22 @@ export class productsService {
     }
     private portAPI = 3100;
     private ip = "10.255.11.5";
+    private idUsine : number | undefined;
 
     constructor(private http: HttpClient) {
         this.httpClient = http;
         this._nom = '';
         this._code = '';
         this._unit = '';
+        //Récupération du user dans localStorage
+        var userLogged = localStorage.getItem('user');
+        if (typeof userLogged === "string") {
+            var userLoggedParse = JSON.parse(userLogged);
+
+            //Récupération de l'idUsine
+            // @ts-ignore
+            this.idUsine = userLoggedParse['idUsine'];
+        }
     }
 
     //récupérer le dernier code

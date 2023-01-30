@@ -2,7 +2,7 @@
 
 <div class="rapportsList">
     <a *ngFor="let rapport of listRapports;let indexOfelement = index" target="_self" (click)="download(rapport.url)">
-        <div class="card">
+        <div class="card rapportsLink">
             <img src="assets/excel.png" class="card-img-top" alt="...">
             <div class="card-body">
                 <p class="card-text">{{rapport.nom}}</p>

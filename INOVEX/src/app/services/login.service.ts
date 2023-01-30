@@ -13,14 +13,24 @@ export class loginService {
     }
     private portAPI = 3100;
     private ip = "10.255.11.5";
+    private idUsine : number | undefined;
 
     constructor(private http: HttpClient) {
         this.httpClient = http;
+        //Récupération du user dans localStorage
+        var userLogged = localStorage.getItem('user');
+        if (typeof userLogged === "string") {
+            var userLoggedParse = JSON.parse(userLogged);
+
+            //Récupération de l'idUsine
+            // @ts-ignore
+            this.idUsine = userLoggedParse['idUsine'];
+        }
     }
 
     //création d'utilisateur
     createUser(nom : string, prenom : string, login : string, pwd : string, isRondier : number, isSaisie : number, isQSE : number, isRapport : number, isAdmin : number){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/User?nom="+nom+"&prenom="+prenom+"&login="+login+"&pwd="+pwd+"&isRondier="+isRondier+"&isSaisie="+isSaisie+"&isQSE="+isQSE+"&isRapport="+isRapport+"&isAdmin="+isAdmin;
+        let requete = "http://"+this.ip+":"+this.portAPI+"/User?nom="+nom+"&prenom="+prenom+"&login="+login+"&pwd="+pwd+"&isRondier="+isRondier+"&isSaisie="+isSaisie+"&isQSE="+isQSE+"&isRapport="+isRapport+"&isAdmin="+isAdmin+"&idUsine="+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -33,7 +43,7 @@ export class loginService {
 
     //récupérer la list des utilisateurs
     getAllUsers(loginLike : string) {
-        let requete = "http://"+this.ip+":"+this.portAPI+"/Users?login="+loginLike;
+        let requete = "http://"+this.ip+":"+this.portAPI+"/Users?login="+loginLike+"&idUsine="+this.idUsine;
         //console.log(requete);
 
 
@@ -47,7 +57,7 @@ export class loginService {
 
     //récupérer le login pour voir si il est déjà utilisé
     getLogin(login : string) {
-        let requete = "http://"+this.ip+":"+this.portAPI+"/User/"+login;
+        let requete = "http://"+this.ip+":"+this.portAPI+"/User/"+login+"/"+this.idUsine;
         //console.log(requete);
 
 
@@ -75,7 +85,7 @@ export class loginService {
 
     //Mise à jour mot de pase utilisateur
     updatePwd(login : string, pwd : string){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/User/"+login+"/"+pwd;
+        let requete = "http://"+this.ip+":"+this.portAPI+"/User/"+login+"/"+pwd+"/"+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -88,7 +98,7 @@ export class loginService {
 
     //Mise à jour droit rondier
     updateRondier(login : string, droit : number){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/UserRondier/"+login+"/"+droit;
+        let requete = "http://"+this.ip+":"+this.portAPI+"/UserRondier/"+login+"/"+droit+"/"+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -101,7 +111,7 @@ export class loginService {
 
     //Mise à jour droit saisie
     updateSaisie(login : string, droit : number){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/UserSaisie/"+login+"/"+droit;
+        let requete = "http://"+this.ip+":"+this.portAPI+"/UserSaisie/"+login+"/"+droit+"/"+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -114,7 +124,7 @@ export class loginService {
 
     //Mise à jour droit qse
     updateQSE(login : string, droit : number){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/UserQSE/"+login+"/"+droit;
+        let requete = "http://"+this.ip+":"+this.portAPI+"/UserQSE/"+login+"/"+droit+"/"+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -127,7 +137,7 @@ export class loginService {
 
     ///Mise à jour droit rapport
     updateRapport(login : string, droit : number){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/UserRapport/"+login+"/"+droit;
+        let requete = "http://"+this.ip+":"+this.portAPI+"/UserRapport/"+login+"/"+droit+"/"+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -140,7 +150,7 @@ export class loginService {
 
     //Mise à jour droit admin
     updateAdmin(login : string, droit : number){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/UserAdmin/"+login+"/"+droit;
+        let requete = "http://"+this.ip+":"+this.portAPI+"/UserAdmin/"+login+"/"+droit+"/"+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {

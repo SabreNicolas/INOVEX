@@ -9,6 +9,7 @@ export class categoriesService {
     private _nom : string;
     private _code : string;
     private _parentId : number;
+    private idUsine : number | undefined;
 
     httpClient: HttpClient;
     private headerDict = {
@@ -24,6 +25,15 @@ export class categoriesService {
         this._nom = '';
         this._code = '';
         this._parentId = 0;
+        //Récupération du user dans localStorage
+        var userLogged = localStorage.getItem('user');
+        if (typeof userLogged === "string") {
+            var userLoggedParse = JSON.parse(userLogged);
+
+            //Récupération de l'idUsine
+            // @ts-ignore
+            this.idUsine = userLoggedParse['idUsine'];
+        }
     }
 
     //création de catégorie
