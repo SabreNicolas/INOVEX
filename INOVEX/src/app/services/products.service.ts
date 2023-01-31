@@ -37,7 +37,7 @@ export class productsService {
 
     //récupérer le dernier code
     getLastCode(Code : string) {
-        let requete = "http://"+this.ip+":"+this.portAPI+"/productLastCode?Code="+Code;
+        let requete = "http://"+this.ip+":"+this.portAPI+"/productLastCode?Code="+Code+"&idUsine="+this.idUsine;
         //console.log(requete);
 
 
@@ -51,7 +51,7 @@ export class productsService {
 
     //création du produit de type compteur
     createProduct(typeId : number){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/Product?Name="+this._nom+"&Code="+this._code+"&typeId="+typeId+"&Unit="+this._unit;
+        let requete = "http://"+this.ip+":"+this.portAPI+"/Product?Name="+this._nom+"&Code="+this._code+"&typeId="+typeId+"&Unit="+this._unit+"&idUsine="+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -64,7 +64,7 @@ export class productsService {
 
     //récupérer les compteurs
     getCompteurs(Code : string) {
-        let requete = "http://"+this.ip+":"+this.portAPI+"/Compteurs?Code="+Code;
+        let requete = "http://"+this.ip+":"+this.portAPI+"/Compteurs?Code="+Code+"&idUsine="+this.idUsine;
         //console.log(requete);
 
 
@@ -78,7 +78,7 @@ export class productsService {
 
      //récupérer les qse
      getQse() {
-        let requete = "http://"+this.ip+":"+this.portAPI+"/qse";
+        let requete = "http://"+this.ip+":"+this.portAPI+"/qse?idUsine="+this.idUsine;
         // console.log(requete);
         
         const requestOptions = {
@@ -92,7 +92,7 @@ export class productsService {
 
     //récupérer les compteurs pour les arrêts
     getCompteursArrets(Code : string) {
-        let requete = "http://"+this.ip+":"+this.portAPI+"/CompteursArrets?Code="+Code;
+        let requete = "http://"+this.ip+":"+this.portAPI+"/CompteursArrets?Code="+Code+"&idUsine="+this.idUsine;
         //console.log(requete);
 
 
@@ -106,7 +106,7 @@ export class productsService {
 
     //récupérer les valeurs de compteur
     getValueCompteurs(Date : string, Code : string) {
-        let requete = "http://"+this.ip+":"+this.portAPI+"/Compteurs/"+Code+"/"+Date;
+        let requete = "http://"+this.ip+":"+this.portAPI+"/Compteurs/"+Code+"/"+Date+"&idUsine="+this.idUsine;
         //console.log(requete);
 
 
@@ -120,7 +120,7 @@ export class productsService {
 
     //récupérer les valeurs de qse
     getValueQse(Date : string, Code : string) {
-        let requete = "http://"+this.ip+":"+this.portAPI+"/qse/"+Code+"/"+Date;
+        let requete = "http://"+this.ip+":"+this.portAPI+"/qse/"+Code+"/"+Date+"&idUsine="+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -133,7 +133,7 @@ export class productsService {
 
     //insérer une valeur de compteur
     createMeasure(Date : string, Value : number, Code : string){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/SaisieMensuelle?Date="+Date+"&Value="+Value+"&Code="+Code;
+        let requete = "http://"+this.ip+":"+this.portAPI+"/SaisieMensuelle?Date="+Date+"&Value="+Value+"&Code="+Code+"&idUsine="+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -146,7 +146,7 @@ export class productsService {
 
     //récupérer les analyses
     getAnalyses(Code : string) {
-        let requete = "http://"+this.ip+":"+this.portAPI+"/Analyses?Code="+Code;
+        let requete = "http://"+this.ip+":"+this.portAPI+"/Analyses?Code="+Code+"&idUsine="+this.idUsine;
         //console.log(requete);
 
 
@@ -160,7 +160,7 @@ export class productsService {
 
     //récupérer les dépassements 1/2 heures
     getDep() {
-        let requete = "http://"+this.ip+":"+this.portAPI+"/AnalysesDep";
+        let requete = "http://"+this.ip+":"+this.portAPI+"/AnalysesDep/"+this.idUsine;
         //console.log(requete);
 
 
@@ -174,7 +174,7 @@ export class productsService {
 
     //récupérer les sortants
     getSortants(Code : string) {
-        let requete = "http://"+this.ip+":"+this.portAPI+"/Sortants?Code="+Code;
+        let requete = "http://"+this.ip+":"+this.portAPI+"/Sortants?Code="+Code+"&idUsine="+this.idUsine;
         //console.log(requete);
 
 
@@ -188,7 +188,7 @@ export class productsService {
 
     //récupérer les consommables & autres
     getConsos() {
-        let requete = "http://"+this.ip+":"+this.portAPI+"/Consos";
+        let requete = "http://"+this.ip+":"+this.portAPI+"/Consos/"+this.idUsine;
         //console.log(requete);
 
 
@@ -202,7 +202,7 @@ export class productsService {
 
     //récupérer les produits pour le PCI
     getPCI() {
-        let requete = "http://"+this.ip+":"+this.portAPI+"/pci";
+        let requete = "http://"+this.ip+":"+this.portAPI+"/pci/"+this.idUsine;
         //console.log(requete);
 
 
@@ -216,7 +216,7 @@ export class productsService {
 
     //récupérer les containers
     getContainers() {
-        let requete = "http://"+this.ip+":"+this.portAPI+"/Container";
+        let requete = "http://"+this.ip+":"+this.portAPI+"/Container/"+this.idUsine;
         //console.log(requete);
 
 
@@ -244,7 +244,7 @@ export class productsService {
 
     //récupérer les produits par catégories => pour admin uniquement
     getAllProductsByType(typeId : number, name : string) {
-        let requete = "http://"+this.ip+":"+this.portAPI+"/Products/"+typeId+"?Name="+name;
+        let requete = "http://"+this.ip+":"+this.portAPI+"/Products/"+typeId+"?Name="+name+"&idUsine="+this.idUsine;
         //console.log(requete);
 
 

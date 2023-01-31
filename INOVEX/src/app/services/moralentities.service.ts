@@ -39,7 +39,7 @@ export class moralEntitiesService {
 
     //création de client
     createMoralEntity(){
-      let requete = "http://"+this.ip+":"+this.portAPI+"/moralEntitie?Name="+this._nom+"&Address="+this._adress+"&Code="+this._code+"&UnitPrice="+this._unitPrice;
+      let requete = "http://"+this.ip+":"+this.portAPI+"/moralEntitie?Name="+this._nom+"&Address="+this._adress+"&Code="+this._code+"&UnitPrice="+this._unitPrice+"&idUsine="+this.idUsine;
       //console.log(requete);
 
       const requestOptions = {
@@ -52,7 +52,7 @@ export class moralEntitiesService {
 
     //récupérer le dernier code
     getLastCode(Code : string) {
-      let requete = "http://"+this.ip+":"+this.portAPI+"/moralEntitieLastCode?Code="+Code;
+      let requete = "http://"+this.ip+":"+this.portAPI+"/moralEntitieLastCode?Code="+Code+"&idUsine="+this.idUsine;
       //console.log(requete);
 
 
@@ -66,7 +66,7 @@ export class moralEntitiesService {
 
     //récupérer les clients avec Enabled à 1 (pour la saisie)
     getMoralEntities(Code : string) {
-      let requete = "http://"+this.ip+":"+this.portAPI+"/moralEntities?Code="+Code;
+      let requete = "http://"+this.ip+":"+this.portAPI+"/moralEntities?Code="+Code+"&idUsine="+this.idUsine;
       //console.log(requete);
 
 
@@ -80,7 +80,7 @@ export class moralEntitiesService {
 
     //récupérer les clients
     getMoralEntitiesAll(Code : string) {
-        let requete = "http://"+this.ip+":"+this.portAPI+"/moralEntitiesAll?Code="+Code;
+        let requete = "http://"+this.ip+":"+this.portAPI+"/moralEntitiesAll?Code="+Code+"&idUsine="+this.idUsine;
         //console.log(requete);
 
 
@@ -174,7 +174,7 @@ export class moralEntitiesService {
 
     //récupérer la somme des tonnages
     getTotal(EntryDate : string, dechet : string) {
-        let requete = "http://"+this.ip+":"+this.portAPI+"/TotalMeasures/"+dechet+"/"+EntryDate;
+        let requete = "http://"+this.ip+":"+this.portAPI+"/TotalMeasures/"+dechet+"/"+EntryDate+"/"+this.idUsine;
         console.log(requete);
 
         const requestOptions = {
