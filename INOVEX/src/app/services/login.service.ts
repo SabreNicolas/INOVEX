@@ -57,7 +57,7 @@ export class loginService {
 
     //récupérer le login pour voir si il est déjà utilisé
     getLogin(login : string) {
-        let requete = "http://"+this.ip+":"+this.portAPI+"/User/"+login+"/"+this.idUsine;
+        let requete = "http://"+this.ip+":"+this.portAPI+"/User/"+login;
         //console.log(requete);
 
 
@@ -85,7 +85,7 @@ export class loginService {
 
     //Mise à jour mot de pase utilisateur
     updatePwd(login : string, pwd : string){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/User/"+login+"/"+pwd+"/"+this.idUsine;
+        let requete = "http://"+this.ip+":"+this.portAPI+"/User/"+login+"/"+pwd;
         //console.log(requete);
 
         const requestOptions = {
@@ -98,7 +98,7 @@ export class loginService {
 
     //Mise à jour droit rondier
     updateRondier(login : string, droit : number){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/UserRondier/"+login+"/"+droit+"/"+this.idUsine;
+        let requete = "http://"+this.ip+":"+this.portAPI+"/UserRondier/"+login+"/"+droit;
         //console.log(requete);
 
         const requestOptions = {
@@ -111,7 +111,7 @@ export class loginService {
 
     //Mise à jour droit saisie
     updateSaisie(login : string, droit : number){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/UserSaisie/"+login+"/"+droit+"/"+this.idUsine;
+        let requete = "http://"+this.ip+":"+this.portAPI+"/UserSaisie/"+login+"/"+droit;
         //console.log(requete);
 
         const requestOptions = {
@@ -124,7 +124,7 @@ export class loginService {
 
     //Mise à jour droit qse
     updateQSE(login : string, droit : number){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/UserQSE/"+login+"/"+droit+"/"+this.idUsine;
+        let requete = "http://"+this.ip+":"+this.portAPI+"/UserQSE/"+login+"/"+droit;
         //console.log(requete);
 
         const requestOptions = {
@@ -137,7 +137,7 @@ export class loginService {
 
     ///Mise à jour droit rapport
     updateRapport(login : string, droit : number){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/UserRapport/"+login+"/"+droit+"/"+this.idUsine;
+        let requete = "http://"+this.ip+":"+this.portAPI+"/UserRapport/"+login+"/"+droit;
         //console.log(requete);
 
         const requestOptions = {
@@ -150,7 +150,7 @@ export class loginService {
 
     //Mise à jour droit admin
     updateAdmin(login : string, droit : number){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/UserAdmin/"+login+"/"+droit+"/"+this.idUsine;
+        let requete = "http://"+this.ip+":"+this.portAPI+"/UserAdmin/"+login+"/"+droit;
         //console.log(requete);
 
         const requestOptions = {
