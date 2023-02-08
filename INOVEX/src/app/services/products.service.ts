@@ -49,7 +49,7 @@ export class productsService {
             .get<any>(requete,requestOptions);
     }
 
-    //création du produit de type compteur
+    //création du produit
     createProduct(typeId : number){
         let requete = "http://"+this.ip+":"+this.portAPI+"/Product?Name="+this._nom+"&Code="+this._code+"&typeId="+typeId+"&Unit="+this._unit+"&idUsine="+this.idUsine;
         //console.log(requete);
@@ -106,22 +106,9 @@ export class productsService {
 
     //récupérer les valeurs de compteur
     getValueCompteurs(Date : string, Code : string) {
-        let requete = "http://"+this.ip+":"+this.portAPI+"/Compteurs/"+Code+"/"+Date+"&idUsine="+this.idUsine;
+        let requete = "http://"+this.ip+":"+this.portAPI+"/Compteurs/"+Code+"/"+Date+"?idUsine="+this.idUsine;
         //console.log(requete);
 
-
-        const requestOptions = {
-            headers: new HttpHeaders(this.headerDict),
-        };
-
-        return this.http
-            .get<any>(requete,requestOptions);
-    }
-
-    //récupérer les valeurs de qse
-    getValueQse(Date : string, Code : string) {
-        let requete = "http://"+this.ip+":"+this.portAPI+"/qse/"+Code+"/"+Date+"&idUsine="+this.idUsine;
-        //console.log(requete);
 
         const requestOptions = {
             headers: new HttpHeaders(this.headerDict),
