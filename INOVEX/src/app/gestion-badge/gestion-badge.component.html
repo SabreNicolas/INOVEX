@@ -1,0 +1,34 @@
+<h1 class="creation">Affectation du badge {{badgeId}} :</h1>
+
+<div class="row">
+    <div class="col-sm-5 col-sm-offset-1">
+
+        <form ngNativeValidate  (ngSubmit)="onSubmit(f)" #f="ngForm">
+
+            <div class="form-group">
+                <label>{{labelSelect}}</label>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <select *ngIf="isUser" required class="form-select form-select-sm" aria-label=".form-select-sm example" name="affect" ngModel>
+                                <option *ngFor="let l of listAffect" value="{{l.Id}}">{{l.Nom | uppercase}} {{l.Prenom}}</option>
+                            </select>
+                            <select *ngIf="!isUser" required class="form-select form-select-sm" aria-label=".form-select-sm example" name="affect" ngModel>
+                                <option *ngFor="let l of listAffect" value="{{l.Id}}">{{l.nom}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <p style="font-size: smaller; color: grey">* : Obligatoire</p>
+
+            <div class="form-group">
+                <button class="btn btn-success btn-lg" type="submit">Valider</button>
+                <button class="btn btn-danger btn-lg" onclick="window.location.replace('/admin/badges')">Annuler</button>
+            </div>
+
+        </form>
+    </div>
+</div>
