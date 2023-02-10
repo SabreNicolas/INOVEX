@@ -8,6 +8,7 @@ export class productsService {
     private _nom : string;
     private _code : string;
     private _unit : string;
+    private _tag : string;
 
     httpClient: HttpClient;
     private headerDict = {
@@ -24,6 +25,7 @@ export class productsService {
         this._nom = '';
         this._code = '';
         this._unit = '';
+        this._tag = '';
         //Récupération du user dans localStorage
         var userLogged = localStorage.getItem('user');
         if (typeof userLogged === "string") {
@@ -51,7 +53,8 @@ export class productsService {
 
     //création du produit
     createProduct(typeId : number){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/Product?Name="+this._nom+"&Code="+this._code+"&typeId="+typeId+"&Unit="+this._unit+"&idUsine="+this.idUsine;
+        console.log(this._tag);
+        let requete = "http://"+this.ip+":"+this.portAPI+"/Product?Name="+this._nom+"&Code="+this._code+"&typeId="+typeId+"&Unit="+this._unit+"&idUsine="+this.idUsine+"&TAG="+this._tag;
         //console.log(requete);
 
         const requestOptions = {
@@ -282,6 +285,42 @@ export class productsService {
             .put<any>(requete,requestOptions);
     }
 
+    /*
+    ** Partie IMAGINDATA
+    */
+
+    //récupération produits sans TAG
+    getProductsWithoutTAG(){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/ProductWithoutTag/"+this.idUsine;
+        //console.log(requete);
+  
+        const requestOptions = {
+          headers: new HttpHeaders(this.headerDict),
+        };
+  
+        return this.http
+          .get<product[]>(requete,requestOptions);
+    }
+
+    //mettre à jour le TAG d'un produit
+    //?TAG=SJSJJS
+    setTAG(TAG: string, productId: number){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/productTAG/"+productId+"?TAG="+TAG;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<any>(requete,requestOptions);
+    }
+  
+  
+    /*
+    ** FIN Partie IMAGINDATA
+    */
+
 
     //GETTER & SETTER
     get nom(): string {
@@ -307,4 +346,13 @@ export class productsService {
     set unit(value: string) {
         this._unit = value;
     }
+
+    get tag(): string {
+        return this._tag;
+    }
+
+    set tag(tag: string) {
+        this._tag = tag;
+    }
+
 }

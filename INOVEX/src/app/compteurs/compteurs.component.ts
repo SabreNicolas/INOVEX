@@ -35,6 +35,11 @@ export class CompteursComponent implements OnInit {
     }
     else this.productsService.unit = form.value['unit'];
 
+    if (form.value['tag']==''){
+      this.productsService.tag = '/';
+    }
+    else this.productsService.tag = form.value['tag'];
+
     this.productsService.nom = form.value['nom'];
     this.Code = form.value['categorie'];
 
@@ -69,6 +74,8 @@ export class CompteursComponent implements OnInit {
     form.value['nom']='';
     form.controls['unit'].reset();
     form.value['unit']='';
+    form.controls['tag'].reset();
+    form.value['tag']='';
   }
 
 }

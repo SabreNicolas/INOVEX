@@ -38,6 +38,8 @@ import { ListUsersComponent } from './list-users/list-users.component';
 import { GestionUserComponent } from './gestion-user/gestion-user.component';
 import {AuthGuard} from "./services/auth-guard.service";
 import { rapportsService } from './services/rapports.service';
+import { rondierService } from './services/rondier.service';
+import { TagAffectationComponent } from './tag-affectation/tag-affectation.component';
 
 @NgModule({
   declarations: [
@@ -67,12 +69,13 @@ import { rapportsService } from './services/rapports.service';
     UserComponent,
     ListUsersComponent,
     GestionUserComponent,
+    TagAffectationComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule,
     HttpClientModule,
+    FormsModule,
   ],
   providers: [
     moralEntitiesService,
@@ -83,6 +86,7 @@ import { rapportsService } from './services/rapports.service';
     loginService,
     AuthGuard,
     rapportsService,
+    rondierService,
   ],
   bootstrap: [AppComponent]
 })

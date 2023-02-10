@@ -139,4 +139,23 @@ export class AdminComponent implements OnInit {
     Swal.fire("Le type a été mis à jour !");
   }
 
+  //Mis à jour du TAG
+  setTag(product : product){
+    var TAG = prompt('Veuillez saisir un TAG',String(product.TAG));
+    if(TAG == null) return;
+    // @ts-ignore
+    this.productsService.setTAG(TAG,product.Id).subscribe((response)=>{
+      if (response == "Mise à jour du TAG OK"){
+        Swal.fire("Le TAG a bien été affecté !");
+        this.ngOnInit();
+      }
+      else {
+        Swal.fire({
+          icon: 'error',
+          text: "Erreur lors de l'affectation du TAG ....",
+        })
+      }
+    });
+  }
+
 }
