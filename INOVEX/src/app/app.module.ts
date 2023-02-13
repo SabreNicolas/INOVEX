@@ -40,6 +40,20 @@ import {AuthGuard} from "./services/auth-guard.service";
 import { rapportsService } from './services/rapports.service';
 import { rondierService } from './services/rondier.service';
 import { TagAffectationComponent } from './tag-affectation/tag-affectation.component';
+import { BadgeComponent } from './badge/badge.component';
+import { ListBadgesComponent } from './list-badges/list-badges.component';
+import { GestionBadgeComponent } from './gestion-badge/gestion-badge.component';
+import { ZoneControleComponent } from './zone-controle/zone-controle.component';
+import { ElementControleComponent } from './element-controle/element-controle.component';
+import { ListZonesComponent } from './list-zones/list-zones.component';
+import { ListElementsComponent } from './list-elements/list-elements.component';
+import { PermisFeuComponent } from './permis-feu/permis-feu.component';
+import { ReportingRondeComponent } from './reporting-ronde/reporting-ronde.component';
+import { ModeOperatoireComponent } from './mode-operatoire/mode-operatoire.component';
+import { ListModeOperatoireComponent } from './list-mode-operatoire/list-mode-operatoire.component';
+import { ListConsignesComponent } from './list-consignes/list-consignes.component';
+import { ConsigneComponent } from './consigne/consigne.component';
+import { RondierFinMoisComponent } from './rondier-fin-mois/rondier-fin-mois.component';
 
 @NgModule({
   declarations: [
@@ -70,6 +84,20 @@ import { TagAffectationComponent } from './tag-affectation/tag-affectation.compo
     ListUsersComponent,
     GestionUserComponent,
     TagAffectationComponent,
+    BadgeComponent,
+    ListBadgesComponent,
+    GestionBadgeComponent,
+    ZoneControleComponent,
+    ElementControleComponent,
+    ListZonesComponent,
+    ListElementsComponent,
+    PermisFeuComponent,
+    ReportingRondeComponent,
+    ModeOperatoireComponent,
+    ListModeOperatoireComponent,
+    ListConsignesComponent,
+    ConsigneComponent,
+    RondierFinMoisComponent,
   ],
   imports: [
     BrowserModule,
