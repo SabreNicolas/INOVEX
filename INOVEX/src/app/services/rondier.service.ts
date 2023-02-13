@@ -26,9 +26,19 @@ export class rondierService {
     }
     private portAPI = 3000;
     private ip = "10.255.11.5";
+    private idUsine : number | undefined;
 
     constructor(private http: HttpClient) {
         this.httpClient = http;
+        //Récupération du user dans localStorage
+        var userLogged = localStorage.getItem('user');
+        if (typeof userLogged === "string") {
+            var userLoggedParse = JSON.parse(userLogged);
+
+            //Récupération de l'idUsine
+            // @ts-ignore
+            this.idUsine = userLoggedParse['idUsine'];
+        }
     }
 
     /*
@@ -37,7 +47,7 @@ export class rondierService {
 
     //création du badge
     createBadge(uid : string){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/Badge?uid="+uid;
+        let requete = "http://"+this.ip+":"+this.portAPI+"/Badge?uid="+uid+"&idUsine="+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -50,7 +60,7 @@ export class rondierService {
 
     //récupération du dernier Id inséré
     lastIdBadge(){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/BadgeLastId";
+        let requete = "http://"+this.ip+":"+this.portAPI+"/BadgeLastId/"+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -63,7 +73,7 @@ export class rondierService {
 
     //liste des badges non affectés
     listBadgeNonAffect(){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/BadgesLibre";
+        let requete = "http://"+this.ip+":"+this.portAPI+"/BadgesLibre/"+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -76,7 +86,7 @@ export class rondierService {
 
     //liste des badges affectés à une zone
     listBadgeZone(){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/BadgesZone";
+        let requete = "http://"+this.ip+":"+this.portAPI+"/BadgesZone/"+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -89,7 +99,7 @@ export class rondierService {
 
     //liste des badges affectés à un user
     listBadgeUser(){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/BadgesUser";
+        let requete = "http://"+this.ip+":"+this.portAPI+"/BadgesUser/"+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -150,7 +160,7 @@ export class rondierService {
 
     //création de la zone de controle
     createZone(nom : string, commentaire : string, four1 : number, four2 : number){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/zone?nom="+nom+"&commentaire="+commentaire+"&four1="+four1+"&four2="+four2;
+        let requete = "http://"+this.ip+":"+this.portAPI+"/zone?nom="+nom+"&commentaire="+commentaire+"&four1="+four1+"&four2="+four2+"&idUsine="+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -163,7 +173,7 @@ export class rondierService {
 
     //liste des zones de controle
     listZone(){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/zones";
+        let requete = "http://"+this.ip+":"+this.portAPI+"/zones/"+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -176,7 +186,7 @@ export class rondierService {
 
     //liste des zones de controle libres
     listZoneLibre(){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/ZonesLibre";
+        let requete = "http://"+this.ip+":"+this.portAPI+"/ZonesLibre/"+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -307,7 +317,7 @@ export class rondierService {
 
     //liste des elements de controle de type compteur
     listElementCompteur(){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/elementsCompteur";
+        let requete = "http://"+this.ip+":"+this.portAPI+"/elementsCompteur/"+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -321,7 +331,7 @@ export class rondierService {
 
     //liste des zones et leurs éléments
     listZonesAndElements(){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/BadgeAndElementsOfZone";
+        let requete = "http://"+this.ip+":"+this.portAPI+"/BadgeAndElementsOfZone/"+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -392,7 +402,7 @@ export class rondierService {
 
     //liste des permis de feu en cours
     listPermisFeu(){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/PermisFeu";
+        let requete = "http://"+this.ip+":"+this.portAPI+"/PermisFeu/"+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -406,7 +416,7 @@ export class rondierService {
     //liste des validation de permis de feu
     //?dateHeure=xshhshx
     listPermisFeuValidation(dateHeure: String | undefined){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/PermisFeuVerification?dateHeure="+dateHeure;
+        let requete = "http://"+this.ip+":"+this.portAPI+"/PermisFeuVerification?dateHeure="+dateHeure+"&idUsine="+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -450,7 +460,7 @@ export class rondierService {
 
     //liste des modeOP
     listModeOP(){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/modeOPs";
+        let requete = "http://"+this.ip+":"+this.portAPI+"/modeOPs/"+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -486,7 +496,7 @@ export class rondierService {
 
     //liste des rondes pour une date donnée
     listRonde(date : string){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/Rondes?date="+date;
+        let requete = "http://"+this.ip+":"+this.portAPI+"/Rondes?date="+date+"&idUsine="+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -544,7 +554,7 @@ export class rondierService {
 
     //liste des users sans badge
     listUserLibre(){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/UsersLibre";
+        let requete = "http://"+this.ip+":"+this.portAPI+"/UsersLibre/"+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -561,7 +571,7 @@ export class rondierService {
     //création d'une consigne
     //?commentaire=dggd&dateFin=fff&type=1
     createConsigne(desc: string, type: number, dateFin: string | null){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/consigne?commentaire="+desc+"&dateFin="+dateFin+"&type="+type;
+        let requete = "http://"+this.ip+":"+this.portAPI+"/consigne?commentaire="+desc+"&dateFin="+dateFin+"&type="+type+"&idUsine="+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -574,7 +584,7 @@ export class rondierService {
 
     //liste des consignes en cours de validité
     listConsignes(){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/consignes";
+        let requete = "http://"+this.ip+":"+this.portAPI+"/consignes/"+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
