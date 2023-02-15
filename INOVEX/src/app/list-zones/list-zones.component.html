@@ -7,8 +7,7 @@
             <tr class="table-secondary">
                 <th scope="col">Nom</th>
                 <th scope="col">Commentaire</th>
-                <th scope="col">Four 1</th>
-                <th scope="col">Four 2</th>
+                <th scope="col">Num Four</th>
                 <th scope="col">Edition</th>
                 <th scope="col">Edition</th>
             </tr>
@@ -17,10 +16,11 @@
             <tr class="table-light">
                 <td>{{z.nom}}</td>
                 <td>{{z.commentaire}}</td>
-                <td style="text-align: center" *ngIf="z.four1 === 1"><i style="color: green" class="fa fa-check" aria-hidden="true"></i></td>
+                <!--<td style="text-align: center" *ngIf="z.four1 === 1"><i style="color: green" class="fa fa-check" aria-hidden="true"></i></td>
                 <td style="text-align: center" *ngIf="z.four1 === 0"><i style="color: red" class="fa fa-times" aria-hidden="true"></i></td>
                 <td style="text-align: center" *ngIf="z.four2 === 1"><i style="color: green" class="fa fa-check" aria-hidden="true"></i></td>
-                <td style="text-align: center" *ngIf="z.four2 === 0"><i style="color: red" class="fa fa-times" aria-hidden="true"></i></td>
+                <td style="text-align: center" *ngIf="z.four2 === 0"><i style="color: red" class="fa fa-times" aria-hidden="true"></i></td>-->
+                <td>{{z.four}}</td>
                 <td><button id="setComment" (click)="setComment(z)" class="btn btn-outline-primary">
                     <i class="fa fa-pencil"></i>Commentaire
                 </button></td>

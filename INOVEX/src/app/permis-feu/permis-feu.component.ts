@@ -18,7 +18,7 @@ export class PermisFeuComponent implements OnInit {
   public dateHeureFin : string;
   public dateHeureFinFormatBDD : string | null;
   public badgeId : number;
-  public isPermisFeu : boolean = false;
+  public isPermisFeu : number = 0;
   public zone : string;
   public numero : string;
 
@@ -33,9 +33,9 @@ export class PermisFeuComponent implements OnInit {
     this.numero = "";
     this.route.queryParams.subscribe(params => {
       if(params.isPermisFeu.includes('true')){
-        this.isPermisFeu = true;
+        this.isPermisFeu = 1;
       }
-      else this.isPermisFeu = false;
+      else this.isPermisFeu = 0;
     });
   }
 

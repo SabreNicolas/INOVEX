@@ -24,7 +24,7 @@ export class rondierService {
         'Accept': 'application/json',
         'Access-Control-Allow-Origin': '*'
     }
-    private portAPI = 3000;
+    private portAPI = 3100;
     private ip = "10.255.11.5";
     private idUsine : number | undefined;
 
@@ -60,7 +60,7 @@ export class rondierService {
 
     //récupération du dernier Id inséré
     lastIdBadge(){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/BadgeLastId/"+this.idUsine;
+        let requete = "http://"+this.ip+":"+this.portAPI+"/BadgeLastId";
         //console.log(requete);
 
         const requestOptions = {
@@ -159,8 +159,8 @@ export class rondierService {
      */
 
     //création de la zone de controle
-    createZone(nom : string, commentaire : string, four1 : number, four2 : number){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/zone?nom="+nom+"&commentaire="+commentaire+"&four1="+four1+"&four2="+four2+"&idUsine="+this.idUsine;
+    createZone(nom : string, commentaire : string, four : number){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/zone?nom="+nom+"&commentaire="+commentaire+"&four="+four+"&idUsine="+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -388,7 +388,7 @@ export class rondierService {
 
     //création du permis de feu
     //?dateHeureDeb=dggd&dateHeureFin=fff&badgeId=1?numero=ehgeheh
-    createPermisFeu(dateHeureDeb: string | null, dateHeureFin: string | null, badgeId: number, zone : string, isPermisFeu : boolean, numero : string){
+    createPermisFeu(dateHeureDeb: string | null, dateHeureFin: string | null, badgeId: number, zone : string, isPermisFeu : number, numero : string){
         let requete = "http://"+this.ip+":"+this.portAPI+"/PermisFeu?dateHeureDeb="+dateHeureDeb+"&dateHeureFin="+dateHeureFin+"&badgeId="+badgeId+"&zone="+zone+"&isPermisFeu="+isPermisFeu+"&numero="+numero;
         //console.log(requete);
 

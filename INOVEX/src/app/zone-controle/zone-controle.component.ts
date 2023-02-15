@@ -48,7 +48,8 @@ export class ZoneControleComponent implements OnInit {
     else this.commentaire = form.value['commentaire'];
 
 
-    this.rondierService.createZone(this.nom,this.commentaire,this.four1,this.four2).subscribe((response)=>{
+    //TODO : prendre en compte envoi de num de four avec automatisaiton du nombre de four
+    this.rondierService.createZone(this.nom,this.commentaire,1).subscribe((response)=>{
       if (response == "Création de la zone OK"){
         Swal.fire("La zone de contrôle a bien été créé !");
       }
