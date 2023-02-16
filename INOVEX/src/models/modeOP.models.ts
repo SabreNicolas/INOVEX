@@ -2,5 +2,5 @@ export interface modeOP{
     Id : number;
     nom : string;
     nomZone : string;
-    fichier : Blob;
+    fichier : string;
 }

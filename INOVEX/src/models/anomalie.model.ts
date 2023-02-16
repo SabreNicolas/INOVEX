@@ -3,5 +3,5 @@ export interface anomalie{
     rondeId : number;
     zoneId : number;
     commentaire : string;
-    photo : Blob;
+    photo : string;
 }
