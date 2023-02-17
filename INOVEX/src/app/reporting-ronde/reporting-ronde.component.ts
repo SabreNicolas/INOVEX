@@ -254,12 +254,8 @@ export class ReportingRondeComponent implements OnInit {
     img.src = imageUrl;
   }*/
 
-  downloadImage(anomalie : anomalie) {
-    // @ts-ignore
-    var byteArray = new Uint8Array(anomalie.photo.data);
-    var blob = new Blob([byteArray], {type: "image/png"});
-    var fileURL = URL.createObjectURL(blob);
-    window.open(fileURL, '_blank');
+  downloadImage(urlPhoto : string) {
+    window.open(urlPhoto, '_blank');
   }
 
 

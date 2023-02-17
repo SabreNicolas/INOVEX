@@ -24,8 +24,9 @@ export class ListModeOperatoireComponent implements OnInit {
   }
 
   //suppression d'un mode opératoire
-  deleteModeOP(id : number){
-    this.rondierService.deleteModeOP(id).subscribe((response)=>{
+  deleteModeOP(modeOP : modeOP){
+    //On récupére le nom du fichier dans l'url pour le supprimer du stockage multer
+    this.rondierService.deleteModeOP(modeOP.Id,modeOP.fichier.split("/fichiers/")[1]).subscribe((response)=>{
       if (response == "Suppression du modeOP OK"){
         Swal.fire("Le mode opératoire a bien été supprimé !");
       }

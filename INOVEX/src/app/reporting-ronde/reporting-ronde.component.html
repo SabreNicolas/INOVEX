@@ -99,7 +99,7 @@
                         <div *ngFor="let anomalie of listAnomalie">
                             <p style="color: red" *ngIf="anomalie.zoneId == elementsOfOneZone.zoneId && anomalie.rondeId == ronde.Id">
                                 <strong>- {{anomalie.commentaire}}  </strong>
-                                <button class="btn btn-outline-secondary" (click)="downloadImage(anomalie)">
+                                <button class="btn btn-outline-secondary" (click)="downloadImage(anomalie.photo)">
                                     <i style="color:black;" class="fa fa-camera" aria-hidden="true"></i>
                                 </button>
                             </p>

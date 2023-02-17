@@ -472,8 +472,8 @@ export class rondierService {
     }
 
     //delete modeOP
-    deleteModeOP(id : number){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/modeOP/"+id;
+    deleteModeOP(id : number, nom : string){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/modeOP/"+id+"?nom="+nom;
         //console.log(requete);
 
         const requestOptions = {
@@ -632,5 +632,26 @@ export class rondierService {
 
     /*
     FIN ANOMALIES
+    */
+
+    /*
+    NB LIGNE USINE
+     */
+
+    //Nombre de four dans l'usine
+    nbLigne(){
+        let requete = "http://"+this.ip+":"+this.portAPI+"/nbLigne/"+this.idUsine;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<number>(requete,requestOptions);
+    }
+
+    /*
+    FIN NB LIGNE USINE
      */
 }

@@ -12,44 +12,40 @@ export class ZoneControleComponent implements OnInit {
 
   private nom : string;
   private commentaire : string;
-  private four1 : number;
-  private four2 : number;
+  private nbfour : number;
+  public numbers : number[]; 
+  private four : number;
 
   constructor(private rondierService : rondierService) {
     this.nom ="";
     this.commentaire="";
-    this.four1 = 0;
-    this.four2 = 0;
+    this.nbfour = 0;
+    //contient des chiffres pour l'itération des fours
+    this.numbers = [];
+    this.four = 0;
   }
 
   ngOnInit(): void {
+    //Récupération du nombre de four du site
+    this.rondierService.nbLigne().subscribe((response)=>{
+      //@ts-ignore
+      this.nbfour = response.data[0].nbLigne;
+      this.numbers = Array(this.nbfour).fill(1).map((x,i) => i+1);
+      console.log(this.numbers);
+    });
   }
 
   //création de la zone de controle
   onSubmit(form : NgForm) {
     this.nom = form.value['nom'];
-    //Gestion Four
-    if(form.value['choixFour'] ===1) {
-      this.four1 = 1;
-      this.four2 = 0;
-    }
-    else if(form.value['choixFour'] ===2) {
-      this.four2 = 1;
-      this.four1 = 0;
-    }
-    else {
-      this.four2 = 0;
-      this.four1 = 0;
-    }
+    this.four = form.value['four'];
     //Gestion commentaire
     if(form.value['commentaire'].length < 1){
       this.commentaire = "_";
     }
     else this.commentaire = form.value['commentaire'];
 
-
-    //TODO : prendre en compte envoi de num de four avec automatisaiton du nombre de four
-    this.rondierService.createZone(this.nom,this.commentaire,1).subscribe((response)=>{
+    this.rondierService.createZone(this.nom,this.commentaire,this.four).subscribe((response)=>{
       if (response == "Création de la zone OK"){
         Swal.fire("La zone de contrôle a bien été créé !");
       }
