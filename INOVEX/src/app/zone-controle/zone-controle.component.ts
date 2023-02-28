@@ -31,7 +31,6 @@ export class ZoneControleComponent implements OnInit {
       //@ts-ignore
       this.nbfour = response.data[0].nbLigne;
       this.numbers = Array(this.nbfour).fill(1).map((x,i) => i+1);
-      console.log(this.numbers);
     });
   }
 
