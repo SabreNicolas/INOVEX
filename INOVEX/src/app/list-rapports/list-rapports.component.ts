@@ -16,7 +16,7 @@ export class ListRapportsComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    window.parent.document.title = 'PAPREX - Rapports';
+    window.parent.document.title = 'CAP Exploitation - Rapports';
 
     //récupération des rapports
     this.rapportsService.getRapports().subscribe((response)=>{

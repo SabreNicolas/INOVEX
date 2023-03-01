@@ -42,7 +42,7 @@ export class AcceuilComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    window.parent.document.title = 'PAPREX';
+    window.parent.document.title = 'CAP Exploitation';
     var userLogged = localStorage.getItem('user');
     if (typeof userLogged === "string") {
       var userLoggedParse = JSON.parse(userLogged);
