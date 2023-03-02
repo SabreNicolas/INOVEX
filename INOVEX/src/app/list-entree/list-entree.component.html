@@ -14,11 +14,7 @@
                 <div class="form-group">
                     <select id="produit" required class="form-select form-select-sm"
                             aria-label=".form-select-sm example" name="produit" ngModel="201">
-                        <option selected value="201">OM</option>
-                        <option value="202">DIB/DEA</option>
-                        <option value="203">DASRI</option>
-                        <option value="204">DAOM</option>
-                        <option value="205">Refus de tri</option>
+                        <option *ngFor="let type of listTypeDechets" value="{{type.split('-')[0]}}">{{type.split("-")[1]}}</option>
                     </select>
                 </div>
             </div>

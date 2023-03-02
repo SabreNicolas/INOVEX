@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {moralEntitiesService} from "../services/moralentities.service";
 import Swal from 'sweetalert2';
 import {moralEntity} from "../../models/moralEntity.model";
+import { dechetsCollecteurs } from 'src/models/dechetsCollecteurs.model';
 
 @Component({
   selector: 'app-list-moral-entities',
@@ -13,17 +14,43 @@ export class ListMoralEntitiesComponent implements OnInit {
   public moralEntities : moralEntity[];
   public debCode : string;
   public listId : number[];
+  private listTypeDechetsCollecteurs : dechetsCollecteurs[];
+  public listTypeDechets : string[];
+  public listCollecteurs : string[];
 
   constructor(private moralEntitiesService : moralEntitiesService) {
     this.debCode = '';
     this.listId = [];
     this.moralEntities = [];
+    this.listTypeDechetsCollecteurs = [];
+    this.listTypeDechets = [];
+    this.listCollecteurs = [];
   }
 
   ngOnInit(): void {
     this.moralEntitiesService.getMoralEntitiesAll(this.debCode).subscribe((response)=>{
       // @ts-ignore
       this.moralEntities = response.data;
+
+      //Récupération des types de déchets et des collecteurs
+      this.moralEntitiesService.GetTypeDéchets().subscribe((response)=>{
+        //@ts-ignore
+        this.listTypeDechetsCollecteurs = response.data;
+
+        //On boucle maintenant sur ce tableau pour scindé en déchets / collecteurs avec les codes associés
+        this.listTypeDechetsCollecteurs.forEach(typeDechetsCollecteurs => {
+          let typeDechets, collecteur;
+          typeDechets = typeDechetsCollecteurs.Code.substring(0,3)+"-"+typeDechetsCollecteurs.Name.split(' ')[0];
+          collecteur = typeDechetsCollecteurs.Code.substring(3)+"-"+typeDechetsCollecteurs.Name.split(' ')[1];
+          if(!this.listTypeDechets.includes(typeDechets)){
+            this.listTypeDechets.push(typeDechets);
+          }
+          if(!this.listCollecteurs.includes(collecteur)){
+            this.listCollecteurs.push(collecteur);
+          }
+        });
+      });
+      
     });
   }
 

@@ -6,6 +6,7 @@ import {NgForm} from "@angular/forms";
 import {productsService} from "../services/products.service";
 import {product} from "../../models/products.model";
 import * as XLSX from 'xlsx';
+import { dechetsCollecteurs } from 'src/models/dechetsCollecteurs.model';
 
 @Component({
   selector: 'app-list-entree',
@@ -22,6 +23,8 @@ export class ListEntreeComponent implements OnInit {
   public listTotal : number[];
   public monthCall : number;
   public containerDasri : product | undefined;
+  private listTypeDechetsCollecteurs : dechetsCollecteurs[];
+  public listTypeDechets : string[];
 
   constructor(private moralEntitiesService : moralEntitiesService, private productsService : productsService) {
     this.debCode = '20';
@@ -29,10 +32,28 @@ export class ListEntreeComponent implements OnInit {
     this.listDays = [];
     this.listTotal = [];
     this.monthCall = 0;
+    this.listTypeDechetsCollecteurs = [];
+    this.listTypeDechets = [];
   }
 
   ngOnInit(): void {
     this.containerDasri = undefined;
+
+    //Récupération des types de déchets et des collecteurs
+    this.moralEntitiesService.GetTypeDéchets().subscribe((response)=>{
+      //@ts-ignore
+      this.listTypeDechetsCollecteurs = response.data;
+
+      //On boucle maintenant sur ce tableau pour scindé en déchets / collecteurs avec les codes associés
+      this.listTypeDechetsCollecteurs.forEach(typeDechetsCollecteurs => {
+        let typeDechets;
+        typeDechets = typeDechetsCollecteurs.Code.substring(0,3)+"-"+typeDechetsCollecteurs.Name.split(' ')[0];
+        if(!this.listTypeDechets.includes(typeDechets)){
+          this.listTypeDechets.push(typeDechets);
+        }
+      });
+    });
+
     this.moralEntitiesService.getMoralEntities(this.debCode).subscribe((response)=>{
       // @ts-ignore
       this.moralEntities = response.data;

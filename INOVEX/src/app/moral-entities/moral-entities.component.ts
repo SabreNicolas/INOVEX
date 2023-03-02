@@ -2,6 +2,7 @@ import {Component, Injectable, OnInit} from '@angular/core';
 import { NgForm } from '@angular/forms';
 import {moralEntitiesService} from "../services/moralentities.service";
 import Swal from 'sweetalert2';
+import { dechetsCollecteurs } from 'src/models/dechetsCollecteurs.model';
 
 @Component({
   selector: 'app-moral-entities',
@@ -12,12 +13,36 @@ import Swal from 'sweetalert2';
 export class MoralEntitiesComponent implements OnInit {
 
   private code : string;
+  private listTypeDechetsCollecteurs : dechetsCollecteurs[];
+  public listTypeDechets : string[];
+  public listCollecteurs : string[];
 
   constructor(private moralEntitiesService : moralEntitiesService) {
     this.code = '';
+    this.listTypeDechetsCollecteurs = [];
+    this.listTypeDechets = [];
+    this.listCollecteurs = [];
   }
 
   ngOnInit(): void {
+    //Récupération des types de déchets et des collecteurs
+    this.moralEntitiesService.GetTypeDéchets().subscribe((response)=>{
+      //@ts-ignore
+      this.listTypeDechetsCollecteurs = response.data;
+
+      //On boucle maintenant sur ce tableau pour scindé en déchets / collecteurs avec les codes associés
+      this.listTypeDechetsCollecteurs.forEach(typeDechetsCollecteurs => {
+        let typeDechets, collecteur;
+        typeDechets = typeDechetsCollecteurs.Code.substring(0,3)+"-"+typeDechetsCollecteurs.Name.split(' ')[0];
+        collecteur = typeDechetsCollecteurs.Code.substring(3)+"-"+typeDechetsCollecteurs.Name.split(' ')[1];
+        if(!this.listTypeDechets.includes(typeDechets)){
+          this.listTypeDechets.push(typeDechets);
+        }
+        if(!this.listCollecteurs.includes(collecteur)){
+          this.listCollecteurs.push(collecteur);
+        }
+      });
+    });
   }
 
 

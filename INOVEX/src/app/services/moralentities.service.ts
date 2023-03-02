@@ -1,5 +1,6 @@
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Injectable} from "@angular/core";
+import { dechetsCollecteurs } from "src/models/dechetsCollecteurs.model";
 import {moralEntity} from "../../models/moralEntity.model";
 
 @Injectable()
@@ -184,6 +185,20 @@ export class moralEntitiesService {
         return this.http
             .get<any>(requete,requestOptions);
     }
+
+    //** PARTIE Products mais est directement lié aux MR donc se trouve ici */
+    //récupérer les types de déchets et collecteurs
+    GetTypeDéchets() {
+      let requete = "http://"+this.ip+":"+this.portAPI+"/DechetsCollecteurs/"+this.idUsine;
+      console.log(requete);
+
+      const requestOptions = {
+          headers: new HttpHeaders(this.headerDict),
+      };
+
+      return this.http
+          .get<dechetsCollecteurs[]>(requete,requestOptions);
+  }
 
 
 
