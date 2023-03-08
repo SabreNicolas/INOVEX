@@ -26,7 +26,6 @@ export class ListRapportsComponent implements OnInit {
   }
 
   download(url : string){
-    alert(url);
     window.location.assign(url);
   }
 

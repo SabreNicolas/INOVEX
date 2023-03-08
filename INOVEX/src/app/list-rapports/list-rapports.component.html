@@ -1,8 +1,10 @@
 <button routerLink="" class="btn btn-outline-primary btn-lg btnRetour"><i class="fa fa-home"></i> Accueil</button>
 
+<h3 class="center">Entrées/Sorties :</h3>
+
 <div class="rapportsList">
-    <a *ngFor="let rapport of listRapports;let indexOfelement = index" target="_self" (click)="download(rapport.url)">
-        <div class="card rapportsLink">
+    <a *ngFor="let rapport of listRapports" target="_self" (click)="download(rapport.url)">
+        <div *ngIf="rapport.nom.includes('Entrées') || rapport.nom.includes('Sorties')" class="card">
             <img src="assets/excel.png" class="card-img-top" alt="...">
             <div class="card-body">
                 <p class="card-text">{{rapport.nom}}</p>
@@ -11,3 +13,41 @@
     </a>
 </div>
 
+<h3 class="center">Facturation :</h3>
+
+<div class="rapportsList">
+    <a *ngFor="let rapport of listRapports" target="_self" (click)="download(rapport.url)">
+        <div *ngIf="rapport.nom.includes('Facturation')" class="card">
+            <img src="assets/excel.png" class="card-img-top" alt="...">
+            <div class="card-body">
+                <p class="card-text">{{rapport.nom}}</p>
+            </div>
+        </div>
+    </a>
+</div>
+
+<h3 class="center">Tableau de Bord :</h3>
+
+<div class="rapportsList">
+    <a *ngFor="let rapport of listRapports" target="_self" (click)="download(rapport.url)">
+        <div *ngIf="rapport.nom.includes('Tableau de Bord')" class="card">
+            <img src="assets/excel.png" class="card-img-top" alt="...">
+            <div class="card-body">
+                <p class="card-text">{{rapport.nom}}</p>
+            </div>
+        </div>
+    </a>
+</div>
+
+<h3 class="center">Divers :</h3>
+
+<div class="rapportsList">
+    <a *ngFor="let rapport of listRapports" target="_self" (click)="download(rapport.url)">
+        <div *ngIf="!rapport.nom.includes('Entrées') && !rapport.nom.includes('Sorties') && !rapport.nom.includes('Facturation') && !rapport.nom.includes('Tableau de Bord')" class="card">
+            <img src="assets/excel.png" class="card-img-top" alt="...">
+            <div class="card-body">
+                <p class="card-text">{{rapport.nom}}</p>
+            </div>
+        </div>
+    </a>
+</div>

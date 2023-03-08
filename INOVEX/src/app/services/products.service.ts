@@ -17,7 +17,7 @@ export class productsService {
         'Access-Control-Allow-Origin' : '*'
     }
     private portAPI = 3100;
-    private ip = "10.255.11.5";
+    private ip = "fr-couvinove301.prod.paprec.fr";
     private idUsine : number | undefined;
 
     constructor(private http: HttpClient) {
