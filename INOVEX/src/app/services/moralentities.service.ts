@@ -10,6 +10,12 @@ export class moralEntitiesService {
     private _adress : string;
     private _code : string;
     private _unitPrice : number;
+    private _numCAP : string;
+    private _codeDechet : string;
+    private _nomClient : string;
+    private _prenomClient : string;
+    private _mailClient : string;
+    private _MR : moralEntity | undefined;
 
     httpClient: HttpClient;
     private headerDict = {
@@ -27,6 +33,11 @@ export class moralEntitiesService {
         this._adress = '';
         this._code = '';
         this._unitPrice = 0.0;
+        this._numCAP = '';
+        this._codeDechet = '';
+        this._nomClient = '';
+        this._prenomClient = '';
+        this._mailClient = '';
         //Récupération du user dans localStorage
         var userLogged = localStorage.getItem('user');
         if (typeof userLogged === "string") {
@@ -40,7 +51,7 @@ export class moralEntitiesService {
 
     //création de client
     createMoralEntity(){
-      let requete = "https://"+this.ip+":"+this.portAPI+"/moralEntitie?Name="+this._nom+"&Address="+this._adress+"&Code="+this._code+"&UnitPrice="+this._unitPrice+"&idUsine="+this.idUsine;
+      let requete = "https://"+this.ip+":"+this.portAPI+"/moralEntitie?Name="+this._nom+"&Address="+this._adress+"&Code="+this._code+"&UnitPrice="+this._unitPrice+"&numCAP="+this.numCAP+"&codeDechet="+this.codeDechet+"&nomClient="+this.nomClient+"&prenomClient="+this.prenomClient+"&mailClient="+this.mailClient+"&idUsine="+this.idUsine;
       //console.log(requete);
 
       const requestOptions = {
@@ -93,6 +104,20 @@ export class moralEntitiesService {
             .get<moralEntity[]>(requete,requestOptions);
     }
 
+    //récupérer 1 client
+    getOneMoralEntity(Id : number) {
+      let requete = "https://"+this.ip+":"+this.portAPI+"/moralEntitie/"+Id;
+      //console.log(requete);
+
+
+      const requestOptions = {
+          headers: new HttpHeaders(this.headerDict),
+      };
+
+      return this.http
+          .get<moralEntity>(requete,requestOptions);
+    }
+
     //mettre à jour le code d'un client
     setCode(Code: string | null, Id: number){
       let requete = "https://"+this.ip+":"+this.portAPI+"/moralEntitieCode/"+Id+"?Code="+Code;
@@ -119,6 +144,19 @@ export class moralEntitiesService {
         .put<any>(requete,requestOptions);
     }
 
+    //mettre à jour le num de CAP d'un client
+    setCAP(cap: string, Id: number){
+      let requete = "https://"+this.ip+":"+this.portAPI+"/moralEntitieCAP/"+Id+"?cap="+cap;
+      //console.log(requete);
+
+      const requestOptions = {
+          headers: new HttpHeaders(this.headerDict),
+      };
+
+      return this.http
+          .put<any>(requete,requestOptions);
+    }
+
     //mettre à jour le nom d'un client
     setName(name: string, Id: number){
         let requete = "https://"+this.ip+":"+this.portAPI+"/moralEntitieName/"+Id+"?Name="+name;
@@ -143,6 +181,19 @@ export class moralEntitiesService {
 
       return this.http
         .put<any>(requete,requestOptions);
+    }
+
+    //update de client
+    updateMoralEntity(Id : number){
+      let requete = "https://"+this.ip+":"+this.portAPI+"/moralEntitieAll/"+Id+"?Name="+this._nom+"&Address="+this._adress+"&Code="+this._code+"&UnitPrice="+this._unitPrice+"&numCAP="+this.numCAP+"&codeDechet="+this.codeDechet+"&nomClient="+this.nomClient+"&prenomClient="+this.prenomClient+"&mailClient="+this.mailClient;
+      //console.log(requete);
+
+      const requestOptions = {
+          headers: new HttpHeaders(this.headerDict),
+      };
+
+      return this.http
+          .put<any>(requete,requestOptions);
     }
 
     //insérer une mesure
@@ -233,5 +284,54 @@ export class moralEntitiesService {
 
     set unitPrice(value: number) {
       this._unitPrice = value;
+    }
+
+    get numCAP(): string {
+      return this._numCAP;
+    }
+
+    set numCAP(value: string) {
+        this._numCAP = value;
+    }
+
+    get codeDechet(): string {
+        return this._codeDechet;
+    }
+
+    set codeDechet(value: string) {
+        this._codeDechet = value;
+    }
+
+    get nomClient(): string {
+        return this._nomClient;
+    }
+
+    set nomClient(value: string) {
+        this._nomClient = value;
+    }
+
+    get prenomClient(): string {
+        return this._prenomClient;
+    }
+
+    set prenomClient(value: string) {
+        this._prenomClient = value;
+    }
+
+    get mailClient(): string {
+        return this._mailClient;
+    }
+
+    set mailClient(value: string) {
+        this._mailClient = value;
+    }
+
+
+    get MR(): moralEntity {
+        return <moralEntity>this._MR;
+    }
+
+    set MR(value: moralEntity) {
+        this._MR = value;
     }
 }

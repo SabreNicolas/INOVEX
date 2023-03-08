@@ -3,6 +3,7 @@ import {moralEntitiesService} from "../services/moralentities.service";
 import Swal from 'sweetalert2';
 import {moralEntity} from "../../models/moralEntity.model";
 import { dechetsCollecteurs } from 'src/models/dechetsCollecteurs.model';
+import { user } from 'src/models/user.model';
 
 @Component({
   selector: 'app-list-moral-entities',
@@ -14,6 +15,8 @@ export class ListMoralEntitiesComponent implements OnInit {
   public moralEntities : moralEntity[];
   public debCode : string;
   public listId : number[];
+  private userLogged : user | undefined;
+  public isAdmin : number;//0 ou 1
   private listTypeDechetsCollecteurs : dechetsCollecteurs[];
   public listTypeDechets : string[];
   public listCollecteurs : string[];
@@ -21,6 +24,7 @@ export class ListMoralEntitiesComponent implements OnInit {
   constructor(private moralEntitiesService : moralEntitiesService) {
     this.debCode = '';
     this.listId = [];
+    this.isAdmin = 0;
     this.moralEntities = [];
     this.listTypeDechetsCollecteurs = [];
     this.listTypeDechets = [];
@@ -28,6 +32,15 @@ export class ListMoralEntitiesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    //Verification droit admin du user pour disabled ou non le btn d'edition des clients
+    var userLogged = localStorage.getItem('user');
+    if (typeof userLogged === "string") {
+      var userLoggedParse = JSON.parse(userLogged);
+      this.userLogged = userLoggedParse;
+      // @ts-ignore
+      this.isAdmin = this.userLogged['isAdmin'];
+    }
+
     this.moralEntitiesService.getMoralEntitiesAll(this.debCode).subscribe((response)=>{
       // @ts-ignore
       this.moralEntities = response.data;
@@ -102,6 +115,27 @@ export class ListMoralEntitiesComponent implements OnInit {
       });
       this.ngOnInit();
     }
+  }
+
+  //mise à jour du num de CAP d'un client
+  setCAP(MR : moralEntity){
+    var cap = prompt('Veuillez saisir un n° du CAP',String(MR.numCAP));
+    if (cap === null) {
+      return; //break out of the function early
+    }
+    // @ts-ignore
+    this.moralEntitiesService.setCAP(cap,MR.Id).subscribe((response)=>{
+      if (response == "Mise à jour du CAP OK"){
+        Swal.fire("Le n° de du CAP a été mis à jour !");
+      }
+      else {
+        Swal.fire({
+          icon: 'error',
+          text: 'Erreur lors de la mise à jour du n° du CAP ....',
+        })
+      }
+    });
+    this.ngOnInit();
   }
 
   //mise à jour du nom d'un client
