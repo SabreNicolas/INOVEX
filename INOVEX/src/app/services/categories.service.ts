@@ -38,7 +38,7 @@ export class categoriesService {
 
     //création de catégorie
     createCategory(){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/Category?Name="+this._nom+"&Code="+this._code+"&ParentId="+this._parentId;
+        let requete = "https://"+this.ip+":"+this.portAPI+"/Category?Name="+this._nom+"&Code="+this._code+"&ParentId="+this._parentId;
         //console.log(requete);
 
         const requestOptions = {
@@ -51,7 +51,7 @@ export class categoriesService {
 
     //récupérer les categories de compteurs
     getCategories() {
-        let requete = "http://"+this.ip+":"+this.portAPI+"/CategoriesCompteurs";
+        let requete = "https://"+this.ip+":"+this.portAPI+"/CategoriesCompteurs";
         //console.log(requete);
 
 
@@ -65,7 +65,7 @@ export class categoriesService {
 
     //récupérer les categories d'analyses
     getCategoriesAnalyses() {
-        let requete = "http://"+this.ip+":"+this.portAPI+"/CategoriesAnalyses";
+        let requete = "https://"+this.ip+":"+this.portAPI+"/CategoriesAnalyses";
         //console.log(requete);
 
 
@@ -79,7 +79,7 @@ export class categoriesService {
 
     //récupérer les categories de sortants
     getCategoriesSortants() {
-        let requete = "http://"+this.ip+":"+this.portAPI+"/CategoriesSortants";
+        let requete = "https://"+this.ip+":"+this.portAPI+"/CategoriesSortants";
         //console.log(requete);
 
 
@@ -97,7 +97,7 @@ export class categoriesService {
 
     //récupérer les différents sites
     getSites() {
-        let requete = "http://"+this.ip+":"+this.portAPI+"/sites";
+        let requete = "https://"+this.ip+":"+this.portAPI+"/sites";
         //console.log(requete);
 
 

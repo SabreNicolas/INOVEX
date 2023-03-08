@@ -40,7 +40,7 @@ export class moralEntitiesService {
 
     //création de client
     createMoralEntity(){
-      let requete = "http://"+this.ip+":"+this.portAPI+"/moralEntitie?Name="+this._nom+"&Address="+this._adress+"&Code="+this._code+"&UnitPrice="+this._unitPrice+"&idUsine="+this.idUsine;
+      let requete = "https://"+this.ip+":"+this.portAPI+"/moralEntitie?Name="+this._nom+"&Address="+this._adress+"&Code="+this._code+"&UnitPrice="+this._unitPrice+"&idUsine="+this.idUsine;
       //console.log(requete);
 
       const requestOptions = {
@@ -53,7 +53,7 @@ export class moralEntitiesService {
 
     //récupérer le dernier code
     getLastCode(Code : string) {
-      let requete = "http://"+this.ip+":"+this.portAPI+"/moralEntitieLastCode?Code="+Code+"&idUsine="+this.idUsine;
+      let requete = "https://"+this.ip+":"+this.portAPI+"/moralEntitieLastCode?Code="+Code+"&idUsine="+this.idUsine;
       //console.log(requete);
 
 
@@ -67,7 +67,7 @@ export class moralEntitiesService {
 
     //récupérer les clients avec Enabled à 1 (pour la saisie)
     getMoralEntities(Code : string) {
-      let requete = "http://"+this.ip+":"+this.portAPI+"/moralEntities?Code="+Code+"&idUsine="+this.idUsine;
+      let requete = "https://"+this.ip+":"+this.portAPI+"/moralEntities?Code="+Code+"&idUsine="+this.idUsine;
       //console.log(requete);
 
 
@@ -81,7 +81,7 @@ export class moralEntitiesService {
 
     //récupérer les clients
     getMoralEntitiesAll(Code : string) {
-        let requete = "http://"+this.ip+":"+this.portAPI+"/moralEntitiesAll?Code="+Code+"&idUsine="+this.idUsine;
+        let requete = "https://"+this.ip+":"+this.portAPI+"/moralEntitiesAll?Code="+Code+"&idUsine="+this.idUsine;
         //console.log(requete);
 
 
@@ -95,7 +95,7 @@ export class moralEntitiesService {
 
     //mettre à jour le code d'un client
     setCode(Code: string | null, Id: number){
-      let requete = "http://"+this.ip+":"+this.portAPI+"/moralEntitieCode/"+Id+"?Code="+Code;
+      let requete = "https://"+this.ip+":"+this.portAPI+"/moralEntitieCode/"+Id+"?Code="+Code;
       //console.log(requete);
 
       const requestOptions = {
@@ -108,7 +108,7 @@ export class moralEntitiesService {
 
     //mettre à jour le prix d'un client
     setPrix(prix: string, Id: number){
-      let requete = "http://"+this.ip+":"+this.portAPI+"/moralEntitieUnitPrice/"+Id+"?UnitPrice="+prix;
+      let requete = "https://"+this.ip+":"+this.portAPI+"/moralEntitieUnitPrice/"+Id+"?UnitPrice="+prix;
       //console.log(requete);
 
       const requestOptions = {
@@ -121,7 +121,7 @@ export class moralEntitiesService {
 
     //mettre à jour le nom d'un client
     setName(name: string, Id: number){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/moralEntitieName/"+Id+"?Name="+name;
+        let requete = "https://"+this.ip+":"+this.portAPI+"/moralEntitieName/"+Id+"?Name="+name;
         //console.log(requete);
 
         const requestOptions = {
@@ -134,7 +134,7 @@ export class moralEntitiesService {
 
     //mettre à jour le enabled d'un client
     setEnabled(Id: number, Enabled : number){
-      let requete = "http://"+this.ip+":"+this.portAPI+"/moralEntitieEnabled/"+Id+"/"+Enabled;
+      let requete = "https://"+this.ip+":"+this.portAPI+"/moralEntitieEnabled/"+Id+"/"+Enabled;
       //console.log(requete);
 
       const requestOptions = {
@@ -147,7 +147,7 @@ export class moralEntitiesService {
 
     //insérer une mesure
     createMeasure(EntryDate : string, Value : number, ProductId : number, ProducerId : number){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/Measure?EntryDate="+EntryDate+"&Value="+Value+"&ProductId="+ProductId+"&ProducerId="+ProducerId;
+        let requete = "https://"+this.ip+":"+this.portAPI+"/Measure?EntryDate="+EntryDate+"&Value="+Value+"&ProductId="+ProductId+"&ProducerId="+ProducerId;
         //console.log(requete);
 
         const requestOptions = {
@@ -160,7 +160,7 @@ export class moralEntitiesService {
 
     //récupérer les tonnages ou valeurs qse
     getEntry(EntryDate : string, ProductId : number, ProducerId : number) {
-        let requete = "http://"+this.ip+":"+this.portAPI+"/Entrant/"+ProductId+"/"+ProducerId+"/"+EntryDate;
+        let requete = "https://"+this.ip+":"+this.portAPI+"/Entrant/"+ProductId+"/"+ProducerId+"/"+EntryDate;
         //console.log(requete);
 
 
@@ -175,7 +175,7 @@ export class moralEntitiesService {
 
     //récupérer la somme des tonnages
     getTotal(EntryDate : string, dechet : string) {
-        let requete = "http://"+this.ip+":"+this.portAPI+"/TotalMeasures/"+dechet+"/"+EntryDate+"/"+this.idUsine;
+        let requete = "https://"+this.ip+":"+this.portAPI+"/TotalMeasures/"+dechet+"/"+EntryDate+"/"+this.idUsine;
         console.log(requete);
 
         const requestOptions = {
@@ -189,7 +189,7 @@ export class moralEntitiesService {
     //** PARTIE Products mais est directement lié aux MR donc se trouve ici */
     //récupérer les types de déchets et collecteurs
     GetTypeDéchets() {
-      let requete = "http://"+this.ip+":"+this.portAPI+"/DechetsCollecteurs/"+this.idUsine;
+      let requete = "https://"+this.ip+":"+this.portAPI+"/DechetsCollecteurs/"+this.idUsine;
       console.log(requete);
 
       const requestOptions = {

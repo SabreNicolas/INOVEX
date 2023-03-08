@@ -30,7 +30,7 @@ export class rapportsService {
 
     //récupérer les rapports pour l'usine sur laquelle on se trouve
     getRapports() {
-        let requete = "http://"+this.ip+":"+this.portAPI+"/rapports/"+this.idUsine
+        let requete = "https://"+this.ip+":"+this.portAPI+"/rapports/"+this.idUsine
         //console.log(requete);
 
 
