@@ -46,8 +46,16 @@ export class ListEntreeComponent implements OnInit {
 
       //On boucle maintenant sur ce tableau pour scindé en déchets / collecteurs avec les codes associés
       this.listTypeDechetsCollecteurs.forEach(typeDechetsCollecteurs => {
-        let typeDechets;
-        typeDechets = typeDechetsCollecteurs.Code.substring(0,3)+"-"+typeDechetsCollecteurs.Name.split(' ')[0];
+        let typeDechets, regroupType;
+
+        //ON regroupe les noms DIB et DEA en 1 seul
+        if(typeDechetsCollecteurs.Name.split(' ')[0].includes('DIB') || typeDechetsCollecteurs.Name.split(' ')[0].includes('DEA')){
+          regroupType = 'DIB/DEA';
+        }
+        else regroupType = typeDechetsCollecteurs.Name.split(' ')[0];
+
+        typeDechets = typeDechetsCollecteurs.Code.substring(0,3)+"_"+regroupType;
+
         if(!this.listTypeDechets.includes(typeDechets)){
           this.listTypeDechets.push(typeDechets);
         }

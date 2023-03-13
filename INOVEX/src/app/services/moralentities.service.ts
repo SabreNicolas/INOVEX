@@ -249,7 +249,7 @@ export class moralEntitiesService {
 
       return this.http
           .get<dechetsCollecteurs[]>(requete,requestOptions);
-  }
+    }
 
 
 

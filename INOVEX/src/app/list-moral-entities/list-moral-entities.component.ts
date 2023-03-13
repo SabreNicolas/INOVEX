@@ -52,9 +52,23 @@ export class ListMoralEntitiesComponent implements OnInit {
 
         //On boucle maintenant sur ce tableau pour scindé en déchets / collecteurs avec les codes associés
         this.listTypeDechetsCollecteurs.forEach(typeDechetsCollecteurs => {
-          let typeDechets, collecteur;
-          typeDechets = typeDechetsCollecteurs.Code.substring(0,3)+"-"+typeDechetsCollecteurs.Name.split(' ')[0];
-          collecteur = typeDechetsCollecteurs.Code.substring(3)+"-"+typeDechetsCollecteurs.Name.split(' ')[1];
+          let typeDechets, collecteur, regroupType;
+
+          //ON regroupe les noms DIB et DEA en 1 seul
+          if(typeDechetsCollecteurs.Name.split(' ')[0].includes('DIB') || typeDechetsCollecteurs.Name.split(' ')[0].includes('DEA')){
+            regroupType = 'DIB/DEA';
+          }
+          else regroupType = typeDechetsCollecteurs.Name.split(' ')[0];
+          typeDechets = typeDechetsCollecteurs.Code.substring(0,3)+"_"+regroupType;
+
+          //GESTION cas spécifique DIB/DEA
+          if(typeDechetsCollecteurs.Code.length > 5){
+            collecteur = typeDechetsCollecteurs.Code.substring(3,5)+"_"+typeDechetsCollecteurs.Name.split(' ')[1];
+          }
+          else {
+            collecteur = typeDechetsCollecteurs.Code.substring(3)+"_"+typeDechetsCollecteurs.Name.split(' ')[1];
+          }
+
           if(!this.listTypeDechets.includes(typeDechets)){
             this.listTypeDechets.push(typeDechets);
           }

@@ -88,8 +88,19 @@ export class MoralEntitiesComponent implements OnInit {
       //On boucle maintenant sur ce tableau pour scindé en déchets / collecteurs avec les codes associés
       this.listTypeDechetsCollecteurs.forEach(typeDechetsCollecteurs => {
         let typeDechets, collecteur;
-        typeDechets = typeDechetsCollecteurs.Code.substring(0,3)+"-"+typeDechetsCollecteurs.Name.split(' ')[0];
-        collecteur = typeDechetsCollecteurs.Code.substring(3)+"-"+typeDechetsCollecteurs.Name.split(' ')[1];
+        //GESTION cas spécifique DIB/DEA
+        if(typeDechetsCollecteurs.Code.length > 5){
+          typeDechets = typeDechetsCollecteurs.Code.substring(0,3)+"-"+typeDechetsCollecteurs.Code.substring(5)+"_"+typeDechetsCollecteurs.Name.split(' ')[0];
+          collecteur = typeDechetsCollecteurs.Code.substring(3,5)+"_"+typeDechetsCollecteurs.Name.split(' ')[1];
+        }
+        else {
+          typeDechets = typeDechetsCollecteurs.Code.substring(0,3)+"_"+typeDechetsCollecteurs.Name.split(' ')[0];
+          collecteur = typeDechetsCollecteurs.Code.substring(3)+"_"+typeDechetsCollecteurs.Name.split(' ')[1];
+        }
+        //SI Contient DIB quoi qu'il arrive on met 202-01_DIB
+        if(typeDechetsCollecteurs.Name.split(' ')[0].includes("DIB")){
+          typeDechets = "202-01_DIB";
+        }
         if(!this.listTypeDechets.includes(typeDechets)){
           this.listTypeDechets.push(typeDechets);
         }
@@ -109,7 +120,17 @@ export class MoralEntitiesComponent implements OnInit {
 
     this.moralEntitiesService.nom = this.name;
     this.moralEntitiesService.unitPrice = +this.unitPrice.toString().replace(',','.');
-    this.code = this.produit+this.collecteur;
+
+    //GESTION DE LA DIFFERENCE DE CODE POUR DIB ET DEA
+    if(this.produit.length > 3){
+      this.code = this.produit.substr(0,3)+this.collecteur+this.produit.substr(4,2);
+    }
+    else{
+      this.code = this.produit+this.collecteur;
+    }
+    //FIN GESTION DE LA DIFFERENCE DE CODE
+
+    this.moralEntitiesService.code = this.code;
 
     //DEBUT AJOUT INFOS SUPP
     if (this.CAP==''){
@@ -138,15 +159,32 @@ export class MoralEntitiesComponent implements OnInit {
     else this.moralEntitiesService.mailClient = this.mailClient;
     //FIN INFOS SUPP
 
+    //Mise à jour du client si édition
+    if (this.mrId > 0){
+      this.update();
+    }
+    else{
+      this.moralEntitiesService.createMoralEntity().subscribe((response)=>{
+        if (response == "Création du client OK"){
+          Swal.fire("Le client a bien été créé !");
+        }
+        else {
+          Swal.fire({
+            icon: 'error',
+            text: 'Erreur lors de la création du client ....',
+          })
+        }
+      });
+    }
 
-    this.moralEntitiesService.getLastCode(this.code).subscribe((response)=>{
+
+    /*this.moralEntitiesService.getLastCode(this.code).subscribe((response)=>{
       if (response.data.length > 0){
         var CodeCast : number = +response.data[0].Code;
         this.moralEntitiesService.code = String(CodeCast+1);
       }
       else {
         this.moralEntitiesService.code = this.code + '0001';
-        
       }
 
       //Mise à jour du client si édition
@@ -166,7 +204,7 @@ export class MoralEntitiesComponent implements OnInit {
           }
         });
       }
-    });
+    });*/
 
     this.resetFields(form);
   }
