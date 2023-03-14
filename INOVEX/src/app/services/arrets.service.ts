@@ -75,22 +75,9 @@ export class arretsService {
             .get<sumDepassement>(requete,requestOptions);
     }
 
-    //récupérer la somme des dépassements pour un mois et pour 1
-    getDepassementsSum1(dateDebut : string, dateFin : string){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/DepassementsSum1/"+dateDebut+"/"+dateFin+"/"+this.idUsine;
-        //console.log(requete);
-
-        const requestOptions = {
-            headers: new HttpHeaders(this.headerDict),
-        };
-
-        return this.http
-            .get<sumDepassement>(requete,requestOptions);
-    }
-
-    //récupérer la somme des dépassements pour un mois et pour 2
-    getDepassementsSum2(dateDebut : string, dateFin : string){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/DepassementsSum2/"+dateDebut+"/"+dateFin+"/"+this.idUsine;
+    //récupérer la somme des dépassements pour un mois et pour four 1
+    getDepassementsSumFour(dateDebut : string, dateFin : string, numFour : number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/DepassementsSumFour/"+dateDebut+"/"+dateFin+"/"+this.idUsine+"/"+numFour;
         //console.log(requete);
 
         const requestOptions = {
@@ -170,22 +157,9 @@ export class arretsService {
             .get<sumArret>(requete,requestOptions);
     }
 
-    //récupérer la somme des arrêts pour un mois et pour 1
-    getArretsSum1(dateDebut : string, dateFin : string){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/ArretsSum1/"+dateDebut+"/"+dateFin+"/"+this.idUsine;
-        //console.log(requete);
-
-        const requestOptions = {
-            headers: new HttpHeaders(this.headerDict),
-        };
-
-        return this.http
-            .get<sumArret>(requete,requestOptions);
-    }
-
-    //récupérer la somme des arrêts pour un mois et pour 2
-    getArretsSum2(dateDebut : string, dateFin : string){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/ArretsSum2/"+dateDebut+"/"+dateFin+"/"+this.idUsine;
+    //récupérer la somme des arrêts pour un mois et pour 1 four
+    getArretsSumFour(dateDebut : string, dateFin : string, numFour : number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/ArretsSumFour/"+dateDebut+"/"+dateFin+"/"+this.idUsine+"/"+numFour;
         //console.log(requete);
 
         const requestOptions = {

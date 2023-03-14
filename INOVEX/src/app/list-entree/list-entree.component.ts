@@ -25,6 +25,7 @@ export class ListEntreeComponent implements OnInit {
   public containerDasri : product | undefined;
   private listTypeDechetsCollecteurs : dechetsCollecteurs[];
   public listTypeDechets : string[];
+  public importTonnage : string;
 
   constructor(private moralEntitiesService : moralEntitiesService, private productsService : productsService) {
     this.debCode = '20';
@@ -34,10 +35,17 @@ export class ListEntreeComponent implements OnInit {
     this.monthCall = 0;
     this.listTypeDechetsCollecteurs = [];
     this.listTypeDechets = [];
+    this.importTonnage = '';
   }
 
   ngOnInit(): void {
     this.containerDasri = undefined;
+
+    //Récupération type Import pour les tonnages
+    this.moralEntitiesService.GetImportTonnage().subscribe((response)=>{
+      //@ts-ignore
+      this.importTonnage = response.data[0].typeImport;
+    });
 
     //Récupération des types de déchets et des collecteurs
     this.moralEntitiesService.GetTypeDéchets().subscribe((response)=>{
@@ -372,6 +380,30 @@ export class ListEntreeComponent implements OnInit {
 
     /* save to file */
     XLSX.writeFile(wb, 'entrants.xlsx');
+  }
+
+  //import tonnage via fichier
+  import(event : Event){
+    if (this.importTonnage.toLowerCase().includes("ademi")){
+      this.importAdemi();
+    }
+    else if (this.importTonnage.toLowerCase().includes("protruck")){
+      this.importProTruck();
+    }
+  }
+
+  importAdemi(){
+    alert("ADEMI");
+  }
+
+  importProTruck(){
+    alert("Protruck");
+  }
+
+  //Import tonnage via HODJA
+  //? apres un nom de param signifie qu'il est optionnel
+  recupHodja(form? : NgForm, dateDeb? : string, dateFin? : string){
+    alert("HODJA");
   }
 
 

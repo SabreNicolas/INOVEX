@@ -251,6 +251,19 @@ export class moralEntitiesService {
           .get<dechetsCollecteurs[]>(requete,requestOptions);
     }
 
+    //Récupération type d'import des pesées
+    GetImportTonnage() {
+      let requete = "https://"+this.ip+":"+this.portAPI+"/typeImport/"+this.idUsine;
+      console.log(requete);
+
+      const requestOptions = {
+          headers: new HttpHeaders(this.headerDict),
+      };
+
+      return this.http
+          .get<string>(requete,requestOptions);
+    }
+
 
 
     //GETTER & SETTER
