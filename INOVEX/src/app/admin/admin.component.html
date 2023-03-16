@@ -41,6 +41,7 @@
         <tr class="table-secondary">
             <th scope="col">#</th>
             <th scope="col">Nom</th>
+            <th scope="col">TAG ImaginData</th>
             <th scope="col">Unité</th>
             <th scope="col">#</th>
             <th scope="col">#</th>
@@ -55,6 +56,10 @@
                 </div>
             </td>
             <td>{{pr.Name}}</td>
+            <td>{{pr.TAG}} <button id="setTAG" (click)="setTag(pr)" class="btn btn-light">
+                <i class="far fa-edit"></i>
+            </button>
+            </td>
             <td>{{pr.Unit}}</td>
             <td><button id="setPrice" (click)="setUnit(pr)" class="btn btn-primary">
                 Changer unité

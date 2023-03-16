@@ -30,7 +30,7 @@ a {
 }
 
 .rapportsList {
-  display: flex;
+  display : flex;
   margin: 0 auto;
   width: max-content;
 }
@@ -208,7 +208,7 @@ a, a:hover, a:visited{
   border : solid red 1px
 }
 
-.gestionUser{
+.gestionUser, .gestionUsine{
   display: flex;
   font-weight: bold;
   color: #134592;

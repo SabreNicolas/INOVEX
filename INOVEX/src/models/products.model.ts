@@ -7,4 +7,5 @@ export interface product{
     Enabled : number;
     Code : string;
     typeId : number;
+    TAG : string;
 }

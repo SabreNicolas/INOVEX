@@ -1,5 +1,6 @@
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Injectable} from "@angular/core";
+import { site } from "src/models/site.model";
 import {category} from "../../models/categories.model";
 
 @Injectable()
@@ -8,6 +9,7 @@ export class categoriesService {
     private _nom : string;
     private _code : string;
     private _parentId : number;
+    private idUsine : number | undefined;
 
     httpClient: HttpClient;
     private headerDict = {
@@ -15,19 +17,28 @@ export class categoriesService {
         'Accept': 'application/json',
         'Access-Control-Allow-Origin' : '*'
     }
-    private portAPI = 3000;
-    private ip = "10.255.11.5";
+    private portAPI = 3100;
+    private ip = "fr-couvinove301.prod.paprec.fr";
 
     constructor(private http: HttpClient) {
         this.httpClient = http;
         this._nom = '';
         this._code = '';
         this._parentId = 0;
+        //Récupération du user dans localStorage
+        var userLogged = localStorage.getItem('user');
+        if (typeof userLogged === "string") {
+            var userLoggedParse = JSON.parse(userLogged);
+
+            //Récupération de l'idUsine
+            // @ts-ignore
+            this.idUsine = userLoggedParse['idUsine'];
+        }
     }
 
     //création de catégorie
     createCategory(){
-        let requete = "http://"+this.ip+":"+this.portAPI+"/Category?Name="+this._nom+"&Code="+this._code+"&ParentId="+this._parentId;
+        let requete = "https://"+this.ip+":"+this.portAPI+"/Category?Name="+this._nom+"&Code="+this._code+"&ParentId="+this._parentId;
         //console.log(requete);
 
         const requestOptions = {
@@ -40,7 +51,7 @@ export class categoriesService {
 
     //récupérer les categories de compteurs
     getCategories() {
-        let requete = "http://"+this.ip+":"+this.portAPI+"/CategoriesCompteurs";
+        let requete = "https://"+this.ip+":"+this.portAPI+"/CategoriesCompteurs";
         //console.log(requete);
 
 
@@ -54,7 +65,7 @@ export class categoriesService {
 
     //récupérer les categories d'analyses
     getCategoriesAnalyses() {
-        let requete = "http://"+this.ip+":"+this.portAPI+"/CategoriesAnalyses";
+        let requete = "https://"+this.ip+":"+this.portAPI+"/CategoriesAnalyses";
         //console.log(requete);
 
 
@@ -68,7 +79,7 @@ export class categoriesService {
 
     //récupérer les categories de sortants
     getCategoriesSortants() {
-        let requete = "http://"+this.ip+":"+this.portAPI+"/CategoriesSortants";
+        let requete = "https://"+this.ip+":"+this.portAPI+"/CategoriesSortants";
         //console.log(requete);
 
 
@@ -79,6 +90,26 @@ export class categoriesService {
         return this.http
             .get<category[]>(requete,requestOptions);
     }
+
+    /*
+    ***** PARTIE CHOIX SITE POUR SUPER ADMIN
+    */
+
+    //récupérer les différents sites
+    getSites() {
+        let requete = "https://"+this.ip+":"+this.portAPI+"/sites";
+        //console.log(requete);
+
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<site[]>(requete,requestOptions);
+    }
+
+
 
     //GETTER & SETTER
     get nom(): string {

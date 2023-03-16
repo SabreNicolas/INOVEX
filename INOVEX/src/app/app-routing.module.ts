@@ -25,6 +25,7 @@ import {UserComponent} from "./user/user.component";
 import {ListUsersComponent} from "./list-users/list-users.component";
 import {GestionUserComponent} from "./gestion-user/gestion-user.component";
 import {AuthGuard} from "./services/auth-guard.service";
+import { TagAffectationComponent } from './tag-affectation/tag-affectation.component';
 import {BadgeComponent} from "./badge/badge.component";
 import {ListBadgesComponent} from "./list-badges/list-badges.component";
 import {ZoneControleComponent} from "./zone-controle/zone-controle.component";
@@ -115,6 +116,7 @@ const routes: Routes = [
             { path: 'clients', canActivate: [AuthGuard], component: MoralEntitiesComponent},
             { path: 'newUser', canActivate: [AuthGuard], component: UserComponent},
             { path: 'users', canActivate: [AuthGuard], component: ListUsersComponent},
+            { path: 'tags', canActivate: [AuthGuard], component: TagAffectationComponent},
             { path: 'newBadge', canActivate: [AuthGuard], component: BadgeComponent},
             { path: 'badges', canActivate: [AuthGuard], component: ListBadgesComponent},
             { path: 'gestionBadge', canActivate: [AuthGuard], component: GestionBadgeComponent},

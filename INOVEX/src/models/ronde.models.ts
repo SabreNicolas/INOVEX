@@ -3,12 +3,12 @@ export interface ronde{
     dateHeure : string;
     commentaire : string;
     quart : number;
-    image : Blob;
     isFinished : boolean;
     Nom : string;
     Prenom : string;
-    fonctFour1 : number;
-    fonctFour2 : number;
+    fonctFour1 : boolean;
+    fonctFour2 : boolean;
+    fonctFour3 : boolean;
     nomChef : string;
     prenomChef : string;
 }

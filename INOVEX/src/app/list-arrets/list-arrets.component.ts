@@ -3,6 +3,7 @@ import {arretsService} from "../services/arrets.service";
 import {NgForm} from "@angular/forms";
 import Swal from "sweetalert2";
 import {ActivatedRoute, Router} from "@angular/router";
+import {rondierService} from "../services/rondier.service";
 
 @Component({
   selector: 'app-list-arrets',
@@ -18,13 +19,18 @@ export class ListArretsComponent implements OnInit {
   public dateDeb : Date | undefined;
   public dateFin : Date | undefined;
   public isArret : boolean = false; // 'true' si on saisie des arrêts et 'false' si dépassements
+  private nbfour : number;
+  public numbers : number[];
 
-  constructor(private arretsService : arretsService, private route : ActivatedRoute, private router : Router) {
+  constructor(private arretsService : arretsService, private rondierService : rondierService, private route : ActivatedRoute, private router : Router) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false; //permet de recharger le component au changement de paramètre
     this.listArretsDepassements = [];
     this.sumArretsDepassements = [];
     this.stringDateDebut = '';
     this.stringDateFin = '';
+    this.nbfour = 0;
+    //contient des chiffres pour l'itération des fours
+    this.numbers = [];
     this.route.queryParams.subscribe(params => {
       if(params.isArret.includes('true')){
         this.isArret = true;
@@ -34,6 +40,14 @@ export class ListArretsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    //Récupération du nombre de four du site
+    this.rondierService.nbLigne().subscribe((response)=>{
+      //@ts-ignore
+      this.nbfour = response.data[0].nbLigne;
+      this.numbers = Array(this.nbfour).fill(1).map((x,i) => i+1);
+    });
+
     if (this.isArret == true) {
       this.arretsService.getArrets(this.stringDateDebut, this.stringDateFin).subscribe((response) => {
         // @ts-ignore
@@ -43,14 +57,13 @@ export class ListArretsComponent implements OnInit {
       this.arretsService.getArretsType(this.stringDateDebut, this.stringDateFin).subscribe((response) => {
         // @ts-ignore
         this.sumArretsDepassements = response.data;
-        this.arretsService.getArretsSum1(this.stringDateDebut, this.stringDateFin).subscribe((response) => {
-          // @ts-ignore
-          this.sumArretsDepassements.push(response.data[0]);
-        });
-        this.arretsService.getArretsSum2(this.stringDateDebut, this.stringDateFin).subscribe((response) => {
-          // @ts-ignore
-          this.sumArretsDepassements.push(response.data[0]);
-        });
+        //On boucle sur les four et on récupére la somme des arrêts pour chaque
+        for (let i = 0; i < this.numbers.length; i++) {
+          this.arretsService.getArretsSumFour(this.stringDateDebut, this.stringDateFin,this.numbers[i]).subscribe((response) => {
+            // @ts-ignore
+            this.sumArretsDepassements.push(response.data[0]);
+          });
+        }
         this.arretsService.getArretsSum(this.stringDateDebut, this.stringDateFin).subscribe((response) => {
           // @ts-ignore
           this.sumArretsDepassements.push(response.data[0]);
@@ -62,43 +75,50 @@ export class ListArretsComponent implements OnInit {
      * Dépassements 1/2 heures
      */
     else {
+      this.sumArretsDepassements = [];
       this.arretsService.getDepassements(this.stringDateDebut, this.stringDateFin).subscribe((response) => {
         // @ts-ignore
         this.listArretsDepassements = response.data;
       });
 
-      this.arretsService.getDepassementsSum1(this.stringDateDebut, this.stringDateFin).subscribe((response) => {
-        // @ts-ignore
-        this.sumArretsDepassements = response.data;
-        this.arretsService.getDepassementsSum2(this.stringDateDebut, this.stringDateFin).subscribe((response) => {
+      for (let i = 0; i < this.numbers.length; i++) {
+        this.arretsService.getDepassementsSumFour(this.stringDateDebut, this.stringDateFin,this.numbers[i]).subscribe((response) => {
           // @ts-ignore
           this.sumArretsDepassements.push(response.data[0]);
         });
-      });
+      }
     }
   }
 
   setPeriod(form: NgForm) {
-    this.dateDeb = new Date(form.value['dateDeb']);
-    this.dateFin = new Date(form.value['dateFin']);
-    if (this.dateFin < this.dateDeb) {
-      form.controls['dateFin'].reset();
-      form.value['dateFin'] = '';
+    if(form.value['dateDeb'].length < 1 && form.value['dateFin'].length < 1){
       Swal.fire({
         icon: 'error',
-        text: 'La date de Fin est inférieure à la date de Départ !',
-      })
+        text: 'Période non valide !',
+      });
     }
-    else {
-      var mmF = String(this.dateDeb.getMonth() + 1).padStart(2, '0'); //January is 0!
-      var yyyyF = this.dateDeb.getFullYear();
-      var ddF = String(this.dateDeb.getDate()).padStart(2, '0');
-      this.stringDateDebut = yyyyF + '-' + mmF + '-' + ddF;
-      var mmL = String(this.dateFin.getMonth() + 1).padStart(2, '0'); //January is 0!
-      var yyyyL = this.dateFin.getFullYear();
-      var ddL = String(this.dateFin.getDate()).padStart(2, '0');
-      this.stringDateFin = yyyyL + '-' + mmL + '-' + ddL;
-      this.ngOnInit();
+    else{
+      this.dateDeb = new Date(form.value['dateDeb']);
+      this.dateFin = new Date(form.value['dateFin']);
+      if (this.dateFin < this.dateDeb) {
+        form.controls['dateFin'].reset();
+        form.value['dateFin'] = '';
+        Swal.fire({
+          icon: 'error',
+          text: 'La date de Fin est inférieure à la date de Départ !',
+        })
+      }
+      else {
+        var mmF = String(this.dateDeb.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyyF = this.dateDeb.getFullYear();
+        var ddF = String(this.dateDeb.getDate()).padStart(2, '0');
+        this.stringDateDebut = yyyyF + '-' + mmF + '-' + ddF;
+        var mmL = String(this.dateFin.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyyL = this.dateFin.getFullYear();
+        var ddL = String(this.dateFin.getDate()).padStart(2, '0');
+        this.stringDateFin = yyyyL + '-' + mmL + '-' + ddL;
+        this.ngOnInit();
+      }
     }
   }
 

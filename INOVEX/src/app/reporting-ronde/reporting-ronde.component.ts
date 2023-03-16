@@ -22,7 +22,8 @@ export class ReportingRondeComponent implements OnInit {
   public listElementsOfZone : elementsOfZone[];
   public listPermisFeuValidation : permisFeuValidation[];
   public isAdmin;
-  public test : SafeUrl | undefined;
+  public numbers : number[]; 
+  private nbfour : number;
 
   constructor(private rondierService : rondierService, private elementRef : ElementRef) {
     this.listRonde = [];
@@ -38,6 +39,9 @@ export class ReportingRondeComponent implements OnInit {
     this.listAnomalie = [];
     this.listElementsOfZone = [];
     this.listPermisFeuValidation = [];
+    //contient des chiffres pour l'itération des fours
+    this.numbers = [];
+    this.nbfour = 0;
     //Récupération de l'utilisateur pour vérifier si il est admin => permettre suppression ronde si admin
     var userLogged = localStorage.getItem('user');
     if (typeof userLogged === "string") {
@@ -48,7 +52,8 @@ export class ReportingRondeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    window.parent.document.title = 'PAPREX - Rondier';
+
+    window.parent.document.title = 'CAP Exploitation - Ronde';
 
     this.listAnomalie = [];
     //this.listReporting = [];
@@ -145,11 +150,20 @@ export class ReportingRondeComponent implements OnInit {
             });
           });
         });
+
         //Récupération des validations de permis de feu
         this.rondierService.listPermisFeuValidation(this.dateDeb).subscribe((response)=>{
           // @ts-ignore
           this.listPermisFeuValidation = response.data;
         });
+
+        //Récupération du nombre de four du site
+        this.rondierService.nbLigne().subscribe((response)=>{
+          //@ts-ignore
+          this.nbfour = response.data[0].nbLigne;
+          this.numbers = Array(this.nbfour).fill(1).map((x,i) => i+1);
+        });
+
       });
     }
     
@@ -255,12 +269,15 @@ export class ReportingRondeComponent implements OnInit {
     img.src = imageUrl;
   }*/
 
-  downloadImage(anomalie : anomalie) {
-    // @ts-ignore
-    var byteArray = new Uint8Array(anomalie.photo.data);
-    var blob = new Blob([byteArray], {type: "image/png"});
-    var fileURL = URL.createObjectURL(blob);
-    window.open(fileURL, '_blank');
+  downloadImage(urlPhoto : string) {
+    window.open(urlPhoto, '_blank');
+  }
+
+  //permet de vérifier si le four est en route
+  checkFonctFour(fourNum : number, ronde : ronde){
+    let fonctFour = "fonctFour"+fourNum;
+    //@ts-ignore
+    return ronde[fonctFour];
   }
 
 

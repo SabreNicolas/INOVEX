@@ -37,7 +37,9 @@ import {loginService} from "./services/login.service";
 import { ListUsersComponent } from './list-users/list-users.component';
 import { GestionUserComponent } from './gestion-user/gestion-user.component';
 import {AuthGuard} from "./services/auth-guard.service";
-import {rondierService} from "./services/rondier.service";
+import { rapportsService } from './services/rapports.service';
+import { rondierService } from './services/rondier.service';
+import { TagAffectationComponent } from './tag-affectation/tag-affectation.component';
 import { BadgeComponent } from './badge/badge.component';
 import { ListBadgesComponent } from './list-badges/list-badges.component';
 import { GestionBadgeComponent } from './gestion-badge/gestion-badge.component';
@@ -81,6 +83,7 @@ import { RondierFinMoisComponent } from './rondier-fin-mois/rondier-fin-mois.com
     UserComponent,
     ListUsersComponent,
     GestionUserComponent,
+    TagAffectationComponent,
     BadgeComponent,
     ListBadgesComponent,
     GestionBadgeComponent,
@@ -94,13 +97,13 @@ import { RondierFinMoisComponent } from './rondier-fin-mois/rondier-fin-mois.com
     ListModeOperatoireComponent,
     ListConsignesComponent,
     ConsigneComponent,
-    RondierFinMoisComponent
+    RondierFinMoisComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
     FormsModule,
-    HttpClientModule
   ],
   providers: [
     moralEntitiesService,
@@ -110,6 +113,7 @@ import { RondierFinMoisComponent } from './rondier-fin-mois/rondier-fin-mois.com
     DatePipe,
     loginService,
     AuthGuard,
+    rapportsService,
     rondierService,
   ],
   bootstrap: [AppComponent]

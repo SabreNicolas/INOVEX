@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from "@angular/router";
+import { site } from 'src/models/site.model';
+import Swal from 'sweetalert2';
 import {user} from "../../models/user.model";
-import {rondierService} from "../services/rondier.service";
+import { categoriesService } from '../services/categories.service';
 
 @Component({
   selector: 'app-acceuil',
@@ -10,35 +12,59 @@ import {rondierService} from "../services/rondier.service";
 })
 export class AcceuilComponent implements OnInit {
 
-  private userLogged : user | undefined;
+  public userLogged!: user;
   public nom : string;
   public prenom : string;
   public MD5pwd : string;
   public login : string;
-  public isRondier : number; //0 ou 1
-  public isSaisie : number;//0 ou 1
-  public isQSE : number;//0 ou 1
-  public isRapport : number;//0 ou 1
-  public isAdmin : number;//0 ou 1
+  public isRondier : boolean; //0 ou 1
+  public isSaisie : boolean;//0 ou 1
+  public isQSE : boolean;//0 ou 1
+  public isRapport : boolean;//0 ou 1
+  public isAdmin : boolean;//0 ou 1
+  public idUsine : number;
+  public localisation : string;
+  public sites : site[];
 
-  constructor(private router : Router, private rondierService : rondierService) {
+  constructor(private router : Router, private categoriesService : categoriesService) {
     this.nom = '';
     this.prenom = '';
     this.MD5pwd ='';
     this.login = '';
-    this.isRondier = 0;
-    this.isSaisie = 0;
-    this.isQSE = 0;
-    this.isRapport = 0;
-    this.isAdmin = 0;
+    this.isRondier = false;
+    this.isSaisie = false;
+    this.isQSE = false;
+    this.isRapport = false;
+    this.isAdmin = false;
+    this.idUsine = 0;
+    this.localisation='';
+    this.sites = [];
   }
 
   ngOnInit(): void {
-    window.parent.document.title = 'PAPREX';
+    window.parent.document.title = 'CAP Exploitation';
     var userLogged = localStorage.getItem('user');
     if (typeof userLogged === "string") {
       var userLoggedParse = JSON.parse(userLogged);
       this.userLogged = userLoggedParse;
+
+      //Récupération de l'idUsine
+      // @ts-ignore
+      this.idUsine = this.userLogged['idUsine'];
+
+      //SI utilisateur GLOBAL alors choix du site à administrer/se connecter
+      //Id 5 correspond à "GLOBAL"
+      if (this.idUsine == 5) {
+        this.choixSite();
+      }
+      //Sinon on récupère la localisation si elle est renseigné
+      else{
+        if(this.userLogged.hasOwnProperty('localisation')){
+          //@ts-ignore
+          this.localisation = this.userLogged['localisation'];
+        }
+      }
+      
       // @ts-ignore
       this.nom = this.userLogged['Nom'];
       // @ts-ignore
@@ -71,6 +97,46 @@ export class AcceuilComponent implements OnInit {
   logout(){
     localStorage.removeItem('user');
     this.router.navigate(['/']);
+  }
+
+  choixSite(){
+    //Récupération des sites
+    this.categoriesService.getSites().subscribe((response)=>{
+      // @ts-ignore
+      this.sites = response.data;
+      //Construction des valeurs du menu select qui contient les sites
+      let listSites = {};
+      this.sites.forEach(site =>{
+        let id = String(site.id)+"_"+site.localisation;
+        //@ts-ignore
+        listSites[id] = site.localisation;
+      });
+
+      Swal.fire({
+        title: 'Veuillez Choisir un site',
+        input: 'select',
+        //TODO list dynamqiue + stockage dans localStorage
+        inputOptions: listSites,
+        showCancelButton: false,
+        confirmButtonText: "Valider",
+        allowOutsideClick: false,
+      })
+      .then((result) => {
+        let usine_localisation = result.value.split("_");
+        //Premier élément du tableau est l'idUsine
+        //@ts-ignore
+        this.userLogged['idUsine'] = Number(usine_localisation[0]);
+        //@ts-ignore
+        this.idUsine = this.userLogged['idUsine'];
+        //2e élément du tableau est la localisation géographiques
+        //@ts-ignore
+        this.localisation = usine_localisation[1];
+        //@ts-ignore
+        this.userLogged['localisation'] = this.localisation;
+        //ON met à jour le user dans le localstorage
+        localStorage.setItem('user',JSON.stringify(this.userLogged));
+      });
+    });
   }
 
 }

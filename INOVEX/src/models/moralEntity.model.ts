@@ -10,4 +10,9 @@ export interface moralEntity{
   produit : string;
   collecteur : string;
   productId : number;
+  numCAP : string;
+  codeDechet : string;
+  nomClient : string;
+  prenomClient : string;
+  mailClient : string;
 }

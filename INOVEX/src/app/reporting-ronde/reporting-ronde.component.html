@@ -68,26 +68,11 @@
                     <p aria-hidden="true">{{ronde.nomChef}} {{ronde.prenomChef}}</p>
                 </td>
             </tr>
-            <tr class="table-info">
-                <td>Four 1 en Fonctionnement ?</td>
+            <tr *ngFor="let fourNumber of numbers" class="table-info">
+                <td>Four {{fourNumber}} en Fonctionnement ?</td>
                 <td *ngFor="let ronde of listRonde" style="text-align: center">
-                    <i *ngIf="ronde.fonctFour1" style="color: green" class="fa fa-check" aria-hidden="true"></i>
-                    <i *ngIf="!ronde.fonctFour1" style="color: red" class="fa fa-times" aria-hidden="true"></i>
-                </td>
-            </tr>
-            <tr class="table-info">
-                <td>Four 2 en Fonctionnement ?</td>
-                <td *ngFor="let ronde of listRonde" style="text-align: center">
-                    <i *ngIf="ronde.fonctFour2" style="color: green" class="fa fa-check" aria-hidden="true"></i>
-                    <i *ngIf="!ronde.fonctFour2" style="color: red" class="fa fa-times" aria-hidden="true"></i>
-                </td>
-            </tr>
-            <tr class="table-info">
-                <td>Permis de feu</td>
-                <td *ngFor="let ronde of listRonde" style="text-align: center">
-                    <div *ngFor="let pf of listPermisFeuValidation">
-                        <p *ngIf="ronde.Id == pf.rondeId" aria-hidden="true">Permis {{pf.numero}} dans la zone {{pf.zone}} validé à {{pf.dateHeure}}</p>
-                    </div>
+                    <i *ngIf="checkFonctFour(fourNumber,ronde)" style="color: green" class="fa fa-check" aria-hidden="true"></i>
+                    <i *ngIf="!checkFonctFour(fourNumber,ronde)" style="color: red" class="fa fa-times" aria-hidden="true"></i>
                 </td>
             </tr>
             </tbody>
@@ -99,7 +84,7 @@
                         <div *ngFor="let anomalie of listAnomalie">
                             <p style="color: red" *ngIf="anomalie.zoneId == elementsOfOneZone.zoneId && anomalie.rondeId == ronde.Id">
                                 <strong>- {{anomalie.commentaire}}  </strong>
-                                <button class="btn btn-outline-secondary" (click)="downloadImage(anomalie)">
+                                <button class="btn btn-outline-secondary" (click)="downloadImage(anomalie.photo)">
                                     <i style="color:black;" class="fa fa-camera" aria-hidden="true"></i>
                                 </button>
                             </p>

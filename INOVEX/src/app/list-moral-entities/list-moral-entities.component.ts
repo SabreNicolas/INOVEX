@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {moralEntitiesService} from "../services/moralentities.service";
 import Swal from 'sweetalert2';
 import {moralEntity} from "../../models/moralEntity.model";
+import { dechetsCollecteurs } from 'src/models/dechetsCollecteurs.model';
+import { user } from 'src/models/user.model';
 
 @Component({
   selector: 'app-list-moral-entities',
@@ -13,17 +15,69 @@ export class ListMoralEntitiesComponent implements OnInit {
   public moralEntities : moralEntity[];
   public debCode : string;
   public listId : number[];
+  private userLogged : user | undefined;
+  public isAdmin : number;//0 ou 1
+  private listTypeDechetsCollecteurs : dechetsCollecteurs[];
+  public listTypeDechets : string[];
+  public listCollecteurs : string[];
 
   constructor(private moralEntitiesService : moralEntitiesService) {
     this.debCode = '';
     this.listId = [];
+    this.isAdmin = 0;
     this.moralEntities = [];
+    this.listTypeDechetsCollecteurs = [];
+    this.listTypeDechets = [];
+    this.listCollecteurs = [];
   }
 
   ngOnInit(): void {
+    //Verification droit admin du user pour disabled ou non le btn d'edition des clients
+    var userLogged = localStorage.getItem('user');
+    if (typeof userLogged === "string") {
+      var userLoggedParse = JSON.parse(userLogged);
+      this.userLogged = userLoggedParse;
+      // @ts-ignore
+      this.isAdmin = this.userLogged['isAdmin'];
+    }
+
     this.moralEntitiesService.getMoralEntitiesAll(this.debCode).subscribe((response)=>{
       // @ts-ignore
       this.moralEntities = response.data;
+
+      //Récupération des types de déchets et des collecteurs
+      this.moralEntitiesService.GetTypeDéchets().subscribe((response)=>{
+        //@ts-ignore
+        this.listTypeDechetsCollecteurs = response.data;
+
+        //On boucle maintenant sur ce tableau pour scindé en déchets / collecteurs avec les codes associés
+        this.listTypeDechetsCollecteurs.forEach(typeDechetsCollecteurs => {
+          let typeDechets, collecteur, regroupType;
+
+          //ON regroupe les noms DIB et DEA en 1 seul
+          if(typeDechetsCollecteurs.Name.split(' ')[0].includes('DIB') || typeDechetsCollecteurs.Name.split(' ')[0].includes('DEA')){
+            regroupType = 'DIB/DEA';
+          }
+          else regroupType = typeDechetsCollecteurs.Name.split(' ')[0];
+          typeDechets = typeDechetsCollecteurs.Code.substring(0,3)+"_"+regroupType;
+
+          //GESTION cas spécifique DIB/DEA
+          if(typeDechetsCollecteurs.Code.length > 5){
+            collecteur = typeDechetsCollecteurs.Code.substring(3,5)+"_"+typeDechetsCollecteurs.Name.split(' ')[1];
+          }
+          else {
+            collecteur = typeDechetsCollecteurs.Code.substring(3)+"_"+typeDechetsCollecteurs.Name.split(' ')[1];
+          }
+
+          if(!this.listTypeDechets.includes(typeDechets)){
+            this.listTypeDechets.push(typeDechets);
+          }
+          if(!this.listCollecteurs.includes(collecteur)){
+            this.listCollecteurs.push(collecteur);
+          }
+        });
+      });
+      
     });
   }
 
@@ -75,6 +129,27 @@ export class ListMoralEntitiesComponent implements OnInit {
       });
       this.ngOnInit();
     }
+  }
+
+  //mise à jour du num de CAP d'un client
+  setCAP(MR : moralEntity){
+    var cap = prompt('Veuillez saisir un n° du CAP',String(MR.numCAP));
+    if (cap === null) {
+      return; //break out of the function early
+    }
+    // @ts-ignore
+    this.moralEntitiesService.setCAP(cap,MR.Id).subscribe((response)=>{
+      if (response == "Mise à jour du CAP OK"){
+        Swal.fire("Le n° de du CAP a été mis à jour !");
+      }
+      else {
+        Swal.fire({
+          icon: 'error',
+          text: 'Erreur lors de la mise à jour du n° du CAP ....',
+        })
+      }
+    });
+    this.ngOnInit();
   }
 
   //mise à jour du nom d'un client

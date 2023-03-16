@@ -6,7 +6,6 @@ export interface elementsOfZone{
     commentaire : string;
     badge : string;
     elements : element[];
-    four1 : number;
-    four2 : number;
-    modeOP : Blob[];
+    four : number;
+    modeOP : string[];
 }

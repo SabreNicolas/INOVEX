@@ -14,35 +14,19 @@
                 <div class="form-group">
                     <select id="produit" required class="form-select form-select-sm"
                             aria-label=".form-select-sm example" name="produit" ngModel="201">
-                        <option selected value="201">OM</option>
-                        <option value="202">DIB/DEA</option>
-                        <option value="203">DASRI</option>
-                        <option value="204">DAOM</option>
-                        <option value="205">Refus de tri</option>
+                        <option *ngFor="let type of listTypeDechets" value="{{type.split('_')[0]}}">{{type.split("_")[1]}}</option>
                     </select>
                 </div>
             </div>
-            <!--<div class="col-sm-3">
-                <div class="form-group">
-                    <select id="collecteur" required class="form-select form-select-sm"
-                            aria-label=".form-select-sm example" name="collecteur" ngModel="01">
-                        <option selected value="01">INOVA</option>
-                        <option value="02">VEOLIA</option>
-                        <option value="03">PAPREC</option>
-                        <option value="04">NICOLLIN</option>
-                        <option value="05">BGV</option>
-                        <option value="06">SITOMAP</option>
-                        <option value="07">SIRTOMRA OM</option>
-                        <option value="08">COMMUNES</option>
-                        <option value="09">SMICTOM</option>
-                        <option value="10">SMETOM</option>
-                    </select>
-                </div>
-            </div>-->
-            <div class="col-sm-3">
+            <div class="col-sm-1">
                 <div class="form-group">
                     <button class="btn btn-success" (click)="setFilters()">Valider</button>
                 </div>
+            </div>
+            <!--SI import renseigné en BDD et pas de type récupération HODJA-->
+            <div *ngIf="importTonnage.length > 0 && importTonnage != 'Hodja'" class="col-sm-3" style="border: solid grey 1px; padding-bottom: 1em; margin-top: -1.5em;">
+                <label style="margin-left: 1em;" for="formFile" class="form-label">Importer un fichier de pesées {{importTonnage}}</label>
+                <input class="form-control" type="file" id="formFile" accept=".csv,.xlsx,.txt" (change)="import($event)">
             </div>
         </div>
 
@@ -65,6 +49,10 @@
                             <button style="margin-left: 0.5em" class="btn btn-warning" (click)="setYesterday(f)">Hier</button>
                             <button style="margin-left: 0.5em" class="btn btn-info" (click)="setCurrentWeek(f)">Semaine en cours</button>
                             <button style="margin-left: 0.5em" class="btn btn-dark" (click)="setCurrentMonth(f)">Mois en cours</button>
+                        </div>
+                        <!--SI import de type récupération HODJA-->
+                        <div *ngIf="importTonnage == 'Hodja'">
+                            <button class="btn btn-primary" (click)="recupHodja(f,undefined,undefined)">Récupération HODJA</button>
                         </div>
                     </div>
                 </div>

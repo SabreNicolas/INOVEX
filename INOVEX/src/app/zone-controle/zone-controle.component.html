@@ -18,16 +18,10 @@
 
             <div class="form-group">
                 <label for="choixFour1">Zone correspondant à un four :</label>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="choixFour" id="choixFour1" [value]="1" ngModel>
-                    <label class="form-check-label" for="choixFour1">
-                        Four 1
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="choixFour" id="choixFour2" [value]="2" ngModel>
-                    <label class="form-check-label" for="choixFour2">
-                        Four 2
+                <div *ngFor="let fourNumber of numbers" class="form-check">
+                    <input class="form-check-input" type="radio" name="four" id="choixFour{{fourNumber}}" [value]=fourNumber ngModel>
+                    <label class="form-check-label" for="choixFour{{fourNumber}}">
+                        Four {{fourNumber}}
                     </label>
                 </div>
             </div>

@@ -1,6 +1,12 @@
 <div class="headerAcceuil">
     <div class="blocLogoInovex">
-        <img class="logoInovex" src="assets/inovex.png">
+        <!--<img class="logoInovex" src="assets/inovex.png">-->
+    </div>
+
+    <div *ngIf="userLogged.hasOwnProperty('localisation')" class="gestionUsine">
+        <a class="nav-link" (click)="choixSite()" role="button">
+            <i class="fa fa-map-marker" aria-hidden="true"></i> {{localisation}}
+        </a>
     </div>
 
     <div class="gestionUser">

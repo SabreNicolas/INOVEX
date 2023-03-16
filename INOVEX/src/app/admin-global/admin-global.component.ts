@@ -10,7 +10,7 @@ export class AdminGlobalComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    window.parent.document.title = 'PAPREX - Admin';
+    window.parent.document.title = 'CAP Exploitation - Admin';
   }
 
   download(file : string){

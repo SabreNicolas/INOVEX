@@ -20,35 +20,35 @@ export class AuthGuard implements CanActivate {
                 var userLoggedParse = JSON.parse(userLogged);
                 //test pour admin
                 if (this.location.path() === '/admin') {
-                    if (userLoggedParse['isAdmin'] === 1){
+                    if (userLoggedParse['isAdmin'] === true){
                         return true;
                     }
                     else this.router.navigate(['/']);
                 }
                 //test pour qse
                 else if (this.location.path() === '/qse') {
-                    if (userLoggedParse['isQSE'] === 1){
+                    if (userLoggedParse['isQSE'] === true){
                         return true;
                     }
                     else this.router.navigate(['/']);
                 }
                 //test pour saisie
                 else if (this.location.path() === '/saisie') {
-                    if (userLoggedParse['isSaisie'] === 1){
+                    if (userLoggedParse['isSaisie'] === true){
                         return true;
                     }
                     else this.router.navigate(['/']);
                 }
                 //test pour rondier
                 else if (this.location.path() === '/reporting') {
-                    if (userLoggedParse['isRondier'] === 1){
+                    if (userLoggedParse['isRondier'] === true){
                         return true;
                     }
                     else this.router.navigate(['/']);
                 }
                 //test pour rapports
                 else if (this.location.path() === '/rapports') {
-                    if (userLoggedParse['isRapport'] === 1){
+                    if (userLoggedParse['isRapport'] === true){
                         return true;
                     }
                     else this.router.navigate(['/']);
