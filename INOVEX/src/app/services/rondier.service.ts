@@ -43,7 +43,7 @@ export class rondierService {
 
     /*
     BADGE
-     */
+    */
 
     //création du badge
     createBadge(uid : string){

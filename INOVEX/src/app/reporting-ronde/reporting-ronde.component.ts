@@ -53,6 +53,8 @@ export class ReportingRondeComponent implements OnInit {
 
   ngOnInit(): void {
 
+    window.parent.document.title = 'CAP Exploitation - Ronde';
+
     this.listAnomalie = [];
     //this.listReporting = [];
     // retourne 3 rondes par jour, 1 pour le matin, 1 pour l'aprem et 1 pour la nuit
