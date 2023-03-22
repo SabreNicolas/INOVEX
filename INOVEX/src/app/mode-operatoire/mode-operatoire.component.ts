@@ -63,7 +63,6 @@ export class ModeOperatoireComponent implements OnInit {
     if (event.target.value) {
       // @ts-ignore
       const file = event.target.files[0];
-      const type = file.type;
       this.fileToUpload = file;
     } else Swal.fire('Aucun fichier choisi....')
   }

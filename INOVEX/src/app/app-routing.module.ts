@@ -40,6 +40,7 @@ import {ListModeOperatoireComponent} from "./list-mode-operatoire/list-mode-oper
 import {ListConsignesComponent} from "./list-consignes/list-consignes.component";
 import {ConsigneComponent} from "./consigne/consigne.component";
 import {RondierFinMoisComponent} from "./rondier-fin-mois/rondier-fin-mois.component";
+import { MaintenanceComponent } from './maintenance/maintenance.component';
 
 const routes: Routes = [
 
@@ -64,6 +65,7 @@ const routes: Routes = [
         path : 'acceuil',
         canActivate: [AuthGuard],
         component : AcceuilComponent
+        //component : MaintenanceComponent
     },
 
     {

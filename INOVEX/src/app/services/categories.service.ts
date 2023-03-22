@@ -1,5 +1,6 @@
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Injectable} from "@angular/core";
+import { maintenance } from "src/models/maintenance.model";
 import { site } from "src/models/site.model";
 import {category} from "../../models/categories.model";
 
@@ -107,6 +108,24 @@ export class categoriesService {
 
         return this.http
             .get<site[]>(requete,requestOptions);
+    }
+
+    /*
+    ***** PARTIE MAINTENANCE
+    */
+
+    //récupérer la maintenance prévue
+    getMaintenance() {
+        let requete = "https://"+this.ip+":"+this.portAPI+"/Maintenance";
+        //console.log(requete);
+
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<maintenance>(requete,requestOptions);
     }
 
 

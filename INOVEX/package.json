@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --port 8100 --host 0.0.0.0 --disable-host-check --ssl true --ssl-cert E:\\INOVEX\\server.crt --ssl-key E:\\INOVEX\\server-decrypted.key",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
@@ -23,6 +23,7 @@
     "bootstrap": "^5.0.2",
     "file-saver": "^2.0.5",
     "jquery": "^3.6.0",
+    "ngx-papaparse": "^7.0.0",
     "popper.js": "^1.16.1",
     "rxjs": "~6.6.0",
     "sweetalert2": "^11.7.0",

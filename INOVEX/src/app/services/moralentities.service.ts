@@ -227,7 +227,7 @@ export class moralEntitiesService {
     //récupérer la somme des tonnages
     getTotal(EntryDate : string, dechet : string) {
         let requete = "https://"+this.ip+":"+this.portAPI+"/TotalMeasures/"+dechet+"/"+EntryDate+"/"+this.idUsine;
-        console.log(requete);
+        //console.log(requete);
 
         const requestOptions = {
             headers: new HttpHeaders(this.headerDict),
@@ -241,7 +241,7 @@ export class moralEntitiesService {
     //récupérer les types de déchets et collecteurs
     GetTypeDéchets() {
       let requete = "https://"+this.ip+":"+this.portAPI+"/DechetsCollecteurs/"+this.idUsine;
-      console.log(requete);
+      //console.log(requete);
 
       const requestOptions = {
           headers: new HttpHeaders(this.headerDict),
@@ -254,7 +254,7 @@ export class moralEntitiesService {
     //Récupération type d'import des pesées
     GetImportTonnage() {
       let requete = "https://"+this.ip+":"+this.portAPI+"/typeImport/"+this.idUsine;
-      console.log(requete);
+      //console.log(requete);
 
       const requestOptions = {
           headers: new HttpHeaders(this.headerDict),

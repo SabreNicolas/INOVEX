@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from "@angular/router";
+import { maintenance } from 'src/models/maintenance.model';
 import { site } from 'src/models/site.model';
 import Swal from 'sweetalert2';
 import {user} from "../../models/user.model";
@@ -25,6 +26,7 @@ export class AcceuilComponent implements OnInit {
   public idUsine : number;
   public localisation : string;
   public sites : site[];
+  public maintenance : maintenance | undefined;
 
   constructor(private router : Router, private categoriesService : categoriesService) {
     this.nom = '';
@@ -85,6 +87,15 @@ export class AcceuilComponent implements OnInit {
       this.isAdmin = this.userLogged['isAdmin'];
     }
 
+    //On vérifie si une maintenance est prévue
+    this.getMaintenance();
+  }
+
+  getMaintenance(){
+    this.categoriesService.getMaintenance().subscribe((response)=>{
+      this.maintenance = response;
+      console.log(this.maintenance);
+    });
   }
 
   navigate(route : string){

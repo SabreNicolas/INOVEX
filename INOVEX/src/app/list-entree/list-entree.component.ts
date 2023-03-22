@@ -6,7 +6,10 @@ import {NgForm} from "@angular/forms";
 import {productsService} from "../services/products.service";
 import {product} from "../../models/products.model";
 import * as XLSX from 'xlsx';
+//Librairie pour lire les csv importés
+import {Papa} from 'ngx-papaparse';
 import { dechetsCollecteurs } from 'src/models/dechetsCollecteurs.model';
+import { importAdemi } from 'src/models/importAdemi.model';
 
 @Component({
   selector: 'app-list-entree',
@@ -25,9 +28,12 @@ export class ListEntreeComponent implements OnInit {
   public containerDasri : product | undefined;
   private listTypeDechetsCollecteurs : dechetsCollecteurs[];
   public listTypeDechets : string[];
-  public importTonnage : string;
+  public typeImportTonnage : string;
+  public ademiArray : importAdemi[];
+  //stockage données ADEMI à envoyer
+  public stockageImport : Map<String,number>;
 
-  constructor(private moralEntitiesService : moralEntitiesService, private productsService : productsService) {
+  constructor(private moralEntitiesService : moralEntitiesService, private productsService : productsService, private Papa : Papa) {
     this.debCode = '20';
     this.moralEntities = [];
     this.listDays = [];
@@ -35,7 +41,9 @@ export class ListEntreeComponent implements OnInit {
     this.monthCall = 0;
     this.listTypeDechetsCollecteurs = [];
     this.listTypeDechets = [];
-    this.importTonnage = '';
+    this.typeImportTonnage = '';
+    this.ademiArray = [];
+    this.stockageImport = new Map();
   }
 
   ngOnInit(): void {
@@ -44,7 +52,7 @@ export class ListEntreeComponent implements OnInit {
     //Récupération type Import pour les tonnages
     this.moralEntitiesService.GetImportTonnage().subscribe((response)=>{
       //@ts-ignore
-      this.importTonnage = response.data[0].typeImport;
+      this.typeImportTonnage = response.data[0].typeImport;
     });
 
     //Récupération des types de déchets et des collecteurs
@@ -70,11 +78,8 @@ export class ListEntreeComponent implements OnInit {
       });
     });
 
-    this.moralEntitiesService.getMoralEntities(this.debCode).subscribe((response)=>{
-      // @ts-ignore
-      this.moralEntities = response.data;
-      this.getValues();
-    });
+    this.getMoralEntities();
+
     //Récupération du produit container DASRI
     if (this.debCode == '203'){
       this.productsService.getContainers().subscribe((response)=>{
@@ -83,6 +88,14 @@ export class ListEntreeComponent implements OnInit {
         this.getValuesContainer();
       });
     }
+  }
+
+  getMoralEntities(){
+    this.moralEntitiesService.getMoralEntities(this.debCode).subscribe((response)=>{
+      // @ts-ignore
+      this.moralEntities = response.data;
+      this.getValues();
+    });
   }
 
   setFilters(){
@@ -384,16 +397,94 @@ export class ListEntreeComponent implements OnInit {
 
   //import tonnage via fichier
   import(event : Event){
-    if (this.importTonnage.toLowerCase().includes("ademi")){
-      this.importAdemi();
+    if (this.typeImportTonnage.toLowerCase().includes("ademi")){
+      this.importAdemi(event);
     }
-    else if (this.importTonnage.toLowerCase().includes("protruck")){
+    else if (this.typeImportTonnage.toLowerCase().includes("protruck")){
       this.importProTruck();
     }
   }
 
-  importAdemi(){
-    alert("ADEMI");
+  //Traitement du fichier csv ADEMI
+  importAdemi(event : Event){
+    //@ts-ignore
+    var files = event.target.files; // FileList object
+    var file = files[0];
+    var reader = new FileReader();
+    reader.readAsText(file);
+    reader.onload = (event: any) => {
+      var csv = event.target.result; // Content of CSV file
+      //options à ajouter => pas d'entête, delimiter ;
+      this.Papa.parse(csv, {
+        skipEmptyLines: true,
+        delimiter: ";",
+        header: false,
+        //TODO : attendre ce traitement avant de traiter le tableau avec la boucle
+        complete: (results) => {
+          for (let i = 0; i < results.data.length; i++) {
+            //ON récupére les lignes infos nécessaires pour chaque ligne du csv
+            //ON récupère uniquement les types de déchets pour les entrants
+            if(results.data[i][7] == "OM" || results.data[i][7] == "DIB" || results.data[i][7] == "DEA" || results.data[i][7] == "DAOM" || results.data[i][7] == "REFUS DE TRI"){
+              let importAdemi = {
+                client: results.data[i][8],
+                typeDechet: results.data[i][7],
+                dateEntree : results.data[i][2].substring(0,10),
+                tonnage : results.data[i][5]/1000,
+              };
+              this.ademiArray.push(importAdemi);
+            }
+          }
+          this.insertTonnageAdemi();
+        }
+      });
+    }
+  }
+
+  //Insertion du tonnage récupéré depuis le fichier csv ADEMI
+  insertTonnageAdemi(){
+    this.debCode = '20';
+    this.stockageImport.clear();
+    this.getMoralEntities();
+    this.moralEntities.forEach(mr => {
+      this.ademiArray.forEach(ademi => {
+        mr.Name = mr.Name.toLocaleLowerCase();
+        mr.produit = mr.produit.toLocaleLowerCase().replace(" ","");
+        ademi.client = ademi.client.toLocaleLowerCase();
+        ademi.typeDechet = ademi.typeDechet.toLocaleLowerCase();
+        //Si il y a correspondance on fait traitement
+        if( mr.Name.split(' - ')[1] == ademi.client && (mr.produit == ademi.typeDechet || (mr.produit == "dib/dea" && mr.produit.includes(ademi.typeDechet))) ){
+          //if( mr.Name.split(' - ')[1] == ademi.client  ){  
+          let formatDate = ademi.dateEntree.split('/')[2]+'-'+ademi.dateEntree.split('/')[1]+'-'+ademi.dateEntree.split('/')[0];
+          let keyHash = formatDate+'_'+mr.productId+'_'+mr.Id;
+          //si il y a deja une valeur dans la hashMap pour ce client et ce jour, on incrémente la valeur
+          let value, valueRound;
+          if(this.stockageImport.has(keyHash)){
+            //@ts-ignore
+            value = this.stockageImport.get(keyHash)+ademi.tonnage;
+            valueRound = parseFloat(value.toFixed(3));
+            this.stockageImport.set(keyHash,valueRound);
+          }
+          //Sinon on insére dans la hashMap
+          //@ts-ignore
+          this.stockageImport.set(keyHash,parseFloat(ademi.tonnage.toFixed(3)));
+        }
+      })
+    });
+
+    //on parcours la hashmap pour insertion en BDD
+    this.stockageImport.forEach(async (value : number, key : String) => {
+      await this.moralEntitiesService.createMeasure(key.split('_')[0],value,parseInt(key.split('_')[1]),parseInt(key.split('_')[2])).subscribe((response) =>{
+        if (response == "Création du Measures OK"){
+          Swal.fire("Les valeurs ont été insérées avec succès !");
+        }
+        else {
+          Swal.fire({
+            icon: 'error',
+            text: 'Erreur lors de l\'insertion des valeurs ....',
+          })
+        }
+      })
+    });
   }
 
   importProTruck(){
