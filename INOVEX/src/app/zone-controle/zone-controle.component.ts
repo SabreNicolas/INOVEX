@@ -65,4 +65,9 @@ export class ZoneControleComponent implements OnInit {
     form.controls['choixFour'].reset();
   }
 
+  resetFourZone(form: NgForm) {
+    form.value['four'].reset();
+    form.value['four'] = '';
+  }
+
 }

@@ -1,6 +1,7 @@
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Injectable} from "@angular/core";
 import { dechetsCollecteurs } from "src/models/dechetsCollecteurs.model";
+import { valueHodja } from "src/models/valueHodja.model";
 import {moralEntity} from "../../models/moralEntity.model";
 
 @Injectable()
@@ -24,6 +25,7 @@ export class moralEntitiesService {
         'Access-Control-Allow-Origin' : '*'
     }
     private portAPI = 3100;
+    private portAPIHodja = 3101;
     private ip = "fr-couvinove301.prod.paprec.fr";
     private idUsine : number | undefined;
 
@@ -263,6 +265,28 @@ export class moralEntitiesService {
       return this.http
           .get<string>(requete,requestOptions);
     }
+
+    /*
+    ** Partie HODJA
+    */
+
+    //récupération HODJA
+    recupHodja(dateDeb : string, dateFin : string){
+      let requete = "https://"+this.ip+":"+this.portAPIHodja+"/entrants?dateDeb="+dateDeb+"&dateFin="+dateFin;
+      console.log(requete);
+
+      const requestOptions = {
+        headers: new HttpHeaders(this.headerDict),
+      };
+
+      return this.http
+        .get<valueHodja[]>(requete,requestOptions);
+    }
+
+
+    /*
+    ** FIN Partie HODJA
+    */
 
 
 

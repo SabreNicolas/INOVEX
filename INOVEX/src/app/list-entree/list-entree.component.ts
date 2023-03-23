@@ -10,6 +10,8 @@ import * as XLSX from 'xlsx';
 import {Papa} from 'ngx-papaparse';
 import { dechetsCollecteurs } from 'src/models/dechetsCollecteurs.model';
 import { importAdemi } from 'src/models/importAdemi.model';
+//***HODJA
+import { valueHodja } from 'src/models/valueHodja.model';
 
 @Component({
   selector: 'app-list-entree',
@@ -32,6 +34,11 @@ export class ListEntreeComponent implements OnInit {
   public ademiArray : importAdemi[];
   //stockage données ADEMI à envoyer
   public stockageImport : Map<String,number>;
+  //**HODJA
+  public valuesHodja : valueHodja[];
+  //stockage données HODJA à envoyer
+  public stockageHodja : Map<moralEntity,number>;
+  
 
   constructor(private moralEntitiesService : moralEntitiesService, private productsService : productsService, private Papa : Papa) {
     this.debCode = '20';
@@ -44,6 +51,9 @@ export class ListEntreeComponent implements OnInit {
     this.typeImportTonnage = '';
     this.ademiArray = [];
     this.stockageImport = new Map();
+    //**HODJA
+    this.valuesHodja = [];
+    this.stockageHodja = new Map();
   }
 
   ngOnInit(): void {
@@ -493,8 +503,63 @@ export class ListEntreeComponent implements OnInit {
 
   //Import tonnage via HODJA
   //? apres un nom de param signifie qu'il est optionnel
-  recupHodja(form? : NgForm, dateDeb? : string, dateFin? : string){
-    alert("HODJA");
+  recupHodja(form : NgForm){
+    this.stockageHodja.clear();
+    let dateDebFormat = new Date(), dateFinFormat = new Date();
+    let listDate = [];
+
+    dateDebFormat = new Date(form.value['dateDeb']);
+    dateFinFormat = new Date(form.value['dateFin']);
+
+    listDate = this.getDays(dateDebFormat,dateFinFormat);
+    listDate.forEach(async day =>{
+      await this.wait(100);
+      //On récupère dans hodja les valeurs de bascule pour la période choisit (par défaut semaine en cours)
+      this.moralEntitiesService.recupHodja(day,day).subscribe(async (response)=>{
+        this.stockageHodja.clear();
+        //console.log(day);
+        this.valuesHodja = response;
+        //ON boucle sur les valeurs HODJA
+        for await (const valueHodja of this.valuesHodja){
+          //ET les clients INOVEX
+          for (const mr of this.moralEntities){
+            //On regarde si le nom INOVEX sans la désignation du type de déchet est contenu dans le nom HODJA et si le début du code correspond
+            let nameWithoutTypeDechet;
+            if(mr.Name.toLowerCase().split(" - ").length>2){
+              nameWithoutTypeDechet = mr.Name.toLowerCase().split(" - ")[1]+" - "+mr.Name.toLowerCase().split(" - ")[2];
+            }
+            else nameWithoutTypeDechet = mr.Name.toLowerCase().split(" - ")[1];
+            if(valueHodja.client.toLowerCase().replace(/ /g,"") === nameWithoutTypeDechet.replace(/ /g,"") && mr.Code.startsWith(valueHodja.debCode)){
+              //Si il y a correspondance alors on fait un traitement
+              //Si il y a déjà une valeur dans la HashMap pour ce client, on incrémente la valeur
+              if(this.stockageHodja.has(mr)){
+                // @ts-ignore
+                let value = this.stockageHodja.get(mr) + (valueHodja.TK_Poids_brut-valueHodja.TK_Poids_tare)/1000;//Pour avoir en tonnes et arrondir à 3 chiffres
+                this.stockageHodja.set(mr,parseFloat(value.toFixed(3)));
+              }
+              //Sinon on insére tout simplement dans la HashMap
+              else this.stockageHodja.set(mr,parseFloat(((valueHodja.TK_Poids_brut-valueHodja.TK_Poids_tare)/1000).toFixed(3)));//Pour avoir en tonnes et arrondir à 3 chiffres
+            }
+          }
+          //await this.wait(100);
+        }
+        //On parcours la HashMap pour insérer en BDD
+        this.stockageHodja.forEach(async (value : number, key : moralEntity) =>{
+          await this.moralEntitiesService.createMeasure(day.split('/')[2]+'-'+day.split('/')[1]+'-'+day.split('/')[0],value,key.productId,key.Id).subscribe((response)=>{
+            if (response == "Création du Measures OK"){
+              Swal.fire("Recup HODJA OK");
+            }
+            else {
+              Swal.fire({
+                icon: 'error',
+                text: 'Erreur lors de l\'insertion des valeurs ....',
+              })
+            }
+          });
+        })
+        await this.wait(350);
+      });
+    })
   }
 
 
