@@ -98,7 +98,7 @@ export class MoralEntitiesComponent implements OnInit {
           collecteur = typeDechetsCollecteurs.Code.substring(3)+"_"+typeDechetsCollecteurs.Name.split(' ')[1];
         }
         //SI Contient DIB quoi qu'il arrive on met 202-01_DIB
-        if(typeDechetsCollecteurs.Name.split(' ')[0].includes("DIB")){
+        if(typeDechetsCollecteurs.Name.split(' ')[0] == "DIB"){
           typeDechets = "202-01_DIB";
         }
         if(!this.listTypeDechets.includes(typeDechets)){

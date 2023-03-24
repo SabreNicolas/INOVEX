@@ -55,7 +55,7 @@ export class ListMoralEntitiesComponent implements OnInit {
           let typeDechets, collecteur, regroupType;
 
           //ON regroupe les noms DIB et DEA en 1 seul
-          if(typeDechetsCollecteurs.Name.split(' ')[0].includes('DIB') || typeDechetsCollecteurs.Name.split(' ')[0].includes('DEA')){
+          if(typeDechetsCollecteurs.Name.split(' ')[0] == 'DIB' || typeDechetsCollecteurs.Name.split(' ')[0] =='DEA'){
             regroupType = 'DIB/DEA';
           }
           else regroupType = typeDechetsCollecteurs.Name.split(' ')[0];

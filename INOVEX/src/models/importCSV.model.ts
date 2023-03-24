@@ -1,4 +1,4 @@
-export interface importAdemi {
+export interface importCSV {
     client: string,
     typeDechet: string,
     dateEntree : string,

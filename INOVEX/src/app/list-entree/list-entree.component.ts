@@ -9,7 +9,7 @@ import * as XLSX from 'xlsx';
 //Librairie pour lire les csv importés
 import {Papa} from 'ngx-papaparse';
 import { dechetsCollecteurs } from 'src/models/dechetsCollecteurs.model';
-import { importAdemi } from 'src/models/importAdemi.model';
+import { importCSV } from 'src/models/importCSV.model';
 //***HODJA
 import { valueHodja } from 'src/models/valueHodja.model';
 
@@ -31,7 +31,7 @@ export class ListEntreeComponent implements OnInit {
   private listTypeDechetsCollecteurs : dechetsCollecteurs[];
   public listTypeDechets : string[];
   public typeImportTonnage : string;
-  public ademiArray : importAdemi[];
+  public csvArray : importCSV[];
   //stockage données ADEMI à envoyer
   public stockageImport : Map<String,number>;
   //**HODJA
@@ -49,7 +49,7 @@ export class ListEntreeComponent implements OnInit {
     this.listTypeDechetsCollecteurs = [];
     this.listTypeDechets = [];
     this.typeImportTonnage = '';
-    this.ademiArray = [];
+    this.csvArray = [];
     this.stockageImport = new Map();
     //**HODJA
     this.valuesHodja = [];
@@ -75,7 +75,7 @@ export class ListEntreeComponent implements OnInit {
         let typeDechets, regroupType;
 
         //ON regroupe les noms DIB et DEA en 1 seul
-        if(typeDechetsCollecteurs.Name.split(' ')[0].includes('DIB') || typeDechetsCollecteurs.Name.split(' ')[0].includes('DEA')){
+        if(typeDechetsCollecteurs.Name.split(' ')[0] == 'DIB' || typeDechetsCollecteurs.Name.split(' ')[0] == 'DEA'){
           regroupType = 'DIB/DEA';
         }
         else regroupType = typeDechetsCollecteurs.Name.split(' ')[0];
@@ -415,6 +415,10 @@ export class ListEntreeComponent implements OnInit {
     }
   }
 
+  importProTruck(){
+    alert("Protruck");
+  }
+
   //Traitement du fichier csv ADEMI
   importAdemi(event : Event){
     //@ts-ignore
@@ -435,48 +439,48 @@ export class ListEntreeComponent implements OnInit {
             //ON récupére les lignes infos nécessaires pour chaque ligne du csv
             //ON récupère uniquement les types de déchets pour les entrants
             if(results.data[i][7] == "OM" || results.data[i][7] == "DIB" || results.data[i][7] == "DEA" || results.data[i][7] == "DAOM" || results.data[i][7] == "REFUS DE TRI"){
-              let importAdemi = {
+              let importCSV = {
                 client: results.data[i][8],
                 typeDechet: results.data[i][7],
                 dateEntree : results.data[i][2].substring(0,10),
                 tonnage : results.data[i][5]/1000,
               };
-              this.ademiArray.push(importAdemi);
+              this.csvArray.push(importCSV);
             }
           }
-          this.insertTonnageAdemi();
+          this.insertTonnageCSV();
         }
       });
     }
   }
 
   //Insertion du tonnage récupéré depuis le fichier csv ADEMI
-  insertTonnageAdemi(){
+  insertTonnageCSV(){
     this.debCode = '20';
     this.stockageImport.clear();
     this.getMoralEntities();
     this.moralEntities.forEach(mr => {
-      this.ademiArray.forEach(ademi => {
+      this.csvArray.forEach(csv => {
         mr.Name = mr.Name.toLocaleLowerCase();
         mr.produit = mr.produit.toLocaleLowerCase().replace(" ","");
-        ademi.client = ademi.client.toLocaleLowerCase();
-        ademi.typeDechet = ademi.typeDechet.toLocaleLowerCase();
+        csv.client = csv.client.toLocaleLowerCase();
+        csv.typeDechet = csv.typeDechet.toLocaleLowerCase();
         //Si il y a correspondance on fait traitement
-        if( mr.Name.split(' - ')[1] == ademi.client && (mr.produit == ademi.typeDechet || (mr.produit == "dib/dea" && mr.produit.includes(ademi.typeDechet))) ){
+        if( mr.Name.split(' - ')[1] == csv.client && (mr.produit == csv.typeDechet || (mr.produit == "dib/dea" && mr.produit.includes(csv.typeDechet))) ){
           //if( mr.Name.split(' - ')[1] == ademi.client  ){  
-          let formatDate = ademi.dateEntree.split('/')[2]+'-'+ademi.dateEntree.split('/')[1]+'-'+ademi.dateEntree.split('/')[0];
+          let formatDate = csv.dateEntree.split('/')[2]+'-'+csv.dateEntree.split('/')[1]+'-'+csv.dateEntree.split('/')[0];
           let keyHash = formatDate+'_'+mr.productId+'_'+mr.Id;
           //si il y a deja une valeur dans la hashMap pour ce client et ce jour, on incrémente la valeur
           let value, valueRound;
           if(this.stockageImport.has(keyHash)){
             //@ts-ignore
-            value = this.stockageImport.get(keyHash)+ademi.tonnage;
+            value = this.stockageImport.get(keyHash)+csv.tonnage;
             valueRound = parseFloat(value.toFixed(3));
             this.stockageImport.set(keyHash,valueRound);
           }
           //Sinon on insére dans la hashMap
           //@ts-ignore
-          this.stockageImport.set(keyHash,parseFloat(ademi.tonnage.toFixed(3)));
+          this.stockageImport.set(keyHash,parseFloat(csv.tonnage.toFixed(3)));
         }
       })
     });
@@ -497,12 +501,7 @@ export class ListEntreeComponent implements OnInit {
     });
   }
 
-  importProTruck(){
-    alert("Protruck");
-  }
-
   //Import tonnage via HODJA
-  //? apres un nom de param signifie qu'il est optionnel
   recupHodja(form : NgForm){
     this.stockageHodja.clear();
     let dateDebFormat = new Date(), dateFinFormat = new Date();
