@@ -55,7 +55,7 @@ export class AcceuilComponent implements OnInit {
       this.idUsine = this.userLogged['idUsine'];
 
       //SI utilisateur GLOBAL alors choix du site à administrer/se connecter
-      //Id 5 correspond à "GLOBAL"
+      //Id 5 correspond à "GLOBAL"/SuperAdmin
       if (this.idUsine == 5) {
         this.choixSite();
       }
@@ -94,7 +94,6 @@ export class AcceuilComponent implements OnInit {
   getMaintenance(){
     this.categoriesService.getMaintenance().subscribe((response)=>{
       this.maintenance = response;
-      console.log(this.maintenance);
     });
   }
 

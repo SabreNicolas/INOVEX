@@ -94,12 +94,14 @@
                 <thead>
                 <tr class="table-secondary">
                     <th scope="col"><button class="btn btn-success"(click)="validation()">Valider les tonnages</button></th>
+                    <th scope="col">Unité</th>
                     <th *ngFor="let day of listDays" scope="col">{{day}}</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr class="table-light" *ngFor="let mr of moralEntities">
                     <td class="fix"><strong>{{mr.Name}}</strong></td>
+                    <td>t/j</td>
                     <td *ngFor="let day of listDays">
                         <!-- Balise caché avec la valeur pour export Excel car impossible d'exporter valeurs si inputs dans table -->
                         <p style="display: none;" id="export-{{mr.Id}}-{{mr.productId}}-{{day}}"></p>
@@ -111,6 +113,7 @@
                 </tr>
                 <tr class="table-secondary" style="color: #044daa">
                     <td class="fix"><strong>Total</strong></td>
+                    <td></td>
                     <td *ngFor="let day of listDays"><strong><p id="{{day}}"></p></strong></td>
                 </tr>
                 </tbody>
