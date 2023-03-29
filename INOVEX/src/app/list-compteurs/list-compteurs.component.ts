@@ -5,6 +5,7 @@ import { category } from 'src/models/categories.model';
 import Swal from 'sweetalert2';
 import {product} from "../../models/products.model";
 import {NgForm} from "@angular/forms";
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-list-compteurs',
@@ -114,6 +115,7 @@ export class ListCompteursComponent implements OnInit {
         this.productsService.getValueCompteurs(day.substr(6, 4) + '-' + day.substr(3, 2) + '-' + day.substr(0, 2),cp.Code).subscribe((response) => {
           if (response.data[0] != undefined && response.data[0].Value != 0) {
             (<HTMLInputElement>document.getElementById(cp.Code + '-' + day)).value = response.data[0].Value;
+            (<HTMLInputElement>document.getElementById('export-'+cp.Code + '-' + day)).innerHTML = response.data[0].Value;
           } else (<HTMLInputElement>document.getElementById(cp.Code + '-' + day)).value = '';
         });
       });
@@ -156,6 +158,21 @@ export class ListCompteursComponent implements OnInit {
         })
       }
     });
+  }
+
+
+  //Export de la table dans fichier EXCEL
+  exportExcel(){
+    /* table id is passed over here */
+    let element = document.getElementById('listCompteurs');
+    const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element,{raw:false,dateNF:'mm/dd/yyyy'}); //Attention les jours sont considérés comme mois !!!!
+
+    /* generate workbook and add the worksheet */
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Comppteurs');
+
+    /* save to file */
+    XLSX.writeFile(wb, 'compteurs.xlsx');
   }
 
 }
