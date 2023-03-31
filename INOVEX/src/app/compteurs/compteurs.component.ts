@@ -29,7 +29,14 @@ export class CompteursComponent implements OnInit {
     });
   }
 
-  onSubmit(form : NgForm){
+  //Fonction pour attendre
+  wait(ms : number) {
+    return new Promise(resolve => {
+      setTimeout(resolve, ms);
+    });
+  }
+
+  async onSubmit(form : NgForm){
     if (form.value['unit']==''){
       this.productsService.unit = '/';
     }
@@ -43,17 +50,30 @@ export class CompteursComponent implements OnInit {
     this.productsService.nom = form.value['nom'];
     this.Code = form.value['categorie'];
 
-    this.productsService.getLastCode(this.Code).subscribe((response)=>{
-      if (response.data.length > 0){
-        var CodeCast : number = +response.data[0].Code;
-        this.productsService.code = String(CodeCast+1);
-      }
-      else {
-        this.productsService.code = this.Code + '0001';
+    let lastCodeUsine = 0, lastCodeGlobal = 0;
+    //On va chercher pour chaque site le dernierCode et on stocke le plus grand de tout les sites confondu pour avoir une uniformité
+    this.categoriesService.sites.forEach(site => {
+      this.productsService.getLastCode(this.Code,site.id).subscribe((response)=>{
+        if (response.data.length > 0){
+          var CodeCast : number = +response.data[0].Code;
+          lastCodeUsine = CodeCast+1;
+        }
+        else {
+          lastCodeUsine = Number(this.Code + '0001');
+        }
+        //Si le code de l'usine est plus grand que celui déjà stocké, on le stocke
+        if(lastCodeUsine > lastCodeGlobal){
+          lastCodeGlobal = lastCodeUsine;
+          this.productsService.code = String(lastCodeGlobal);
+        }
+      });
+    });
 
-      }
+    await this.wait(500);
 
-      this.productsService.createProduct(this.typeId).subscribe((response)=>{
+    //On va créer le compteur pour l'ensemble des sites = > Référentiel produit unique
+    this.categoriesService.sites.forEach(site => {
+      this.productsService.createProduct(this.typeId, site.id).subscribe((response)=>{
         if (response == "Création du produit OK"){
           Swal.fire("Le compteur a bien été créé !");
         }

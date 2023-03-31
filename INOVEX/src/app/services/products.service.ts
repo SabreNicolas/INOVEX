@@ -38,8 +38,8 @@ export class productsService {
     }
 
     //récupérer le dernier code
-    getLastCode(Code : string) {
-        let requete = "https://"+this.ip+":"+this.portAPI+"/productLastCode?Code="+Code+"&idUsine="+this.idUsine;
+    getLastCode(Code : string, idUsine : number) {
+        let requete = "https://"+this.ip+":"+this.portAPI+"/productLastCode?Code="+Code+"&idUsine="+idUsine;
         //console.log(requete);
 
 
@@ -52,9 +52,8 @@ export class productsService {
     }
 
     //création du produit
-    createProduct(typeId : number){
-        console.log(this._tag);
-        let requete = "https://"+this.ip+":"+this.portAPI+"/Product?Name="+this._nom+"&Code="+this._code+"&typeId="+typeId+"&Unit="+this._unit+"&idUsine="+this.idUsine+"&TAG="+this._tag;
+    createProduct(typeId : number, idUsine : number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/Product?Name="+this._nom+"&Code="+this._code+"&typeId="+typeId+"&Unit="+this._unit+"&idUsine="+idUsine+"&TAG="+this._tag;
         //console.log(requete);
 
         const requestOptions = {

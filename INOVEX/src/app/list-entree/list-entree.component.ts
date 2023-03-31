@@ -408,19 +408,16 @@ export class ListEntreeComponent implements OnInit {
   //import tonnage via fichier
   import(event : Event){
     if (this.typeImportTonnage.toLowerCase().includes("ademi")){
-      this.importAdemi(event);
+      this.lectureCSV(event, ";", false, 8, 7, 2, 5);
     }
     else if (this.typeImportTonnage.toLowerCase().includes("protruck")){
-      this.importProTruck();
+      alert("Bientôt Disponible");
     }
   }
 
-  importProTruck(){
-    alert("Protruck");
-  }
-
+  //import tonnage via fichier
   //Traitement du fichier csv ADEMI
-  importAdemi(event : Event){
+  lectureCSV(event : Event, delimiter : string, header : boolean, posClient : number, posTypeDechet : number, posDateEntree : number, posTonnage : number){
     //@ts-ignore
     var files = event.target.files; // FileList object
     var file = files[0];
@@ -431,19 +428,18 @@ export class ListEntreeComponent implements OnInit {
       //options à ajouter => pas d'entête, delimiter ;
       this.Papa.parse(csv, {
         skipEmptyLines: true,
-        delimiter: ";",
-        header: false,
-        //TODO : attendre ce traitement avant de traiter le tableau avec la boucle
+        delimiter: delimiter,
+        header: header,
         complete: (results) => {
           for (let i = 0; i < results.data.length; i++) {
             //ON récupére les lignes infos nécessaires pour chaque ligne du csv
             //ON récupère uniquement les types de déchets pour les entrants
-            if(results.data[i][7] == "OM" || results.data[i][7] == "DIB" || results.data[i][7] == "DEA" || results.data[i][7] == "DAOM" || results.data[i][7] == "REFUS DE TRI"){
+            if(results.data[i][posTypeDechet] == "OM" || results.data[i][posTypeDechet] == "DIB" || results.data[i][posTypeDechet] == "DEA" || results.data[i][posTypeDechet] == "DAOM" || results.data[i][posTypeDechet] == "REFUS DE TRI"){
               let importCSV = {
-                client: results.data[i][8],
-                typeDechet: results.data[i][7],
-                dateEntree : results.data[i][2].substring(0,10),
-                tonnage : results.data[i][5]/1000,
+                client: results.data[i][posClient],
+                typeDechet: results.data[i][posTypeDechet],
+                dateEntree : results.data[i][posDateEntree].substring(0,10),
+                tonnage : results.data[i][posTonnage]/1000,
               };
               this.csvArray.push(importCSV);
             }
@@ -513,7 +509,7 @@ export class ListEntreeComponent implements OnInit {
     listDate = this.getDays(dateDebFormat,dateFinFormat);
     listDate.forEach(async day =>{
       await this.wait(100);
-      //On récupère dans hodja les valeurs de bascule pour la période choisit (par défaut semaine en cours)
+      //On récupère dans hodja les valeurs de bascule pour la période choisit
       this.moralEntitiesService.recupHodja(day,day).subscribe(async (response)=>{
         this.stockageHodja.clear();
         //console.log(day);
@@ -524,10 +520,10 @@ export class ListEntreeComponent implements OnInit {
           for (const mr of this.moralEntities){
             //On regarde si le nom INOVEX sans la désignation du type de déchet est contenu dans le nom HODJA et si le début du code correspond
             let nameWithoutTypeDechet;
-            if(mr.Name.toLowerCase().split(" - ").length>2){
-              nameWithoutTypeDechet = mr.Name.toLowerCase().split(" - ")[1]+" - "+mr.Name.toLowerCase().split(" - ")[2];
+            if(mr.Name.toLowerCase().split("-").length>2){
+              nameWithoutTypeDechet = mr.Name.toLowerCase().split("-")[1]+"-"+mr.Name.toLowerCase().split("-")[2];
             }
-            else nameWithoutTypeDechet = mr.Name.toLowerCase().split(" - ")[1];
+            else nameWithoutTypeDechet = mr.Name.toLowerCase().split("-")[1];
             if(valueHodja.client.toLowerCase().replace(/ /g,"") === nameWithoutTypeDechet.replace(/ /g,"") && mr.Code.startsWith(valueHodja.debCode)){
               //Si il y a correspondance alors on fait un traitement
               //Si il y a déjà une valeur dans la HashMap pour ce client, on incrémente la valeur

@@ -10,7 +10,7 @@ export class categoriesService {
     private _nom : string;
     private _code : string;
     private _parentId : number;
-    private idUsine : number | undefined;
+    public sites : site[];
 
     httpClient: HttpClient;
     private headerDict = {
@@ -26,6 +26,7 @@ export class categoriesService {
         this._nom = '';
         this._code = '';
         this._parentId = 0;
+        this.sites = [];
         //Récupération du user dans localStorage
         var userLogged = localStorage.getItem('user');
         if (typeof userLogged === "string") {
@@ -154,4 +155,13 @@ export class categoriesService {
     set parentId(value: number) {
         this._parentId = value;
     }
+
+    get listSites(): site[] {
+        return this.sites;
+    }
+
+    set listSites(value: site[]) {
+        this.sites = value;
+    }
+
 }

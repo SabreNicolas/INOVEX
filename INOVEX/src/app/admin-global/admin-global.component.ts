@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { categoriesService } from '../services/categories.service';
 
 @Component({
   selector: 'app-admin-global',
@@ -9,7 +10,7 @@ export class AdminGlobalComponent implements OnInit {
 
   public isSuperAdmin : boolean;
 
-  constructor() { 
+  constructor(private categoriesService : categoriesService) { 
     this.isSuperAdmin = false;
   }
 
@@ -27,6 +28,12 @@ export class AdminGlobalComponent implements OnInit {
         this.isSuperAdmin = true;
       }
     }
+
+    //stockage de l'ensemble des sites dans le le service categories pour la création de produit pour l'ensemble des sites
+    this.categoriesService.getSites().subscribe((response)=>{
+      //@ts-ignore
+      this.categoriesService.sites = response.data;
+    });
   }
 
   download(file : string){
