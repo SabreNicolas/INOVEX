@@ -37,7 +37,12 @@ export class ZoneControleComponent implements OnInit {
   //création de la zone de controle
   onSubmit(form : NgForm) {
     this.nom = form.value['nom'];
-    this.four = form.value['four'];
+    //On affecte la valeur si le four est coché
+    if (form.controls['four'].touched){
+      this.four = form.value['four'];
+    }
+    //Sinon 0 pour commun
+    else this.four = 0;
     //Gestion commentaire
     if(form.value['commentaire'].length < 1){
       this.commentaire = "_";
@@ -62,15 +67,14 @@ export class ZoneControleComponent implements OnInit {
   resetFields(form: NgForm){
     form.controls['nom'].reset();
     form.value['nom']='';
-    form.controls['commentaire'].reset();
-    form.value['commentaire']='';
+    //form.controls['commentaire'].reset();
+    form.value['commentaire']='_';
     form.controls['four'].reset();
     form.value['four'] = 0;
   }
 
   resetFourZone(form: NgForm) {
     form.controls['four'].reset();
-    form.value['four'] = 0;
   }
 
 }

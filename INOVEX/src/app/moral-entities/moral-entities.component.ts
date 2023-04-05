@@ -113,7 +113,7 @@ export class MoralEntitiesComponent implements OnInit {
 
 
   onSubmit(form : NgForm){
-    if (this.address==''){
+    if (this.address == '' || this.address == null){
       this.moralEntitiesService.adress = '_';
     }
     else this.moralEntitiesService.adress = this.address;
@@ -133,27 +133,27 @@ export class MoralEntitiesComponent implements OnInit {
     this.moralEntitiesService.code = this.code;
 
     //DEBUT AJOUT INFOS SUPP
-    if (this.CAP==''){
+    if (this.CAP == '' || this.CAP == null){
       this.moralEntitiesService.numCAP = '_';
     }
     else this.moralEntitiesService.numCAP = this.CAP;
 
-    if (this.codeDechet==''){
+    if (this.codeDechet == '' || this.codeDechet == null){
       this.moralEntitiesService.codeDechet = '_';
     }
     else this.moralEntitiesService.codeDechet = this.codeDechet;
 
-    if (this.nomClient==''){
+    if (this.nomClient == '' || this.nomClient == null){
       this.moralEntitiesService.nomClient = '_';
     }
     else this.moralEntitiesService.nomClient = this.nomClient;
 
-    if (this.prenomClient==''){
+    if (this.prenomClient == '' || this.prenomClient == null){
       this.moralEntitiesService.prenomClient = '_';
     }
     else this.moralEntitiesService.prenomClient = this.prenomClient;
 
-    if (this.mailClient==''){
+    if (this.mailClient == '' || this.mailClient == null){
       this.moralEntitiesService.mailClient = '_';
     }
     else this.moralEntitiesService.mailClient = this.mailClient;
@@ -243,6 +243,7 @@ export class MoralEntitiesComponent implements OnInit {
     form.value['prenomClient']='';
     form.controls['mailClient'].reset();
     form.value['mailClient']='';
+    this.code = '';
   }
 
 }

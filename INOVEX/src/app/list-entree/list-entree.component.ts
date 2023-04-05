@@ -408,10 +408,12 @@ export class ListEntreeComponent implements OnInit {
   //import tonnage via fichier
   import(event : Event){
     if (this.typeImportTonnage.toLowerCase().includes("ademi")){
+      //delimiter,header,client,typedechet,dateEntree,tonnage
       this.lectureCSV(event, ";", false, 8, 7, 2, 5);
     }
     else if (this.typeImportTonnage.toLowerCase().includes("protruck")){
-      alert("Bientôt Disponible");
+      //delimiter,header,client,typedechet,dateEntree,tonnage
+      this.lectureCSV(event, ";", false, 6, 31, 2, 16);
     }
   }
 
@@ -434,16 +436,22 @@ export class ListEntreeComponent implements OnInit {
           for (let i = 0; i < results.data.length; i++) {
             //ON récupére les lignes infos nécessaires pour chaque ligne du csv
             //ON récupère uniquement les types de déchets pour les entrants
-            if(results.data[i][posTypeDechet] == "OM" || results.data[i][posTypeDechet] == "DIB" || results.data[i][posTypeDechet] == "DEA" || results.data[i][posTypeDechet] == "DAOM" || results.data[i][posTypeDechet] == "REFUS DE TRI"){
+            //Si import Protruck, on récupère uniquement le type de déchet dans la colonne correspondante
+            if(this.typeImportTonnage.toLowerCase().includes("protruck")){
+              results.data[i][posTypeDechet] = results.data[i][posTypeDechet].split(" - ")[0].split(" ")[0];
+            }
+            if(results.data[i][posTypeDechet] == ("OM") || results.data[i][posTypeDechet] == "DIB" || results.data[i][posTypeDechet] == "DEA" || results.data[i][posTypeDechet] == "DAOM" || results.data[i][posTypeDechet] == "REFUS DE TRI"){
+              //Création de l'objet qui contient l'ensemble des infos nécessaires
               let importCSV = {
                 client: results.data[i][posClient],
                 typeDechet: results.data[i][posTypeDechet],
                 dateEntree : results.data[i][posDateEntree].substring(0,10),
-                tonnage : results.data[i][posTonnage]/1000,
+                tonnage : +results.data[i][posTonnage].replace(/[^0-9]/g,"")/1000,
               };
               this.csvArray.push(importCSV);
             }
           }
+          //console.log(this.csvArray);
           this.insertTonnageCSV();
         }
       });
@@ -457,13 +465,18 @@ export class ListEntreeComponent implements OnInit {
     this.getMoralEntities();
     this.moralEntities.forEach(mr => {
       this.csvArray.forEach(csv => {
-        mr.Name = mr.Name.toLocaleLowerCase();
+        //Gestion des différents cas : NSL nomClient , PIT Collecteur - nomClient
+        if(this.typeImportTonnage.toLowerCase().includes("protruck")){
+          mr.Name = mr.Name.toLocaleLowerCase();
+        }
+        else if(this.typeImportTonnage.toLowerCase().includes("ademi")){
+          mr.Name = mr.Name.toLocaleLowerCase().split(' - ')[1];
+        }
         mr.produit = mr.produit.toLocaleLowerCase().replace(" ","");
         csv.client = csv.client.toLocaleLowerCase();
         csv.typeDechet = csv.typeDechet.toLocaleLowerCase();
         //Si il y a correspondance on fait traitement
-        if( mr.Name.split(' - ')[1] == csv.client && (mr.produit == csv.typeDechet || (mr.produit == "dib/dea" && mr.produit.includes(csv.typeDechet))) ){
-          //if( mr.Name.split(' - ')[1] == ademi.client  ){  
+        if( mr.Name == csv.client && (mr.produit == csv.typeDechet || (mr.produit == "dib/dea" && mr.produit.includes(csv.typeDechet))) ){  
           let formatDate = csv.dateEntree.split('/')[2]+'-'+csv.dateEntree.split('/')[1]+'-'+csv.dateEntree.split('/')[0];
           let keyHash = formatDate+'_'+mr.productId+'_'+mr.Id;
           //si il y a deja une valeur dans la hashMap pour ce client et ce jour, on incrémente la valeur

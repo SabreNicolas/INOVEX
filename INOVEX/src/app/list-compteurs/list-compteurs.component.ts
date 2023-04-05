@@ -18,12 +18,25 @@ export class ListCompteursComponent implements OnInit {
   public listCompteurs : product[];
   public Code : string;
   public listDays : string[];
+  public idUsine : number | undefined;
+  public dateDeb : Date | undefined;
+  public dateFin : Date | undefined;
 
   constructor(private productsService : productsService, private categoriesService : categoriesService) {
     this.listCategories = [];
     this.listCompteurs = [];
     this.Code = '';
     this.listDays = [];
+
+    //Récupération du user dans localStorage
+    var userLogged = localStorage.getItem('user');
+    if (typeof userLogged === "string") {
+        var userLoggedParse = JSON.parse(userLogged);
+
+        //Récupération de l'idUsine
+        // @ts-ignore
+        this.idUsine = userLoggedParse['idUsine'];
+    }
   }
 
   ngOnInit(): void {
@@ -50,11 +63,26 @@ export class ListCompteursComponent implements OnInit {
 
   setPeriod(form: NgForm){
     this.listDays = [];
-    var date = new Date(form.value['dateDeb']);
-    var mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
-    var yyyy = date.getFullYear();
-    var dd = String(new Date(yyyy, date.getMonth()+1, 0).getDate()).padStart(2, '0');
-    this.listDays.push(dd + '/' + mm + '/' + yyyy);
+    if(this.idUsine !=2 ){
+      var date = new Date(form.value['dateDeb']);
+      var mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
+      var yyyy = date.getFullYear();
+      var dd = String(new Date(yyyy, date.getMonth()+1, 0).getDate()).padStart(2, '0');
+      this.listDays.push(dd + '/' + mm + '/' + yyyy);
+    }
+    else {
+      this.dateDeb = new Date(form.value['dateDeb']);
+      this.dateFin = new Date(form.value['dateFin']);
+      if (this.dateFin < this.dateDeb) {
+        form.controls['dateFin'].reset();
+        form.value['dateFin'] = '';
+        Swal.fire({
+          icon: 'error',
+          text: 'La date de Fin est inférieure à la date de Départ !',
+        })
+      }
+      this.listDays = this.getDays(this.dateDeb, this.dateFin);
+    }
     this.getValues();
   }
 
@@ -107,6 +135,94 @@ export class ListCompteursComponent implements OnInit {
     }
     this.getValues();
   }
+
+  /**
+   * PARTIE SAISIE JOUR
+  */
+
+  //récupérer les jours de la période
+  getDays(start : Date, end : Date) {
+    for(var arr=[],dt=new Date(start); dt<=end; dt.setDate(dt.getDate()+1)){
+      var dd = String(dt.getDate()).padStart(2, '0');
+      var mm = String(dt.getMonth() + 1).padStart(2, '0'); //January is 0!
+      var yyyy = dt.getFullYear();
+      var day = dd + '/' + mm + '/' + yyyy;
+      arr.push(day);
+    }
+    return arr;
+  };
+
+  //changer les dates pour saisir hier
+  setYesterday(form: NgForm){
+    var date = new Date();
+    var yyyy = date.getFullYear();
+    var dd = String(date.getDate() - 1).padStart(2, '0');
+    var mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
+    if(dd === '00'){
+      dd = String(new Date(yyyy, date.getMonth(), 0).getDate()).padStart(2, '0');
+      mm = String(date.getMonth()).padStart(2, '0');
+    }
+    var day = yyyy + '-' + mm + '-' + dd;
+    (<HTMLInputElement>document.getElementById("dateDeb")).value = day;
+    (<HTMLInputElement>document.getElementById("dateFin")).value = day;
+    form.value['dateDeb'] = day;
+    form.value['dateFin'] = day;
+    this.setPeriod(form);
+    form.controls['dateDeb'].reset();
+    form.value['dateDeb']='';
+    form.controls['dateFin'].reset();
+    form.value['dateFin']='';
+  }
+
+  //changer les dates pour saisir la semaine en cours
+  setCurrentWeek(form: NgForm){
+    var date = new Date();
+    //le début de la semaine par défaut est dimanche (0)
+    var firstday = new Date(date.setDate(date.getDate() - date.getDay()+1));
+    var lastday = new Date(date.setDate(date.getDate() - date.getDay()+7));
+    var ddF = String(firstday.getDate()).padStart(2, '0');
+    var mmF = String(firstday.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyyF = firstday.getFullYear();
+    var firstDayOfWeek = yyyyF + '-' + mmF + '-' + ddF;
+    var ddL = String(lastday.getDate()).padStart(2, '0');
+    var mmL = String(lastday.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyyL = lastday.getFullYear();
+    var LastDayOfWeek = yyyyL + '-' + mmL + '-' + ddL;
+
+    (<HTMLInputElement>document.getElementById("dateDeb")).value = firstDayOfWeek;
+    (<HTMLInputElement>document.getElementById("dateFin")).value = LastDayOfWeek;
+    form.value['dateDeb'] = firstDayOfWeek;
+    form.value['dateFin'] = LastDayOfWeek;
+    this.setPeriod(form);
+    form.controls['dateDeb'].reset();
+    form.value['dateDeb']='';
+    form.controls['dateFin'].reset();
+    form.value['dateFin']='';
+  }
+
+  //changer les dates pour saisir le mois en cours
+  setCurrentMonth(form: NgForm){
+    var date = new Date();
+    var mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = date.getFullYear();
+    var dd = String(new Date(yyyy, date.getMonth()+1, 0).getDate()).padStart(2, '0');
+
+    var Fisrtday = yyyy + '-' + mm + '-' + '01';
+    var Lastday = yyyy + '-' + mm + '-' + dd;
+    (<HTMLInputElement>document.getElementById("dateDeb")).value = Fisrtday;
+    (<HTMLInputElement>document.getElementById("dateFin")).value = Lastday;
+    form.value['dateDeb'] = Fisrtday;
+    form.value['dateFin'] = Lastday;
+    this.setPeriod(form);
+    form.controls['dateDeb'].reset();
+    form.value['dateDeb']='';
+    form.controls['dateFin'].reset();
+    form.value['dateFin']='';
+  }
+
+  /**
+   * FIN PARTIE SAISIE JOUR
+  */
 
   //récupérer les valeurs en BDD
   getValues() {
