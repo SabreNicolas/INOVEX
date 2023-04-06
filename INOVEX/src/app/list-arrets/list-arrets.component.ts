@@ -21,6 +21,7 @@ export class ListArretsComponent implements OnInit {
   public isArret : boolean = false; // 'true' si on saisie des arrêts et 'false' si dépassements
   private nbfour : number;
   public numbers : number[];
+  public updateAfterDelete : boolean;
 
   constructor(private arretsService : arretsService, private rondierService : rondierService, private route : ActivatedRoute, private router : Router) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false; //permet de recharger le component au changement de paramètre
@@ -29,6 +30,7 @@ export class ListArretsComponent implements OnInit {
     this.stringDateDebut = '';
     this.stringDateFin = '';
     this.nbfour = 0;
+    this.updateAfterDelete = false;
     //contient des chiffres pour l'itération des fours
     this.numbers = [];
     this.route.queryParams.subscribe(params => {
@@ -48,9 +50,13 @@ export class ListArretsComponent implements OnInit {
       this.numbers = Array(this.nbfour).fill(1).map((x,i) => i+1);
     });
 
-    //Permet de prendre en compte l'entiereté de la journée pour la date de début et de fin
-    this.stringDateDebut = this.stringDateDebut +" 00:00:00";
-    this.stringDateFin = this.stringDateFin + " 23:59:59"
+    //Si on rafraichit après un delete on n'ajoute pas les heures dans la date
+    if(!this.updateAfterDelete){
+      //Permet de prendre en compte l'entiereté de la journée pour la date de début et de fin
+      this.stringDateDebut = this.stringDateDebut +" 00:00:00";
+      this.stringDateFin = this.stringDateFin + " 23:59:59";
+    }
+    else this.updateAfterDelete = false;
 
     if (this.isArret == true) {
       this.arretsService.getArrets(this.stringDateDebut, this.stringDateFin).subscribe((response) => {
@@ -177,6 +183,8 @@ export class ListArretsComponent implements OnInit {
 
   //Suppression d'un arret
   delete(id : number){
+    this.updateAfterDelete =true;
+
     if (this.isArret == true) {
       this.arretsService.deleteArret(id).subscribe((response) => {
         if (response == "Suppression de l'arrêt OK") {

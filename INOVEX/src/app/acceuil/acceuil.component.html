@@ -8,8 +8,8 @@
         <p>Merci de terminer vos saisies avant la date de début de la maintenance - <strong>l'Equipe KERLAN INFORMATIQUE</strong>.</p>
     </div>
 
-    <div *ngIf="userLogged.hasOwnProperty('localisation')" class="gestionUsine">
-        <a class="nav-link" (click)="choixSite()" role="button">
+    <div class="gestionUsine">
+        <a *ngIf="userLogged.hasOwnProperty('localisation')" class="nav-link" (click)="choixSite()" role="button">
             <i class="fa fa-map-marker" aria-hidden="true"></i> {{localisation}}
         </a>
     </div>
