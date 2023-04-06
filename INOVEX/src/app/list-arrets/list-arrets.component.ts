@@ -48,6 +48,10 @@ export class ListArretsComponent implements OnInit {
       this.numbers = Array(this.nbfour).fill(1).map((x,i) => i+1);
     });
 
+    //Permet de prendre en compte l'entiereté de la journée pour la date de début et de fin
+    this.stringDateDebut = this.stringDateDebut +" 00:00:00";
+    this.stringDateFin = this.stringDateFin + " 23:59:59"
+
     if (this.isArret == true) {
       this.arretsService.getArrets(this.stringDateDebut, this.stringDateFin).subscribe((response) => {
         // @ts-ignore
