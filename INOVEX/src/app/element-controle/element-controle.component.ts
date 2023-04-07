@@ -145,7 +145,7 @@ export class ElementControleComponent implements OnInit {
 
   //Création éléments contrôle
   onSubmit(form : NgForm) {
-    this.nom = form.value['nom'];
+    this.nom = form.value['nom'].replace("'"," ");
     this.zoneId = form.value['zone'];
     if(this.zoneId.length < 2){
       this.ordreElem = form.value['ordreElem'];
