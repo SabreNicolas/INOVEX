@@ -45,7 +45,7 @@
             <th scope="col">Unité</th>
             <th scope="col">Code GMAO</th>
             <!--<th scope="col">#</th>-->
-            <th scope="col">#</th>
+            <!--<th scope="col">#</th>-->
             <th scope="col">Visibilité</th>
         </tr>
         </thead>
@@ -66,9 +66,9 @@
             <!--<td><button id="setPrice" (click)="setUnit(pr)" class="btn btn-primary">
                 Changer unité
             </button></td>-->
-            <td><button id="setType" (click)="setType(pr)" class="btn btn-primary">
+            <!--<td><button id="setType" (click)="setType(pr)" class="btn btn-primary">
                 Changer le type
-            </button></td>
+            </button></td>-->
             <td *ngIf="pr.Enabled == 0"><button id="setDisabled" (click)="setVisibility(pr.Id,1)" class="btn btn-outline-danger">
                 <i style="color: red" class="fa fa-eye-slash"></i>
             </button></td>

@@ -32,6 +32,7 @@
                 <th scope="col">Valeur par défaut</th>
                 <th scope="col">Valeurs Possibles</th>
                 <th scope="col">Unité</th>
+                <th scope="col">Code GMAO</th>
                 <th style="text-align: center" scope="col">Est un régulateur ?</th>
                 <th style="text-align: center" scope="col">Est un compteur ?</th>
                 <th scope="col">Edition</th>
@@ -50,6 +51,7 @@
                 <td>{{e.defaultValue}}</td>
                 <td>{{e.listValues}}</td>
                 <td>{{e.unit}}</td>
+                <td style="color: blue;">/</td>
                 <td style="text-align: center" *ngIf="e.isRegulateur"><i style="color: green" class="fa fa-check" aria-hidden="true"></i></td>
                 <td style="text-align: center" *ngIf="!e.isRegulateur"><i style="color: red" class="fa fa-times" aria-hidden="true"></i></td>
                 <td style="text-align: center" *ngIf="e.isCompteur"><i style="color: green" class="fa fa-check" aria-hidden="true"></i></td>
