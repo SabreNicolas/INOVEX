@@ -51,9 +51,10 @@
                 <td>Terminé ?</td>
                 <td *ngFor="let ronde of listRonde" style="text-align: center">
                     <i *ngIf="ronde.isFinished" style="color: green" class="fa fa-check" aria-hidden="true"></i>
-                    <button *ngIf="!ronde.isFinished" id="closeRonde" (click)="clotureRonde(ronde.Id)" class="btn btn btn-outline-danger">
+                    <i *ngIf="!ronde.isFinished" style="color: red" class="fa fa-times" aria-hidden="true"></i>
+                    <!--<button *ngIf="!ronde.isFinished" id="closeRonde" (click)="clotureRonde(ronde.Id)" class="btn btn btn-outline-danger">
                         <i style="color: red" class="fa fa-times" aria-hidden="true"></i>
-                    </button>
+                    </button>-->
                 </td>
             </tr>
             <tr class="table-info">
