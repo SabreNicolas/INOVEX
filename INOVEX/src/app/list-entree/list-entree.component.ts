@@ -407,13 +407,20 @@ export class ListEntreeComponent implements OnInit {
 
   //import tonnage via fichier
   import(event : Event){
+    //Pithiviers/chinon
     if (this.typeImportTonnage.toLowerCase().includes("ademi")){
       //delimiter,header,client,typedechet,dateEntree,tonnage
       this.lectureCSV(event, ";", false, 8, 7, 2, 5);
     }
+    //Noyelles-sous-lens
     else if (this.typeImportTonnage.toLowerCase().includes("protruck")){
       //delimiter,header,client,typedechet,dateEntree,tonnage
       this.lectureCSV(event, ";", false, 6, 31, 2, 16);
+    }
+    //Saint-Saulve
+    else if (this.typeImportTonnage.toLowerCase().includes("dpk")){
+      //delimiter,header,client,typedechet,dateEntree,tonnage
+      this.lectureCSV(event, ";", false, 21, 20, 7, 19);
     }
   }
 
@@ -464,21 +471,26 @@ export class ListEntreeComponent implements OnInit {
     this.stockageImport.clear();
     this.getMoralEntities();
     this.moralEntities.forEach(mr => {
+      //Gestion des différents cas : NSL nomClient , PIT Collecteur - nomClient
+      //Pour ADEMI/Pithiviers & DPK/Saint-Saulve => les clients ont le format typeDechet Collecteur - MR => on récupère que le MR
+      //TODO : idem pour l'ensemble des sites avec Ademi ?????
+      //TODO : voir pour peut être vérifier par site au lieu de logiciel de pessage
+      if(this.typeImportTonnage.toLowerCase().includes("ademi") || this.typeImportTonnage.toLowerCase().includes("dpk")){
+        mr.Name = mr.Name.split(' - ')[1];
+      }
+      mr.Name = mr.Name.toLowerCase();
+      mr.produit = mr.produit.toLowerCase().replace(" ","");
+
       this.csvArray.forEach(csv => {
-        //Gestion des différents cas : NSL nomClient , PIT Collecteur - nomClient
-        if(this.typeImportTonnage.toLowerCase().includes("protruck")){
-          mr.Name = mr.Name.toLocaleLowerCase();
-        }
-        else if(this.typeImportTonnage.toLowerCase().includes("ademi")){
-          mr.Name = mr.Name.toLocaleLowerCase().split(' - ')[1];
-        }
-        mr.produit = mr.produit.toLocaleLowerCase().replace(" ","");
-        csv.client = csv.client.toLocaleLowerCase();
-        csv.typeDechet = csv.typeDechet.toLocaleLowerCase();
+        csv.client = csv.client.toLowerCase();
+        csv.typeDechet = csv.typeDechet.toLowerCase();
         //Si il y a correspondance on fait traitement
         if( mr.Name == csv.client && (mr.produit == csv.typeDechet || (mr.produit == "dib/dea" && mr.produit.includes(csv.typeDechet))) ){  
           let formatDate = csv.dateEntree.split('/')[2]+'-'+csv.dateEntree.split('/')[1]+'-'+csv.dateEntree.split('/')[0];
           let keyHash = formatDate+'_'+mr.productId+'_'+mr.Id;
+          //debug
+          console.log("**"+mr.Name+"**");
+          console.log("**"+csv.client+"**");
           //si il y a deja une valeur dans la hashMap pour ce client et ce jour, on incrémente la valeur
           let value, valueRound;
           if(this.stockageImport.has(keyHash)){
@@ -493,7 +505,8 @@ export class ListEntreeComponent implements OnInit {
         }
       })
     });
-
+    //debug
+    console.log(this.stockageImport);
     //on parcours la hashmap pour insertion en BDD
     this.stockageImport.forEach(async (value : number, key : String) => {
       await this.moralEntitiesService.createMeasure(key.split('_')[0],value,parseInt(key.split('_')[1]),parseInt(key.split('_')[2])).subscribe((response) =>{
