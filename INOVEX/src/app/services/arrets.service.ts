@@ -15,7 +15,8 @@ export class arretsService {
         'Access-Control-Allow-Origin' : '*'
     }
     private portAPI = 3100;
-    private ip = "fr-couvinove301.prod.paprec.fr";
+    // private ip = "fr-couvinove301.prod.paprec.fr";
+    private ip = "localhost";
     private idUsine : number | undefined;
 
     constructor(private http: HttpClient) {
