@@ -18,6 +18,7 @@ export class productsService {
     }
     private portAPI = 3100;
     private ip = "fr-couvinove301.prod.paprec.fr";
+    //private ip = "localhost";
     private idUsine : number | undefined;
 
     constructor(private http: HttpClient) {
@@ -305,6 +306,20 @@ export class productsService {
     //?TAG=SJSJJS
     setTAG(TAG: string, productId: number){
         let requete = "https://"+this.ip+":"+this.portAPI+"/productTAG/"+productId+"?TAG="+TAG;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<any>(requete,requestOptions);
+    }
+
+    //mettre à jour le code GMAO d'un produit
+    //?CodeEquipement=SJSJJS
+    setCodeEquipement(Code: string, productId: number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/productCodeEquipement/"+productId+"?CodeEquipement="+Code;
         //console.log(requete);
 
         const requestOptions = {

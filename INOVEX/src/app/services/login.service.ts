@@ -13,6 +13,7 @@ export class loginService {
     }
     private portAPI = 3100;
     private ip = "fr-couvinove301.prod.paprec.fr";
+    //private ip = "localhost";
     private idUsine : number | undefined;
 
     constructor(private http: HttpClient) {
@@ -29,10 +30,10 @@ export class loginService {
     }
 
     //création d'utilisateur
-    createUser(nom : string, prenom : string, login : string, pwd : string, isRondier : number, isSaisie : number, isQSE : number, isRapport : number, isAdmin : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/User?nom="+nom+"&prenom="+prenom+"&login="+login+"&pwd="+pwd+"&isRondier="+isRondier+"&isSaisie="+isSaisie+"&isQSE="+isQSE+"&isRapport="+isRapport+"&isAdmin="+isAdmin+"&idUsine="+this.idUsine;
-        //console.log(requete);
-
+    createUser(nom : string, prenom : string, login : string, pwd : string, isRondier : number, isSaisie : number, isQSE : number, isRapport : number, isChefQuart : number, isAdmin : number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/User?nom="+nom+"&prenom="+prenom+"&login="+login+"&pwd="+pwd+"&isRondier="+isRondier+"&isSaisie="+isSaisie+"&isQSE="+isQSE+"&isRapport="+isRapport+"&isChefQuart="+isChefQuart+"&isAdmin="+isAdmin+"&idUsine="+this.idUsine;
+        console.log(requete);
+        
         const requestOptions = {
             headers: new HttpHeaders(this.headerDict),
         };
@@ -96,61 +97,9 @@ export class loginService {
             .put<any>(requete,requestOptions);
     }
 
-    //Mise à jour droit rondier
-    updateRondier(login : string, droit : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/UserRondier/"+login+"/"+droit;
-        //console.log(requete);
-
-        const requestOptions = {
-            headers: new HttpHeaders(this.headerDict),
-        };
-
-        return this.http
-            .put<any>(requete,requestOptions);
-    }
-
-    //Mise à jour droit saisie
-    updateSaisie(login : string, droit : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/UserSaisie/"+login+"/"+droit;
-        //console.log(requete);
-
-        const requestOptions = {
-            headers: new HttpHeaders(this.headerDict),
-        };
-
-        return this.http
-            .put<any>(requete,requestOptions);
-    }
-
-    //Mise à jour droit qse
-    updateQSE(login : string, droit : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/UserQSE/"+login+"/"+droit;
-        //console.log(requete);
-
-        const requestOptions = {
-            headers: new HttpHeaders(this.headerDict),
-        };
-
-        return this.http
-            .put<any>(requete,requestOptions);
-    }
-
-    ///Mise à jour droit rapport
-    updateRapport(login : string, droit : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/UserRapport/"+login+"/"+droit;
-        //console.log(requete);
-
-        const requestOptions = {
-            headers: new HttpHeaders(this.headerDict),
-        };
-
-        return this.http
-            .put<any>(requete,requestOptions);
-    }
-
-    //Mise à jour droit admin
-    updateAdmin(login : string, droit : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/UserAdmin/"+login+"/"+droit;
+    //Mise à jour des droits rondier ou saisie ou qse ou rapports ou chef de quart ou admin
+    updateDroit(login : string, droit : number, choix : string){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/"+choix+"/"+login+"/"+droit;
         //console.log(requete);
 
         const requestOptions = {

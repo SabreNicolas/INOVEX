@@ -61,8 +61,11 @@
                 <i class="far fa-edit"></i>
             </button>
             </td>
-            <td>{{pr.Unit}}</td>
-            <td style="color: blue;">/</td>
+            <td>{{pr.Unit}}
+            </td>
+            <td>{{pr.CodeEquipement}}<button id="setTAG" (click)="setCodeEquipement(pr)" class="btn btn-light">
+                <i class="far fa-edit"></i>
+            </button></td>
             <!--<td><button id="setPrice" (click)="setUnit(pr)" class="btn btn-primary">
                 Changer unité
             </button></td>-->

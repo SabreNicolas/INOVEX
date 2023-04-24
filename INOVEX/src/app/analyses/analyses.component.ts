@@ -7,6 +7,7 @@ import {NgForm} from "@angular/forms";
 import {product} from "../../models/products.model";
 import {moralEntitiesService} from "../services/moralentities.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import { dateService } from '../services/date.service';
 
 @Component({
   selector: 'app-analyses',
@@ -21,7 +22,7 @@ export class AnalysesComponent implements OnInit {
   public listDays : string[];
   public isPCI : boolean = false; // 'true' si on saisie des pci et 'false' si analyses
 
-  constructor(private productsService : productsService, private categoriesService : categoriesService, private mrService : moralEntitiesService, private route : ActivatedRoute, private router : Router) {
+  constructor(private productsService : productsService, private categoriesService : categoriesService, private mrService : moralEntitiesService, private route : ActivatedRoute, private router : Router, private dateService : dateService) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false; //permet de recharger le component au changement de paramètre
     this.listCategories = [];
     this.listAnalyses = [];
@@ -84,51 +85,18 @@ export class AnalysesComponent implements OnInit {
 
   //changer les dates pour saisir le mois précédent
   setLastMonth(form: NgForm){
-    var date = new Date();
-    var mm : String;
-    var yyyy : number;
-    if (date.getMonth() === 0){
-      mm = "12";
-      yyyy = date.getFullYear()-1;
-    }
-    else {
-      mm = String(date.getMonth()).padStart(2, '0'); //January is 0!
-      yyyy = date.getFullYear();
-    }
-
-    var Lastday = yyyy + '-' + mm;
-    (<HTMLInputElement>document.getElementById("dateDeb")).value = Lastday;
-    form.value['dateDeb'] = Lastday;
+    this.dateService.setLastMonth(form);
     this.setPeriod(form);
   }
 
-  //afficher le dernier jour de chaque mois de l'année en cours
   setYear(){
-    this.listDays = [];
-    var date = new Date();
-    var yyyy = date.getFullYear();
-    for (let i = 1; i < 13; i++) {
-      var dd = String(new Date(yyyy, i, 0).getDate()).padStart(2, '0');
-      if(i<10){
-        this.listDays.push(dd + '/' + 0+i + '/' + yyyy);
-      }
-      else this.listDays.push(dd + '/' + i + '/' + yyyy);
-    }
+    this.listDays = this.dateService.setYear();
     this.getValues();
   }
 
   //afficher le dernier jour de chaque mois de l'année en cours
   setLastYear(){
-    this.listDays = [];
-    var date = new Date();
-    var yyyy = date.getFullYear()-1;
-    for (let i = 1; i < 13; i++) {
-      var dd = String(new Date(yyyy, i, 0).getDate()).padStart(2, '0');
-      if(i<10){
-        this.listDays.push(dd + '/' + 0+i + '/' + yyyy);
-      }
-      else this.listDays.push(dd + '/' + i + '/' + yyyy);
-    }
+    this.listDays = this.dateService.setLastYear();
     this.getValues();
   }
 
