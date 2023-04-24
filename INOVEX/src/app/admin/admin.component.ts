@@ -163,7 +163,7 @@ export class AdminComponent implements OnInit {
 
   //Mis à jour du Code GMAO
   setCodeEquipement(product : product){
-    if(product.Code == null){
+    if(product.CodeEquipement == null){
       var Code = prompt('Veuillez saisir un code GMAO','');
     }
     else var Code = prompt('Veuillez saisir un code GMAO',String(product.CodeEquipement));
