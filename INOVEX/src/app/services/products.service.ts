@@ -315,6 +315,20 @@ export class productsService {
         return this.http
             .put<any>(requete,requestOptions);
     }
+
+    //mettre à jour le code GMAO d'un produit
+    //?TAG=SJSJJS
+    setCode(Code: string, productId: number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/productCode/"+productId+"?Code="+Code;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<any>(requete,requestOptions);
+    }
   
   
     /*

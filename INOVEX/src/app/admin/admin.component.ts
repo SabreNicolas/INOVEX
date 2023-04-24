@@ -141,7 +141,10 @@ export class AdminComponent implements OnInit {
 
   //Mis à jour du TAG
   setTag(product : product){
-    var TAG = prompt('Veuillez saisir un TAG',String(product.TAG));
+    if(product.TAG == null){
+      var TAG = prompt('Veuillez saisir un TAG','');
+    }
+    else var TAG = prompt('Veuillez saisir un TAG',String(product.TAG));
     if(TAG == null) return;
     // @ts-ignore
     this.productsService.setTAG(TAG,product.Id).subscribe((response)=>{
@@ -153,6 +156,28 @@ export class AdminComponent implements OnInit {
         Swal.fire({
           icon: 'error',
           text: "Erreur lors de l'affectation du TAG ....",
+        })
+      }
+    });
+  }
+
+  //Mis à jour du Code GMAO
+  setCode(product : product){
+    if(product.Code == null){
+      var Code = prompt('Veuillez saisir un code GMAO','');
+    }
+    else var Code = prompt('Veuillez saisir un code GMAO',String(product.Code));
+    if(Code == null) return;
+    // @ts-ignore
+    this.productsService.setCode(Code,product.Id).subscribe((response)=>{
+      if (response == "Mise à jour du Code OK"){
+        Swal.fire("Le code GMAO a bien été affecté !");
+        this.ngOnInit();
+      }
+      else {
+        Swal.fire({
+          icon: 'error',
+          text: "Erreur lors de l'affectation du code ....",
         })
       }
     });

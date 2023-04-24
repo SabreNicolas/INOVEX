@@ -49,9 +49,9 @@ export class ListUsersComponent implements OnInit {
     });
   }
 
-  //changement droit rondier
-  changeRondier(login : string, right : number){
-    this.loginService.updateRondier(login,right).subscribe((response)=>{
+  //changement des droits rondier ou saisie ou qse ou rapports ou chef de quart ou admin
+  changeDroit(login : string, right : number, choix : string){
+    this.loginService.updateDroit(login,right,choix).subscribe((response)=>{
       if (response == "Mise à jour du droit OK"){
         Swal.fire("Les droits ont bien été mis à jour !");
       }
@@ -65,69 +65,6 @@ export class ListUsersComponent implements OnInit {
     this.ngOnInit();
   }
 
-  //changement droit saisie
-  changeSaisie(login : string, right : number){
-    this.loginService.updateSaisie(login,right).subscribe((response)=>{
-      if (response == "Mise à jour du droit OK"){
-        Swal.fire("Les droits ont bien été mis à jour !");
-      }
-      else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Erreur lors de la mise à jour des droits',
-        })
-      }
-    });
-    this.ngOnInit();
-  }
-
-  //changement droit qse
-  changeQSE(login : string, right : number){
-    this.loginService.updateQSE(login,right).subscribe((response)=>{
-      if (response == "Mise à jour du droit OK"){
-        Swal.fire("Les droits ont bien été mis à jour !");
-      }
-      else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Erreur lors de la mise à jour des droits',
-        })
-      }
-    });
-    this.ngOnInit();
-  }
-
-  //changement droit rapport
-  changeRapport(login : string, right : number){
-    this.loginService.updateRapport(login,right).subscribe((response)=>{
-      if (response == "Mise à jour du droit OK"){
-        Swal.fire("Les droits ont bien été mis à jour !");
-      }
-      else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Erreur lors de la mise à jour des droits',
-        })
-      }
-    });
-    this.ngOnInit();
-  }
-
-  //changement droit admin
-  changeAdmin(login : string, right : number){
-    this.loginService.updateAdmin(login,right).subscribe((response)=>{
-      if (response == "Mise à jour du droit OK"){
-        Swal.fire("Les droits ont bien été mis à jour !");
-      }
-      else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Erreur lors de la mise à jour des droits',
-        })
-      }
-    });
-    this.ngOnInit();
-  }
 
   //suppression d'un user
   deleteUser(id : number){

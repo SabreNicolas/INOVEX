@@ -8,5 +8,6 @@ export interface user{
     isSaisie : boolean;
     isQSE : boolean;
     isRapport : boolean;
+    isChefQuart : boolean;
     isAdmin : boolean;
 }
