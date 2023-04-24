@@ -8,4 +8,5 @@ export interface product{
     Code : string;
     typeId : number;
     TAG : string;
+    CodeEquipement : string;
 }

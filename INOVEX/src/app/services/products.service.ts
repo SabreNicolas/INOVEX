@@ -318,7 +318,7 @@ export class productsService {
 
     //mettre à jour le code GMAO d'un produit
     //?TAG=SJSJJS
-    setCode(Code: string, productId: number){
+    setCodeEquipement(Code: string, productId: number){
         let requete = "https://"+this.ip+":"+this.portAPI+"/productCode/"+productId+"?Code="+Code;
         //console.log(requete);
 

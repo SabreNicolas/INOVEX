@@ -162,14 +162,14 @@ export class AdminComponent implements OnInit {
   }
 
   //Mis à jour du Code GMAO
-  setCode(product : product){
+  setCodeEquipement(product : product){
     if(product.Code == null){
       var Code = prompt('Veuillez saisir un code GMAO','');
     }
-    else var Code = prompt('Veuillez saisir un code GMAO',String(product.Code));
+    else var Code = prompt('Veuillez saisir un code GMAO',String(product.CodeEquipement));
     if(Code == null) return;
     // @ts-ignore
-    this.productsService.setCode(Code,product.Id).subscribe((response)=>{
+    this.productsService.setCodeEquipement(Code,product.Id).subscribe((response)=>{
       if (response == "Mise à jour du Code OK"){
         Swal.fire("Le code GMAO a bien été affecté !");
         this.ngOnInit();
