@@ -65,11 +65,20 @@ export class ListCompteursComponent implements OnInit {
   setPeriod(form: NgForm){
     this.listDays = [];
     if(this.idUsine !=2 ){
-      var date = new Date(form.value['dateDeb']);
-      var mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
-      var yyyy = date.getFullYear();
-      var dd = String(new Date(yyyy, date.getMonth()+1, 0).getDate()).padStart(2, '0');
-      this.listDays.push(dd + '/' + mm + '/' + yyyy);
+      if(form.value['dateDeb'] != ''){
+        var date = new Date(form.value['dateDeb']);
+        var mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = date.getFullYear();
+        var dd = String(new Date(yyyy, date.getMonth()+1, 0).getDate()).padStart(2, '0');
+        this.listDays.push(dd + '/' + mm + '/' + yyyy);
+      }
+      else{
+        Swal.fire({
+          icon: 'error',
+          text: 'Date invalide',
+        })
+      }
+      
     }
     else {
       this.dateDeb = new Date(form.value['dateDeb']);
