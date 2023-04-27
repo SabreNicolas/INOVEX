@@ -4,6 +4,7 @@ import {NgForm} from "@angular/forms";
 import Swal from "sweetalert2";
 import {ActivatedRoute, Router} from "@angular/router";
 import {rondierService} from "../services/rondier.service";
+import { dateService } from '../services/date.service';
 
 @Component({
   selector: 'app-list-arrets',
@@ -23,7 +24,7 @@ export class ListArretsComponent implements OnInit {
   public numbers : number[];
   public updateAfterDelete : boolean;
 
-  constructor(private arretsService : arretsService, private rondierService : rondierService, private route : ActivatedRoute, private router : Router) {
+  constructor(private arretsService : arretsService, private rondierService : rondierService, private route : ActivatedRoute, private router : Router, private dateService : dateService) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false; //permet de recharger le component au changement de paramètre
     this.listArretsDepassements = [];
     this.sumArretsDepassements = [];
@@ -108,11 +109,9 @@ export class ListArretsComponent implements OnInit {
       });
     }
     else{
-      this.dateDeb = new Date(form.value['dateDeb']);
-      this.dateFin = new Date(form.value['dateFin']);
+      this.dateDeb = new Date((<HTMLInputElement>document.getElementById("dateDeb")).value);
+      this.dateFin = new Date((<HTMLInputElement>document.getElementById("dateFin")).value);
       if (this.dateFin < this.dateDeb) {
-        form.controls['dateFin'].reset();
-        form.value['dateFin'] = '';
         Swal.fire({
           icon: 'error',
           text: 'La date de Fin est inférieure à la date de Départ !',
@@ -133,24 +132,10 @@ export class ListArretsComponent implements OnInit {
   }
 
 
-  //changer les dates pour afficher le mois en cours
+  //changer les dates pour saisir le mois en cours
   setCurrentMonth(form: NgForm){
-    var date = new Date();
-    var mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
-    var yyyy = date.getFullYear();
-    var dd = String(new Date(yyyy, date.getMonth()+1, 0).getDate()).padStart(2, '0');
-
-    var Fisrtday = yyyy + '-' + mm + '-' + '01';
-    var Lastday = yyyy + '-' + mm + '-' + dd;
-    (<HTMLInputElement>document.getElementById("dateDeb")).value = Fisrtday;
-    (<HTMLInputElement>document.getElementById("dateFin")).value = Lastday;
-    form.value['dateDeb'] = Fisrtday;
-    form.value['dateFin'] = Lastday;
+    this.dateService.setCurrentMonth(form);
     this.setPeriod(form);
-    form.controls['dateDeb'].reset();
-    form.value['dateDeb']='';
-    form.controls['dateFin'].reset();
-    form.value['dateFin']='';
   }
 
   //changer les dates pour afficher le mois en dernier
@@ -175,10 +160,6 @@ export class ListArretsComponent implements OnInit {
     form.value['dateDeb'] = Fisrtday;
     form.value['dateFin'] = Lastday;
     this.setPeriod(form);
-    form.controls['dateDeb'].reset();
-    form.value['dateDeb']='';
-    form.controls['dateFin'].reset();
-    form.value['dateFin']='';
   }
 
   //Suppression d'un arret

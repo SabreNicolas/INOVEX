@@ -1,6 +1,6 @@
 .blockFiltres{
   position: fixed;
-  top: 10%;
+  top: 5.5em;
   right: 0;
   left: 0.5em;
   margin: 0 auto;
@@ -8,5 +8,38 @@
 }
 
 .table-style{
-  margin-top: 23%;
+  margin-top: 25em;
+}
+
+@media (width < 1320px) {
+  .table-style{
+    margin-top: 28em;
+  }
+}
+
+@media (width < 1235px) {
+  .blockFiltres{
+    top: 7em;
+  }
+  .table-style{
+    margin-top: 29em;
+  }
+}
+
+
+@media (width < 992px) {
+  .blockFiltres{
+    top: 4em;
+  }
+  .table-style{
+    margin-top: 29em;
+  }
+}
+@media (width < 838px) {
+  .blockFiltres{
+    top: 4em;
+  }
+  .table-style{
+    margin-top: 30.5em;
+  }
 }

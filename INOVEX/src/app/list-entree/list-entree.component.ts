@@ -59,7 +59,6 @@ export class ListEntreeComponent implements OnInit {
 
   ngOnInit(): void {
     this.containerDasri = undefined;
-
     //Récupération type Import pour les tonnages
     this.moralEntitiesService.GetImportTonnage().subscribe((response)=>{
       //@ts-ignore
@@ -122,19 +121,22 @@ export class ListEntreeComponent implements OnInit {
     this.ngOnInit();
   }
 
-  setPeriod(form: NgForm) {
+  async setPeriod(form: NgForm) {
     this.listDays = [];
-    this.dateDeb = new Date(form.value['dateDeb']);
-    this.dateFin = new Date(form.value['dateFin']);
+    this.dateDeb = new Date((<HTMLInputElement>document.getElementById("dateDeb")).value);
+    this.dateFin = new Date((<HTMLInputElement>document.getElementById("dateFin")).value);
     if (this.dateFin < this.dateDeb) {
       this.dateService.mauvaiseEntreeDate(form); 
     }
+    if( (this.dateFin.getTime()-this.dateDeb.getTime())/(1000*60*60*24) >30){
+      this.loading();
+    }
     this.listDays = this.dateService.getDays(this.dateDeb, this.dateFin);
-    this.getValues();
+    await this.getValues();
+    this.removeloading();
     if(this.debCode == "203"){
       this.getValuesContainer();
     }
-    
   }
 
   //valider la saisie des tonnages
@@ -318,11 +320,11 @@ export class ListEntreeComponent implements OnInit {
   }
 
   //changer les dates pour saisir le mois en cours
-  setCurrentMonth(form: NgForm){
+  async setCurrentMonth(form: NgForm){
     this.loading();
     this.dateService.setCurrentMonth(form);
-    this.setPeriod(form);
-    this.removeloading(); 
+    await this.setPeriod(form);     
+    this.removeloading();
   }
 
 

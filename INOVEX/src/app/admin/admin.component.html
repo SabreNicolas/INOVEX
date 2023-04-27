@@ -57,13 +57,13 @@
                 </div>
             </td>
             <td>{{pr.Name}}</td>
-            <td>{{pr.TAG}} <button id="setTAG" (click)="setTag(pr)" class="btn btn-light">
+            <td>{{pr.TAG}} <button id="setTAG" (click)="setElement(pr,'TAG')" class="btn btn-light">
                 <i class="far fa-edit"></i>
             </button>
             </td>
             <td>{{pr.Unit}}
             </td>
-            <td>{{pr.CodeEquipement}}<button id="setTAG" (click)="setCodeEquipement(pr)" class="btn btn-light">
+            <td>{{pr.CodeEquipement}}<button id="setTAG" (click)="setElement(pr,'CodeEquipement')" class="btn btn-light">
                 <i class="far fa-edit"></i>
             </button></td>
             <!--<td><button id="setPrice" (click)="setUnit(pr)" class="btn btn-primary">

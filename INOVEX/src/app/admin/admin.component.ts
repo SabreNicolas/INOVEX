@@ -46,7 +46,7 @@ export class AdminComponent implements OnInit {
   }
 
   //désactiver un produit
-  setVisibility(idPR : number, visibility : number){
+  async setVisibility(idPR : number, visibility : number){
     this.productsService.setEnabled(idPR,visibility).subscribe((response)=>{
       if (response == "Changement de visibilité du client OK"){
         Swal.fire("La visibilité à bien été mise à jour");
@@ -58,6 +58,7 @@ export class AdminComponent implements OnInit {
         })
       }
     });
+    await this.wait(5);
     this.getProducts();
   }
 
@@ -139,45 +140,41 @@ export class AdminComponent implements OnInit {
     Swal.fire("Le type a été mis à jour !");
   }
 
-  //Mis à jour du TAG
-  setTag(product : product){
-    if(product.TAG == null){
-      var TAG = prompt('Veuillez saisir un TAG','');
+  //Fonction pour attendre
+  wait(ms : number) {
+    return new Promise(resolve => {
+      setTimeout(resolve, ms);
+    });
+  }
+
+  //Mise à jour du tag ou du codeEquipement d'un produit
+  setElement(product : product,type : string){
+    if(type=="CodeEquipement"){
+      if(product.CodeEquipement == null){
+        var saisie = prompt('Veuillez saisir un code GMAO','');
+      }
+      else var saisie = prompt('Veuillez saisir un code GMAO',String(product.CodeEquipement));
     }
-    else var TAG = prompt('Veuillez saisir un TAG',String(product.TAG));
-    if(TAG == null) return;
-    // @ts-ignore
-    this.productsService.setTAG(TAG,product.Id).subscribe((response)=>{
-      if (response == "Mise à jour du TAG OK"){
+    else {
+      if(product.TAG == null){
+        var saisie = prompt('Veuillez saisir un TAG','');
+      }
+      else var saisie = prompt('Veuillez saisir un TAG',String(product.TAG));
+    }
+    if(saisie == null) return;
+    this.productsService.setElement(saisie,product.Id,type).subscribe((response)=>{
+      if (response == "Mise à jour du Code OK"){
+        Swal.fire("Le code GMAO a bien été affecté !");
+        this.ngOnInit();
+      }
+      else if (response == "Mise à jour du TAG OK"){
         Swal.fire("Le TAG a bien été affecté !");
         this.ngOnInit();
       }
       else {
         Swal.fire({
           icon: 'error',
-          text: "Erreur lors de l'affectation du TAG ....",
-        })
-      }
-    });
-  }
-
-  //Mis à jour du Code GMAO
-  setCodeEquipement(product : product){
-    if(product.CodeEquipement == null){
-      var Code = prompt('Veuillez saisir un code GMAO','');
-    }
-    else var Code = prompt('Veuillez saisir un code GMAO',String(product.CodeEquipement));
-    if(Code == null) return;
-    // @ts-ignore
-    this.productsService.setCodeEquipement(Code,product.Id).subscribe((response)=>{
-      if (response == "Mise à jour du Code OK"){
-        Swal.fire("Le code GMAO a bien été affecté !");
-        this.ngOnInit();
-      }
-      else {
-        Swal.fire({
-          icon: 'error',
-          text: "Erreur lors de l'affectation du code ....",
+          text: "Erreur lors de l'affectation ....",
         })
       }
     });

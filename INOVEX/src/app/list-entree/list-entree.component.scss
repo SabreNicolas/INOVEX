@@ -1,15 +1,47 @@
 .blockFiltres{
   position: fixed;
-  top: 10%;
+  top: 5.5em;
   right: 0;
   left: 0.5em;
   margin: 0 auto;
+  margin-bottom: 50px;
   z-index: -2;
 }
 
 #saisie{
-  margin-top: 22%;
+  margin-top: 23em;
 }
+
+@media (width < 1257px) {
+  #saisie{
+    margin-top: 26.5em;
+  }
+}
+@media (width < 1233px) {
+  .blockFiltres{
+    top: 7em;
+  }
+  
+  #saisie{
+    margin-top: 28.5em;
+  }
+}
+
+@media (width < 992px) {
+  .blockFiltres{
+    top: 4.5em;
+  }
+  
+  #saisie{
+    margin-top: 30em;
+  }
+}
+@media (width < 862px) {
+  #saisie{
+    margin-top: 32em;
+  }
+}
+
 
 .loader {
   @keyframes loader {
@@ -44,6 +76,7 @@
   top: 0; left: 0; right: 0; bottom: 0;
   z-index: 20;
   animation: loader 12s linear ;
+  animation-iteration-count: infinite;
   visibility: hidden;
   display: flex;
   align-items: center;
@@ -59,6 +92,7 @@
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
     animation: loader-bloc 12s linear ;
+    animation-iteration-count: infinite;
     z-index: 10;
     visibility: hidden;
   }

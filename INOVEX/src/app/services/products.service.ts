@@ -18,7 +18,7 @@ export class productsService {
     }
     private portAPI = 3100;
     private ip = "fr-couvinove301.prod.paprec.fr";
-    //private ip = "localhost";
+    // private ip = "localhost";
     private idUsine : number | undefined;
 
     constructor(private http: HttpClient) {
@@ -302,10 +302,10 @@ export class productsService {
           .get<product[]>(requete,requestOptions);
     }
 
-    //mettre à jour le TAG d'un produit
-    //?TAG=SJSJJS
-    setTAG(TAG: string, productId: number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/productTAG/"+productId+"?TAG="+TAG;
+    //mettre à jour le TAG ou le code GMAO d'un produit
+    //?TAG=SJSJJS ou ?CodeEquipement=xxxx
+    setElement(Code: string, productId: number,type : string){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/product"+type +"/"+productId+"?"+type +"="+Code;
         //console.log(requete);
 
         const requestOptions = {
@@ -315,21 +315,6 @@ export class productsService {
         return this.http
             .put<any>(requete,requestOptions);
     }
-
-    //mettre à jour le code GMAO d'un produit
-    //?CodeEquipement=SJSJJS
-    setCodeEquipement(Code: string, productId: number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/productCodeEquipement/"+productId+"?CodeEquipement="+Code;
-        //console.log(requete);
-
-        const requestOptions = {
-            headers: new HttpHeaders(this.headerDict),
-        };
-
-        return this.http
-            .put<any>(requete,requestOptions);
-    }
-  
   
     /*
     ** FIN Partie IMAGINDATA
