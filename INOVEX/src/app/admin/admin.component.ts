@@ -154,17 +154,14 @@ export class AdminComponent implements OnInit {
         var saisie = prompt('Veuillez saisir un code GMAO','');
       }
       else var saisie = prompt('Veuillez saisir un code GMAO',String(product.CodeEquipement));
-      if(saisie == null) return;
-      // @ts-ignore
     }
     else {
       if(product.TAG == null){
         var saisie = prompt('Veuillez saisir un TAG','');
       }
       else var saisie = prompt('Veuillez saisir un TAG',String(product.TAG));
-      if(saisie == null) return;
-      // @ts-ignore
     }
+    if(saisie == null) return;
     this.productsService.setElement(saisie,product.Id,type).subscribe((response)=>{
       if (response == "Mise à jour du Code OK"){
         Swal.fire("Le code GMAO a bien été affecté !");

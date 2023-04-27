@@ -23,7 +23,6 @@ export class ListUsersComponent implements OnInit {
     this.loginService.getAllUsers(this.loginLike).subscribe((response)=>{
       // @ts-ignore
       this.listUsers = response.data;
-      console.log("test");
     });
   }
 

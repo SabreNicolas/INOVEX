@@ -128,13 +128,11 @@ export class ListEntreeComponent implements OnInit {
     if (this.dateFin < this.dateDeb) {
       this.dateService.mauvaiseEntreeDate(form); 
     }
-    console.log((this.dateFin.getTime()-this.dateDeb.getTime())/(1000*60*60*24) );
     if( (this.dateFin.getTime()-this.dateDeb.getTime())/(1000*60*60*24) >30){
       this.loading();
     }
     this.listDays = this.dateService.getDays(this.dateDeb, this.dateFin);
     await this.getValues();
-    console.log("fin get values");
     this.removeloading();
     if(this.debCode == "203"){
       this.getValuesContainer();

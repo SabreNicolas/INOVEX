@@ -40,10 +40,7 @@ export class ListCompteursComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {
-
-    
-
+  ngOnInit(): void { 
     this.categoriesService.getCategories().subscribe((response)=>{
       // @ts-ignore
       this.listCategories = response.data;
@@ -54,20 +51,15 @@ export class ListCompteursComponent implements OnInit {
       this.listCompteurs = response.data;
       this.getValues();
     });
-    // this.wait(5000);
-    
-    // var elt = <HTMLElement>document.getElementsByClassName('table-style')[0];
-    // var block = <HTMLElement>document.getElementsByClassName('blockFiltres')[0];
-    // var test =block.clientHeight + "px";
-    // elt.style.marginTop = '600px';
-    // console.log(block.offsetHeight + "px");
   }
+  
   //Fonction pour attendre
   wait(ms : number) {
     return new Promise(resolve => {
       setTimeout(resolve, ms);
     });
   }
+  
   setFilters(){
     var codeCat = document.getElementById("categorie");
     // @ts-ignore
