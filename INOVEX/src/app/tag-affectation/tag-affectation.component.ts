@@ -28,7 +28,7 @@ export class TagAffectationComponent implements OnInit {
   }
 
   onSubmit(){
-    this.productsService.setTAG(this.tag,this.productId).subscribe((response)=>{
+    this.productsService.setElement(this.tag,this.productId,"TAG").subscribe((response)=>{
       if (response == "Mise à jour du TAG OK"){
         Swal.fire("Le TAG a bien été affecté !");
         this.ngOnInit();

@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --port 8100 --host 0.0.0.0 --disable-host-check --ssl true --ssl-cert E:\\INOVEX\\server.crt --ssl-key E:\\INOVEX\\server-decrypted.key",
+    "start": "ng serve --port 8100 --host 0.0.0.0 --disable-host-check --ssl true --ssl-cert C:/Users/Pro/Desktop/api/crt_client/server.crt --ssl-key C:/Users/Pro/Desktop/api/crt_client/server-decrypted.key",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"

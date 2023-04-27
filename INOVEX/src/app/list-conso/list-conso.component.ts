@@ -33,8 +33,8 @@ export class ListConsoComponent implements OnInit {
 
   setPeriod(form: NgForm){
     this.listDays = [];
-    this.dateDeb = new Date(form.value['dateDeb']);
-    this.dateFin = new Date(form.value['dateFin']);
+    this.dateDeb = new Date((<HTMLInputElement>document.getElementById("dateDeb")).value);
+    this.dateFin = new Date((<HTMLInputElement>document.getElementById("dateFin")).value);
     if(this.dateFin < this.dateDeb){
       this.dateService.mauvaiseEntreeDate(form);
     }

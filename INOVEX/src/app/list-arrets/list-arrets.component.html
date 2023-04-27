@@ -1,4 +1,4 @@
-<div>
+<div id="page">
     <div id="arrets">
         <!--Période-->
         <div id="arretsFiltres">
@@ -27,7 +27,7 @@
         </div>
 
         <!--table des totaux-->
-        <div class="table-style" *ngIf="sumArretsDepassements.length > 0">
+        <div class="table-style totaux" *ngIf="sumArretsDepassements.length > 0">
             <table class="table table-primary">
                 <thead>
                 <tr>
@@ -47,7 +47,7 @@
     </div>
 
         <!--table de l'historique-->
-        <div class="table-style" *ngIf="listArretsDepassements.length > 0">
+        <div class="table-style historique" *ngIf="listArretsDepassements.length > 0">
             <table class="table table-hover tableFixed">
                 <thead>
                 <tr class="table-secondary">

@@ -23,6 +23,7 @@ export class ListUsersComponent implements OnInit {
     this.loginService.getAllUsers(this.loginLike).subscribe((response)=>{
       // @ts-ignore
       this.listUsers = response.data;
+      console.log("test");
     });
   }
 
@@ -48,9 +49,15 @@ export class ListUsersComponent implements OnInit {
       }
     });
   }
+  //Fonction pour attendre
+  wait(ms : number) {
+    return new Promise(resolve => {
+      setTimeout(resolve, ms);
+    });
+  }
 
   //changement des droits rondier ou saisie ou qse ou rapports ou chef de quart ou admin
-  changeDroit(login : string, right : number, choix : string){
+  async changeDroit(login : string, right : number, choix : string){
     this.loginService.updateDroit(login,right,choix).subscribe((response)=>{
       if (response == "Mise à jour du droit OK"){
         Swal.fire("Les droits ont bien été mis à jour !");
@@ -62,12 +69,13 @@ export class ListUsersComponent implements OnInit {
         })
       }
     });
+    await this.wait(50);
     this.ngOnInit();
   }
 
 
   //suppression d'un user
-  deleteUser(id : number){
+  async deleteUser(id : number){
     this.loginService.deleteUser(id).subscribe((response)=>{
       if (response == "Suppression du user OK"){
         Swal.fire("L'utilisateur a bien été supprimé !");
@@ -79,6 +87,7 @@ export class ListUsersComponent implements OnInit {
         })
       }
     });
+    await this.wait(50);
     this.ngOnInit();
   }
 

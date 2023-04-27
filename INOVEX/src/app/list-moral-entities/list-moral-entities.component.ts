@@ -173,8 +173,16 @@ export class ListMoralEntitiesComponent implements OnInit {
     this.ngOnInit();
   }
 
+  //Fonction pour attendre
+  wait(ms : number) {
+    return new Promise(resolve => {
+      setTimeout(resolve, ms);
+    });
+  }
+
+
   //désactiver un client
-  setVisibility(idMr : number, visibility : number){
+  async setVisibility(idMr : number, visibility : number){
     this.moralEntitiesService.setEnabled(idMr,visibility).subscribe((response)=>{
       if (response == "Changement de visibilité du client OK"){
         Swal.fire("La visibilité du client a bien été changé !");
@@ -186,6 +194,7 @@ export class ListMoralEntitiesComponent implements OnInit {
         })
       }
     });
+    await this.wait(50);
     this.ngOnInit();
   }
 
