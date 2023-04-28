@@ -128,7 +128,7 @@ export class ListEntreeComponent implements OnInit {
     if (this.dateFin < this.dateDeb) {
       this.dateService.mauvaiseEntreeDate(form); 
     }
-    if( (this.dateFin.getTime()-this.dateDeb.getTime())/(1000*60*60*24) >30){
+    if( (this.dateFin.getTime()-this.dateDeb.getTime())/(1000*60*60*24) > 29){
       this.loading();
     }
     this.listDays = this.dateService.getDays(this.dateDeb, this.dateFin);
@@ -384,16 +384,14 @@ export class ListEntreeComponent implements OnInit {
             if(this.typeImportTonnage.toLowerCase().includes("protruck")){
               results.data[i][posTypeDechet] = results.data[i][posTypeDechet].split(" - ")[0].split(" ")[0];
             }
-            if(results.data[i][posTypeDechet] == ("OM") || results.data[i][posTypeDechet] == "DIB" || results.data[i][posTypeDechet] == "DEA" || results.data[i][posTypeDechet] == "DAOM" || results.data[i][posTypeDechet] == "REFUS DE TRI"){
-              //Création de l'objet qui contient l'ensemble des infos nécessaires
-              let importCSV = {
-                client: results.data[i][posClient],
-                typeDechet: results.data[i][posTypeDechet],
-                dateEntree : results.data[i][posDateEntree].substring(0,10),
-                tonnage : +results.data[i][posTonnage].replace(/[^0-9]/g,"")/1000,
-              };
-              this.csvArray.push(importCSV);
-            }
+            //Création de l'objet qui contient l'ensemble des infos nécessaires
+            let importCSV = {
+              client: results.data[i][posClient],
+              typeDechet: results.data[i][posTypeDechet].replace(" ","."),
+              dateEntree : results.data[i][posDateEntree].substring(0,10),
+              tonnage : +results.data[i][posTonnage].replace(/[^0-9]/g,"")/1000,
+            };
+            this.csvArray.push(importCSV);
           }
           //console.log(this.csvArray);
           this.insertTonnageCSV();
@@ -415,19 +413,35 @@ export class ListEntreeComponent implements OnInit {
       if(this.typeImportTonnage.toLowerCase().includes("ademi") || this.typeImportTonnage.toLowerCase().includes("dpk")){
         mr.Name = mr.Name.split(' - ')[1];
       }
+      if(this.typeImportTonnage.toLowerCase().includes("dpk")){
+        mr.produit = mr.collecteur;
+      }
       mr.Name = mr.Name.toLowerCase();
       mr.produit = mr.produit.toLowerCase().replace(" ","");
 
       this.csvArray.forEach(csv => {
+        //Gestion des types de déchets mal orthographié dans le fichier CSV (Saint-SAULVE par exemple)
+        if(csv.typeDechet.includes("REFUS")){
+          csv.typeDechet = 'REFUS.DE.TRI';
+        }
+        if(csv.typeDechet.includes("ENCOMB")){
+          csv.typeDechet = 'ENCOMBRANTS';
+        }
+        if(csv.typeDechet.includes("HAUTPCI") || csv.typeDechet.includes("HAUT PCI")){
+          csv.typeDechet = 'HAUT.PCI';
+        }
+
         csv.client = csv.client.toLowerCase();
         csv.typeDechet = csv.typeDechet.toLowerCase();
+
+        //console.log("********"+mr.Name+"**"+mr.produit);
+        //console.log(csv.client+"////"+csv.typeDechet);
+        //console.log("**"+csv.client+"**");
+
         //Si il y a correspondance on fait traitement
         if( mr.Name == csv.client && (mr.produit == csv.typeDechet || (mr.produit == "dib/dea" && mr.produit.includes(csv.typeDechet))) ){  
           let formatDate = csv.dateEntree.split('/')[2]+'-'+csv.dateEntree.split('/')[1]+'-'+csv.dateEntree.split('/')[0];
           let keyHash = formatDate+'_'+mr.productId+'_'+mr.Id;
-          //debug
-          console.log("**"+mr.Name+"**");
-          console.log("**"+csv.client+"**");
           //si il y a deja une valeur dans la hashMap pour ce client et ce jour, on incrémente la valeur
           let value, valueRound;
           if(this.stockageImport.has(keyHash)){
@@ -443,7 +457,7 @@ export class ListEntreeComponent implements OnInit {
       })
     });
     //debug
-    console.log(this.stockageImport);
+    //console.log(this.stockageImport);
     //on parcours la hashmap pour insertion en BDD
     this.stockageImport.forEach(async (value : number, key : String) => {
       await this.moralEntitiesService.createMeasure(key.split('_')[0],value,parseInt(key.split('_')[1]),parseInt(key.split('_')[2])).subscribe((response) =>{

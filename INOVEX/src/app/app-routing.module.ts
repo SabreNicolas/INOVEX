@@ -65,8 +65,8 @@ const routes: Routes = [
     {
         path : 'acceuil',
         canActivate: [AuthGuard],
-        component : AcceuilComponent
-        // component : MaintenanceComponent
+        //component : AcceuilComponent
+        component : MaintenanceComponent
     },
 
     {
