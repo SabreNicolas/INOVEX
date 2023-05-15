@@ -104,6 +104,7 @@ export class ListEntreeComponent implements OnInit {
     this.moralEntitiesService.getMoralEntities(this.debCode).subscribe((response)=>{
       // @ts-ignore
       this.moralEntities = response.data;
+      console.log(this.moralEntities);
       this.getValues();
     });
   }
@@ -411,7 +412,12 @@ export class ListEntreeComponent implements OnInit {
       //TODO : idem pour l'ensemble des sites avec Ademi ?????
       //TODO : voir pour peut être vérifier par site au lieu de logiciel de pessage
       if(this.typeImportTonnage.toLowerCase().includes("ademi") || this.typeImportTonnage.toLowerCase().includes("dpk")){
-        mr.Name = mr.Name.split(' - ')[1];
+        if(mr.Name.split(' - ').length > 2){
+          mr.Name = mr.Name.split(' - ')[2];
+        }
+        else{
+          mr.Name = mr.Name.split(' - ')[1];
+        }
       }
       if(this.typeImportTonnage.toLowerCase().includes("dpk")){
         mr.produit = mr.collecteur;
