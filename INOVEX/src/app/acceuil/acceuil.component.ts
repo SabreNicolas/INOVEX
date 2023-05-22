@@ -125,7 +125,6 @@ export class AcceuilComponent implements OnInit {
       Swal.fire({
         title: 'Veuillez Choisir un site',
         input: 'select',
-        //TODO list dynamqiue + stockage dans localStorage
         inputOptions: listSites,
         showCancelButton: false,
         confirmButtonText: "Valider",
