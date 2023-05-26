@@ -41,6 +41,7 @@ import {ListConsignesComponent} from "./list-consignes/list-consignes.component"
 import {ConsigneComponent} from "./consigne/consigne.component";
 import {RondierFinMoisComponent} from "./rondier-fin-mois/rondier-fin-mois.component";
 import { MaintenanceComponent } from './maintenance/maintenance.component';
+import { TokenApiComponent } from './token-api/token-api.component';
 
 const routes: Routes = [
 
@@ -111,6 +112,7 @@ const routes: Routes = [
         // component : MaintenanceComponent,
         children: [
             { path: '', canActivate: [AuthGuard], component:  AdminComponent },
+            { path: 'token', canActivate: [AuthGuard], component:  TokenApiComponent },
             { path: 'modification', canActivate: [AuthGuard], component:  AdminComponent },
             { path: 'newCompteur', canActivate: [AuthGuard], component:  CompteursComponent },
             { path: 'newSortant', canActivate: [AuthGuard], component:  SortantsComponent },

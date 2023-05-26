@@ -14,11 +14,12 @@ export class productsService {
     private headerDict = {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Access-Control-Allow-Origin' : '*'
+        'Access-Control-Allow-Origin' : '*',
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
     }
     private portAPI = 3100;
     private ip = "fr-couvinove301.prod.paprec.fr";
-    // private ip = "localhost";
+    //private ip = "localhost";
     private idUsine : number | undefined;
 
     constructor(private http: HttpClient) {
@@ -62,7 +63,7 @@ export class productsService {
         };
 
         return this.http
-            .put<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
 
     //récupérer les compteurs
@@ -131,7 +132,7 @@ export class productsService {
         };
 
         return this.http
-            .put<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
 
     //récupérer les analyses
@@ -256,7 +257,7 @@ export class productsService {
         };
 
         return this.http
-            .put<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
 
     //mettre à jour l'unité d'un produit
@@ -269,7 +270,7 @@ export class productsService {
         };
 
         return this.http
-            .put<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
 
     //mettre à jour le type d'un produit
@@ -282,7 +283,7 @@ export class productsService {
         };
 
         return this.http
-            .put<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
 
     /*
@@ -313,7 +314,7 @@ export class productsService {
         };
 
         return this.http
-            .put<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
   
     /*
