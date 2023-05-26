@@ -56,6 +56,8 @@ import { ConsigneComponent } from './consigne/consigne.component';
 import { RondierFinMoisComponent } from './rondier-fin-mois/rondier-fin-mois.component';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { dateService } from './services/date.service';
+import { TokenApiComponent } from './token-api/token-api.component';
+import { tokenApiService } from './services/tokenApi.service';
 
 @NgModule({
   declarations: [
@@ -101,6 +103,7 @@ import { dateService } from './services/date.service';
     ConsigneComponent,
     RondierFinMoisComponent,
     MaintenanceComponent,
+    TokenApiComponent,
   ],
   imports: [
     BrowserModule,
@@ -118,7 +121,8 @@ import { dateService } from './services/date.service';
     AuthGuard,
     rapportsService,
     rondierService,
-    dateService
+    dateService,
+    tokenApiService
   ],
   bootstrap: [AppComponent]
 })

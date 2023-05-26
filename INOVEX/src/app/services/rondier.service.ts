@@ -22,11 +22,12 @@ export class rondierService {
     private headerDict = {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Access-Control-Allow-Origin': '*'
+        'Access-Control-Allow-Origin': '*',
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
     }
     private portAPI = 3100;
-    private ip = "fr-couvinove301.prod.paprec.fr";
-    // private ip = "localhost";
+    //private ip = "fr-couvinove301.prod.paprec.fr";
+    private ip = "localhost";
     private idUsine : number | undefined;
 
     constructor(private http: HttpClient) {
@@ -56,7 +57,7 @@ export class rondierService {
         };
 
         return this.http
-            .put<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
 
     //récupération du dernier Id inséré
@@ -121,7 +122,7 @@ export class rondierService {
         };
 
         return this.http
-            .put<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
 
     //Update affectation
@@ -134,7 +135,7 @@ export class rondierService {
         };
 
         return this.http
-            .put<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
 
     //Update affectation => rendre le badge libre
@@ -147,7 +148,7 @@ export class rondierService {
         };
 
         return this.http
-            .put<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
 
 
@@ -169,7 +170,7 @@ export class rondierService {
         };
 
         return this.http
-            .put<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
 
     //liste des zones de controle
@@ -208,7 +209,7 @@ export class rondierService {
         };
 
         return this.http
-            .put<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
 
     //Mise à jour du nom d'une zone de contrôle
@@ -221,7 +222,7 @@ export class rondierService {
         };
 
         return this.http
-            .put<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
 
 
@@ -245,7 +246,7 @@ export class rondierService {
         };
 
         return this.http
-            .put<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
 
     //update de l'élément de controle ayant comme id
@@ -259,7 +260,7 @@ export class rondierService {
         };
 
         return this.http
-            .put<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
 
     //update de l'ordre des éléments ayant un ordre suppérieur à x pour une zone
@@ -273,7 +274,7 @@ export class rondierService {
         };
 
         return this.http
-            .put<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
 
     //delete 1 élément de controle
@@ -361,7 +362,7 @@ export class rondierService {
         };
 
         return this.http
-            .put<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
 
     //Récupérer la valeur pour un élément de contrôle et une date (quart de nuit => dernier de la journée)
@@ -398,7 +399,7 @@ export class rondierService {
         };
 
         return this.http
-            .put<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
 
     //liste des permis de feu en cours
@@ -531,7 +532,7 @@ export class rondierService {
         };
 
         return this.http
-            .put<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
 
     //delete ronde
@@ -580,7 +581,7 @@ export class rondierService {
         };
 
         return this.http
-            .put<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
 
     //liste des consignes en cours de validité

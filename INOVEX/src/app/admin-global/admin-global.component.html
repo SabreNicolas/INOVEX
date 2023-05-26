@@ -12,6 +12,12 @@
 
         <ul class="navbar-nav mr-auto">
 
+            <li *ngIf="isSuperAdmin" class="nav-item dropdown">
+                <a routerLink="./token" class="nav-link" id="navbarDropdownEntree" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Token
+                </a>
+            </li>
+
             <li class="nav-item dropdown">
                 <a routerLink="./modification" class="nav-link" id="navbarDropdownEntree" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Modifier les Produits
