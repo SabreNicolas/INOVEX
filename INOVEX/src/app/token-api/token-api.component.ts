@@ -74,7 +74,7 @@ export class TokenApiComponent implements OnInit {
   getTokens(){
     this.tokenApiService.getAllTokens().subscribe((response)=>{
       // @ts-ignore
-      this.listTokens = response.recordset;
+      this.listTokens = response.data;
     });
   }
 

@@ -102,7 +102,6 @@ export class loginService {
         const requestOptions = {
             headers: new HttpHeaders(this.headerDict),
         };
-        console.log(requestOptions);
         return this.http
             .put<any>(requete,null,requestOptions);
     }
