@@ -20,8 +20,8 @@ export class categoriesService {
         'Authorization': 'Bearer ' + localStorage.getItem('token')
     }
     private portAPI = 3100;
-    //private ip = "fr-couvinove301.prod.paprec.fr";
-    private ip = "localhost";
+    private ip = "fr-couvinove301.prod.paprec.fr";
+    //private ip = "localhost";
 
     constructor(private http: HttpClient) {
         this.httpClient = http;

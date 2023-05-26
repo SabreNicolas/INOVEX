@@ -18,8 +18,8 @@ export class productsService {
         'Authorization': 'Bearer ' + localStorage.getItem('token')
     }
     private portAPI = 3100;
-    //private ip = "fr-couvinove301.prod.paprec.fr";
-    private ip = "localhost";
+    private ip = "fr-couvinove301.prod.paprec.fr";
+    //private ip = "localhost";
     private idUsine : number | undefined;
 
     constructor(private http: HttpClient) {
