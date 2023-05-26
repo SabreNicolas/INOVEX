@@ -48,7 +48,7 @@ export class tokenApiService {
     }
     //Fonction permettant de désactiver un token
     desactivateToken(id: number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/desactivate?id="+id;
+        let requete = "https://"+this.ip+":"+this.portAPI+"/desactivateToken?id="+id;
 
         const requestOptions = {
             headers: new HttpHeaders(this.headerDict),
