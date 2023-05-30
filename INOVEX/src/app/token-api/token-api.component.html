@@ -29,12 +29,12 @@
     <tbody *ngFor="let tk of listTokens">
     <tr class="table-light">
         <td class="scrollable" >{{tk.token}}</td>
-        <td>{{tk.affectation}} <button id="{{tk.id}}" (click)="updateToken(tk.id)" class="btn btn-light">
+        <td>{{tk.affectation}} <button id="{{tk.Id}}" (click)="updateToken(tk.Id)" class="btn btn-light">
             <i class="far fa-edit"></i>
             </button>
         </td>
         <td>
-            <button class="btn btn-light" (click)="desactivateToken(tk.id)" id="delete {{tk.id}}">
+            <button class="btn btn-light" (click)="desactivateToken(tk.Id)" id="delete {{tk.Id}}">
                 <i class="fa fa-trash-o" aria-hidden="true"></i>
             </button>
         </td>
