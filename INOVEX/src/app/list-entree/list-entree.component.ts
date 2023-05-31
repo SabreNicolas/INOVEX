@@ -383,7 +383,7 @@ export class ListEntreeComponent implements OnInit {
             //ON récupère uniquement les types de déchets pour les entrants
             //Si import Protruck, on récupère uniquement le type de déchet dans la colonne correspondante
             if(this.typeImportTonnage.toLowerCase().includes("protruck")){
-              results.data[i][posTypeDechet] = results.data[i][posTypeDechet].split(" - ")[0].split(" ")[0];
+              results.data[i][posTypeDechet] = results.data[i][posTypeDechet].split(" - ")[0];
             }
             //Création de l'objet qui contient l'ensemble des infos nécessaires
             let importCSV = {
@@ -422,9 +422,11 @@ export class ListEntreeComponent implements OnInit {
       if(this.typeImportTonnage.toLowerCase().includes("dpk")){
         mr.produit = mr.collecteur;
       }
+      if (this.typeImportTonnage.toLowerCase().includes("protruck")){
+        mr.produit = mr.produit + mr.collecteur;  
+      }
       mr.Name = mr.Name.toLowerCase();
       mr.produit = mr.produit.toLowerCase().replace(" ","");
-
       this.csvArray.forEach(csv => {
         //Gestion des types de déchets mal orthographié dans le fichier CSV (Saint-SAULVE par exemple)
         if(csv.typeDechet.includes("REFUS")){
@@ -436,13 +438,25 @@ export class ListEntreeComponent implements OnInit {
         if(csv.typeDechet.includes("HAUTPCI") || csv.typeDechet.includes("HAUT PCI")){
           csv.typeDechet = 'HAUT.PCI';
         }
-
+        //CAS SAINT SAULVE
+        if (this.typeImportTonnage.toLowerCase().includes("protruck")){
+          csv.typeDechet = csv.typeDechet.replace("."," ");
+        }
+        if(csv.typeDechet.includes("DIB INOVA OPERATIONS") && this.typeImportTonnage.toLowerCase().includes("protruck")){
+          csv.typeDechet = 'DIB INOVA';
+        }
+        if(csv.typeDechet.includes("OM CALL") && this.typeImportTonnage.toLowerCase().includes("protruck")){
+          csv.typeDechet = 'OM CALLERGIE';
+        }
+        if(csv.typeDechet.includes("OM NICOLLIN") && this.typeImportTonnage.toLowerCase().includes("protruck")){
+          csv.typeDechet = 'OM INOVA';
+        }
         csv.client = csv.client.toLowerCase();
         csv.typeDechet = csv.typeDechet.toLowerCase();
-
-        //console.log("********"+mr.Name+"**"+mr.produit);
+        mr.collecteur = mr.collecteur.toLowerCase();
+        //console.log("********"+mr.Name+"**"+mr.produit + "****" + mr.collecteur);
         //console.log(csv.client+"////"+csv.typeDechet);
-        //console.log("**"+csv.client+"**");
+        //console.log("**"+csv.typeDechet+"**");
 
         //Si il y a correspondance on fait traitement
         if( mr.Name == csv.client && (mr.produit == csv.typeDechet || (mr.produit == "dib/dea" && mr.produit.includes(csv.typeDechet))) ){  
@@ -456,6 +470,7 @@ export class ListEntreeComponent implements OnInit {
             valueRound = parseFloat(value.toFixed(3));
             this.stockageImport.set(keyHash,valueRound);
           }
+          else
           //Sinon on insére dans la hashMap
           //@ts-ignore
           this.stockageImport.set(keyHash,parseFloat(csv.tonnage.toFixed(3)));
