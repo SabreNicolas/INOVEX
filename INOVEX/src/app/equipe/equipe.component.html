@@ -1,0 +1,70 @@
+<div id="container">
+    <div id="gauche">
+        <h3>Liste des rondiers sans équipe</h3>
+        <table class="table table-hover tableFixed" id="listRondier" cdkDropList [cdkDropListData]="listUsers" [cdkDropListConnectedTo]="'listAjout'" (cdkDropListDropped)="onItemDropped($event)" >
+            <thead>
+                <tr class="table-secondary">
+                    <th scope="col">Nom</th>
+                    <th scope="col">Prénom</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let user of listUsers" cdkDrag>
+            <tr class="table-light"  >
+                <td>{{user.Nom}}</td>
+                <td>{{user.Prenom}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div id="droite">
+        <h3>Création de la nouvelle équipe :</h3>
+
+        <div class="mb-3">  
+            <label for="nomEquipe" class="form-label">Nom de l'équipe *</label>  
+            <input type="text" id="nomEquipe" class="form-control" #nomEquipe name="nomEquipe" placeholder="Nom de l'équipe">
+        </div>
+
+        <div class="mb-3">
+            <label for="quart" class="form-label">Période</label>
+            <select class="form-select" id="quart" #quart name="periode" required>
+                <option value="matin">Quart du matin</option>
+                <option value="apres-midi">Quart de l'après-midi</option>
+                <option value="nuit">Quart de nuit</option>
+            </select>
+        </div>
+
+        <table class="table table-hover tableFixed" id="listAjout" cdkDropList  [cdkDropListData]="listAjout" [cdkDropListConnectedTo]="'listRondier'" (cdkDropListDropped)="onItemDropped($event)">
+            <thead>
+            <tr class="table-secondary">
+                <th scope="col">Nom</th>
+                <th scope="col">Prénom</th>
+                <th scope="col">Poste</th>
+                <th scope="col">Ronde</th>
+            </thead>
+            <tbody >
+                <tr *ngFor="let user of listAjout" class="table-light" cdkDrag>
+                    <td>{{user.Nom}}</td>
+                    <td>{{user.Prenom}}</td>
+                    <td>
+                        <select id="{{user.Nom}}_{{user.Prenom}}_poste" class="form-select" name="poste" required>
+                            <option value="Pontier">Pontier</option>
+                            <option value="Rondier">Rondier</option>
+                            <option value="Technicien">Technicien</option>
+                            <option value="Chef de bloc / CQ Adjoint">Chef de bloc / CQ Adjoint</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select class="form-select" id="{{user.Nom}}_{{user.Prenom}}_zone" id="period" name="period" required>
+                            <option *ngFor="let zone of listZone" value="{{zone.Id}}">{{zone.nom}}</option>
+                        </select>
+                    </td>
+                    
+                </tr>
+            </tbody>
+        </table>
+        <p style="font-size: smaller; color: grey">* : Obligatoire</p>
+        <button id="creer" type="submit" class="btn btn-lg btn-success" (click)="nouvelleEquipe(nomEquipe.value,quart.value)">Soumettre</button>  
+        <button class="btn btn-danger btn-lg" onclick="window.location.replace('/cahierQuart')">Annuler</button>
+    </div>  
+</div>

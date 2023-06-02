@@ -1,0 +1,31 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a style="margin-left: 1em;" class="navbar-brand" routerLink="">
+        <strong><i class="fa fa-home"></i> Accueil</strong>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+
+            <li class="nav-item dropdown">
+                <a routerLink="listEquipe" class="nav-link" id="navbarDropdownListClients" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Equipe
+                </a>
+            </li>
+
+
+        </ul>
+
+        <!--<a style="color: white" routerLink="admin" target="_blank" class="nav-link" id="navbarDropdownAdministration" role="button" aria-haspopup="true" aria-expanded="false">
+            Administration
+        </a>-->
+
+        <img src="assets/paprec.png" style="width:10em">
+    </div>
+</nav>
+
+<div style="margin : 5px">
+    <router-outlet></router-outlet>
+</div>

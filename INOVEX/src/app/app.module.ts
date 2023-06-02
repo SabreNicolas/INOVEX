@@ -58,6 +58,11 @@ import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { dateService } from './services/date.service';
 import { TokenApiComponent } from './token-api/token-api.component';
 import { tokenApiService } from './services/tokenApi.service';
+import { ListEquipeComponent } from './list-equipe/list-equipe.component';
+import { cahierQuartService } from './services/cahierQuart.service';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { cahierQuart } from './cahierQuart/cahierQuart.component.';
+import { EquipeComponent } from './equipe/equipe.component';
 
 @NgModule({
   declarations: [
@@ -104,12 +109,16 @@ import { tokenApiService } from './services/tokenApi.service';
     RondierFinMoisComponent,
     MaintenanceComponent,
     TokenApiComponent,
+    ListEquipeComponent,
+    cahierQuart,
+    EquipeComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
+    DragDropModule
   ],
   providers: [
     moralEntitiesService,
@@ -122,7 +131,8 @@ import { tokenApiService } from './services/tokenApi.service';
     rapportsService,
     rondierService,
     dateService,
-    tokenApiService
+    tokenApiService,
+    cahierQuartService
   ],
   bootstrap: [AppComponent]
 })

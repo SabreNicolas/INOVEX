@@ -23,6 +23,7 @@ export class AcceuilComponent implements OnInit {
   public isQSE : boolean;//0 ou 1
   public isRapport : boolean;//0 ou 1
   public isAdmin : boolean;//0 ou 1
+  public isChefQuart : boolean;//0 ou 1
   public idUsine : number;
   public localisation : string;
   public sites : site[];
@@ -38,6 +39,7 @@ export class AcceuilComponent implements OnInit {
     this.isQSE = false;
     this.isRapport = false;
     this.isAdmin = false;
+    this.isChefQuart = false;
     this.idUsine = 0;
     this.localisation='';
     this.sites = [];
@@ -85,6 +87,7 @@ export class AcceuilComponent implements OnInit {
       this.isSaisie = this.userLogged['isSaisie'];
       // @ts-ignore
       this.isAdmin = this.userLogged['isAdmin'];
+      this.isChefQuart = this.userLogged['isAdmin'];
     }
 
     //On vérifie si une maintenance est prévue

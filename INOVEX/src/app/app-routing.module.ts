@@ -42,7 +42,9 @@ import {ConsigneComponent} from "./consigne/consigne.component";
 import {RondierFinMoisComponent} from "./rondier-fin-mois/rondier-fin-mois.component";
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { TokenApiComponent } from './token-api/token-api.component';
-
+import { ListEquipeComponent } from './list-equipe/list-equipe.component';
+import { cahierQuart } from './cahierQuart/cahierQuart.component.';
+import { EquipeComponent } from './equipe/equipe.component';
 const routes: Routes = [
 
     {
@@ -103,6 +105,17 @@ const routes: Routes = [
         path : 'reporting',
         canActivate: [AuthGuard],
         component : ReportingRondeComponent
+    },
+
+    {
+        path : 'cahierQuart',
+        canActivate: [AuthGuard],
+        component : cahierQuart,
+        children : [
+            { path : '', canActivate: [AuthGuard], component: ListEquipeComponent },
+            { path : 'listEquipe', canActivate: [AuthGuard], component: ListEquipeComponent },
+            { path : 'newEquipe', canActivate: [AuthGuard], component: EquipeComponent },
+        ]
     },
 
     {

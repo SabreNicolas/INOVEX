@@ -1,0 +1,19 @@
+.croix{
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 20000;
+}
+
+#container{
+    display: flex;
+    justify-content: space-around;
+}
+#droite,#gauche{
+    width: 49%;
+    position: relative;
+}
+
+#listRondier:hover{
+    cursor: grab;
+}
