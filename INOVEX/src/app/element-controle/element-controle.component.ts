@@ -142,7 +142,9 @@ export class ElementControleComponent implements OnInit {
       this.listElement = response.data;
     });
   }
-
+  getGroupement(zoneId : any){
+    console.log(zoneId);
+  }
   //Création éléments contrôle
   onSubmit(form : NgForm) {
     this.nom = form.value['nom'].replace("'"," ");

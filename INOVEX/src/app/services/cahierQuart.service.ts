@@ -45,8 +45,8 @@ export class cahierQuartService {
         }
     }
 
-    getUsersRondier(){
-      let requete = "https://"+this.ip+":"+this.portAPI+"/UsersRondier?idUsine=1";
+    getUsersRondierSansEquipe(){
+      let requete = "https://"+this.ip+":"+this.portAPI+"/usersRondierSansEquipe?idUsine=" + this.idUsine;
       console.log(requete);
 
 
@@ -95,5 +95,47 @@ export class cahierQuartService {
           return this.http
               .put<any>(requete,null,requestOptions);
     }
+
+    getEquipes(){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/equipes?&idUsine="+ this.idUsine;
+        //   console.log(requete);
     
+    
+          const requestOptions = {
+              headers: new HttpHeaders(this.headerDict),
+          };
+    
+          return this.http
+              .get<any>(requete,requestOptions);
+    }
+    
+    getOneEquipe(idEquipe : number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/getOneEquipe?&idUsine="+ this.idUsine + "&idEquipe=" + idEquipe;
+        //   console.log(requete);
+    
+    
+          const requestOptions = {
+              headers: new HttpHeaders(this.headerDict),
+          };
+    
+          return this.http
+              .get<any>(requete,requestOptions);
+    }
+
+    udpateEquipe(nomEquipe : string, quart : number, idEquipe : number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/updateEquipe?&nomEquipe="+ nomEquipe + "&quart=" + quart + "&idEquipe="+idEquipe;
+        //   console.log(requete);
+    
+    
+          const requestOptions = {
+              headers: new HttpHeaders(this.headerDict),
+          };
+    
+          return this.http
+              .put<any>(requete,null,requestOptions);
+    }
+
+    updateAffectationEquipe(){
+        
+    }
 }

@@ -1,6 +1,50 @@
-<a routerLink="/cahierQuart/newEquipe" class="btn btn-primary center"> Crée une équipe </a>
+<a routerLink="/cahierQuart/newEquipe" class="btn btn-primary"> Crée une équipe </a>
 
 <h1>Voici la liste des équipes :</h1>
-<div style="margin-left: 0.5em; margin-top: 7%">
-    <router-outlet></router-outlet>
+<div class="container">
+
+
+    <div  *ngFor="let card of equipes" class="card" id="{{card.id}}" (click)="toggleCardSize(card)" >
+          <div class="card-body">
+            <h5 class="card-title">{{ card.equipe }}</h5>
+            
+            <p class="card-text">{{ card.prenomChefQuart }} {{card.nomChefQuart}} Chef de Quart</p>
+            
+            <p class="titreListe">Voici la liste des rondiers :</p>
+            <div id="tableRondier" class="overflow-auto">
+                <table class="table table-hover tableFixed" id="listRondier">
+                    <thead>
+                    <tr class="table-secondary">
+                        <th scope="col">Nom</th>
+                        <th scope="col">Prénom</th>
+                        <th scope="col">Poste</th>
+                        <th scope="col">Ronde</th>
+                        <th></th>
+                    </thead>
+                    <tbody >
+                        <tr *ngFor="let rondier of card.rondiers" class="table-light">
+                            <td>{{rondier.nomRondier}}</td>
+                            <td>{{rondier.prenomRondier}}</td>
+                            <td>{{rondier.poste}}</td>
+                            <td>{{rondier.zone}}</td>
+                            <td>
+                                <button type="button" class="btn btn-light">
+                                    <i class="far fa-edit"></i> 
+                                </button> 
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+          </div>
+          <a target="_blank" routerLink="/cahierQuart/newEquipe" [queryParams]="{idEquipe: card.id}" > 
+            <button class="btn btn btn-light edition">
+                <i class="far fa-edit"></i>
+            </button>
+          </a>
+    </div>
+    
+  </div>
+  
+<div class="overlay" *ngFor="let card of equipes" id="{{card.id}}_overlay" (click)="closeCard(card)">
 </div>
