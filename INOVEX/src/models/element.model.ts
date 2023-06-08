@@ -11,4 +11,6 @@ export interface element{
     listValues : string;
     isCompteur : number;
     ordre : number;
+    groupement : string;
+    idGroupement : number;
 }

@@ -81,6 +81,7 @@ export class ElementControleComponent implements OnInit {
           this.element = response.data[0];
           this.nom = this.element.nom;
           this.zoneId[0] = this.element.zoneId;
+          this.getGroupement(this.zoneId[0]);
           this.valeurMin = this.element.valeurMin;
           this.valeurMax = this.element.valeurMax;
           this.typeChamp = this.element.typeChamp;
@@ -89,6 +90,11 @@ export class ElementControleComponent implements OnInit {
           this.isRegulateur = this.element.isRegulateur;
           this.isCompteur = this.element.isCompteur;
           this.listValues = this.element.listValues;
+          //@ts-ignore
+          this.idGroupement= this.element.idGroupement;
+          if(this.idGroupement == null){
+            this.idGroupement = 0;
+          }
           this.getElements();
           this.ordreElem = this.element.ordre-1;
           this.changeType(null);
@@ -150,6 +156,9 @@ export class ElementControleComponent implements OnInit {
     this.rondierService.getGroupements(this.zoneId[0]).subscribe((response)=>{
       // @ts-ignore
       this.listGroupements = response.data;
+      if(this.listGroupements.length < 1 ){
+        this.idGroupement = 0;
+      }
     });
   }
   //Création éléments contrôle
@@ -249,7 +258,7 @@ export class ElementControleComponent implements OnInit {
   }
 
   updateElement(ordre : number){
-    this.rondierService.updateElement(this.elementId, this.zoneId[0], this.nom, this.valeurMin, this.valeurMax, this.typeChamp, this.unit, this.defaultValue, this.isRegulateur, this.listValues, this.isCompteur,ordre).subscribe((response)=>{
+    this.rondierService.updateElement(this.elementId, this.zoneId[0], this.nom, this.valeurMin, this.valeurMax, this.typeChamp, this.unit, this.defaultValue, this.isRegulateur, this.listValues, this.isCompteur,ordre, this.idGroupement).subscribe((response)=>{
       if (response == "Mise à jour de l'element OK"){
         Swal.fire("L'élément de contrôle a bien été mis à jour !");
       }

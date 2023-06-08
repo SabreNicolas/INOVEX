@@ -15,7 +15,7 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <select required id="zone" class="select" aria-label=".form-select-sm example" name="zone" ngModel multiple [(ngModel)]="zoneId" (change)="getElements(); getGroupement(this.zoneId)">
+                            <select required id="zone" class="select" aria-label=".form-select-sm example" name="zone" ngModel multiple [(ngModel)]="zoneId" (change)="getElements();" (click)="getGroupement(this.zoneId)">
                                 <option *ngFor="let z of listZone" value="{{z.Id}}">{{z.nom}}</option>
                             </select>
                         </div>
@@ -24,11 +24,12 @@
             </div>
 
             <div *ngIf="zoneId.length < 2 && zoneId.length > 0 && listGroupements.length != 0" class="form-group">
-                <label>Groupement : * <strong>(Veuillez choisir à quel Groupement appartient l'élément)</strong></label>
+                <label>Groupement : <strong>(Veuillez choisir à quel Groupement appartient l'élément)</strong></label>
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <select required class="select" id="groupement" aria-label=".form-select-sm example" name="groupement" ngModel [(ngModel)]="idGroupement">
+                            <select class="select" id="groupement" aria-label=".form-select-sm example" name="groupement" ngModel [(ngModel)]="idGroupement">
+                                <option value="0">Aucun</option>
                                 <option *ngFor="let g of listGroupements" value={{g.id}}>{{g.groupement}}</option>
                             </select>
                         </div>

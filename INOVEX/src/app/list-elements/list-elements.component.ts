@@ -29,6 +29,7 @@ export class ListElementsComponent implements OnInit {
     this.rondierService.listElementofZone(this.zoneId).subscribe((response)=>{
       // @ts-ignore
       this.listElements = response.data;
+      console.log(this.listElements)
     });
   }
 
@@ -59,4 +60,10 @@ export class ListElementsComponent implements OnInit {
     this.ngOnInit();
   }
 
+  getPreviousItem(index :number){
+    if(index > 0){
+      return this.listElements[index-1]['idGroupement'];
+    }
+    return 0;
+  }
 }

@@ -39,7 +39,11 @@
                 <th scope="col">#</th>
             </tr>
             </thead>
-            <tbody *ngFor="let e of listElements">
+            <tbody *ngFor="let e of listElements; let i = index">
+            <tr *ngIf="e.idGroupement !=0 && getPreviousItem(i) != e.idGroupement" class="table-secondary">
+                <th *ngIf="e.groupement == null" colspan="12">Aucun Groupement</th>
+                <th *ngIf="e.groupement != null" scope="col" colspan="12">{{e.groupement}}</th>
+            </tr>
             <tr class="table-light" [ngSwitch]="e.typeChamp">
                 <td>{{e.nom}}</td>
                 <td>{{e.ordre}}</td>
