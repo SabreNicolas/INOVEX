@@ -45,10 +45,9 @@ export class cahierQuartService {
         }
     }
 
+    //Récupérer les rondiers sans équipe
     getUsersRondierSansEquipe(){
       let requete = "https://"+this.ip+":"+this.portAPI+"/usersRondierSansEquipe?idUsine=" + this.idUsine;
-      console.log(requete);
-
 
       const requestOptions = {
           headers: new HttpHeaders(this.headerDict),
@@ -58,10 +57,9 @@ export class cahierQuartService {
           .get<user[]>(requete,requestOptions);
     }
 
+    //Récupérer les zones d'une usine
     getZones(){
         let requete = "https://"+this.ip+":"+this.portAPI+"/zones/"+this.idUsine;
-    //   console.log(requete);
-
 
       const requestOptions = {
           headers: new HttpHeaders(this.headerDict),
@@ -70,10 +68,10 @@ export class cahierQuartService {
       return this.http
           .get<zone[]>(requete,requestOptions);
     }
+
+    //Créer une nouvelle équipe
     nouvelleEquipe(nomEquipe :string, quart : number){
         let requete = "https://"+this.ip+":"+this.portAPI+"/equipe?nomEquipe="+nomEquipe +"&quart="+ quart +"&idChefQuart=" + this.idUser;
-    //   console.log(requete);
-
 
       const requestOptions = {
           headers: new HttpHeaders(this.headerDict),
@@ -83,10 +81,9 @@ export class cahierQuartService {
           .put<any>(requete,null,requestOptions);
     }
 
+    //Ajouter les utilisateur à une équipe
     nouvelleAffectationEquipe(idUser : number,idEquipe : number ,idZone : number ,poste : string){
         let requete = "https://"+this.ip+":"+this.portAPI+"/affectationEquipe?idRondier="+idUser +"&idEquipe="+ idEquipe+"&idZone=" + idZone +"&poste="+poste;
-        //   console.log(requete);
-    
     
           const requestOptions = {
               headers: new HttpHeaders(this.headerDict),
@@ -96,6 +93,7 @@ export class cahierQuartService {
               .put<any>(requete,null,requestOptions);
     }
 
+    //Récupérer les équipes d'une usine
     getEquipes(){
         let requete = "https://"+this.ip+":"+this.portAPI+"/equipes?&idUsine="+ this.idUsine;
         //   console.log(requete);
@@ -109,6 +107,7 @@ export class cahierQuartService {
               .get<any>(requete,requestOptions);
     }
     
+    //Récupérer une seule équipe
     getOneEquipe(idEquipe : number){
         let requete = "https://"+this.ip+":"+this.portAPI+"/getOneEquipe?&idUsine="+ this.idUsine + "&idEquipe=" + idEquipe;
         //   console.log(requete);
@@ -122,11 +121,10 @@ export class cahierQuartService {
               .get<any>(requete,requestOptions);
     }
 
+    //Mise à jour des infos d'une équipe
     udpateEquipe(nomEquipe : string, quart : number, idEquipe : number){
         let requete = "https://"+this.ip+":"+this.portAPI+"/updateEquipe?&nomEquipe="+ nomEquipe + "&quart=" + quart + "&idEquipe="+idEquipe;
-        //   console.log(requete);
-    
-    
+        
           const requestOptions = {
               headers: new HttpHeaders(this.headerDict),
           };
@@ -135,7 +133,16 @@ export class cahierQuartService {
               .put<any>(requete,null,requestOptions);
     }
 
-    updateAffectationEquipe(){
-        
+    //Supprimer les Rondiers d'une équipe
+    deleteAffectationEquipe(idEquipe : number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/deleteAffectationEquipe/"+idEquipe;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .delete<any>(requete,requestOptions);
     }
 }

@@ -23,6 +23,19 @@
                 </div>
             </div>
 
+            <div *ngIf="zoneId.length < 2 && zoneId.length > 0 && listGroupements.length != 0" class="form-group">
+                <label>Groupement : * <strong>(Veuillez choisir à quel Groupement appartient l'élément)</strong></label>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <select required class="select" id="groupement" aria-label=".form-select-sm example" name="groupement" ngModel [(ngModel)]="idGroupement">
+                                <option *ngFor="let g of listGroupements" value={{g.id}}>{{g.groupement}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div *ngIf="zoneId.length < 2" class="form-group">
                 <label>Ordre : * <strong>(Veuillez choisir après quel élément placer celui en cours de création)</strong></label>
                 <div class="row">

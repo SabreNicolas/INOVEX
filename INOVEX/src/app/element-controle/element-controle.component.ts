@@ -35,6 +35,8 @@ export class ElementControleComponent implements OnInit {
   public checkboxRegulateur : HTMLInputElement;
   // @ts-ignore
   public checkboxCompteur : HTMLInputElement;
+  public listGroupements : any[];
+  public idGroupement : number;
 
   constructor(private rondierService : rondierService,  private route : ActivatedRoute) {
     this.listZone = [];
@@ -53,6 +55,8 @@ export class ElementControleComponent implements OnInit {
     this.needBornes = false;
     this.listValues = "";
     this.elementId = 0;
+    this.listGroupements = [];
+    this.idGroupement = 0;
     //Récupération de l'id de l'élément pour modification
     this.route.queryParams.subscribe(params => {
       if(params.element != undefined){
@@ -143,7 +147,10 @@ export class ElementControleComponent implements OnInit {
     });
   }
   getGroupement(zoneId : any){
-    console.log(zoneId);
+    this.rondierService.getGroupements(this.zoneId[0]).subscribe((response)=>{
+      // @ts-ignore
+      this.listGroupements = response.data;
+    });
   }
   //Création éléments contrôle
   onSubmit(form : NgForm) {
@@ -151,6 +158,10 @@ export class ElementControleComponent implements OnInit {
     this.zoneId = form.value['zone'];
     if(this.zoneId.length < 2){
       this.ordreElem = form.value['ordreElem'];
+      
+    }
+    if(this.listGroupements.length > 0 && this.zoneId.length < 2){
+      this.idGroupement = form.value['groupement'];
     }
     if(form.value['unit'].length > 0){
       this.unit = form.value['unit'];
@@ -188,8 +199,9 @@ export class ElementControleComponent implements OnInit {
         this.rondierService.updateOrdreElement(zoneId,this.ordreElem).subscribe((response)=>{
           // @ts-ignore
           if (response == "Mise à jour des ordres OK"){
-            this.rondierService.createElement(zoneId, this.nom, this.valeurMin, this.valeurMax, this.typeChamp, this.unit, this.defaultValue, this.isRegulateur,this.listValues,this.isCompteur, Number(this.ordreElem)+1).subscribe((response)=>{
+            this.rondierService.createElement(zoneId, this.nom, this.valeurMin, this.valeurMax, this.typeChamp, this.unit, this.defaultValue, this.isRegulateur,this.listValues,this.isCompteur, Number(this.ordreElem)+1, this.idGroupement).subscribe((response)=>{
               if (response == "Création de l'élément OK"){
+                this.idGroupement = 0 ;
                 Swal.fire("L'élément de contrôle a bien été créé !");
               }
               else {

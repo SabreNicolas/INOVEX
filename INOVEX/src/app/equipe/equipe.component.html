@@ -68,7 +68,6 @@
                         </td>
                         <td>
                             <select class="form-select" id="{{user.Nom}}_{{user.Prenom}}_zone" id="period" name="period" required ngModel [(ngModel)]="user.Zone">
-                                <option value="0">Choix de la ronde</option>
                                 <option *ngFor="let zone of listZone" value="{{zone.Id}}">{{zone.nom}}</option>
                             </select>
                         </td>
