@@ -1,0 +1,61 @@
+<div *ngIf="moralEntities">
+
+    <div class="form-group blockFiltres">
+
+      <h5><label>Filtres :</label></h5>
+      <div class="row">
+        <div class="col-sm-3">
+          <div class="form-group">
+            <select id="produit" required class="form-select form-select-sm" aria-label=".form-select-sm example" name="produit" ngModel="201">
+              <option *ngFor="let type of listTypeDechets" value="{{type.split('_')[0]}}">{{type.split("_")[1]}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="form-group">
+            <select id="collecteur" required class="form-select form-select-sm" aria-label=".form-select-sm example" name="collecteur" ngModel="01">
+              <option *ngFor="let collecteur of listCollecteurs" value="{{collecteur.split('_')[0]}}">{{collecteur.split("_")[1]}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="form-group">
+            <button class="btn btn-success" (click)="setFilters()">Valider</button>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+     <div class="table-style">
+         <!--table des client-->
+         <table class="table table-hover tableFixed">
+           <thead>
+           <tr class="table-secondary">
+             <th scope="col">Nom</th>
+             <th scope="col">N° CAP</th>
+             <th scope="col">Code Déchet</th>
+             <th scope="col">Type Déchets</th>
+             <th scope="col">Prix Unitaire</th>
+             <th>Correspondance dans le logiciel de pesée</th>
+           </tr>
+           </thead>
+           <tbody *ngFor="let mr of moralEntities">
+           <tr class="table-light">
+             <td><strong>{{mr.Name}}</strong></td>
+             <td>{{mr.numCAP}}</td>
+             <td>{{mr.codeDechet}}</td>
+             <td>{{mr.produit}} {{mr.collecteur}}</td>
+             <td>{{mr.UnitPrice}}</td>
+             <td>
+                <input type="text" id="{{mr.Id}}_nomImport">     
+                <button class="btn btn-success" (click)="ajoutCorrespondance(mr.Name,mr.Id, mr.productId)">
+                    <i class="fas fa-check"></i>
+                </button>
+             </td>
+           </tr>
+           </tbody>
+         </table>
+     </div>
+</div>

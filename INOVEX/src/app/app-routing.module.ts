@@ -47,6 +47,7 @@ import { cahierQuart } from './cahierQuart/cahierQuart.component.';
 import { EquipeComponent } from './equipe/equipe.component';
 import { GroupementComponent } from './groupement/groupement.component';
 import { ListGroupementsComponent } from './list-groupements/list-groupements.component';
+import { ImportTonnageComponent } from './import-tonnage/import-tonnage.component';
 const routes: Routes = [
 
     {
@@ -73,7 +74,12 @@ const routes: Routes = [
         component : AcceuilComponent
         //component : MaintenanceComponent
     },
-
+    {
+        path : 'import',
+        canActivate: [AuthGuard],
+        component : ImportTonnageComponent
+        //component : MaintenanceComponent
+    },
     {
         path: 'clients',
         canActivate: [AuthGuard],

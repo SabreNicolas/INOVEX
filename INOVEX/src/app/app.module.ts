@@ -65,6 +65,7 @@ import { cahierQuart } from './cahierQuart/cahierQuart.component.';
 import { EquipeComponent } from './equipe/equipe.component';
 import { GroupementComponent } from './groupement/groupement.component';
 import { ListGroupementsComponent } from './list-groupements/list-groupements.component';
+import { ImportTonnageComponent } from './import-tonnage/import-tonnage.component';
 
 @NgModule({
   declarations: [
@@ -116,6 +117,7 @@ import { ListGroupementsComponent } from './list-groupements/list-groupements.co
     EquipeComponent,
     GroupementComponent,
     ListGroupementsComponent,
+    ImportTonnageComponent,
   ],
   imports: [
     BrowserModule,

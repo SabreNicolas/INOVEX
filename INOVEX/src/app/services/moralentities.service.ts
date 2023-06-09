@@ -94,6 +94,32 @@ export class moralEntitiesService {
         .get<moralEntity[]>(requete,requestOptions);
     }
 
+     //récupérer les clients avec Enabled à 1 (pour la saisie)
+     getMoralEntitiesSansCorrespondance(debCode : string) {
+      let requete = "https://"+this.ip+":"+this.portAPI+"/getMoralEntitiesSansCorrespondance?idUsine=" + this.idUsine +"&Code="+debCode;
+      //console.log(requete);
+
+      const requestOptions = {
+        headers: new HttpHeaders(this.headerDict),
+      };
+
+      return this.http
+        .get<moralEntity[]>(requete,requestOptions);
+    }
+
+    //crée une nouvelle correspondance pour lecture csv
+    createImport_tonnage(ProducerId : number, ProductId : number, nomImport : string){
+      let requete = "https://"+this.ip+":"+this.portAPI+"/import_tonnage?ProducerId="+ProducerId+"&ProductId="+ProductId+"&nomImport="+nomImport+"&idUsine="+this.idUsine;
+      console.log(requete);
+
+      const requestOptions = {
+        headers: new HttpHeaders(this.headerDict),
+      };
+
+      return this.http
+        .put<any>(requete,null,requestOptions);
+    }
+
     //récupérer les clients
     getMoralEntitiesAll(Code : string) {
         let requete = "https://"+this.ip+":"+this.portAPI+"/moralEntitiesAll?Code="+Code+"&idUsine="+this.idUsine;
