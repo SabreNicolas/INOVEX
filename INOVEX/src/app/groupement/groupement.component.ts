@@ -36,11 +36,13 @@ export class GroupementComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    //On récupère toutes les zones de l'usine
     this.rondierService.listZone().subscribe((response)=>{
       // @ts-ignore
       this.listZone = response.data;
     });
     
+    //Si on est en mode modification on rempli les champs
     if(this.idGroupement > 0){
       this.rondierService.getOneGroupement(this.idGroupement).subscribe((response)=>{
         // @ts-ignore
@@ -52,11 +54,15 @@ export class GroupementComponent implements OnInit {
   }
   
   createGroupement(){
+    //Si mode modif
     if(this.idGroupement > 0){
       this.updateGroupement();
     }
+    //Sinon on créer un groupement
     else{
+      //Si le champs d'entrée est vide
       if(this.groupement != ""){
+        //Si aucune zone n'est sélectionnée
         if(this.idZone!=0){
           Swal.fire({title: 'Êtes-vous sûr(e) de créer ce Groupement ?',icon: 'warning',showCancelButton: true,confirmButtonColor: '#3085d6',cancelButtonColor: '#d33',confirmButtonText: 'Oui, créer',cancelButtonText: 'Annuler'
           }).then((result) => {
@@ -84,7 +90,9 @@ export class GroupementComponent implements OnInit {
   }
 
   updateGroupement(){
+    //Si le champs d'entrée est vides
     if(this.groupement != ""){
+      //Si aucune zone n'est sélectionnée
       if(this.idZone!=0){
         Swal.fire({title: 'Êtes-vous sûr(e) de modifier ce Groupement ?',icon: 'warning',showCancelButton: true,confirmButtonColor: '#3085d6',cancelButtonColor: '#d33',confirmButtonText: 'Oui, modifier',cancelButtonText: 'Annuler'
         }).then((result) => {
