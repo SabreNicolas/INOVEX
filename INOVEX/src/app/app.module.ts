@@ -63,6 +63,8 @@ import { cahierQuartService } from './services/cahierQuart.service';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { cahierQuart } from './cahierQuart/cahierQuart.component.';
 import { EquipeComponent } from './equipe/equipe.component';
+import { GroupementComponent } from './groupement/groupement.component';
+import { ListGroupementsComponent } from './list-groupements/list-groupements.component';
 
 @NgModule({
   declarations: [
@@ -112,6 +114,8 @@ import { EquipeComponent } from './equipe/equipe.component';
     ListEquipeComponent,
     cahierQuart,
     EquipeComponent,
+    GroupementComponent,
+    ListGroupementsComponent,
   ],
   imports: [
     BrowserModule,

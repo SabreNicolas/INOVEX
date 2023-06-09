@@ -1,0 +1,29 @@
+<div *ngIf="listGroupement">
+
+    <h1  class="creation">Voici la liste des groupements </h1>
+    <div class="table-style">
+        <!--table des zones de controle-->
+        <table class="table table-hover tableFixed">
+            <thead>
+            <tr class="table-secondary">
+                <th scope="col">Id</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Edition</th>
+            </tr>
+            </thead>
+            <tbody *ngFor="let g of listGroupement; let i = index">
+                <tr *ngIf="g.id !=0 && getPreviousItem(i) != g.zoneId" class="table-secondary">
+                    <th *ngIf="g.groupement == null" colspan="12">Aucun Groupement</th>
+                    <th *ngIf="g.groupement != null" scope="col" colspan="12">{{g.nom}}</th>
+                </tr>
+            <tr class="table-light">
+                <td>{{g.id}}</td>
+                <td>{{g.groupement}}</td>
+                <td><button id="setName"  class="btn btn-outline-primary" routerLink="/admin/newGroupement" [queryParams]="{idGroupement: g.id}">
+                    <i class="fa fa-pencil"></i>
+                </button></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

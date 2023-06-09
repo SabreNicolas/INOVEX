@@ -45,6 +45,8 @@ import { TokenApiComponent } from './token-api/token-api.component';
 import { ListEquipeComponent } from './list-equipe/list-equipe.component';
 import { cahierQuart } from './cahierQuart/cahierQuart.component.';
 import { EquipeComponent } from './equipe/equipe.component';
+import { GroupementComponent } from './groupement/groupement.component';
+import { ListGroupementsComponent } from './list-groupements/list-groupements.component';
 const routes: Routes = [
 
     {
@@ -143,6 +145,8 @@ const routes: Routes = [
             { path: 'zones', canActivate: [AuthGuard], component: ListZonesComponent},
             { path: 'newElement', canActivate: [AuthGuard], component: ElementControleComponent},
             { path: 'elements', canActivate: [AuthGuard], component: ListElementsComponent},
+            { path: 'newGroupement', canActivate: [AuthGuard], component: GroupementComponent},
+            { path: 'groupement', canActivate: [AuthGuard], component: ListGroupementsComponent},
             { path: 'permisFeu', canActivate: [AuthGuard], component: PermisFeuComponent},
             { path: 'reporting', canActivate: [AuthGuard], component: ReportingRondeComponent},
             { path: 'newModeOP', canActivate: [AuthGuard], component: ModeOperatoireComponent},

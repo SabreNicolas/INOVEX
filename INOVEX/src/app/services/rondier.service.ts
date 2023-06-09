@@ -230,7 +230,40 @@ export class rondierService {
     FIN ZONE DE CONTROLE
      */
 
+    createGroupement(zoneId : number, groupement : string){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/groupement?zoneId="+zoneId+"&groupement="+groupement;
+        //console.log(requete);
 
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<any>(requete,null,requestOptions);
+    }
+
+    getOneGroupement(idGroupement : number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/getOneGroupement?idGroupement="+idGroupement;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<element>(requete,requestOptions);
+    }
+    updateGroupement(idGroupement : number, groupement : string, zoneId : number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/updateGroupement?idGroupement="+idGroupement+"&groupement="+groupement+"&zoneId="+zoneId;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<any>(requete,null,requestOptions);
+    }
     /*
     ELEMENT DE CONTROLE
      */
@@ -355,6 +388,17 @@ export class rondierService {
             .get<elementsOfZone[]>(requete,requestOptions);
     }
 
+    getAllGroupements(){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/getAllGroupements?idUsine="+this.idUsine;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<elementsOfZone[]>(requete,requestOptions);
+    }
     /*
     FIN ELEMENT DE CONTROLE
      */

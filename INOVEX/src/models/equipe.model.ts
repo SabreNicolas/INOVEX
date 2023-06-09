@@ -1,4 +1,3 @@
-// import { user } from "./user.model"
 export interface equipe {
     id : number,
     equipe: string,

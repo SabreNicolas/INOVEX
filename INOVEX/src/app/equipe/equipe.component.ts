@@ -117,7 +117,10 @@ export class EquipeComponent implements OnInit {
         return
       }
     }
-
+    if(this.listAjout.length == 0){
+      Swal.fire('Veuillez ajouter des personnes à l\'équipe !','La saisie a été annulée.','error');
+      return
+    }
     //On vérifie si il y a un nom d'équipe
     if(nomEquipe ===""){
       Swal.fire('Veuillez saisir un nom d\'équipe !','La saisie a été annulée.','error');
