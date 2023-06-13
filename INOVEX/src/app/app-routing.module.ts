@@ -74,12 +74,7 @@ const routes: Routes = [
         component : AcceuilComponent
         //component : MaintenanceComponent
     },
-    {
-        path : 'import',
-        canActivate: [AuthGuard],
-        component : ImportTonnageComponent
-        //component : MaintenanceComponent
-    },
+    
     {
         path: 'clients',
         canActivate: [AuthGuard],
@@ -134,6 +129,7 @@ const routes: Routes = [
         children: [
             { path: '', canActivate: [AuthGuard], component:  AdminComponent },
             { path: 'token', canActivate: [AuthGuard], component:  TokenApiComponent },
+            { path: 'import', canActivate: [AuthGuard], component:  ImportTonnageComponent },
             { path: 'modification', canActivate: [AuthGuard], component:  AdminComponent },
             { path: 'newCompteur', canActivate: [AuthGuard], component:  CompteursComponent },
             { path: 'newSortant', canActivate: [AuthGuard], component:  SortantsComponent },

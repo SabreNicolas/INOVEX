@@ -38,22 +38,29 @@
              <th scope="col">Code Déchet</th>
              <th scope="col">Type Déchets</th>
              <th scope="col">Prix Unitaire</th>
-             <th>Correspondance dans le logiciel de pesée</th>
+             <th>Correspondance de l'apporteur dans le logiciel de pesée</th>
+             <th>Correspondance du produit dans le logiciel de pesée</th>
            </tr>
            </thead>
-           <tbody *ngFor="let mr of moralEntities">
+           <tbody *ngFor="let mr of moralEntities; let i = index">
            <tr class="table-light">
-             <td><strong>{{mr.Name}}</strong></td>
-             <td>{{mr.numCAP}}</td>
-             <td>{{mr.codeDechet}}</td>
-             <td>{{mr.produit}} {{mr.collecteur}}</td>
-             <td>{{mr.UnitPrice}}</td>
-             <td>
-                <input type="text" id="{{mr.Id}}_nomImport">     
-                <button class="btn btn-success" (click)="ajoutCorrespondance(mr.Name,mr.Id, mr.productId)">
-                    <i class="fas fa-check"></i>
-                </button>
-             </td>
+              <td><strong>{{mr.Name}}</strong></td>
+              <td>{{mr.numCAP}}</td>
+              <td>{{mr.codeDechet}}</td>
+              <td>{{mr.produit}} {{mr.collecteur}}</td>
+              <td>{{mr.UnitPrice}}</td>
+              <td>
+                  {{mr.nomImport}}
+                  <button class="btn btn-light" (click)="edition(mr.Id,mr.productId,mr.nomImport, mr.productImport,'nom')">
+                    <i class="fas fa-edit"></i>
+                  </button>
+              </td>
+              <td>
+                  {{mr.productImport}}
+                  <button class="btn btn-light" (click)="edition(mr.Id,mr.productId,mr.nomImport, mr.productImport,'product')">
+                    <i class="fas fa-edit"></i>
+                  </button>
+              </td>
            </tr>
            </tbody>
          </table>

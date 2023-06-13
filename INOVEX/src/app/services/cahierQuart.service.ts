@@ -133,6 +133,20 @@ export class cahierQuartService {
               .put<any>(requete,null,requestOptions);
     }
 
+
+    //Supprimer une une équipe
+    deleteEquipe(idEquipe : number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/deleteEquipe/"+idEquipe;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .delete<any>(requete,requestOptions);
+    }
+
     //Supprimer les Rondiers d'une équipe
     deleteAffectationEquipe(idEquipe : number){
         let requete = "https://"+this.ip+":"+this.portAPI+"/deleteAffectationEquipe/"+idEquipe;

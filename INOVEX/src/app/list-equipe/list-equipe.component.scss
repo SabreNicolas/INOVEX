@@ -12,7 +12,9 @@
     transition: transform 0.3s;
     cursor: pointer;
 }
-  
+.card-title{
+    text-shadow: none;
+}
 .card.expanded {
     position: fixed;
     top: 45%;
@@ -50,4 +52,13 @@
 }
 .card.expanded .edition{
     display: block;
+}
+.card.expanded .suppression{
+    display: block;
+}
+.suppression{
+    position: absolute;
+    top: 0;
+    right: 50px;
+    display: none;
 }

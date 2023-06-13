@@ -281,6 +281,20 @@ export class rondierService {
         return this.http
             .put<any>(requete,null,requestOptions);
     }
+
+    deleteGroupement(idGroupement : number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/deleteGroupement?idGroupement="+idGroupement;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .delete<any>(requete,requestOptions);
+    }
+
+
     /*
     ELEMENT DE CONTROLE
      */

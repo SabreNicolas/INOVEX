@@ -95,8 +95,8 @@ export class moralEntitiesService {
     }
 
      //récupérer les clients avec Enabled à 1 (pour la saisie)
-     getMoralEntitiesSansCorrespondance(debCode : string) {
-      let requete = "https://"+this.ip+":"+this.portAPI+"/getMoralEntitiesSansCorrespondance?idUsine=" + this.idUsine +"&Code="+debCode;
+     getMoralEntitiesAndCorrespondance(debCode : string) {
+      let requete = "https://"+this.ip+":"+this.portAPI+"/getMoralEntitiesAndCorrespondance?idUsine=" + this.idUsine +"&Code="+debCode;
       //console.log(requete);
 
       const requestOptions = {
@@ -108,9 +108,9 @@ export class moralEntitiesService {
     }
 
     //crée une nouvelle correspondance pour lecture csv
-    createImport_tonnage(ProducerId : number, ProductId : number, nomImport : string){
-      let requete = "https://"+this.ip+":"+this.portAPI+"/import_tonnage?ProducerId="+ProducerId+"&ProductId="+ProductId+"&nomImport="+nomImport+"&idUsine="+this.idUsine;
-      console.log(requete);
+    createImport_tonnage(ProducerId : number, ProductId : number, nomImport : string, productImport : string){
+      let requete = "https://"+this.ip+":"+this.portAPI+"/import_tonnage?ProducerId="+ProducerId+"&ProductId="+ProductId+"&nomImport="+nomImport+"&productImport="+productImport+"&idUsine="+this.idUsine;
+      // console.log(requete);
 
       const requestOptions = {
         headers: new HttpHeaders(this.headerDict),
@@ -120,6 +120,18 @@ export class moralEntitiesService {
         .put<any>(requete,null,requestOptions);
     }
 
+    //mettre à jour une correspondance
+    updateCorrespondance(ProducerId : number ,nomImport : string ,productImport : string){
+      let requete = "https://"+this.ip+":"+this.portAPI+"/updateCorrespondance?ProducerId="+ProducerId+"&nomImport="+nomImport+"&productImport="+productImport;
+      console.log(requete);
+
+      const requestOptions = {
+        headers: new HttpHeaders(this.headerDict),
+      };
+
+      return this.http
+        .put<any>(requete,null,requestOptions);
+    }
     //récupérer les clients
     getMoralEntitiesAll(Code : string) {
         let requete = "https://"+this.ip+":"+this.portAPI+"/moralEntitiesAll?Code="+Code+"&idUsine="+this.idUsine;
@@ -135,6 +147,20 @@ export class moralEntitiesService {
     //récupérer 1 client
     getOneMoralEntity(Id : number) {
       let requete = "https://"+this.ip+":"+this.portAPI+"/moralEntitie/"+Id;
+      //console.log(requete);
+
+
+      const requestOptions = {
+          headers: new HttpHeaders(this.headerDict),
+      };
+
+      return this.http
+          .get<moralEntity>(requete,requestOptions);
+    }
+
+    //récupérer 1 client
+    getOneCorrespondance(Id : number) {
+      let requete = "https://"+this.ip+":"+this.portAPI+"/correspondance/"+Id;
       //console.log(requete);
 
 
