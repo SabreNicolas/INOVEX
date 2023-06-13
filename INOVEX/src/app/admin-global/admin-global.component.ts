@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { categoriesService } from '../services/categories.service';
+import { user } from 'src/models/user.model';
 
 @Component({
   selector: 'app-admin-global',
@@ -9,9 +10,12 @@ import { categoriesService } from '../services/categories.service';
 export class AdminGlobalComponent implements OnInit {
 
   public isSuperAdmin : boolean;
-
+  public idUsine : number;
+  public userLogged!: user;
+  
   constructor(private categoriesService : categoriesService) { 
     this.isSuperAdmin = false;
+    this.idUsine = 0;
   }
 
   ngOnInit(): void {
@@ -27,6 +31,9 @@ export class AdminGlobalComponent implements OnInit {
       if(userLoggedParse.hasOwnProperty('localisation')){
         this.isSuperAdmin = true;
       }
+      this.userLogged = userLoggedParse;
+      // @ts-ignore
+      this.idUsine = this.userLogged['idUsine'];
     }
 
     //stockage de l'ensemble des sites dans le le service categories pour la création de produit pour l'ensemble des sites

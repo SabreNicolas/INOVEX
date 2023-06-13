@@ -4,9 +4,9 @@
     <div class="col-sm-5 col-sm-offset-1">
 
             <div class="form-group">
-                <label for="choixZone">Selectionnez la zone du groupement *</label><br>
+                <label for="choixZone">Selectionnez la {{denomination}} du groupement *</label><br>
                 <select name="zone" id="choixZone" ngModel [(ngModel)]="idZone">
-                    <option value="0">-- Veuillez selectionner une zone --</option>
+                    <option value="0">-- Veuillez selectionner une {{denomination}} --</option>
                     <option *ngFor ="let zone of listZone" value="{{zone.Id}}">{{zone.nom}}</option>
                 </select>
             </div>

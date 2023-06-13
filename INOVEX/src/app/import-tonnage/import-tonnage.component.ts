@@ -127,7 +127,7 @@ export class ImportTonnageComponent implements OnInit {
         else productImport = prompt('Veuillez saisir le nom du produit dans le logiciel de pesée',String(productImport));
         if (nomImport == null) nomImport="";
       }
-      if(productImport == null && nomImport == null) return;
+      if(productImport == null || nomImport == null) return;
 
       if(productImport == "" && nomImport == ""){
         Swal.fire('Veuillez saisir une valeur','error');
@@ -136,14 +136,20 @@ export class ImportTonnageComponent implements OnInit {
       //@ts-ignore
       else if(response.data.length > 0 ){
         this.moralEntitiesService.updateCorrespondance(ProducerId,nomImport,productImport).subscribe((response) => {
-          Swal.fire('Correspondance modifiée','success');
+          Swal.fire({
+            icon: 'success',
+            text: 'Correspondance modifiée',
+          });
           this.ngOnInit();
         })
       }
       //Sinon on la crée
       else {
         this.moralEntitiesService.createImport_tonnage(ProducerId, ProductId, nomImport, productImport).subscribe((response) => {
-          Swal.fire('Correspondance ajoutée','success');
+          Swal.fire({
+            icon: 'success',
+            text: 'Correspondance ajoutée',
+          });
           this.ngOnInit();
         })
       }

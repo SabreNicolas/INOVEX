@@ -72,20 +72,20 @@ export class PermisFeuComponent implements OnInit {
     this.dateHeureDeb = this.datePipe.transform(form.value['dateHeureDeb'], 'yyyy-MM-dd HH:mm');
     //SI permis de feu on calcule la date de fin = date de début + 24h
     if(this.isPermisFeu) {
-      let jour, mois, annee, heure, min;
+      //@ts-ignore
+      const date = new Date(this.dateHeureDeb);
+      const dateFuture = new Date(date.getTime() + (24*60*60*1000))
+     
+      const annee = dateFuture.getFullYear();
+      const mois = ("0" + (dateFuture.getMonth() + 1)).slice(-2);
+      const jour = ("0" + dateFuture.getDate()).slice(-2);
+      const heures = ("0" + dateFuture.getHours()).slice(-2);
+      const minutes = ("0" + dateFuture.getMinutes()).slice(-2);
+
+      this.dateHeureFin = `${jour}/${mois}/${annee} ${heures}:${minutes}`;
+
       // @ts-ignore
-      jour = +this.dateHeureDeb.substr(8, 2) + 1;
-      // @ts-ignore
-      mois = this.dateHeureDeb.substr(5, 2);
-      // @ts-ignore
-      annee = this.dateHeureDeb.substr(0, 4);
-      // @ts-ignore
-      heure = this.dateHeureDeb.substr(11, 2);
-      // @ts-ignore
-      min = this.dateHeureDeb.substr(14, 2);
-      this.dateHeureFin = jour + "/" + mois + "/" + annee + " " + heure + ":" + min;
-      // @ts-ignore
-      this.dateHeureFinFormatBDD = this.datePipe.transform(new Date(annee, mois - 1, jour, heure, min), 'yyyy-MM-dd HH:mm');//Janvier est 0
+      this.dateHeureFinFormatBDD = this.datePipe.transform(new Date(annee, mois - 1, jour, heures, minutes), 'yyyy-MM-dd HH:mm');//Janvier est 0
     }
   }
 

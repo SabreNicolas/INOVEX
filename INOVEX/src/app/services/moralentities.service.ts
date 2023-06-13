@@ -158,7 +158,7 @@ export class moralEntitiesService {
           .get<moralEntity>(requete,requestOptions);
     }
 
-    //récupérer 1 client
+    //récupérer 1 correspondance
     getOneCorrespondance(Id : number) {
       let requete = "https://"+this.ip+":"+this.portAPI+"/correspondance/"+Id;
       //console.log(requete);
@@ -172,6 +172,20 @@ export class moralEntitiesService {
           .get<moralEntity>(requete,requestOptions);
     }
 
+
+    //récupérer les correspondances d'une usine
+    getCorrespondance() {
+      let requete = "https://"+this.ip+":"+this.portAPI+"/getCorrespondance/"+this.idUsine;
+      //console.log(requete);
+
+
+      const requestOptions = {
+          headers: new HttpHeaders(this.headerDict),
+      };
+
+      return this.http
+          .get<moralEntity>(requete,requestOptions);
+    }
     //mettre à jour le code d'un client
     setCode(Code: string | null, Id: number){
       let requete = "https://"+this.ip+":"+this.portAPI+"/moralEntitieCode/"+Id+"?Code="+Code;

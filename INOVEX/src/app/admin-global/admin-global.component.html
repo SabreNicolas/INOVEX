@@ -105,11 +105,18 @@
                             <a class="dropdown-item" routerLink="./consignes" >Liste des Consignes</a>
                         </ul>
                     </li>   
-                    <li class="dropdown menu">
+                    <li class="dropdown menu" *ngIf="idUsine != 7">
                         <a class="dropdown-toggle">Zone de Contrôle</a>
                         <ul class="dropdown-menu sous-menu">                    
                             <a class="dropdown-item" routerLink="./newZone" >Nouvelle Zone de Contrôle</a>
                             <a class="dropdown-item" routerLink="./zones" >Liste des Zones de Contrôle</a>
+                        </ul>
+                    </li>   
+                    <li class="dropdown menu" *ngIf="idUsine == 7">
+                        <a class="dropdown-toggle">Ronde</a>
+                        <ul class="dropdown-menu sous-menu">                    
+                            <a class="dropdown-item" routerLink="./newZone" >Nouvelle Ronde</a>
+                            <a class="dropdown-item" routerLink="./zones" >Liste des Rondes</a>
                         </ul>
                     </li>   
                     <li class="dropdown menu">

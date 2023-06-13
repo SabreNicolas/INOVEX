@@ -4,6 +4,7 @@ import { groupement } from 'src/models/groupement.model';
 import { zone } from 'src/models/zone.model';
 import Swal from 'sweetalert2';
 import { ActivatedRoute } from '@angular/router';
+import { user } from 'src/models/user.model';
 
 @Component({
   selector: 'app-groupement',
@@ -17,13 +18,16 @@ export class GroupementComponent implements OnInit {
   public idZone : number;
   public groupement : string;
   public idGroupement : number;
-
+  public denomination : string;
+  public userLogged!: user;
+  
   constructor(public rondierService : rondierService,private route : ActivatedRoute) { 
     this.listGroupement = [];
     this.listZone = [];
     this.idZone = 0;
     this.groupement = "";
     this.idGroupement = 0;
+    this.denomination = "";
 
     this.route.queryParams.subscribe(params => {
       if(params.idGroupement != undefined){
@@ -50,6 +54,17 @@ export class GroupementComponent implements OnInit {
         // @ts-ignore
         this.idZone = response.data[0]['zoneId'];
       });
+    }
+
+    var userLogged = localStorage.getItem('user');
+    if (typeof userLogged === "string") {
+      var userLoggedParse = JSON.parse(userLogged);
+      this.userLogged = userLoggedParse;
+      // @ts-ignore
+      if(this.userLogged['idUsine']==7){
+        this.denomination = "Ronde";
+      }
+      else this.denomination = "Zone";
     }
   }
   
