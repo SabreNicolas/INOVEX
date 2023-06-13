@@ -1,3 +1,13 @@
-.a:hover .b{
+.menu:hover .sous-menu{
     display: block;
+}
+
+.sous-menu{
+    position: absolute;
+    left: -18em;
+    top: -1em;
+    width: 18em;
+}
+.menu{
+    margin-left:  10px;
 }
