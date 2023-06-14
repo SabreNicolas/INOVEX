@@ -1,25 +1,17 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Component, OnInit } from '@angular/core';
 
-import { cahierQuart } from './cahierQuart.component.';
+@Component({
+  selector: 'app-cahierQuart',
+  templateUrl: './cahierQuart.component.html',
+  styleUrls: ['./cahierQuart.component.scss']
+})
+export class cahierQuart implements OnInit {
 
-describe('EquipeGlobalComponent', () => {
-  let component: cahierQuart;
-  let fixture: ComponentFixture<cahierQuart>;
+  constructor() { }
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ cahierQuart ]
-    })
-    .compileComponents();
-  });
+  ngOnInit(): void {
+    window.parent.document.title = 'CAP Exploitation - Cahier de Quart';
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(cahierQuart);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+  }
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+}

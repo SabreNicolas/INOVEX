@@ -29,7 +29,6 @@ export class ListElementsComponent implements OnInit {
     this.rondierService.listElementofZone(this.zoneId).subscribe((response)=>{
       // @ts-ignore
       this.listElements = response.data;
-      console.log(this.listElements)
     });
   }
 

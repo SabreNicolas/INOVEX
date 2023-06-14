@@ -87,7 +87,7 @@ export class AcceuilComponent implements OnInit {
       this.isSaisie = this.userLogged['isSaisie'];
       // @ts-ignore
       this.isAdmin = this.userLogged['isAdmin'];
-      this.isChefQuart = this.userLogged['isAdmin'];
+      this.isChefQuart = this.userLogged['isChefQuart'];
     }
 
     //On vérifie si une maintenance est prévue

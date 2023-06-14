@@ -43,7 +43,7 @@ import {RondierFinMoisComponent} from "./rondier-fin-mois/rondier-fin-mois.compo
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { TokenApiComponent } from './token-api/token-api.component';
 import { ListEquipeComponent } from './list-equipe/list-equipe.component';
-import { cahierQuart } from './cahierQuart/cahierQuart.component.';
+import { cahierQuart } from './cahierQuart/cahierQuart.component';
 import { EquipeComponent } from './equipe/equipe.component';
 import { GroupementComponent } from './groupement/groupement.component';
 import { ListGroupementsComponent } from './list-groupements/list-groupements.component';

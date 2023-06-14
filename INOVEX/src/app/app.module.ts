@@ -61,7 +61,7 @@ import { tokenApiService } from './services/tokenApi.service';
 import { ListEquipeComponent } from './list-equipe/list-equipe.component';
 import { cahierQuartService } from './services/cahierQuart.service';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { cahierQuart } from './cahierQuart/cahierQuart.component.';
+import { cahierQuart } from './cahierQuart/cahierQuart.component';
 import { EquipeComponent } from './equipe/equipe.component';
 import { GroupementComponent } from './groupement/groupement.component';
 import { ListGroupementsComponent } from './list-groupements/list-groupements.component';

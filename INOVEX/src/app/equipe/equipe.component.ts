@@ -13,7 +13,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class EquipeComponent implements OnInit {
 
-  public listUsers : any[];
+  public listUsers : user[];
   public listAjout : any[];
   public listZone : zone[];
   public idEquipe : number;
@@ -70,14 +70,7 @@ export class EquipeComponent implements OnInit {
       // @ts-ignore
       this.listUsers = response.data;
       // this.list2.push()
-      var userLogged = localStorage.getItem('user');
-        if (typeof userLogged === "string") {
-            var userLoggedParse = JSON.parse(userLogged);
 
-            //Récupération de l'idUsine
-            // @ts-ignore
-            var idUsine = userLoggedParse['Nom'];
-        }
         //On récupère les zones disponibles dans cette usine
         this.cahierQuartService.getZones().subscribe((response) =>{
           //@ts-ignore

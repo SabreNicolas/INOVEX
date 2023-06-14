@@ -8,10 +8,6 @@ import { zone } from "src/models/zone.model";
 @Injectable()
 export class cahierQuartService {
 
-    private _nom : string;
-    private _code : string;
-    private _parentId : number;
-    public sites : site[];
 
     httpClient: HttpClient;
     private headerDict = {
@@ -28,10 +24,7 @@ export class cahierQuartService {
 
     constructor(private http: HttpClient) {
         this.httpClient = http;
-        this._nom = '';
-        this._code = '';
-        this._parentId = 0;
-        this.sites = [];
+
         //Récupération du user dans localStorage
         var userLogged = localStorage.getItem('user');
         if (typeof userLogged === "string") {

@@ -15,8 +15,6 @@ export class ImportTonnageComponent implements OnInit {
   public moralEntities : any[];
   public debCode : string;
   public listId : number[];
-  private userLogged : user | undefined;
-  public isAdmin : number;//0 ou 1
   private listTypeDechetsCollecteurs : dechetsCollecteurs[];
   public listTypeDechets : string[];
   public listCollecteurs : string[];
@@ -26,7 +24,6 @@ export class ImportTonnageComponent implements OnInit {
   constructor(private moralEntitiesService : moralEntitiesService) {
     this.debCode = '';
     this.listId = [];
-    this.isAdmin = 0;
     this.moralEntities = [];
     this.listTypeDechetsCollecteurs = [];
     this.listTypeDechets = [];
@@ -37,19 +34,11 @@ export class ImportTonnageComponent implements OnInit {
 
   ngOnInit(): void {
     //Verification droit admin du user pour disabled ou non le btn d'edition des clients
-    var userLogged = localStorage.getItem('user');
-    if (typeof userLogged === "string") {
-      var userLoggedParse = JSON.parse(userLogged);
-      this.userLogged = userLoggedParse;
-      // @ts-ignore
-      this.isAdmin = this.userLogged['isAdmin'];
-    }
+    
 
     this.moralEntitiesService.getMoralEntitiesAndCorrespondance(this.debCode).subscribe((response)=>{
       // @ts-ignore
       this.moralEntities = response.data;
-      console.log("mr:");
-      console.log(this.moralEntities);
       //Récupération des types de déchets et des collecteurs
       this.moralEntitiesService.GetTypeDéchets().subscribe((response)=>{
         //@ts-ignore
@@ -111,49 +100,49 @@ export class ImportTonnageComponent implements OnInit {
   //Mise à jour du nom de l'import ou du produit
   edition(ProducerId : number, ProductId : number, nomImport : any, productImport : any ,type : string){
     //On récupère la correspondance pour voir si elle est déjà existante
-    this.moralEntitiesService.getOneCorrespondance(ProducerId).subscribe((response) => {
-      //On demande à l'utilisateur de siaire soit le nom soit le produit
-      if(type=="nom"){
-        if(nomImport == null){
-          nomImport = prompt('Veuillez saisir le nom de l\'apporteur dans le logiciel de pesée','');
-        }
-        else nomImport = prompt('Veuillez saisir le nom de l\'apporteur dans le logiciel de pesée',String(nomImport));
-        if(productImport == null) productImport ="";
+    var verifNomImport = nomImport;
+    var verifProductImport = productImport;
+    //On demande à l'utilisateur de siaire soit le nom soit le produit
+    if(type=="nom"){
+      if(nomImport == null){
+        nomImport = prompt('Veuillez saisir le nom de l\'apporteur dans le logiciel de pesée','');
       }
-      else {
-        if(productImport == null){
-          productImport = prompt('Veuillez saisir le nom du produit dans le logiciel de pesée','');
-        }
-        else productImport = prompt('Veuillez saisir le nom du produit dans le logiciel de pesée',String(productImport));
-        if (nomImport == null) nomImport="";
+      else nomImport = prompt('Veuillez saisir le nom de l\'apporteur dans le logiciel de pesée',String(nomImport));
+      if(productImport == null) productImport ="";
+    }
+    else {
+      if(productImport == null){
+        productImport = prompt('Veuillez saisir le nom du produit dans le logiciel de pesée','');
       }
-      if(productImport == null || nomImport == null) return;
-      productImport = productImport.replace(/'/g,"''");
-      nomImport = nomImport.replace(/'/g,"''");
-      if(productImport == "" && nomImport == ""){
-        Swal.fire('Veuillez saisir une valeur','error');
-      }
-      //Si on a une correspondance, on met à jour celle ci
-      //@ts-ignore
-      else if(response.data.length > 0 ){
-        this.moralEntitiesService.updateCorrespondance(ProducerId,nomImport,productImport).subscribe((response) => {
-          Swal.fire({
-            icon: 'success',
-            text: 'Correspondance modifiée',
-          });
-          this.ngOnInit();
-        })
-      }
-      //Sinon on la crée
-      else {
-        this.moralEntitiesService.createImport_tonnage(ProducerId, ProductId, nomImport, productImport).subscribe((response) => {
-          Swal.fire({
-            icon: 'success',
-            text: 'Correspondance ajoutée',
-          });
-          this.ngOnInit();
-        })
-      }
-    })
+      else productImport = prompt('Veuillez saisir le nom du produit dans le logiciel de pesée',String(productImport));
+      if (nomImport == null) nomImport="";
+    }
+    if(productImport == null || nomImport == null) return;
+    productImport = productImport.replace(/'/g,"''");
+    nomImport = nomImport.replace(/'/g,"''");
+    if(productImport == "" && nomImport == ""){
+      Swal.fire('Veuillez saisir une valeur','error');
+    }
+    //Si on a une correspondance, on met à jour celle ci
+    //@ts-ignore
+    else if(verifNomImport != null || verifProductImport != null){
+      this.moralEntitiesService.updateCorrespondance(ProducerId,nomImport,productImport).subscribe((response) => {
+        Swal.fire({
+          icon: 'success',
+          text: 'Correspondance modifiée',
+        });
+        this.ngOnInit();
+      })
+    }
+    //Sinon on la crée
+    else {
+      this.moralEntitiesService.createImport_tonnage(ProducerId, ProductId, nomImport, productImport).subscribe((response) => {
+        Swal.fire({
+          icon: 'success',
+          text: 'Correspondance ajoutée',
+        });
+        this.ngOnInit();
+      })
+    }
   }
 }
