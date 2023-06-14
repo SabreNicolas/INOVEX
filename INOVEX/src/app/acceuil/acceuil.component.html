@@ -70,6 +70,14 @@
             </div>
         </div>
 
+        <div *ngIf="idUsine == 7" class="card text-white bg-primary cardAccueil cardCahierQuart">
+            <div class="card-body text-center">
+                <h2 class="card-title">Cahier de quart</h2>
+                <p class="card-text card-textAccueil">Accès au cahier de quart</p>
+                <a> <button [disabled]="!isChefQuart" (click)="navigate('/cahierQuart')" type="button" class="btn btn-light btnAccueil">Accéder</button></a>
+            </div>
+        </div>
+
 </div>
 
 <div class="support" style="position: fixed; bottom: 0; font-weight: bold;">

@@ -1,0 +1,47 @@
+<a routerLink="/cahierQuart/newEquipe" class="btn btn-primary"> Créer une équipe </a>
+
+<h1>Voici la liste des équipes :</h1>
+<div class="container">
+
+
+    <div  *ngFor="let card of equipes" class="card" id="{{card.id}}" (click)="toggleCardSize(card)" >
+          <div class="card-body">
+            <h5 class="card-title">{{ card.equipe }} || {{ card.quart }}</h5>
+            
+            <p class="card-text"><strong>{{ card.prenomChefQuart }} {{card.nomChefQuart}}</strong> Chef de Quart</p>
+            
+            <p class="titreListe">Voici la liste des rondiers :</p>
+            <div id="tableRondier" class="overflow-auto">
+                <table class="table table-hover tableFixed" id="listRondier">
+                    <thead>
+                    <tr class="table-secondary">
+                        <th scope="col">Nom</th>
+                        <th scope="col">Prénom</th>
+                        <th scope="col">Poste</th>
+                        <th scope="col">Ronde</th>
+                    </thead>
+                    <tbody >
+                        <tr *ngFor="let rondier of card.rondiers" class="table-light">
+                            <td>{{rondier.nomRondier}}</td>
+                            <td>{{rondier.prenomRondier}}</td>
+                            <td>{{rondier.poste}}</td>
+                            <td>{{rondier.zone}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+          </div>
+          <a target="_blank" routerLink="/cahierQuart/newEquipe" [queryParams]="{idEquipe: card.id}" > 
+            <button class="btn btn btn-light edition">
+                <i class="far fa-edit"></i>
+            </button>
+          </a>
+          <button class="btn btn btn-danger suppression" (click)="deleteEquipe(card.id)">
+            <i class="fas fa-trash-alt"></i>
+            </button>
+    </div>
+    
+  </div>
+  
+<div class="overlay" *ngFor="let card of equipes" id="{{card.id}}_overlay" (click)="closeCard(card)">
+</div>

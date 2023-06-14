@@ -56,6 +56,17 @@ import { ConsigneComponent } from './consigne/consigne.component';
 import { RondierFinMoisComponent } from './rondier-fin-mois/rondier-fin-mois.component';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { dateService } from './services/date.service';
+import { TokenApiComponent } from './token-api/token-api.component';
+import { tokenApiService } from './services/tokenApi.service';
+import { ListEquipeComponent } from './list-equipe/list-equipe.component';
+import { cahierQuartService } from './services/cahierQuart.service';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { cahierQuart } from './cahierQuart/cahierQuart.component';
+import { EquipeComponent } from './equipe/equipe.component';
+import { GroupementComponent } from './groupement/groupement.component';
+import { ListGroupementsComponent } from './list-groupements/list-groupements.component';
+import { ImportTonnageComponent } from './import-tonnage/import-tonnage.component';
+import { OutilsComponent } from './outils/outils.component';
 
 @NgModule({
   declarations: [
@@ -101,12 +112,21 @@ import { dateService } from './services/date.service';
     ConsigneComponent,
     RondierFinMoisComponent,
     MaintenanceComponent,
+    TokenApiComponent,
+    ListEquipeComponent,
+    cahierQuart,
+    EquipeComponent,
+    GroupementComponent,
+    ListGroupementsComponent,
+    ImportTonnageComponent,
+    OutilsComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
+    DragDropModule
   ],
   providers: [
     moralEntitiesService,
@@ -118,7 +138,9 @@ import { dateService } from './services/date.service';
     AuthGuard,
     rapportsService,
     rondierService,
-    dateService
+    dateService,
+    tokenApiService,
+    cahierQuartService
   ],
   bootstrap: [AppComponent]
 })

@@ -5,6 +5,7 @@ import {zone} from "../../models/zone.model";
 import Swal from "sweetalert2";
 import {ActivatedRoute} from "@angular/router";
 import {element} from "../../models/element.model";
+import { groupement } from 'src/models/groupement.model';
 
 @Component({
   selector: 'app-element-controle',
@@ -35,6 +36,9 @@ export class ElementControleComponent implements OnInit {
   public checkboxRegulateur : HTMLInputElement;
   // @ts-ignore
   public checkboxCompteur : HTMLInputElement;
+  public listGroupements : groupement[];
+  public idGroupement : number;
+  public codeEquipement : string;
 
   constructor(private rondierService : rondierService,  private route : ActivatedRoute) {
     this.listZone = [];
@@ -53,6 +57,9 @@ export class ElementControleComponent implements OnInit {
     this.needBornes = false;
     this.listValues = "";
     this.elementId = 0;
+    this.listGroupements = [];
+    this.idGroupement = 0;
+    this.codeEquipement ="";
     //Récupération de l'id de l'élément pour modification
     this.route.queryParams.subscribe(params => {
       if(params.element != undefined){
@@ -77,6 +84,7 @@ export class ElementControleComponent implements OnInit {
           this.element = response.data[0];
           this.nom = this.element.nom;
           this.zoneId[0] = this.element.zoneId;
+          this.getGroupement();
           this.valeurMin = this.element.valeurMin;
           this.valeurMax = this.element.valeurMax;
           this.typeChamp = this.element.typeChamp;
@@ -85,6 +93,12 @@ export class ElementControleComponent implements OnInit {
           this.isRegulateur = this.element.isRegulateur;
           this.isCompteur = this.element.isCompteur;
           this.listValues = this.element.listValues;
+          this.codeEquipement = this.element.CodeEquipement;
+          //@ts-ignore
+          this.idGroupement= this.element.idGroupement;
+          if(this.idGroupement == null){
+            this.idGroupement = 0;
+          }
           this.getElements();
           this.ordreElem = this.element.ordre-1;
           this.changeType(null);
@@ -142,7 +156,16 @@ export class ElementControleComponent implements OnInit {
       this.listElement = response.data;
     });
   }
-
+  getGroupement(){
+    this.idGroupement = 0;
+    this.rondierService.getGroupements(this.zoneId[0]).subscribe((response)=>{
+      // @ts-ignore
+      this.listGroupements = response.data;
+      if(this.listGroupements.length < 1 ){
+        this.idGroupement = 0;
+      }
+    });
+  }
   //Création éléments contrôle
   onSubmit(form : NgForm) {
     this.nom = form.value['nom'].replace("'"," ");
@@ -186,8 +209,11 @@ export class ElementControleComponent implements OnInit {
         this.rondierService.updateOrdreElement(zoneId,this.ordreElem).subscribe((response)=>{
           // @ts-ignore
           if (response == "Mise à jour des ordres OK"){
-            this.rondierService.createElement(zoneId, this.nom, this.valeurMin, this.valeurMax, this.typeChamp, this.unit, this.defaultValue, this.isRegulateur,this.listValues,this.isCompteur, Number(this.ordreElem)+1).subscribe((response)=>{
+            this.rondierService.createElement(zoneId, this.nom, this.valeurMin, this.valeurMax, this.typeChamp, this.unit, this.defaultValue, this.isRegulateur,this.listValues,this.isCompteur, Number(this.ordreElem)+1, this.idGroupement, this.codeEquipement).subscribe((response)=>{
               if (response == "Création de l'élément OK"){
+                this.idGroupement = 0 ;
+                this.codeEquipement = "";
+                this.nom = "";
                 Swal.fire("L'élément de contrôle a bien été créé !");
               }
               else {
@@ -235,7 +261,7 @@ export class ElementControleComponent implements OnInit {
   }
 
   updateElement(ordre : number){
-    this.rondierService.updateElement(this.elementId, this.zoneId[0], this.nom, this.valeurMin, this.valeurMax, this.typeChamp, this.unit, this.defaultValue, this.isRegulateur, this.listValues, this.isCompteur,ordre).subscribe((response)=>{
+    this.rondierService.updateElement(this.elementId, this.zoneId[0], this.nom, this.valeurMin, this.valeurMax, this.typeChamp, this.unit, this.defaultValue, this.isRegulateur, this.listValues, this.isCompteur,ordre, this.idGroupement, this.codeEquipement).subscribe((response)=>{
       if (response == "Mise à jour de l'element OK"){
         Swal.fire("L'élément de contrôle a bien été mis à jour !");
       }

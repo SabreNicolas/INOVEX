@@ -9,11 +9,12 @@ export class loginService {
     private headerDict = {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Access-Control-Allow-Origin' : '*'
+        'Access-Control-Allow-Origin' : '*',
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
     }
-    private portAPI = 3100;
+    private portAPI = 3102;
     private ip = "fr-couvinove301.prod.paprec.fr";
-    // private ip = "localhost";
+    //private ip = "localhost";
     private idUsine : number | undefined;
 
     constructor(private http: HttpClient) {
@@ -39,19 +40,15 @@ export class loginService {
         };
 
         return this.http
-            .put<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
 
     //récupérer la list des utilisateurs
     getAllUsers(loginLike : string) {
         let requete = "https://"+this.ip+":"+this.portAPI+"/Users?login="+loginLike+"&idUsine="+this.idUsine;
-        //console.log(requete);
-
-
         const requestOptions = {
             headers: new HttpHeaders(this.headerDict),
         };
-
         return this.http
             .get<user[]>(requete,requestOptions);
     }
@@ -77,7 +74,7 @@ export class loginService {
 
 
         const requestOptions = {
-            headers: new HttpHeaders(this.headerDict),
+            headers: new HttpHeaders(this.headerDict),       
         };
 
         return this.http
@@ -94,7 +91,7 @@ export class loginService {
         };
 
         return this.http
-            .put<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
 
     //Mise à jour des droits rondier ou saisie ou qse ou rapports ou chef de quart ou admin
@@ -105,9 +102,8 @@ export class loginService {
         const requestOptions = {
             headers: new HttpHeaders(this.headerDict),
         };
-
         return this.http
-            .put<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
 
     //delete user

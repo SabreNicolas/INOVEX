@@ -41,7 +41,14 @@ import {ListConsignesComponent} from "./list-consignes/list-consignes.component"
 import {ConsigneComponent} from "./consigne/consigne.component";
 import {RondierFinMoisComponent} from "./rondier-fin-mois/rondier-fin-mois.component";
 import { MaintenanceComponent } from './maintenance/maintenance.component';
-
+import { TokenApiComponent } from './token-api/token-api.component';
+import { ListEquipeComponent } from './list-equipe/list-equipe.component';
+import { cahierQuart } from './cahierQuart/cahierQuart.component';
+import { EquipeComponent } from './equipe/equipe.component';
+import { GroupementComponent } from './groupement/groupement.component';
+import { ListGroupementsComponent } from './list-groupements/list-groupements.component';
+import { ImportTonnageComponent } from './import-tonnage/import-tonnage.component';
+import { OutilsComponent } from './outils/outils.component';
 const routes: Routes = [
 
     {
@@ -68,7 +75,7 @@ const routes: Routes = [
         //component : AcceuilComponent
         component : MaintenanceComponent
     },
-
+    
     {
         path: 'clients',
         canActivate: [AuthGuard],
@@ -105,12 +112,26 @@ const routes: Routes = [
     },
 
     {
+        path : 'cahierQuart',
+        canActivate: [AuthGuard],
+        component : cahierQuart,
+        children : [
+            { path : '', canActivate: [AuthGuard], component: ListEquipeComponent },
+            { path : 'listEquipe', canActivate: [AuthGuard], component: ListEquipeComponent },
+            { path : 'newEquipe', canActivate: [AuthGuard], component: EquipeComponent },
+            { path : 'outils', canActivate: [AuthGuard], component: OutilsComponent },
+        ]
+    },
+
+    {
         path : 'admin',
         canActivate: [AuthGuard],
         //component : AdminGlobalComponent,
          component : MaintenanceComponent,
         children: [
             { path: '', canActivate: [AuthGuard], component:  AdminComponent },
+            { path: 'token', canActivate: [AuthGuard], component:  TokenApiComponent },
+            { path: 'import', canActivate: [AuthGuard], component:  ImportTonnageComponent },
             { path: 'modification', canActivate: [AuthGuard], component:  AdminComponent },
             { path: 'newCompteur', canActivate: [AuthGuard], component:  CompteursComponent },
             { path: 'newSortant', canActivate: [AuthGuard], component:  SortantsComponent },
@@ -128,6 +149,8 @@ const routes: Routes = [
             { path: 'zones', canActivate: [AuthGuard], component: ListZonesComponent},
             { path: 'newElement', canActivate: [AuthGuard], component: ElementControleComponent},
             { path: 'elements', canActivate: [AuthGuard], component: ListElementsComponent},
+            { path: 'newGroupement', canActivate: [AuthGuard], component: GroupementComponent},
+            { path: 'groupement', canActivate: [AuthGuard], component: ListGroupementsComponent},
             { path: 'permisFeu', canActivate: [AuthGuard], component: PermisFeuComponent},
             { path: 'reporting', canActivate: [AuthGuard], component: ReportingRondeComponent},
             { path: 'newModeOP', canActivate: [AuthGuard], component: ModeOperatoireComponent},

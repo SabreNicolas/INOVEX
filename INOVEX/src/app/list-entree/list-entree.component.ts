@@ -22,6 +22,7 @@ import { dateService } from '../services/date.service';
 export class ListEntreeComponent implements OnInit {
 
   public moralEntities : moralEntity[];
+  public correspondance : any[];
   public debCode : string;
   public dateDeb : Date | undefined;
   public dateFin : Date | undefined;
@@ -55,6 +56,7 @@ export class ListEntreeComponent implements OnInit {
     //**HODJA
     this.valuesHodja = [];
     this.stockageHodja = new Map();
+    this.correspondance = [];
   }
 
   ngOnInit(): void {
@@ -64,7 +66,7 @@ export class ListEntreeComponent implements OnInit {
       //@ts-ignore
       this.typeImportTonnage = response.data[0].typeImport;
     });
-
+    this.getCorrespondance();
     //Récupération des types de déchets et des collecteurs
     this.moralEntitiesService.GetTypeDéchets().subscribe((response)=>{
       //@ts-ignore
@@ -104,11 +106,18 @@ export class ListEntreeComponent implements OnInit {
     this.moralEntitiesService.getMoralEntities(this.debCode).subscribe((response)=>{
       // @ts-ignore
       this.moralEntities = response.data;
-      console.log(this.moralEntities);
+      // console.log(this.moralEntities);
       this.getValues();
     });
   }
-
+  getCorrespondance(){
+    this.moralEntitiesService.getCorrespondance().subscribe((response)=>{
+      // console.log(response)
+      // @ts-ignore
+      this.correspondance = response.data;
+      // console.log(this.correspondance);
+    });
+  }
   setFilters(){
     /* Début prise en compte des filtres*/
     var produitElt = document.getElementById("produit");
@@ -381,14 +390,15 @@ export class ListEntreeComponent implements OnInit {
           for (let i = 0; i < results.data.length; i++) {
             //ON récupére les lignes infos nécessaires pour chaque ligne du csv
             //ON récupère uniquement les types de déchets pour les entrants
-            //Si import Protruck, on récupère uniquement le type de déchet dans la colonne correspondante
-            if(this.typeImportTonnage.toLowerCase().includes("protruck")){
-              results.data[i][posTypeDechet] = results.data[i][posTypeDechet].split(" - ")[0];
-            }
+
+            // if(this.typeImportTonnage.toLowerCase().includes("protruck")){
+            //   results.data[i][posTypeDechet] = results.data[i][posTypeDechet].split(" - ")[0];
+            // }
+
             //Création de l'objet qui contient l'ensemble des infos nécessaires
             let importCSV = {
               client: results.data[i][posClient],
-              typeDechet: results.data[i][posTypeDechet].replace(" ","."),
+              typeDechet: results.data[i][posTypeDechet],
               dateEntree : results.data[i][posDateEntree].substring(0,10),
               tonnage : +results.data[i][posTonnage].replace(/[^0-9]/g,"")/1000,
             };
@@ -405,77 +415,34 @@ export class ListEntreeComponent implements OnInit {
   insertTonnageCSV(){
     this.debCode = '20';
     this.stockageImport.clear();
-    this.getMoralEntities();
-    this.moralEntities.forEach(mr => {
-      //Gestion des différents cas : NSL nomClient , PIT Collecteur - nomClient
-      //Pour ADEMI/Pithiviers & DPK/Saint-Saulve => les clients ont le format typeDechet Collecteur - MR => on récupère que le MR
-      //TODO : idem pour l'ensemble des sites avec Ademi ?????
-      //TODO : voir pour peut être vérifier par site au lieu de logiciel de pessage
-      if(this.typeImportTonnage.toLowerCase().includes("ademi") || this.typeImportTonnage.toLowerCase().includes("dpk")){
-        if(mr.Name.split(' - ').length > 2){
-          mr.Name = mr.Name.split(' - ')[2];
-        }
-        else{
-          mr.Name = mr.Name.split(' - ')[1];
-        }
-      }
-      if(this.typeImportTonnage.toLowerCase().includes("dpk")){
-        mr.produit = mr.collecteur;
-      }
-      if (this.typeImportTonnage.toLowerCase().includes("protruck")){
-        mr.produit = mr.produit + mr.collecteur;  
-      }
-      mr.Name = mr.Name.toLowerCase();
-      mr.produit = mr.produit.toLowerCase().replace(" ","");
-      this.csvArray.forEach(csv => {
-        //Gestion des types de déchets mal orthographié dans le fichier CSV (Saint-SAULVE par exemple)
-        if(csv.typeDechet.includes("REFUS")){
-          csv.typeDechet = 'REFUS.DE.TRI';
-        }
-        if(csv.typeDechet.includes("ENCOMB")){
-          csv.typeDechet = 'ENCOMBRANTS';
-        }
-        if(csv.typeDechet.includes("HAUTPCI") || csv.typeDechet.includes("HAUT PCI")){
-          csv.typeDechet = 'HAUT.PCI';
-        }
-        //CAS SAINT SAULVE
-        if (this.typeImportTonnage.toLowerCase().includes("protruck")){
-          csv.typeDechet = csv.typeDechet.replace("."," ");
-        }
-        if(csv.typeDechet.includes("DIB INOVA OPERATIONS") && this.typeImportTonnage.toLowerCase().includes("protruck")){
-          csv.typeDechet = 'DIB INOVA';
-        }
-        if(csv.typeDechet.includes("OM CALL") && this.typeImportTonnage.toLowerCase().includes("protruck")){
-          csv.typeDechet = 'OM CALLERGIE';
-        }
-        if(csv.typeDechet.includes("OM NICOLLIN") && this.typeImportTonnage.toLowerCase().includes("protruck")){
-          csv.typeDechet = 'OM INOVA';
-        }
-        csv.client = csv.client.toLowerCase();
-        csv.typeDechet = csv.typeDechet.toLowerCase();
-        mr.collecteur = mr.collecteur.toLowerCase();
-        //console.log("********"+mr.Name+"**"+mr.produit + "****" + mr.collecteur);
-        //console.log(csv.client+"////"+csv.typeDechet);
-        //console.log("**"+csv.typeDechet+"**");
+    
+    this.correspondance.forEach(correspondance => {
+        this.csvArray.forEach(csv => {
+        
+          csv.client = csv.client.toLowerCase().replace(/\s/g,"");
+          csv.typeDechet = csv.typeDechet.toLowerCase().replace(/\s/g,"");
+          correspondance.nomImport = correspondance.nomImport.toLowerCase().replace(/\s/g,"");
+          correspondance.productImport = correspondance.productImport.toLowerCase().replace(/\s/g,"");
 
-        //Si il y a correspondance on fait traitement
-        if( mr.Name == csv.client && (mr.produit == csv.typeDechet || (mr.produit == "dib/dea" && mr.produit.includes(csv.typeDechet))) ){  
-          let formatDate = csv.dateEntree.split('/')[2]+'-'+csv.dateEntree.split('/')[1]+'-'+csv.dateEntree.split('/')[0];
-          let keyHash = formatDate+'_'+mr.productId+'_'+mr.Id;
-          //si il y a deja une valeur dans la hashMap pour ce client et ce jour, on incrémente la valeur
-          let value, valueRound;
-          if(this.stockageImport.has(keyHash)){
+          //Si il y a correspondance on fait traitement
+          if( correspondance.nomImport == csv.client && correspondance.productImport == csv.typeDechet /*|| (mr.produit == "dib/dea" && mr.produit.includes(csv.typeDechet)))*/ ){  
+            console.log("if");
+            let formatDate = csv.dateEntree.split('/')[2]+'-'+csv.dateEntree.split('/')[1]+'-'+csv.dateEntree.split('/')[0];
+            let keyHash = formatDate+'_'+correspondance.ProductId+'_'+correspondance.ProducerId;
+            //si il y a deja une valeur dans la hashMap pour ce client et ce jour, on incrémente la valeur
+            let value, valueRound;
+            if(this.stockageImport.has(keyHash)){
+              //@ts-ignore
+              value = this.stockageImport.get(keyHash)+csv.tonnage;
+              valueRound = parseFloat(value.toFixed(3));
+              this.stockageImport.set(keyHash,valueRound);
+            }
+            else
+            //Sinon on insére dans la hashMap
             //@ts-ignore
-            value = this.stockageImport.get(keyHash)+csv.tonnage;
-            valueRound = parseFloat(value.toFixed(3));
-            this.stockageImport.set(keyHash,valueRound);
+            this.stockageImport.set(keyHash,parseFloat(csv.tonnage.toFixed(3)));
           }
-          else
-          //Sinon on insére dans la hashMap
-          //@ts-ignore
-          this.stockageImport.set(keyHash,parseFloat(csv.tonnage.toFixed(3)));
-        }
-      })
+        });
     });
     //debug
     //console.log(this.stockageImport);

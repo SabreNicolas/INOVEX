@@ -59,4 +59,10 @@ export class ListElementsComponent implements OnInit {
     this.ngOnInit();
   }
 
+  getPreviousItem(index :number){
+    if(index > 0){
+      return this.listElements[index-1]['idGroupement'];
+    }
+    return 0;
+  }
 }

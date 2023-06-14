@@ -21,7 +21,7 @@ export class ListUsersComponent implements OnInit {
 
   ngOnInit(): void {
     this.loginService.getAllUsers(this.loginLike).subscribe((response)=>{
-      // @ts-ignore
+      // @ts-ignore 
       this.listUsers = response.data;
     });
   }

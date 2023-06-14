@@ -42,6 +42,9 @@ export class LoginComponent implements OnInit {
         this.loginKO = false;
         // @ts-ignore
         localStorage.setItem('user',JSON.stringify(response.data[0]));
+        //stockage du token dans le localStorage
+        // @ts-ignore
+        localStorage.setItem('token',response.token);
         this.router.navigate(['/acceuil']);
       }
       else {

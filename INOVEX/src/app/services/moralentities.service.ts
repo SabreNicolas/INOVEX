@@ -22,12 +22,13 @@ export class moralEntitiesService {
     private headerDict = {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Access-Control-Allow-Origin' : '*'
+        'Access-Control-Allow-Origin' : '*',
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
     }
-    private portAPI = 3100;
+    private portAPI = 3102;
     private portAPIHodja = 3101;
     private ip = "fr-couvinove301.prod.paprec.fr";
-    // private ip = "localhost";
+    //private ip = "localhost";
     private idUsine : number | undefined;
 
     constructor(private http: HttpClient) {
@@ -62,7 +63,7 @@ export class moralEntitiesService {
       };
 
       return this.http
-        .put<any>(requete,requestOptions);
+        .put<any>(requete,null,requestOptions);
     }
 
     //récupérer le dernier code
@@ -93,16 +94,52 @@ export class moralEntitiesService {
         .get<moralEntity[]>(requete,requestOptions);
     }
 
+     //récupérer les clients avec Enabled à 1 (pour la saisie)
+     getMoralEntitiesAndCorrespondance(debCode : string) {
+      let requete = "https://"+this.ip+":"+this.portAPI+"/getMoralEntitiesAndCorrespondance?idUsine=" + this.idUsine +"&Code="+debCode;
+      //console.log(requete);
+
+      const requestOptions = {
+        headers: new HttpHeaders(this.headerDict),
+      };
+
+      return this.http
+        .get<moralEntity[]>(requete,requestOptions);
+    }
+
+    //crée une nouvelle correspondance pour lecture csv
+    createImport_tonnage(ProducerId : number, ProductId : number, nomImport : string, productImport : string){
+      let requete = "https://"+this.ip+":"+this.portAPI+"/import_tonnage?ProducerId="+ProducerId+"&ProductId="+ProductId+"&nomImport="+nomImport+"&productImport="+productImport+"&idUsine="+this.idUsine;
+      // console.log(requete);
+
+      const requestOptions = {
+        headers: new HttpHeaders(this.headerDict),
+      };
+
+      return this.http
+        .put<any>(requete,null,requestOptions);
+    }
+
+    //mettre à jour une correspondance
+    updateCorrespondance(ProducerId : number ,nomImport : string ,productImport : string){
+      let requete = "https://"+this.ip+":"+this.portAPI+"/updateCorrespondance?ProducerId="+ProducerId+"&nomImport="+nomImport+"&productImport="+productImport;
+      console.log(requete);
+
+      const requestOptions = {
+        headers: new HttpHeaders(this.headerDict),
+      };
+
+      return this.http
+        .put<any>(requete,null,requestOptions);
+    }
     //récupérer les clients
     getMoralEntitiesAll(Code : string) {
         let requete = "https://"+this.ip+":"+this.portAPI+"/moralEntitiesAll?Code="+Code+"&idUsine="+this.idUsine;
         //console.log(requete);
 
-
         const requestOptions = {
             headers: new HttpHeaders(this.headerDict),
         };
-
         return this.http
             .get<moralEntity[]>(requete,requestOptions);
     }
@@ -121,6 +158,34 @@ export class moralEntitiesService {
           .get<moralEntity>(requete,requestOptions);
     }
 
+    //récupérer 1 correspondance
+    getOneCorrespondance(Id : number) {
+      let requete = "https://"+this.ip+":"+this.portAPI+"/correspondance/"+Id;
+      //console.log(requete);
+
+
+      const requestOptions = {
+          headers: new HttpHeaders(this.headerDict),
+      };
+
+      return this.http
+          .get<moralEntity>(requete,requestOptions);
+    }
+
+
+    //récupérer les correspondances d'une usine
+    getCorrespondance() {
+      let requete = "https://"+this.ip+":"+this.portAPI+"/getCorrespondance/"+this.idUsine;
+      //console.log(requete);
+
+
+      const requestOptions = {
+          headers: new HttpHeaders(this.headerDict),
+      };
+
+      return this.http
+          .get<moralEntity>(requete,requestOptions);
+    }
     //mettre à jour le code d'un client
     setCode(Code: string | null, Id: number){
       let requete = "https://"+this.ip+":"+this.portAPI+"/moralEntitieCode/"+Id+"?Code="+Code;
@@ -131,7 +196,7 @@ export class moralEntitiesService {
       };
 
       return this.http
-        .put<any>(requete,requestOptions);
+        .put<any>(requete,null,requestOptions);
     }
 
     //mettre à jour le prix d'un client
@@ -144,7 +209,7 @@ export class moralEntitiesService {
       };
 
       return this.http
-        .put<any>(requete,requestOptions);
+        .put<any>(requete,null,requestOptions);
     }
 
     //mettre à jour le num de CAP d'un client
@@ -157,7 +222,7 @@ export class moralEntitiesService {
       };
 
       return this.http
-          .put<any>(requete,requestOptions);
+          .put<any>(requete,null,requestOptions);
     }
 
     //mettre à jour le nom d'un client
@@ -170,20 +235,19 @@ export class moralEntitiesService {
         };
 
         return this.http
-            .put<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
 
     //mettre à jour le enabled d'un client
     setEnabled(Id: number, Enabled : number){
       let requete = "https://"+this.ip+":"+this.portAPI+"/moralEntitieEnabled/"+Id+"/"+Enabled;
       //console.log(requete);
-
+      console.log(this.headerDict);
       const requestOptions = {
         headers: new HttpHeaders(this.headerDict),
       };
-
       return this.http
-        .put<any>(requete,requestOptions);
+        .put<any>(requete,null,requestOptions);
     }
 
     //update de client
@@ -196,7 +260,7 @@ export class moralEntitiesService {
       };
 
       return this.http
-          .put<any>(requete,requestOptions);
+          .put<any>(requete,null,requestOptions);
     }
 
     //insérer une mesure
@@ -209,7 +273,7 @@ export class moralEntitiesService {
         };
 
         return this.http
-            .put<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
 
     //récupérer les tonnages ou valeurs qse

@@ -1,0 +1,44 @@
+<div class="blocCards">
+    <div class="card text-white bg-success cardAccueil">
+        <div class="card-body text-center">
+            <h2 class="card-title">Générer un token</h2>
+            <p class="card-text card-textAccueil">Ceci permet de générer un token pour donner accès à la documentation swagger de l'API</p>
+            <a> <button  type="button" (click)="generateToken()" class="btn btn-light btnAccueil">Générer</button></a>
+        </div>
+
+    </div>
+
+    <div *ngIf="token !== ''" class="card text-white bg-warning cardAccueil">
+        <div class="card-body text-center">
+            <h2 class="card-title">Voici le token :</h2>
+            <textarea name="newToken" id="newToken" class="card-text card-textAccueil">{{ token }}</textarea>
+        </div>
+    </div>
+
+</div>
+
+<!--table des produits-->
+<table class="table table-hover tableFixed">
+    <thead>
+    <tr class="table-secondary">
+        <th scope="col">Personne affectée</th>
+        <th scope="col">Token</th>
+        <th scope="col">Supression</th>
+    </tr>
+    </thead>
+    <tbody *ngFor="let tk of listTokens">
+    <tr class="table-light">
+        <td class="scrollable" >{{tk.token}}</td>
+        <td>{{tk.affectation}} <button id="{{tk.Id}}" (click)="updateToken(tk.Id)" class="btn btn-light">
+            <i class="far fa-edit"></i>
+            </button>
+        </td>
+        <td>
+            <button class="btn btn-light" (click)="desactivateToken(tk.Id)" id="delete {{tk.Id}}">
+                <i class="fa fa-trash-o" aria-hidden="true"></i>
+            </button>
+        </td>
+
+    </tr>
+    </tbody>
+</table>

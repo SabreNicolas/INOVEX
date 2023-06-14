@@ -22,11 +22,12 @@ export class rondierService {
     private headerDict = {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Access-Control-Allow-Origin': '*'
+        'Access-Control-Allow-Origin': '*',
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
     }
-    private portAPI = 3100;
+    private portAPI = 3102;
     private ip = "fr-couvinove301.prod.paprec.fr";
-    // private ip = "localhost";
+    //private ip = "localhost";
     private idUsine : number | undefined;
 
     constructor(private http: HttpClient) {
@@ -56,7 +57,7 @@ export class rondierService {
         };
 
         return this.http
-            .put<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
 
     //récupération du dernier Id inséré
@@ -121,7 +122,7 @@ export class rondierService {
         };
 
         return this.http
-            .put<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
 
     //Update affectation
@@ -134,7 +135,7 @@ export class rondierService {
         };
 
         return this.http
-            .put<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
 
     //Update affectation => rendre le badge libre
@@ -147,7 +148,7 @@ export class rondierService {
         };
 
         return this.http
-            .put<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
 
 
@@ -169,7 +170,7 @@ export class rondierService {
         };
 
         return this.http
-            .put<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
 
     //liste des zones de controle
@@ -208,7 +209,7 @@ export class rondierService {
         };
 
         return this.http
-            .put<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
 
     //Mise à jour du nom d'une zone de contrôle
@@ -221,13 +222,77 @@ export class rondierService {
         };
 
         return this.http
-            .put<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
 
 
     /*
     FIN ZONE DE CONTROLE
      */
+
+    //Création d'un groupement
+    createGroupement(zoneId : number, groupement : string){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/groupement?zoneId="+zoneId+"&groupement="+groupement;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<any>(requete,null,requestOptions);
+    }
+
+    //Récupérer tout les groupements d'une usine
+    getAllGroupements(){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/getAllGroupements?idUsine="+this.idUsine;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<elementsOfZone[]>(requete,requestOptions);
+    }
+
+    //Récupérer un groupement
+    getOneGroupement(idGroupement : number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/getOneGroupement?idGroupement="+idGroupement;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<element>(requete,requestOptions);
+    }
+
+    //Modifier un groupement
+    updateGroupement(idGroupement : number, groupement : string, zoneId : number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/updateGroupement?idGroupement="+idGroupement+"&groupement="+groupement+"&zoneId="+zoneId;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<any>(requete,null,requestOptions);
+    }
+
+    deleteGroupement(idGroupement : number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/deleteGroupement?idGroupement="+idGroupement;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .delete<any>(requete,requestOptions);
+    }
 
 
     /*
@@ -236,22 +301,22 @@ export class rondierService {
 
     //création de l'élément de controle
     //?zoneId=1&nom=ddd&valeurMin=1.4&valeurMax=2.5&typeChamp=1&isFour=0&isGlobal=1&unit=tonnes&defaultValue=1.7&isRegulateur=0&listValues=1;2;3&isCompteur=1&ordre=5
-    createElement(zoneId : number, nom : string, valeurMin : number, valeurMax : number, typeChamp : number, unit : string, defaultValue : number, isRegulateur : number, listValues : string, isCompteur : number, ordre : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/element?zoneId="+zoneId+"&nom="+nom+"&valeurMin="+valeurMin+"&valeurMax="+valeurMax+"&typeChamp="+typeChamp+"&unit="+unit+"&defaultValue="+defaultValue+"&isRegulateur="+isRegulateur+"&listValues="+listValues+"&isCompteur="+isCompteur+"&ordre="+ordre;
-        //console.log(requete);
+    createElement(zoneId : number, nom : string, valeurMin : number, valeurMax : number, typeChamp : number, unit : string, defaultValue : number, isRegulateur : number, listValues : string, isCompteur : number, ordre : number, idGroupement : number, codeEquipement : string){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/element?zoneId="+zoneId+"&nom="+nom+"&valeurMin="+valeurMin+"&valeurMax="+valeurMax+"&typeChamp="+typeChamp+"&unit="+unit+"&defaultValue="+defaultValue+"&isRegulateur="+isRegulateur+"&listValues="+listValues+"&isCompteur="+isCompteur+"&ordre="+ordre +"&idGroupement="+idGroupement+"&codeEquipement="+codeEquipement;
+        console.log(requete);
 
         const requestOptions = {
             headers: new HttpHeaders(this.headerDict),
         };
 
         return this.http
-            .put<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
 
     //update de l'élément de controle ayant comme id
     //?zoneId=1&nom=ddd&valeurMin=1.4&valeurMax=2.5&typeChamp=1&isFour=0&isGlobal=1&unit=tonnes&defaultValue=1.7&isRegulateur=0&listValues=1;2;3&isCompteur=1&ordre=5
-    updateElement(Id : number, zoneId : number, nom : string, valeurMin : number, valeurMax : number, typeChamp : number, unit : string, defaultValue : number, isRegulateur : number, listValues : string, isCompteur : number, ordre : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/updateElement/"+Id+"?zoneId="+zoneId+"&nom="+nom+"&valeurMin="+valeurMin+"&valeurMax="+valeurMax+"&typeChamp="+typeChamp+"&unit="+unit+"&defaultValue="+defaultValue+"&isRegulateur="+isRegulateur+"&listValues="+listValues+"&isCompteur="+isCompteur+"&ordre="+ordre;
+    updateElement(Id : number, zoneId : number, nom : string, valeurMin : number, valeurMax : number, typeChamp : number, unit : string, defaultValue : number, isRegulateur : number, listValues : string, isCompteur : number, ordre : number, idGroupement : number, codeEquipement : string){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/updateElement/"+Id+"?zoneId="+zoneId+"&nom="+nom+"&valeurMin="+valeurMin+"&valeurMax="+valeurMax+"&typeChamp="+typeChamp+"&unit="+unit+"&defaultValue="+defaultValue+"&isRegulateur="+isRegulateur+"&listValues="+listValues+"&isCompteur="+isCompteur+"&ordre="+ordre+"&idGroupement="+idGroupement+"&codeEquipement="+codeEquipement;
         //console.log(requete);
 
         const requestOptions = {
@@ -259,7 +324,7 @@ export class rondierService {
         };
 
         return this.http
-            .put<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
 
     //update de l'ordre des éléments ayant un ordre suppérieur à x pour une zone
@@ -273,7 +338,7 @@ export class rondierService {
         };
 
         return this.http
-            .put<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
 
     //delete 1 élément de controle
@@ -315,7 +380,18 @@ export class rondierService {
         return this.http
             .get<element[]>(requete,requestOptions);
     }
+    //Récupérer les groupements d'une zone
+    getGroupements(zoneId : number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/getGroupements?zoneId="+zoneId;
+        //console.log(requete);
 
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<element[]>(requete,requestOptions);
+    }
     //liste des elements de controle de type compteur
     listElementCompteur(){
         let requete = "https://"+this.ip+":"+this.portAPI+"/elementsCompteur/"+this.idUsine;
@@ -361,7 +437,7 @@ export class rondierService {
         };
 
         return this.http
-            .put<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
 
     //Récupérer la valeur pour un élément de contrôle et une date (quart de nuit => dernier de la journée)
@@ -398,7 +474,7 @@ export class rondierService {
         };
 
         return this.http
-            .put<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
 
     //liste des permis de feu en cours
@@ -531,7 +607,7 @@ export class rondierService {
         };
 
         return this.http
-            .put<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
 
     //delete ronde
@@ -580,7 +656,7 @@ export class rondierService {
         };
 
         return this.http
-            .put<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
 
     //liste des consignes en cours de validité
