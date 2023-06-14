@@ -390,10 +390,11 @@ export class ListEntreeComponent implements OnInit {
           for (let i = 0; i < results.data.length; i++) {
             //ON récupére les lignes infos nécessaires pour chaque ligne du csv
             //ON récupère uniquement les types de déchets pour les entrants
-            //Si import Protruck, on récupère uniquement le type de déchet dans la colonne correspondante
+
             // if(this.typeImportTonnage.toLowerCase().includes("protruck")){
             //   results.data[i][posTypeDechet] = results.data[i][posTypeDechet].split(" - ")[0];
             // }
+
             //Création de l'objet qui contient l'ensemble des infos nécessaires
             let importCSV = {
               client: results.data[i][posClient],
@@ -416,32 +417,32 @@ export class ListEntreeComponent implements OnInit {
     this.stockageImport.clear();
     
     this.correspondance.forEach(correspondance => {
-      this.csvArray.forEach(csv => {
+        this.csvArray.forEach(csv => {
         
-        csv.client = csv.client.toLowerCase().replace(/\s/g,"");
-        csv.typeDechet = csv.typeDechet.toLowerCase().replace(/\s/g,"");
-        correspondance.nomImport = correspondance.nomImport.toLowerCase().replace(/\s/g,"");
-        correspondance.productImport = correspondance.productImport.toLowerCase().replace(/\s/g,"");
-       
-        //Si il y a correspondance on fait traitement
-        if( correspondance.nomImport == csv.client && correspondance.productImport == csv.typeDechet /*|| (mr.produit == "dib/dea" && mr.produit.includes(csv.typeDechet)))*/ ){  
-          console.log("if");
-          let formatDate = csv.dateEntree.split('/')[2]+'-'+csv.dateEntree.split('/')[1]+'-'+csv.dateEntree.split('/')[0];
-          let keyHash = formatDate+'_'+correspondance.ProductId+'_'+correspondance.ProducerId;
-          //si il y a deja une valeur dans la hashMap pour ce client et ce jour, on incrémente la valeur
-          let value, valueRound;
-          if(this.stockageImport.has(keyHash)){
+          csv.client = csv.client.toLowerCase().replace(/\s/g,"");
+          csv.typeDechet = csv.typeDechet.toLowerCase().replace(/\s/g,"");
+          correspondance.nomImport = correspondance.nomImport.toLowerCase().replace(/\s/g,"");
+          correspondance.productImport = correspondance.productImport.toLowerCase().replace(/\s/g,"");
+
+          //Si il y a correspondance on fait traitement
+          if( correspondance.nomImport == csv.client && correspondance.productImport == csv.typeDechet /*|| (mr.produit == "dib/dea" && mr.produit.includes(csv.typeDechet)))*/ ){  
+            console.log("if");
+            let formatDate = csv.dateEntree.split('/')[2]+'-'+csv.dateEntree.split('/')[1]+'-'+csv.dateEntree.split('/')[0];
+            let keyHash = formatDate+'_'+correspondance.ProductId+'_'+correspondance.ProducerId;
+            //si il y a deja une valeur dans la hashMap pour ce client et ce jour, on incrémente la valeur
+            let value, valueRound;
+            if(this.stockageImport.has(keyHash)){
+              //@ts-ignore
+              value = this.stockageImport.get(keyHash)+csv.tonnage;
+              valueRound = parseFloat(value.toFixed(3));
+              this.stockageImport.set(keyHash,valueRound);
+            }
+            else
+            //Sinon on insére dans la hashMap
             //@ts-ignore
-            value = this.stockageImport.get(keyHash)+csv.tonnage;
-            valueRound = parseFloat(value.toFixed(3));
-            this.stockageImport.set(keyHash,valueRound);
+            this.stockageImport.set(keyHash,parseFloat(csv.tonnage.toFixed(3)));
           }
-          else
-          //Sinon on insére dans la hashMap
-          //@ts-ignore
-          this.stockageImport.set(keyHash,parseFloat(csv.tonnage.toFixed(3)));
-        }
-      })
+        });
     });
     //debug
     //console.log(this.stockageImport);

@@ -72,8 +72,8 @@ const routes: Routes = [
     {
         path : 'acceuil',
         canActivate: [AuthGuard],
-        component : AcceuilComponent
-        //component : MaintenanceComponent
+        //component : AcceuilComponent
+        component : MaintenanceComponent
     },
     
     {
@@ -126,8 +126,8 @@ const routes: Routes = [
     {
         path : 'admin',
         canActivate: [AuthGuard],
-        component : AdminGlobalComponent,
-        // component : MaintenanceComponent,
+        //component : AdminGlobalComponent,
+         component : MaintenanceComponent,
         children: [
             { path: '', canActivate: [AuthGuard], component:  AdminComponent },
             { path: 'token', canActivate: [AuthGuard], component:  TokenApiComponent },
