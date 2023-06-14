@@ -66,6 +66,7 @@ import { EquipeComponent } from './equipe/equipe.component';
 import { GroupementComponent } from './groupement/groupement.component';
 import { ListGroupementsComponent } from './list-groupements/list-groupements.component';
 import { ImportTonnageComponent } from './import-tonnage/import-tonnage.component';
+import { OutilsComponent } from './outils/outils.component';
 
 @NgModule({
   declarations: [
@@ -118,6 +119,7 @@ import { ImportTonnageComponent } from './import-tonnage/import-tonnage.componen
     GroupementComponent,
     ListGroupementsComponent,
     ImportTonnageComponent,
+    OutilsComponent,
   ],
   imports: [
     BrowserModule,

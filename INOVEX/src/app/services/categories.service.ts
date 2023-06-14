@@ -122,7 +122,6 @@ export class categoriesService {
         let requete = "https://"+this.ip+":"+this.portAPI+"/Maintenance";
         //console.log(requete);
 
-
         const requestOptions = {
             headers: new HttpHeaders(this.headerDict),
         };

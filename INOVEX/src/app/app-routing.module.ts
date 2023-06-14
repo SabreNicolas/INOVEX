@@ -48,6 +48,7 @@ import { EquipeComponent } from './equipe/equipe.component';
 import { GroupementComponent } from './groupement/groupement.component';
 import { ListGroupementsComponent } from './list-groupements/list-groupements.component';
 import { ImportTonnageComponent } from './import-tonnage/import-tonnage.component';
+import { OutilsComponent } from './outils/outils.component';
 const routes: Routes = [
 
     {
@@ -118,6 +119,7 @@ const routes: Routes = [
             { path : '', canActivate: [AuthGuard], component: ListEquipeComponent },
             { path : 'listEquipe', canActivate: [AuthGuard], component: ListEquipeComponent },
             { path : 'newEquipe', canActivate: [AuthGuard], component: EquipeComponent },
+            { path : 'outils', canActivate: [AuthGuard], component: OutilsComponent },
         ]
     },
 
