@@ -36,7 +36,8 @@ export class TokenApiComponent implements OnInit {
     })
     .then((result) => {
       if (result.isConfirmed) {
-        const text = result.value;
+        var text = result.value;
+        var text2;
         //Si le texte entré par l'utilisateur est vide on affiche une erreur
         if (text =="") {
           Swal.fire(
@@ -46,8 +47,9 @@ export class TokenApiComponent implements OnInit {
           );
           return;
         }
+        text2 = text.replace(/'/g,"''");
         //Sinon on envoie la requête api permettant de générer un nouveau token
-        this.tokenApiService.generateAcessToken(text).subscribe((response)=>{
+        this.tokenApiService.generateAcessToken(text2).subscribe((response)=>{
           this.token = "Bearer " + response;
           //Affichage d'un pop-up de validation
           Swal.fire(
@@ -131,6 +133,7 @@ export class TokenApiComponent implements OnInit {
     .then((result) => {
       if (result.isConfirmed) {
         const text = result.value;
+        var text2;
         //Si le texte entré par l'utilisateur est vide on affiche une erreur
         if (text =="") {
           Swal.fire(
@@ -140,8 +143,9 @@ export class TokenApiComponent implements OnInit {
           );
           return;
         }
+        text2 = text.replace(/'/g,"''");
         //Sinon on envoie la requête api permettant de modifier l'affectation du token
-        this.tokenApiService.updateToken(id,text).subscribe((response)=>{
+        this.tokenApiService.updateToken(id,text2).subscribe((response)=>{
           this.token = "Bearer " + response;
           //Pop-up de confirmation de la modification
           Swal.fire(

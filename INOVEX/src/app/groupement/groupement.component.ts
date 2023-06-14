@@ -82,8 +82,9 @@ export class GroupementComponent implements OnInit {
           Swal.fire({title: 'Êtes-vous sûr(e) de créer ce Groupement ?',icon: 'warning',showCancelButton: true,confirmButtonColor: '#3085d6',cancelButtonColor: '#d33',confirmButtonText: 'Oui, créer',cancelButtonText: 'Annuler'
           }).then((result) => {
             if (result.isConfirmed) {
+              this.groupement = this.groupement.replace(/'/g,"''");
               this.rondierService.createGroupement(this.idZone, this.groupement).subscribe((response) => {
-              Swal.fire('Nouveau groupement créé','success');
+              Swal.fire({text : 'Nouveau groupement créé', icon : 'success',});
               this.groupement="";
               this.idZone=0;
             })
@@ -112,6 +113,7 @@ export class GroupementComponent implements OnInit {
         Swal.fire({title: 'Êtes-vous sûr(e) de modifier ce Groupement ?',icon: 'warning',showCancelButton: true,confirmButtonColor: '#3085d6',cancelButtonColor: '#d33',confirmButtonText: 'Oui, modifier',cancelButtonText: 'Annuler'
         }).then((result) => {
           if (result.isConfirmed) {
+            this.groupement =this.groupement.replace(/'/g,"''");
             this.rondierService.updateGroupement(this.idGroupement,this.groupement,this.idZone).subscribe((response) => {
               Swal.fire('Groupement modifié !','success');
               window.location.replace('/admin/groupement')

@@ -128,7 +128,8 @@ export class ImportTonnageComponent implements OnInit {
         if (nomImport == null) nomImport="";
       }
       if(productImport == null || nomImport == null) return;
-
+      productImport = productImport.replace(/'/g,"''");
+      nomImport = nomImport.replace(/'/g,"''");
       if(productImport == "" && nomImport == ""){
         Swal.fire('Veuillez saisir une valeur','error');
       }

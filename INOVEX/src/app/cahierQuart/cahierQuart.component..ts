@@ -10,6 +10,8 @@ export class cahierQuart implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    window.parent.document.title = 'CAP Exploitation - Cahier de Quart';
+
   }
 
 }
