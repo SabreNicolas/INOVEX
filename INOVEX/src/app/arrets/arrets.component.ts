@@ -52,7 +52,7 @@ export class ArretsComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       if(params.isArret.includes('true')){
         this.isArret = true;
-        this.getProductsArrets("303020");
+        this.getProductsArrets("30302");
       }
       /**
        * Dépassements 1/2 heures
