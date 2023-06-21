@@ -98,34 +98,41 @@ export class ImportTonnageComponent implements OnInit {
 
 
   //Mise à jour du nom de l'import ou du produit
-  edition(ProducerId : number, ProductId : number, nomImport : any, productImport : any ,type : string){
+  edition(ProducerId : number, ProductId : number, nomImport : string, productImport : string ,type : string){
     //On récupère la correspondance pour voir si elle est déjà existante
     var verifNomImport = nomImport;
     var verifProductImport = productImport;
     //On demande à l'utilisateur de siaire soit le nom soit le produit
     if(type=="nom"){
       if(nomImport == null){
+        //@ts-ignore
         nomImport = prompt('Veuillez saisir le nom de l\'apporteur dans le logiciel de pesée','');
       }
-      else nomImport = prompt('Veuillez saisir le nom de l\'apporteur dans le logiciel de pesée',String(nomImport));
-      if(productImport == null) productImport ="";
+      //@ts-ignore
+      else nomImport = prompt('Veuillez saisir le nom de l\'apporteur dans le logiciel de pesée',nomImport);
+      if(productImport == null) productImport ="_";
     }
     else {
       if(productImport == null){
+        //@ts-ignore
         productImport = prompt('Veuillez saisir le nom du produit dans le logiciel de pesée','');
       }
-      else productImport = prompt('Veuillez saisir le nom du produit dans le logiciel de pesée',String(productImport));
-      if (nomImport == null) nomImport="";
+      //@ts-ignore
+      else productImport = prompt('Veuillez saisir le nom du produit dans le logiciel de pesée',productImport);
+      if (nomImport == null) nomImport="_";
     }
-    if(productImport == null || nomImport == null) return;
+    // if(productImport == null || nomImport == null) return;
     productImport = productImport.replace(/'/g,"''");
     nomImport = nomImport.replace(/'/g,"''");
-    if(productImport == "" && nomImport == ""){
-      Swal.fire('Veuillez saisir une valeur','error');
+    if(productImport == ""){
+      productImport="_";
+    }
+    if(nomImport == ""){
+      nomImport="_";
     }
     //Si on a une correspondance, on met à jour celle ci
     //@ts-ignore
-    else if(verifNomImport != null || verifProductImport != null){
+    if(verifNomImport != null || verifProductImport != null){
       this.moralEntitiesService.updateCorrespondance(ProducerId,nomImport,productImport).subscribe((response) => {
         Swal.fire({
           icon: 'success',

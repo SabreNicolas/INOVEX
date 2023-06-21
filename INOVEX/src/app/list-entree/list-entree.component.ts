@@ -426,7 +426,6 @@ export class ListEntreeComponent implements OnInit {
 
           //Si il y a correspondance on fait traitement
           if( correspondance.nomImport == csv.client && correspondance.productImport == csv.typeDechet /*|| (mr.produit == "dib/dea" && mr.produit.includes(csv.typeDechet)))*/ ){  
-            console.log("if");
             let formatDate = csv.dateEntree.split('/')[2]+'-'+csv.dateEntree.split('/')[1]+'-'+csv.dateEntree.split('/')[0];
             let keyHash = formatDate+'_'+correspondance.ProductId+'_'+correspondance.ProducerId;
             //si il y a deja une valeur dans la hashMap pour ce client et ce jour, on incrémente la valeur

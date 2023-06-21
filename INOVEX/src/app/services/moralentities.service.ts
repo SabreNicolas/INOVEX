@@ -123,7 +123,7 @@ export class moralEntitiesService {
     //mettre à jour une correspondance
     updateCorrespondance(ProducerId : number ,nomImport : string ,productImport : string){
       let requete = "https://"+this.ip+":"+this.portAPI+"/updateCorrespondance?ProducerId="+ProducerId+"&nomImport="+nomImport+"&productImport="+productImport;
-      console.log(requete);
+      //console.log(requete);
 
       const requestOptions = {
         headers: new HttpHeaders(this.headerDict),
