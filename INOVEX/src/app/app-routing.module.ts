@@ -57,12 +57,12 @@ const routes: Routes = [
         component : SaisieGlobalComponent,
         //component : MaintenanceComponent,
         children: [
-            { path: '', canActivate: [AuthGuard], component:  ListEntreeComponent },
-            { path: 'listClients', canActivate: [AuthGuard], component: ListMoralEntitiesComponent },
-            { path: 'entree', canActivate: [AuthGuard], component : ListEntreeComponent },
-            { path: 'sortie', canActivate: [AuthGuard], component : ListSortantsComponent },
+            { path : '', canActivate: [AuthGuard], component:  ListEntreeComponent },
+            { path : 'listClients', canActivate: [AuthGuard], component: ListMoralEntitiesComponent },
+            { path : 'entree', canActivate: [AuthGuard], component : ListEntreeComponent },
+            { path : 'sortie', canActivate: [AuthGuard], component : ListSortantsComponent },
             { path : 'listCompteurs', canActivate: [AuthGuard], component: ListCompteursComponent },
-            { path: 'analyses', canActivate: [AuthGuard], component: AnalysesComponent },
+            { path : 'analyses', canActivate: [AuthGuard], component: AnalysesComponent },
             { path : 'conso', canActivate: [AuthGuard], component : ListConsoComponent },
             { path : 'arrets', canActivate: [AuthGuard], component : ArretsComponent },
             { path : 'listArrets', canActivate: [AuthGuard], component : ListArretsComponent },
@@ -70,7 +70,7 @@ const routes: Routes = [
     },
 
     {
-        path : 'acceuil',
+        path : 'accueil',
         canActivate: [AuthGuard],
         component : AcceuilComponent
         //component : MaintenanceComponent

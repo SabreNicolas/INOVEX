@@ -179,5 +179,18 @@ export class AdminComponent implements OnInit {
       }
     });
   }
+  updateTypeRecup(id : number, typeRecupEMonitoring : string){
+    this.productsService.updateTypeRecup(id,typeRecupEMonitoring).subscribe((response)=>{
+      if (response == "Changement du type de récupération OK"){
+        Swal.fire("Le type a été changé !");
+      }
+      else {
+        Swal.fire({
+          icon: 'error',
+          text: 'Erreur lors de la mise à jour du type ....',
+        })
+      }
+    });
+  }
 
 }

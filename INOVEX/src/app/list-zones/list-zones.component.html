@@ -10,6 +10,7 @@
                 <th scope="col">Num Four</th>
                 <th scope="col">Edition</th>
                 <th scope="col">Edition</th>
+                <th scope="col">Supprimer</th>
             </tr>
             </thead>
             <tbody *ngFor="let z of listZone">
@@ -27,6 +28,10 @@
                 <td><button id="setName" (click)="setName(z)" class="btn btn-outline-primary">
                     <i class="fa fa-pencil"></i>Nom
                 </button></td>
+                <td><button id="setName" (click)="deleteZone(z.Id)" class="btn btn-danger">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </td>
             </tr>
             </tbody>
         </table>

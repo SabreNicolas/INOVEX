@@ -25,7 +25,7 @@ export class rondierService {
         'Access-Control-Allow-Origin': '*',
         'Authorization': 'Bearer ' + localStorage.getItem('token')
     }
-    private portAPI = 3100;
+    private portAPI = 3102;
     private ip = "fr-couvinove301.prod.paprec.fr";
     //private ip = "localhost";
     private idUsine : number | undefined;
@@ -225,7 +225,17 @@ export class rondierService {
             .put<any>(requete,null,requestOptions);
     }
 
+    deleteZone(id : number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/deleteZone?Id="+id;
+        //console.log(requete);
 
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .delete<any>(requete,requestOptions);
+    }
     /*
     FIN ZONE DE CONTROLE
      */

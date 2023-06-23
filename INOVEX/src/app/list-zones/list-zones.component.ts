@@ -63,4 +63,29 @@ export class ListZonesComponent implements OnInit {
     }
   }
 
+  deleteZone(id : number){
+    
+    Swal.fire({title: 'Êtes-vous sûr(e) de vouloir supprimer cette zone et tout ses éléments ?',icon: 'warning',showCancelButton: true,confirmButtonColor: '#3085d6',cancelButtonColor: '#d33',confirmButtonText: 'Oui, supprimer',cancelButtonText: 'Annuler'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.rondierService.deleteZone(id).subscribe((response)=>{
+            if (response == "Suppression OK"){
+              Swal.fire("La zone a été supprimée !");
+              this.ngOnInit();
+            }
+            else {
+              Swal.fire({
+                icon: 'error',
+                text: 'Erreur lors de Suppression ....',
+              })
+            }
+          });
+        } 
+        else {
+          // Pop-up d'annulation de la suppression
+          Swal.fire('Annulé','La suprression a été annulée.','error');
+        }
+      });
+  }
+  
 }
