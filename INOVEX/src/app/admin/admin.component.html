@@ -31,7 +31,7 @@
             </div>
         </div>
 
-        <button id="changeAllType" class="btn btn-primary btn-lg float-right" (click)="changeAllType()">Changer plusieurs Type</button>
+        <!--<button id="changeAllType" class="btn btn-primary btn-lg float-right" (click)="changeAllType()">Changer plusieurs Type</button>-->
 
     </div>
 
@@ -39,7 +39,7 @@
     <table class="table table-hover tableFixed">
         <thead>
         <tr class="table-secondary">
-            <th scope="col">#</th>
+            <!--<th scope="col">#</th>-->
             <th scope="col">Nom</th>
             <th scope="col">TAG eMonitoring</th>
             <th scope="col">Unité</th>
@@ -52,11 +52,11 @@
         </thead>
         <tbody *ngFor="let pr of listProducts">
         <tr class="table-light">
-            <td>
+            <!--<td>
                 <div class="form-check form-switch">
                     <input class="form-check-input" type="checkbox" id="{{pr.Id}}" (click)="addPr(pr.Id)">
                 </div>
-            </td>
+            </td>-->
             <td>{{pr.Name}}</td>
             <td>{{pr.TAG}} <button id="setTAG" (click)="setElement(pr,'TAG')" class="btn btn-light">
                 <i class="far fa-edit"></i>
@@ -74,7 +74,7 @@
                 Changer le type
             </button></td>-->
             <td>
-                <select name="" id="{{pr.Id}}" ngModel [(ngModel)]="pr.typeRecupEMonitoring" (change)="updateTypeRecup(pr.Id, pr.typeRecupEMonitoring)">
+                <select class="form-select" id="{{pr.Id}}" ngModel [(ngModel)]="pr.typeRecupEMonitoring" (change)="updateTypeRecup(pr.Id, pr.typeRecupEMonitoring)">
                     <option value=null>Aucune</option>
                     <option value="tafVal">Valeur moyenne</option>
                     <option value="tafMin">Valeur min</option>
