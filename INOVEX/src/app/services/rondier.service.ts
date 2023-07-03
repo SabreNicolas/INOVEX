@@ -29,7 +29,7 @@ export class rondierService {
     private ip = "fr-couvinove301.prod.paprec.fr";
     //private ip = "localhost";
     private idUsine : number | undefined;
-
+    private idUser : number;
     constructor(private http: HttpClient) {
         this.httpClient = http;
         //Récupération du user dans localStorage
@@ -41,6 +41,7 @@ export class rondierService {
             // @ts-ignore
             this.idUsine = userLoggedParse['idUsine'];
         }
+        this.idUser = userLoggedParse['Id'];
     }
 
     /*
@@ -418,15 +419,30 @@ export class rondierService {
 
     //liste des zones et leurs éléments
     listZonesAndElements(){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/BadgeAndElementsOfZone/"+this.idUsine;
-        //console.log(requete);
 
-        const requestOptions = {
-            headers: new HttpHeaders(this.headerDict),
-        };
+        if(this.idUsine != 7){
+            let requete = "https://"+this.ip+":"+this.portAPI+"/BadgeAndElementsOfZone/"+this.idUsine;
+            //console.log(requete);
+    
+            const requestOptions = {
+                headers: new HttpHeaders(this.headerDict),
+            };
+    
+            return this.http
+                .get<elementsOfZone[]>(requete,requestOptions);
+        }
+        else {
+            let requete = "https://"+this.ip+":"+this.portAPI+"/elementsOfUsine/"+this.idUsine;
+            //console.log(requete);
 
-        return this.http
-            .get<elementsOfZone[]>(requete,requestOptions);
+            const requestOptions = {
+                headers: new HttpHeaders(this.headerDict),
+            };
+
+            return this.http
+                .get<elementsOfZone[]>(requete,requestOptions);
+        }
+        
     }
 
     /*

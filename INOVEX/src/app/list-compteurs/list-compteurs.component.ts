@@ -7,6 +7,7 @@ import {product} from "../../models/products.model";
 import {NgForm} from "@angular/forms";
 import * as XLSX from 'xlsx';
 import { dateService } from '../services/date.service';
+import { moralEntitiesService } from '../services/moralentities.service';
 
 @Component({
   selector: 'app-list-compteurs',
@@ -23,7 +24,7 @@ export class ListCompteursComponent implements OnInit {
   public dateDeb : Date | undefined;
   public dateFin : Date | undefined;
 
-  constructor(private productsService : productsService, private categoriesService : categoriesService, private dateService : dateService) {
+  constructor(private productsService : productsService, private categoriesService : categoriesService, private dateService : dateService, private mrService : moralEntitiesService) {
     this.listCategories = [];
     this.listCompteurs = [];
     this.Code = '';
@@ -69,52 +70,39 @@ export class ListCompteursComponent implements OnInit {
     this.ngOnInit();
   }
 
-  setPeriod(form: NgForm){
+  loading(){
+    var element = document.getElementById('spinner');
+    // @ts-ignore
+    element.classList.add('loader');
+    var element = document.getElementById('spinnerBloc');
+    // @ts-ignore
+    element.classList.add('loaderBloc');
+  }
+
+  removeloading(){
+      var element = document.getElementById('spinner');
+      // @ts-ignore
+      element.classList.remove('loader');
+      var element = document.getElementById('spinnerBloc');
+      // @ts-ignore
+      element.classList.remove('loaderBloc');
+  }
+
+  async setPeriod(form: NgForm){
     this.listDays = [];
-    if(this.idUsine !=2 ){
-      if(form.value['dateDeb'] != ''){
-        var date = new Date(form.value['dateDeb']);
-        var mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
-        var yyyy = date.getFullYear();
-        var dd = String(new Date(yyyy, date.getMonth()+1, 0).getDate()).padStart(2, '0');
-        this.listDays.push(dd + '/' + mm + '/' + yyyy);
-      }
-      else{
-        Swal.fire({
-          icon: 'error',
-          text: 'Date invalide',
-        })
-      }
-      
-    }
-    else {
     this.dateDeb = new Date((<HTMLInputElement>document.getElementById("dateDeb")).value);
     this.dateFin = new Date((<HTMLInputElement>document.getElementById("dateFin")).value);
-      if (this.dateFin < this.dateDeb) {
-        this.dateService.mauvaiseEntreeDate(form);
-      }
-      this.listDays = this.dateService.getDays(this.dateDeb, this.dateFin);
+    if(this.dateFin < this.dateDeb){
+      this.dateService.mauvaiseEntreeDate(form);
     }
-    this.getValues();
+    if( (this.dateFin.getTime()-this.dateDeb.getTime())/(1000*60*60*24) >= 29){
+      this.loading();
+    }
+    this.listDays = this.dateService.getDays(this.dateDeb, this.dateFin);
+    await this.getValues();
+    this.removeloading();
   }
 
-  //changer les dates pour saisir le mois précédent
-  setLastMonth(form: NgForm){
-    this.dateService.setLastMonth(form);
-    this.setPeriod(form);
-  }
-
-  //afficher le dernier jour de chaque mois de l'année en cours
-  setYear(){
-    this.listDays = this.dateService.setYear();
-    this.getValues();
-  }
-
-  //afficher le dernier jour de chaque mois de l'année en cours
-  setLastYear(){
-    this.listDays = this.dateService.setLastYear();
-    this.getValues();
-  }
 
   /**
    * PARTIE SAISIE JOUR
@@ -134,9 +122,11 @@ export class ListCompteursComponent implements OnInit {
   }
 
   //changer les dates pour saisir le mois en cours
-  setCurrentMonth(form: NgForm){
+  async setCurrentMonth(form: NgForm){
+    this.loading();
     this.dateService.setCurrentMonth(form);
-    this.setPeriod(form);
+    await this.setPeriod(form);     
+    this.removeloading();
   }
 
   /**
@@ -144,30 +134,38 @@ export class ListCompteursComponent implements OnInit {
   */
 
   //récupérer les valeurs en BDD
-  getValues() {
-    this.listCompteurs.forEach(cp => {
-      this.listDays.forEach(day => {
-        this.productsService.getValueCompteurs(day.substr(6, 4) + '-' + day.substr(3, 2) + '-' + day.substr(0, 2),cp.Code).subscribe((response) => {
+  async getValues(){
+    let i = 0;
+    for (const date of this.listDays){
+      for (const pr of this.listCompteurs){
+        i++;
+        //temporisation toutes les 400 req pour libérer de l'espace
+        if(i >= 400){
+          i=0;
+          await this.wait(500);
+        }
+        this.productsService.getValueProducts(date.substr(6, 4) + '-' + date.substr(3, 2) + '-' + date.substr(0, 2), pr.Id).subscribe((response) => {
           if (response.data[0] != undefined && response.data[0].Value != 0) {
-            (<HTMLInputElement>document.getElementById(cp.Code + '-' + day)).value = response.data[0].Value;
-            (<HTMLInputElement>document.getElementById('export-'+cp.Code + '-' + day)).innerHTML = response.data[0].Value;
-          } else (<HTMLInputElement>document.getElementById(cp.Code + '-' + day)).value = '';
+            (<HTMLInputElement>document.getElementById(pr.Id + '-' + date)).value = response.data[0].Value;
+          }
+          else (<HTMLInputElement>document.getElementById(pr.Id + '-' + date)).value = '';
         });
-      });
-    });
+      }
+    }
   }
 
   //valider les saisies
   validation(){
-    this.listCompteurs.forEach(cp =>{
-      this.listDays.forEach(day => {
-        var value = (<HTMLInputElement>document.getElementById(cp.Code + '-' + day)).value.replace(',', '.');
-        var valueInt: number = +value;
-        if (valueInt > 0.0) {
-          this.productsService.createMeasure(day.substr(6, 4) + '-' + day.substr(3, 2) + '-' + day.substr(0, 2), valueInt, cp.Code).subscribe((response) => {
-            if (response == "Création du saisiemensuelle OK") {
+    this.listDays.forEach(date => {
+      this.listCompteurs.forEach(pr =>{
+        var value = (<HTMLInputElement>document.getElementById(pr.Id+'-'+date)).value.replace(',','.');
+        var valueInt : number = +value;
+        if (valueInt >0.0){
+          this.mrService.createMeasure(date.substr(6,4)+'-'+date.substr(3,2)+'-'+date.substr(0,2),valueInt,pr.Id,0).subscribe((response)=>{
+            if (response == "Création du Measures OK"){
               Swal.fire("Les valeurs ont été insérées avec succès !");
-            } else {
+            }
+            else {
               Swal.fire({
                 icon: 'error',
                 text: 'Erreur lors de l\'insertion des valeurs ....',
@@ -175,16 +173,16 @@ export class ListCompteursComponent implements OnInit {
             }
           });
         }
-      });
+      })
     });
   }
 
   //mettre à 0 la value pour modificiation
-  delete(Code : string, date : string){
-    this.productsService.createMeasure(date.substr(6,4)+'-'+date.substr(3,2)+'-'+date.substr(0,2),0,Code).subscribe((response)=>{
-      if (response == "Création du saisiemensuelle OK"){
+  delete(Id : number, date : string){
+    this.mrService.createMeasure(date.substr(6,4)+'-'+date.substr(3,2)+'-'+date.substr(0,2),0,Id,0).subscribe((response)=>{
+      if (response == "Création du Measures OK"){
         Swal.fire("La valeur a bien été supprimé !");
-        (<HTMLInputElement>document.getElementById(Code + '-' + date)).value = '';
+        (<HTMLInputElement>document.getElementById(Id + '-' + date)).value = '';
       }
       else {
         Swal.fire({

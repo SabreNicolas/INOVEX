@@ -72,7 +72,7 @@ export class ReportingRondeComponent implements OnInit {
             //Récupération des éléments et leurs valeurs sur la ronde
             this.rondierService.reportingRonde(ronde.Id).subscribe((response)=>{
               // @ts-ignore
-              response.data.forEach(reporting =>{
+              response.data.forEach(reporting =>{ 
                 let champValue = document.getElementById(ronde.Id+"-"+reporting.elementId);
                 let champError = document.getElementById(ronde.Id+"-"+reporting.elementId+"-Error");
                 //SI on a un mode regulateur on affiche le champ et on affiche le mode
