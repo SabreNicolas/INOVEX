@@ -369,6 +369,11 @@ export class ListEntreeComponent implements OnInit {
       //delimiter,header,client,typedechet,dateEntree,tonnage
       this.lectureCSV(event, ";", false, 21, 20, 7, 19);
     }
+    //Calce
+    else if (this.typeImportTonnage.toLowerCase().includes("informatique verte")){
+      //delimiter,header,client,typedechet,dateEntree,tonnage
+      this.lectureCSV(event, ";", false, 19, 22, 10, 8);
+    }
   }
 
   //import tonnage via fichier

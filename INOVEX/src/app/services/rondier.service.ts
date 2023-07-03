@@ -406,17 +406,31 @@ export class rondierService {
     }
 
 
-    //liste des zones et leurs éléments
     listZonesAndElements(){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/BadgeAndElementsOfZone/"+this.idUsine;
-        //console.log(requete);
 
-        const requestOptions = {
-            headers: new HttpHeaders(this.headerDict),
-        };
+        if(this.idUsine != 7){
+            let requete = "https://"+this.ip+":"+this.portAPI+"/BadgeAndElementsOfZone/"+this.idUsine;
+            //console.log(requete);
+    
+            const requestOptions = {
+                headers: new HttpHeaders(this.headerDict),
+            };
+    
+            return this.http
+                .get<elementsOfZone[]>(requete,requestOptions);
+        }
+        else {
+            let requete = "https://"+this.ip+":"+this.portAPI+"/elementsOfUsine/"+this.idUsine;
+            //console.log(requete);
 
-        return this.http
-            .get<elementsOfZone[]>(requete,requestOptions);
+            const requestOptions = {
+                headers: new HttpHeaders(this.headerDict),
+            };
+
+            return this.http
+                .get<elementsOfZone[]>(requete,requestOptions);
+        }
+        
     }
 
     /*
