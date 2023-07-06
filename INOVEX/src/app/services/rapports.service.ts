@@ -44,4 +44,18 @@ export class rapportsService {
             .get<rapport[]>(requete,requestOptions);
     }
 
+        //récupérer les rapports pour l'usine sur laquelle on se trouve
+        getModeOPs() {
+            let requete = "https://"+this.ip+":"+this.portAPI+"/rapports/5"
+            //console.log(requete);
+    
+    
+            const requestOptions = {
+                headers: new HttpHeaders(this.headerDict),
+            };
+    
+            return this.http
+                .get<rapport[]>(requete,requestOptions);
+        }
+
 }

@@ -24,6 +24,7 @@ export class ReportingRondeComponent implements OnInit {
   public isAdmin;
   public numbers : number[]; 
   private nbfour : number;
+  public filtreZone : string;
 
   constructor(private rondierService : rondierService, private elementRef : ElementRef) {
     this.listRonde = [];
@@ -49,6 +50,8 @@ export class ReportingRondeComponent implements OnInit {
       // @ts-ignore
       this.isAdmin = userLoggedParse['isAdmin'];
     }
+    this.filtreZone ="";
+    // AEROcondenseurs
   }
 
   ngOnInit(): void {
@@ -74,71 +77,74 @@ export class ReportingRondeComponent implements OnInit {
               // @ts-ignore
               response.data.forEach(reporting =>{ 
                 let champValue = document.getElementById(ronde.Id+"-"+reporting.elementId);
-                let champError = document.getElementById(ronde.Id+"-"+reporting.elementId+"-Error");
-                //SI on a un mode regulateur on affiche le champ et on affiche le mode
-                if(reporting.modeRegulateur != "undefined"){
-                  let champRegul = document.getElementById(ronde.Id+"-"+reporting.elementId+"-Regulateur");
-                  //let champValue = document.getElementById(ronde.Id+"-"+reporting.elementId);
-                  // @ts-ignore
-                  champRegul.style.display = "block";
-                  // @ts-ignore
-                  champRegul.innerText = reporting.modeRegulateur;
-                }
-                let champValueContenu, champValueError;
-                //On affiche la valeur uniquement si elle a été saisie
-                if(reporting.value != "/"){
-                  champValueContenu = ""+reporting.value + " " + reporting.unit + " ";
-                  //On vérifie que la valeur est réglementaire (entre les bornes ou correspond à la valeur par défaut)
-                  //Si curseur (type 1) => doit etre compris entre les bornes
-                  if((reporting.typeChamp == "1") && (Number(reporting.value) < reporting.valeurMin || Number(reporting.value) > reporting.valeurMax)){
-                    //On utilise champValue pour afficher le message
-                    console.log(Number(reporting.value) + " "+ reporting.valeurMin+" "+reporting.valeurMax)
+                if(champValue != null){
+                  let champError = document.getElementById(ronde.Id+"-"+reporting.elementId+"-Error");
+                  //SI on a un mode regulateur on affiche le champ et on affiche le mode
+                  if(reporting.modeRegulateur != "undefined"){
+                    let champRegul = document.getElementById(ronde.Id+"-"+reporting.elementId+"-Regulateur");
+                    //let champValue = document.getElementById(ronde.Id+"-"+reporting.elementId);
                     // @ts-ignore
-                    champError.style.backgroundColor = "#ff726f";
+                    champRegul.style.display = "block";
                     // @ts-ignore
-                    champValueError = "ATTENTION, doit être compris entre "+reporting.valeurMin+" "+reporting.unit+" & "+reporting.valeurMax+" "+reporting.unit;
+                    champRegul.innerText = reporting.modeRegulateur;
                   }
-                  //Si pas curseur (différent de type 1) => doit etre égal à la valeur par défaut
-                  if(reporting.typeChamp !== "1" && reporting.value != reporting.defaultValue && reporting.defaultValue.length > 0){
-                    //On utilise champValue pour afficher le medssage
-                    // @ts-ignore
-                    champError.style.backgroundColor = "#ff726f";
-                    // @ts-ignore
-                    champValueError = "ATTENTION, la valeur par défaut est : "+reporting.defaultValue+" "+reporting.unit;
+                  let champValueContenu, champValueError;
+                  //On affiche la valeur uniquement si elle a été saisie
+                  if(reporting.value != "/"){
+                    champValueContenu = ""+reporting.value + " " + reporting.unit + " ";
+                    //On vérifie que la valeur est réglementaire (entre les bornes ou correspond à la valeur par défaut)
+                    //Si curseur (type 1) => doit etre compris entre les bornes
+                    if((reporting.typeChamp == "1") && (Number(reporting.value) < reporting.valeurMin || Number(reporting.value) > reporting.valeurMax)){
+                      //On utilise champValue pour afficher le message
+                      console.log(Number(reporting.value) + " "+ reporting.valeurMin+" "+reporting.valeurMax)
+                      // @ts-ignore
+                      champError.style.backgroundColor = "#ff726f";
+                      // @ts-ignore
+                      champValueError = "ATTENTION, doit être compris entre "+reporting.valeurMin+" "+reporting.unit+" & "+reporting.valeurMax+" "+reporting.unit;
+                    }
+                    //Si pas curseur (différent de type 1) => doit etre égal à la valeur par défaut
+                    if(reporting.typeChamp !== "1" && reporting.value != reporting.defaultValue && reporting.defaultValue.length > 0){
+                      //On utilise champValue pour afficher le medssage
+                      // @ts-ignore
+                      champError.style.backgroundColor = "#ff726f";
+                      // @ts-ignore
+                      champValueError = "ATTENTION, la valeur par défaut est : "+reporting.defaultValue+" "+reporting.unit;
+                    }
                   }
+                  //Sinon on surligne en rouge et on précise que ce n'est pas saisie
+                  else {
+                    // @ts-ignore
+                    champValue.style.backgroundColor = "red";
+                    // @ts-ignore
+                    champValueContenu = "NON SAISIE ";
+                  }
+                  // @ts-ignore
+                  champValue.innerHTML = champValueContenu;
+                  //On affiche le message d'erreur si nécessaire
+                  if( (reporting.typeChamp == "1" && (Number(reporting.value) < reporting.valeurMin || Number(reporting.value) > reporting.valeurMax)) || (reporting.typeChamp !== "1" && reporting.value !== reporting.defaultValue && reporting.defaultValue.length > 0)){
+                    // @ts-ignore
+                    champError.innerHTML = champValueError;
+                    // @ts-ignore
+                    champError.style.display = "block"
+                  }
+  
+                  //Création du button d'update de la valeur si utilisateur admin
+                  if(this.isAdmin){
+                    const button = document.createElement("button");
+                    button.className = "btn btn-warning btn-sm";
+                    button.id = "update"+reporting.Id;
+                    const i = document.createElement("i");
+                    i.className = "fa fa-pencil-square-o";
+                    button.appendChild(i);
+                    button.addEventListener('click', (e) =>{
+                      this.updateValueElement(reporting.Id,reporting.value);
+                    });
+                    // @ts-ignore
+                    champValue.appendChild(button);
+                  }
+                  //FIN Création du button edit
                 }
-                //Sinon on surligne en rouge et on précise que ce n'est pas saisie
-                else {
-                  // @ts-ignore
-                  champValue.style.backgroundColor = "red";
-                  // @ts-ignore
-                  champValueContenu = "NON SAISIE ";
-                }
-                // @ts-ignore
-                champValue.innerHTML = champValueContenu;
-                //On affiche le message d'erreur si nécessaire
-                if( (reporting.typeChamp == "1" && (Number(reporting.value) < reporting.valeurMin || Number(reporting.value) > reporting.valeurMax)) || (reporting.typeChamp !== "1" && reporting.value !== reporting.defaultValue && reporting.defaultValue.length > 0)){
-                  // @ts-ignore
-                  champError.innerHTML = champValueError;
-                  // @ts-ignore
-                  champError.style.display = "block"
-                }
-
-                //Création du button d'update de la valeur si utilisateur admin
-                if(this.isAdmin){
-                  const button = document.createElement("button");
-                  button.className = "btn btn-warning btn-sm";
-                  button.id = "update"+reporting.Id;
-                  const i = document.createElement("i");
-                  i.className = "fa fa-pencil-square-o";
-                  button.appendChild(i);
-                  button.addEventListener('click', (e) =>{
-                    this.updateValueElement(reporting.Id,reporting.value);
-                  });
-                  // @ts-ignore
-                  champValue.appendChild(button);
-                }
-                //FIN Création du button edit
+                
               });
               //Récupération des anomalies sur la ronde
               this.rondierService.listAnomalies(ronde.Id).subscribe((response)=>{
@@ -166,6 +172,7 @@ export class ReportingRondeComponent implements OnInit {
 
       });
     }
+    console.log(this.listAnomalie.length)
     
   }
 
@@ -280,5 +287,58 @@ export class ReportingRondeComponent implements OnInit {
     return ronde[fonctFour];
   }
 
+  setFilters(){
+    //@ts-ignore
+    var nameElt = document.getElementById("name").value;
+    if(nameElt != ''){
+      this.filtreZone= nameElt.toLowerCase()
+      //@ts-ignore
+      document.getElementById("type").value ="";
+    }
+    else{
+      var typeElt = document.getElementById("type");
+      // @ts-ignore
+      this.filtreZone = typeElt.options[typeElt.selectedIndex].value.toLowerCase();
+    }
+    this.ngOnInit();
+  }
+
+  resetFiltre(){
+    this.filtreZone="";
+    //@ts-ignore
+    document.getElementById("name").value = "";
+    this.ngOnInit();
+  }
+
+  editAnomalie(rondeId : number, zoneId : number){
+    var nvCommentaire;
+    //@ts-ignore
+    var commentaire = document.getElementById(rondeId+"--"+zoneId).innerHTML;
+    if(commentaire == ""){
+      nvCommentaire = prompt('Veuillez le nouveau commentaire','');
+      if(nvCommentaire != null){
+        this.rondierService.createAnomalie(rondeId, nvCommentaire, zoneId).subscribe((response) =>{
+          Swal.fire({
+            icon: 'success',
+            text: 'Commentaire modifié',
+          });
+          this.ngOnInit();
+        })
+      }
+    }
+    else{
+      nvCommentaire = prompt('Veuillez modifier le commentaire',commentaire);
+      if(nvCommentaire != null){
+        this.rondierService.updateAnomalie(rondeId,zoneId,nvCommentaire).subscribe((response) =>{
+          Swal.fire({
+            icon: 'success',
+            text: 'Commentaire modifié',
+          });
+          this.ngOnInit();
+        })
+      }
+      
+    }
+  }
 
 }

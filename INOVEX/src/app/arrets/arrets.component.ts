@@ -123,7 +123,7 @@ export class ArretsComponent implements OnInit {
     if(this.arretName.toLocaleLowerCase().includes("disponible")){
       this.disponible = true;
     }
-    else if(this.arretName.toLocaleLowerCase().includes("fortuit")){
+    else if(this.arretName.toLocaleLowerCase().includes("fortuit") || this.arretName.toLocaleLowerCase().includes("intempestif")){
       this.fortuit = true;
       this.fortuit_four = true;
     }

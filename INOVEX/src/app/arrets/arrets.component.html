@@ -57,7 +57,7 @@
                     </div>
                 </div>
 
-                <h5 *ngIf="isArret">Catégorie : </h5>
+                <h5 *ngIf="disponible || fortuit || programme">Catégorie : </h5>
                 <select *ngIf="disponible" id="disponible" class="form-select form-select-sm" aria-label=".form-select-sm example" name="disponible">
                     <option value="Manque de déchets">Manque de déchets</option>
                     <option value="Coupure électricité (si pas de production électrique sur le site)">Coupure électricité (si pas de production électrique sur le site)</option>

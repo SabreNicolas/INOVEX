@@ -733,6 +733,29 @@ export class rondierService {
             .get<anomalie[]>(requete,requestOptions);
     }
 
+    updateAnomalie(rondeId : number,zoneId : number, commentaire : string){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/updateAnomalie?rondeId="+rondeId+"&zoneId="+zoneId +"&commentaire=" + commentaire;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<anomalie[]>(requete,requestOptions);
+    }
+
+    createAnomalie(rondeId : number, commentaire : string, zoneId : number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/createAnomalie?rondeId="+rondeId + "&zoneId=" + zoneId +"&commentaire=" + commentaire;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<anomalie[]>(requete,requestOptions);
+    }
     /*
     FIN ANOMALIES
     */
