@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { rapport } from 'src/models/rapport.model';
 import { rapportsService } from '../services/rapports.service';
+import {user} from "../../models/user.model";
 
 @Component({
   selector: 'app-list-rapports',
@@ -10,9 +11,16 @@ import { rapportsService } from '../services/rapports.service';
 export class ListRapportsComponent implements OnInit {
 
   public listRapports : rapport[];
+  public userLogged!: user;
+  public idUsine : number;
+  public usine : string;
+  public isSuperAdmin : boolean;
 
   constructor(private rapportsService : rapportsService) {
     this.listRapports = [];
+    this.usine="";
+    this.isSuperAdmin = false;
+    this.idUsine = 0;
    }
 
   ngOnInit(): void {
@@ -23,6 +31,20 @@ export class ListRapportsComponent implements OnInit {
       // @ts-ignore
       this.listRapports = response.data;
     });
+
+    var userLogged = localStorage.getItem('user');
+    if (typeof userLogged === "string") {
+      var userLoggedParse = JSON.parse(userLogged);
+      this.userLogged = userLoggedParse;
+      //Récupération de l'idUsine
+      // @ts-ignore
+      this.idUsine = this.userLogged['idUsine'];
+      if(this.userLogged.hasOwnProperty('localisation')){
+        //@ts-ignore
+        this.usine = this.userLogged['localisation'];
+        this.isSuperAdmin = true;
+      }
+    }
   }
 
   download(url : string){

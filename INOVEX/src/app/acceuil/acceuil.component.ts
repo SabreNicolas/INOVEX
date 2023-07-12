@@ -180,6 +180,7 @@ export class AcceuilComponent implements OnInit {
         this.userLogged['localisation'] = this.localisation;
         //ON met à jour le user dans le localstorage
         localStorage.setItem('user',JSON.stringify(this.userLogged));
+        window.location.reload()
       });
     });
   }

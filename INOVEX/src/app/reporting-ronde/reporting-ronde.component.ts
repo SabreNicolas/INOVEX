@@ -8,6 +8,7 @@ import {anomalie} from "../../models/anomalie.model";
 import {elementsOfZone} from "../../models/elementsOfZone.model";
 import {permisFeuValidation} from "../../models/permisfeu-validation.model";
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
+import {user} from "../../models/user.model";
 
 @Component({
   selector: 'app-reporting-ronde',
@@ -25,9 +26,16 @@ export class ReportingRondeComponent implements OnInit {
   public numbers : number[]; 
   private nbfour : number;
   public filtreZone : string;
+  public userLogged!: user;
+  public idUsine : number;
+  public usine : string;
+  public isSuperAdmin : boolean;
 
   constructor(private rondierService : rondierService, private elementRef : ElementRef) {
     this.listRonde = [];
+    this.usine="";
+    this.isSuperAdmin = false;
+    this.idUsine = 0;
     /*//mettre hier comme date par défaut
     var dt = new Date();
     dt.setDate(dt.getDate());
@@ -58,6 +66,20 @@ export class ReportingRondeComponent implements OnInit {
 
     window.parent.document.title = 'CAP Exploitation - Ronde';
 
+    var userLogged = localStorage.getItem('user');
+    if (typeof userLogged === "string") {
+      var userLoggedParse = JSON.parse(userLogged);
+      this.userLogged = userLoggedParse;
+      //Récupération de l'idUsine
+      // @ts-ignore
+      this.idUsine = this.userLogged['idUsine'];
+      if(this.userLogged.hasOwnProperty('localisation')){
+        //@ts-ignore
+        this.usine = this.userLogged['localisation'];
+        this.isSuperAdmin = true;
+      }
+    }
+    
     this.listAnomalie = [];
     //this.listReporting = [];
     // retourne 3 rondes par jour, 1 pour le matin, 1 pour l'aprem et 1 pour la nuit

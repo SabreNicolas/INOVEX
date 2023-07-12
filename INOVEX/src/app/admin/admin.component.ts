@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import {productsService} from "../services/products.service";
 import Swal from 'sweetalert2';
 import {product} from "../../models/products.model";
+import {element} from "../../models/element.model";
+import {rondierService} from "../services/rondier.service";
+import { identifierModuleUrl } from '@angular/compiler';
+
 
 @Component({
   selector: 'app-admin',
@@ -14,16 +18,19 @@ export class AdminComponent implements OnInit {
   public listProducts : product[];
   public name : string;
   public listId : number[];
+  public listElements : element[];
 
-  constructor(private productsService : productsService) {
+  constructor(private productsService : productsService,private rondierService : rondierService) {
     this.typeId = 4;
     this.listProducts = [];
     this.name ="";
     this.listId = [];
+    this.listElements =[];
   }
 
   ngOnInit(): void {
     this.getProducts();
+    this.getElements();
   }
 
   setFilters(){
@@ -39,9 +46,18 @@ export class AdminComponent implements OnInit {
   }
 
   getProducts(){
-    this.productsService.getAllProductsByType(this.typeId,this.name).subscribe((response)=>{
+    this.productsService.getAllProductsAndElementRondier(this.typeId,this.name).subscribe((response)=>{
       // @ts-ignore
       this.listProducts = response.data;
+    });
+  }
+
+  getElements(){
+    //Requête pour récupérer tout les éléments rondiers d'une usine qui sont en type valeur
+    this.rondierService.getElementsOfUsine().subscribe((response)=>{
+      // @ts-ignore
+      this.listElements = response.data;
+      // console.log(this.listElements)
     });
   }
 
@@ -193,4 +209,31 @@ export class AdminComponent implements OnInit {
     });
   }
 
+  //fonction qui permet de choisir l'élement rondier correspondant au produit pour la récupération automatique
+  setElementRondier(pr : product){
+    let listElementsRondier = {};
+    //@ts-ignore
+    listElementsRondier[0] = "Aucun"
+    for(let i=0; i<this.listElements.length;i++){
+      //@ts-ignore
+      listElementsRondier[this.listElements[i]['Id']] = this.listElements[i]['nom']
+    }
+    Swal.fire({
+      title: 'Veuillez choisir un mode opératoire',
+      input: 'select',
+      inputOptions: listElementsRondier,
+      showCancelButton: true,
+      confirmButtonText: "Confirmer",
+      cancelButtonText: "Annuler",
+      allowOutsideClick: false,
+    })
+    .then((result) => {
+      if(result.value != undefined){
+        this.rondierService.changeTypeRecupSetRondier(pr.Id,result.value).subscribe((response) =>{
+          console.log("ok")
+          this.ngOnInit();
+        })
+      }
+    });
+  }
 }

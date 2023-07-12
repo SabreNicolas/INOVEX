@@ -12,10 +12,12 @@ export class AdminGlobalComponent implements OnInit {
   public isSuperAdmin : boolean;
   public idUsine : number;
   public userLogged!: user;
-  
+  public usine : string;
+
   constructor(private categoriesService : categoriesService) { 
     this.isSuperAdmin = false;
     this.idUsine = 0;
+    this.usine="";
   }
 
   ngOnInit(): void {
@@ -34,6 +36,8 @@ export class AdminGlobalComponent implements OnInit {
       this.userLogged = userLoggedParse;
       // @ts-ignore
       this.idUsine = this.userLogged['idUsine'];
+      // @ts-ignore
+      this.usine = this.userLogged['localisation'];
     }
 
     //stockage de l'ensemble des sites dans le le service categories pour la création de produit pour l'ensemble des sites

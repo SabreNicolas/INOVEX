@@ -215,7 +215,7 @@ export class rondierService {
 
     //Mise à jour du nom d'une zone de contrôle
     updateNomZone(zoneId : number, nom : string){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/zoneNom/"+zoneId+"/"+nom;
+        let requete = "https://"+this.ip+":"+this.portAPI+"/zoneNom/"+zoneId+"?nom="+nom;
         //console.log(requete);
 
         const requestOptions = {
@@ -337,6 +337,32 @@ export class rondierService {
         return this.http
             .put<any>(requete,null,requestOptions);
     }
+
+    getElementsOfUsine(){
+        
+        let requete = "https://"+this.ip+":"+this.portAPI+"/elementsControleOfUsine/"+this.idUsine;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<element>(requete,requestOptions);
+    }
+
+    changeTypeRecupSetRondier(Id : number, elementRondier: number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/productElementRondier?id="+Id+"&idElementRondier=" +elementRondier;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<any>(requete,null,requestOptions);
+    }
+    
 
     //update de l'ordre des éléments ayant un ordre suppérieur à x pour une zone
     //?zoneId=1&ordre=2

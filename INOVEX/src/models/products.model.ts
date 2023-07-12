@@ -10,4 +10,6 @@ export interface product{
     TAG : string;
     CodeEquipement : string;
     typeRecupEMonitoring : string;
+    idElementRondier : number;
+    nomElementRondier : string;
 }

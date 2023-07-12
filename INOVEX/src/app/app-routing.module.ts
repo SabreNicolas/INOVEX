@@ -49,6 +49,7 @@ import { GroupementComponent } from './groupement/groupement.component';
 import { ListGroupementsComponent } from './list-groupements/list-groupements.component';
 import { ImportTonnageComponent } from './import-tonnage/import-tonnage.component';
 import { OutilsComponent } from './outils/outils.component';
+import { CorrespondanceSortantsComponent } from './correspondance-sortants/correspondance-sortants.component';
 const routes: Routes = [
 
     {
@@ -158,6 +159,7 @@ const routes: Routes = [
             { path: 'newConsigne', canActivate: [AuthGuard], component: ConsigneComponent},
             { path: 'consignes', canActivate: [AuthGuard], component: ListConsignesComponent},
             { path: 'finMois', canActivate: [AuthGuard], component: RondierFinMoisComponent},
+            { path: 'correspondanceSortants', canActivate: [AuthGuard], component: CorrespondanceSortantsComponent},
         ]
     },
 

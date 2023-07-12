@@ -11,7 +11,7 @@
              </select>
            </div>
          </div>
-         <div class="col-sm-3">
+         <div class="col-sm-3" *ngIf="listCollecteurs[0].split('_')[1] != 'undefined'">
            <div class="form-group">
              <select id="collecteur" required class="form-select form-select-sm" aria-label=".form-select-sm example" name="collecteur" ngModel="01">
                <option *ngFor="let collecteur of listCollecteurs" value="{{collecteur.split('_')[0]}}">{{collecteur.split("_")[1]}}</option>

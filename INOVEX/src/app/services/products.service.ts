@@ -113,7 +113,6 @@ export class productsService {
         let requete = "https://"+this.ip+":"+this.portAPI+"/Compteurs/"+Code+"/"+Date+"?idUsine="+this.idUsine;
         //console.log(requete);
 
-
         const requestOptions = {
             headers: new HttpHeaders(this.headerDict),
         };
@@ -177,6 +176,21 @@ export class productsService {
             .get<product[]>(requete,requestOptions);
     }
 
+    //récupérer les sortants
+    getSortantsAndCorrespondance(Code : string) {
+        let requete = "https://"+this.ip+":"+this.portAPI+"/getSortantsAndCorrespondance?Code="+Code+"&idUsine="+this.idUsine;
+        //console.log(requete);
+
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<product[]>(requete,requestOptions);
+    }
+
+
     //récupérer les consommables & autres
     getConsos() {
         let requete = "https://"+this.ip+":"+this.portAPI+"/Consos/"+this.idUsine;
@@ -237,6 +251,18 @@ export class productsService {
         let requete = "https://"+this.ip+":"+this.portAPI+"/Products/"+typeId+"?Name="+name+"&idUsine="+this.idUsine;
         //console.log(requete);
 
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<product[]>(requete,requestOptions);
+    }
+
+    //récupérer les produits par catégories => pour admin uniquement
+    getAllProductsAndElementRondier(typeId : number, name : string) {
+        let requete = "https://"+this.ip+":"+this.portAPI+"/ProductsAndElementRondier/"+typeId+"?Name="+name+"&idUsine="+this.idUsine;
+        //console.log(requete);
 
         const requestOptions = {
             headers: new HttpHeaders(this.headerDict),

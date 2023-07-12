@@ -129,6 +129,7 @@ export class ListEntreeComponent implements OnInit {
     // @ts-ignore
     //var collecteurSel = collecteurElt.options[collecteurElt.selectedIndex].value;
     this.debCode = produitSel;
+    console.log(this.debCode)
     /*Fin de prise en commpte des filtres */
     this.ngOnInit();
   }
@@ -381,6 +382,10 @@ export class ListEntreeComponent implements OnInit {
       //delimiter,header,client,typedechet,dateEntree,tonnage
       this.lectureCSV(event, ";", false, 19, 22, 10, 8);
     }
+    else if (this.typeImportTonnage.toLowerCase().includes("tradim")){
+      //delimiter,header,client,typedechet,dateEntree,tonnage
+      this.lectureCSV(event, ";", false, 8, 6, 0, 5);
+    }
   }
 
   //import tonnage via fichier
@@ -406,7 +411,7 @@ export class ListEntreeComponent implements OnInit {
             // if(this.typeImportTonnage.toLowerCase().includes("protruck")){
             //   results.data[i][posTypeDechet] = results.data[i][posTypeDechet].split(" - ")[0];
             // }
-
+            console.log(results.data[i][posClient])
             //Création de l'objet qui contient l'ensemble des infos nécessaires
             let importCSV = {
               client: results.data[i][posClient],

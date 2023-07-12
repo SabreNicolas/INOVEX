@@ -80,25 +80,45 @@ export class ListCompteursComponent implements OnInit {
   }
 
   removeloading(){
-      var element = document.getElementById('spinner');
-      // @ts-ignore
-      element.classList.remove('loader');
-      var element = document.getElementById('spinnerBloc');
-      // @ts-ignore
-      element.classList.remove('loaderBloc');
+    var element = document.getElementById('spinner');
+    // @ts-ignore
+    element.classList.remove('loader');
+    var element = document.getElementById('spinnerBloc');
+    // @ts-ignore
+    element.classList.remove('loaderBloc');
   }
 
   async setPeriod(form: NgForm){
-    this.listDays = [];
-    this.dateDeb = new Date((<HTMLInputElement>document.getElementById("dateDeb")).value);
-    this.dateFin = new Date((<HTMLInputElement>document.getElementById("dateFin")).value);
-    if(this.dateFin < this.dateDeb){
-      this.dateService.mauvaiseEntreeDate(form);
+    //SI NSL OU SAINT SAULVE, on affiche en mensuel
+    if(this.idUsine == 1 ||this.idUsine == 3){
+      this.listDays = [];
+      if(form.value['dateDeb'] != ''){
+        var date = new Date(form.value['dateDeb']);
+        var mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = date.getFullYear();
+        var dd = String(new Date(yyyy, date.getMonth()+1, 0).getDate()).padStart(2, '0');
+        this.listDays.push(dd + '/' + mm + '/' + yyyy);
+      }
+      else{
+        Swal.fire({
+          icon: 'error',
+          text: 'Date invalide',
+        })
+      }
+    }//Sinon on afficheen journalier
+    else {
+      this.listDays = [];
+      this.dateDeb = new Date((<HTMLInputElement>document.getElementById("dateDeb")).value);
+      this.dateFin = new Date((<HTMLInputElement>document.getElementById("dateFin")).value);
+      if(this.dateFin < this.dateDeb){
+        this.dateService.mauvaiseEntreeDate(form);
+      }
+      if( (this.dateFin.getTime()-this.dateDeb.getTime())/(1000*60*60*24) >= 29){
+        this.loading();
+      }
+      this.listDays = this.dateService.getDays(this.dateDeb, this.dateFin);
     }
-    if( (this.dateFin.getTime()-this.dateDeb.getTime())/(1000*60*60*24) >= 29){
-      this.loading();
-    }
-    this.listDays = this.dateService.getDays(this.dateDeb, this.dateFin);
+    //On récupère les valeurs
     await this.getValues();
     this.removeloading();
   }
@@ -107,7 +127,6 @@ export class ListCompteursComponent implements OnInit {
   /**
    * PARTIE SAISIE JOUR
   */
-
 
   //changer les dates pour saisir hier
   setYesterday(form: NgForm){
@@ -133,6 +152,31 @@ export class ListCompteursComponent implements OnInit {
    * FIN PARTIE SAISIE JOUR
   */
 
+  /**
+   * SAISIE MOIS
+   */
+
+  //changer les dates pour saisir le mois précédent
+  setLastMonth(form: NgForm){
+    this.dateService.setLastMonth(form);
+    this.setPeriod(form);
+  }
+  
+  //afficher le dernier jour de chaque mois de l'année en cours
+  setYear(){
+    this.listDays = this.dateService.setYear();
+    this.getValues();
+  }
+  
+  //afficher le dernier jour de chaque mois de l'année en cours
+  setLastYear(){
+    this.listDays = this.dateService.setLastYear();
+    this.getValues();
+  }
+  /**
+  * FIN SAISIE MOIS
+  */
+
   //récupérer les valeurs en BDD
   async getValues(){
     let i = 0;
@@ -144,45 +188,76 @@ export class ListCompteursComponent implements OnInit {
           i=0;
           await this.wait(500);
         }
-        this.productsService.getValueProducts(date.substr(6, 4) + '-' + date.substr(3, 2) + '-' + date.substr(0, 2), pr.Id).subscribe((response) => {
-          if (response.data[0] != undefined && response.data[0].Value != 0) {
-            (<HTMLInputElement>document.getElementById(pr.Id + '-' + date)).value = response.data[0].Value;
-          }
-          else (<HTMLInputElement>document.getElementById(pr.Id + '-' + date)).value = '';
-        });
+        //Si on est sur chinon, nsl ou saint-saulev, on récupère les valeurs dans saisiemensuelle
+        if(this.idUsine == 1 || this.idUsine == 2 || this.idUsine == 3){
+          this.productsService.getValueCompteurs(date.substr(6, 4) + '-' + date.substr(3, 2) + '-' + date.substr(0, 2),pr.Code).subscribe((response) => {
+            if (response.data[0] != undefined && response.data[0].Value != 0) {
+              (<HTMLInputElement>document.getElementById(pr.Code + '-' + date)).value = response.data[0].Value;
+              (<HTMLInputElement>document.getElementById('export-'+pr.Code + '-' + date)).innerHTML = response.data[0].Value;
+            } else (<HTMLInputElement>document.getElementById(pr.Code + '-' + date)).value = '';
+          });
+        }
+        //sinon on récupère les valeurs dans maasure new
+        else{
+          this.productsService.getValueProducts(date.substr(6, 4) + '-' + date.substr(3, 2) + '-' + date.substr(0, 2), pr.Id).subscribe((response) => {
+            if (response.data[0] != undefined && response.data[0].Value != 0) {
+              (<HTMLInputElement>document.getElementById(pr.Code + '-' + date)).value = response.data[0].Value;
+            }
+            else (<HTMLInputElement>document.getElementById(pr.Code + '-' + date)).value = '';
+          });
+
+        }
       }
     }
   }
 
+
   //valider les saisies
   validation(){
-    this.listDays.forEach(date => {
-      this.listCompteurs.forEach(pr =>{
-        var value = (<HTMLInputElement>document.getElementById(pr.Id+'-'+date)).value.replace(',','.');
-        var valueInt : number = +value;
-        if (valueInt >0.0){
-          this.mrService.createMeasure(date.substr(6,4)+'-'+date.substr(3,2)+'-'+date.substr(0,2),valueInt,pr.Id,0).subscribe((response)=>{
-            if (response == "Création du Measures OK"){
-              Swal.fire("Les valeurs ont été insérées avec succès !");
-            }
-            else {
-              Swal.fire({
-                icon: 'error',
-                text: 'Erreur lors de l\'insertion des valeurs ....',
-              })
-            }
-          });
+    this.listCompteurs.forEach(cp =>{
+      this.listDays.forEach(day => {
+        var value = (<HTMLInputElement>document.getElementById(cp.Code + '-' + day)).value.replace(',', '.');
+        var valueInt: number = +value;
+        if (valueInt > 0.0) {
+           //Si on est sur chinon, nsl ou saint-saulev, on insère les valeurs dans saisiemensuelle
+          if(this.idUsine == 1 || this.idUsine == 2 ||this.idUsine == 3){
+            this.productsService.createMeasure(day.substr(6, 4) + '-' + day.substr(3, 2) + '-' + day.substr(0, 2), valueInt, cp.Code).subscribe((response) => {
+              if (response == "Création du saisiemensuelle OK") {
+                Swal.fire("Les valeurs ont été insérées avec succès !");
+              } else {
+                Swal.fire({
+                  icon: 'error',
+                  text: 'Erreur lors de l\'insertion des valeurs ....',
+                })
+              }
+            });
+          }
+          //sinon on récupère les valeurs dans measure_new
+          else{
+            this.mrService.createMeasure(day.substr(6,4)+'-'+day.substr(3,2)+'-'+day.substr(0,2),valueInt,cp.Id,0).subscribe((response)=>{
+              if (response == "Création du Measures OK"){
+                Swal.fire("Les valeurs ont été insérées avec succès !");
+              }
+              else {
+                Swal.fire({
+                  icon: 'error',
+                  text: 'Erreur lors de l\'insertion des valeurs ....',
+                })
+              }
+            });
+          }
         }
-      })
+      });
     });
   }
 
   //mettre à 0 la value pour modificiation
-  delete(Id : number, date : string){
+  //On supprime les valeurs dans measure_new
+  delete(Id : number, date : string, Code : string){
     this.mrService.createMeasure(date.substr(6,4)+'-'+date.substr(3,2)+'-'+date.substr(0,2),0,Id,0).subscribe((response)=>{
       if (response == "Création du Measures OK"){
         Swal.fire("La valeur a bien été supprimé !");
-        (<HTMLInputElement>document.getElementById(Id + '-' + date)).value = '';
+        (<HTMLInputElement>document.getElementById(Code + '-' + date)).value = '';
       }
       else {
         Swal.fire({
@@ -193,7 +268,23 @@ export class ListCompteursComponent implements OnInit {
     });
   }
 
-
+  //mettre à 0 la value pour modificiation
+  //Si on est sur chinon, nsl ou saint-saulev, on supprime les valeurs dans saisiemensuelle
+  deleteCompteur(Code : string, date : string){
+    this.productsService.createMeasure(date.substr(6,4)+'-'+date.substr(3,2)+'-'+date.substr(0,2),0,Code).subscribe((response)=>{
+      if (response == "Création du saisiemensuelle OK"){
+        Swal.fire("La valeur a bien été supprimé !");
+        (<HTMLInputElement>document.getElementById(Code + '-' + date)).value = '';
+      }
+      else {
+        Swal.fire({
+          icon: 'error',
+          text: 'Erreur lors de la suppression de la valeur ....',
+        })
+      }
+    });
+  } 
+  
   //Export de la table dans fichier EXCEL
   exportExcel(){
     /* table id is passed over here */

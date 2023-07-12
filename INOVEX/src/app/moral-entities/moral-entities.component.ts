@@ -108,6 +108,7 @@ export class MoralEntitiesComponent implements OnInit {
           this.listCollecteurs.push(collecteur);
         }
       });
+      console.log(this.listCollecteurs)
     });
   }
 
@@ -118,7 +119,7 @@ export class MoralEntitiesComponent implements OnInit {
     }
     else this.moralEntitiesService.adress = this.address;
 
-    this.moralEntitiesService.nom = this.name;
+    this.moralEntitiesService.nom = this.name.replace("'","''");
     this.moralEntitiesService.unitPrice = +this.unitPrice.toString().replace(',','.');
 
     //GESTION DE LA DIFFERENCE DE CODE POUR DIB ET DEA

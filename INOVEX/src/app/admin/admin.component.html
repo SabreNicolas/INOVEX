@@ -41,8 +41,9 @@
         <tr class="table-secondary">
             <!--<th scope="col">#</th>-->
             <th scope="col">Nom</th>
-            <th scope="col">TAG eMonitoring</th>
             <th scope="col">Unité</th>
+            <th scope="col">TAG eMonitoring</th>
+            <th scope="col">Element contrôle rondier</th>
             <th scope="col">Code GMAO</th>
             <!--<th scope="col">#</th>-->
             <!--<th scope="col">#</th>-->
@@ -58,11 +59,24 @@
                 </div>
             </td>-->
             <td>{{pr.Name}}</td>
-            <td>{{pr.TAG}} <button id="setTAG" (click)="setElement(pr,'TAG')" class="btn btn-light">
-                <i class="far fa-edit"></i>
-            </button>
-            </td>
             <td>{{pr.Unit}}
+            </td>
+            <td><strong>{{pr.TAG}}</strong> <button *ngIf="pr.idElementRondier == null" id="setTAG" (click)="setElement(pr,'TAG')" class="btn btn-light">
+                <i class="far fa-edit"></i>
+                </button>
+                <p *ngIf="pr.idElementRondier != null && (pr.TAG == '' || pr.TAG == null)">
+                    La récupération se fait via Rondier
+                </p>
+            </td>
+            
+            <td *ngIf="pr.TAG == '' || pr.TAG == null" >
+                <strong>{{pr.nomElementRondier}}</strong>
+                <button id="setTAG" (click)="setElementRondier(pr)" class="btn btn-light">
+                    <i class="far fa-edit"></i>
+                </button>
+            </td>
+            <td *ngIf="pr.idElementRondier == null && (pr.TAG != '' && pr.TAG != null)">
+                La récupération se fait via le TAG
             </td>
             <td>{{pr.CodeEquipement}}<button id="setTAG" (click)="setElement(pr,'CodeEquipement')" class="btn btn-light">
                 <i class="far fa-edit"></i>

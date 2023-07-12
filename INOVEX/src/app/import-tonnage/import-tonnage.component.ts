@@ -33,9 +33,6 @@ export class ImportTonnageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    //Verification droit admin du user pour disabled ou non le btn d'edition des clients
-    
-
     this.moralEntitiesService.getMoralEntitiesAndCorrespondance(this.debCode).subscribe((response)=>{
       // @ts-ignore
       this.moralEntities = response.data;

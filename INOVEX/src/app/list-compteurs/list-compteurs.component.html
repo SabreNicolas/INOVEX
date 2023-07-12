@@ -23,8 +23,34 @@
             </div>
         </div>
 
+        <!--Période - saisie au mois si le site est noyelle ou pithivier ou chinon-->
+        <form *ngIf="idUsine == 1 ||idUsine == 3 " #f="ngForm">
+            <div class="form-group">
+                <h5><label>Mois :</label></h5>
+                <div class="row">
+                    <div class="col-lg-3">
+                        <input type="month" id="dateDeb" class="form-control" placeholder="Date de début" name="dateDeb"
+                               ngModel>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <button class="btn btn-primary" type="submit" (click)="setPeriod(f)"><img src="assets/refresh.png"></button>
+                            <button style="margin-left: 0.5em" class="btn btn-dark" (click)="setLastMonth(f)">Mois précédent</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <button style="margin-left: 0.5em" class="btn btn-outline-success" (click)="setYear()">Année en cours</button>
+                            <button style="margin-left: 0.5em" class="btn btn-outline-success" (click)="setLastYear()">Année précédente</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>        
         <!--Période-->
-        <form #f="ngForm">
+        <form #f="ngForm" *ngIf="idUsine != 1  && idUsine != 3 ">
             <div class="form-group">
                 <h5><label>Période :</label></h5>
                 <div class="row">
@@ -67,11 +93,16 @@
                 <td class="fix"><strong>{{cp.Name}}</strong></td>
                 <td class="fix">{{cp.Unit}}</td>
                 <td *ngFor="let day of listDays">
-                    <!-- Balise caché avec la valeur pour export Excel car impossible d'exporter valeurs si inputs dans table -->
-                    <p style="display: none;" id="export-{{cp.Id}}-{{day}}"></p>
-                    <div class="flex">
-                        <input type="text" id="{{cp.Id}}-{{day}}" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                        <button class="btn btn-light" id="delete-{{cp.Id}}-{{day}}" (click)="delete(cp.Id,day)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                    <p  *ngIf="idUsine != 1  && idUsine != 2 && idUsine != 3 " style="display: none;" id="export-{{cp.Code}}-{{day}}"></p>
+                    <div class="flex" *ngIf="idUsine != 1  && idUsine != 2 && idUsine != 3 " >
+                        <input type="text" id="{{cp.Code}}-{{day}}" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                        <button class="btn btn-light" id="delete-{{cp.Code}}-{{day}}" (click)="delete(cp.Id,day,cp.Code)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                    </div>
+
+                    <p *ngIf="idUsine == 1  || idUsine == 2 || idUsine == 3 " style="display: none;" id="export-{{cp.Code}}-{{day}}"></p>
+                    <div *ngIf="idUsine == 1  || idUsine == 2 || idUsine == 3 " class="flex" >
+                        <input type="text" id="{{cp.Code}}-{{day}}" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                        <button class="btn btn-light" id="delete-{{cp.Code}}-{{day}}" (click)="deleteCompteur(cp.Code,day)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
                     </div>
                 </td>
             </tr>

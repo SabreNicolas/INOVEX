@@ -158,13 +158,15 @@ export class ElementControleComponent implements OnInit {
   }
   getGroupement(){
     this.idGroupement = 0;
-    this.rondierService.getGroupements(this.zoneId[0]).subscribe((response)=>{
-      // @ts-ignore
-      this.listGroupements = response.data;
-      if(this.listGroupements.length < 1 ){
-        this.idGroupement = 0;
-      }
-    });
+    if(this.zoneId.length == 1 ){
+      this.rondierService.getGroupements(this.zoneId[0]).subscribe((response)=>{
+        // @ts-ignore
+        this.listGroupements = response.data;
+        if(this.listGroupements.length < 1 ){
+          this.idGroupement = 0;
+        }
+      });
+    }
   }
   //Création éléments contrôle
   onSubmit(form : NgForm) {
