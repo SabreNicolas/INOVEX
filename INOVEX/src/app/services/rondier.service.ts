@@ -443,7 +443,6 @@ export class rondierService {
     }
 
 
-    //liste des zones et leurs éléments
     listZonesAndElements(){
 
         if(this.idUsine != 7){
