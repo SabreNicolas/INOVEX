@@ -220,7 +220,6 @@ export class ListSortantsComponent implements OnInit {
             };
             this.csvArray.push(importCSV);
           }
-          console.log(this.csvArray);
           this.insertTonnageCSV();
         }
       });
@@ -232,7 +231,6 @@ export class ListSortantsComponent implements OnInit {
       // console.log(response)
       // @ts-ignore
       this.correspondance = response.data;
-      console.log(this.correspondance);
     });
   }
 
@@ -267,7 +265,6 @@ export class ListSortantsComponent implements OnInit {
     //debug
     //console.log(this.stockageImport);
     //on parcours la hashmap pour insertion en BDD
-    console.log(this.stockageImport)
     this.stockageImport.forEach(async (value : number, key : String) => {
       await this.mrService.createMeasure(key.split('_')[0],value,parseInt(key.split('_')[1]),0).subscribe((response) =>{
         if (response == "Création du Measures OK"){

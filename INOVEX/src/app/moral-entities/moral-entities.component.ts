@@ -108,7 +108,6 @@ export class MoralEntitiesComponent implements OnInit {
           this.listCollecteurs.push(collecteur);
         }
       });
-      console.log(this.listCollecteurs)
     });
   }
 

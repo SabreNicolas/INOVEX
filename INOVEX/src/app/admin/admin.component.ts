@@ -219,7 +219,7 @@ export class AdminComponent implements OnInit {
       listElementsRondier[this.listElements[i]['Id']] = this.listElements[i]['nom']
     }
     Swal.fire({
-      title: 'Veuillez choisir un mode opératoire',
+      title: 'Veuillez choisir un élément rondier',
       input: 'select',
       inputOptions: listElementsRondier,
       showCancelButton: true,
