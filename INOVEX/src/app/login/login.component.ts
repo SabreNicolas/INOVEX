@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     if (localStorage.getItem('user') != undefined){
-      this.router.navigate(['/acceuil']);
+      this.router.navigate(['/accueil']);
     }
   }
 
@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit {
         //stockage du token dans le localStorage
         // @ts-ignore
         localStorage.setItem('token',response.token);
-        this.router.navigate(['/acceuil']);
+        this.router.navigate(['/accueil']);
       }
       else {
         this.loginKO = true;

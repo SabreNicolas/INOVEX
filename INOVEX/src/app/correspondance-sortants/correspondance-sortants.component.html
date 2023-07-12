@@ -1,0 +1,42 @@
+<div>
+  <h5><label>Filtres :</label></h5>
+  <div class="row">
+      <div class="col-sm-3">
+          <div class="form-group">
+              <select id="categorie" required class="form-select form-select-sm"
+                      aria-label=".form-select-sm example" name="produit" ngModel="201">
+                      <option value="">Tout</option>
+                  <option *ngFor="let cat of listCategories" selected value="{{cat.Code}}">{{cat.Name}}</option>
+              </select>
+          </div>
+      </div>
+      <div class="col-sm-3">
+          <div class="form-group">
+              <button class="btn btn-success" (click)="setFilters()">Valider</button>
+          </div>
+      </div>
+  </div>
+
+     <div class="table-style">
+         <!--table des client-->
+         <table class="table table-hover tableFixed">
+           <thead>
+           <tr class="table-secondary">
+             <th scope="col">Nom</th>
+             <th>Correpondande dans le logiciel de pesée</th>
+           </tr>
+           </thead>
+           <tbody *ngFor="let s of listSortants; let i = index">
+           <tr class="table-light">
+              <td><strong>{{s.Name}}</strong>
+              <td>
+                  {{s.productImport}}
+                  <button class="btn btn-light" (click)="edition(s.Id, s.productImport)">
+                    <i class="fas fa-edit"></i>
+                  </button>
+              </td>
+           </tr>
+           </tbody>
+         </table>
+     </div>
+</div>

@@ -67,6 +67,7 @@ import { GroupementComponent } from './groupement/groupement.component';
 import { ListGroupementsComponent } from './list-groupements/list-groupements.component';
 import { ImportTonnageComponent } from './import-tonnage/import-tonnage.component';
 import { OutilsComponent } from './outils/outils.component';
+import { CorrespondanceSortantsComponent } from './correspondance-sortants/correspondance-sortants.component';
 
 @NgModule({
   declarations: [
@@ -120,6 +121,7 @@ import { OutilsComponent } from './outils/outils.component';
     ListGroupementsComponent,
     ImportTonnageComponent,
     OutilsComponent,
+    CorrespondanceSortantsComponent,
   ],
   imports: [
     BrowserModule,

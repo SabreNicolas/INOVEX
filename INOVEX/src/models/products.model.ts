@@ -9,4 +9,7 @@ export interface product{
     typeId : number;
     TAG : string;
     CodeEquipement : string;
+    typeRecupEMonitoring : string;
+    idElementRondier : number;
+    nomElementRondier : string;
 }

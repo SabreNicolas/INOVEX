@@ -44,7 +44,7 @@ export class ListMoralEntitiesComponent implements OnInit {
     this.moralEntitiesService.getMoralEntitiesAll(this.debCode).subscribe((response)=>{
       // @ts-ignore
       this.moralEntities = response.data;
-
+      // console.log(response)
       //Récupération des types de déchets et des collecteurs
       this.moralEntitiesService.GetTypeDéchets().subscribe((response)=>{
         //@ts-ignore

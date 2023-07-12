@@ -49,6 +49,7 @@ import { GroupementComponent } from './groupement/groupement.component';
 import { ListGroupementsComponent } from './list-groupements/list-groupements.component';
 import { ImportTonnageComponent } from './import-tonnage/import-tonnage.component';
 import { OutilsComponent } from './outils/outils.component';
+import { CorrespondanceSortantsComponent } from './correspondance-sortants/correspondance-sortants.component';
 const routes: Routes = [
 
     {
@@ -57,12 +58,12 @@ const routes: Routes = [
         //component : SaisieGlobalComponent,
         component : MaintenanceComponent,
         children: [
-            { path: '', canActivate: [AuthGuard], component:  ListEntreeComponent },
-            { path: 'listClients', canActivate: [AuthGuard], component: ListMoralEntitiesComponent },
-            { path: 'entree', canActivate: [AuthGuard], component : ListEntreeComponent },
-            { path: 'sortie', canActivate: [AuthGuard], component : ListSortantsComponent },
+            { path : '', canActivate: [AuthGuard], component:  ListEntreeComponent },
+            { path : 'listClients', canActivate: [AuthGuard], component: ListMoralEntitiesComponent },
+            { path : 'entree', canActivate: [AuthGuard], component : ListEntreeComponent },
+            { path : 'sortie', canActivate: [AuthGuard], component : ListSortantsComponent },
             { path : 'listCompteurs', canActivate: [AuthGuard], component: ListCompteursComponent },
-            { path: 'analyses', canActivate: [AuthGuard], component: AnalysesComponent },
+            { path : 'analyses', canActivate: [AuthGuard], component: AnalysesComponent },
             { path : 'conso', canActivate: [AuthGuard], component : ListConsoComponent },
             { path : 'arrets', canActivate: [AuthGuard], component : ArretsComponent },
             { path : 'listArrets', canActivate: [AuthGuard], component : ListArretsComponent },
@@ -70,7 +71,7 @@ const routes: Routes = [
     },
 
     {
-        path : 'acceuil',
+        path : 'accueil',
         canActivate: [AuthGuard],
         //component : AcceuilComponent
         component : MaintenanceComponent
@@ -158,6 +159,7 @@ const routes: Routes = [
             { path: 'newConsigne', canActivate: [AuthGuard], component: ConsigneComponent},
             { path: 'consignes', canActivate: [AuthGuard], component: ListConsignesComponent},
             { path: 'finMois', canActivate: [AuthGuard], component: RondierFinMoisComponent},
+            { path: 'correspondanceSortants', canActivate: [AuthGuard], component: CorrespondanceSortantsComponent},
         ]
     },
 

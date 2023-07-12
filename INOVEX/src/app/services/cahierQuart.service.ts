@@ -16,7 +16,7 @@ export class cahierQuartService {
         'Access-Control-Allow-Origin' : '*',
         'Authorization': 'Bearer ' + localStorage.getItem('token')
     }
-    private portAPI = 3100;
+    private portAPI = 3102;
     private ip = "fr-couvinove301.prod.paprec.fr";
     //private ip = "localhost";
     private idUsine : number | undefined;
@@ -89,8 +89,7 @@ export class cahierQuartService {
     //Récupérer les équipes d'une usine
     getEquipes(){
         let requete = "https://"+this.ip+":"+this.portAPI+"/equipes?&idUsine="+ this.idUsine;
-        //   console.log(requete);
-    
+           //console.log(requete);
     
           const requestOptions = {
               headers: new HttpHeaders(this.headerDict),
