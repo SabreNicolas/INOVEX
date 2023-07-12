@@ -5,6 +5,8 @@ import { site } from 'src/models/site.model';
 import Swal from 'sweetalert2';
 import {user} from "../../models/user.model";
 import { categoriesService } from '../services/categories.service';
+import { rapportsService } from '../services/rapports.service';
+
 
 @Component({
   selector: 'app-acceuil',
@@ -28,8 +30,9 @@ export class AcceuilComponent implements OnInit {
   public localisation : string;
   public sites : site[];
   public maintenance : maintenance | undefined;
+  public modeOPs : string[];
 
-  constructor(private router : Router, private categoriesService : categoriesService) {
+  constructor(private router : Router, private categoriesService : categoriesService,private rapportsService : rapportsService) {
     this.nom = '';
     this.prenom = '';
     this.MD5pwd ='';
@@ -43,6 +46,7 @@ export class AcceuilComponent implements OnInit {
     this.idUsine = 0;
     this.localisation='';
     this.sites = [];
+    this.modeOPs = [];
   }
 
   ngOnInit(): void {
@@ -113,6 +117,34 @@ export class AcceuilComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
+  choixModeOPs(){
+    //Récupération des sites
+    this.rapportsService.getModeOPs().subscribe((response)=>{
+      // @ts-ignore
+      this.modeOPs = response.data;
+      //Construction des valeurs du menu select qui contient les sites
+      let listModesOPs = {};
+      for(let i=0; i<this.modeOPs.length;i++){
+        //@ts-ignore
+        listModesOPs[this.modeOPs[i]['url']] = this.modeOPs[i]['nom']
+      }
+
+      Swal.fire({
+        title: 'Veuillez choisir un mode opératoire',
+        input: 'select',
+        inputOptions: listModesOPs,
+        showCancelButton: false,
+        confirmButtonText: "Télécharger",
+        allowOutsideClick: true,
+      })
+      .then((result) => {
+        if(result.value != undefined){
+          window.open(result.value);
+        }
+      });
+    });
+  }
+
   choixSite(){
     //Récupération des sites
     this.categoriesService.getSites().subscribe((response)=>{
@@ -148,6 +180,7 @@ export class AcceuilComponent implements OnInit {
         this.userLogged['localisation'] = this.localisation;
         //ON met à jour le user dans le localstorage
         localStorage.setItem('user',JSON.stringify(this.userLogged));
+        window.location.reload()
       });
     });
   }

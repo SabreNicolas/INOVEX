@@ -2,6 +2,7 @@ export interface ronde{
     Id : number;
     dateHeure : string;
     commentaire : string;
+    userId : number;
     quart : number;
     isFinished : boolean;
     Nom : string;

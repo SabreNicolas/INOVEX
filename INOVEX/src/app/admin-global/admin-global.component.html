@@ -2,7 +2,9 @@
     <button routerLink="./modification" target="_blank" id="modification" class="btn btn-primary btn-lg float-right">Modification des Produits</button>
     <button routerLink="./newCompteur" target="_blank" id="newCompteur" class="btn btn-primary btn-lg float-right">Création de Compteur</button>
 </div>-->
-
+<div *ngIf="isSuperAdmin" id="usine">
+    {{usine}}
+</div>
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
@@ -30,11 +32,11 @@
                 </a>
             </li>-->
 
-            <li class="nav-item dropdown">
+            <!-- <li class="nav-item dropdown">
                 <a routerLink="./tags" class="nav-link" id="navbarDropdownEntree" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     TAGs
                 </a>
-            </li>
+            </li> -->
 
 
             <li class="nav-item dropdown">
@@ -44,8 +46,14 @@
             </li>
 
             <li class="nav-item dropdown">
-                <a routerLink="./import" class="nav-link" id="navbarDropdownAddClients" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a routerLink="./import" class="nav-link" id="navbarDropdownApporteurs" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Correspondance apporteurs
+                </a>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a routerLink="./correspondanceSortants" class="nav-link" id="navbarDropdownSortants" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Correspondance sortants
                 </a>
             </li>
 
@@ -87,10 +95,11 @@
                 <a class="nav-link dropdown-toggle" id="navbarDropdownRondier" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     RONDIER
                 </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <div class="dropdown-menu menuGlobal" aria-labelledby="navbarDropdown">
                     <!--<a class="dropdown-item" routerLink="./reporting" >REPORTING</a>-->
                     
-                    <a class="dropdown-item" routerLink="./finMois" >VALIDATION fin de mois</a>
+                    <a class="dropdown-item" href="https://drive.kerlan-info.fr/d/s/uKSSWZluFqp6pHEI7Ech2OLLZpBmp0rx/A1NE_o04ApMl_hAYy2zku2pLN6CU-zj7--7sAwK0ZlQo" target="_blank">Blocage Tablette</a>
+                    <!--<a class="dropdown-item" routerLink="./finMois" >VALIDATION fin de mois</a>-->
                     <li class="dropdown menu">
                         <a class="dropdown-toggle">Badge</a>
                         <ul class="dropdown-menu sous-menu">
@@ -148,7 +157,7 @@
             </li>
 
         </ul>
-        <img src="assets/paprec.png" style="width:10em">
+        <!-- <img src="assets/paprec.png" style="width:10em"> -->
     </div>
 </nav>
 

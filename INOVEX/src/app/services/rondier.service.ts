@@ -25,11 +25,11 @@ export class rondierService {
         'Access-Control-Allow-Origin': '*',
         'Authorization': 'Bearer ' + localStorage.getItem('token')
     }
-    private portAPI = 3100;
+    private portAPI = 3102;
     private ip = "fr-couvinove301.prod.paprec.fr";
     //private ip = "localhost";
     private idUsine : number | undefined;
-
+    private idUser : number;
     constructor(private http: HttpClient) {
         this.httpClient = http;
         //Récupération du user dans localStorage
@@ -41,6 +41,7 @@ export class rondierService {
             // @ts-ignore
             this.idUsine = userLoggedParse['idUsine'];
         }
+        this.idUser = userLoggedParse['Id'];
     }
 
     /*
@@ -214,7 +215,7 @@ export class rondierService {
 
     //Mise à jour du nom d'une zone de contrôle
     updateNomZone(zoneId : number, nom : string){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/zoneNom/"+zoneId+"/"+nom;
+        let requete = "https://"+this.ip+":"+this.portAPI+"/zoneNom/"+zoneId+"?nom="+nom;
         //console.log(requete);
 
         const requestOptions = {
@@ -225,7 +226,17 @@ export class rondierService {
             .put<any>(requete,null,requestOptions);
     }
 
+    deleteZone(id : number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/deleteZone?Id="+id;
+        //console.log(requete);
 
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .delete<any>(requete,requestOptions);
+    }
     /*
     FIN ZONE DE CONTROLE
      */
@@ -326,6 +337,32 @@ export class rondierService {
         return this.http
             .put<any>(requete,null,requestOptions);
     }
+
+    getElementsOfUsine(){
+        
+        let requete = "https://"+this.ip+":"+this.portAPI+"/elementsControleOfUsine/"+this.idUsine;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<element>(requete,requestOptions);
+    }
+
+    changeTypeRecupSetRondier(Id : number, elementRondier: number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/productElementRondier?id="+Id+"&idElementRondier=" +elementRondier;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<any>(requete,null,requestOptions);
+    }
+    
 
     //update de l'ordre des éléments ayant un ordre suppérieur à x pour une zone
     //?zoneId=1&ordre=2
@@ -721,6 +758,29 @@ export class rondierService {
             .get<anomalie[]>(requete,requestOptions);
     }
 
+    updateAnomalie(rondeId : number,zoneId : number, commentaire : string){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/updateAnomalie?rondeId="+rondeId+"&zoneId="+zoneId +"&commentaire=" + commentaire;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<anomalie[]>(requete,requestOptions);
+    }
+
+    createAnomalie(rondeId : number, commentaire : string, zoneId : number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/createAnomalie?rondeId="+rondeId + "&zoneId=" + zoneId +"&commentaire=" + commentaire;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<anomalie[]>(requete,requestOptions);
+    }
     /*
     FIN ANOMALIES
     */

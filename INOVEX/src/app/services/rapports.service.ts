@@ -12,7 +12,7 @@ export class rapportsService {
         'Access-Control-Allow-Origin' : '*',
         'Authorization': 'Bearer ' + localStorage.getItem('token')
     }
-    private portAPI = 3100;
+    private portAPI = 3102;
     private ip = "fr-couvinove301.prod.paprec.fr";
     //private ip = "localhost";
     private idUsine : number | undefined;
@@ -43,5 +43,19 @@ export class rapportsService {
         return this.http
             .get<rapport[]>(requete,requestOptions);
     }
+
+        //récupérer les rapports pour l'usine sur laquelle on se trouve
+        getModeOPs() {
+            let requete = "https://"+this.ip+":"+this.portAPI+"/rapports/5"
+            //console.log(requete);
+    
+    
+            const requestOptions = {
+                headers: new HttpHeaders(this.headerDict),
+            };
+    
+            return this.http
+                .get<rapport[]>(requete,requestOptions);
+        }
 
 }

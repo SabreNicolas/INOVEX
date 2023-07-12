@@ -67,20 +67,20 @@
     <div id="saisie">
         <!--table de saisie CONTAINER DASRI-->
         <div class="table-style">
-            <table class="table table-hover tableFixed" *ngIf="listDays && containerDasri">
+            <table class="table table-hover tableFixed" *ngIf="listDays && productsEntrants">
                 <thead>
                 <tr class="table-secondary">
-                    <th scope="col"><button class="btn btn-success"(click)="validationContainer()">Valider les Containers</button></th>
+                    <th scope="col"><button class="btn btn-success"(click)="validationProducts()">Valider les entrants</button></th>
                     <th *ngFor="let day of listDays" scope="col">{{day}}</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr class="table-light">
-                    <td class="fix"><strong>{{containerDasri.Name}}</strong></td>
+                <tr class="table-light" *ngFor="let product of productsEntrants">
+                    <td class="fix"><strong>{{product.Name}}</strong></td>
                     <td *ngFor="let day of listDays">
                         <div class="flex">
-                            <input type="text" id="{{containerDasri.Id}}-{{day}}" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                            <button class="btn btn-light" id="delete-{{containerDasri.Id}}-{{day}}" (click)="deleteContainer(containerDasri.Id,day)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                            <input type="text" id="{{product.Id}}-{{day}}" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                            <button class="btn btn-light" id="delete-{{product.Id}}-{{day}}" (click)="deleteContainer(product.Id,day)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
                         </div>
                     </td>
                 </tr>

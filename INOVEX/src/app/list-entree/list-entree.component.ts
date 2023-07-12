@@ -29,7 +29,7 @@ export class ListEntreeComponent implements OnInit {
   public listDays : string[];
   public listTotal : number[];
   public monthCall : number;
-  public containerDasri : product | undefined;
+  public productsEntrants : product[];
   private listTypeDechetsCollecteurs : dechetsCollecteurs[];
   public listTypeDechets : string[];
   public typeImportTonnage : string;
@@ -57,10 +57,11 @@ export class ListEntreeComponent implements OnInit {
     this.valuesHodja = [];
     this.stockageHodja = new Map();
     this.correspondance = [];
+    this.productsEntrants = [];
   }
 
   ngOnInit(): void {
-    this.containerDasri = undefined;
+    this.productsEntrants = [];
     //Récupération type Import pour les tonnages
     this.moralEntitiesService.GetImportTonnage().subscribe((response)=>{
       //@ts-ignore
@@ -93,13 +94,14 @@ export class ListEntreeComponent implements OnInit {
     this.getMoralEntities();
 
     //Récupération du produit container DASRI
-    if (this.debCode == '203'){
-      this.productsService.getContainers().subscribe((response)=>{
+      this.productsService.getProductEntrant().subscribe((response)=>{
         // @ts-ignore
-        this.containerDasri = response.data[0];
-        this.getValuesContainer();
+        this.productsEntrants = response.data;
+        //console.log(this.productsEntrants);
+        for(let product of this.productsEntrants){
+          this.getValuesProduct(product.Id);
+        }
       });
-    }
   }
 
   getMoralEntities(){
@@ -127,6 +129,7 @@ export class ListEntreeComponent implements OnInit {
     // @ts-ignore
     //var collecteurSel = collecteurElt.options[collecteurElt.selectedIndex].value;
     this.debCode = produitSel;
+    console.log(this.debCode)
     /*Fin de prise en commpte des filtres */
     this.ngOnInit();
   }
@@ -144,9 +147,11 @@ export class ListEntreeComponent implements OnInit {
     this.listDays = this.dateService.getDays(this.dateDeb, this.dateFin);
     await this.getValues();
     this.removeloading();
-    if(this.debCode == "203"){
-      this.getValuesContainer();
+    
+    for(let product of this.productsEntrants){
+      this.getValuesProduct(product.Id);
     }
+    
   }
 
   //valider la saisie des tonnages
@@ -236,44 +241,47 @@ export class ListEntreeComponent implements OnInit {
   }
 
   /*
-  CONTAINERS DASRI
+  Products Entrants
    */
-  //récupérer les valeurs en BDD pour Container DASRI
-  getValuesContainer(){
+  //récupérer les valeurs en BDD pour Products Entrants
+  getValuesProduct(idProduct : number){
     this.listDays.forEach(date => {
       // @ts-ignore
-      this.productsService.getValueProducts(date.substr(6, 4) + '-' + date.substr(3, 2) + '-' + date.substr(0, 2), this.containerDasri.Id).subscribe((response) => {
+      this.productsService.getValueProducts(date.substr(6, 4) + '-' + date.substr(3, 2) + '-' + date.substr(0, 2), idProduct).subscribe((response) => {
+        console.log(response.data);
         if (response.data[0] != undefined && response.data[0].Value != 0) {
           // @ts-ignore
-          (<HTMLInputElement>document.getElementById(this.containerDasri.Id + '-' + date)).value = response.data[0].Value;
+          (<HTMLInputElement>document.getElementById(idProduct + '-' + date)).value = response.data[0].Value;
         }
         else { // @ts-ignore
-          (<HTMLInputElement>document.getElementById(this.containerDasri.Id + '-' + date)).value = '';
+          (<HTMLInputElement>document.getElementById(idProduct + '-' + date)).value = '';
         }
       });
     });
   }
 
-  //valider la saisie des Containers DASRI
-  validationContainer(){
+  //valider la saisie des Products Entrants
+  validationProducts(){
     this.listDays.forEach(date => {
       // @ts-ignore
-      var value = (<HTMLInputElement>document.getElementById(this.containerDasri.Id+'-'+date)).value;
-      var valueInt : number = +value;
-      if (valueInt >0.0){
-        // @ts-ignore
-        this.moralEntitiesService.createMeasure(date.substr(6,4)+'-'+date.substr(3,2)+'-'+date.substr(0,2),valueInt,this.containerDasri.Id,0).subscribe((response)=>{
-          if (response == "Création du Measures OK"){
-            Swal.fire("Les valeurs de Containers ont été insérées avec succès !");
-          }
-          else {
-            Swal.fire({
-              icon: 'error',
-              text: 'Erreur lors de l\'insertion des valeurs ....',
-            })
-          }
-        });
-      }
+      this.productsEntrants.forEach(product => {
+        var value = (<HTMLInputElement>document.getElementById(product.Id+'-'+date)).value;
+        var valueInt : number = +value;
+        if (valueInt >0.0){
+          // @ts-ignore
+          this.moralEntitiesService.createMeasure(date.substr(6,4)+'-'+date.substr(3,2)+'-'+date.substr(0,2),valueInt,product.Id,0).subscribe((response)=>{
+            if (response == "Création du Measures OK"){
+              Swal.fire("Les valeurs ont été insérées avec succès !");
+            }
+            else {
+              Swal.fire({
+                icon: 'error',
+                text: 'Erreur lors de l\'insertion des valeurs ....',
+              })
+            }
+          });
+        }
+      })
     });
   }
 
@@ -374,6 +382,10 @@ export class ListEntreeComponent implements OnInit {
       //delimiter,header,client,typedechet,dateEntree,tonnage
       this.lectureCSV(event, ";", false, 19, 22, 10, 8);
     }
+    else if (this.typeImportTonnage.toLowerCase().includes("tradim")){
+      //delimiter,header,client,typedechet,dateEntree,tonnage
+      this.lectureCSV(event, ";", false, 8, 6, 0, 5);
+    }
   }
 
   //import tonnage via fichier
@@ -399,7 +411,7 @@ export class ListEntreeComponent implements OnInit {
             // if(this.typeImportTonnage.toLowerCase().includes("protruck")){
             //   results.data[i][posTypeDechet] = results.data[i][posTypeDechet].split(" - ")[0];
             // }
-
+            console.log(results.data[i][posClient])
             //Création de l'objet qui contient l'ensemble des infos nécessaires
             let importCSV = {
               client: results.data[i][posClient],

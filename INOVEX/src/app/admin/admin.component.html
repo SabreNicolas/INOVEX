@@ -31,7 +31,7 @@
             </div>
         </div>
 
-        <button id="changeAllType" class="btn btn-primary btn-lg float-right" (click)="changeAllType()">Changer plusieurs Type</button>
+        <!--<button id="changeAllType" class="btn btn-primary btn-lg float-right" (click)="changeAllType()">Changer plusieurs Type</button>-->
 
     </div>
 
@@ -39,29 +39,44 @@
     <table class="table table-hover tableFixed">
         <thead>
         <tr class="table-secondary">
-            <th scope="col">#</th>
+            <!--<th scope="col">#</th>-->
             <th scope="col">Nom</th>
-            <th scope="col">TAG eMonitoring</th>
             <th scope="col">Unité</th>
+            <th scope="col">TAG eMonitoring</th>
+            <th scope="col">Element contrôle rondier</th>
             <th scope="col">Code GMAO</th>
             <!--<th scope="col">#</th>-->
             <!--<th scope="col">#</th>-->
+            <th scope="col">Type de Récupération eMonitoring</th>
             <th scope="col">Visibilité</th>
         </tr>
         </thead>
         <tbody *ngFor="let pr of listProducts">
         <tr class="table-light">
-            <td>
+            <!--<td>
                 <div class="form-check form-switch">
                     <input class="form-check-input" type="checkbox" id="{{pr.Id}}" (click)="addPr(pr.Id)">
                 </div>
-            </td>
+            </td>-->
             <td>{{pr.Name}}</td>
-            <td>{{pr.TAG}} <button id="setTAG" (click)="setElement(pr,'TAG')" class="btn btn-light">
-                <i class="far fa-edit"></i>
-            </button>
-            </td>
             <td>{{pr.Unit}}
+            </td>
+            <td><strong>{{pr.TAG}}</strong> <button *ngIf="pr.idElementRondier == null" id="setTAG" (click)="setElement(pr,'TAG')" class="btn btn-light">
+                <i class="far fa-edit"></i>
+                </button>
+                <p *ngIf="pr.idElementRondier != null && (pr.TAG == '' || pr.TAG == null)">
+                    La récupération se fait via Rondier
+                </p>
+            </td>
+            
+            <td *ngIf="pr.TAG == '' || pr.TAG == null" >
+                <strong>{{pr.nomElementRondier}}</strong>
+                <button id="setTAG" (click)="setElementRondier(pr)" class="btn btn-light">
+                    <i class="far fa-edit"></i>
+                </button>
+            </td>
+            <td *ngIf="pr.idElementRondier == null && (pr.TAG != '' && pr.TAG != null)">
+                La récupération se fait via le TAG
             </td>
             <td>{{pr.CodeEquipement}}<button id="setTAG" (click)="setElement(pr,'CodeEquipement')" class="btn btn-light">
                 <i class="far fa-edit"></i>
@@ -72,6 +87,15 @@
             <!--<td><button id="setType" (click)="setType(pr)" class="btn btn-primary">
                 Changer le type
             </button></td>-->
+            <td>
+                <select class="form-select" id="{{pr.Id}}" ngModel [(ngModel)]="pr.typeRecupEMonitoring" (change)="updateTypeRecup(pr.Id, pr.typeRecupEMonitoring)">
+                    <option value=null>Aucune</option>
+                    <option value="tafVal">Valeur moyenne</option>
+                    <option value="tafMin">Valeur min</option>
+                    <option value="tafMax">Valeur max</option>
+                    <option value="cumul">Valeur cumulée</option>
+                </select>
+            </td>
             <td *ngIf="pr.Enabled == 0"><button id="setDisabled" (click)="setVisibility(pr.Id,1)" class="btn btn-outline-danger">
                 <i style="color: red" class="fa fa-eye-slash"></i>
             </button></td>

@@ -17,7 +17,7 @@ export class productsService {
         'Access-Control-Allow-Origin' : '*',
         'Authorization': 'Bearer ' + localStorage.getItem('token')
     }
-    private portAPI = 3100;
+    private portAPI = 3102;
     private ip = "fr-couvinove301.prod.paprec.fr";
     //private ip = "localhost";
     private idUsine : number | undefined;
@@ -113,7 +113,6 @@ export class productsService {
         let requete = "https://"+this.ip+":"+this.portAPI+"/Compteurs/"+Code+"/"+Date+"?idUsine="+this.idUsine;
         //console.log(requete);
 
-
         const requestOptions = {
             headers: new HttpHeaders(this.headerDict),
         };
@@ -177,6 +176,21 @@ export class productsService {
             .get<product[]>(requete,requestOptions);
     }
 
+    //récupérer les sortants
+    getSortantsAndCorrespondance(Code : string) {
+        let requete = "https://"+this.ip+":"+this.portAPI+"/getSortantsAndCorrespondance?Code="+Code+"&idUsine="+this.idUsine;
+        //console.log(requete);
+
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<product[]>(requete,requestOptions);
+    }
+
+
     //récupérer les consommables & autres
     getConsos() {
         let requete = "https://"+this.ip+":"+this.portAPI+"/Consos/"+this.idUsine;
@@ -206,10 +220,9 @@ export class productsService {
     }
 
     //récupérer les containers
-    getContainers() {
-        let requete = "https://"+this.ip+":"+this.portAPI+"/Container/"+this.idUsine;
+    getProductEntrant() {
+        let requete = "https://"+this.ip+":"+this.portAPI+"/productsEntrants/"+this.idUsine;
         //console.log(requete);
-
 
         const requestOptions = {
             headers: new HttpHeaders(this.headerDict),
@@ -238,6 +251,18 @@ export class productsService {
         let requete = "https://"+this.ip+":"+this.portAPI+"/Products/"+typeId+"?Name="+name+"&idUsine="+this.idUsine;
         //console.log(requete);
 
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<product[]>(requete,requestOptions);
+    }
+
+    //récupérer les produits par catégories => pour admin uniquement
+    getAllProductsAndElementRondier(typeId : number, name : string) {
+        let requete = "https://"+this.ip+":"+this.portAPI+"/ProductsAndElementRondier/"+typeId+"?Name="+name+"&idUsine="+this.idUsine;
+        //console.log(requete);
 
         const requestOptions = {
             headers: new HttpHeaders(this.headerDict),
@@ -286,6 +311,17 @@ export class productsService {
             .put<any>(requete,null,requestOptions);
     }
 
+    updateTypeRecup(id : number, typeRecupEMonitoring : string){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/updateRecupEMonitoring?id="+id+"&typeRecup="+typeRecupEMonitoring;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<any>(requete,null,requestOptions);
+    }
     /*
     ** Partie IMAGINDATA
     */
