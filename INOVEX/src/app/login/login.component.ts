@@ -36,6 +36,7 @@ export class LoginComponent implements OnInit {
     this.pwd = form.value['pwd'];
     this.MD5pwd = Md5.hashStr(this.pwd);
 
+    this.login = this.login.replace("'","''");
     this.loginService.getUserLoged(this.login,this.MD5pwd).subscribe((response)=>{
       // @ts-ignore
       if(response.data.length > 0) {
