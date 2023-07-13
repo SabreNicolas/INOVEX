@@ -6,8 +6,10 @@
 
     <div  *ngFor="let card of equipes" class="card" id="{{card.id}}" (click)="toggleCardSize(card)" >
           <div class="card-body">
-            <h5 class="card-title">{{ card.equipe }} || {{ card.quart }}</h5>
-            
+            <h5 *ngIf="card.quart === 1" class="card-title">{{ card.equipe }} || Quart du matin </h5>
+            <h5 *ngIf="card.quart === 2" class="card-title">{{ card.equipe }} || Quart de l'après-midi </h5>
+            <h5 *ngIf="card.quart === 3" class="card-title">{{ card.equipe }} || Quart de nuit </h5>
+
             <p class="card-text"><strong>{{ card.prenomChefQuart }} {{card.nomChefQuart}}</strong> Chef de Quart</p>
             
             <p class="titreListe">Voici la liste des rondiers :</p>

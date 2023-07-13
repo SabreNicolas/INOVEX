@@ -23,6 +23,7 @@ export class ReportingRondeComponent implements OnInit {
   public listElementsOfZone : elementsOfZone[];
   public listPermisFeuValidation : permisFeuValidation[];
   public isAdmin;
+  public isChefQuart;
   public numbers : number[]; 
   private nbfour : number;
   public filtreZone : string;
@@ -57,6 +58,7 @@ export class ReportingRondeComponent implements OnInit {
       var userLoggedParse = JSON.parse(userLogged);
       // @ts-ignore
       this.isAdmin = userLoggedParse['isAdmin'];
+      this.isChefQuart = userLoggedParse['isChefQuart'];
     }
     this.filtreZone ="";
     // AEROcondenseurs
@@ -151,7 +153,7 @@ export class ReportingRondeComponent implements OnInit {
                   }
   
                   //Création du button d'update de la valeur si utilisateur admin
-                  if(this.isAdmin){
+                  if(this.isAdmin || this.isChefQuart){
                     const button = document.createElement("button");
                     button.className = "btn btn-warning btn-sm";
                     button.id = "update"+reporting.Id;

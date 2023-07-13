@@ -47,7 +47,7 @@
             <th scope="col">Code GMAO</th>
             <!--<th scope="col">#</th>-->
             <!--<th scope="col">#</th>-->
-            <th scope="col">Type de Récupération eMonitoring</th>
+            <th scope="col" >Type de Récupération eMonitoring</th>
             <th scope="col">Visibilité</th>
         </tr>
         </thead>
@@ -88,13 +88,16 @@
                 Changer le type
             </button></td>-->
             <td>
-                <select class="form-select" id="{{pr.Id}}" ngModel [(ngModel)]="pr.typeRecupEMonitoring" (change)="updateTypeRecup(pr.Id, pr.typeRecupEMonitoring)">
+                <select *ngIf="pr.idElementRondier == null" class="form-select" id="{{pr.Id}}" ngModel [(ngModel)]="pr.typeRecupEMonitoring" (change)="updateTypeRecup(pr.Id, pr.typeRecupEMonitoring)">
                     <option value=null>Aucune</option>
                     <option value="tafVal">Valeur moyenne</option>
                     <option value="tafMin">Valeur min</option>
                     <option value="tafMax">Valeur max</option>
                     <option value="cumul">Valeur cumulée</option>
                 </select>
+                <p *ngIf="pr.idElementRondier != null && (pr.TAG == '' || pr.TAG == null)">
+                    /
+                </p>
             </td>
             <td *ngIf="pr.Enabled == 0"><button id="setDisabled" (click)="setVisibility(pr.Id,1)" class="btn btn-outline-danger">
                 <i style="color: red" class="fa fa-eye-slash"></i>
