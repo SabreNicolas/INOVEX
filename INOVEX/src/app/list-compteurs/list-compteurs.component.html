@@ -80,7 +80,7 @@
 
     <!--table de saisie-->
     <div class="table-style">
-        <table class="table table-hover tableFixed" id="listCompteurs" *ngIf="listCompteurs">
+        <table class="table table-bordered table-hover tableFixed" id="listCompteurs" *ngIf="listCompteurs">
             <thead>
             <tr class="table-secondary">
                 <th scope="col"><button class="btn btn-success"(click)="validation()">Valider les valeurs</button></th>
@@ -93,14 +93,12 @@
                 <td class="fix"><strong>{{cp.Name}}</strong></td>
                 <td class="fix">{{cp.Unit}}</td>
                 <td *ngFor="let day of listDays">
-                    <p  *ngIf="idUsine != 1  && idUsine != 2 && idUsine != 3 " style="display: none;" id="export-{{cp.Code}}-{{day}}"></p>
-                    <div class="flex" *ngIf="idUsine != 1  && idUsine != 2 && idUsine != 3 " >
+                    <p style="display: none;" id="export-{{cp.Code}}-{{day}}"></p>
+                    <div class="flex" *ngIf="idUsine != 1  && idUsine != 2 && idUsine != 3" >
                         <input type="text" id="{{cp.Code}}-{{day}}" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
                         <button class="btn btn-light" id="delete-{{cp.Code}}-{{day}}" (click)="delete(cp.Id,day,cp.Code)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
                     </div>
-
-                    <p *ngIf="idUsine == 1  || idUsine == 2 || idUsine == 3 " style="display: none;" id="export-{{cp.Code}}-{{day}}"></p>
-                    <div *ngIf="idUsine == 1  || idUsine == 2 || idUsine == 3 " class="flex" >
+                    <div *ngIf="idUsine == 1  || idUsine == 2 || idUsine == 3" class="flex" >
                         <input type="text" id="{{cp.Code}}-{{day}}" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
                         <button class="btn btn-light" id="delete-{{cp.Code}}-{{day}}" (click)="deleteCompteur(cp.Code,day)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
                     </div>

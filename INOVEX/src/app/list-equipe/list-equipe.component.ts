@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { cahierQuartService } from '../services/cahierQuart.service';
 import { equipe } from "../../models/equipe.model";
 import Swal from 'sweetalert2';
+import { consigne } from 'src/models/consigne.model';
+import { rondierService } from '../services/rondier.service';
 
 @Component({
   selector: 'app-list-equipe',
@@ -11,18 +13,26 @@ import Swal from 'sweetalert2';
 export class ListEquipeComponent implements OnInit {
   
   public equipes : equipe[];
-  public periode : string ;
+  public consignes : consigne[];
 
-  constructor(public cahierQuartService : cahierQuartService){
+  constructor(public cahierQuartService : cahierQuartService, public rondierService : rondierService){
     this.equipes = [];
-    this.periode = "";
+    this.consignes = [];
   }
 
   ngOnInit(): void {
     //On récupère la liste des équipes
     this.cahierQuartService.getEquipes().subscribe((response) =>{  
       this.equipes = response.tabEquipes;
-    })
+    });
+
+    //On récupére la liste des consignes en cours de validité
+    this.rondierService.listConsignes().subscribe((response) => {
+      //@ts-ignore
+      this.consignes = response.data;
+      console.log(this.consignes);
+    });
+
   }
 
   //Fonction qui permet d'agrandir une card contenant les informations sur une équipe

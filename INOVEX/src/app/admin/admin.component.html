@@ -8,6 +8,8 @@
                 <div class="form-group">
                     <select id="type" required class="form-select form-select-sm"
                             aria-label=".form-select-sm example" name="type" ngModel="4">
+                        <option value="_">Tout</option>
+                        <option value="1">Entrants</option>
                         <option value="2">Consommables et Autres</option>
                         <option selected value="4">Compteurs/QSE</option>
                         <option value="5">Sortants</option>
@@ -61,23 +63,26 @@
             <td>{{pr.Name}}</td>
             <td>{{pr.Unit}}
             </td>
-            <td><strong>{{pr.TAG}}</strong> <button *ngIf="pr.idElementRondier == null" id="setTAG" (click)="setElement(pr,'TAG')" class="btn btn-light">
-                <i class="far fa-edit"></i>
+            <td>
+                <strong>{{pr.TAG}}</strong> 
+                <button *ngIf="pr.idElementRondier == null && pr.typeId != 1 && pr.typeId != 5" id="setTAG" (click)="setElement(pr,'TAG')" class="btn btn-light">
+                    <i class="far fa-edit"></i>
                 </button>
                 <p *ngIf="pr.idElementRondier != null && (pr.TAG == '' || pr.TAG == null)">
                     La récupération se fait via Rondier
                 </p>
             </td>
             
-            <td *ngIf="pr.TAG == '' || pr.TAG == null" >
+            <td >
                 <strong>{{pr.nomElementRondier}}</strong>
-                <button id="setTAG" (click)="setElementRondier(pr)" class="btn btn-light">
+                <button *ngIf="(pr.TAG == '' || pr.TAG == null) && pr.typeId != 1 && pr.typeId != 5" id="setRondier" (click)="setElementRondier(pr)" class="btn btn-light">
                     <i class="far fa-edit"></i>
                 </button>
+                <p *ngIf="pr.idElementRondier == null && (pr.TAG != '' && pr.TAG != null)">
+                    La récupération se fait via le TAG
+                </p>
             </td>
-            <td *ngIf="pr.idElementRondier == null && (pr.TAG != '' && pr.TAG != null)">
-                La récupération se fait via le TAG
-            </td>
+            
             <td>{{pr.CodeEquipement}}<button id="setTAG" (click)="setElement(pr,'CodeEquipement')" class="btn btn-light">
                 <i class="far fa-edit"></i>
             </button></td>
@@ -88,14 +93,14 @@
                 Changer le type
             </button></td>-->
             <td>
-                <select *ngIf="pr.idElementRondier == null" class="form-select" id="{{pr.Id}}" ngModel [(ngModel)]="pr.typeRecupEMonitoring" (change)="updateTypeRecup(pr.Id, pr.typeRecupEMonitoring)">
+                <select *ngIf="pr.idElementRondier == null && pr.typeId != 1 && pr.typeId != 5" class="form-select" id="{{pr.Id}}" ngModel [(ngModel)]="pr.typeRecupEMonitoring" (change)="updateTypeRecup(pr.Id, pr.typeRecupEMonitoring)">
                     <option value=null>Aucune</option>
                     <option value="tafVal">Valeur moyenne</option>
                     <option value="tafMin">Valeur min</option>
                     <option value="tafMax">Valeur max</option>
                     <option value="cumul">Valeur cumulée</option>
                 </select>
-                <p *ngIf="pr.idElementRondier != null && (pr.TAG == '' || pr.TAG == null)">
+                <p *ngIf="(pr.idElementRondier != null && (pr.TAG == '' || pr.TAG == null)) || pr.typeId == 1 || pr.typeId == 5">
                     /
                 </p>
             </td>

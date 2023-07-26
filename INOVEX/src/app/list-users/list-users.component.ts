@@ -36,6 +36,7 @@ export class ListUsersComponent implements OnInit {
 
   //reset le mot de passe utilisateur à 'temporaire'
   resetPwd(login : string){
+    login = login.replace("'","''");
     this.loginService.updatePwd(login,Md5.hashStr('temporaire')).subscribe((response)=>{
       if (response == "Mise à jour du mot de passe OK"){
         Swal.fire("Mot de passe mis à jour avec succès !");

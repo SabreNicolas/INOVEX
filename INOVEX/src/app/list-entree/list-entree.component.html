@@ -65,9 +65,9 @@
 
 
     <div id="saisie">
-        <!--table de saisie CONTAINER DASRI-->
+        <!--table de saisie CONTAINER DASRI et autres-->
         <div class="table-style">
-            <table class="table table-hover tableFixed" *ngIf="listDays && productsEntrants">
+            <table class="table table-bordered table-hover tableFixed" *ngIf="listDays && productsEntrants">
                 <thead>
                 <tr class="table-secondary">
                     <th scope="col"><button class="btn btn-success"(click)="validationProducts()">Valider les entrants</button></th>
@@ -90,7 +90,7 @@
 
         <!--table de saisie-->
         <div class="table-style">
-            <table class="table table-hover tableFixed" id="listEntree" *ngIf="listDays && moralEntities">
+            <table class="table table-bordered table-hover tableFixed" id="listEntree" *ngIf="listDays && moralEntities">
                 <thead>
                 <tr class="table-secondary">
                     <th scope="col"><button class="btn btn-success"(click)="validation()">Valider les tonnages</button></th>

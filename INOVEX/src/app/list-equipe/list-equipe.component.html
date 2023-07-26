@@ -1,5 +1,24 @@
 <a routerLink="/cahierQuart/newEquipe" class="btn btn-primary"> Créer une équipe </a>
 
+<!--Table contenant la liste des consignes en cours-->
+
+<div class="consignes" *ngIf="consignes.length > 0">
+  <table class="table table-bordered table-secondary">
+    <thead>
+      <tr>
+        <th scope="col">Consigne</th>
+        <th scope="col">Date de Fin</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let consigne of consignes">
+        <th scope="row">{{consigne.commentaire}}</th>
+        <td>{{consigne.dateHeureFin}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
 <h1>Voici la liste des équipes :</h1>
 <div class="container">
 

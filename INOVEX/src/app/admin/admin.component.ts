@@ -57,7 +57,7 @@ export class AdminComponent implements OnInit {
     this.rondierService.getElementsOfUsine().subscribe((response)=>{
       // @ts-ignore
       this.listElements = response.data;
-      // console.log(this.listElements)
+      //console.log(this.listElements)
     });
   }
 
@@ -195,6 +195,8 @@ export class AdminComponent implements OnInit {
       }
     });
   }
+
+
   updateTypeRecup(id : number, typeRecupEMonitoring : string){
     this.productsService.updateTypeRecup(id,typeRecupEMonitoring).subscribe((response)=>{
       if (response == "Changement du type de récupération OK"){
@@ -212,12 +214,15 @@ export class AdminComponent implements OnInit {
   //fonction qui permet de choisir l'élement rondier correspondant au produit pour la récupération automatique
   setElementRondier(pr : product){
     let listElementsRondier = {};
+    //Un peu particulier ici mais si la clef de l'objet n'est pas une chaine, l'ordre alphabétique n'est pas respecté car classement selon la clef
+    //d'ou le 0_rondier
     //@ts-ignore
-    listElementsRondier[0] = "Aucun"
-    for(let i=0; i<this.listElements.length;i++){
+    listElementsRondier["0_rondier"] = "Aucun"
+    this.listElements.forEach(element =>{
+      let id = String(element.Id)+"_rondier";
       //@ts-ignore
-      listElementsRondier[this.listElements[i]['Id']] = this.listElements[i]['nom']
-    }
+      listElementsRondier[id] = element.nom;
+    });
     Swal.fire({
       title: 'Veuillez choisir un élément rondier',
       input: 'select',
@@ -229,8 +234,9 @@ export class AdminComponent implements OnInit {
     })
     .then((result) => {
       if(result.value != undefined){
-        this.rondierService.changeTypeRecupSetRondier(pr.Id,result.value).subscribe((response) =>{
-          console.log("ok")
+        //On récupérer l'id de l'élément rondier que l'on a stocké dans la clef de la liste
+        let idElementRondier = Number(result.value.split("_")[0]);
+        this.rondierService.changeTypeRecupSetRondier(pr.Id,idElementRondier).subscribe((response) =>{
           this.ngOnInit();
         })
       }

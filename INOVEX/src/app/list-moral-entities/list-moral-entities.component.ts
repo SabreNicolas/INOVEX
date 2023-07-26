@@ -87,8 +87,14 @@ export class ListMoralEntitiesComponent implements OnInit {
     // @ts-ignore
     var produitSel = produitElt.options[produitElt.selectedIndex].value;
     var collecteurElt = document.getElementById("collecteur");
-    // @ts-ignore
-    var collecteurSel = collecteurElt.options[collecteurElt.selectedIndex].value;
+    if(collecteurElt != null){
+      // @ts-ignore
+      var collecteurSel = collecteurElt.options[collecteurElt.selectedIndex].value;
+    }
+    //Gestion du cas ou il n'y a pas de collecteur
+    else {
+      var collecteurSel = '01';
+    } 
     this.debCode = produitSel+collecteurSel;
     /*Fin de prise en commpte des filtres */
     this.ngOnInit();
