@@ -233,6 +233,18 @@ export class ReportingRondeComponent implements OnInit {
     this.setPeriod(form);
   }
 
+  //changer les dates pour saisir aujourd'hui
+  setToday(form: NgForm){
+    var date = new Date();
+    var yyyy = date.getFullYear();
+    var dd = String(date.getDate()).padStart(2, '0');
+    var mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var day = yyyy + '-' + mm + '-' + dd;
+    (<HTMLInputElement>document.getElementById("dateDeb")).value = day;
+    form.value['dateDeb'] = day;
+    this.setPeriod(form);
+  }
+
   deleteRonde(id : number){
     Swal.fire({
       title: 'Etes vous certain de vouloir supprimer cette ronde ?',

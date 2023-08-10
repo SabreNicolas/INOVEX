@@ -66,7 +66,7 @@
 
     <div id="saisie">
         <!--table de saisie CONTAINER DASRI et autres-->
-        <div class="table-style">
+        <div *ngIf="productsEntrants.length > 0" class="table-style">
             <table class="table table-bordered table-hover tableFixed" *ngIf="listDays && productsEntrants">
                 <thead>
                 <tr class="table-secondary">

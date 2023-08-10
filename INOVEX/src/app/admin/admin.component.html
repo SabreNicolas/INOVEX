@@ -78,7 +78,7 @@
                 <button *ngIf="(pr.TAG == '' || pr.TAG == null) && pr.typeId != 1 && pr.typeId != 5" id="setRondier" (click)="setElementRondier(pr)" class="btn btn-light">
                     <i class="far fa-edit"></i>
                 </button>
-                <p *ngIf="pr.idElementRondier == null && (pr.TAG != '' && pr.TAG != null)">
+                <p *ngIf="(pr.idElementRondier == null && pr.TAG != '' && pr.TAG != null)">
                     La récupération se fait via le TAG
                 </p>
             </td>

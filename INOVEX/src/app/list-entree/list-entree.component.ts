@@ -43,7 +43,7 @@ export class ListEntreeComponent implements OnInit {
   
 
   constructor(private moralEntitiesService : moralEntitiesService, private productsService : productsService, private Papa : Papa, private dateService : dateService) {
-    this.debCode = '20';
+    this.debCode = '2';
     this.moralEntities = [];
     this.listDays = [];
     this.listTotal = [];
@@ -382,9 +382,15 @@ export class ListEntreeComponent implements OnInit {
       //delimiter,header,client,typedechet,dateEntree,tonnage
       this.lectureCSV(event, ";", false, 19, 22, 10, 8);
     }
+    //Maubeuge
     else if (this.typeImportTonnage.toLowerCase().includes("tradim")){
       //delimiter,header,client,typedechet,dateEntree,tonnage
       this.lectureCSV(event, ";", false, 8, 6, 0, 5);
+    }
+    //Plouharnel
+    else if (this.typeImportTonnage.toLowerCase().includes("arpege masterk")){
+      //delimiter,header,client,typedechet,dateEntree,tonnage
+      this.lectureCSV(event, ";", false, 8, 6, 1, 11);
     }
   }
 
