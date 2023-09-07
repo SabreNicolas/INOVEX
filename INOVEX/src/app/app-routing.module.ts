@@ -58,7 +58,7 @@ const routes: Routes = [
         component : SaisieGlobalComponent,
         //component : MaintenanceComponent,
         children: [
-            { path : '', canActivate: [AuthGuard], component:  ListEntreeComponent },
+            { path : '', canActivate: [AuthGuard], component:  ArretsComponent },
             { path : 'listClients', canActivate: [AuthGuard], component: ListMoralEntitiesComponent },
             { path : 'entree', canActivate: [AuthGuard], component : ListEntreeComponent },
             { path : 'sortie', canActivate: [AuthGuard], component : ListSortantsComponent },

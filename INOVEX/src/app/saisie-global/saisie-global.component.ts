@@ -14,10 +14,12 @@ export class SaisieGlobalComponent implements OnInit {
   public idUsine : number;
   public usine : string;
   public isSuperAdmin : boolean;
+  public isSaisie : boolean;
 
-  constructor() {
+  constructor(private router: Router) {
     this.usine="";
     this.isSuperAdmin = false;
+    this.isSaisie = false;
     this.idUsine = 0;
   }
 
@@ -31,6 +33,7 @@ export class SaisieGlobalComponent implements OnInit {
       //Récupération de l'idUsine
       // @ts-ignore
       this.idUsine = this.userLogged['idUsine'];
+      this.isSaisie = this.userLogged['isSaisie'];
       if(this.userLogged.hasOwnProperty('localisation')){
         //@ts-ignore
         this.usine = this.userLogged['localisation'];

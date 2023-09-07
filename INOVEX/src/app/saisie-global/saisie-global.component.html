@@ -12,25 +12,25 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
 
-            <li class="nav-item dropdown">
+            <li *ngIf="isSaisie" class="nav-item dropdown">
                 <a routerLink="listClients" class="nav-link" id="navbarDropdownListClients" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Liste des Clients
                 </a>
             </li>
 
-            <li class="nav-item dropdown">
+            <li *ngIf="isSaisie" class="nav-item dropdown">
                 <a routerLink="entree" class="nav-link" id="navbarDropdownEntree" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Entrants
                 </a>
             </li>
 
-            <li class="nav-item dropdown">
+            <li *ngIf="isSaisie" class="nav-item dropdown">
                 <a routerLink="sortie" class="nav-link" id="navbarDropdownSortie" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Sortants
                 </a>
             </li>
 
-            <li class="nav-item dropdown">
+            <li *ngIf="isSaisie" class="nav-item dropdown">
                 <a routerLink="listCompteurs" class="nav-link" id="navbarDropdownCompteurs" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Compteurs & Autres
                 </a>
@@ -42,13 +42,13 @@
                 </a>
             </li>-->
 
-            <li class="nav-item dropdown">
+            <li *ngIf="isSaisie" class="nav-item dropdown">
                 <a routerLink="analyses" [queryParams]="{ pci: 'false'}" class="nav-link" id="navbarDropdownAnalyse" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Analyses
                 </a>
             </li>
 
-            <li class="nav-item dropdown">
+            <li *ngIf="isSaisie" class="nav-item dropdown">
                 <a routerLink="conso" class="nav-link" id="navbarDropdownConso" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Consommables
                 </a>

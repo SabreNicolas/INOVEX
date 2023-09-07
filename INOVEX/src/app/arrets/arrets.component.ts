@@ -57,7 +57,8 @@ export class ArretsComponent implements OnInit {
     this.stringDateSaisie = '';
     this.commentaire = '_';
     this.route.queryParams.subscribe(params => {
-      if(params.isArret.includes('true')){
+      //Si le params n'est pas précisé dans l'url on le force à TRUE
+      if(params.isArret == undefined || params.isArret.includes('true')){
         this.isArret = true;
         this.getProductsArrets("30302");
       }

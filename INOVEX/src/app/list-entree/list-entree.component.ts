@@ -375,6 +375,7 @@ export class ListEntreeComponent implements OnInit {
     //Saint-Saulve
     else if (this.typeImportTonnage.toLowerCase().includes("dpk")){
       //delimiter,header,client,typedechet,dateEntree,tonnage
+      //this.lectureCSV(event, ";", false, 21, 20, 7, 19);
       this.lectureCSV(event, ";", false, 21, 20, 7, 19);
     }
     //Calce
@@ -391,6 +392,11 @@ export class ListEntreeComponent implements OnInit {
     else if (this.typeImportTonnage.toLowerCase().includes("arpege masterk")){
       //delimiter,header,client,typedechet,dateEntree,tonnage
       this.lectureCSV(event, ";", false, 8, 6, 1, 11);
+    }
+    //Pluzunet
+    else if (this.typeImportTonnage.toLowerCase().includes("caktus")){
+      //delimiter,header,client,typedechet,dateEntree,tonnage
+      this.lectureCSV(event, ";", false, 24, 4, 14, 10);
     }
   }
 
@@ -418,12 +424,20 @@ export class ListEntreeComponent implements OnInit {
             //   results.data[i][posTypeDechet] = results.data[i][posTypeDechet].split(" - ")[0];
             // }
             console.log(results.data[i][posClient])
+
+            //permet de diviser le tonnage par 1000 si on l'a en kg
+            let divisionKgToTonnes = 1;
+            //si ce n'est pas caktus on divise par 1000 pour avoir en tonnes
+            if (!this.typeImportTonnage.toLowerCase().includes("caktus")){
+              divisionKgToTonnes = 1000;
+            }
+
             //Création de l'objet qui contient l'ensemble des infos nécessaires
             let importCSV = {
               client: results.data[i][posClient],
               typeDechet: results.data[i][posTypeDechet],
               dateEntree : results.data[i][posDateEntree].substring(0,10),
-              tonnage : +results.data[i][posTonnage].replace(/[^0-9]/g,"")/1000,
+              tonnage : +results.data[i][posTonnage].replace(/[^0-9]/g,"")/divisionKgToTonnes,
             };
             this.csvArray.push(importCSV);
           }
