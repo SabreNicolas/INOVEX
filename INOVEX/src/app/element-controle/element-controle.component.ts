@@ -156,6 +156,7 @@ export class ElementControleComponent implements OnInit {
       this.listElement = response.data;
     });
   }
+
   getGroupement(){
     this.idGroupement = 0;
     if(this.zoneId.length == 1 ){
@@ -168,6 +169,7 @@ export class ElementControleComponent implements OnInit {
       });
     }
   }
+  
   //Création éléments contrôle
   onSubmit(form : NgForm) {
     this.nom = form.value['nom'].replace("'"," ");

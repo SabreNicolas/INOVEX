@@ -13,7 +13,8 @@
             <div class="col-sm-3">
                 <div class="form-group">
                     <select id="produit" required class="form-select form-select-sm"
-                            aria-label=".form-select-sm example" name="produit" ngModel="201">
+                            aria-label=".form-select-sm example" name="produit" ngModel="2">
+                        <option selected value="2">Tout</option>
                         <option *ngFor="let type of listTypeDechets" value="{{type.split('_')[0]}}">{{type.split("_")[1]}}</option>
                     </select>
                 </div>

@@ -7,8 +7,9 @@
             <div class="col-sm-3">
                 <div class="form-group">
                     <select id="categorie" required class="form-select form-select-sm"
-                            aria-label=".form-select-sm example" name="produit" ngModel="201">
-                        <option *ngFor="let cat of listCategories" selected value="{{cat.Code}}">{{cat.Name}}</option>
+                            aria-label=".form-select-sm example" name="produit" ngModel="5">
+                            <option selected value="">Tout</option>
+                        <option *ngFor="let cat of listCategories" value="{{cat.Code}}">{{cat.Name}}</option>
                     </select>
                 </div>
             </div>

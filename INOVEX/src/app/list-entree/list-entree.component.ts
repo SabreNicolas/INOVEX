@@ -13,6 +13,7 @@ import { importCSV } from 'src/models/importCSV.model';
 //***HODJA
 import { valueHodja } from 'src/models/valueHodja.model';
 import { dateService } from '../services/date.service';
+import { user } from 'src/models/user.model';
 
 @Component({
   selector: 'app-list-entree',
@@ -21,6 +22,8 @@ import { dateService } from '../services/date.service';
 })
 export class ListEntreeComponent implements OnInit {
 
+  public userLogged!: user;
+  public idUsine : number;
   public moralEntities : moralEntity[];
   public correspondance : any[];
   public debCode : string;
@@ -58,9 +61,21 @@ export class ListEntreeComponent implements OnInit {
     this.stockageHodja = new Map();
     this.correspondance = [];
     this.productsEntrants = [];
+    this.idUsine = 0;
   }
 
   ngOnInit(): void {
+
+    var userLogged = localStorage.getItem('user');
+    if (typeof userLogged === "string") {
+      var userLoggedParse = JSON.parse(userLogged);
+      this.userLogged = userLoggedParse;
+
+      //Récupération de l'idUsine
+      // @ts-ignore
+      this.idUsine = this.userLogged['idUsine'];
+    }
+
     this.productsEntrants = [];
     //Récupération type Import pour les tonnages
     this.moralEntitiesService.GetImportTonnage().subscribe((response)=>{
@@ -367,10 +382,14 @@ export class ListEntreeComponent implements OnInit {
       //delimiter,header,client,typedechet,dateEntree,tonnage
       this.lectureCSV(event, ";", false, 8, 7, 2, 5);
     }
-    //Noyelles-sous-lens
+    //Noyelles-sous-lens et Thiverval
     else if (this.typeImportTonnage.toLowerCase().includes("protruck")){
       //delimiter,header,client,typedechet,dateEntree,tonnage
-      this.lectureCSV(event, ";", false, 6, 31, 2, 16);
+      //Thiverval
+      if(this.idUsine === 11){
+        this.lectureCSV(event, ";", false, 6, 29, 2, 16);
+      }
+      else this.lectureCSV(event, ";", false, 6, 31, 2, 16);
     }
     //Saint-Saulve
     else if (this.typeImportTonnage.toLowerCase().includes("dpk")){
@@ -450,6 +469,7 @@ export class ListEntreeComponent implements OnInit {
 
   //Insertion du tonnage récupéré depuis le fichier csv ADEMI
   insertTonnageCSV(){
+    let successInsert = true;
     this.debCode = '20';
     this.stockageImport.clear();
     
@@ -481,21 +501,26 @@ export class ListEntreeComponent implements OnInit {
         });
     });
     //debug
-    //console.log(this.stockageImport);
+    console.log(this.stockageImport);
     //on parcours la hashmap pour insertion en BDD
     this.stockageImport.forEach(async (value : number, key : String) => {
       await this.moralEntitiesService.createMeasure(key.split('_')[0],value,parseInt(key.split('_')[1]),parseInt(key.split('_')[2])).subscribe((response) =>{
-        if (response == "Création du Measures OK"){
-          Swal.fire("Les valeurs ont été insérées avec succès !");
-        }
-        else {
-          Swal.fire({
-            icon: 'error',
-            text: 'Erreur lors de l\'insertion des valeurs ....',
-          })
+        if (response != "Création du Measures OK"){
+          successInsert = false;
         }
       })
     });
+
+    if (successInsert){
+      Swal.fire("Les valeurs ont été insérées avec succès !");
+    }
+    else {
+      Swal.fire({
+        icon: 'error',
+        text: 'Erreur lors de l\'insertion des valeurs ....',
+      })
+    }
+
   }
 
   //Import tonnage via HODJA

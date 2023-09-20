@@ -59,8 +59,13 @@ export class EquipeComponent implements OnInit {
           this.periode = "nuit";
         }
 
+        let zoneId; 
         for(var i = 0;i<response.data.length;i++){
-          this.listAjout.push({Id : response.data[i]['idRondier'], Prenom : response.data[i]['prenomRondier'],Nom : response.data[i]['nomRondier'], Poste : response.data[i]['poste'], Zone : response.data[i]['idZone']});
+          if(response.data[i]['idZone'] > 0){
+            zoneId = response.data[i]['idZone'];
+          }
+          else zoneId = 0;
+          this.listAjout.push({Id : response.data[i]['idRondier'], Prenom : response.data[i]['prenomRondier'],Nom : response.data[i]['nomRondier'], Poste : response.data[i]['poste'], Zone : zoneId});
         }
       })
     }

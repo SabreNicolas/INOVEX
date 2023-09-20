@@ -11,6 +11,7 @@ import { dateService } from '../services/date.service';
 import {Papa} from 'ngx-papaparse';
 import { dechetsCollecteurs } from 'src/models/dechetsCollecteurs.model';
 import { importCSV } from 'src/models/importCSV.model';
+import { user } from 'src/models/user.model';
 
 @Component({
   selector: 'app-list-sortants',
@@ -19,6 +20,8 @@ import { importCSV } from 'src/models/importCSV.model';
 })
 export class ListSortantsComponent implements OnInit {
 
+  public userLogged!: user;
+  public idUsine : number;
   public listProducts : product[];
   public listCategories : category[];
   public debCode : string;
@@ -41,9 +44,21 @@ export class ListSortantsComponent implements OnInit {
     this.csvArray = [];
     this.stockageImport = new Map();
     this.correspondance = [];
+    this.idUsine = 0;
   }
 
   ngOnInit(): void {
+
+    var userLogged = localStorage.getItem('user');
+    if (typeof userLogged === "string") {
+      var userLoggedParse = JSON.parse(userLogged);
+      this.userLogged = userLoggedParse;
+
+      //Récupération de l'idUsine
+      // @ts-ignore
+      this.idUsine = this.userLogged['idUsine'];
+    }
+
     this.categoriesService.getCategoriesSortants().subscribe((response)=>{
       // @ts-ignore
       this.listCategories = response.data;
@@ -168,27 +183,43 @@ export class ListSortantsComponent implements OnInit {
     import(event : Event){
       //Pithiviers/chinon
       if (this.typeImportTonnage.toLowerCase().includes("ademi")){
-        //delimiter,header,typedechet,dateEntree,tonnage
+        //delimiter,header,client,typedechet,dateEntree,tonnage
         this.lectureCSV(event, ";", false, 7, 2, 5);
       }
-      //Noyelles-sous-lens
+      //Noyelles-sous-lens et Thiverval
       else if (this.typeImportTonnage.toLowerCase().includes("protruck")){
-        //delimiter,header,typedechet,dateEntree,tonnage
-        this.lectureCSV(event, ";", false, 31, 2, 16);
+        //delimiter,header,client,typedechet,dateEntree,tonnage
+        //Thiverval
+        if(this.idUsine === 11){
+          this.lectureCSV(event, ";", false, 29, 2, 16);
+        }
+        else this.lectureCSV(event, ";", false, 31, 2, 16);
       }
       //Saint-Saulve
       else if (this.typeImportTonnage.toLowerCase().includes("dpk")){
-        //delimiter,header,typedechet,dateEntree,tonnage
-        this.lectureCSV(event, ";", false,  20, 7, 19);
+        //delimiter,header,client,typedechet,dateEntree,tonnage
+        //this.lectureCSV(event, ";", false, 21, 20, 7, 19);
+        this.lectureCSV(event, ";", false, 20, 7, 19);
       }
       //Calce
       else if (this.typeImportTonnage.toLowerCase().includes("informatique verte")){
-        //delimiter,header,typedechet,dateEntree,tonnage
+        //delimiter,header,client,typedechet,dateEntree,tonnage
         this.lectureCSV(event, ";", false, 22, 10, 8);
       }
+      //Maubeuge
       else if (this.typeImportTonnage.toLowerCase().includes("tradim")){
-        //delimiter,header,typedechet,dateEntree,tonnage
+        //delimiter,header,client,typedechet,dateEntree,tonnage
         this.lectureCSV(event, ";", false, 6, 0, 5);
+      }
+      //Plouharnel
+      else if (this.typeImportTonnage.toLowerCase().includes("arpege masterk")){
+        //delimiter,header,client,typedechet,dateEntree,tonnage
+        this.lectureCSV(event, ";", false, 6, 1, 11);
+      }
+      //Pluzunet
+      else if (this.typeImportTonnage.toLowerCase().includes("caktus")){
+        //delimiter,header,client,typedechet,dateEntree,tonnage
+        this.lectureCSV(event, ";", false, 4, 14, 10);
       }
     }
 
