@@ -30,7 +30,6 @@ export class ListEquipeComponent implements OnInit {
     this.rondierService.listConsignes().subscribe((response) => {
       //@ts-ignore
       this.consignes = response.data;
-      console.log(this.consignes);
     });
 
   }
@@ -42,6 +41,7 @@ export class ListEquipeComponent implements OnInit {
     //@ts-ignore
     (<HTMLElement>document.getElementById(equipe.id).classList.add("expanded"))
     console.log((<HTMLElement>document.getElementById(equipe.equipe)))
+    
   }
   
   //Fonction qui permet de fermer une card

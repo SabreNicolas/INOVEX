@@ -3,4 +3,5 @@ export interface importCSV {
     typeDechet: string,
     dateEntree : string,
     tonnage : number,
+    entrant : any
 }

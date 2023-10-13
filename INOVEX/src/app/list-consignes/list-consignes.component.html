@@ -7,6 +7,7 @@
             <thead>
             <tr class="table-secondary">
                 <th scope="col">Consigne</th>
+                <th scope="col">Date de Début de validité</th>
                 <th scope="col">Date de Fin de validité</th>
                 <th scope="col">Type</th>
                 <th scope="col">#</th>
@@ -15,6 +16,7 @@
             <tbody *ngFor="let consigne of listConsignes">
             <tr class="table-light" [ngSwitch]="consigne.type">
                 <td>{{consigne.commentaire}}</td>
+                <td>{{consigne.dateHeureDebut}}</td>
                 <td>{{consigne.dateHeureFin}}</td>
                 <td *ngSwitchCase=1 style="color: blue">Jour</td>
                 <td *ngSwitchCase=2 style="color: orange">Sécurité</td>

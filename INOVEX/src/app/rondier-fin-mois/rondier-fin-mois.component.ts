@@ -29,7 +29,7 @@ export class RondierFinMoisComponent implements OnInit {
       // @ts-ignore
       this.listCompteursRondier = response.data;
       //Récupération compteurs INOVEX
-      this.productsService.getCompteurs('').subscribe((response)=>{
+      this.productsService.getCompteurs('','').subscribe((response)=>{
         // @ts-ignore
         this.listCompteurs = response.data;
         this.getValues();

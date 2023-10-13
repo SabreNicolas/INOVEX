@@ -3,6 +3,7 @@ import {Injectable} from "@angular/core";
 import { maintenance } from "src/models/maintenance.model";
 import { site } from "src/models/site.model";
 import {category} from "../../models/categories.model";
+import { idUsineService } from "./idUsine.service";
 
 @Injectable()
 export class categoriesService {
@@ -19,25 +20,19 @@ export class categoriesService {
         'Access-Control-Allow-Origin' : '*',
         'Authorization': 'Bearer ' + localStorage.getItem('token')
     }
-    private portAPI = 3100;
+    private portAPI = 3102;
     private ip = "fr-couvinove301.prod.paprec.fr";
     //private ip = "localhost";
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient, private idUsineService : idUsineService) {
         this.httpClient = http;
         this._nom = '';
         this._code = '';
         this._parentId = 0;
         this.sites = [];
-        //Récupération du user dans localStorage
-        var userLogged = localStorage.getItem('user');
-        if (typeof userLogged === "string") {
-            var userLoggedParse = JSON.parse(userLogged);
-
-            //Récupération de l'idUsine
-            // @ts-ignore
-            this.idUsine = userLoggedParse['idUsine'];
-        }
+        //@ts-ignore
+        this.idUsine = this.idUsineService.getIdUsine();
+        
     }
 
     //création de catégorie

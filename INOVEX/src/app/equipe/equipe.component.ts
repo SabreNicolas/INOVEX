@@ -176,7 +176,7 @@ export class EquipeComponent implements OnInit {
 
       if(idUser>0){
         this.cahierQuartService.nouvelleAffectationEquipe(idUser,idEquipe,idZone,poste).subscribe((response) => {
-          Swal.fire('Nouvelle équipe créée','success');
+          Swal.fire({text : 'Nouvelle équipe créée', icon :'success'});
           this.listAjout = [];
         });
       }

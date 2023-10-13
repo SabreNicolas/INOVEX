@@ -4,6 +4,7 @@ import { maintenance } from "src/models/maintenance.model";
 import { site } from "src/models/site.model";
 import { user } from "src/models/user.model";
 import { zone } from "src/models/zone.model";
+import { idUsineService } from "./idUsine.service";
 
 @Injectable()
 export class cahierQuartService {
@@ -16,26 +17,16 @@ export class cahierQuartService {
         'Access-Control-Allow-Origin' : '*',
         'Authorization': 'Bearer ' + localStorage.getItem('token')
     }
-    private portAPI = 3100;
+    private portAPI = 3102;
     private ip = "fr-couvinove301.prod.paprec.fr";
     //private ip = "localhost";
     private idUsine : number | undefined;
     private idUser : number | undefined;
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient, private idUsineService : idUsineService) {
         this.httpClient = http;
-
-        //Récupération du user dans localStorage
-        var userLogged = localStorage.getItem('user');
-        if (typeof userLogged === "string") {
-            var userLoggedParse = JSON.parse(userLogged);
-
-            //Récupération de l'idUsine
-            // @ts-ignore
-            this.idUsine = userLoggedParse['idUsine'];
-            // @ts-ignore
-            this.idUser = userLoggedParse['Id'];
-        }
+        this.idUsine = this.idUsineService.getIdUsine();
+        this.idUser = this.idUsineService.getIdUser();
     }
 
     //Récupérer les rondiers sans équipe

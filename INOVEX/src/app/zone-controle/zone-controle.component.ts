@@ -3,6 +3,7 @@ import {NgForm} from "@angular/forms";
 import Swal from "sweetalert2";
 import {rondierService} from "../services/rondier.service";
 import { user } from 'src/models/user.model';
+import { idUsineService } from '../services/idUsine.service';
 
 @Component({
   selector: 'app-zone-controle',
@@ -18,8 +19,9 @@ export class ZoneControleComponent implements OnInit {
   private four : number;
   public denomination : string;
   public userLogged!: user;
+  private idUsine: number;
 
-  constructor(private rondierService : rondierService) {
+  constructor(private rondierService : rondierService, private idUsineService : idUsineService) {
     this.nom ="";
     this.commentaire="";
     this.nbfour = 0;
@@ -27,6 +29,7 @@ export class ZoneControleComponent implements OnInit {
     this.numbers = [];
     this.four = 0;
     this.denomination ="";
+    this.idUsine=0;
   }
 
   ngOnInit(): void {
@@ -37,16 +40,12 @@ export class ZoneControleComponent implements OnInit {
       this.numbers = Array(this.nbfour).fill(1).map((x,i) => i+1);
     });
 
-    var userLogged = localStorage.getItem('user');
-    if (typeof userLogged === "string") {
-      var userLoggedParse = JSON.parse(userLogged);
-      this.userLogged = userLoggedParse;
-      // @ts-ignore
-      if(this.userLogged['idUsine']==7){
-        this.denomination = "Ronde";
-      }
-      else this.denomination = "Zone de contrôle";
+    this.idUsine = this.idUsineService.getIdUsine();
+    if(this.idUsine==7){
+      this.denomination = "Ronde";
     }
+    else this.denomination = "Zone de contrôle";
+    
   }
 
   //création de la zone de controle

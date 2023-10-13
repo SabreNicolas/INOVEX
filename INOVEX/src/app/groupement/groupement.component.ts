@@ -5,6 +5,7 @@ import { zone } from 'src/models/zone.model';
 import Swal from 'sweetalert2';
 import { ActivatedRoute } from '@angular/router';
 import { user } from 'src/models/user.model';
+import { idUsineService } from '../services/idUsine.service';
 
 @Component({
   selector: 'app-groupement',
@@ -20,14 +21,16 @@ export class GroupementComponent implements OnInit {
   public idGroupement : number;
   public denomination : string;
   public userLogged!: user;
+  public idUsine : number;
   
-  constructor(public rondierService : rondierService,private route : ActivatedRoute) { 
+  constructor(public rondierService : rondierService,private route : ActivatedRoute, private idUsineService : idUsineService) { 
     this.listGroupement = [];
     this.listZone = [];
     this.idZone = 0;
     this.groupement = "";
     this.idGroupement = 0;
     this.denomination = "";
+    this.idUsine=0;
 
     this.route.queryParams.subscribe(params => {
       if(params.idGroupement != undefined){
@@ -56,16 +59,13 @@ export class GroupementComponent implements OnInit {
       });
     }
 
-    var userLogged = localStorage.getItem('user');
-    if (typeof userLogged === "string") {
-      var userLoggedParse = JSON.parse(userLogged);
-      this.userLogged = userLoggedParse;
-      // @ts-ignore
-      if(this.userLogged['idUsine']==7){
-        this.denomination = "Ronde";
-      }
-      else this.denomination = "Zone";
+   
+    this.idUsine = this.idUsineService.getIdUsine();
+    if(this.idUsine==7){
+      this.denomination = "Ronde";
     }
+    else this.denomination = "Zone";
+  
   }
   
   createGroupement(){
@@ -115,7 +115,7 @@ export class GroupementComponent implements OnInit {
           if (result.isConfirmed) {
             this.groupement =this.groupement.replace(/'/g,"''");
             this.rondierService.updateGroupement(this.idGroupement,this.groupement,this.idZone).subscribe((response) => {
-              Swal.fire('Groupement modifié !','success');
+              Swal.fire({text :'Groupement modifié !', icon :'success'});
               window.location.replace('/admin/groupement')
             })
           } 
