@@ -106,7 +106,7 @@ export class cahierQuartService {
 
     //Mise à jour des infos d'une équipe
     udpateEquipe(nomEquipe : string, quart : number, idEquipe : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/updateEquipe?&nomEquipe="+ nomEquipe + "&quart=" + quart + "&idEquipe="+idEquipe;
+        let requete = "https://"+this.ip+":"+this.portAPI+"/updateEquipe?&nomEquipe="+ nomEquipe + "&quart=" + quart + "&idEquipe="+idEquipe  +"&idChefQuart=" + this.idUser;
         
           const requestOptions = {
               headers: new HttpHeaders(this.headerDict),

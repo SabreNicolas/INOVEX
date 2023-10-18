@@ -36,20 +36,30 @@ export class ListEquipeComponent implements OnInit {
 
   //Fonction qui permet d'agrandir une card contenant les informations sur une équipe
   toggleCardSize(equipe: equipe) {
-    //@ts-ignore
-    (<HTMLElement>document.getElementById(equipe.id+"_overlay").classList.add("show"));
-    //@ts-ignore
-    (<HTMLElement>document.getElementById(equipe.id).classList.add("expanded"))
-    console.log((<HTMLElement>document.getElementById(equipe.equipe)))
-    
+
+    if(equipe.rondiers.length == 0){
+      document.location.href = ('https://fr-couvinove300.prod.paprec.fr:8101/cahierQuart/newEquipe?idEquipe=' + equipe.id);
+    }
+    else {
+      //@ts-ignore
+      (<HTMLElement>document.getElementById(equipe.id+"_overlay").classList.add("show"));
+      var exp = document.getElementById(String(equipe.id));
+      if(exp != null)
+      exp.classList.add("expanded");
+      //@ts-ignore
+      (<HTMLElement>document.getElementById(equipe.id+"_chefQuart").classList.remove("hide"))
+    }
   }
   
   //Fonction qui permet de fermer une card
-  closeCard(equipe: equipe) {
+  closeCard(equipe: equipe) {    
+    var chef = document.getElementById(equipe.id+"_chefQuart");
+    if(chef != null)
+    chef.classList.add("hide");
     //@ts-ignore
-    (<HTMLElement>document.getElementById(equipe.id).classList.toggle("expanded"))
-    //@ts-ignore
-    (<HTMLElement>document.getElementById(equipe.id+"_overlay").classList.toggle("show"));
+    (<HTMLElement>document.getElementById(equipe.id).classList.remove("expanded"))
+    var over = document.getElementById(equipe.id+"_overlay");
+    if(over != null )over.classList.remove("show");
   }
 
   deleteEquipe(idEquipe : number){

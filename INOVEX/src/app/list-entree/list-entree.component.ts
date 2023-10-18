@@ -149,9 +149,9 @@ export class ListEntreeComponent implements OnInit {
     if (this.dateFin < this.dateDeb) {
       this.dateService.mauvaiseEntreeDate(form); 
     }
-    if( (this.dateFin.getTime()-this.dateDeb.getTime())/(1000*60*60*24) > 29){
+    // if( (this.dateFin.getTime()-this.dateDeb.getTime())/(1000*60*60*24) > 29){
       this.loading();
-    }
+    // }
     this.listDays = this.dateService.getDays(this.dateDeb, this.dateFin);
     await this.getValues();
     this.removeloading();
@@ -392,13 +392,22 @@ export class ListEntreeComponent implements OnInit {
     }
     //Calce
     else if (this.typeImportTonnage.toLowerCase().includes("informatique verte")){
-      //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
-      this.lectureCSV(event, ";", true, 13, 15, 8, 6, 12);
+      //@ts-ignore
+      var file = event.target.files[0].name;
+      file = file.toLowerCase();
+      if(file.includes("dasri")){
+        //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
+        this.lectureCSV(event, ";", true, 1, 9999 , 3, 7);
+      }
+      else{
+        //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
+        this.lectureCSV(event, ";", true, 13, 15, 8, 6, 12);
+      }
     }
     //Maubeuge
     else if (this.typeImportTonnage.toLowerCase().includes("tradim")){
       //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
-      this.lectureCSV(event, ";", false, 8, 6, 0, 5);
+      this.lectureCSV(event, ";", true, 8, 6, 0, 5);
     }
     //Plouharnel
     else if (this.typeImportTonnage.toLowerCase().includes("arpege masterk")){
@@ -408,7 +417,7 @@ export class ListEntreeComponent implements OnInit {
     //Pluzunet
     else if (this.typeImportTonnage.toLowerCase().includes("caktus")){
       //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
-      this.lectureCSV(event, ";", false, 24, 4, 14, 10);
+      this.lectureCSV(event, ";", true, 59, 28, 7, 35, 6);
     }
   }
 
@@ -460,14 +469,21 @@ export class ListEntreeComponent implements OnInit {
             else{
               EntreeSortie = results.data[i][posEntreeSortie]
             }
+            var typeDechet
+            if(posTypeDechet == 9999){
+               typeDechet= "DASRI"
+            }
+            else typeDechet = results.data[i][posTypeDechet]
+
             //Création de l'objet qui contient l'ensemble des infos nécessaires
             let importCSV = {
               client: results.data[i][posClient],
-              typeDechet: results.data[i][posTypeDechet],
+              typeDechet: typeDechet,
               dateEntree : results.data[i][posDateEntree].substring(0,10),
-              tonnage : +results.data[i][posTonnage].replace(/[^0-9]/g,"")/divisionKgToTonnes,
+              tonnage : +results.data[i][posTonnage].replace(/[^0-9,.]/g,"").replace(",",".")/divisionKgToTonnes,
               entrant : EntreeSortie
             };
+            console.log(importCSV)
             this.csvArray.push(importCSV);
           }
           //console.log(this.csvArray);
@@ -615,7 +631,4 @@ export class ListEntreeComponent implements OnInit {
       });
     })
   }
-
-
 }
-

@@ -19,38 +19,41 @@
   </table>
 </div>
 
-<h1>Voici la liste des équipes :</h1>
+<h1>Veuillez choisir un quart :</h1>
 <div class="container">
 
 
     <div  *ngFor="let card of equipes" class="card" id="{{card.id}}" (click)="toggleCardSize(card)" >
           <div class="card-body">
-            <h5 *ngIf="card.quart === 1" class="card-title">{{ card.equipe }} || Quart du matin </h5>
-            <h5 *ngIf="card.quart === 2" class="card-title">{{ card.equipe }} || Quart de l'après-midi </h5>
-            <h5 *ngIf="card.quart === 3" class="card-title">{{ card.equipe }} || Quart de nuit </h5>
+            <h5 *ngIf="card.quart === 1" class="card-title">Quart du matin </h5>
+            <h5 *ngIf="card.quart === 2" class="card-title">Quart de l'après-midi </h5>
+            <h5 *ngIf="card.quart === 3" class="card-title">Quart de nuit </h5>
 
-            <p class="card-text"><strong>{{ card.prenomChefQuart }} {{card.nomChefQuart}}</strong> Chef de Quart</p>
+            <div  class="hide" id="{{card.id}}_chefQuart">
+              <p class="card-text">{{ card.equipe }} || <strong>{{ card.prenomChefQuart }} {{card.nomChefQuart}}</strong> Chef de Quart</p>
             
-            <p class="titreListe">Voici la liste des rondiers :</p>
-            <div id="tableRondier" class="overflow-auto">
-                <table class="table table-hover tableFixed" id="listRondier">
-                    <thead>
-                    <tr class="table-secondary">
-                        <th scope="col">Nom</th>
-                        <th scope="col">Prénom</th>
-                        <th scope="col">Poste</th>
-                        <th scope="col">Ronde</th>
-                    </thead>
-                    <tbody >
-                        <tr *ngFor="let rondier of card.rondiers" class="table-light">
-                            <td>{{rondier.Nom}}</td>
-                            <td>{{rondier.Prenom}}</td>
-                            <td>{{rondier.poste}}</td>
-                            <td>{{rondier.nomZone}}</td>
-                        </tr>
-                    </tbody>
-                </table>
+              <p class="titreListe">Voici la liste des rondiers :</p>
+              <div id="tableRondier" class="overflow-auto">
+                  <table class="table table-hover tableFixed" id="listRondier">
+                      <thead>
+                      <tr class="table-secondary">
+                          <th scope="col">Nom</th>
+                          <th scope="col">Prénom</th>
+                          <th scope="col">Poste</th>
+                          <th scope="col">Ronde</th>
+                      </thead>
+                      <tbody >
+                          <tr *ngFor="let rondier of card.rondiers" class="table-light">
+                              <td>{{rondier.Nom}}</td>
+                              <td>{{rondier.Prenom}}</td>
+                              <td>{{rondier.poste}}</td>
+                              <td>{{rondier.nomZone}}</td>
+                          </tr>
+                      </tbody>
+                  </table>
+              </div>          
             </div>
+
           </div>
           <a target="_blank" routerLink="/cahierQuart/newEquipe" [queryParams]="{idEquipe: card.id}" > 
             <button class="btn btn btn-light edition">
@@ -59,10 +62,10 @@
           </a>
           <button class="btn btn btn-danger suppression" (click)="deleteEquipe(card.id)">
             <i class="fas fa-trash-alt"></i>
-            </button>
+          </button>
     </div>
     
   </div>
   
-<div class="overlay" *ngFor="let card of equipes" id="{{card.id}}_overlay" (click)="closeCard(card)">
+  <div class="overlay" *ngFor="let card of equipes" id="{{card.id}}_overlay" (click)="closeCard(card)">
 </div>

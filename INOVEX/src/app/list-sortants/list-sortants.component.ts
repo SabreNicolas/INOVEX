@@ -212,7 +212,7 @@ export class ListSortantsComponent implements OnInit {
       //Pluzunet
       else if (this.typeImportTonnage.toLowerCase().includes("caktus")){
         //delimiter,header,client,typedechet,dateEntree,tonnage
-        this.lectureCSV(event, ";", false, 4, 14, 10);
+        this.lectureCSV(event, ";", false, 28, 7, 35, 6);
       }
     }
 
