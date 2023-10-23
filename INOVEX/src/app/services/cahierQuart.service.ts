@@ -4,6 +4,7 @@ import { maintenance } from "src/models/maintenance.model";
 import { site } from "src/models/site.model";
 import { user } from "src/models/user.model";
 import { zone } from "src/models/zone.model";
+import { idUsineService } from "./idUsine.service";
 
 @Injectable()
 export class cahierQuartService {
@@ -22,20 +23,10 @@ export class cahierQuartService {
     private idUsine : number | undefined;
     private idUser : number | undefined;
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient, private idUsineService : idUsineService) {
         this.httpClient = http;
-
-        //Récupération du user dans localStorage
-        var userLogged = localStorage.getItem('user');
-        if (typeof userLogged === "string") {
-            var userLoggedParse = JSON.parse(userLogged);
-
-            //Récupération de l'idUsine
-            // @ts-ignore
-            this.idUsine = userLoggedParse['idUsine'];
-            // @ts-ignore
-            this.idUser = userLoggedParse['Id'];
-        }
+        this.idUsine = this.idUsineService.getIdUsine();
+        this.idUser = this.idUsineService.getIdUser();
     }
 
     //Récupérer les rondiers sans équipe
@@ -115,7 +106,7 @@ export class cahierQuartService {
 
     //Mise à jour des infos d'une équipe
     udpateEquipe(nomEquipe : string, quart : number, idEquipe : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/updateEquipe?&nomEquipe="+ nomEquipe + "&quart=" + quart + "&idEquipe="+idEquipe;
+        let requete = "https://"+this.ip+":"+this.portAPI+"/updateEquipe?&nomEquipe="+ nomEquipe + "&quart=" + quart + "&idEquipe="+idEquipe  +"&idChefQuart=" + this.idUser;
         
           const requestOptions = {
               headers: new HttpHeaders(this.headerDict),

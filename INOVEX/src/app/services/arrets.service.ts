@@ -4,6 +4,7 @@ import {arret} from "../../models/arrets.model";
 import {sumArret} from "../../models/sumArret.model";
 import {depassement} from "../../models/depassement.model";
 import {sumDepassement} from "../../models/sumDepassement.model";
+import { idUsineService } from "./idUsine.service";
 
 @Injectable()
 export class arretsService {
@@ -20,17 +21,10 @@ export class arretsService {
     //private ip = "localhost";
     private idUsine : number | undefined;
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient, private idUsineService : idUsineService) {
         this.httpClient = http;
-        //Récupération du user dans localStorage
-        var userLogged = localStorage.getItem('user');
-        if (typeof userLogged === "string") {
-            var userLoggedParse = JSON.parse(userLogged);
-
-            //Récupération de l'idUsine
-            // @ts-ignore
-            this.idUsine = userLoggedParse['idUsine'];
-        }
+        //@ts-ignore
+        this.idUsine = this.idUsineService.getIdUsine();
     }
 
 

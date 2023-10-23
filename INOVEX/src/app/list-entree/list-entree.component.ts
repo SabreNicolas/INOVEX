@@ -14,6 +14,7 @@ import { importCSV } from 'src/models/importCSV.model';
 import { valueHodja } from 'src/models/valueHodja.model';
 import { dateService } from '../services/date.service';
 import { user } from 'src/models/user.model';
+import { idUsineService } from '../services/idUsine.service';
 
 @Component({
   selector: 'app-list-entree',
@@ -45,7 +46,7 @@ export class ListEntreeComponent implements OnInit {
   public stockageHodja : Map<moralEntity,number>;
   
 
-  constructor(private moralEntitiesService : moralEntitiesService, private productsService : productsService, private Papa : Papa, private dateService : dateService) {
+  constructor(private idUsineService : idUsineService, private moralEntitiesService : moralEntitiesService, private productsService : productsService, private Papa : Papa, private dateService : dateService) {
     this.debCode = '2';
     this.moralEntities = [];
     this.listDays = [];
@@ -66,15 +67,7 @@ export class ListEntreeComponent implements OnInit {
 
   ngOnInit(): void {
 
-    var userLogged = localStorage.getItem('user');
-    if (typeof userLogged === "string") {
-      var userLoggedParse = JSON.parse(userLogged);
-      this.userLogged = userLoggedParse;
-
-      //Récupération de l'idUsine
-      // @ts-ignore
-      this.idUsine = this.userLogged['idUsine'];
-    }
+    this.idUsine = this.idUsineService.getIdUsine();
 
     this.productsEntrants = [];
     //Récupération type Import pour les tonnages
@@ -144,7 +137,7 @@ export class ListEntreeComponent implements OnInit {
     // @ts-ignore
     //var collecteurSel = collecteurElt.options[collecteurElt.selectedIndex].value;
     this.debCode = produitSel;
-    console.log(this.debCode)
+    // console.log(this.debCode)
     /*Fin de prise en commpte des filtres */
     this.ngOnInit();
   }
@@ -156,9 +149,9 @@ export class ListEntreeComponent implements OnInit {
     if (this.dateFin < this.dateDeb) {
       this.dateService.mauvaiseEntreeDate(form); 
     }
-    if( (this.dateFin.getTime()-this.dateDeb.getTime())/(1000*60*60*24) > 29){
+    // if( (this.dateFin.getTime()-this.dateDeb.getTime())/(1000*60*60*24) > 29){
       this.loading();
-    }
+    // }
     this.listDays = this.dateService.getDays(this.dateDeb, this.dateFin);
     await this.getValues();
     this.removeloading();
@@ -263,7 +256,6 @@ export class ListEntreeComponent implements OnInit {
     this.listDays.forEach(date => {
       // @ts-ignore
       this.productsService.getValueProducts(date.substr(6, 4) + '-' + date.substr(3, 2) + '-' + date.substr(0, 2), idProduct).subscribe((response) => {
-        console.log(response.data);
         if (response.data[0] != undefined && response.data[0].Value != 0) {
           // @ts-ignore
           (<HTMLInputElement>document.getElementById(idProduct + '-' + date)).value = response.data[0].Value;
@@ -379,12 +371,12 @@ export class ListEntreeComponent implements OnInit {
   import(event : Event){
     //Pithiviers/chinon
     if (this.typeImportTonnage.toLowerCase().includes("ademi")){
-      //delimiter,header,client,typedechet,dateEntree,tonnage
+      //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
       this.lectureCSV(event, ";", false, 8, 7, 2, 5);
     }
     //Noyelles-sous-lens et Thiverval
     else if (this.typeImportTonnage.toLowerCase().includes("protruck")){
-      //delimiter,header,client,typedechet,dateEntree,tonnage
+      //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
       //Thiverval
       if(this.idUsine === 11){
         this.lectureCSV(event, ";", false, 6, 29, 2, 16);
@@ -393,39 +385,55 @@ export class ListEntreeComponent implements OnInit {
     }
     //Saint-Saulve
     else if (this.typeImportTonnage.toLowerCase().includes("dpk")){
-      //delimiter,header,client,typedechet,dateEntree,tonnage
+      //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
       //this.lectureCSV(event, ";", false, 21, 20, 7, 19);
       this.lectureCSV(event, ";", false, 21, 20, 7, 19);
     }
     //Calce
     else if (this.typeImportTonnage.toLowerCase().includes("informatique verte")){
-      //delimiter,header,client,typedechet,dateEntree,tonnage
-      this.lectureCSV(event, ";", false, 19, 22, 10, 8);
+      //@ts-ignore
+      var file = event.target.files[0].name;
+      file = file.toLowerCase();
+      if(file.includes("dasri")){
+        //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
+        this.lectureCSV(event, ";", true, 1, 9999 , 3, 7);
+      }
+      else{
+        //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
+        this.lectureCSV(event, ";", true, 13, 15, 8, 6, 12);
+      }
     }
     //Maubeuge
     else if (this.typeImportTonnage.toLowerCase().includes("tradim")){
-      //delimiter,header,client,typedechet,dateEntree,tonnage
-      this.lectureCSV(event, ";", false, 8, 6, 0, 5);
+      //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
+      this.lectureCSV(event, ";", true, 8, 6, 0, 5);
     }
     //Plouharnel
     else if (this.typeImportTonnage.toLowerCase().includes("arpege masterk")){
-      //delimiter,header,client,typedechet,dateEntree,tonnage
-      this.lectureCSV(event, ";", false, 8, 6, 1, 11);
+      //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
+      this.lectureCSV(event, ";", false, 8, 6, 1, 11, 12);
     }
     //Pluzunet
     else if (this.typeImportTonnage.toLowerCase().includes("caktus")){
-      //delimiter,header,client,typedechet,dateEntree,tonnage
-      this.lectureCSV(event, ";", false, 24, 4, 14, 10);
+      //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
+      this.lectureCSV(event, ";", true, 59, 28, 7, 35, 6);
     }
   }
 
   //import tonnage via fichier
   //Traitement du fichier csv ADEMI
-  lectureCSV(event : Event, delimiter : string, header : boolean, posClient : number, posTypeDechet : number, posDateEntree : number, posTonnage : number){
+  lectureCSV(event : Event, delimiter : string, header : boolean, posClient : number, posTypeDechet : number, posDateEntree : number, posTonnage : number, posEntreeSortie? : number){
     //@ts-ignore
     var files = event.target.files; // FileList object
     var file = files[0];
     var reader = new FileReader();
+    var debut = 0;
+
+    //Si on a une ligne header, on commence l'acquisition à 1.
+    if(header == true){
+      debut = 1;
+    }
+
     reader.readAsText(file);
     reader.onload = (event: any) => {
       var csv = event.target.result; // Content of CSV file
@@ -433,16 +441,17 @@ export class ListEntreeComponent implements OnInit {
       this.Papa.parse(csv, {
         skipEmptyLines: true,
         delimiter: delimiter,
-        header: header,
+        //False pour éviter de devoir utiliser le nom des entêtes et rester sur un tableau avec des indices.
+        header: false,
         complete: (results) => {
-          for (let i = 0; i < results.data.length; i++) {
+          for (let i = debut; i < results.data.length; i++) {
             //ON récupére les lignes infos nécessaires pour chaque ligne du csv
             //ON récupère uniquement les types de déchets pour les entrants
 
             // if(this.typeImportTonnage.toLowerCase().includes("protruck")){
             //   results.data[i][posTypeDechet] = results.data[i][posTypeDechet].split(" - ")[0];
             // }
-            console.log(results.data[i][posClient])
+            // console.log(results.data[i][posClient])
 
             //permet de diviser le tonnage par 1000 si on l'a en kg
             let divisionKgToTonnes = 1;
@@ -451,12 +460,27 @@ export class ListEntreeComponent implements OnInit {
               divisionKgToTonnes = 1000;
             }
 
+            var EntreeSortie
+            //Si l'argument de position n'est pas fournit, on met la valeur à E
+            if(posEntreeSortie == undefined){
+              EntreeSortie = "E";
+            }
+            else{
+              EntreeSortie = results.data[i][posEntreeSortie]
+            }
+            var typeDechet
+            if(posTypeDechet == 9999){
+               typeDechet= "DASRI"
+            }
+            else typeDechet = results.data[i][posTypeDechet]
+
             //Création de l'objet qui contient l'ensemble des infos nécessaires
             let importCSV = {
               client: results.data[i][posClient],
-              typeDechet: results.data[i][posTypeDechet],
+              typeDechet: typeDechet,
               dateEntree : results.data[i][posDateEntree].substring(0,10),
-              tonnage : +results.data[i][posTonnage].replace(/[^0-9]/g,"")/divisionKgToTonnes,
+              tonnage : +results.data[i][posTonnage].replace(/[^0-9,.]/g,"").replace(",",".")/divisionKgToTonnes,
+              entrant : EntreeSortie
             };
             this.csvArray.push(importCSV);
           }
@@ -470,38 +494,51 @@ export class ListEntreeComponent implements OnInit {
   //Insertion du tonnage récupéré depuis le fichier csv ADEMI
   insertTonnageCSV(){
     let successInsert = true;
+    let clientManquants: any[] = [];
+    let dechetsManquants: string[]  = [];
     this.debCode = '20';
     this.stockageImport.clear();
-    
-    this.correspondance.forEach(correspondance => {
-        this.csvArray.forEach(csv => {
-        
+    var count = 0 ;
+
+    this.csvArray.forEach(csv => {
+      var clientManquant = csv.client;
+      var dechetManquant = csv.typeDechet;
+      count = 0;
+      this.correspondance.forEach(correspondance => {
+
           csv.client = csv.client.toLowerCase().replace(/\s/g,"");
           csv.typeDechet = csv.typeDechet.toLowerCase().replace(/\s/g,"");
           correspondance.nomImport = correspondance.nomImport.toLowerCase().replace(/\s/g,"");
           correspondance.productImport = correspondance.productImport.toLowerCase().replace(/\s/g,"");
 
-          //Si il y a correspondance on fait traitement
-          if( correspondance.nomImport == csv.client && correspondance.productImport == csv.typeDechet /*|| (mr.produit == "dib/dea" && mr.produit.includes(csv.typeDechet)))*/ ){  
-            let formatDate = csv.dateEntree.split('/')[2]+'-'+csv.dateEntree.split('/')[1]+'-'+csv.dateEntree.split('/')[0];
-            let keyHash = formatDate+'_'+correspondance.ProductId+'_'+correspondance.ProducerId;
-            //si il y a deja une valeur dans la hashMap pour ce client et ce jour, on incrémente la valeur
-            let value, valueRound;
-            if(this.stockageImport.has(keyHash)){
+          if(csv.entrant == "E" || csv.entrant == 1){
+            //Si il y a correspondance on fait traitement
+            if( correspondance.nomImport == csv.client && correspondance.productImport == csv.typeDechet  /*|| (mr.produit == "dib/dea" && mr.produit.includes(csv.typeDechet)))*/ ){  
+              let formatDate = csv.dateEntree.split('/')[2]+'-'+csv.dateEntree.split('/')[1]+'-'+csv.dateEntree.split('/')[0];
+              let keyHash = formatDate+'_'+correspondance.ProductId+'_'+correspondance.ProducerId;
+              //si il y a deja une valeur dans la hashMap pour ce client et ce jour, on incrémente la valeur
+              let value, valueRound;
+              count = count + 1;;
+              if(this.stockageImport.has(keyHash)){
+                //@ts-ignore
+                value = this.stockageImport.get(keyHash)+csv.tonnage;
+                valueRound = parseFloat(value.toFixed(3));
+                this.stockageImport.set(keyHash,valueRound);
+              }
+              else
+              //Sinon on insére dans la hashMap
               //@ts-ignore
-              value = this.stockageImport.get(keyHash)+csv.tonnage;
-              valueRound = parseFloat(value.toFixed(3));
-              this.stockageImport.set(keyHash,valueRound);
+              this.stockageImport.set(keyHash,parseFloat(csv.tonnage.toFixed(3)));
             }
-            else
-            //Sinon on insére dans la hashMap
-            //@ts-ignore
-            this.stockageImport.set(keyHash,parseFloat(csv.tonnage.toFixed(3)));
           }
         });
+        if(count == 0 && (csv.entrant == "E" || csv.entrant == 1)){
+          dechetsManquants.push(dechetManquant);
+          clientManquants.push(clientManquant);
+        }
     });
     //debug
-    console.log(this.stockageImport);
+    // console.log(this.stockageImport);
     //on parcours la hashmap pour insertion en BDD
     this.stockageImport.forEach(async (value : number, key : String) => {
       await this.moralEntitiesService.createMeasure(key.split('_')[0],value,parseInt(key.split('_')[1]),parseInt(key.split('_')[2])).subscribe((response) =>{
@@ -512,7 +549,16 @@ export class ListEntreeComponent implements OnInit {
     });
 
     if (successInsert){
-      Swal.fire("Les valeurs ont été insérées avec succès !");
+      var afficher = "";
+
+      for(let i = 0; i< clientManquants.length; i++){
+        afficher += "Le client <strong>'" + clientManquants[i] + "'</strong> avec le déchet : <strong>'" + dechetsManquants[i] + "'</strong> n'a pas de correspondance dans CAP Exploitation <br>";
+      }
+      Swal.fire({
+        html : afficher,
+        width : '80%',
+        title :"Les valeurs ont été insérées avec succès !"
+      });
     }
     else {
       Swal.fire({
@@ -582,7 +628,4 @@ export class ListEntreeComponent implements OnInit {
       });
     })
   }
-
-
 }
-

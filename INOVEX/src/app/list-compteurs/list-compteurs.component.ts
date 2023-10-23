@@ -8,6 +8,7 @@ import {NgForm} from "@angular/forms";
 import * as XLSX from 'xlsx';
 import { dateService } from '../services/date.service';
 import { moralEntitiesService } from '../services/moralentities.service';
+import { idUsineService } from '../services/idUsine.service';
 
 @Component({
   selector: 'app-list-compteurs',
@@ -23,22 +24,16 @@ export class ListCompteursComponent implements OnInit {
   public idUsine : number | undefined;
   public dateDeb : Date | undefined;
   public dateFin : Date | undefined;
+  public name : string;
 
-  constructor(private productsService : productsService, private categoriesService : categoriesService, private dateService : dateService, private mrService : moralEntitiesService) {
+  constructor(private idUsineService : idUsineService, private productsService : productsService, private categoriesService : categoriesService, private dateService : dateService, private mrService : moralEntitiesService) {
     this.listCategories = [];
     this.listCompteurs = [];
     this.Code = '';
     this.listDays = [];
+    this.name ="";
 
-    //Récupération du user dans localStorage
-    var userLogged = localStorage.getItem('user');
-    if (typeof userLogged === "string") {
-        var userLoggedParse = JSON.parse(userLogged);
-
-        //Récupération de l'idUsine
-        // @ts-ignore
-        this.idUsine = userLoggedParse['idUsine'];
-    }
+    this.idUsine = this.idUsineService.getIdUsine();
   }
 
   ngOnInit(): void { 
@@ -47,7 +42,7 @@ export class ListCompteursComponent implements OnInit {
       this.listCategories = response.data;
     });
 
-    this.productsService.getCompteurs(this.Code).subscribe((response)=>{
+    this.productsService.getCompteurs(this.Code, this.name).subscribe((response)=>{
       // @ts-ignore
       this.listCompteurs = response.data;
       this.getValues();
@@ -63,9 +58,17 @@ export class ListCompteursComponent implements OnInit {
   
   setFilters(){
     var codeCat = document.getElementById("categorie");
-    // @ts-ignore
-    var codeCatSel = codeCat.options[codeCat.selectedIndex].value;
+    //@ts-ignore
+    var verif = codeCat.options[codeCat.selectedIndex]
+    if(verif != undefined){
+      // @ts-ignore
+      var codeCatSel = codeCat.options[codeCat.selectedIndex].value;
+    }
+    else var codeCatSel = "";
+   
     this.Code = codeCatSel;
+    var name = (<HTMLInputElement>document.getElementById('name')).value;
+    this.name = name;
     /*Fin de prise en commpte des filtres */
     this.ngOnInit();
   }

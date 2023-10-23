@@ -82,7 +82,7 @@ export class UserComponent implements OnInit {
     else this.isAdmin = 0;
 
     this.loginService.createUser(this.nom,this.prenom,this.login,this.MD5pwd,this.isRondier,this.isSaisie, this.isQSE, this.isRapport,this.isChefQuart,this.isAdmin).subscribe((response)=>{
-      console.log(response);
+      // console.log(response);
       if (response == "Création de l'utilisateur OK"){
         Swal.fire("L'utilisateur a bien été créé !");
       }

@@ -43,6 +43,7 @@ export class ArretsComponent implements OnInit {
   public fortuit_chaudiere : boolean = false;
   public fortuit_traitement : boolean = false;
   public fortuit_commun : boolean = false;
+  public saisieLibre : string;
 
   constructor(private arretsService : arretsService, private productsService : productsService, private datePipe : DatePipe, private route : ActivatedRoute, private router : Router) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false; //permet de recharger le component au changement de paramètre
@@ -56,6 +57,7 @@ export class ArretsComponent implements OnInit {
     this.stringDateFin = '';
     this.stringDateSaisie = '';
     this.commentaire = '_';
+    this.saisieLibre ="";
     this.route.queryParams.subscribe(params => {
       //Si le params n'est pas précisé dans l'url on le force à TRUE
       if(params.isArret == undefined || params.isArret.includes('true')){
@@ -232,7 +234,10 @@ export class ArretsComponent implements OnInit {
       this.dateFin = this.dateDebut;
       this.commentaire = '_';
     }
-
+    if(this.commentaire != '_'){
+      this.commentaire = this.commentaire +" - "+ this.saisieLibre;
+    }
+    else this.commentaire = this.saisieLibre;
     this.transformDateFormat();
     if (this.isArret == true) {
       this.arretsService.createArret(this.stringDateDebut, this.stringDateFin, this.duree, this.IdUser, this.stringDateSaisie, this.commentaire, this.arretId).subscribe((response) => {
@@ -240,7 +245,6 @@ export class ArretsComponent implements OnInit {
           Swal.fire("L'arrêt a bien été créé !");
           //envoi d'un mail si arrêt intempestif ou arrêt GTA
           if (this.arretName.includes("FORTUIT") || this.arretName.includes("GTA")) {
-            console.log(this.stringDateDebut);
             this.arretsService.sendEmail(this.stringDateDebut.substr(8, 2) + '-' + this.stringDateDebut.substr(5, 2) + '-' + this.stringDateDebut.substr(0, 4), this.stringDateDebut.substr(11, 5), this.duree, this.arretName, this.commentaire).subscribe((response) => {
               if (response == "mail OK") {
                 Swal.fire("Un mail d'alerte à été envoyé !");

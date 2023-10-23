@@ -13,6 +13,7 @@ import {consigne} from "../../models/consigne.model";
 import {anomalie} from "../../models/anomalie.model";
 import {elementsOfZone} from "../../models/elementsOfZone.model";
 import {permisFeuValidation} from "../../models/permisfeu-validation.model";
+import { idUsineService } from "./idUsine.service";
 
 @Injectable()
 export class rondierService {
@@ -30,18 +31,11 @@ export class rondierService {
     //private ip = "localhost";
     private idUsine : number | undefined;
     private idUser : number;
-    constructor(private http: HttpClient) {
-        this.httpClient = http;
-        //Récupération du user dans localStorage
-        var userLogged = localStorage.getItem('user');
-        if (typeof userLogged === "string") {
-            var userLoggedParse = JSON.parse(userLogged);
 
-            //Récupération de l'idUsine
-            // @ts-ignore
-            this.idUsine = userLoggedParse['idUsine'];
-        }
-        this.idUser = userLoggedParse['Id'];
+    constructor(private http: HttpClient, private idUsineService : idUsineService) {
+        this.httpClient = http;
+        this.idUsine = this.idUsineService.getIdUsine();
+        this.idUser = this.idUsineService.getIdUser();
     }
 
     /*
@@ -470,6 +464,19 @@ export class rondierService {
         
     }
 
+    listZonesAndElementsWithValues(rondeId : number){
+            let requete = "https://"+this.ip+":"+this.portAPI+"/BadgeAndElementsOfZoneWithValues/"+this.idUsine+"/"+rondeId;
+            //console.log(requete);
+    
+            const requestOptions = {
+                headers: new HttpHeaders(this.headerDict),
+            };
+    
+            return this.http
+                .get<elementsOfZone[]>(requete,requestOptions);
+      
+    }
+
     /*
     FIN ELEMENT DE CONTROLE
      */
@@ -635,6 +642,19 @@ export class rondierService {
             .get<ronde[]>(requete,requestOptions);
     }
 
+    //Affichage d'une ronde pour une date et un quart donnée
+    affichageRonde(date: string, quart: number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/RondesQuart?date="+date+"&idUsine="+this.idUsine+"&quart="+quart;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<ronde[]>(requete,requestOptions);
+    }
+
     //Reporting d'une ronde
     reportingRonde(idRonde : number){
         let requete = "https://"+this.ip+":"+this.portAPI+"/reportingRonde/"+idRonde;
@@ -698,8 +718,8 @@ export class rondierService {
      */
     //création d'une consigne
     //?commentaire=dggd&dateFin=fff&type=1
-    createConsigne(desc: string, type: number, dateFin: string | null){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/consigne?commentaire="+desc+"&dateFin="+dateFin+"&type="+type+"&idUsine="+this.idUsine;
+    createConsigne(desc: string, type: number, dateFin: string | null, dateDebut: string | null){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/consigne?commentaire="+desc+"&dateFin="+dateFin+"&dateDebut=" + dateDebut + "&type="+type+"&idUsine="+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {

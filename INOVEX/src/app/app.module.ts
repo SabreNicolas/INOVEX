@@ -68,6 +68,7 @@ import { ListGroupementsComponent } from './list-groupements/list-groupements.co
 import { ImportTonnageComponent } from './import-tonnage/import-tonnage.component';
 import { OutilsComponent } from './outils/outils.component';
 import { CorrespondanceSortantsComponent } from './correspondance-sortants/correspondance-sortants.component';
+import { idUsineService } from './services/idUsine.service';
 
 @NgModule({
   declarations: [
@@ -142,7 +143,8 @@ import { CorrespondanceSortantsComponent } from './correspondance-sortants/corre
     rondierService,
     dateService,
     tokenApiService,
-    cahierQuartService
+    cahierQuartService,
+    idUsineService
   ],
   bootstrap: [AppComponent]
 })

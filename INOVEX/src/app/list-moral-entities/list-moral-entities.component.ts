@@ -212,7 +212,7 @@ export class ListMoralEntitiesComponent implements OnInit {
     }
     else this.listId.splice(this.listId.indexOf(Id),1);
 
-    console.log(this.listId);
+    // console.log(this.listId);
   }
 
   changeAllPrice(){
@@ -222,7 +222,7 @@ export class ListMoralEntitiesComponent implements OnInit {
       // @ts-ignore
       this.moralEntitiesService.setPrix(prix.replace(',','.'),this.listId[i]).subscribe((response)=>{
         if (response == "Mise à jour du prix unitaire OK"){
-          console.log("Le Prix a été mis à jour !");
+          // console.log("Le Prix a été mis à jour !");
         }
         else {
           Swal.fire({

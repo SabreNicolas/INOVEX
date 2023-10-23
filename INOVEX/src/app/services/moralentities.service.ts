@@ -3,6 +3,7 @@ import {Injectable} from "@angular/core";
 import { dechetsCollecteurs } from "src/models/dechetsCollecteurs.model";
 import { valueHodja } from "src/models/valueHodja.model";
 import {moralEntity} from "../../models/moralEntity.model";
+import { idUsineService } from "./idUsine.service";
 
 @Injectable()
 export class moralEntitiesService {
@@ -31,7 +32,7 @@ export class moralEntitiesService {
     //private ip = "localhost";
     private idUsine : number | undefined;
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient, private idUsineService : idUsineService) {
         this.httpClient = http;
         this._nom = '';
         this._adress = '';
@@ -42,15 +43,8 @@ export class moralEntitiesService {
         this._nomClient = '';
         this._prenomClient = '';
         this._mailClient = '';
-        //Récupération du user dans localStorage
-        var userLogged = localStorage.getItem('user');
-        if (typeof userLogged === "string") {
-            var userLoggedParse = JSON.parse(userLogged);
-
-            //Récupération de l'idUsine
-            // @ts-ignore
-            this.idUsine = userLoggedParse['idUsine'];
-        }
+        //@ts-ignore
+        this.idUsine = this.idUsineService.getIdUsine();
     }
 
     //création de client
@@ -133,6 +127,19 @@ export class moralEntitiesService {
         .put<any>(requete,null,requestOptions);
     }
 
+        //delete correspondance
+      deleteCorrespondance(id : number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/deleteCorrespondance/"+id;
+        //console.log(requete);
+  
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+  
+        return this.http
+            .delete<any>(requete,requestOptions);
+      }
+
     //mettre à jour une correspondance
     updateCorrespondance(ProducerId : number ,nomImport : string ,productImport : string){
       let requete = "https://"+this.ip+":"+this.portAPI+"/updateCorrespondance?ProducerId="+ProducerId+"&nomImport="+nomImport+"&productImport="+productImport;
@@ -146,9 +153,9 @@ export class moralEntitiesService {
         .put<any>(requete,null,requestOptions);
     }
 
-    //mettre à jour une correspondance
-    updateCorrespondanceSortant(ProductId : number ,productImport : string){
-      let requete = "https://"+this.ip+":"+this.portAPI+"/updateCorrespondanceSortant?ProductId="+ProductId+"&productImport="+productImport;
+    //mettre à jour le nom dans le logiciel de pesée d'une correspondance de sortant
+    updateNomImportCorrespondanceSortant(ProductId : number ,productImport : string){
+      let requete = "https://"+this.ip+":"+this.portAPI+"/updateNomImportCorrespondanceSortant?ProductId="+ProductId+"&productImport="+productImport;
       //console.log(requete);
 
       const requestOptions = {
@@ -158,6 +165,20 @@ export class moralEntitiesService {
       return this.http
         .put<any>(requete,null,requestOptions);
     }
+
+    //mettre à jour le produit cap exploitation d'une correspondance de sortant
+    updateProductImportCorrespondanceSortant(idCorrespondance : number ,ProductId : number){
+      let requete = "https://"+this.ip+":"+this.portAPI+"/updateProductImportCorrespondanceSortant?ProductId="+ProductId+"&idCorrespondance="+idCorrespondance;
+      //console.log(requete);
+
+      const requestOptions = {
+        headers: new HttpHeaders(this.headerDict),
+      };
+
+      return this.http
+        .put<any>(requete,null,requestOptions);
+    }
+
 
     //récupérer les clients
     getMoralEntitiesAll(Code : string) {

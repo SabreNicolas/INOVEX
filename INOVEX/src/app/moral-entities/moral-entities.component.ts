@@ -116,7 +116,7 @@ export class MoralEntitiesComponent implements OnInit {
     if (this.address == '' || this.address == null){
       this.moralEntitiesService.adress = '_';
     }
-    else this.moralEntitiesService.adress = this.address;
+    else this.moralEntitiesService.adress = this.address.replace("'","''");
 
     this.moralEntitiesService.nom = this.name.replace("'","''");
     this.moralEntitiesService.unitPrice = +this.unitPrice.toString().replace(',','.');
@@ -146,17 +146,17 @@ export class MoralEntitiesComponent implements OnInit {
     if (this.nomClient == '' || this.nomClient == null){
       this.moralEntitiesService.nomClient = '_';
     }
-    else this.moralEntitiesService.nomClient = this.nomClient;
+    else this.moralEntitiesService.nomClient = this.nomClient.replace("'","''");
 
     if (this.prenomClient == '' || this.prenomClient == null){
       this.moralEntitiesService.prenomClient = '_';
     }
-    else this.moralEntitiesService.prenomClient = this.prenomClient;
+    else this.moralEntitiesService.prenomClient = this.prenomClient.replace("'","''");
 
     if (this.mailClient == '' || this.mailClient == null){
       this.moralEntitiesService.mailClient = '_';
     }
-    else this.moralEntitiesService.mailClient = this.mailClient;
+    else this.moralEntitiesService.mailClient = this.mailClient.replace("'","''");
     //FIN INFOS SUPP
 
     //Mise à jour du client si édition

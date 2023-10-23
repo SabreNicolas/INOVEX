@@ -12,6 +12,7 @@ import {Papa} from 'ngx-papaparse';
 import { dechetsCollecteurs } from 'src/models/dechetsCollecteurs.model';
 import { importCSV } from 'src/models/importCSV.model';
 import { user } from 'src/models/user.model';
+import { idUsineService } from '../services/idUsine.service';
 
 @Component({
   selector: 'app-list-sortants',
@@ -35,7 +36,7 @@ export class ListSortantsComponent implements OnInit {
 
 
 
-  constructor(private productsService : productsService, private categoriesService : categoriesService, private Papa : Papa, private mrService : moralEntitiesService,private dateService : dateService) {
+  constructor(private idUsineService : idUsineService, private productsService : productsService, private categoriesService : categoriesService, private Papa : Papa, private mrService : moralEntitiesService,private dateService : dateService) {
     this.debCode = '';
     this.listProducts = [];
     this.listDays = [];
@@ -49,15 +50,7 @@ export class ListSortantsComponent implements OnInit {
 
   ngOnInit(): void {
 
-    var userLogged = localStorage.getItem('user');
-    if (typeof userLogged === "string") {
-      var userLoggedParse = JSON.parse(userLogged);
-      this.userLogged = userLoggedParse;
-
-      //Récupération de l'idUsine
-      // @ts-ignore
-      this.idUsine = this.userLogged['idUsine'];
-    }
+    this.idUsine = this.idUsineService.getIdUsine();
 
     this.categoriesService.getCategoriesSortants().subscribe((response)=>{
       // @ts-ignore
@@ -204,7 +197,7 @@ export class ListSortantsComponent implements OnInit {
       //Calce
       else if (this.typeImportTonnage.toLowerCase().includes("informatique verte")){
         //delimiter,header,client,typedechet,dateEntree,tonnage
-        this.lectureCSV(event, ";", false, 22, 10, 8);
+        this.lectureCSV(event, ";", true, 15, 8, 6, 12);
       }
       //Maubeuge
       else if (this.typeImportTonnage.toLowerCase().includes("tradim")){
@@ -214,22 +207,30 @@ export class ListSortantsComponent implements OnInit {
       //Plouharnel
       else if (this.typeImportTonnage.toLowerCase().includes("arpege masterk")){
         //delimiter,header,client,typedechet,dateEntree,tonnage
-        this.lectureCSV(event, ";", false, 6, 1, 11);
+        this.lectureCSV(event, ";", false, 6, 1, 11, 12);
       }
       //Pluzunet
       else if (this.typeImportTonnage.toLowerCase().includes("caktus")){
         //delimiter,header,client,typedechet,dateEntree,tonnage
-        this.lectureCSV(event, ";", false, 4, 14, 10);
+        this.lectureCSV(event, ";", false, 28, 7, 35, 6);
       }
     }
 
     //import tonnage via fichier
   //Traitement du fichier csv ADEMI
-  lectureCSV(event : Event, delimiter : string, header : boolean,  posTypeDechet : number, posDateEntree : number, posTonnage : number){
+  lectureCSV(event : Event, delimiter : string, header : boolean,  posTypeDechet : number, posDateEntree : number, posTonnage : number, posEntreeSortie? : number){
     //@ts-ignore
     var files = event.target.files; // FileList object
     var file = files[0];
     var reader = new FileReader();
+
+    var debut = 0;
+
+    //Si on a une ligne header, on commence l'acquisition à 1.
+    if(header == true){
+      debut = 1;
+    }
+
     reader.readAsText(file);
     reader.onload = (event: any) => {
       var csv = event.target.result; // Content of CSV file
@@ -237,17 +238,29 @@ export class ListSortantsComponent implements OnInit {
       this.Papa.parse(csv, {
         skipEmptyLines: true,
         delimiter: delimiter,
-        header: header,
+        //False pour éviter de devoir utiliser le nom des entêtes et rester sur un tableau avec des indices.
+        header: false,
         complete: (results) => {
-          for (let i = 0; i < results.data.length; i++) {
+          for (let i = debut; i < results.data.length; i++) {
             //ON récupére les lignes infos nécessaires pour chaque ligne du csv
             //ON récupère uniquement les types de déchets pour les entrants
             //Création de l'objet qui contient l'ensemble des infos nécessaires
+
+            //Si la velur de position de sens n'est pas fournit, on le met à S
+            var EntreeSortie
+            if(posEntreeSortie == undefined){
+              EntreeSortie = "S";
+            }
+            else{
+              EntreeSortie = results.data[i][posEntreeSortie]
+            }
+
             let importCSV = {
               client : "Aucun",
               typeDechet: results.data[i][posTypeDechet],
               dateEntree : results.data[i][posDateEntree].substring(0,10),
               tonnage : +results.data[i][posTonnage].replace(/[^0-9]/g,"")/1000,
+              entrant : EntreeSortie
             };
             this.csvArray.push(importCSV);
           }
@@ -269,37 +282,62 @@ export class ListSortantsComponent implements OnInit {
   insertTonnageCSV(){
     this.debCode = '20';
     this.stockageImport.clear();
-    this.correspondance.forEach(correspondance => {
-        this.csvArray.forEach(csv => {
-        
+    var count = 0 ;
+    let dechetsManquants: string[]  = [];
+
+    this.csvArray.forEach(csv => {
+      var dechetManquant = csv.typeDechet;
+      count = 0;
+
+      this.correspondance.forEach(correspondance => {
+
           csv.typeDechet = csv.typeDechet.toLowerCase().replace(/\s/g,"");
           correspondance.productImport = correspondance.productImport.toLowerCase().replace(/\s/g,"");  
-          //Si il y a correspondance on fait traitement
-          if( correspondance.productImport == csv.typeDechet ){
-            let formatDate = csv.dateEntree.split('/')[2]+'-'+csv.dateEntree.split('/')[1]+'-'+csv.dateEntree.split('/')[0];
-            let keyHash = formatDate+'_'+correspondance.ProductId;
-            //si il y a deja une valeur dans la hashMap pour ce client et ce jour, on incrémente la valeur
-            let value, valueRound;
-            if(this.stockageImport.has(keyHash)){
+          
+          if(csv.entrant == "S" || csv.entrant == 2){
+            //Si il y a correspondance on fait traitement
+            if( correspondance.productImport == csv.typeDechet ){
+              let formatDate = csv.dateEntree.split('/')[2]+'-'+csv.dateEntree.split('/')[1]+'-'+csv.dateEntree.split('/')[0];
+              let keyHash = formatDate+'_'+correspondance.ProductId;
+              //si il y a deja une valeur dans la hashMap pour ce client et ce jour, on incrémente la valeur
+              let value, valueRound;
+              count = count + 1;;
+              if(this.stockageImport.has(keyHash)){
+                //@ts-ignore
+                value = this.stockageImport.get(keyHash)+csv.tonnage;
+                valueRound = parseFloat(value.toFixed(3));
+                this.stockageImport.set(keyHash,valueRound);
+              }
+              else
+              //Sinon on insére dans la hashMap
               //@ts-ignore
-              value = this.stockageImport.get(keyHash)+csv.tonnage;
-              valueRound = parseFloat(value.toFixed(3));
-              this.stockageImport.set(keyHash,valueRound);
+              this.stockageImport.set(keyHash,parseFloat(csv.tonnage.toFixed(3)));
             }
-            else
-            //Sinon on insére dans la hashMap
-            //@ts-ignore
-            this.stockageImport.set(keyHash,parseFloat(csv.tonnage.toFixed(3)));
           }
         });
+        if(count == 0 && (csv.entrant == "S" || csv.entrant == 2) ){
+          dechetsManquants.push(dechetManquant);
+        }
+       
+
     });
     //debug
     //console.log(this.stockageImport);
     //on parcours la hashmap pour insertion en BDD
     this.stockageImport.forEach(async (value : number, key : String) => {
+
       await this.mrService.createMeasure(key.split('_')[0],value,parseInt(key.split('_')[1]),0).subscribe((response) =>{
         if (response == "Création du Measures OK"){
-          Swal.fire("Les valeurs ont été insérées avec succès !");
+          var afficher = "";
+
+          for(let i = 0; i< dechetsManquants.length; i++){
+            afficher += "Le déchet : <strong>'" + dechetsManquants[i] + "'</strong> n'a pas de correspondance dans CAP Exploitation <br>";
+          }
+          Swal.fire({
+            html : afficher,
+            width : '80%',
+            title :"Les valeurs ont été insérées avec succès !"
+          });
         }
         else {
           Swal.fire({
