@@ -256,7 +256,6 @@ export class ListEntreeComponent implements OnInit {
     this.listDays.forEach(date => {
       // @ts-ignore
       this.productsService.getValueProducts(date.substr(6, 4) + '-' + date.substr(3, 2) + '-' + date.substr(0, 2), idProduct).subscribe((response) => {
-        console.log(response.data);
         if (response.data[0] != undefined && response.data[0].Value != 0) {
           // @ts-ignore
           (<HTMLInputElement>document.getElementById(idProduct + '-' + date)).value = response.data[0].Value;
@@ -483,7 +482,6 @@ export class ListEntreeComponent implements OnInit {
               tonnage : +results.data[i][posTonnage].replace(/[^0-9,.]/g,"").replace(",",".")/divisionKgToTonnes,
               entrant : EntreeSortie
             };
-            console.log(importCSV)
             this.csvArray.push(importCSV);
           }
           //console.log(this.csvArray);
@@ -555,7 +553,6 @@ export class ListEntreeComponent implements OnInit {
 
       for(let i = 0; i< clientManquants.length; i++){
         afficher += "Le client <strong>'" + clientManquants[i] + "'</strong> avec le déchet : <strong>'" + dechetsManquants[i] + "'</strong> n'a pas de correspondance dans CAP Exploitation <br>";
-        console.log(afficher)
       }
       Swal.fire({
         html : afficher,

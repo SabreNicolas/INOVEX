@@ -127,7 +127,7 @@ export class ReportingRondeComponent implements OnInit {
             this.rondierService.listZonesAndElementsWithValues(ronde.Id).subscribe((response)=>{
               // @ts-ignore
               this.listElementsOfZone = response.BadgeAndElementsOfZone;
-              console.log(this.listElementsOfZone)
+              // console.log(this.listElementsOfZone)
             //Récupération des éléments et leurs valeurs sur la ronde
             this.rondierService.reportingRonde(ronde.Id).subscribe((response)=>{
               // @ts-ignore
@@ -165,7 +165,7 @@ export class ReportingRondeComponent implements OnInit {
                     //Si curseur (type 1) => doit etre compris entre les bornes
                     if((reporting.typeChamp == "1") && (Number(reporting.value) < reporting.valeurMin || Number(reporting.value) > reporting.valeurMax)){
                       //On utilise champValue pour afficher le message
-                      console.log(Number(reporting.value) + " "+ reporting.valeurMin+" "+reporting.valeurMax)
+                      // console.log(Number(reporting.value) + " "+ reporting.valeurMin+" "+reporting.valeurMax)
                       // @ts-ignore
                       champError.style.backgroundColor = "#ff726f";
                       // @ts-ignore

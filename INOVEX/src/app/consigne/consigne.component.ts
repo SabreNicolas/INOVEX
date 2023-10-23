@@ -37,13 +37,10 @@ export class ConsigneComponent implements OnInit {
     this.stringDateFin = this.datePipe.transform(this.dateFin,'yyyy-MM-dd HH:mm');
     this.stringDateDebut = this.datePipe.transform(this.dateDebut,'yyyy-MM-dd HH:mm');
     this.type = form.value['type'];
-    //@ts-ignore
-    console.log(this.dateDebut);
-    console.log( this.dateFin)
     if(this.dateDebut != undefined && this.dateDebut > this.dateFin){
       Swal.fire({
         icon: 'error',
-        text: 'La date de début et la datee de fin ne correspondent pas !',
+        text: 'La date de début et la date de fin ne correspondent pas !',
       })
     }
     else {
@@ -66,6 +63,7 @@ export class ConsigneComponent implements OnInit {
     form.controls['desc'].reset();
     form.controls['dateFin'].reset();
     form.controls['type'].reset();
+    form.controls['dateDebut'].reset();
   }
 
 }

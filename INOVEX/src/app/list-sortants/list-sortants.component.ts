@@ -255,7 +255,6 @@ export class ListSortantsComponent implements OnInit {
               EntreeSortie = results.data[i][posEntreeSortie]
             }
 
-            console.log(results.data)
             let importCSV = {
               client : "Aucun",
               typeDechet: results.data[i][posTypeDechet],
@@ -325,7 +324,6 @@ export class ListSortantsComponent implements OnInit {
     //debug
     //console.log(this.stockageImport);
     //on parcours la hashmap pour insertion en BDD
-    console.log(this.stockageImport);
     this.stockageImport.forEach(async (value : number, key : String) => {
 
       await this.mrService.createMeasure(key.split('_')[0],value,parseInt(key.split('_')[1]),0).subscribe((response) =>{
@@ -334,7 +332,6 @@ export class ListSortantsComponent implements OnInit {
 
           for(let i = 0; i< dechetsManquants.length; i++){
             afficher += "Le déchet : <strong>'" + dechetsManquants[i] + "'</strong> n'a pas de correspondance dans CAP Exploitation <br>";
-            console.log(afficher)
           }
           Swal.fire({
             html : afficher,

@@ -192,7 +192,6 @@ export class EquipeComponent implements OnInit {
     if(indexRomove != -1){
       this.listUsers.splice(indexRomove,1);
     }
-    console.log(this.listAjout);
   }
 
   //Fonction qui permet de supprimer un utilisateur de la table d'ajout
@@ -204,7 +203,6 @@ export class EquipeComponent implements OnInit {
     if(indexRomove != -1){
       this.listAjout.splice(indexRomove,1);
     }
-    console.log(this.listAjout);
   }
 
   //Fonction qui permet de mettre à jour les informations d'une équipe

@@ -237,7 +237,7 @@ export class ArretsComponent implements OnInit {
     if(this.commentaire != '_'){
       this.commentaire = this.commentaire +" - "+ this.saisieLibre;
     }
-    else this.commentaire = this.saisieLibre + " -";
+    else this.commentaire = this.saisieLibre;
     this.transformDateFormat();
     if (this.isArret == true) {
       this.arretsService.createArret(this.stringDateDebut, this.stringDateFin, this.duree, this.IdUser, this.stringDateSaisie, this.commentaire, this.arretId).subscribe((response) => {
@@ -245,7 +245,6 @@ export class ArretsComponent implements OnInit {
           Swal.fire("L'arrêt a bien été créé !");
           //envoi d'un mail si arrêt intempestif ou arrêt GTA
           if (this.arretName.includes("FORTUIT") || this.arretName.includes("GTA")) {
-            console.log(this.stringDateDebut);
             this.arretsService.sendEmail(this.stringDateDebut.substr(8, 2) + '-' + this.stringDateDebut.substr(5, 2) + '-' + this.stringDateDebut.substr(0, 4), this.stringDateDebut.substr(11, 5), this.duree, this.arretName, this.commentaire).subscribe((response) => {
               if (response == "mail OK") {
                 Swal.fire("Un mail d'alerte à été envoyé !");

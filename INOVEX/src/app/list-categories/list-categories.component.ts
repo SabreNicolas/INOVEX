@@ -19,7 +19,6 @@ export class ListCategoriesComponent implements OnInit {
     this.categoriesService.getCategories().subscribe((response)=>{
       // @ts-ignore
       this.listCategories = response.data;
-      console.log(this.listCategories);
     });
   }
 
