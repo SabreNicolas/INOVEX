@@ -70,7 +70,7 @@ export class EquipeComponent implements OnInit {
       })
     }
 
-    //On récupère la liste des utilisateurs rondiers sans équipe
+    //On récupère la liste des utilisateurs rondiers sans équipe => finalement on récupère même ceux ayant déjà une équipe :)
     this.cahierQuartService.getUsersRondierSansEquipe().subscribe((response)=>{
       // @ts-ignore
       this.listUsers = response.data;

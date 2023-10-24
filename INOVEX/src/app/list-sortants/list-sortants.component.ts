@@ -172,49 +172,70 @@ export class ListSortantsComponent implements OnInit {
    * IMPORT CSV
    */
 
-    //import tonnage via fichier
-    import(event : Event){
-      //Pithiviers/chinon
-      if (this.typeImportTonnage.toLowerCase().includes("ademi")){
-        //delimiter,header,client,typedechet,dateEntree,tonnage
-        this.lectureCSV(event, ";", false, 7, 2, 5);
+  //import tonnage via fichier
+  import(event : Event){
+    //Pithiviers/chinon/dunkerque
+    if (this.typeImportTonnage.toLowerCase().includes("ademi")){
+      //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
+      //Dunkerque
+      if(this.idUsine === 9){
+        this.lectureCSV(event, ";", true, 11, 0, 37);
       }
-      //Noyelles-sous-lens et Thiverval
-      else if (this.typeImportTonnage.toLowerCase().includes("protruck")){
-        //delimiter,header,client,typedechet,dateEntree,tonnage
-        //Thiverval
-        if(this.idUsine === 11){
-          this.lectureCSV(event, ";", false, 29, 2, 16);
-        }
-        else this.lectureCSV(event, ";", false, 31, 2, 16);
+      else this.lectureCSV(event, ";", false, 7, 2, 5);
+    }
+    //Noyelles-sous-lens et Thiverval
+    else if (this.typeImportTonnage.toLowerCase().includes("protruck")){
+      //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
+      //Thiverval
+      if(this.idUsine === 11){
+        this.lectureCSV(event, ";", false, 29, 2, 16, 1);
       }
-      //Saint-Saulve
-      else if (this.typeImportTonnage.toLowerCase().includes("dpk")){
-        //delimiter,header,client,typedechet,dateEntree,tonnage
-        //this.lectureCSV(event, ";", false, 21, 20, 7, 19);
-        this.lectureCSV(event, ";", false, 20, 7, 19);
+      else this.lectureCSV(event, ";", false, 31, 2, 16);
+    }
+    //Saint-Saulve
+    else if (this.typeImportTonnage.toLowerCase().includes("dpk")){
+      //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
+      this.lectureCSV(event, ";", false, 20, 7, 19);
+    }
+    //Calce
+    else if (this.typeImportTonnage.toLowerCase().includes("informatique verte")){
+      //@ts-ignore
+      var file = event.target.files[0].name;
+      file = file.toLowerCase();
+      if(file.includes("dasri")){
+        //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
+        this.lectureCSV(event, ";", true, 9999 , 3, 7);
       }
-      //Calce
-      else if (this.typeImportTonnage.toLowerCase().includes("informatique verte")){
-        //delimiter,header,client,typedechet,dateEntree,tonnage
+      else{
+        //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
         this.lectureCSV(event, ";", true, 15, 8, 6, 12);
       }
-      //Maubeuge
-      else if (this.typeImportTonnage.toLowerCase().includes("tradim")){
-        //delimiter,header,client,typedechet,dateEntree,tonnage
-        this.lectureCSV(event, ";", false, 6, 0, 5);
-      }
-      //Plouharnel
-      else if (this.typeImportTonnage.toLowerCase().includes("arpege masterk")){
-        //delimiter,header,client,typedechet,dateEntree,tonnage
-        this.lectureCSV(event, ";", false, 6, 1, 11, 12);
-      }
-      //Pluzunet
-      else if (this.typeImportTonnage.toLowerCase().includes("caktus")){
-        //delimiter,header,client,typedechet,dateEntree,tonnage
-        this.lectureCSV(event, ";", false, 28, 7, 35, 6);
-      }
     }
+    //Maubeuge
+    else if (this.typeImportTonnage.toLowerCase().includes("tradim")){
+      //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
+      this.lectureCSV(event, ";", true, 6, 0, 5);
+    }
+    //Plouharnel / GIEN
+    else if (this.typeImportTonnage.toLowerCase().includes("arpege masterk")){
+      //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
+      //Gien
+      if(this.idUsine === 16){
+        this.lectureCSV(event, ";", false, 17, 14, 7);
+      }
+      else this.lectureCSV(event, ";", false, 6, 1, 11, 12);
+    }
+    //Pluzunet
+    else if (this.typeImportTonnage.toLowerCase().includes("caktus")){
+      //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
+      this.lectureCSV(event, ";", true, 28, 7, 35, 6);
+    }
+    //Sète
+    else if (this.typeImportTonnage.toLowerCase().includes("hodja")){
+      //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
+      this.lectureCSV(event, ";", true, 12, 0, 14);
+    }
+  }
 
     //import tonnage via fichier
   //Traitement du fichier csv ADEMI
@@ -246,6 +267,13 @@ export class ListSortantsComponent implements OnInit {
             //ON récupère uniquement les types de déchets pour les entrants
             //Création de l'objet qui contient l'ensemble des infos nécessaires
 
+            //permet de diviser le tonnage par 1000 si on l'a en kg
+            let divisionKgToTonnes = 1;
+            //si ce n'est pas caktus on divise par 1000 pour avoir en tonnes
+            if (!this.typeImportTonnage.toLowerCase().includes("caktus") && !this.typeImportTonnage.toLowerCase().includes("tradim")){
+              divisionKgToTonnes = 1000;
+            }
+
             //Si la velur de position de sens n'est pas fournit, on le met à S
             var EntreeSortie
             if(posEntreeSortie == undefined){
@@ -259,7 +287,7 @@ export class ListSortantsComponent implements OnInit {
               client : "Aucun",
               typeDechet: results.data[i][posTypeDechet],
               dateEntree : results.data[i][posDateEntree].substring(0,10),
-              tonnage : +results.data[i][posTonnage].replace(/[^0-9]/g,"")/1000,
+              tonnage : Math.abs(+results.data[i][posTonnage].replace(/[^0-9,.]/g,"").replace(",",".")/divisionKgToTonnes),
               entrant : EntreeSortie
             };
             this.csvArray.push(importCSV);
@@ -294,7 +322,7 @@ export class ListSortantsComponent implements OnInit {
           csv.typeDechet = csv.typeDechet.toLowerCase().replace(/\s/g,"");
           correspondance.productImport = correspondance.productImport.toLowerCase().replace(/\s/g,"");  
           
-          if(csv.entrant == "S" || csv.entrant == 2){
+          if(csv.entrant == "S" || csv.entrant == 2 || csv.entrant == "EXPEDITION"){
             //Si il y a correspondance on fait traitement
             if( correspondance.productImport == csv.typeDechet ){
               let formatDate = csv.dateEntree.split('/')[2]+'-'+csv.dateEntree.split('/')[1]+'-'+csv.dateEntree.split('/')[0];
@@ -315,7 +343,7 @@ export class ListSortantsComponent implements OnInit {
             }
           }
         });
-        if(count == 0 && (csv.entrant == "S" || csv.entrant == 2) ){
+        if(count == 0 && (csv.entrant == "S" || csv.entrant == 2 || csv.entrant == "EXPEDITION") ){
           dechetsManquants.push(dechetManquant);
         }
        
@@ -333,6 +361,7 @@ export class ListSortantsComponent implements OnInit {
           for(let i = 0; i< dechetsManquants.length; i++){
             afficher += "Le déchet : <strong>'" + dechetsManquants[i] + "'</strong> n'a pas de correspondance dans CAP Exploitation <br>";
           }
+          afficher += "<strong>Pensez à faire la correspondance dans l'administration !</strong>";
           Swal.fire({
             html : afficher,
             width : '80%',

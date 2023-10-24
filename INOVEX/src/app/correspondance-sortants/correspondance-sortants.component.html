@@ -55,7 +55,7 @@
                 <td>
                     <div class="form-group">
                         <div class="form-group">
-                            <input type="text" id="name" class="form-control" placeholder="Nom du dêchet" name="nomAjout" ngModel [(ngModel)]="nomAjout">
+                            <input type="text" id="name" class="form-control" placeholder="Nom du déchet" name="nomAjout" ngModel [(ngModel)]="nomAjout">
                         </div>
                     </div>
                 </td>
@@ -63,7 +63,7 @@
                     <div class="form-group">
                         <select id="type" required class="form-select form-select-sm"
                                 aria-label=".form-select-sm example" ngModel [(ngModel)]="produitACreer" >
-                                <option value="0">Choisissez un type de déchêt</option>
+                                <option value="0">Choisissez un produit CAP Exploitation</option>
                                  <option *ngFor="let product of listSortants" value="{{product.Id}}">{{product.Name}}</option>
                         </select>
                     </div>

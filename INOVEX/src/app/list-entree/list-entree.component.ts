@@ -369,17 +369,21 @@ export class ListEntreeComponent implements OnInit {
 
   //import tonnage via fichier
   import(event : Event){
-    //Pithiviers/chinon
+    //Pithiviers/chinon/dunkerque
     if (this.typeImportTonnage.toLowerCase().includes("ademi")){
       //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
-      this.lectureCSV(event, ";", false, 8, 7, 2, 5);
+      //Dunkerque
+      if(this.idUsine === 9){
+        this.lectureCSV(event, ";", true, 12, 11, 0, 37);
+      }
+      else this.lectureCSV(event, ";", false, 8, 7, 2, 5);
     }
     //Noyelles-sous-lens et Thiverval
     else if (this.typeImportTonnage.toLowerCase().includes("protruck")){
       //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
       //Thiverval
       if(this.idUsine === 11){
-        this.lectureCSV(event, ";", false, 6, 29, 2, 16);
+        this.lectureCSV(event, ";", false, 23, 29, 2, 16, 1);
       }
       else this.lectureCSV(event, ";", false, 6, 31, 2, 16);
     }
@@ -408,15 +412,24 @@ export class ListEntreeComponent implements OnInit {
       //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
       this.lectureCSV(event, ";", true, 8, 6, 0, 5);
     }
-    //Plouharnel
+    //Plouharnel / GIEN
     else if (this.typeImportTonnage.toLowerCase().includes("arpege masterk")){
       //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
-      this.lectureCSV(event, ";", false, 8, 6, 1, 11, 12);
+      //Gien
+      if(this.idUsine === 16){
+        this.lectureCSV(event, ";", false, 18, 17, 14, 7);
+      }
+      else this.lectureCSV(event, ";", false, 8, 6, 1, 11, 12);
     }
     //Pluzunet
     else if (this.typeImportTonnage.toLowerCase().includes("caktus")){
       //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
       this.lectureCSV(event, ";", true, 59, 28, 7, 35, 6);
+    }
+    //Sète
+    else if (this.typeImportTonnage.toLowerCase().includes("hodja")){
+      //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
+      this.lectureCSV(event, ";", true, 10, 12, 0, 14);
     }
   }
 
@@ -456,7 +469,7 @@ export class ListEntreeComponent implements OnInit {
             //permet de diviser le tonnage par 1000 si on l'a en kg
             let divisionKgToTonnes = 1;
             //si ce n'est pas caktus on divise par 1000 pour avoir en tonnes
-            if (!this.typeImportTonnage.toLowerCase().includes("caktus")){
+            if (!this.typeImportTonnage.toLowerCase().includes("caktus") && !this.typeImportTonnage.toLowerCase().includes("tradim")){
               divisionKgToTonnes = 1000;
             }
 
@@ -511,7 +524,7 @@ export class ListEntreeComponent implements OnInit {
           correspondance.nomImport = correspondance.nomImport.toLowerCase().replace(/\s/g,"");
           correspondance.productImport = correspondance.productImport.toLowerCase().replace(/\s/g,"");
 
-          if(csv.entrant == "E" || csv.entrant == 1){
+          if(csv.entrant == "E" || csv.entrant == 1 || csv.entrant == "RECEPTION"){
             //Si il y a correspondance on fait traitement
             if( correspondance.nomImport == csv.client && correspondance.productImport == csv.typeDechet  /*|| (mr.produit == "dib/dea" && mr.produit.includes(csv.typeDechet)))*/ ){  
               let formatDate = csv.dateEntree.split('/')[2]+'-'+csv.dateEntree.split('/')[1]+'-'+csv.dateEntree.split('/')[0];
@@ -532,7 +545,7 @@ export class ListEntreeComponent implements OnInit {
             }
           }
         });
-        if(count == 0 && (csv.entrant == "E" || csv.entrant == 1)){
+        if(count == 0 && (csv.entrant == "E" || csv.entrant == 1 || csv.entrant == "RECEPTION")){
           dechetsManquants.push(dechetManquant);
           clientManquants.push(clientManquant);
         }
@@ -554,6 +567,7 @@ export class ListEntreeComponent implements OnInit {
       for(let i = 0; i< clientManquants.length; i++){
         afficher += "Le client <strong>'" + clientManquants[i] + "'</strong> avec le déchet : <strong>'" + dechetsManquants[i] + "'</strong> n'a pas de correspondance dans CAP Exploitation <br>";
       }
+      afficher += "<strong>Pensez à faire la correspondance dans l'administration !</strong>";
       Swal.fire({
         html : afficher,
         width : '80%',

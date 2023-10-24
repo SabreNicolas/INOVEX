@@ -19,7 +19,7 @@
                 </div>
             </div>
                     <!--SI import renseigné en BDD et pas de type récupération HODJA-->
-            <div *ngIf="typeImportTonnage.length > 1 && typeImportTonnage != 'Hodja'" class="col-sm-3" style="border: solid grey 1px; padding-bottom: 1em; margin-top: -1.5em;">
+            <div *ngIf="typeImportTonnage.length > 1" class="col-sm-3" style="border: solid grey 1px; padding-bottom: 1em; margin-top: -1.5em;">
                 <label style="margin-left: 1em;" for="formFile" class="form-label">Importer un fichier des sortants {{typeImportTonnage}}</label>
                 <input class="form-control" type="file" id="formFile" accept=".csv" (change)="import($event)">
             </div>

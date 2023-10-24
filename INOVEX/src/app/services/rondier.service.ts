@@ -743,6 +743,19 @@ export class rondierService {
             .get<consigne[]>(requete,requestOptions);
     }
 
+    //liste des consignes 
+    listAllConsignes(){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/allConsignes/"+this.idUsine;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<consigne[]>(requete,requestOptions);
+    }
+
     //delete consigne
     deleteConsigne(id : number){
         let requete = "https://"+this.ip+":"+this.portAPI+"/consigne/"+id;

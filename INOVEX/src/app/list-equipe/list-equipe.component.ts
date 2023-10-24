@@ -38,7 +38,7 @@ export class ListEquipeComponent implements OnInit {
   toggleCardSize(equipe: equipe) {
 
     if(equipe.rondiers.length == 0){
-      document.location.href = ('https://fr-couvinove300.prod.paprec.fr:8101/cahierQuart/newEquipe?idEquipe=' + equipe.id);
+      document.location.href = ('https://fr-couvinove300.prod.paprec.fr:8100/cahierQuart/newEquipe?idEquipe=' + equipe.id);
     }
     else {
       //@ts-ignore
