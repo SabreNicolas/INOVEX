@@ -1,10 +1,15 @@
 <div class="headerAcceuil">
-    <div class="blocLogoInovex">
+    <div *ngIf="maintenance == null" class="blocLogoInovex">
         <!--<img class="logoInovex" src="assets/inovex.png">-->
     </div>
 
-    <div *ngIf="userLogged.hasOwnProperty('localisation')" class="gestionUsine">
-        <a class="nav-link" (click)="choixSite()" role="button">
+    <div *ngIf="maintenance != null" style="background-color: lightcoral;">
+        <p><strong>INFORMATION</strong> : Une maintenance est prévu de : <strong>{{maintenance.dateHeureDebut}}</strong> jusqu'à : <strong>{{maintenance.dateHeureFin}}</strong>.</p>
+        <p>Merci de terminer vos saisies avant la date de début de la maintenance - <strong>l'Equipe KERLAN INFORMATIQUE</strong>.</p>
+    </div>
+
+    <div class="gestionUsine">
+        <a *ngIf="userLogged.hasOwnProperty('localisation')" class="nav-link" (click)="choixSite()" role="button">
             <i class="fa fa-map-marker" aria-hidden="true"></i> {{localisation}}
         </a>
     </div>
@@ -26,26 +31,26 @@
 
         <div class="card text-white bg-primary cardAccueil cardSaisie">
             <div class="card-body text-center">
-                <h2 class="card-title">Saisie</h2>
-                <p class="card-text card-textAccueil">Saisir les différentes données</p>
-                <a> <button [disabled]="!isSaisie" (click)="navigate('/saisie')" type="button" class="btn btn-light btnAccueil">Accéder</button></a>
+                <h2 class="card-title">Données</h2>
+                <p class="card-text card-textAccueil">Saisir et consulter les différentes données</p>
+                <a routerLink="/saisie"> <button [disabled]="!isSaisie && !isChefQuart" type="button" class="btn btn-light btnAccueil">Accéder</button></a>
             </div>
         </div>
 
-        <div class="card text-white bg-primary cardAccueil cardQSE">
+        <!--<div class="card text-white bg-primary cardAccueil cardQSE">
             <div class="card-body text-center">
                 <h2 class="card-title">Budget</h2>
                 <p class="card-text card-textAccueil">Saisir les différents objectifs/budgets</p>
-                <a> <button [disabled]="!isQSE" (click)="navigate('/qse')" type="button" class="btn btn-light btnAccueil">Accéder</button></a>
+                <a routerLink="/qse"> <button [disabled]="!isQSE" type="button" class="btn btn-light btnAccueil">Accéder</button></a>
             </div>
-        </div>
+        </div>-->
 
 
         <div class="card text-white bg-primary cardAccueil cardRapports">
             <div class="card-body text-center">
                 <h2 class="card-title">Rapports</h2>
                 <p class="card-text card-textAccueil">Consultation des rapports d'activité</p>
-                <a> <button [disabled]="!isRapport" (click)="navigate('/rapports')" type="button" class="btn btn-light btnAccueil">Accéder</button></a>
+                <a routerLink="/rapports"> <button [disabled]="!isRapport" type="button" class="btn btn-light btnAccueil">Accéder</button></a>
             </div>
         </div>
 
@@ -53,7 +58,7 @@
             <div class="card-body text-center">
                 <h2 class="card-title">Administration</h2>
                 <p class="card-text card-textAccueil">Création et modification des différents éléments</p>
-                <a> <button [disabled]="!isAdmin" (click)="navigate('/admin')" type="button" class="btn btn-light btnAccueil">Accéder</button></a>
+                <a routerLink="/admin"> <button [disabled]="!isAdmin" type="button" class="btn btn-light btnAccueil">Accéder</button></a>
             </div>
         </div>
 
@@ -61,8 +66,28 @@
             <div class="card-body text-center">
                 <h2 class="card-title">Rondier</h2>
                 <p class="card-text card-textAccueil">Accès aux Récapitulatif des rondes</p>
-                <a> <button [disabled]="!isRondier" (click)="navigate('/reporting')" type="button" class="btn btn-light btnAccueil">Accéder</button></a>
+                <a routerLink="/reporting"> <button [disabled]="!isRondier" type="button" class="btn btn-light btnAccueil">Accéder</button></a>
             </div>
         </div>
 
+        <div *ngIf="idUsine == 7" class="card text-white bg-primary cardAccueil cardCahierQuart">
+            <div class="card-body text-center">
+                <h2 class="card-title">Cahier de quart</h2>
+                <p class="card-text card-textAccueil">Accès au cahier de quart</p>
+                <a routerLink="/cahierQuart"> <button [disabled]="!isChefQuart" type="button" class="btn btn-light btnAccueil">Accéder</button></a>
+            </div>
+        </div>
+
+</div>
+
+<div class="support" style="position: fixed; bottom: 0; font-weight: bold;">
+    <a target="_blank" href="https://kerlan-info.fr/support-technique/">Contacter le Support</a>
+</div>
+
+<div class="modesOPs" style="position: fixed; bottom: 0; right: 0; font-weight: bold;">
+    <a target="_blank" class="nav-link" role="button" (click)="choixModeOPs()"> 
+        <button class="btn btn-info btn-lg">
+            <i class="fas fa-info"></i>
+        </button>
+    </a>
 </div>

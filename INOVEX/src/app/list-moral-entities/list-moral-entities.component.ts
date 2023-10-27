@@ -44,7 +44,7 @@ export class ListMoralEntitiesComponent implements OnInit {
     this.moralEntitiesService.getMoralEntitiesAll(this.debCode).subscribe((response)=>{
       // @ts-ignore
       this.moralEntities = response.data;
-
+      // console.log(response)
       //Récupération des types de déchets et des collecteurs
       this.moralEntitiesService.GetTypeDéchets().subscribe((response)=>{
         //@ts-ignore
@@ -55,7 +55,7 @@ export class ListMoralEntitiesComponent implements OnInit {
           let typeDechets, collecteur, regroupType;
 
           //ON regroupe les noms DIB et DEA en 1 seul
-          if(typeDechetsCollecteurs.Name.split(' ')[0].includes('DIB') || typeDechetsCollecteurs.Name.split(' ')[0].includes('DEA')){
+          if(typeDechetsCollecteurs.Name.split(' ')[0] == 'DIB' || typeDechetsCollecteurs.Name.split(' ')[0] =='DEA'){
             regroupType = 'DIB/DEA';
           }
           else regroupType = typeDechetsCollecteurs.Name.split(' ')[0];
@@ -87,8 +87,14 @@ export class ListMoralEntitiesComponent implements OnInit {
     // @ts-ignore
     var produitSel = produitElt.options[produitElt.selectedIndex].value;
     var collecteurElt = document.getElementById("collecteur");
-    // @ts-ignore
-    var collecteurSel = collecteurElt.options[collecteurElt.selectedIndex].value;
+    if(collecteurElt != null){
+      // @ts-ignore
+      var collecteurSel = collecteurElt.options[collecteurElt.selectedIndex].value;
+    }
+    //Gestion du cas ou il n'y a pas de collecteur
+    else {
+      var collecteurSel = '01';
+    } 
     this.debCode = produitSel+collecteurSel;
     /*Fin de prise en commpte des filtres */
     this.ngOnInit();
@@ -173,8 +179,16 @@ export class ListMoralEntitiesComponent implements OnInit {
     this.ngOnInit();
   }
 
+  //Fonction pour attendre
+  wait(ms : number) {
+    return new Promise(resolve => {
+      setTimeout(resolve, ms);
+    });
+  }
+
+
   //désactiver un client
-  setVisibility(idMr : number, visibility : number){
+  async setVisibility(idMr : number, visibility : number){
     this.moralEntitiesService.setEnabled(idMr,visibility).subscribe((response)=>{
       if (response == "Changement de visibilité du client OK"){
         Swal.fire("La visibilité du client a bien été changé !");
@@ -186,6 +200,7 @@ export class ListMoralEntitiesComponent implements OnInit {
         })
       }
     });
+    await this.wait(50);
     this.ngOnInit();
   }
 
@@ -197,7 +212,7 @@ export class ListMoralEntitiesComponent implements OnInit {
     }
     else this.listId.splice(this.listId.indexOf(Id),1);
 
-    console.log(this.listId);
+    // console.log(this.listId);
   }
 
   changeAllPrice(){
@@ -207,7 +222,7 @@ export class ListMoralEntitiesComponent implements OnInit {
       // @ts-ignore
       this.moralEntitiesService.setPrix(prix.replace(',','.'),this.listId[i]).subscribe((response)=>{
         if (response == "Mise à jour du prix unitaire OK"){
-          console.log("Le Prix a été mis à jour !");
+          // console.log("Le Prix a été mis à jour !");
         }
         else {
           Swal.fire({

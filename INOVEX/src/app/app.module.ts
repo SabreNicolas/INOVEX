@@ -54,6 +54,23 @@ import { ListModeOperatoireComponent } from './list-mode-operatoire/list-mode-op
 import { ListConsignesComponent } from './list-consignes/list-consignes.component';
 import { ConsigneComponent } from './consigne/consigne.component';
 import { RondierFinMoisComponent } from './rondier-fin-mois/rondier-fin-mois.component';
+import { MaintenanceComponent } from './maintenance/maintenance.component';
+import { dateService } from './services/date.service';
+import { TokenApiComponent } from './token-api/token-api.component';
+import { tokenApiService } from './services/tokenApi.service';
+import { ListEquipeComponent } from './list-equipe/list-equipe.component';
+import { cahierQuartService } from './services/cahierQuart.service';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { cahierQuart } from './cahierQuart/cahierQuart.component';
+import { EquipeComponent } from './equipe/equipe.component';
+import { GroupementComponent } from './groupement/groupement.component';
+import { ListGroupementsComponent } from './list-groupements/list-groupements.component';
+import { ImportTonnageComponent } from './import-tonnage/import-tonnage.component';
+import { OutilsComponent } from './outils/outils.component';
+import { CorrespondanceSortantsComponent } from './correspondance-sortants/correspondance-sortants.component';
+import { idUsineService } from './services/idUsine.service';
+import { ListReactifsComponent } from './list-reactifs/list-reactifs.component';
+import { CorrespondanceReactifsComponent } from './correspondance-reactifs/correspondance-reactifs.component';
 
 @NgModule({
   declarations: [
@@ -98,12 +115,25 @@ import { RondierFinMoisComponent } from './rondier-fin-mois/rondier-fin-mois.com
     ListConsignesComponent,
     ConsigneComponent,
     RondierFinMoisComponent,
+    MaintenanceComponent,
+    TokenApiComponent,
+    ListEquipeComponent,
+    cahierQuart,
+    EquipeComponent,
+    GroupementComponent,
+    ListGroupementsComponent,
+    ImportTonnageComponent,
+    OutilsComponent,
+    CorrespondanceSortantsComponent,
+    ListReactifsComponent,
+    CorrespondanceReactifsComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
+    DragDropModule
   ],
   providers: [
     moralEntitiesService,
@@ -115,6 +145,10 @@ import { RondierFinMoisComponent } from './rondier-fin-mois/rondier-fin-mois.com
     AuthGuard,
     rapportsService,
     rondierService,
+    dateService,
+    tokenApiService,
+    cahierQuartService,
+    idUsineService
   ],
   bootstrap: [AppComponent]
 })

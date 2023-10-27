@@ -1,6 +1,7 @@
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Injectable} from "@angular/core";
 import {user} from "../../models/user.model";
+import { idUsineService } from "./idUsine.service";
 
 @Injectable()
 export class loginService {
@@ -9,48 +10,39 @@ export class loginService {
     private headerDict = {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Access-Control-Allow-Origin' : '*'
+        'Access-Control-Allow-Origin' : '*',
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
     }
     private portAPI = 3100;
     private ip = "fr-couvinove301.prod.paprec.fr";
+    //private ip = "localhost";
     private idUsine : number | undefined;
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient, private idUsineService : idUsineService) {
         this.httpClient = http;
-        //Récupération du user dans localStorage
-        var userLogged = localStorage.getItem('user');
-        if (typeof userLogged === "string") {
-            var userLoggedParse = JSON.parse(userLogged);
-
-            //Récupération de l'idUsine
-            // @ts-ignore
-            this.idUsine = userLoggedParse['idUsine'];
-        }
+        //@ts-ignore
+        this.idUsine = this.idUsineService.getIdUsine();
     }
 
     //création d'utilisateur
-    createUser(nom : string, prenom : string, login : string, pwd : string, isRondier : number, isSaisie : number, isQSE : number, isRapport : number, isAdmin : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/User?nom="+nom+"&prenom="+prenom+"&login="+login+"&pwd="+pwd+"&isRondier="+isRondier+"&isSaisie="+isSaisie+"&isQSE="+isQSE+"&isRapport="+isRapport+"&isAdmin="+isAdmin+"&idUsine="+this.idUsine;
-        //console.log(requete);
-
+    createUser(nom : string, prenom : string, login : string, pwd : string, isRondier : number, isSaisie : number, isQSE : number, isRapport : number, isChefQuart : number, isAdmin : number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/User?nom="+nom+"&prenom="+prenom+"&login="+login+"&pwd="+pwd+"&isRondier="+isRondier+"&isSaisie="+isSaisie+"&isQSE="+isQSE+"&isRapport="+isRapport+"&isChefQuart="+isChefQuart+"&isAdmin="+isAdmin+"&idUsine="+this.idUsine;
+        console.log(requete);
+        
         const requestOptions = {
             headers: new HttpHeaders(this.headerDict),
         };
 
         return this.http
-            .put<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
 
     //récupérer la list des utilisateurs
     getAllUsers(loginLike : string) {
         let requete = "https://"+this.ip+":"+this.portAPI+"/Users?login="+loginLike+"&idUsine="+this.idUsine;
-        //console.log(requete);
-
-
         const requestOptions = {
             headers: new HttpHeaders(this.headerDict),
         };
-
         return this.http
             .get<user[]>(requete,requestOptions);
     }
@@ -76,7 +68,7 @@ export class loginService {
 
 
         const requestOptions = {
-            headers: new HttpHeaders(this.headerDict),
+            headers: new HttpHeaders(this.headerDict),       
         };
 
         return this.http
@@ -93,72 +85,19 @@ export class loginService {
         };
 
         return this.http
-            .put<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
 
-    //Mise à jour droit rondier
-    updateRondier(login : string, droit : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/UserRondier/"+login+"/"+droit;
+    //Mise à jour des droits rondier ou saisie ou qse ou rapports ou chef de quart ou admin
+    updateDroit(login : string, droit : number, choix : string){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/"+choix+"/"+login+"/"+droit;
         //console.log(requete);
 
         const requestOptions = {
             headers: new HttpHeaders(this.headerDict),
         };
-
         return this.http
-            .put<any>(requete,requestOptions);
-    }
-
-    //Mise à jour droit saisie
-    updateSaisie(login : string, droit : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/UserSaisie/"+login+"/"+droit;
-        //console.log(requete);
-
-        const requestOptions = {
-            headers: new HttpHeaders(this.headerDict),
-        };
-
-        return this.http
-            .put<any>(requete,requestOptions);
-    }
-
-    //Mise à jour droit qse
-    updateQSE(login : string, droit : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/UserQSE/"+login+"/"+droit;
-        //console.log(requete);
-
-        const requestOptions = {
-            headers: new HttpHeaders(this.headerDict),
-        };
-
-        return this.http
-            .put<any>(requete,requestOptions);
-    }
-
-    ///Mise à jour droit rapport
-    updateRapport(login : string, droit : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/UserRapport/"+login+"/"+droit;
-        //console.log(requete);
-
-        const requestOptions = {
-            headers: new HttpHeaders(this.headerDict),
-        };
-
-        return this.http
-            .put<any>(requete,requestOptions);
-    }
-
-    //Mise à jour droit admin
-    updateAdmin(login : string, droit : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/UserAdmin/"+login+"/"+droit;
-        //console.log(requete);
-
-        const requestOptions = {
-            headers: new HttpHeaders(this.headerDict),
-        };
-
-        return this.http
-            .put<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
 
     //delete user

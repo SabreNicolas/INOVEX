@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-sm-3">
                 <div class="form-group">
-                    <select class="form-select form-select-sm" aria-label=".form-select-sm example" id="zone">
+                    <select class="form-select form-select-sm" aria-label=".form-select-sm example" id="zone" (change)="setFilters()">
                         <option *ngFor="let z of listZone" value="{{z.Id}}">{{z.nom}}</option>
                     </select>
                 </div>
@@ -32,13 +32,19 @@
                 <th scope="col">Valeur par défaut</th>
                 <th scope="col">Valeurs Possibles</th>
                 <th scope="col">Unité</th>
+                <th scope="col">Code GMAO</th>
+                <th>Code Equipement</th>
                 <th style="text-align: center" scope="col">Est un régulateur ?</th>
                 <th style="text-align: center" scope="col">Est un compteur ?</th>
                 <th scope="col">Edition</th>
                 <th scope="col">#</th>
             </tr>
             </thead>
-            <tbody *ngFor="let e of listElements">
+            <tbody *ngFor="let e of listElements; let i = index">
+            <tr *ngIf="e.idGroupement !=0 && getPreviousItem(i) != e.idGroupement" class="table-secondary">
+                <th *ngIf="e.groupement == null" colspan="13">Aucun Groupement</th>
+                <th *ngIf="e.groupement != null" scope="col" colspan="13">{{e.groupement}}</th>
+            </tr>
             <tr class="table-light" [ngSwitch]="e.typeChamp">
                 <td>{{e.nom}}</td>
                 <td>{{e.ordre}}</td>
@@ -50,6 +56,8 @@
                 <td>{{e.defaultValue}}</td>
                 <td>{{e.listValues}}</td>
                 <td>{{e.unit}}</td>
+                <td style="color: blue;">/</td>
+                <td>{{e.CodeEquipement}}</td>
                 <td style="text-align: center" *ngIf="e.isRegulateur"><i style="color: green" class="fa fa-check" aria-hidden="true"></i></td>
                 <td style="text-align: center" *ngIf="!e.isRegulateur"><i style="color: red" class="fa fa-times" aria-hidden="true"></i></td>
                 <td style="text-align: center" *ngIf="e.isCompteur"><i style="color: green" class="fa fa-check" aria-hidden="true"></i></td>

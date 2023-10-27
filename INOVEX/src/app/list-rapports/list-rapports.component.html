@@ -1,6 +1,9 @@
+<div *ngIf="isSuperAdmin" id="usine">
+    {{usine}}
+</div>
 <button routerLink="" class="btn btn-outline-primary btn-lg btnRetour"><i class="fa fa-home"></i> Accueil</button>
 
-<h3 class="center">Entrées/Sorties :</h3>
+<h2 class="center centerTop">Entrées/Sorties :</h2>
 
 <div class="rapportsList">
     <a *ngFor="let rapport of listRapports" target="_self" (click)="download(rapport.url)">
@@ -13,7 +16,7 @@
     </a>
 </div>
 
-<h3 class="center">Facturation :</h3>
+<h2 class="center">Facturation :</h2>
 
 <div class="rapportsList">
     <a *ngFor="let rapport of listRapports" target="_self" (click)="download(rapport.url)">
@@ -26,7 +29,7 @@
     </a>
 </div>
 
-<h3 class="center">Tableau de Bord :</h3>
+<h2 class="center">Tableau de Bord :</h2>
 
 <div class="rapportsList">
     <a *ngFor="let rapport of listRapports" target="_self" (click)="download(rapport.url)">
@@ -39,11 +42,24 @@
     </a>
 </div>
 
-<h3 class="center">Divers :</h3>
+<h2 class="center">Annuel :</h2>
 
 <div class="rapportsList">
     <a *ngFor="let rapport of listRapports" target="_self" (click)="download(rapport.url)">
-        <div *ngIf="!rapport.nom.includes('Entrées') && !rapport.nom.includes('Sorties') && !rapport.nom.includes('Facturation') && !rapport.nom.includes('Tableau de Bord')" class="card">
+        <div *ngIf="rapport.nom.includes('Annuel')" class="card">
+            <img src="assets/excel.png" class="card-img-top" alt="...">
+            <div class="card-body">
+                <p class="card-text">{{rapport.nom}}</p>
+            </div>
+        </div>
+    </a>
+</div>
+
+<h2 class="center">Divers :</h2>
+
+<div class="rapportsList">
+    <a *ngFor="let rapport of listRapports" target="_self" (click)="download(rapport.url)">
+        <div *ngIf="!rapport.nom.includes('Entrées') && !rapport.nom.includes('Sorties') && !rapport.nom.includes('Facturation') && !rapport.nom.includes('Tableau de Bord') && !rapport.nom.includes('Annuel')" class="card">
             <img src="assets/excel.png" class="card-img-top" alt="...">
             <div class="card-body">
                 <p class="card-text">{{rapport.nom}}</p>

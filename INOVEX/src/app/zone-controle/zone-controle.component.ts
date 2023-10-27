@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {NgForm} from "@angular/forms";
 import Swal from "sweetalert2";
 import {rondierService} from "../services/rondier.service";
+import { user } from 'src/models/user.model';
+import { idUsineService } from '../services/idUsine.service';
 
 @Component({
   selector: 'app-zone-controle',
@@ -15,14 +17,19 @@ export class ZoneControleComponent implements OnInit {
   private nbfour : number;
   public numbers : number[]; 
   private four : number;
+  public denomination : string;
+  public userLogged!: user;
+  private idUsine: number;
 
-  constructor(private rondierService : rondierService) {
+  constructor(private rondierService : rondierService, private idUsineService : idUsineService) {
     this.nom ="";
     this.commentaire="";
     this.nbfour = 0;
     //contient des chiffres pour l'itération des fours
     this.numbers = [];
     this.four = 0;
+    this.denomination ="";
+    this.idUsine=0;
   }
 
   ngOnInit(): void {
@@ -32,12 +39,24 @@ export class ZoneControleComponent implements OnInit {
       this.nbfour = response.data[0].nbLigne;
       this.numbers = Array(this.nbfour).fill(1).map((x,i) => i+1);
     });
+
+    this.idUsine = this.idUsineService.getIdUsine();
+    if(this.idUsine==7){
+      this.denomination = "Ronde";
+    }
+    else this.denomination = "Zone de contrôle";
+    
   }
 
   //création de la zone de controle
   onSubmit(form : NgForm) {
     this.nom = form.value['nom'];
-    this.four = form.value['four'];
+    //On affecte la valeur si le four est coché
+    if (form.controls['four'].touched){
+      this.four = form.value['four'];
+    }
+    //Sinon 0 pour commun
+    else this.four = 0;
     //Gestion commentaire
     if(form.value['commentaire'].length < 1){
       this.commentaire = "_";
@@ -62,7 +81,14 @@ export class ZoneControleComponent implements OnInit {
   resetFields(form: NgForm){
     form.controls['nom'].reset();
     form.value['nom']='';
-    form.controls['choixFour'].reset();
+    //form.controls['commentaire'].reset();
+    form.value['commentaire']='_';
+    form.controls['four'].reset();
+    form.value['four'] = 0;
+  }
+
+  resetFourZone(form: NgForm) {
+    form.controls['four'].reset();
   }
 
 }

@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from "@angular/router";
+import { maintenance } from 'src/models/maintenance.model';
 import { site } from 'src/models/site.model';
 import Swal from 'sweetalert2';
 import {user} from "../../models/user.model";
 import { categoriesService } from '../services/categories.service';
+import { rapportsService } from '../services/rapports.service';
+
 
 @Component({
   selector: 'app-acceuil',
@@ -22,11 +25,14 @@ export class AcceuilComponent implements OnInit {
   public isQSE : boolean;//0 ou 1
   public isRapport : boolean;//0 ou 1
   public isAdmin : boolean;//0 ou 1
+  public isChefQuart : boolean;//0 ou 1
   public idUsine : number;
   public localisation : string;
   public sites : site[];
+  public maintenance : maintenance | undefined;
+  public modeOPs : string[];
 
-  constructor(private router : Router, private categoriesService : categoriesService) {
+  constructor(private router : Router, private categoriesService : categoriesService,private rapportsService : rapportsService) {
     this.nom = '';
     this.prenom = '';
     this.MD5pwd ='';
@@ -36,9 +42,11 @@ export class AcceuilComponent implements OnInit {
     this.isQSE = false;
     this.isRapport = false;
     this.isAdmin = false;
+    this.isChefQuart = false;
     this.idUsine = 0;
     this.localisation='';
     this.sites = [];
+    this.modeOPs = [];
   }
 
   ngOnInit(): void {
@@ -53,7 +61,7 @@ export class AcceuilComponent implements OnInit {
       this.idUsine = this.userLogged['idUsine'];
 
       //SI utilisateur GLOBAL alors choix du site à administrer/se connecter
-      //Id 5 correspond à "GLOBAL"
+      //Id 5 correspond à "GLOBAL"/SuperAdmin
       if (this.idUsine == 5) {
         this.choixSite();
       }
@@ -83,8 +91,17 @@ export class AcceuilComponent implements OnInit {
       this.isSaisie = this.userLogged['isSaisie'];
       // @ts-ignore
       this.isAdmin = this.userLogged['isAdmin'];
+      this.isChefQuart = this.userLogged['isChefQuart'];
     }
 
+    //On vérifie si une maintenance est prévue
+    this.getMaintenance();
+  }
+
+  getMaintenance(){
+    this.categoriesService.getMaintenance().subscribe((response)=>{
+      this.maintenance = response;
+    });
   }
 
   navigate(route : string){
@@ -96,7 +113,36 @@ export class AcceuilComponent implements OnInit {
 
   logout(){
     localStorage.removeItem('user');
+    localStorage.removeItem('token');
     this.router.navigate(['/']);
+  }
+
+  choixModeOPs(){
+    //Récupération des sites
+    this.rapportsService.getModeOPs().subscribe((response)=>{
+      // @ts-ignore
+      this.modeOPs = response.data;
+      //Construction des valeurs du menu select qui contient les sites
+      let listModesOPs = {};
+      for(let i=0; i<this.modeOPs.length;i++){
+        //@ts-ignore
+        listModesOPs[this.modeOPs[i]['url']] = this.modeOPs[i]['nom']
+      }
+
+      Swal.fire({
+        title: 'Veuillez choisir un mode opératoire',
+        input: 'select',
+        inputOptions: listModesOPs,
+        showCancelButton: false,
+        confirmButtonText: "Télécharger",
+        allowOutsideClick: true,
+      })
+      .then((result) => {
+        if(result.value != undefined){
+          window.open(result.value);
+        }
+      });
+    });
   }
 
   choixSite(){
@@ -115,7 +161,6 @@ export class AcceuilComponent implements OnInit {
       Swal.fire({
         title: 'Veuillez Choisir un site',
         input: 'select',
-        //TODO list dynamqiue + stockage dans localStorage
         inputOptions: listSites,
         showCancelButton: false,
         confirmButtonText: "Valider",
@@ -135,6 +180,7 @@ export class AcceuilComponent implements OnInit {
         this.userLogged['localisation'] = this.localisation;
         //ON met à jour le user dans le localstorage
         localStorage.setItem('user',JSON.stringify(this.userLogged));
+        window.location.reload()
       });
     });
   }

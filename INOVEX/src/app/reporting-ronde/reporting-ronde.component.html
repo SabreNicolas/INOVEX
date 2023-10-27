@@ -1,17 +1,26 @@
+<div *ngIf="isSuperAdmin" id="usine">
+    {{usine}}
+</div>
+<button routerLink="" class="btn btn-outline-primary btn-lg btnRetour"><i class="fa fa-home"></i> Accueil</button>
+
 <div class="blocReporting">
     <div>
         <!--date-->
         <form #f="ngForm">
             <div class="form-group">
-                <h5><label>Jour :</label></h5>
+                <h5><label>Jour et Quart:</label></h5>
                 <div class="row">
-                    <div class="col-lg-3">
-                        <input type="date" id="dateDeb" class="form-control" placeholder="Date de début" name="dateDeb" ngModel>
+                    <div class="col-lg-5">
+                        <input type="date" id="dateDeb" class="form-control" placeholder="Date de début" name="dateDeb" ngModel (change)="setPeriod(f)">
                     </div>
-                    <div class="col-sm-3">
+                    <div class="col-sm-5">
                         <div class="form-group">
-                            <button class="btn btn-primary" type="submit" (click)="setPeriod(f)"><img src="assets/refresh.png"></button>
+                            <!-- <button class="btn btn-primary" type="submit" (click)="setPeriod(f)"><img src="assets/refresh.png"></button> -->
                             <button style="margin-left: 0.5em" class="btn btn-warning" (click)="setYesterday(f)">Hier</button>
+                            <button style="margin-left: 0.5em" class="btn btn-success" (click)="setToday(f)">Aujourd'hui</button>
+                            <button style="margin-left: 0.5em" id="quartmatin" class="btn btn-info" (click)="affichageQuart(1)"><strong>Matin</strong></button>
+                            <button style="margin-left: 0.5em" id="quartapresmidi" class="btn btn-info" (click)="affichageQuart(2)"><strong>Après-midi</strong></button>
+                            <button style="margin-left: 0.5em" id="quartnuit" class="btn btn-info" (click)="affichageQuart(3)"><strong>Nuit</strong></button>
                         </div>
                     </div>
                 </div>
@@ -19,9 +28,67 @@
         </form>
     </div>
 
+    <h5><label *ngIf="listElementsOfZone.length != 0">Filtres :</label></h5>
+    <div class="row" *ngIf="listElementsOfZone.length != 0">
+        <div class="col-sm-3">
+            <div class="form-group">
+                <select id="type" required class="form-select form-select-sm"
+                        aria-label=".form-select-sm example" name="type">
+                        <option value="">Choisissez une zone</option>
+                    <option *ngFor="let elementsOfOneZone of listElementsOfZone" value="{{elementsOfOneZone.zone}}">{{elementsOfOneZone.zone}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="form-group">
+                <div class="form-group">
+                    <input type="text" id="name" class="form-control" placeholder="Nom de la zone" name="name" ngModel>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="form-group">
+                <div class="form-group">
+                    <button class="btn btn-success" (click)="setFilters()" style="margin-right: 5px;">Valider</button>
+                    <button class="btn btn-danger" (click)="resetFiltre()">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Filtre pour les éléments de contrôle -->
+    <!-- <div class="row" *ngIf="listElementsOfZone.length != 0">
+        <div class="col-sm-3">
+            <div class="form-group">
+                <select id="type" required class="form-select form-select-sm"
+                        aria-label=".form-select-sm example" name="type">
+                        <option value="">Choisissez un élément de contrôle</option>
+                    <option *ngFor="let elementsOfUsine of listElementsOfUsine" value="{{elementsOfUsine.nom}}">{{elementsOfUsine.nom}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="form-group">
+                <div class="form-group">
+                    <input type="text" id="name" class="form-control" placeholder="Nom de la zone" name="name" ngModel>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="form-group">
+                <div class="form-group">
+                    <button class="btn btn-success" (click)="setFilters()" style="margin-right: 5px;">Valider</button>
+                    <button class="btn btn-danger" (click)="resetFiltre()">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div> -->
     <!--table des rondes-->
-    <div *ngIf="listRonde.length > 0" class="table-style">
-        <table class="table table-hover tableFixed table-bordered">
+    <div id="tableDesRondes" style="display: block;" *ngIf="listRonde.length > 0" class="table-style">
+        <table class="table table-hover tableFixed table-bordered" id="tableTable">
             <thead>
             <tr class="table-secondary">
                 <th scope="col"><p>Element de contrôle</p></th>
@@ -51,9 +118,10 @@
                 <td>Terminé ?</td>
                 <td *ngFor="let ronde of listRonde" style="text-align: center">
                     <i *ngIf="ronde.isFinished" style="color: green" class="fa fa-check" aria-hidden="true"></i>
-                    <button *ngIf="!ronde.isFinished" id="closeRonde" (click)="clotureRonde(ronde.Id)" class="btn btn btn-outline-danger">
+                    <i *ngIf="!ronde.isFinished" style="color: red" class="fa fa-times" aria-hidden="true"></i>
+                    <!--<button *ngIf="!ronde.isFinished" id="closeRonde" (click)="clotureRonde(ronde.Id)" class="btn btn btn-outline-danger">
                         <i style="color: red" class="fa fa-times" aria-hidden="true"></i>
-                    </button>
+                    </button>-->
                 </td>
             </tr>
             <tr class="table-info">
@@ -68,53 +136,67 @@
                     <p aria-hidden="true">{{ronde.nomChef}} {{ronde.prenomChef}}</p>
                 </td>
             </tr>
-            <tr *ngFor="let fourNumber of numbers" class="table-info">
-                <td>Four {{fourNumber}} en Fonctionnement ?</td>
-                <td *ngFor="let ronde of listRonde" style="text-align: center">
-                    <i *ngIf="checkFonctFour(fourNumber,ronde)" style="color: green" class="fa fa-check" aria-hidden="true"></i>
-                    <i *ngIf="!checkFonctFour(fourNumber,ronde)" style="color: red" class="fa fa-times" aria-hidden="true"></i>
-                </td>
-            </tr>
+            <ng-container *ngIf="idUsine !=7">
+                <tr *ngFor="let fourNumber of numbers" class="table-info fourLigneTableau">
+                    <td >Four {{fourNumber}} en Fonctionnement ?</td>
+                    <td *ngFor="let ronde of listRonde" style="text-align: center">
+                        <i *ngIf="checkFonctFour(fourNumber,ronde)" style="color: green" class="fa fa-check" aria-hidden="true"></i>
+                        <i *ngIf="!checkFonctFour(fourNumber,ronde)" style="color: red" class="fa fa-times" aria-hidden="true"></i>
+                    </td>
+                </tr>
+            </ng-container>
             </tbody>
             <!--Affichage des zones et de leurs éléments-->
-            <tbody *ngFor="let elementsOfOneZone of listElementsOfZone">
-                <tr class="table-light">
-                    <td style="color: blue; text-align: center"><strong>{{elementsOfOneZone.zone}}</strong></td>
+            <tbody *ngFor="let elementsOfOneZone of listElementsOfZone" >
+                <tr class="table-light" *ngIf="elementsOfOneZone.zone.toLowerCase().includes(this.filtreZone) || this.filtreZone == '' ">
+                    <td  style="color: blue; text-align: center"><strong>{{elementsOfOneZone.zone}}</strong></td>
                     <td *ngFor="let ronde of listRonde" style="text-align: center">
                         <div *ngFor="let anomalie of listAnomalie">
                             <p style="color: red" *ngIf="anomalie.zoneId == elementsOfOneZone.zoneId && anomalie.rondeId == ronde.Id">
-                                <strong>- {{anomalie.commentaire}}  </strong>
-                                <button class="btn btn-outline-secondary" (click)="downloadImage(anomalie.photo)">
+                                <strong id="{{ronde.Id}}--{{elementsOfOneZone.zoneId}}">{{anomalie.commentaire}}  </strong>
+                                <button class="btn btn-outline-secondary"  *ngIf="anomalie.photo != undefined" (click)="downloadImage(anomalie.photo)">
                                     <i style="color:black;" class="fa fa-camera" aria-hidden="true"></i>
                                 </button>
                             </p>
+                            <p style="color: red" *ngIf="anomalie.zoneId != elementsOfOneZone.zoneId || anomalie.rondeId != ronde.Id">
+                                <strong id="{{ronde.Id}}--{{elementsOfOneZone.zoneId}}"></strong>
+                            </p>
                         </div>
+                        <p style="color: red" *ngIf="listAnomalie.length == 0">
+                            <strong id="{{ronde.Id}}--{{elementsOfOneZone.zoneId}}"></strong>
+                        </p>
+                        <button class="btn btn-outline-secondary" (click)="editAnomalie(ronde.Id,elementsOfOneZone.zoneId)">
+                            <i style="color:black;" class="far fa-edit" aria-hidden="true"></i>
+                        </button>
                     </td>
                 </tr>
-                <tr class="table-warning" *ngFor="let element of elementsOfOneZone.elements">
-                    <td>{{element.nom}}</td>
-                    <td *ngFor="let ronde of listRonde" style="text-align: center">
-                        <!--<div style="display: flex; flex-direction: column;" *ngFor="let reporting of listReporting">
-                            <p *ngIf="reporting.nomZone == elementsOfOneZone.zone && reporting.rondeId == ronde.Id && reporting.elementId == element.Id && reporting.value != '/'">
-                                {{reporting.value}} {{element.unit}}
-                                <button class="btn btn-warning btn-sm" (click)="updateValueElement(reporting)">
-                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                </button>
-                            </p>
-                            <p style="color: #22498c" *ngIf="reporting.nomZone == elementsOfOneZone.zone && reporting.rondeId == ronde.Id && reporting.elementId == element.Id && reporting.modeRegulateur != 'undefined'">Mode Régulateur : {{reporting.modeRegulateur}}</p>
-                            <div style="display: inline-flex; justify-content: center; align-items: center;" *ngIf="reporting.nomZone == elementsOfOneZone.zone && reporting.rondeId == ronde.Id && reporting.elementId == element.Id && reporting.value == '/'">
-                                <p style="background-color: red">NON SAISIE</p>
-                                <button class="btn btn-warning btn-sm" (click)="updateValueElement(reporting)">
-                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                </button>
-                            </div>-->
-                            <div style="display: flex; flex-direction: column;">
-                                <p id="{{ronde.Id}}-{{element.Id}}"></p>
-                                <p id="{{ronde.Id}}-{{element.Id}}-Error" style="display: none;"></p>
-                                <p id="{{ronde.Id}}-{{element.Id}}-Regulateur" style="color: #22498c; display: none"></p>
-                            </div>
-                        <!--</div>-->
-                    </td>
+                <tr class="table-warning" *ngFor="let element of elementsOfOneZone.elements" >
+                    <ng-container *ngIf="elementsOfOneZone.zone.toLowerCase().includes(this.filtreZone) || this.filtreZone == '' ">
+                        <td id="{{element.nom}}">{{element.nom}}</td>
+                        <td *ngFor="let ronde of listRonde" style="text-align: center">
+                            <!--<div style="display: flex; flex-direction: column;" *ngFor="let reporting of listReporting">
+                                <p *ngIf="reporting.nomZone == elementsOfOneZone.zone && reporting.rondeId == ronde.Id 
+                                && reporting.elementId == element.Id && reporting.value != '/'">
+                                    {{reporting.value}} {{element.unit}}
+                                    <button class="btn btn-warning btn-sm" (click)="updateValueElement(reporting)">
+                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                    </button>
+                                </p>
+                                <p style="color: #22498c" *ngIf="reporting.nomZone == elementsOfOneZone.zone && reporting.rondeId == ronde.Id && reporting.elementId == element.Id && reporting.modeRegulateur != 'undefined'">Mode Régulateur : {{reporting.modeRegulateur}}</p>
+                                <div style="display: inline-flex; justify-content: center; align-items: center;" *ngIf="reporting.nomZone == elementsOfOneZone.zone && reporting.rondeId == ronde.Id && reporting.elementId == element.Id && reporting.value == '/'">
+                                    <p style="background-color: red">NON SAISIE</p>
+                                    <button class="btn btn-warning btn-sm" (click)="updateValueElement(reporting)">
+                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                    </button>
+                                </div>-->
+                                <div style="display: flex; flex-direction: column;" *ngIf="ronde.quart">
+                                    <p id="{{ronde.Id}}-{{element.Id}}"></p>
+                                    <p id="{{ronde.Id}}-{{element.Id}}-Error" style="display: none;"></p>
+                                    <p id="{{ronde.Id}}-{{element.Id}}-Regulateur" style="color: #22498c; display: none"></p>
+                                </div>
+                            <!--</div>-->
+                        </td>
+                    </ng-container>
                 </tr>
             </tbody>
         </table>

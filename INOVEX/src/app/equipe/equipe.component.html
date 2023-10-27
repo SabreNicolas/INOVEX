@@ -1,0 +1,88 @@
+<div id="container">
+    <div id="gauche">
+        <h3>Liste des rondiers sans équipe</h3>
+        <div id="test" class="overflow-auto">
+        <table class="table table-hover tableFixed" id="listRondier" cdkDropList [cdkDropListData]="listUsers" [cdkDropListConnectedTo]="'listAjout'" (cdkDropListDropped)="onItemDropped($event)" >
+            <thead>
+                <tr class="table-secondary">
+                    <th scope="col">Nom</th>
+                    <th scope="col">Prénom</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let user of listUsers" cdkDrag>
+            <tr class="table-light"  >
+                <td>{{user.Nom}}</td>
+                <td>{{user.Prenom}}</td>
+                <td>
+                    <button type="button" class="btn btn-success" (click)="ajoutUser(user)">
+                        <i class="fas fa-arrow-right"></i> 
+                    </button> 
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        </div>
+    </div>
+
+    <div id="droite">
+        <h3>Création de la nouvelle équipe :</h3>
+
+        <div id="choix">
+            <div class="mb-3">  
+                <label for="nomEquipe" class="form-label">Nom de l'équipe *</label>  
+                <input type="text" id="nomEquipe" class="form-control" #nomEquipe name="nomEquipe" placeholder="Nom de l'équipe" ngModel [(ngModel)]="name">
+            </div>
+    
+            <div class="mb-3">
+                <label for="quart" class="form-label">Période</label>
+                <select class="form-select" id="quart" #quart name="periode" required ngModel [(ngModel)]="periode">
+                    <option value="matin">Quart du matin</option>
+                    <option value="apres-midi">Quart de l'après-midi</option>
+                    <option value="nuit">Quart de nuit</option>
+                </select>
+            </div>
+        </div>
+        
+        <div id="tableAjout" class="overflow-auto">
+            <table class="table table-hover tableFixed" id="listAjout" cdkDropList  [cdkDropListData]="listAjout" [cdkDropListConnectedTo]="'listRondier'" (cdkDropListDropped)="onItemDropped($event)">
+                <thead>
+                <tr class="table-secondary">
+                    <th scope="col">Nom</th>
+                    <th scope="col">Prénom</th>
+                    <th scope="col">Poste</th>
+                    <th scope="col">Ronde</th>
+                    <th></th>
+                </thead>
+                <tbody >
+                    <tr *ngFor="let user of listAjout" class="table-light" cdkDrag>
+                        <td>{{user.Nom}}</td>
+                        <td>{{user.Prenom}}</td>
+                        <td>
+                            <select id="{{user.Nom}}_{{user.Prenom}}_poste" class="form-select" name="poste" required ngModel [(ngModel)]="user.Poste">
+                                <option value="Rondier/Pontier">Rondier/Pontier</option>
+                                <option value="Opérateur de conduite">Opérateur de conduite</option>
+                                <option value="Adjoint Chef de Quart">Adjoint Chef de Quart</option>
+                                <option value="Chef de Quart">Chef de Quart</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select class="form-select" id="{{user.Nom}}_{{user.Prenom}}_zone" id="ronde" name="ronde" required ngModel [(ngModel)]="user.Zone">
+                                <option value="0">Pontier</option>
+                                <option *ngFor="let zone of listZone" value="{{zone.Id}}">{{zone.nom}}</option>
+                            </select>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-danger" (click)="suppUser(user)">
+                                <i class="fas fa-times"></i> 
+                            </button> 
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <p style="font-size: smaller; color: grey" id="legende">* : Obligatoire</p>
+        <button id="creer" type="submit" class="btn btn-success" (click)="nouvelleEquipe(nomEquipe.value,quart.value)">Soumettre</button>  
+        <button class="btn btn-danger" onclick="window.location.replace('/cahierQuart')">Annuler</button>
+    </div>  
+</div>

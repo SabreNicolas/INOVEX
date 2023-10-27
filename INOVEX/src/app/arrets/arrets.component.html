@@ -1,4 +1,4 @@
-<div>
+<div id="page">
 
     <!--Filtres de recherche-->
     <div class="form-group">
@@ -57,14 +57,80 @@
                     </div>
                 </div>
 
+                <h5 *ngIf="disponible || fortuit || programme">Catégorie : </h5>
+                <select *ngIf="disponible" id="disponible" class="form-select form-select-sm" aria-label=".form-select-sm example" name="disponible">
+                    <option value="Manque de déchets">Manque de déchets</option>
+                    <option value="Coupure électricité (si pas de production électrique sur le site)">Coupure électricité (si pas de production électrique sur le site)</option>
+                    <option value="Non respect de l'arrêté prefectoral">Non respect de l'arrêté prefectoral</option>
+                    <option value="Autre">Autre</option>
+                </select>
+                
+                <select *ngIf="fortuit" id="fortuit" class="form-select form-select-sm" aria-label=".form-select-sm example" name="fortuit" (change)="setSousCommentaire('fortuit')">
+                    <option value="Four">Four</option>
+                    <option value="Chaudière">Chaudière</option>
+                    <option value="Traitement des fumées">Traitement des fumées</option>
+                    <option value="Communs auxiliaires">Communs auxiliaires</option>
+                    <option value="Autre">Autre</option>
+                </select>
 
-                <div class="form-group">
-                    <label for="desc">Commentaire (pas de caractères spéciaux ni majuscules SVP) : * </label>
-                    <textarea class="form-control" required id="desc"  placeholder="Description ..." name="desc" ngModel></textarea>
-                </div>
+                <select *ngIf="programme" id="programme" class="form-select form-select-sm" aria-label=".form-select-sm example" name="programme">
+                    <option value="Arrêt technique">Arrêt technique</option>
+                    <option value="Autre">Autre</option>
+                </select>
+
+                <h5 *ngIf = "fortuit">Sous-catégorie : </h5>
+                <select *ngIf="fortuit_four" id="fortuit_four" class="form-select form-select-sm" aria-label=".form-select-sm example" name="fortuit_four">
+                    <option value="Air de combustion">Air de combustion</option>
+                    <option value="Alimentation four">Alimentation four</option>
+                    <option value="Autres">Autres</option>
+                    <option value="Brûleurs">Brûleurs</option>
+                    <option value="Centrale hydraulique four">Centrale hydraulique four</option>
+                    <option value="Extracteur mâchefer">Extracteur mâchefer</option>
+                    <option value="Fine sous grille">Fine sous grille</option>
+                    <option value="Grille">Grille</option>
+                    <option value="Pressions four">Pressions four</option>
+                    <option value="Autre">Autre</option>
+                </select>
+
+                <select *ngIf="fortuit_chaudiere" id="fortuit_chaudiere" class="form-select form-select-sm" aria-label=".form-select-sm example" name="fortuit_chaudiere">
+                    <option value="Fuite">Fuite</option>
+                    <option value="Hors fuite">Hors fuite</option>
+                    <option value="Autre">Autre</option>
+                </select>
+
+                <select *ngIf="fortuit_traitement" id="fortuit_traitement" class="form-select form-select-sm" aria-label=".form-select-sm example" name="fortuit_traitement">
+                    <option value="Electrofiltres">Electrofiltres</option>
+                    <option value="Filtres à manches">Filtres à manches</option>
+                    <option value="SCR">SCR</option>
+                    <option value="Ventilateur tirage">Ventilateur tirage</option>
+                    <option value="Réacteur/Lit fluidisé">Réacteur/Lit fluidisé</option>
+                    <option value="Réactifs">Réactifs</option> 
+                    <option value="Contraintes environnementales">Contraintes environnementales</option>
+                    <option value="Autre">Autre</option>
+                </select>
+
+                <select *ngIf="fortuit_commun" id="fortuit_commun" class="form-select form-select-sm" aria-label=".form-select-sm example" name="fortuit_commun">
+                    <option value="Air comprimé">Air comprimé</option>
+                    <option value="Contrôle commande">Contrôle commande</option>
+                    <option value="Electricité (si dispo GA/GE)">Electricité (si dispo GA/GE)</option>
+                    <option value="Evacuation cendrs/refiom">Evacuation cendrs/refiom</option>
+                    <option value="Evacuation mâchefer">Evacuation mâchefer</option>
+                    <option value="Mouvement social">Mouvement social</option>
+                    <option value="Non pécisé">Non pécisé</option>
+                    <option value="Pont">Pont</option>
+                    <option value="Préparation déchêts">Préparation déchêts</option>
+                    <option value="Réseau vapeur">Réseau vapeur</option>
+                    <option value="Traitement de l'eau">Traitement de l'eau</option>
+                    <option value="Traitement des effluents">Traitement des effluents</option>
+                    <option value="Autre">Autre</option>
+                </select>
 
                 <p style="font-size: smaller; color: grey">* : Obligatoire</p>
 
+                <div class="form-group">
+                    <input type="text" id="saisieLibre" class="form-control" placeholder="Saisie libre" name="saisieLibre"  ngModel [(ngModel)]="saisieLibre">
+                </div>
+                
                 <div class="form-group">
                     <button [disabled]="duree < 0.001" class="btn btn-success btn-lg" type="submit">Valider</button>
                     <button class="btn btn-danger btn-lg" routerLink="/">Annuler</button>

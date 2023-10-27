@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     if (localStorage.getItem('user') != undefined){
-      this.router.navigate(['/acceuil']);
+      this.router.navigate(['/accueil']);
     }
   }
 
@@ -36,13 +36,17 @@ export class LoginComponent implements OnInit {
     this.pwd = form.value['pwd'];
     this.MD5pwd = Md5.hashStr(this.pwd);
 
+    this.login = this.login.replace("'","''");
     this.loginService.getUserLoged(this.login,this.MD5pwd).subscribe((response)=>{
       // @ts-ignore
       if(response.data.length > 0) {
         this.loginKO = false;
         // @ts-ignore
         localStorage.setItem('user',JSON.stringify(response.data[0]));
-        this.router.navigate(['/acceuil']);
+        //stockage du token dans le localStorage
+        // @ts-ignore
+        localStorage.setItem('token',response.token);
+        this.router.navigate(['/accueil']);
       }
       else {
         this.loginKO = true;

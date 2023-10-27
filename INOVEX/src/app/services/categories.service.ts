@@ -1,7 +1,9 @@
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Injectable} from "@angular/core";
+import { maintenance } from "src/models/maintenance.model";
 import { site } from "src/models/site.model";
 import {category} from "../../models/categories.model";
+import { idUsineService } from "./idUsine.service";
 
 @Injectable()
 export class categoriesService {
@@ -9,31 +11,28 @@ export class categoriesService {
     private _nom : string;
     private _code : string;
     private _parentId : number;
-    private idUsine : number | undefined;
+    public sites : site[];
 
     httpClient: HttpClient;
     private headerDict = {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Access-Control-Allow-Origin' : '*'
+        'Access-Control-Allow-Origin' : '*',
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
     }
     private portAPI = 3100;
     private ip = "fr-couvinove301.prod.paprec.fr";
+    //private ip = "localhost";
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient, private idUsineService : idUsineService) {
         this.httpClient = http;
         this._nom = '';
         this._code = '';
         this._parentId = 0;
-        //Récupération du user dans localStorage
-        var userLogged = localStorage.getItem('user');
-        if (typeof userLogged === "string") {
-            var userLoggedParse = JSON.parse(userLogged);
-
-            //Récupération de l'idUsine
-            // @ts-ignore
-            this.idUsine = userLoggedParse['idUsine'];
-        }
+        this.sites = [];
+        //@ts-ignore
+        this.idUsine = this.idUsineService.getIdUsine();
+        
     }
 
     //création de catégorie
@@ -46,7 +45,7 @@ export class categoriesService {
         };
 
         return this.http
-            .put<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
 
     //récupérer les categories de compteurs
@@ -109,6 +108,23 @@ export class categoriesService {
             .get<site[]>(requete,requestOptions);
     }
 
+    /*
+    ***** PARTIE MAINTENANCE
+    */
+
+    //récupérer la maintenance prévue
+    getMaintenance() {
+        let requete = "https://"+this.ip+":"+this.portAPI+"/Maintenance";
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<maintenance>(requete,requestOptions);
+    }
+
 
 
     //GETTER & SETTER
@@ -135,4 +151,13 @@ export class categoriesService {
     set parentId(value: number) {
         this._parentId = value;
     }
+
+    get listSites(): site[] {
+        return this.sites;
+    }
+
+    set listSites(value: site[]) {
+        this.sites = value;
+    }
+
 }

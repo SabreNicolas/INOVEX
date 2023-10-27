@@ -1,0 +1,63 @@
+<div>
+       <div class="table-style">
+          <!--table des client-->
+          <table class="table table-hover tableFixed">
+            <thead>
+            <tr class="table-secondary">
+              <th>Correpondande dans le logiciel de pesée</th>
+              <th scope="col">Nom</th>
+              <th></th>
+            </tr>
+            </thead>
+            <tbody >
+              <tr>
+                  <td>
+                      <div class="form-group">
+                          <div class="form-group">
+                              <input type="text" id="name" class="form-control" placeholder="Nom du déchet" name="nomAjout" ngModel [(ngModel)]="nomAjout">
+                          </div>
+                      </div>
+                  </td>
+                  <td>
+                      <div class="form-group">
+                          <select id="type" required class="form-select form-select-sm"
+                                  aria-label=".form-select-sm example" ngModel [(ngModel)]="produitACreer" >
+                                  <option value="0">Choisissez un produit CAP Exploitation</option>
+                                   <option *ngFor="let product of listReactifs" value="{{product.Id}}">{{product.Name}}</option>
+                          </select>
+                      </div>
+                  </td>
+                  <td>
+                      <button class="btn btn-success" style="margin-right: 5px;" (click)="createCorrespondance(nomAjout,produitACreer)">Valider</button>
+                  </td>
+              </tr>
+            <tr class="table-light" *ngFor="let s of listReactifsAvecCorrespondance; let i = index">
+               <!-- <td><strong>{{s.Name}}</strong> -->
+               <td>
+                   {{s.productImport}}
+                   <button class="btn btn-light" (click)="editionNomImport(s.Id, s.productImport)">
+                     <i class="fas fa-edit"></i>
+                   </button>
+               </td>
+  
+               <td>
+                  <div class="form-group">
+                      <select id="{{s.id}}" required class="form-select form-select-sm"
+                              aria-label=".form-select-sm example" name="Name" ngModel [(ngModel)]="s.Id" (change)="editionProductImport(s.id)">
+                              <option value="">Choisissez un type de déchêt</option>
+                               <option *ngFor="let product of listReactifs" value="{{product.Id}}">{{product.Name}}</option>
+                      </select>
+                  </div>
+               </td>
+               <td>
+                  <button class="btn btn-danger" (click)="supprimer(s.id)">
+                      <i class="fas fa-trash-alt"></i>
+                  </button>
+               </td>
+            </tr>
+            </tbody>
+          </table>
+      </div>
+  
+  </div>
+  

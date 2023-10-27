@@ -17,7 +17,7 @@ export class ListConsignesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.rondierService.listConsignes().subscribe((response)=>{
+    this.rondierService.listAllConsignes().subscribe((response)=>{
       // @ts-ignore
       this.listConsignes = response.data;
     });

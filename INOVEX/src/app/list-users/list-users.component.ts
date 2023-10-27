@@ -21,7 +21,7 @@ export class ListUsersComponent implements OnInit {
 
   ngOnInit(): void {
     this.loginService.getAllUsers(this.loginLike).subscribe((response)=>{
-      // @ts-ignore
+      // @ts-ignore 
       this.listUsers = response.data;
     });
   }
@@ -36,6 +36,7 @@ export class ListUsersComponent implements OnInit {
 
   //reset le mot de passe utilisateur à 'temporaire'
   resetPwd(login : string){
+    login = login.replace("'","''");
     this.loginService.updatePwd(login,Md5.hashStr('temporaire')).subscribe((response)=>{
       if (response == "Mise à jour du mot de passe OK"){
         Swal.fire("Mot de passe mis à jour avec succès !");
@@ -48,10 +49,16 @@ export class ListUsersComponent implements OnInit {
       }
     });
   }
+  //Fonction pour attendre
+  wait(ms : number) {
+    return new Promise(resolve => {
+      setTimeout(resolve, ms);
+    });
+  }
 
-  //changement droit rondier
-  changeRondier(login : string, right : number){
-    this.loginService.updateRondier(login,right).subscribe((response)=>{
+  //changement des droits rondier ou saisie ou qse ou rapports ou chef de quart ou admin
+  async changeDroit(login : string, right : number, choix : string){
+    this.loginService.updateDroit(login,right,choix).subscribe((response)=>{
       if (response == "Mise à jour du droit OK"){
         Swal.fire("Les droits ont bien été mis à jour !");
       }
@@ -62,75 +69,13 @@ export class ListUsersComponent implements OnInit {
         })
       }
     });
+    await this.wait(50);
     this.ngOnInit();
   }
 
-  //changement droit saisie
-  changeSaisie(login : string, right : number){
-    this.loginService.updateSaisie(login,right).subscribe((response)=>{
-      if (response == "Mise à jour du droit OK"){
-        Swal.fire("Les droits ont bien été mis à jour !");
-      }
-      else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Erreur lors de la mise à jour des droits',
-        })
-      }
-    });
-    this.ngOnInit();
-  }
-
-  //changement droit qse
-  changeQSE(login : string, right : number){
-    this.loginService.updateQSE(login,right).subscribe((response)=>{
-      if (response == "Mise à jour du droit OK"){
-        Swal.fire("Les droits ont bien été mis à jour !");
-      }
-      else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Erreur lors de la mise à jour des droits',
-        })
-      }
-    });
-    this.ngOnInit();
-  }
-
-  //changement droit rapport
-  changeRapport(login : string, right : number){
-    this.loginService.updateRapport(login,right).subscribe((response)=>{
-      if (response == "Mise à jour du droit OK"){
-        Swal.fire("Les droits ont bien été mis à jour !");
-      }
-      else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Erreur lors de la mise à jour des droits',
-        })
-      }
-    });
-    this.ngOnInit();
-  }
-
-  //changement droit admin
-  changeAdmin(login : string, right : number){
-    this.loginService.updateAdmin(login,right).subscribe((response)=>{
-      if (response == "Mise à jour du droit OK"){
-        Swal.fire("Les droits ont bien été mis à jour !");
-      }
-      else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Erreur lors de la mise à jour des droits',
-        })
-      }
-    });
-    this.ngOnInit();
-  }
 
   //suppression d'un user
-  deleteUser(id : number){
+  async deleteUser(id : number){
     this.loginService.deleteUser(id).subscribe((response)=>{
       if (response == "Suppression du user OK"){
         Swal.fire("L'utilisateur a bien été supprimé !");
@@ -142,6 +87,7 @@ export class ListUsersComponent implements OnInit {
         })
       }
     });
+    await this.wait(50);
     this.ngOnInit();
   }
 

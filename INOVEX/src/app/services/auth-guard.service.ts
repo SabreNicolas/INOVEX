@@ -34,8 +34,8 @@ export class AuthGuard implements CanActivate {
                 }
                 //test pour saisie
                 else if (this.location.path() === '/saisie') {
-                    if (userLoggedParse['isSaisie'] === true){
-                        return true;
+                    if (userLoggedParse['isSaisie'] === true || userLoggedParse['isChefQuart'] === true){
+                       return true;
                     }
                     else this.router.navigate(['/']);
                 }

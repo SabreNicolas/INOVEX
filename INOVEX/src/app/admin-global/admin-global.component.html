@@ -2,7 +2,9 @@
     <button routerLink="./modification" target="_blank" id="modification" class="btn btn-primary btn-lg float-right">Modification des Produits</button>
     <button routerLink="./newCompteur" target="_blank" id="newCompteur" class="btn btn-primary btn-lg float-right">Création de Compteur</button>
 </div>-->
-
+<div *ngIf="isSuperAdmin" id="usine">
+    {{usine}}
+</div>
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
@@ -11,6 +13,12 @@
         </a>
 
         <ul class="navbar-nav mr-auto">
+
+            <li *ngIf="isSuperAdmin" class="nav-item dropdown">
+                <a routerLink="./token" class="nav-link" id="navbarDropdownEntree" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Token
+                </a>
+            </li>
 
             <li class="nav-item dropdown">
                 <a routerLink="./modification" class="nav-link" id="navbarDropdownEntree" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -24,11 +32,11 @@
                 </a>
             </li>-->
 
-            <li class="nav-item dropdown">
+            <!-- <li class="nav-item dropdown">
                 <a routerLink="./tags" class="nav-link" id="navbarDropdownEntree" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     TAGs
                 </a>
-            </li>
+            </li> -->
 
 
             <li class="nav-item dropdown">
@@ -38,24 +46,42 @@
             </li>
 
             <li class="nav-item dropdown">
+                <a routerLink="./import" class="nav-link" id="navbarDropdownApporteurs" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Correspondance apporteurs
+                </a>
+            </li>
+            
+            <li class="nav-item dropdown">
+                <a routerLink="./correspondanceSortants" class="nav-link" id="navbarDropdownSortants" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Correspondance sortants
+                </a>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a routerLink="./CorrespondanceReactifs" class="nav-link" id="navbarDropdownSortants" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Correspondance réactifs et livraisons
+                </a>
+            </li>
+
+            <li *ngIf="isSuperAdmin" class="nav-item dropdown">
                 <a routerLink="./newSortant" class="nav-link" id="navbarDropdownSortie" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Nouveau Sortant
                 </a>
             </li>
 
-            <li class="nav-item dropdown">
+            <li *ngIf="isSuperAdmin" class="nav-item dropdown">
                 <a routerLink="./newCompteur" class="nav-link" id="navbarDropdownCompteur" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Nouveau Compteur/QSE
+                    Nouveau Compteur
                 </a>
             </li>
 
-            <li class="nav-item dropdown">
+            <li *ngIf="isSuperAdmin" class="nav-item dropdown">
                 <a routerLink="./newAnalyse" class="nav-link" id="navbarDropdownAnalyse" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Nouvelle Analyse
                 </a>
             </li>
 
-            <li class="nav-item dropdown">
+            <li *ngIf="isSuperAdmin" class="nav-item dropdown">
                 <a routerLink="./newConso" class="nav-link" id="navbarDropdownConso" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Nouveau Consommable
                 </a>
@@ -75,26 +101,69 @@
                 <a class="nav-link dropdown-toggle" id="navbarDropdownRondier" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     RONDIER
                 </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <div class="dropdown-menu menuGlobal" aria-labelledby="navbarDropdown">
                     <!--<a class="dropdown-item" routerLink="./reporting" >REPORTING</a>-->
-                    <a class="dropdown-item" routerLink="./finMois" >VALIDATION fin de mois</a>
-                    <a class="dropdown-item" routerLink="./newBadge" >Nouveau Badge</a>
-                    <a class="dropdown-item" routerLink="./badges" >Liste des Badges</a>
-                    <a class="dropdown-item" routerLink="./newConsigne" >Nouvelle Consigne</a>
-                    <a class="dropdown-item" routerLink="./consignes" >Liste des Consignes</a>
-                    <a class="dropdown-item" routerLink="./newZone" >Nouvelle Zone de Contrôle</a>
-                    <a class="dropdown-item" routerLink="./zones" >Liste des Zones de Contrôle</a>
-                    <a class="dropdown-item" routerLink="./newElement" >Nouvel Element de Contrôle</a>
-                    <a class="dropdown-item" routerLink="./elements" >Liste des Elements de Contrôle</a>
-                    <a class="dropdown-item" routerLink="./newModeOP" >Nouveau Mode Opératoire</a>
-                    <a class="dropdown-item" routerLink="./modesOP" >Liste des Modes Opératoire</a>
-                    <a class="dropdown-item" (click)="download('https://drive.kerlan-info.fr/d/s/ojYJrv2pqQlf9OiUydqGhs3d1APEDuPw/ip8sfpheefz6R3EuV2lPfKOptbQwBro_-QLaA-m0BiAk')">Localisation Tablette</a>
-                    <a class="dropdown-item" (click)="download('https://drive.kerlan-info.fr/d/s/qLEPdZ4j1BrVIDHAgfxV8usUWdEYR3ev/HR9pQTaI6SMXtRn19O0ezpwGy_IQrqLc-CL7AS8JT1Qk')">Blocage Tablette</a>
+                    
+                    <a class="dropdown-item" href="https://drive.kerlan-info.fr/d/s/uKSSWZluFqp6pHEI7Ech2OLLZpBmp0rx/A1NE_o04ApMl_hAYy2zku2pLN6CU-zj7--7sAwK0ZlQo" target="_blank">Blocage Tablette</a>
+                    <!--<a class="dropdown-item" routerLink="./finMois" >VALIDATION fin de mois</a>-->
+                    <li class="dropdown menu">
+                        <a class="dropdown-toggle">Badge</a>
+                        <ul class="dropdown-menu sous-menu">
+                            <a class="dropdown-item" routerLink="./newBadge" >Nouveau Badge</a>
+                            <a class="dropdown-item" routerLink="./badges" >Liste des Badges</a>
+                        </ul>
+                    </li>              
+                    <li class="dropdown menu">
+                        <a class="dropdown-toggle">Consigne</a>
+                        <ul class="dropdown-menu sous-menu">                    
+                            <a class="dropdown-item" routerLink="./newConsigne" >Nouvelle Consigne</a>
+                            <a class="dropdown-item" routerLink="./consignes" >Liste des Consignes</a>
+                        </ul>
+                    </li>   
+                    <li class="dropdown menu" *ngIf="idUsine != 7">
+                        <a class="dropdown-toggle">Zone de Contrôle</a>
+                        <ul class="dropdown-menu sous-menu">                    
+                            <a class="dropdown-item" routerLink="./newZone" >Nouvelle Zone de Contrôle</a>
+                            <a class="dropdown-item" routerLink="./zones" >Liste des Zones de Contrôle</a>
+                        </ul>
+                    </li>   
+                    <li class="dropdown menu" *ngIf="idUsine == 7">
+                        <a class="dropdown-toggle">Ronde</a>
+                        <ul class="dropdown-menu sous-menu">                    
+                            <a class="dropdown-item" routerLink="./newZone" >Nouvelle Ronde</a>
+                            <a class="dropdown-item" routerLink="./zones" >Liste des Rondes</a>
+                        </ul>
+                    </li>   
+                    <li class="dropdown menu">
+                        <a class="dropdown-toggle">Groupement</a>
+                        <ul class="dropdown-menu sous-menu">                    
+                            <a class="dropdown-item" routerLink="./newGroupement" >Nouveau Groupement</a>
+                            <a class="dropdown-item" routerLink="./groupement" >Liste des Groupements</a>
+                        </ul>
+                    </li>   
+                    <li class="dropdown menu">
+                        <a class="dropdown-toggle">Element de Contrôle</a>
+                        <ul class="dropdown-menu sous-menu">                    
+                            <a class="dropdown-item" routerLink="./newElement" >Nouvel Element de Contrôle</a>
+                            <a class="dropdown-item" routerLink="./elements" >Liste des Elements de Contrôle</a>
+                        </ul>
+                    </li>  
+                    <li class="dropdown menu">
+                        <a class="dropdown-toggle">Mode Opératoire</a>
+                        <ul class="dropdown-menu sous-menu">                    
+                            <a class="dropdown-item" routerLink="./newModeOP" >Nouveau Mode Opératoire</a>
+                            <a class="dropdown-item" routerLink="./modesOP" >Liste des Modes Opératoire</a>
+                        </ul>
+                    </li>  
+
+
+                    <!-- <a class="dropdown-item" (click)="download('https://drive.kerlan-info.fr/d/s/t8jDgzM5gbhel4o8zHX1qfKw4mSCecxr/2ZK8T_dAYyx9cwcN1fNRvVeKLDaxE5b6-0bzA1aToWwo')">Localisation Tablette</a>
+                    <a class="dropdown-item" (click)="download('https://drive.kerlan-info.fr/d/s/qLEPdZ4j1BrVIDHAgfxV8usUWdEYR3ev/HR9pQTaI6SMXtRn19O0ezpwGy_IQrqLc-CL7AS8JT1Qk')">Blocage Tablette</a> -->
                 </div>
             </li>
 
         </ul>
-        <img src="assets/paprec.png" style="width:10em">
+        <!-- <img src="assets/paprec.png" style="width:10em"> -->
     </div>
 </nav>
 

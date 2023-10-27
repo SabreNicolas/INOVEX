@@ -1,6 +1,7 @@
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Injectable} from "@angular/core";
 import {product} from "../../models/products.model";
+import { idUsineService } from "./idUsine.service";
 
 @Injectable()
 export class productsService {
@@ -14,32 +15,27 @@ export class productsService {
     private headerDict = {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Access-Control-Allow-Origin' : '*'
+        'Access-Control-Allow-Origin' : '*',
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
     }
     private portAPI = 3100;
     private ip = "fr-couvinove301.prod.paprec.fr";
+    //private ip = "localhost";
     private idUsine : number | undefined;
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient, private idUsineService : idUsineService) {
         this.httpClient = http;
         this._nom = '';
         this._code = '';
         this._unit = '';
         this._tag = '';
-        //Récupération du user dans localStorage
-        var userLogged = localStorage.getItem('user');
-        if (typeof userLogged === "string") {
-            var userLoggedParse = JSON.parse(userLogged);
-
-            //Récupération de l'idUsine
-            // @ts-ignore
-            this.idUsine = userLoggedParse['idUsine'];
-        }
+        //@ts-ignore
+        this.idUsine = this.idUsineService.getIdUsine();
     }
 
     //récupérer le dernier code
-    getLastCode(Code : string) {
-        let requete = "https://"+this.ip+":"+this.portAPI+"/productLastCode?Code="+Code+"&idUsine="+this.idUsine;
+    getLastCode(Code : string, idUsine : number) {
+        let requete = "https://"+this.ip+":"+this.portAPI+"/productLastCode?Code="+Code+"&idUsine="+idUsine;
         //console.log(requete);
 
 
@@ -52,9 +48,8 @@ export class productsService {
     }
 
     //création du produit
-    createProduct(typeId : number){
-        console.log(this._tag);
-        let requete = "https://"+this.ip+":"+this.portAPI+"/Product?Name="+this._nom+"&Code="+this._code+"&typeId="+typeId+"&Unit="+this._unit+"&idUsine="+this.idUsine+"&TAG="+this._tag;
+    createProduct(typeId : number, idUsine : number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/Product?Name="+this._nom+"&Code="+this._code+"&typeId="+typeId+"&Unit="+this._unit+"&idUsine="+idUsine+"&TAG="+this._tag;
         //console.log(requete);
 
         const requestOptions = {
@@ -62,12 +57,12 @@ export class productsService {
         };
 
         return this.http
-            .put<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
 
     //récupérer les compteurs
-    getCompteurs(Code : string) {
-        let requete = "https://"+this.ip+":"+this.portAPI+"/Compteurs?Code="+Code+"&idUsine="+this.idUsine;
+    getCompteurs(Code : string, name : string) {
+        let requete = "https://"+this.ip+":"+this.portAPI+"/Compteurs?Code="+Code+"&name=" + name + "&idUsine="+this.idUsine;
         //console.log(requete);
 
 
@@ -112,7 +107,6 @@ export class productsService {
         let requete = "https://"+this.ip+":"+this.portAPI+"/Compteurs/"+Code+"/"+Date+"?idUsine="+this.idUsine;
         //console.log(requete);
 
-
         const requestOptions = {
             headers: new HttpHeaders(this.headerDict),
         };
@@ -131,7 +125,7 @@ export class productsService {
         };
 
         return this.http
-            .put<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
 
     //récupérer les analyses
@@ -176,6 +170,47 @@ export class productsService {
             .get<product[]>(requete,requestOptions);
     }
 
+    //récupérer les livraison de réactifs
+    getReactifs() {
+        let requete = "https://"+this.ip+":"+this.portAPI+"/reactifs?idUsine="+this.idUsine;
+        //console.log(requete);
+
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<product[]>(requete,requestOptions);
+    }
+
+    //récupérer les sortants
+    getSortantsAndCorrespondance(Code : string) {
+        let requete = "https://"+this.ip+":"+this.portAPI+"/getSortantsAndCorrespondance?Code="+Code+"&idUsine="+this.idUsine;
+        //console.log(requete);
+
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<product[]>(requete,requestOptions);
+    }
+
+    //récupérer les sortants
+    getReactifsAndCorrespondance() {
+        let requete = "https://"+this.ip+":"+this.portAPI+"/getReactifsAndCorrespondance?idUsine="+this.idUsine;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+           .get<product[]>(requete,requestOptions);
+    }
+
     //récupérer les consommables & autres
     getConsos() {
         let requete = "https://"+this.ip+":"+this.portAPI+"/Consos/"+this.idUsine;
@@ -205,10 +240,9 @@ export class productsService {
     }
 
     //récupérer les containers
-    getContainers() {
-        let requete = "https://"+this.ip+":"+this.portAPI+"/Container/"+this.idUsine;
+    getProductEntrant() {
+        let requete = "https://"+this.ip+":"+this.portAPI+"/productsEntrants/"+this.idUsine;
         //console.log(requete);
-
 
         const requestOptions = {
             headers: new HttpHeaders(this.headerDict),
@@ -237,6 +271,18 @@ export class productsService {
         let requete = "https://"+this.ip+":"+this.portAPI+"/Products/"+typeId+"?Name="+name+"&idUsine="+this.idUsine;
         //console.log(requete);
 
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<product[]>(requete,requestOptions);
+    }
+
+    //récupérer les produits par catégories => pour admin uniquement
+    getAllProductsAndElementRondier(typeId : number, name : string) {
+        let requete = "https://"+this.ip+":"+this.portAPI+"/ProductsAndElementRondier/"+typeId+"?Name="+name+"&idUsine="+this.idUsine;
+        //console.log(requete);
 
         const requestOptions = {
             headers: new HttpHeaders(this.headerDict),
@@ -256,7 +302,7 @@ export class productsService {
         };
 
         return this.http
-            .put<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
 
     //mettre à jour l'unité d'un produit
@@ -269,7 +315,7 @@ export class productsService {
         };
 
         return this.http
-            .put<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
 
     //mettre à jour le type d'un produit
@@ -282,9 +328,20 @@ export class productsService {
         };
 
         return this.http
-            .put<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
 
+    updateTypeRecup(id : number, typeRecupEMonitoring : string){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/updateRecupEMonitoring?id="+id+"&typeRecup="+typeRecupEMonitoring;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<any>(requete,null,requestOptions);
+    }
     /*
     ** Partie IMAGINDATA
     */
@@ -302,10 +359,10 @@ export class productsService {
           .get<product[]>(requete,requestOptions);
     }
 
-    //mettre à jour le TAG d'un produit
-    //?TAG=SJSJJS
-    setTAG(TAG: string, productId: number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/productTAG/"+productId+"?TAG="+TAG;
+    //mettre à jour le TAG ou le code GMAO d'un produit
+    //?TAG=SJSJJS ou ?CodeEquipement=xxxx
+    setElement(Code: string, productId: number,type : string){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/product"+type +"/"+productId+"?"+type +"="+Code;
         //console.log(requete);
 
         const requestOptions = {
@@ -313,9 +370,8 @@ export class productsService {
         };
 
         return this.http
-            .put<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
-  
   
     /*
     ** FIN Partie IMAGINDATA

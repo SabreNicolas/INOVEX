@@ -36,6 +36,14 @@ export class ArretsComponent implements OnInit {
   public commentaire : string;
   public isTotal : boolean = false;
   public isArret : boolean = false; // 'true' si on saisie des arrêts et 'false' si dépassements
+  public disponible : boolean = false;
+  public programme : boolean = false;
+  public fortuit : boolean = false;
+  public fortuit_four : boolean = false;
+  public fortuit_chaudiere : boolean = false;
+  public fortuit_traitement : boolean = false;
+  public fortuit_commun : boolean = false;
+  public saisieLibre : string;
 
   constructor(private arretsService : arretsService, private productsService : productsService, private datePipe : DatePipe, private route : ActivatedRoute, private router : Router) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false; //permet de recharger le component au changement de paramètre
@@ -49,10 +57,12 @@ export class ArretsComponent implements OnInit {
     this.stringDateFin = '';
     this.stringDateSaisie = '';
     this.commentaire = '_';
+    this.saisieLibre ="";
     this.route.queryParams.subscribe(params => {
-      if(params.isArret.includes('true')){
+      //Si le params n'est pas précisé dans l'url on le force à TRUE
+      if(params.isArret == undefined || params.isArret.includes('true')){
         this.isArret = true;
-        this.getProductsArrets("303020");
+        this.getProductsArrets("30302");
       }
       /**
        * Dépassements 1/2 heures
@@ -104,6 +114,56 @@ export class ArretsComponent implements OnInit {
       this.isTotal = true;
     }
     else this.isTotal = false;
+
+    this.disponible = false;
+    this.fortuit = false;
+    this.programme = false;
+    this.fortuit_four = false;
+    this.fortuit_chaudiere = false;
+    this.fortuit_traitement = false;
+    this.fortuit_commun = false;
+
+    if(this.arretName.toLocaleLowerCase().includes("disponible")){
+      this.disponible = true;
+    }
+    else if(this.arretName.toLocaleLowerCase().includes("fortuit") || this.arretName.toLocaleLowerCase().includes("intempestif")){
+      this.fortuit = true;
+      this.fortuit_four = true;
+    }
+    else if(this.arretName.toLocaleLowerCase().includes("programm")){
+      this.programme = true;
+    }
+  }
+
+
+  //Fonction permettant de séléctionner les sous-commentaire d'un arrêt
+  //A modifier en cas d'ajout car ne fonction qu'avec fortuit
+  setSousCommentaire(id : string){
+    //Initialisation de toutes les variables à false
+    this.fortuit_four = false;
+    this.fortuit_chaudiere = false;
+    this.fortuit_traitement = false;
+    this.fortuit_commun = false;
+
+    //On récupère la référence du select dont l'id est passé en paramètre
+    var selection = document.getElementById(id);
+    //On regarde quelle est la valeur sélectionnée et on met sa valeur à true pour afficher le sous-menu
+    //@ts-ignore
+    if(selection.options[selection.selectedIndex].value == "Four"){
+      this.fortuit_four = true;
+    }
+    //@ts-ignore
+    else if(selection.options[selection.selectedIndex].value == "Chaudière"){
+      this.fortuit_chaudiere = true;
+    }
+    //@ts-ignore
+    else if(selection.options[selection.selectedIndex].value == "Traitement des fumées"){
+      this.fortuit_traitement = true;
+    }
+    //@ts-ignore
+    else if(selection.options[selection.selectedIndex].value == "Communs auxiliaires"){
+      this.fortuit_commun = true;
+    }
   }
 
   //calcul de la durée de l'arrêt en heure
@@ -128,13 +188,44 @@ export class ArretsComponent implements OnInit {
     //SI pas TOTAL DEP on récupére le commentaire (les dates sont déjà stockées lors du calcul de la durée)
     if(!this.isTotal) {
       /*
-      * DEBUT suppression des caractères suppression
+      * DEBUT récupération commentaire
       * */
-      this.commentaire = form.value['desc'];
-      this.commentaire = this.commentaire.replace("'", " ").toLowerCase();
-      this.commentaire = this.commentaire.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, " ");
+      if(this.disponible == true){
+        var selection = document.getElementById("disponible");
+        //@ts-ignore
+        this.commentaire = selection.options[selection.selectedIndex].text
+      }
+      else if(this.fortuit == true){
+        var selection = document.getElementById("fortuit");
+        //@ts-ignore
+        this.commentaire = selection.options[selection.selectedIndex].value;
+        
+        if(this.fortuit_chaudiere == true){
+          var selection2 = document.getElementById("fortuit_chaudiere");
+          //@ts-ignore
+          this.commentaire =  this.commentaire + " - " + selection2.options[selection2.selectedIndex].value;
+        }
+        else if(this.fortuit_commun == true){
+          var selection2 = document.getElementById("fortuit_commun");
+          //@ts-ignore
+          this.commentaire =  this.commentaire + " - " + selection2.options[selection2.selectedIndex].value;
+        }
+        else if(this.fortuit_four == true){
+          var selection2 = document.getElementById("fortuit_four");
+          //@ts-ignore
+          this.commentaire =  this.commentaire + " - " + selection2.options[selection2.selectedIndex].value;
+        }
+        else {
+          var selection2 = document.getElementById("fortuit_traitement");
+          //@ts-ignore
+          this.commentaire =  this.commentaire + " - " + selection2.options[selection2.selectedIndex].value;
+        }
+      }
+      else if(this.programme == true){
+        this.commentaire = "Arrêt technique";
+      }
       /*
-      * FIN suppression des caractères suppression
+      * FIN récupération commentaire
       * */
     }
     //Sinon on stocke les dates (dateDebut = dateFin)
@@ -143,15 +234,17 @@ export class ArretsComponent implements OnInit {
       this.dateFin = this.dateDebut;
       this.commentaire = '_';
     }
-
+    if(this.commentaire != '_'){
+      this.commentaire = this.commentaire +" - "+ this.saisieLibre;
+    }
+    else this.commentaire = this.saisieLibre;
     this.transformDateFormat();
     if (this.isArret == true) {
       this.arretsService.createArret(this.stringDateDebut, this.stringDateFin, this.duree, this.IdUser, this.stringDateSaisie, this.commentaire, this.arretId).subscribe((response) => {
         if (response == "Création de l'arret OK") {
           Swal.fire("L'arrêt a bien été créé !");
           //envoi d'un mail si arrêt intempestif ou arrêt GTA
-          if (this.arretName.includes("intempestif") || this.arretName.includes("GTA")) {
-            console.log(this.stringDateDebut);
+          if (this.arretName.includes("FORTUIT") || this.arretName.includes("GTA")) {
             this.arretsService.sendEmail(this.stringDateDebut.substr(8, 2) + '-' + this.stringDateDebut.substr(5, 2) + '-' + this.stringDateDebut.substr(0, 4), this.stringDateDebut.substr(11, 5), this.duree, this.arretName, this.commentaire).subscribe((response) => {
               if (response == "mail OK") {
                 Swal.fire("Un mail d'alerte à été envoyé !");

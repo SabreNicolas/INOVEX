@@ -20,6 +20,7 @@ export class UserComponent implements OnInit {
   public isQSE : number;//0 ou 1
   public isRapport : number;//0 ou 1
   public isAdmin : number;//0 ou 1
+  public isChefQuart : number;//0 ou 1
   public loginUsed : boolean;
 
   constructor(private loginService : loginService) {
@@ -33,6 +34,7 @@ export class UserComponent implements OnInit {
     this.isQSE = 0;
     this.isRapport = 0;
     this.isAdmin = 0;
+    this.isChefQuart = 0;
     this.loginUsed = false;
 
   }
@@ -52,6 +54,8 @@ export class UserComponent implements OnInit {
     var qse = document.getElementsByName('qse');
     var rapport = document.getElementsByName('rapports');
     var admin = document.getElementsByName('admin');
+    var chefQuart = document.getElementsByName('chefQuart');
+    
     if ((<HTMLInputElement>rondier[0]).checked) {
       this.isRondier = 1;
     }
@@ -68,12 +72,17 @@ export class UserComponent implements OnInit {
       this.isRapport = 1;
     }
     else this.isRapport = 0;
+    if ((<HTMLInputElement>chefQuart[0]).checked) {
+      this.isChefQuart = 1;
+    }
+    else this.isChefQuart = 0;
     if ((<HTMLInputElement>admin[0]).checked) {
       this.isAdmin = 1;
     }
     else this.isAdmin = 0;
 
-    this.loginService.createUser(this.nom,this.prenom,this.login,this.MD5pwd,this.isRondier,this.isSaisie, this.isQSE, this.isRapport,this.isAdmin).subscribe((response)=>{
+    this.loginService.createUser(this.nom,this.prenom,this.login,this.MD5pwd,this.isRondier,this.isSaisie, this.isQSE, this.isRapport,this.isChefQuart,this.isAdmin).subscribe((response)=>{
+      // console.log(response);
       if (response == "Création de l'utilisateur OK"){
         Swal.fire("L'utilisateur a bien été créé !");
       }

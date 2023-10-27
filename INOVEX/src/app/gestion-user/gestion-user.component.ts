@@ -52,6 +52,7 @@ export class GestionUserComponent implements OnInit {
   onSubmit(form : NgForm) {
     var pwd = form.value['pwd1'];
     var MD5pwd = Md5.hashStr(pwd);
+    this.storedLogin = this.storedLogin.replace("'","''");
     this.loginService.updatePwd(this.storedLogin,MD5pwd).subscribe((response)=>{
       if (response == "Mise à jour du mot de passe OK"){
         Swal.fire("Mot de passe mis à jour avec succès !");

@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import {productsService} from "../services/products.service";
 import Swal from 'sweetalert2';
 import {product} from "../../models/products.model";
+import {element} from "../../models/element.model";
+import {rondierService} from "../services/rondier.service";
+import { identifierModuleUrl } from '@angular/compiler';
+
 
 @Component({
   selector: 'app-admin',
@@ -14,16 +18,19 @@ export class AdminComponent implements OnInit {
   public listProducts : product[];
   public name : string;
   public listId : number[];
+  public listElements : element[];
 
-  constructor(private productsService : productsService) {
+  constructor(private productsService : productsService,private rondierService : rondierService) {
     this.typeId = 4;
     this.listProducts = [];
     this.name ="";
     this.listId = [];
+    this.listElements =[];
   }
 
   ngOnInit(): void {
     this.getProducts();
+    this.getElements();
   }
 
   setFilters(){
@@ -39,14 +46,23 @@ export class AdminComponent implements OnInit {
   }
 
   getProducts(){
-    this.productsService.getAllProductsByType(this.typeId,this.name).subscribe((response)=>{
+    this.productsService.getAllProductsAndElementRondier(this.typeId,this.name).subscribe((response)=>{
       // @ts-ignore
       this.listProducts = response.data;
     });
   }
 
+  getElements(){
+    //Requête pour récupérer tout les éléments rondiers d'une usine qui sont en type valeur
+    this.rondierService.getElementsOfUsine().subscribe((response)=>{
+      // @ts-ignore
+      this.listElements = response.data;
+      //console.log(this.listElements)
+    });
+  }
+
   //désactiver un produit
-  setVisibility(idPR : number, visibility : number){
+  async setVisibility(idPR : number, visibility : number){
     this.productsService.setEnabled(idPR,visibility).subscribe((response)=>{
       if (response == "Changement de visibilité du client OK"){
         Swal.fire("La visibilité à bien été mise à jour");
@@ -58,6 +74,7 @@ export class AdminComponent implements OnInit {
         })
       }
     });
+    await this.wait(5);
     this.getProducts();
   }
 
@@ -139,23 +156,90 @@ export class AdminComponent implements OnInit {
     Swal.fire("Le type a été mis à jour !");
   }
 
-  //Mis à jour du TAG
-  setTag(product : product){
-    var TAG = prompt('Veuillez saisir un TAG',String(product.TAG));
-    if(TAG == null) return;
-    // @ts-ignore
-    this.productsService.setTAG(TAG,product.Id).subscribe((response)=>{
-      if (response == "Mise à jour du TAG OK"){
+  //Fonction pour attendre
+  wait(ms : number) {
+    return new Promise(resolve => {
+      setTimeout(resolve, ms);
+    });
+  }
+
+  //Mise à jour du tag ou du codeEquipement d'un produit
+  setElement(product : product,type : string){
+    if(type=="CodeEquipement"){
+      if(product.CodeEquipement == null){
+        var saisie = prompt('Veuillez saisir un code GMAO','');
+      }
+      else var saisie = prompt('Veuillez saisir un code GMAO',String(product.CodeEquipement));
+    }
+    else {
+      if(product.TAG == null){
+        var saisie = prompt('Veuillez saisir un TAG','');
+      }
+      else var saisie = prompt('Veuillez saisir un TAG',String(product.TAG));
+    }
+    if(saisie == null) return;
+    this.productsService.setElement(saisie,product.Id,type).subscribe((response)=>{
+      if (response == "Mise à jour du Code OK"){
+        Swal.fire("Le code GMAO a bien été affecté !");
+        this.ngOnInit();
+      }
+      else if (response == "Mise à jour du TAG OK"){
         Swal.fire("Le TAG a bien été affecté !");
         this.ngOnInit();
       }
       else {
         Swal.fire({
           icon: 'error',
-          text: "Erreur lors de l'affectation du TAG ....",
+          text: "Erreur lors de l'affectation ....",
         })
       }
     });
   }
 
+
+  updateTypeRecup(id : number, typeRecupEMonitoring : string){
+    this.productsService.updateTypeRecup(id,typeRecupEMonitoring).subscribe((response)=>{
+      if (response == "Changement du type de récupération OK"){
+        Swal.fire("Le type a été changé !");
+      }
+      else {
+        Swal.fire({
+          icon: 'error',
+          text: 'Erreur lors de la mise à jour du type ....',
+        })
+      }
+    });
+  }
+
+  //fonction qui permet de choisir l'élement rondier correspondant au produit pour la récupération automatique
+  setElementRondier(pr : product){
+    let listElementsRondier = {};
+    //Un peu particulier ici mais si la clef de l'objet n'est pas une chaine, l'ordre alphabétique n'est pas respecté car classement selon la clef
+    //d'ou le 0_rondier
+    //@ts-ignore
+    listElementsRondier["0_rondier"] = "Aucun"
+    this.listElements.forEach(element =>{
+      let id = String(element.Id)+"_rondier";
+      //@ts-ignore
+      listElementsRondier[id] = element.nom;
+    });
+    Swal.fire({
+      title: 'Veuillez choisir un élément rondier',
+      input: 'select',
+      inputOptions: listElementsRondier,
+      showCancelButton: true,
+      confirmButtonText: "Confirmer",
+      cancelButtonText: "Annuler",
+      allowOutsideClick: false,
+    })
+    .then((result) => {
+      if(result.value != undefined){
+        //On récupérer l'id de l'élément rondier que l'on a stocké dans la clef de la liste
+        let idElementRondier = Number(result.value.split("_")[0]);
+        this.rondierService.changeTypeRecupSetRondier(pr.Id,idElementRondier).subscribe((response) =>{
+          this.ngOnInit();
+        })
+      }
+    });
+  }
 }

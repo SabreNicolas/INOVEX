@@ -1,12 +1,103 @@
 .blockFiltres{
   position: fixed;
-  top: 9%;
+  top: 5.5em;
   right: 0;
   left: 0.5em;
   margin: 0 auto;
+  margin-bottom: 50px;
   z-index: -2;
 }
 
 .table-style{
-  margin-top: 17%;
+  margin-top: 19em;
+}
+
+@media (width < 1257px) {
+  .table-style{
+    margin-top: 21.5em;
+  }
+}
+@media (width < 1233px) {
+  .blockFiltres{
+    top: 7em;
+  }
+  
+  .table-style{
+    margin-top: 23.5em;
+  }
+}
+
+@media (width < 992px) {
+  .blockFiltres{
+    top: 4.5em;
+  }
+  
+  .table-style{
+    margin-top: 25em;
+  }
+}
+@media (width < 862px) {
+  .table-style{
+    margin-top: 27em;
+  }
+}
+
+.loader {
+  @keyframes loader {
+    0% {
+      visibility: visible;
+      opacity: 0.6;
+    }
+    90% {
+      visibility: visible;
+    }
+    100% {
+      opacity: 0.6;
+      visibility: hidden;
+    }
+  }
+
+  @keyframes loader-bloc {
+    0% {
+      visibility: visible;
+      opacity: 1;
+    }
+    100% {
+      transform: rotate(1800deg);
+      visibility: hidden;
+    }
+  }
+  height: 100%;
+  width: 100%;
+  background: white;
+  margin: auto;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 20;
+  animation: loader 12s linear ;
+  animation-iteration-count: infinite;
+  visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .loaderBloc{
+    border: 10px solid transparent;
+    border-top: 10px solid #2cb6aa;
+    border-bottom: 10px solid #22498c;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    margin: auto;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    animation: loader-bloc 12s linear ;
+    animation-iteration-count: infinite;
+    z-index: 10;
+    visibility: hidden;
+  }
+}
+
+#spinner, #spinnerBloc{
+  visibility: hidden;
+  position: fixed;
 }
