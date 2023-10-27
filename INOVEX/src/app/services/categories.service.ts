@@ -20,7 +20,7 @@ export class categoriesService {
         'Access-Control-Allow-Origin' : '*',
         'Authorization': 'Bearer ' + localStorage.getItem('token')
     }
-    private portAPI = 3102;
+    private portAPI = 3100;
     private ip = "fr-couvinove301.prod.paprec.fr";
     //private ip = "localhost";
 
