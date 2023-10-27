@@ -86,7 +86,7 @@
                     <select id="{{s.id}}" required class="form-select form-select-sm"
                             aria-label=".form-select-sm example" name="Name" ngModel [(ngModel)]="s.Id" (change)="editionProductImport(s.id)">
                             <option value="">Choisissez un type de déchêt</option>
-                             <option *ngFor="let product of listSortantsAvecCorrespondance" value="{{product.Id}}">{{product.Name}}</option>
+                             <option *ngFor="let product of listSortants" value="{{product.Id}}">{{product.Name}}</option>
                     </select>
                 </div>
              </td>

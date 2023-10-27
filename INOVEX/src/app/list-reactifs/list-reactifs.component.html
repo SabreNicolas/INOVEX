@@ -7,29 +7,12 @@
 <div>
 
     <!--Filtres de recherche-->
-    <div class="form-group blockFiltres" *ngIf="listCategories">
-        <h5><label>Filtres :</label></h5>
-        <div class="row">
-            <div class="col-sm-3">
-                <div class="form-group">
-                    <select id="categorie" required class="form-select form-select-sm"
-                            aria-label=".form-select-sm example" name="produit" ngModel="5">
-                            <option selected value="">Tout</option>
-                        <option *ngFor="let cat of listCategories" value="{{cat.Code}}">{{cat.Name}}</option>
-                    </select>
-                </div>
-            </div>
-            <div class="col-sm-1">
-                <div class="form-group">
-                    <button class="btn btn-success" (click)="setFilters()">Valider</button>
-                </div>
-            </div>
-                    <!--SI import renseigné en BDD et pas de type récupération HODJA-->
-            <div *ngIf="typeImportTonnage.length > 1" class="col-sm-3" style="border: solid grey 1px; padding-bottom: 1em; margin-top: -1.5em;">
-                <label style="margin-left: 1em;" for="formFile" class="form-label">Importer un fichier des sortants {{typeImportTonnage}}</label>
-                <input class="form-control" type="file" id="formFile" accept=".csv" (change)="import($event)">
-            </div>
-        </div>
+    <div class="form-group blockFiltres">
+        <!--SI import renseigné en BDD et pas de type récupération HODJA-->
+        <div *ngIf="typeImportTonnage.length > 1" class="col-sm-3" style="border: solid grey 1px; padding-bottom: 1em;">
+            <label style="margin-left: 1em;" for="formFile" class="form-label">Importer un fichier des réactifs {{typeImportTonnage}}</label>
+             <input class="form-control" type="file" id="formFile" accept=".csv" (change)="import($event)">
+         </div>
 
         <!--Période-->
         <form #f="ngForm">
@@ -50,8 +33,6 @@
                             <button style="margin-left: 0.5em" class="btn btn-warning" (click)="setYesterday(f)">Hier</button>
                             <button style="margin-left: 0.5em" class="btn btn-info" (click)="setCurrentWeek(f)">Semaine en cours</button>
                             <button style="margin-left: 0.5em" class="btn btn-dark" (click)="setCurrentMonth(f)">Mois en cours</button>
-                            <!--SI import de type récupération HODJA-->
-                            <button style="margin-left: 0.5em" *ngIf="typeImportTonnage == 'Hodja'" class="btn btn-primary" (click)="recupHodja(f)">Récupération HODJA</button>
                         </div>
                     </div>
                 </div>
@@ -59,6 +40,7 @@
         </form>
     </div>
 
+    
     <!--table de saisie-->
     <div class="table-style">
         <table class="table table-bordered table-hover tableFixed" *ngIf="listDays && listProducts">

@@ -50,6 +50,9 @@ import { ListGroupementsComponent } from './list-groupements/list-groupements.co
 import { ImportTonnageComponent } from './import-tonnage/import-tonnage.component';
 import { OutilsComponent } from './outils/outils.component';
 import { CorrespondanceSortantsComponent } from './correspondance-sortants/correspondance-sortants.component';
+import { ListReactifsComponent } from './list-reactifs/list-reactifs.component';
+import { CorrespondanceReactifsComponent } from './correspondance-reactifs/correspondance-reactifs.component';
+
 const routes: Routes = [
 
     {
@@ -62,6 +65,7 @@ const routes: Routes = [
             { path : 'listClients', canActivate: [AuthGuard], component: ListMoralEntitiesComponent },
             { path : 'entree', canActivate: [AuthGuard], component : ListEntreeComponent },
             { path : 'sortie', canActivate: [AuthGuard], component : ListSortantsComponent },
+            { path : 'reactifs', canActivate: [AuthGuard], component : ListReactifsComponent },
             { path : 'listCompteurs', canActivate: [AuthGuard], component: ListCompteursComponent },
             { path : 'analyses', canActivate: [AuthGuard], component: AnalysesComponent },
             { path : 'conso', canActivate: [AuthGuard], component : ListConsoComponent },
@@ -160,6 +164,8 @@ const routes: Routes = [
             { path: 'consignes', canActivate: [AuthGuard], component: ListConsignesComponent},
             { path: 'finMois', canActivate: [AuthGuard], component: RondierFinMoisComponent},
             { path: 'correspondanceSortants', canActivate: [AuthGuard], component: CorrespondanceSortantsComponent},
+            { path: 'CorrespondanceReactifs', canActivate: [AuthGuard], component: CorrespondanceReactifsComponent},
+
         ]
     },
 

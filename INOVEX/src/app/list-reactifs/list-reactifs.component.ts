@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {productsService} from "../services/products.service";
 import {categoriesService} from "../services/categories.service";
-import { category } from 'src/models/categories.model';
 import Swal from 'sweetalert2';
 import {product} from "../../models/products.model";
 import {NgForm} from "@angular/forms";
@@ -9,24 +8,20 @@ import {moralEntitiesService} from "../services/moralentities.service";
 import { dateService } from '../services/date.service';
 //Librairie pour lire les csv importés
 import {Papa} from 'ngx-papaparse';
-import { dechetsCollecteurs } from 'src/models/dechetsCollecteurs.model';
 import { importCSV } from 'src/models/importCSV.model';
 import { user } from 'src/models/user.model';
 import { idUsineService } from '../services/idUsine.service';
-import { valueHodja } from 'src/models/valueHodja.model';
 
 @Component({
-  selector: 'app-list-sortants',
-  templateUrl: './list-sortants.component.html',
-  styleUrls: ['./list-sortants.component.scss']
+  selector: 'app-list-reactifs',
+  templateUrl: './list-reactifs.component.html',
+  styleUrls: ['./list-reactifs.component.scss']
 })
-export class ListSortantsComponent implements OnInit {
 
+export class ListReactifsComponent implements OnInit {
   public userLogged!: user;
   public idUsine : number;
   public listProducts : product[];
-  public listCategories : category[];
-  public debCode : string;
   public dateDeb : Date | undefined;
   public dateFin : Date | undefined;
   public listDays : string[];
@@ -34,35 +29,22 @@ export class ListSortantsComponent implements OnInit {
   public csvArray : importCSV[];
   public stockageImport : Map<String,number>;
   public correspondance : any[];
-  //stockage données HODJA à envoyer
-  public stockageHodja : Map<String,number>;
-  public valuesHodja : valueHodja[];
 
 
 
-  constructor(private idUsineService : idUsineService, private moralEntitiesService : moralEntitiesService,private productsService : productsService, private categoriesService : categoriesService, private Papa : Papa, private mrService : moralEntitiesService,private dateService : dateService) {
-    this.debCode = '';
+  constructor(private idUsineService : idUsineService, private productsService : productsService, private categoriesService : categoriesService, private Papa : Papa, private mrService : moralEntitiesService,private dateService : dateService) {
     this.listProducts = [];
     this.listDays = [];
-    this.listCategories = [];
     this.typeImportTonnage = '';
     this.csvArray = [];
     this.stockageImport = new Map();
     this.correspondance = [];
     this.idUsine = 0;
-    this.stockageHodja = new Map();
-    this.valuesHodja = [];
-
   }
 
   ngOnInit(): void {
 
     this.idUsine = this.idUsineService.getIdUsine();
-
-    this.categoriesService.getCategoriesSortants().subscribe((response)=>{
-      // @ts-ignore
-      this.listCategories = response.data;
-    });
 
     this.mrService.GetImportTonnage().subscribe((response)=>{
       //@ts-ignore
@@ -71,20 +53,11 @@ export class ListSortantsComponent implements OnInit {
 
     this.getCorrespondance();
 
-    this.productsService.getSortants(this.debCode).subscribe((response)=>{
+    this.productsService.getReactifs().subscribe((response)=>{
       // @ts-ignore
       this.listProducts = response.data;
       this.getValues();
     });
-  }
-
-  setFilters(){
-    var codeCat = document.getElementById("categorie");
-    // @ts-ignore
-    var codeCatSel = codeCat.options[codeCat.selectedIndex].value;
-    this.debCode = codeCatSel;
-    /*Fin de prise en commpte des filtres */
-    this.ngOnInit();
   }
 
   setPeriod(form: NgForm){
@@ -285,7 +258,7 @@ export class ListSortantsComponent implements OnInit {
             //Si la velur de position de sens n'est pas fournit, on le met à S
             var EntreeSortie
             if(posEntreeSortie == undefined){
-              EntreeSortie = "S";
+              EntreeSortie = "E";
             }
             else{
               EntreeSortie = results.data[i][posEntreeSortie]
@@ -308,8 +281,8 @@ export class ListSortantsComponent implements OnInit {
   }
 
   getCorrespondance(){
-    this.mrService.getCorrespondanceSortants().subscribe((response)=>{
-      // console.log(response)
+    this.mrService.getCorrespondancesReactifs().subscribe((response)=>{
+      console.log(response)
       // @ts-ignore
       this.correspondance = response.data;
     });
@@ -333,7 +306,6 @@ export class ListSortantsComponent implements OnInit {
   }
   //Insertion du tonnage récupéré depuis le fichier csv ADEMI
   insertTonnageCSV(){
-    this.debCode = '20';
     this.stockageImport.clear();
     var count = 0 ;
     let dechetsManquants: string[]  = [];
@@ -347,7 +319,7 @@ export class ListSortantsComponent implements OnInit {
           csv.typeDechet = csv.typeDechet.toLowerCase().replace(/\s/g,"");
           correspondance.productImport = correspondance.productImport.toLowerCase().replace(/\s/g,"");  
           
-          if(csv.entrant == "S" || csv.entrant == 2 || csv.entrant == "EXPEDITION"){
+          if(csv.entrant == "E" || csv.entrant == 1 || csv.entrant == "RECEPTION"){
             //Si il y a correspondance on fait traitement
             if( correspondance.productImport == csv.typeDechet ){
               let formatDate = csv.dateEntree.split('/')[2]+'-'+csv.dateEntree.split('/')[1]+'-'+csv.dateEntree.split('/')[0];
@@ -368,7 +340,7 @@ export class ListSortantsComponent implements OnInit {
             }
           }
         });
-        if(count == 0 && (csv.entrant == "S" || csv.entrant == 2 || csv.entrant == "EXPEDITION") ){
+        if(count == 0 && (csv.entrant == "E" || csv.entrant == 1 || csv.entrant == "RECEPTION") ){
           dechetsManquants.push(dechetManquant);
         }
        
@@ -408,98 +380,6 @@ export class ListSortantsComponent implements OnInit {
         text: 'Aucune valeur n\'a été insérée, aucune correspondance n\'a été trouvée',
       })
     }
-  }
-
-   //Fonction pour attendre
-  wait(ms : number) {
-    return new Promise(resolve => {
-      setTimeout(resolve, ms);
-    });
-  }
-
-  //Import tonnage via HODJA
-  recupHodja(form : NgForm){
-    this.stockageHodja.clear();
-    let dateDebFormat = new Date(), dateFinFormat = new Date();
-    let listDate = [];
-    var count = 0 ;
-    let dechetsManquants: string[]  = [];
-
-    dateDebFormat = new Date(form.value['dateDeb']);
-    dateFinFormat = new Date(form.value['dateFin']);
-
-    listDate = this.dateService.getDays(dateDebFormat,dateFinFormat);
-    listDate.forEach(async day =>{
-      await this.wait(100);
-      //On récupère dans hodja les valeurs de bascule pour la période choisit
-      this.moralEntitiesService.recupHodjaSortants(day,day).subscribe(async (response)=>{
-        
-        this.stockageHodja.clear();
-        this.valuesHodja = response;
-
-        //ON boucle sur les valeurs HODJA
-        for await (const valueHodja of this.valuesHodja){
-
-          var dechetManquant = valueHodja.typeDechet;
-          count = 0;
-
-          //ET les clients INOVEX
-          for (const correspondance of this.correspondance){
-
-            valueHodja.typeDechet = valueHodja.typeDechet.toLowerCase().replace(/\s/g,"");
-            correspondance.productImport = correspondance.productImport.toLowerCase().replace(/\s/g,"");
-            
-            //Si il y a correspondance on fait traitement
-            if(correspondance.productImport == valueHodja.typeDechet){  
-
-              let formatDate = valueHodja.entryDate.split('T')[0];
-              let keyHash = formatDate+'_'+correspondance.ProductId;
-              let value, valueRound;
-              count = count + 1;;
-
-              //si il y a deja une valeur dans la hashMap pour ce client et ce jour, on incrémente la valeur
-              if(this.stockageHodja.has(keyHash)){
-                //@ts-ignore       
-                value = this.stockageHodja.get(keyHash) + ( (valueHodja.TK_Poids_brut - valueHodja.TK_Poids_tare) /1000 );
-                valueRound = parseFloat(value.toFixed(3));
-                this.stockageHodja.set(keyHash,valueRound);
-              }
-              else
-              //Sinon on insére dans la hashMap
-              //@ts-ignore
-              this.stockageHodja.set(keyHash,parseFloat(( (valueHodja.TK_Poids_brut - valueHodja.TK_Poids_tare) /1000 ).toFixed(3)));
-            }
-          }
-          if(count == 0){
-            dechetsManquants.push(dechetManquant);
-          }
-        }
-
-        //On parcours la HashMap pour insérer en BDD
-        this.stockageHodja.forEach(async (value : number, key : String) =>{
-          await this.mrService.createMeasure(key.split('_')[0],value,parseInt(key.split('_')[1]),0).subscribe((response) =>{
-            if (response == "Création du Measures OK"){
-              var afficher = "";
-
-              for(let i = 0; i< dechetsManquants.length; i++){
-                afficher += "Le déchet : <strong>'" + dechetsManquants[i] + "'</strong> n'a pas de correspondance dans CAP Exploitation <br>";
-              }
-              afficher += "<strong>Pensez à faire la correspondance dans l'administration !</strong>";
-              Swal.fire({
-                html : afficher,
-                width : '80%',
-                title :"Les valeurs ont été insérées avec succès !"
-              });            }
-            else {
-              Swal.fire({
-                icon: 'error',
-                text: 'Erreur lors de l\'insertion des valeurs ....',
-              })
-            }
-          });
-        })
-        await this.wait(350);
-      });
-    })
+    
   }
 }

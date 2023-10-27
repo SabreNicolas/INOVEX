@@ -69,6 +69,8 @@ import { ImportTonnageComponent } from './import-tonnage/import-tonnage.componen
 import { OutilsComponent } from './outils/outils.component';
 import { CorrespondanceSortantsComponent } from './correspondance-sortants/correspondance-sortants.component';
 import { idUsineService } from './services/idUsine.service';
+import { ListReactifsComponent } from './list-reactifs/list-reactifs.component';
+import { CorrespondanceReactifsComponent } from './correspondance-reactifs/correspondance-reactifs.component';
 
 @NgModule({
   declarations: [
@@ -123,6 +125,8 @@ import { idUsineService } from './services/idUsine.service';
     ImportTonnageComponent,
     OutilsComponent,
     CorrespondanceSortantsComponent,
+    ListReactifsComponent,
+    CorrespondanceReactifsComponent,
   ],
   imports: [
     BrowserModule,

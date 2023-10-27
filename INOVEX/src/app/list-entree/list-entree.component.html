@@ -36,24 +36,22 @@
             <div class="form-group">
                 <h5><label>Période :</label></h5>
                 <div class="row">
-                    <div class="col-lg-3">
+                    <div class="col-lg-2">
                         <input type="date" id="dateDeb" class="form-control" placeholder="Date de début" name="dateDeb"
                                ngModel>
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-2">
                         <input type="date" id="dateFin" class="form-control" placeholder="Date de fin" name="dateFin"
                                ngModel>
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-6" id="period">
                         <div class="form-group">
                             <button class="btn btn-primary" type="submit" (click)="setPeriod(f)"><img src="assets/refresh.png"></button>
                             <button style="margin-left: 0.5em" class="btn btn-warning" (click)="setYesterday(f)">Hier</button>
                             <button style="margin-left: 0.5em" class="btn btn-info" (click)="setCurrentWeek(f)">Semaine en cours</button>
                             <button style="margin-left: 0.5em" class="btn btn-dark" (click)="setCurrentMonth(f)">Mois en cours</button>
-                        </div>
-                        <!--SI import de type récupération HODJA-->
-                        <div *ngIf="typeImportTonnage == 'Hodja'">
-                            <button class="btn btn-primary" (click)="recupHodja(f)">Récupération HODJA</button>
+                            <!--SI import de type récupération HODJA-->
+                            <button *ngIf="typeImportTonnage == 'Hodja'" style="margin-left: 0.5em" class="btn btn-primary" (click)="recupHodja(f)">Récupération HODJA</button>
                         </div>
                     </div>
                 </div>

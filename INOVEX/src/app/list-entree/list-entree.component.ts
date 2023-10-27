@@ -43,7 +43,7 @@ export class ListEntreeComponent implements OnInit {
   //**HODJA
   public valuesHodja : valueHodja[];
   //stockage données HODJA à envoyer
-  public stockageHodja : Map<moralEntity,number>;
+  public stockageHodja : Map<String,number>;
   
 
   constructor(private idUsineService : idUsineService, private moralEntitiesService : moralEntitiesService, private productsService : productsService, private Papa : Papa, private dateService : dateService) {
@@ -436,6 +436,7 @@ export class ListEntreeComponent implements OnInit {
   //import tonnage via fichier
   //Traitement du fichier csv ADEMI
   lectureCSV(event : Event, delimiter : string, header : boolean, posClient : number, posTypeDechet : number, posDateEntree : number, posTonnage : number, posEntreeSortie? : number){
+    this.loading();
     //@ts-ignore
     var files = event.target.files; // FileList object
     var file = files[0];
@@ -456,7 +457,7 @@ export class ListEntreeComponent implements OnInit {
         delimiter: delimiter,
         //False pour éviter de devoir utiliser le nom des entêtes et rester sur un tableau avec des indices.
         header: false,
-        complete: (results) => {
+        complete: async (results) => {
           for (let i = debut; i < results.data.length; i++) {
             //ON récupére les lignes infos nécessaires pour chaque ligne du csv
             //ON récupère uniquement les types de déchets pour les entrants
@@ -498,7 +499,8 @@ export class ListEntreeComponent implements OnInit {
             this.csvArray.push(importCSV);
           }
           //console.log(this.csvArray);
-          this.insertTonnageCSV();
+          await this.insertTonnageCSV();
+          this.removeloading();
         }
       });
     }
@@ -581,6 +583,13 @@ export class ListEntreeComponent implements OnInit {
       })
     }
 
+    if(this.stockageImport.size == 0 ){
+      Swal.fire({
+        icon: 'error',
+        text: 'Aucune valeur n\'a été insérée, aucune correspondance n\'a été trouvée',
+      })
+    }
+
   }
 
   //Import tonnage via HODJA
@@ -588,6 +597,9 @@ export class ListEntreeComponent implements OnInit {
     this.stockageHodja.clear();
     let dateDebFormat = new Date(), dateFinFormat = new Date();
     let listDate = [];
+    var count = 0 ;
+    let clientManquants: any[] = [];
+    let dechetsManquants: string[]  = [];
 
     dateDebFormat = new Date(form.value['dateDeb']);
     dateFinFormat = new Date(form.value['dateFin']);
@@ -596,39 +608,66 @@ export class ListEntreeComponent implements OnInit {
     listDate.forEach(async day =>{
       await this.wait(100);
       //On récupère dans hodja les valeurs de bascule pour la période choisit
-      this.moralEntitiesService.recupHodja(day,day).subscribe(async (response)=>{
+      this.moralEntitiesService.recupHodjaEntrants(day,day).subscribe(async (response)=>{
+        
         this.stockageHodja.clear();
-        //console.log(day);
         this.valuesHodja = response;
+
         //ON boucle sur les valeurs HODJA
         for await (const valueHodja of this.valuesHodja){
+          count = 0;
+          var clientManquant = valueHodja.client;
+          var dechetManquant = valueHodja.typeDechet;
           //ET les clients INOVEX
-          for (const mr of this.moralEntities){
-            //On regarde si le nom INOVEX sans la désignation du type de déchet est contenu dans le nom HODJA et si le début du code correspond
-            let nameWithoutTypeDechet;
-            if(mr.Name.toLowerCase().split("-").length>2){
-              nameWithoutTypeDechet = mr.Name.toLowerCase().split("-")[1]+"-"+mr.Name.toLowerCase().split("-")[2];
-            }
-            else nameWithoutTypeDechet = mr.Name.toLowerCase().split("-")[1];
-            if(valueHodja.client.toLowerCase().replace(/ /g,"") === nameWithoutTypeDechet.replace(/ /g,"") && mr.Code.startsWith(valueHodja.debCode)){
-              //Si il y a correspondance alors on fait un traitement
-              //Si il y a déjà une valeur dans la HashMap pour ce client, on incrémente la valeur
-              if(this.stockageHodja.has(mr)){
-                // @ts-ignore
-                let value = this.stockageHodja.get(mr) + (valueHodja.TK_Poids_brut-valueHodja.TK_Poids_tare)/1000;//Pour avoir en tonnes et arrondir à 3 chiffres
-                this.stockageHodja.set(mr,parseFloat(value.toFixed(3)));
+          for (const correspondance of this.correspondance){
+
+            valueHodja.client = valueHodja.client.toLowerCase().replace(/\s/g,"");
+            valueHodja.typeDechet = valueHodja.typeDechet.toLowerCase().replace(/\s/g,"");
+            correspondance.nomImport = correspondance.nomImport.toLowerCase().replace(/\s/g,"");
+            correspondance.productImport = correspondance.productImport.toLowerCase().replace(/\s/g,"");
+            
+            //Si il y a correspondance on fait traitement
+            if( correspondance.nomImport == valueHodja.client && correspondance.productImport == valueHodja.typeDechet){  
+
+              let formatDate = valueHodja.entryDate.split('T')[0];
+              let keyHash = formatDate+'_'+correspondance.ProductId+'_'+correspondance.ProducerId;
+              let value, valueRound;
+              count = count + 1;;
+
+              //si il y a deja une valeur dans la hashMap pour ce client et ce jour, on incrémente la valeur
+              if(this.stockageHodja.has(keyHash)){
+                //@ts-ignore       
+                value = this.stockageHodja.get(keyHash) + ( (valueHodja.TK_Poids_brut - valueHodja.TK_Poids_tare) /1000 );
+                valueRound = parseFloat(value.toFixed(3));
+                this.stockageHodja.set(keyHash,valueRound);
               }
-              //Sinon on insére tout simplement dans la HashMap
-              else this.stockageHodja.set(mr,parseFloat(((valueHodja.TK_Poids_brut-valueHodja.TK_Poids_tare)/1000).toFixed(3)));//Pour avoir en tonnes et arrondir à 3 chiffres
+              else
+              //Sinon on insére dans la hashMap
+              //@ts-ignore
+              this.stockageHodja.set(keyHash,parseFloat(( (valueHodja.TK_Poids_brut - valueHodja.TK_Poids_tare) /1000 ).toFixed(3)));
             }
           }
-          //await this.wait(100);
+          if(count == 0){
+            dechetsManquants.push(dechetManquant);
+            clientManquants.push(clientManquant);
+          }
         }
+
         //On parcours la HashMap pour insérer en BDD
-        this.stockageHodja.forEach(async (value : number, key : moralEntity) =>{
-          await this.moralEntitiesService.createMeasure(day.split('/')[2]+'-'+day.split('/')[1]+'-'+day.split('/')[0],value,key.productId,key.Id).subscribe((response)=>{
+        this.stockageHodja.forEach(async (value : number, key : String) =>{
+          await this.moralEntitiesService.createMeasure(key.split('_')[0],value,parseInt(key.split('_')[1]),parseInt(key.split('_')[2])).subscribe((response) =>{
             if (response == "Création du Measures OK"){
-              Swal.fire("Recup HODJA OK");
+              var afficher = "";
+
+              for(let i = 0; i< clientManquants.length; i++){
+                afficher += "Le client <strong>'" + clientManquants[i] + "'</strong> avec le déchet : <strong>'" + dechetsManquants[i] + "'</strong> n'a pas de correspondance dans CAP Exploitation <br>";
+              }
+              afficher += "<strong>Pensez à faire la correspondance dans l'administration !</strong>";
+              Swal.fire({
+                html : afficher,
+                width : '80%',
+                title :"Les valeurs ont été insérées avec succès !"
+              });
             }
             else {
               Swal.fire({

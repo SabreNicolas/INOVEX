@@ -26,7 +26,7 @@ export class moralEntitiesService {
         'Access-Control-Allow-Origin' : '*',
         'Authorization': 'Bearer ' + localStorage.getItem('token')
     }
-    private portAPI = 3100;
+    private portAPI = 3102;
     private portAPIHodja = 3101;
     private ip = "fr-couvinove301.prod.paprec.fr";
     //private ip = "localhost";
@@ -127,19 +127,44 @@ export class moralEntitiesService {
         .put<any>(requete,null,requestOptions);
     }
 
-        //delete correspondance
-      deleteCorrespondance(id : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/deleteCorrespondance/"+id;
-        //console.log(requete);
-  
-        const requestOptions = {
-            headers: new HttpHeaders(this.headerDict),
-        };
-  
-        return this.http
-            .delete<any>(requete,requestOptions);
-      }
+    //crée une nouvelle correspondance pour lecture csv
+    createImport_tonnageReactif(ProductId : number,productImport : string){
+      let requete = "https://"+this.ip+":"+this.portAPI+"/import_tonnageReactif?ProductId="+ProductId+"&productImport="+productImport+"&idUsine="+this.idUsine;
+      // console.log(requete);
 
+      const requestOptions = {
+        headers: new HttpHeaders(this.headerDict),
+      };
+
+      return this.http
+        .put<any>(requete,null,requestOptions);
+    }
+
+    //delete correspondance
+    deleteCorrespondance(id : number){
+      let requete = "https://"+this.ip+":"+this.portAPI+"/deleteCorrespondance/"+id;
+      //console.log(requete);
+  
+      const requestOptions = {
+          headers: new HttpHeaders(this.headerDict),
+      };
+
+      return this.http
+          .delete<any>(requete,requestOptions);
+    }
+
+    //delete correspondance
+    deleteCorrespondanceReactif(id : number){
+      let requete = "https://"+this.ip+":"+this.portAPI+"/deleteCorrespondanceReactif/"+id;
+      //console.log(requete);
+  
+      const requestOptions = {
+          headers: new HttpHeaders(this.headerDict),
+      };
+
+      return this.http
+          .delete<any>(requete,requestOptions);
+    }
     //mettre à jour une correspondance
     updateCorrespondance(ProducerId : number ,nomImport : string ,productImport : string){
       let requete = "https://"+this.ip+":"+this.portAPI+"/updateCorrespondance?ProducerId="+ProducerId+"&nomImport="+nomImport+"&productImport="+productImport;
@@ -179,6 +204,31 @@ export class moralEntitiesService {
         .put<any>(requete,null,requestOptions);
     }
 
+    //mettre à jour le produit cap exploitation d'une correspondance de réactif
+    updateProductImportCorrespondanceReactif(idCorrespondance : number ,ProductId : number){
+      let requete = "https://"+this.ip+":"+this.portAPI+"/updateProductImportCorrespondanceReactif?ProductId="+ProductId+"&idCorrespondance="+idCorrespondance;
+      //console.log(requete);
+
+      const requestOptions = {
+        headers: new HttpHeaders(this.headerDict),
+      };
+
+      return this.http
+        .put<any>(requete,null,requestOptions);
+    }
+
+    //mettre à jour le nom dans le logiciel de pesée d'une correspondance de reactif
+    updateNomImportCorrespondanceReactif(ProductId : number ,productImport : string){
+      let requete = "https://"+this.ip+":"+this.portAPI+"/updateNomImportCorrespondanceReactif?ProductId="+ProductId+"&productImport="+productImport;
+      //console.log(requete);
+
+      const requestOptions = {
+        headers: new HttpHeaders(this.headerDict),
+      };
+
+      return this.http
+        .put<any>(requete,null,requestOptions);
+    }
 
     //récupérer les clients
     getMoralEntitiesAll(Code : string) {
@@ -240,6 +290,19 @@ export class moralEntitiesService {
       let requete = "https://"+this.ip+":"+this.portAPI+"/getCorrespondanceSortants/"+this.idUsine;
       //console.log(requete);
 
+
+      const requestOptions = {
+          headers: new HttpHeaders(this.headerDict),
+      };
+
+      return this.http
+          .get<moralEntity>(requete,requestOptions);
+    }
+
+    //récupérer les correspondances d'une usine
+    getCorrespondancesReactifs() {
+      let requete = "https://"+this.ip+":"+this.portAPI+"/getCorrespondanceReactifs/"+this.idUsine;
+      //console.log(requete);
 
       const requestOptions = {
           headers: new HttpHeaders(this.headerDict),
@@ -399,8 +462,21 @@ export class moralEntitiesService {
     */
 
     //récupération HODJA
-    recupHodja(dateDeb : string, dateFin : string){
-      let requete = "https://"+this.ip+":"+this.portAPIHodja+"/entrants?dateDeb="+dateDeb+"&dateFin="+dateFin;
+    recupHodjaEntrants(dateDeb : string, dateFin : string){
+      let requete = "https://"+this.ip+":"+this.portAPIHodja+"/entrantsOuSortants?dateDeb="+dateDeb+"&dateFin="+dateFin +"&sortant=0";
+      console.log(requete);
+
+      const requestOptions = {
+        headers: new HttpHeaders(this.headerDict),
+      };
+
+      return this.http
+        .get<valueHodja[]>(requete,requestOptions);
+    }
+
+    //récupération HODJA
+    recupHodjaSortants(dateDeb : string, dateFin : string){
+      let requete = "https://"+this.ip+":"+this.portAPIHodja+"/entrantsOuSortants?dateDeb="+dateDeb+"&dateFin="+dateFin +"&sortant=1";
       console.log(requete);
 
       const requestOptions = {

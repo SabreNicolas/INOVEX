@@ -14,10 +14,17 @@ export class ListEquipeComponent implements OnInit {
   
   public equipes : equipe[];
   public consignes : consigne[];
+  public dateDuJour : string;
 
   constructor(public cahierQuartService : cahierQuartService, public rondierService : rondierService){
     this.equipes = [];
     this.consignes = [];
+    const date = new Date();
+
+    const options : Intl.DateTimeFormatOptions = {weekday : 'long', year: 'numeric', month:'long', day:'numeric'};
+    const dateFormateur = new Intl.DateTimeFormat('fr-FR', options);
+    this.dateDuJour = dateFormateur.format(date);
+
   }
 
   ngOnInit(): void {
