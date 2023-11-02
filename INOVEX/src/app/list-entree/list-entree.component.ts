@@ -385,7 +385,7 @@ export class ListEntreeComponent implements OnInit {
       if(this.idUsine === 11){
         this.lectureCSV(event, ";", false, 23, 29, 2, 16, 1);
       }
-      else this.lectureCSV(event, ";", false, 6, 31, 2, 16);
+      else this.lectureCSV(event, ";", true, 6, 31, 2, 16);
     }
     //Saint-Saulve
     else if (this.typeImportTonnage.toLowerCase().includes("dpk")){
@@ -429,7 +429,7 @@ export class ListEntreeComponent implements OnInit {
     //Sète
     else if (this.typeImportTonnage.toLowerCase().includes("hodja")){
       //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
-      this.lectureCSV(event, ";", true, 10, 12, 0, 14);
+      this.lectureCSV(event, ";", true, 9, 12, 0, 14);
     }
   }
 
@@ -469,8 +469,8 @@ export class ListEntreeComponent implements OnInit {
 
             //permet de diviser le tonnage par 1000 si on l'a en kg
             let divisionKgToTonnes = 1;
-            //si ce n'est pas caktus on divise par 1000 pour avoir en tonnes
-            if (!this.typeImportTonnage.toLowerCase().includes("caktus") && !this.typeImportTonnage.toLowerCase().includes("tradim")){
+            //si ce n'est pas caktus ni tradim ni Dunkerque, on divise par 1000 pour avoir en tonnes
+            if (!this.typeImportTonnage.toLowerCase().includes("caktus") && !this.typeImportTonnage.toLowerCase().includes("tradim") && this.idUsine != 9){
               divisionKgToTonnes = 1000;
             }
 

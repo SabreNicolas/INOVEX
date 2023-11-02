@@ -31,16 +31,24 @@
         <div id="choix">
             <div class="mb-3">  
                 <label for="nomEquipe" class="form-label">Nom de l'équipe *</label>  
-                <input type="text" id="nomEquipe" class="form-control" #nomEquipe name="nomEquipe" placeholder="Nom de l'équipe" ngModel [(ngModel)]="name">
+                <select class="form-select" id="nomEquipe" #nomEquipe name="name" required ngModel [(ngModel)]="name">
+                    <option value="Equipe 1">Equipe 1</option>
+                    <option value="Equipe 2">Equipe 2</option>
+                    <option value="Equipe 3">Equipe 3</option>
+                    <option value="Equipe 4">Equipe 4</option>
+                    <option value="Equipe 5">Equipe 5</option>
+                    <option value="Equipe 6">Equipe 6</option>
+                </select>
             </div>
     
             <div class="mb-3">
-                <label for="quart" class="form-label">Période</label>
-                <select class="form-select" id="quart" #quart name="periode" required ngModel [(ngModel)]="periode">
+                <label for="quart" class="form-label">Période :</label>
+                <strong>{{periode}} du {{dateDuJour}}</strong>
+                <!-- <select class="form-select" id="quart" #quart name="periode" required ngModel [(ngModel)]="periode">
                     <option value="matin">Quart du matin</option>
                     <option value="apres-midi">Quart de l'après-midi</option>
                     <option value="nuit">Quart de nuit</option>
-                </select>
+                </select> -->
             </div>
         </div>
         
@@ -82,7 +90,7 @@
             </table>
         </div>
         <p style="font-size: smaller; color: grey" id="legende">* : Obligatoire</p>
-        <button id="creer" type="submit" class="btn btn-success" (click)="nouvelleEquipe(nomEquipe.value,quart.value)">Soumettre</button>  
+        <button id="creer" type="submit" class="btn btn-success" (click)="nouvelleEquipe(nomEquipe.value)">Soumettre</button>  
         <button class="btn btn-danger" onclick="window.location.replace('/cahierQuart')">Annuler</button>
     </div>  
 </div>

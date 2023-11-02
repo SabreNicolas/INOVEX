@@ -197,7 +197,7 @@ export class ListSortantsComponent implements OnInit {
       if(this.idUsine === 11){
         this.lectureCSV(event, ";", false, 29, 2, 16, 1);
       }
-      else this.lectureCSV(event, ";", false, 31, 2, 16);
+      else this.lectureCSV(event, ";", true, 31, 2, 16);
     }
     //Saint-Saulve
     else if (this.typeImportTonnage.toLowerCase().includes("dpk")){

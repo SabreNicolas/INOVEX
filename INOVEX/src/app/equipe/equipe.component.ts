@@ -20,12 +20,13 @@ export class EquipeComponent implements OnInit {
   public name : string;
   public periode : string;
   public quart : number;
+  public dateDuJour : string;
 
   constructor(private cahierQuartService :cahierQuartService,private route : ActivatedRoute) {
     this.listUsers = [];
     this.listAjout = [];
     this.listZone = [];
-    this.name = "";
+    this.name = "Equipe 1";
     this.idEquipe = 0;
     this.periode = "matin";
     this.quart = 0;
@@ -39,10 +40,16 @@ export class EquipeComponent implements OnInit {
         this.idEquipe = 0;
       }
     });
+
+    const date = new Date();
+
+    const options : Intl.DateTimeFormatOptions = {year: 'numeric', month:'numeric', day:'numeric'};
+    const dateFormateur = new Intl.DateTimeFormat('fr-FR', options);
+    this.dateDuJour = dateFormateur.format(date);
    }
 
   ngOnInit(): void {
-    
+
     //Si on est en mode édition
     if(this.idEquipe > 0){
       //On récupère l'quipe concernée
@@ -60,12 +67,14 @@ export class EquipeComponent implements OnInit {
         }
 
         let zoneId; 
-        for(var i = 0;i<response.data.length;i++){
-          if(response.data[i]['idZone'] > 0){
-            zoneId = response.data[i]['idZone'];
+        if(response.data[0]['idRondier'] != null){
+          for(var i = 0;i<response.data.length;i++){
+            if(response.data[i]['idZone'] > 0){
+              zoneId = response.data[i]['idZone'];
+            }
+            else zoneId = 0;
+            this.listAjout.push({Id : response.data[i]['idRondier'], Prenom : response.data[i]['prenomRondier'],Nom : response.data[i]['nomRondier'], Poste : response.data[i]['poste'], Zone : zoneId});
           }
-          else zoneId = 0;
-          this.listAjout.push({Id : response.data[i]['idRondier'], Prenom : response.data[i]['prenomRondier'],Nom : response.data[i]['nomRondier'], Poste : response.data[i]['poste'], Zone : zoneId});
         }
       })
     }
@@ -94,7 +103,7 @@ export class EquipeComponent implements OnInit {
     }
   }
 
-  nouvelleEquipe(nomEquipe :string, quart :string){
+  nouvelleEquipe(nomEquipe :string/*, quart :string*/){
 
     var quartNombre;
 
@@ -128,23 +137,23 @@ export class EquipeComponent implements OnInit {
       Swal.fire({title: 'Êtes-vous sûr(e) de créer cette équipe ?',icon: 'warning',showCancelButton: true,confirmButtonColor: '#3085d6',cancelButtonColor: '#d33',confirmButtonText: 'Oui, créer',cancelButtonText: 'Annuler'
       }).then((result) => {
         if (result.isConfirmed) {
-          //On change le quart en nombre
-          if(quart === "matin"){
-            quartNombre = 1;
-          }
-          else if(quart === "apres-midi"){
-            quartNombre = 2;
-          }
-          else {
-            quartNombre = 3;
-          }
+          // //On change le quart en nombre
+          // if(quart === "matin"){
+          //   quartNombre = 1;
+          // }
+          // else if(quart === "apres-midi"){
+          //   quartNombre = 2;
+          // }
+          // else {
+          //   quartNombre = 3;
+          // }
           //Si on est en mode édition d'une équipe on va dans la fonction update
           if (this.idEquipe > 0){
-            this.update(quartNombre);
+            this.update(this.quart);
           }
           //Sinon on créé l'équipe
           else{
-            this.cahierQuartService.nouvelleEquipe(nomEquipe,quartNombre).subscribe((response) => {
+            this.cahierQuartService.nouvelleEquipe(nomEquipe,this.quart).subscribe((response) => {
               //On vide les input pour une nouvelle création
               (<HTMLInputElement>document.getElementById("nomEquipe")).value ="";
              

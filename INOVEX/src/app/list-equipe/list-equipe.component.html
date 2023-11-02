@@ -55,14 +55,14 @@
             </div>
 
           </div>
-          <a target="_blank" routerLink="/cahierQuart/newEquipe" [queryParams]="{idEquipe: card.id}" > 
+          <a  routerLink="/cahierQuart/newEquipe" [queryParams]="{idEquipe: card.id}" > 
             <button class="btn btn btn-light edition">
                 <i class="far fa-edit"></i>
             </button>
           </a>
-          <button class="btn btn btn-danger suppression" (click)="deleteEquipe(card.id)">
+          <!-- <button class="btn btn btn-danger suppression" (click)="deleteEquipe(card.id)"> 
             <i class="fas fa-trash-alt"></i>
-          </button>
+          </button>-->
     </div>
     
   </div>
