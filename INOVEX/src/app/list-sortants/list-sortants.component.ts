@@ -37,6 +37,7 @@ export class ListSortantsComponent implements OnInit {
   //stockage données HODJA à envoyer
   public stockageHodja : Map<String,number>;
   public valuesHodja : valueHodja[];
+  public dates : string[]
 
 
 
@@ -52,7 +53,7 @@ export class ListSortantsComponent implements OnInit {
     this.idUsine = 0;
     this.stockageHodja = new Map();
     this.valuesHodja = [];
-
+    this.dates = [];
   }
 
   ngOnInit(): void {
@@ -290,6 +291,8 @@ export class ListSortantsComponent implements OnInit {
             else{
               EntreeSortie = results.data[i][posEntreeSortie]
             }
+            
+            this.dates.push(results.data[i][posDateEntree].substring(0,10));
 
             let importCSV = {
               client : "Aucun",
@@ -300,7 +303,25 @@ export class ListSortantsComponent implements OnInit {
             };
             this.csvArray.push(importCSV);
           }
-          await this.insertTonnageCSV();
+
+          function compareDates(a: string, b: string){
+            const dateA = new Date(a.split('/').reverse().join('/'));
+            const dateB = new Date(b.split('/').reverse().join('/'));
+            return dateA.getTime() - dateB.getTime();
+          }
+
+          this.dates.sort(compareDates);
+
+          const [day, month, year] = this.dates[0].split('/');
+          const dateDeb = `${year}-${month}-${day}`;
+
+          const [day2, month2, year2] = this.dates[this.dates.length-1].split('/');
+          const dateFin = `${year2}-${month2}-${day2}`;
+
+
+          this.moralEntitiesService.deleteMesuresSortantsEntreDeuxDates(dateDeb,dateFin).subscribe((response)=>{
+            this.insertTonnageCSV();
+          })          
           this.removeloading();
         }
       });

@@ -86,8 +86,4 @@ export class ListEquipeComponent implements OnInit {
         }
       });
   }
-
- 
 }
-
-

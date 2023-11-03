@@ -44,7 +44,8 @@ export class ListEntreeComponent implements OnInit {
   public valuesHodja : valueHodja[];
   //stockage données HODJA à envoyer
   public stockageHodja : Map<String,number>;
-  
+  public dates : string[]
+
 
   constructor(private idUsineService : idUsineService, private moralEntitiesService : moralEntitiesService, private productsService : productsService, private Papa : Papa, private dateService : dateService) {
     this.debCode = '2';
@@ -63,6 +64,7 @@ export class ListEntreeComponent implements OnInit {
     this.correspondance = [];
     this.productsEntrants = [];
     this.idUsine = 0;
+    this.dates = [];
   }
 
   ngOnInit(): void {
@@ -451,6 +453,7 @@ export class ListEntreeComponent implements OnInit {
     reader.readAsText(file);
     reader.onload = (event: any) => {
       var csv = event.target.result; // Content of CSV file
+
       //options à ajouter => pas d'entête, delimiter ;
       this.Papa.parse(csv, {
         skipEmptyLines: true,
@@ -487,7 +490,9 @@ export class ListEntreeComponent implements OnInit {
                typeDechet= "DASRI"
             }
             else typeDechet = results.data[i][posTypeDechet]
-
+            
+            this.dates.push(results.data[i][posDateEntree].substring(0,10));
+            
             //Création de l'objet qui contient l'ensemble des infos nécessaires
             let importCSV = {
               client: results.data[i][posClient],
@@ -498,8 +503,26 @@ export class ListEntreeComponent implements OnInit {
             };
             this.csvArray.push(importCSV);
           }
+          
+          function compareDates(a: string, b: string){
+            const dateA = new Date(a.split('/').reverse().join('/'));
+            const dateB = new Date(b.split('/').reverse().join('/'));
+            return dateA.getTime() - dateB.getTime();
+          }
+
+          this.dates.sort(compareDates);
+
+          const [day, month, year] = this.dates[0].split('/');
+          const dateDeb = `${year}-${month}-${day}`;
+
+          const [day2, month2, year2] = this.dates[this.dates.length-1].split('/');
+          const dateFin = `${year2}-${month2}-${day2}`;
+
+          this.moralEntitiesService.deleteMesuresEntrantsEntreDeuxDates(dateDeb,dateFin).subscribe((response)=>{
+            this.insertTonnageCSV();
+          })
           //console.log(this.csvArray);
-          await this.insertTonnageCSV();
+          
           this.removeloading();
         }
       });
