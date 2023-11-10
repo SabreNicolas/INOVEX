@@ -205,6 +205,10 @@ export class ListReactifsComponent implements OnInit {
       if(this.idUsine === 16){
         this.lectureCSV(event, ";", false, 17, 14, 7);
       }
+      //Douchy
+      else if(this.idUsine === 10){
+        this.lectureCSV(event, ";", false, 27, 16, 7, 12);
+      }
       //Mourenx
       else if(this.idUsine === 18){
         this.lectureCSV(event, ";", false, 13, 1, 7);
