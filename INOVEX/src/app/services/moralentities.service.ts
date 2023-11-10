@@ -154,6 +154,45 @@ export class moralEntitiesService {
     }
 
     //delete correspondance
+    deleteMesuresEntrantsEntreDeuxDates(dateDeb : string, dateFin: string){
+      let requete = "https://"+this.ip+":"+this.portAPI+"/deleteMesuresEntrantsEntreDeuxDates?idUsine=" + this.idUsine + "&dateDeb=" + dateDeb + "&dateFin=" + dateFin;
+      //console.log(requete);
+  
+      const requestOptions = {
+          headers: new HttpHeaders(this.headerDict),
+      };
+
+      return this.http
+          .delete<any>(requete,requestOptions);
+    }
+
+        //delete correspondance
+    deleteMesuresSortantsEntreDeuxDates(dateDeb : string, dateFin: string, name : string){
+      let requete = "https://"+this.ip+":"+this.portAPI+"/deleteMesuresSortantsEntreDeuxDates?idUsine=" + this.idUsine + "&dateDeb=" + dateDeb + "&dateFin=" + dateFin + "&name=" + name;
+      //console.log(requete);
+  
+      const requestOptions = {
+          headers: new HttpHeaders(this.headerDict),
+      };
+
+      return this.http
+          .delete<any>(requete,requestOptions);
+    }
+
+    //delete mesure ractifs entre deux dates
+    deleteMesuresReactifsEntreDeuxDates(dateDeb : string, dateFin: string, name : string){
+      let requete = "https://"+this.ip+":"+this.portAPI+"/deleteMesuresReactifsEntreDeuxDates?idUsine=" + this.idUsine + "&dateDeb=" + dateDeb + "&dateFin=" + dateFin + "&name=" + name;
+      //console.log(requete);
+  
+      const requestOptions = {
+          headers: new HttpHeaders(this.headerDict),
+      };
+
+      return this.http
+          .delete<any>(requete,requestOptions);
+    }
+
+    //delete correspondance
     deleteCorrespondanceReactif(id : number){
       let requete = "https://"+this.ip+":"+this.portAPI+"/deleteCorrespondanceReactif/"+id;
       //console.log(requete);

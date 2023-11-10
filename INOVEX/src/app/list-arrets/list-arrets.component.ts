@@ -102,31 +102,33 @@ export class ListArretsComponent implements OnInit {
   }
 
   setPeriod(form: NgForm) {
-    if(form.value['dateDeb'].length < 1 && form.value['dateFin'].length < 1){
-      Swal.fire({
-        icon: 'error',
-        text: 'Période non valide !',
-      });
-    }
-    else{
-      this.dateDeb = new Date((<HTMLInputElement>document.getElementById("dateDeb")).value);
-      this.dateFin = new Date((<HTMLInputElement>document.getElementById("dateFin")).value);
-      if (this.dateFin < this.dateDeb) {
+    if(form.value['dateDeb'] != "" && form.value['dateFin'] != ""){
+      if(form.value['dateDeb'].length < 1 && form.value['dateFin'].length < 1){
         Swal.fire({
           icon: 'error',
-          text: 'La date de Fin est inférieure à la date de Départ !',
-        })
+          text: 'Période non valide !',
+        });
       }
-      else {
-        var mmF = String(this.dateDeb.getMonth() + 1).padStart(2, '0'); //January is 0!
-        var yyyyF = this.dateDeb.getFullYear();
-        var ddF = String(this.dateDeb.getDate()).padStart(2, '0');
-        this.stringDateDebut = yyyyF + '-' + mmF + '-' + ddF;
-        var mmL = String(this.dateFin.getMonth() + 1).padStart(2, '0'); //January is 0!
-        var yyyyL = this.dateFin.getFullYear();
-        var ddL = String(this.dateFin.getDate()).padStart(2, '0');
-        this.stringDateFin = yyyyL + '-' + mmL + '-' + ddL;
-        this.ngOnInit();
+      else{
+        this.dateDeb = new Date((<HTMLInputElement>document.getElementById("dateDeb")).value);
+        this.dateFin = new Date((<HTMLInputElement>document.getElementById("dateFin")).value);
+        if (this.dateFin < this.dateDeb) {
+          Swal.fire({
+            icon: 'error',
+            text: 'La date de Fin est inférieure à la date de Départ !',
+          })
+        }
+        else {
+          var mmF = String(this.dateDeb.getMonth() + 1).padStart(2, '0'); //January is 0!
+          var yyyyF = this.dateDeb.getFullYear();
+          var ddF = String(this.dateDeb.getDate()).padStart(2, '0');
+          this.stringDateDebut = yyyyF + '-' + mmF + '-' + ddF;
+          var mmL = String(this.dateFin.getMonth() + 1).padStart(2, '0'); //January is 0!
+          var yyyyL = this.dateFin.getFullYear();
+          var ddL = String(this.dateFin.getDate()).padStart(2, '0');
+          this.stringDateFin = yyyyL + '-' + mmL + '-' + ddL;
+          this.ngOnInit();
+        }
       }
     }
   }

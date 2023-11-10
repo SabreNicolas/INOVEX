@@ -114,31 +114,32 @@ export class ReportingRondeComponent implements OnInit {
     this.afficherRonde();
   }
 
-  afficherRonde(){
+  afficherRonde() {
     // retourne une ronde à une date
-    if(this.dateDeb != undefined){
+    if (this.dateDeb != undefined) {
+      //Recupère les rondes d'une dates et d'un quart
       // @ts-ignore
-      this.rondierService.affichageRonde(this.dateDeb, this.quart).subscribe((response)=>{
+      this.rondierService.affichageRonde(this.dateDeb, this.quart).subscribe((response) => {
         // @ts-ignore
         this.listRonde = response.data;
-          this.listRonde.forEach(async ronde =>{
-            await this.await(500);
-            //Récupération des zones et de leurs éléments
-            this.rondierService.listZonesAndElementsWithValues(ronde.Id).subscribe((response)=>{
-              // @ts-ignore
-              this.listElementsOfZone = response.BadgeAndElementsOfZone;
-              // console.log(this.listElementsOfZone)
+        this.listRonde.forEach(async ronde => {
+          await this.await(500);
+          //Récupération des zones et de leurs éléments qui ont des valeurs sur la ronde
+          this.rondierService.listZonesAndElementsWithValues(ronde.Id).subscribe(async (response) => {
+            // @ts-ignore
+            this.listElementsOfZone = response.BadgeAndElementsOfZone;
+            console.log(this.listElementsOfZone)
             //Récupération des éléments et leurs valeurs sur la ronde
-            this.rondierService.reportingRonde(ronde.Id).subscribe((response)=>{
+            this.rondierService.reportingRonde(ronde.Id).subscribe(async (response) => {
               // @ts-ignore
-              response.data.forEach(reporting =>{
+              response.data.forEach(reporting => {
                 //@ts-ignore
-                let champValue = document.getElementById(ronde.Id+"-"+reporting.elementId);
-                if(champValue != null || champValue != ""){
-                  let champError = document.getElementById(ronde.Id+"-"+reporting.elementId+"-Error");
+                let champValue = document.getElementById(ronde.Id + "-" + reporting.elementId);
+                if (champValue != null || champValue != "") {
+                  let champError = document.getElementById(ronde.Id + "-" + reporting.elementId + "-Error");
                   //SI on a un mode regulateur on affiche le champ et on affiche le mode
-                  if(reporting.modeRegulateur != "undefined"){
-                    let champRegul = document.getElementById(ronde.Id+"-"+reporting.elementId+"-Regulateur");
+                  if (reporting.modeRegulateur != "undefined") {
+                    let champRegul = document.getElementById(ronde.Id + "-" + reporting.elementId + "-Regulateur");
                     //let champValue = document.getElementById(ronde.Id+"-"+reporting.elementId);
                     // @ts-ignore
                     champRegul.style.display = "block";
@@ -147,39 +148,39 @@ export class ReportingRondeComponent implements OnInit {
                   }
                   let champValueContenu, champValueError;
                   //On affiche la valeur uniquement si elle a été saisie
-                  if(reporting.value != "/"){
-                    champValueContenu = ""+reporting.value + " " + reporting.unit + " ";
-                    
+                  if (reporting.value != "/") {
+                    champValueContenu = "" + reporting.value + " " + reporting.unit + " ";
+
                     //Si le champValueContenu est vide on masque sur le reporting
                     let nomGroupement = document.getElementById(reporting.nom);
-                    if(champValueContenu == "" || champValueContenu == null){
-                          if(nomGroupement != null){
-                            nomGroupement.style.display = "none";
-                          }
-                          if(champValue != null){
-                            champValue.style.display = "none";
-                          }
+                    if (champValueContenu == "" || champValueContenu == null) {
+                      if (nomGroupement != null) {
+                        nomGroupement.style.display = "none";
+                      }
+                      if (champValue != null) {
+                        champValue.style.display = "none";
+                      }
                     }
 
                     //On vérifie que la valeur est réglementaire (entre les bornes ou correspond à la valeur par défaut)
                     //Si curseur (type 1) => doit etre compris entre les bornes
-                    if((reporting.typeChamp == "1") && (Number(reporting.value) < reporting.valeurMin || Number(reporting.value) > reporting.valeurMax)){
+                    if ((reporting.typeChamp == "1") && (Number(reporting.value) < reporting.valeurMin || Number(reporting.value) > reporting.valeurMax)) {
                       //On utilise champValue pour afficher le message
                       // console.log(Number(reporting.value) + " "+ reporting.valeurMin+" "+reporting.valeurMax)
                       // @ts-ignore
                       champError.style.backgroundColor = "#ff726f";
                       // @ts-ignore
-                      champValueError = "ATTENTION, doit être compris entre "+reporting.valeurMin+" "+reporting.unit+" & "+reporting.valeurMax+" "+reporting.unit;
+                      champValueError = "ATTENTION, doit être compris entre " + reporting.valeurMin + " " + reporting.unit + " & " + reporting.valeurMax + " " + reporting.unit;
                     }
                     //Si pas curseur (différent de type 1) => doit etre égal à la valeur par défaut
-                    if(reporting.typeChamp !== "1" && reporting.value != reporting.defaultValue && reporting.defaultValue.length > 0){
+                    if (reporting.typeChamp !== "1" && reporting.value != reporting.defaultValue && reporting.defaultValue.length > 0) {
                       //On utilise champValue pour afficher le medssage
                       // @ts-ignore
                       champError.style.backgroundColor = "#ff726f";
                       // @ts-ignore
-                      champValueError = "ATTENTION, la valeur par défaut est : "+reporting.defaultValue+" "+reporting.unit;
+                      champValueError = "ATTENTION, la valeur par défaut est : " + reporting.defaultValue + " " + reporting.unit;
                     }
-                  } 
+                  }
                   //Sinon on surligne en rouge et on précise que ce n'est pas saisie
                   else {
                     // @ts-ignore
@@ -187,61 +188,59 @@ export class ReportingRondeComponent implements OnInit {
                     // @ts-ignore
                     champValueContenu = "NON SAISIE ";
                   }
-                  
+
                   // @ts-ignore
                   champValue.innerHTML = champValueContenu;
                   //On affiche le message d'erreur si nécessaire
-                  if( (reporting.typeChamp == "1" && (Number(reporting.value) < reporting.valeurMin || Number(reporting.value) > reporting.valeurMax)) || (reporting.typeChamp !== "1" && reporting.value !== reporting.defaultValue && reporting.defaultValue.length > 0)){
+                  if ((reporting.typeChamp == "1" && (Number(reporting.value) < reporting.valeurMin || Number(reporting.value) > reporting.valeurMax)) || (reporting.typeChamp !== "1" && reporting.value !== reporting.defaultValue && reporting.defaultValue.length > 0)) {
                     // @ts-ignore
                     champError.innerHTML = champValueError;
                     // @ts-ignore
                     champError.style.display = "block"
                   }
-  
+
                   //Création du button d'update de la valeur si utilisateur admin
-                  if(this.isAdmin || this.isChefQuart){
+                  if (this.isAdmin || this.isChefQuart) {
                     const button = document.createElement("button");
                     button.className = "btn btn-warning btn-sm";
-                    button.id = "update"+reporting.Id;
+                    button.id = "update" + reporting.Id;
                     const i = document.createElement("i");
                     i.className = "fa fa-pencil-square-o";
                     button.appendChild(i);
-                    button.addEventListener('click', (e) =>{
-                      this.updateValueElement(reporting.Id,reporting.value);
+                    button.addEventListener('click', (e) => {
+                      this.updateValueElement(reporting.Id, reporting.value);
                     });
                     // @ts-ignore
                     champValue.appendChild(button);
                   }
                   //FIN Création du button edit
-                } 
-                
+                }
+
               });
               //Récupération des anomalies sur la ronde
-              this.rondierService.listAnomalies(ronde.Id).subscribe((response)=>{
+              this.rondierService.listAnomalies(ronde.Id).subscribe((response) => {
                 // @ts-ignore
-                response.data.forEach(anomalie =>{
+                response.data.forEach(anomalie => {
                   this.listAnomalie.push(anomalie);
                 });
               });
             });
           });
-          });
+        });
 
         //Récupération des validations de permis de feu
-        this.rondierService.listPermisFeuValidation(this.dateDeb).subscribe((response)=>{
+        this.rondierService.listPermisFeuValidation(this.dateDeb).subscribe((response) => {
           // @ts-ignore
           this.listPermisFeuValidation = response.data;
         });
 
         //Récupération du nombre de four du site
-        this.rondierService.nbLigne().subscribe((response)=>{
+        this.rondierService.nbLigne().subscribe((response) => {
           //@ts-ignore
           this.nbfour = response.data[0].nbLigne;
-          this.numbers = Array(this.nbfour).fill(1).map((x,i) => i+1);
+          this.numbers = Array(this.nbfour).fill(1).map((x, i) => i + 1);
         });
-
-        
-      });     
+      });
     }
   }
 
@@ -260,7 +259,7 @@ export class ReportingRondeComponent implements OnInit {
     var yyyy = dt.getFullYear();
     var day = dd + '/' + mm + '/' + yyyy;
     this.dateDeb = day;
-    (<HTMLDivElement>document.getElementById("tableDesRondes")).style.display = "block";
+    // (<HTMLDivElement>document.getElementById("tableDesRondes")).style.display = "block";
     this.ngOnInit();
   }
 

@@ -29,10 +29,11 @@ export class ListReactifsComponent implements OnInit {
   public csvArray : importCSV[];
   public stockageImport : Map<String,number>;
   public correspondance : any[];
+  public dates : string[]
 
 
 
-  constructor(private idUsineService : idUsineService, private productsService : productsService, private categoriesService : categoriesService, private Papa : Papa, private mrService : moralEntitiesService,private dateService : dateService) {
+  constructor(private idUsineService : idUsineService,private moralEntitiesService : moralEntitiesService, private productsService : productsService, private categoriesService : categoriesService, private Papa : Papa, private mrService : moralEntitiesService,private dateService : dateService) {
     this.listProducts = [];
     this.listDays = [];
     this.typeImportTonnage = '';
@@ -40,6 +41,7 @@ export class ListReactifsComponent implements OnInit {
     this.stockageImport = new Map();
     this.correspondance = [];
     this.idUsine = 0;
+    this.dates = [];
   }
 
   ngOnInit(): void {
@@ -168,7 +170,7 @@ export class ListReactifsComponent implements OnInit {
       //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
       //Thiverval
       if(this.idUsine === 11){
-        this.lectureCSV(event, ";", false, 29, 2, 16, 1);
+        this.lectureCSV(event, ";", true, 29, 2, 16, 1);
       }
       else this.lectureCSV(event, ";", false, 31, 2, 16);
     }
@@ -203,12 +205,16 @@ export class ListReactifsComponent implements OnInit {
       if(this.idUsine === 16){
         this.lectureCSV(event, ";", false, 17, 14, 7);
       }
+      //Mourenx
+      else if(this.idUsine === 18){
+        this.lectureCSV(event, ";", false, 13, 1, 7);
+      } 
       else this.lectureCSV(event, ";", false, 6, 1, 11, 12);
     }
     //Pluzunet
     else if (this.typeImportTonnage.toLowerCase().includes("caktus")){
       //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
-      this.lectureCSV(event, ";", true, 28, 7, 35, 6);
+      this.lectureCSV(event, ",", true, 22, 14, 10, 33);
     }
     //Sète
     else if (this.typeImportTonnage.toLowerCase().includes("hodja")){
@@ -264,16 +270,43 @@ export class ListReactifsComponent implements OnInit {
               EntreeSortie = results.data[i][posEntreeSortie]
             }
 
-            let importCSV = {
-              client : "Aucun",
-              typeDechet: results.data[i][posTypeDechet],
-              dateEntree : results.data[i][posDateEntree].substring(0,10),
-              tonnage : Math.abs(+results.data[i][posTonnage].replace(/[^0-9,.]/g,"").replace(",",".")/divisionKgToTonnes),
-              entrant : EntreeSortie
-            };
-            this.csvArray.push(importCSV);
+            //Permet d'éviter l'erreur en cas de lignes vides
+            if(results.data[i][posDateEntree] != undefined){
+              if(results.data[i][posDateEntree] != ""){
+                //On ajoute toutes les dates dans le tableau dates
+                this.dates.push(results.data[i][posDateEntree].substring(0,10));
+              }
+              
+              let importCSV = {
+                client : "Aucun",
+                typeDechet: results.data[i][posTypeDechet],
+                dateEntree : results.data[i][posDateEntree].substring(0,10),
+                tonnage : Math.abs(+results.data[i][posTonnage].replace(/[^0-9,.]/g,"").replace(",",".")/divisionKgToTonnes),
+                entrant : EntreeSortie
+              };
+              this.csvArray.push(importCSV);
+            }
           }
-          await this.insertTonnageCSV();
+
+          //Fonction qui tranforme les dates string au format date afin de les comparer
+          function compareDates(a: string, b: string){
+            const dateA = new Date(a.split('/').reverse().join('/'));
+            const dateB = new Date(b.split('/').reverse().join('/'));
+            return dateA.getTime() - dateB.getTime();
+          }
+
+          //On trie le tableau des dates
+          this.dates.sort(compareDates);
+
+          //On récupère la date de début qui est donc la première date du tableau et on la met au format 'yyyy-mm-dd'
+          const [day, month, year] = this.dates[0].split('/');
+          const dateDeDebut = `${year}-${month}-${day}`;
+
+          //On récupère la date de fin qui est donc la dernière date du tableau et on la met au format 'yyyy-mm-dd'
+          const [day2, month2, year2] = this.dates[this.dates.length-1].split('/');
+          const dateDeFin = `${year2}-${month2}-${day2}`;
+
+          this.insertTonnageCSV(dateDeDebut,dateDeFin);          
           this.removeloading();
         }
       });
@@ -282,7 +315,7 @@ export class ListReactifsComponent implements OnInit {
 
   getCorrespondance(){
     this.mrService.getCorrespondancesReactifs().subscribe((response)=>{
-      console.log(response)
+      // console.log(response)
       // @ts-ignore
       this.correspondance = response.data;
     });
@@ -305,11 +338,17 @@ export class ListReactifsComponent implements OnInit {
       element.classList.remove('loaderBloc');
   }
   //Insertion du tonnage récupéré depuis le fichier csv ADEMI
-  insertTonnageCSV(){
+  insertTonnageCSV(dateDeDebut: string,dateDeFin : string){
+    let successInsert = true;
     this.stockageImport.clear();
     var count = 0 ;
     let dechetsManquants: string[]  = [];
-
+    //On supprime les valeurs entre les deux dates, pour tout les déchets présents dans le csv
+    this.correspondance.forEach(correspondance => {
+      this.moralEntitiesService.deleteMesuresReactifsEntreDeuxDates(dateDeDebut,dateDeFin, correspondance.productImport).subscribe((response)=>{
+      })
+    });
+    
     this.csvArray.forEach(csv => {
       var dechetManquant = csv.typeDechet;
       count = 0;
@@ -339,41 +378,44 @@ export class ListReactifsComponent implements OnInit {
               this.stockageImport.set(keyHash,parseFloat(csv.tonnage.toFixed(3)));
             }
           }
-        });
-        if(count == 0 && (csv.entrant == "E" || csv.entrant == 1 || csv.entrant == "RECEPTION") ){
-          dechetsManquants.push(dechetManquant);
-        }
-       
+      });
 
+      //Si sur ce dechet, nous n'avons pas trouvé de correspondant, count = 0, et que ce dechet est une sortie, on la'jouter au tableau des dechet
+      if(count == 0 && (csv.entrant == "E" || csv.entrant == 1 || csv.entrant == "RECEPTION") ){
+        dechetsManquants.push(dechetManquant);
+      }
     });
+    console.log(this.stockageImport)
     //debug
     //console.log(this.stockageImport);
     //on parcours la hashmap pour insertion en BDD
     this.stockageImport.forEach(async (value : number, key : String) => {
 
       await this.mrService.createMeasure(key.split('_')[0],value,parseInt(key.split('_')[1]),0).subscribe((response) =>{
-        if (response == "Création du Measures OK"){
-          var afficher = "";
-
-          for(let i = 0; i< dechetsManquants.length; i++){
-            afficher += "Le déchet : <strong>'" + dechetsManquants[i] + "'</strong> n'a pas de correspondance dans CAP Exploitation <br>";
-          }
-          afficher += "<strong>Pensez à faire la correspondance dans l'administration !</strong>";
-          Swal.fire({
-            html : afficher,
-            width : '80%',
-            title :"Les valeurs ont été insérées avec succès !"
-          });
-        }
-        else {
-          Swal.fire({
-            icon: 'error',
-            text: 'Erreur lors de l\'insertion des valeurs ....',
-          })
+        if (response != "Création du Measures OK"){
+          successInsert = false
         }
       })
     });
+    if(successInsert == true){
+      var afficher = "";
 
+      for(let i = 0; i< dechetsManquants.length; i++){
+        afficher += "Le déchet : <strong>'" + dechetsManquants[i] + "'</strong> n'a pas de correspondance dans CAP Exploitation <br>";
+      }
+      afficher += "<strong>Pensez à faire la correspondance dans l'administration !</strong>";
+      Swal.fire({
+        html : afficher,
+        width : '80%',
+        title :"Les valeurs ont été insérées avec succès !"
+      });
+    }
+    else {
+      Swal.fire({
+        icon: 'error',
+        text: 'Erreur lors de l\'insertion des valeurs ....',
+      })
+    }
     if(this.stockageImport.size == 0 ){
       Swal.fire({
         icon: 'error',
