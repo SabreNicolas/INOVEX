@@ -231,6 +231,10 @@ export class ListSortantsComponent implements OnInit {
       if(this.idUsine === 16){
         this.lectureCSV(event, ";", false, 17, 14, 7);
       }
+      //Mourenx
+      else if(this.idUsine === 18){
+        this.lectureCSV(event, ";", false, 13, 1, 7);
+      } 
       else this.lectureCSV(event, ";", false, 6, 1, 11, 12);
     }
     //Pluzunet

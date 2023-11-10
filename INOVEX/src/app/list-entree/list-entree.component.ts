@@ -414,7 +414,7 @@ export class ListEntreeComponent implements OnInit {
       //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
       this.lectureCSV(event, ";", true, 8, 6, 0, 5);
     }
-    //Plouharnel / GIEN
+    //Plouharnel / GIEN / Douchy/ Mourenx
     else if (this.typeImportTonnage.toLowerCase().includes("arpege masterk")){
       //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
       //Gien
@@ -424,7 +424,12 @@ export class ListEntreeComponent implements OnInit {
       //Douchy
       else if(this.idUsine === 10){
         this.lectureCSV(event, ";", false, 28, 27, 16, 7, 12);
-      }  
+      }
+      //Mourenx
+      else if(this.idUsine === 18){
+        this.lectureCSV(event, ";", false, 11, 13, 1,7 );
+      }   
+      //Plouharnel 
       else this.lectureCSV(event, ";", false, 8, 6, 1, 11, 12);
     }
     //Pluzunet
