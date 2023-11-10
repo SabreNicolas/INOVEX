@@ -236,7 +236,7 @@ export class ListSortantsComponent implements OnInit {
     //Pluzunet
     else if (this.typeImportTonnage.toLowerCase().includes("caktus")){
       //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
-      this.lectureCSV(event, ";", true, 28, 7, 35, 6);
+      this.lectureCSV(event, ",", true, 22, 14, 10, 33);
     }
     //Sète
     else if (this.typeImportTonnage.toLowerCase().includes("hodja")){
@@ -292,36 +292,42 @@ export class ListSortantsComponent implements OnInit {
               EntreeSortie = results.data[i][posEntreeSortie]
             }
             
-            this.dates.push(results.data[i][posDateEntree].substring(0,10));
-
-            let importCSV = {
-              client : "Aucun",
-              typeDechet: results.data[i][posTypeDechet],
-              dateEntree : results.data[i][posDateEntree].substring(0,10),
-              tonnage : Math.abs(+results.data[i][posTonnage].replace(/[^0-9,.]/g,"").replace(",",".")/divisionKgToTonnes),
-              entrant : EntreeSortie
-            };
-            this.csvArray.push(importCSV);
+            //Permet d'éviter l'erreur en cas de lignes vides
+            if(results.data[i][posDateEntree] != undefined){
+              if(results.data[i][posDateEntree] != ""){
+                //On ajoute toutes les dates dans le tableau dates
+                this.dates.push(results.data[i][posDateEntree].substring(0,10));
+              }
+              let importCSV = {
+                client : "Aucun",
+                typeDechet: results.data[i][posTypeDechet],
+                dateEntree : results.data[i][posDateEntree].substring(0,10),
+                tonnage : Math.abs(+results.data[i][posTonnage].replace(/[^0-9,.]/g,"").replace(",",".")/divisionKgToTonnes),
+                entrant : EntreeSortie
+              };
+              this.csvArray.push(importCSV);
+            }
           }
 
+          //Fonction qui tranforme les dates string au format date afin de les comparer
           function compareDates(a: string, b: string){
             const dateA = new Date(a.split('/').reverse().join('/'));
             const dateB = new Date(b.split('/').reverse().join('/'));
             return dateA.getTime() - dateB.getTime();
           }
 
+          //On trie le tableau des dates
           this.dates.sort(compareDates);
 
+          //On récupère la date de début qui est donc la première date du tableau et on la met au format 'yyyy-mm-dd'
           const [day, month, year] = this.dates[0].split('/');
-          const dateDeb = `${year}-${month}-${day}`;
+          const dateDeDebut = `${year}-${month}-${day}`;
 
+          //On récupère la date de fin qui est donc la dernière date du tableau et on la met au format 'yyyy-mm-dd'
           const [day2, month2, year2] = this.dates[this.dates.length-1].split('/');
-          const dateFin = `${year2}-${month2}-${day2}`;
+          const dateDeFin = `${year2}-${month2}-${day2}`;
 
-
-          this.moralEntitiesService.deleteMesuresSortantsEntreDeuxDates(dateDeb,dateFin).subscribe((response)=>{
-            this.insertTonnageCSV();
-          })          
+          this.insertTonnageCSV(dateDeDebut,dateDeFin);          
           this.removeloading();
         }
       });
@@ -353,22 +359,27 @@ export class ListSortantsComponent implements OnInit {
       element.classList.remove('loaderBloc');
   }
   //Insertion du tonnage récupéré depuis le fichier csv ADEMI
-  insertTonnageCSV(){
+  insertTonnageCSV(dateDeDebut : string, dateDeFin : string){
+    let successInsert = true;
     this.debCode = '20';
     this.stockageImport.clear();
     var count = 0 ;
     let dechetsManquants: string[]  = [];
-
+    //On supprime les valeurs entre les deux dates, pour tout les déchets présents dans le csv
+    this.correspondance.forEach(correspondance => {
+      this.moralEntitiesService.deleteMesuresSortantsEntreDeuxDates(dateDeDebut,dateDeFin, correspondance.productImport).subscribe((response)=>{
+      });    
+    })
     this.csvArray.forEach(csv => {
       var dechetManquant = csv.typeDechet;
       count = 0;
 
       this.correspondance.forEach(correspondance => {
-
+        
           csv.typeDechet = csv.typeDechet.toLowerCase().replace(/\s/g,"");
           correspondance.productImport = correspondance.productImport.toLowerCase().replace(/\s/g,"");  
           
-          if(csv.entrant == "S" || csv.entrant == 2 || csv.entrant == "EXPEDITION"){
+          if(csv.entrant == "S" || csv.entrant == 2 || csv.entrant == "EXPEDITION" || csv.entrant == "SORTIE"){
             //Si il y a correspondance on fait traitement
             if( correspondance.productImport == csv.typeDechet ){
               let formatDate = csv.dateEntree.split('/')[2]+'-'+csv.dateEntree.split('/')[1]+'-'+csv.dateEntree.split('/')[0];
@@ -388,12 +399,11 @@ export class ListSortantsComponent implements OnInit {
               this.stockageImport.set(keyHash,parseFloat(csv.tonnage.toFixed(3)));
             }
           }
-        });
-        if(count == 0 && (csv.entrant == "S" || csv.entrant == 2 || csv.entrant == "EXPEDITION") ){
-          dechetsManquants.push(dechetManquant);
-        }
-       
-
+      })
+              //Si sur ce dechet, nous n'avons pas trouvé de correspondant, count = 0, et que ce dechet est une sortie, on la'jouter au tableau des dechet
+      if(count == 0 && (csv.entrant == "S" || csv.entrant == 2 || csv.entrant == "EXPEDITION" || csv.entrant == "SORTIE") ){
+            dechetsManquants.push(dechetManquant);
+      }
     });
     //debug
     //console.log(this.stockageImport);
@@ -401,27 +411,30 @@ export class ListSortantsComponent implements OnInit {
     this.stockageImport.forEach(async (value : number, key : String) => {
 
       await this.mrService.createMeasure(key.split('_')[0],value,parseInt(key.split('_')[1]),0).subscribe((response) =>{
-        if (response == "Création du Measures OK"){
-          var afficher = "";
-
-          for(let i = 0; i< dechetsManquants.length; i++){
-            afficher += "Le déchet : <strong>'" + dechetsManquants[i] + "'</strong> n'a pas de correspondance dans CAP Exploitation <br>";
-          }
-          afficher += "<strong>Pensez à faire la correspondance dans l'administration !</strong>";
-          Swal.fire({
-            html : afficher,
-            width : '80%',
-            title :"Les valeurs ont été insérées avec succès !"
-          });
-        }
-        else {
-          Swal.fire({
-            icon: 'error',
-            text: 'Erreur lors de l\'insertion des valeurs ....',
-          })
+        if (response != "Création du Measures OK"){
+          successInsert = false
         }
       })
     });
+
+    if(successInsert == true){
+      var afficher = "";
+      for(let i = 0; i< dechetsManquants.length; i++){
+        afficher += "Le déchet : <strong>'" + dechetsManquants[i] + "'</strong> n'a pas de correspondance dans CAP Exploitation <br>";
+      }
+      afficher += "<strong>Pensez à faire la correspondance dans l'administration !</strong>";
+      Swal.fire({
+        html : afficher,
+        width : '80%',
+        title :"Les valeurs ont été insérées avec succès !"
+      });
+    }
+    else {
+      Swal.fire({
+        icon: 'error',
+        text: 'Erreur lors de l\'insertion des valeurs ....',
+      })
+    }
 
     if(this.stockageImport.size == 0 ){
       Swal.fire({
@@ -440,6 +453,7 @@ export class ListSortantsComponent implements OnInit {
 
   //Import tonnage via HODJA
   recupHodja(form : NgForm){
+    let successInsert = true;
     this.stockageHodja.clear();
     let dateDebFormat = new Date(), dateFinFormat = new Date();
     let listDate = [];
@@ -499,26 +513,30 @@ export class ListSortantsComponent implements OnInit {
         //On parcours la HashMap pour insérer en BDD
         this.stockageHodja.forEach(async (value : number, key : String) =>{
           await this.mrService.createMeasure(key.split('_')[0],value,parseInt(key.split('_')[1]),0).subscribe((response) =>{
-            if (response == "Création du Measures OK"){
-              var afficher = "";
-
-              for(let i = 0; i< dechetsManquants.length; i++){
-                afficher += "Le déchet : <strong>'" + dechetsManquants[i] + "'</strong> n'a pas de correspondance dans CAP Exploitation <br>";
-              }
-              afficher += "<strong>Pensez à faire la correspondance dans l'administration !</strong>";
-              Swal.fire({
-                html : afficher,
-                width : '80%',
-                title :"Les valeurs ont été insérées avec succès !"
-              });            }
-            else {
-              Swal.fire({
-                icon: 'error',
-                text: 'Erreur lors de l\'insertion des valeurs ....',
-              })
+            if (response != "Création du Measures OK"){
+              successInsert = false;
             }
           });
         })
+
+        if(successInsert == true){
+          var afficher = "";
+
+          for(let i = 0; i< dechetsManquants.length; i++){
+            afficher += "Le déchet : <strong>'" + dechetsManquants[i] + "'</strong> n'a pas de correspondance dans CAP Exploitation <br>";
+          }
+          afficher += "<strong>Pensez à faire la correspondance dans l'administration !</strong>";
+          Swal.fire({
+            html : afficher,
+            width : '80%',
+            title :"Les valeurs ont été insérées avec succès !"
+          });            }
+          else {
+            Swal.fire({
+            icon: 'error',
+            text: 'Erreur lors de l\'insertion des valeurs ....',
+            })
+          }
         await this.wait(350);
       });
     })

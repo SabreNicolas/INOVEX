@@ -421,14 +421,18 @@ export class ListEntreeComponent implements OnInit {
       if(this.idUsine === 16){
         this.lectureCSV(event, ";", false, 18, 17, 14, 7);
       }
+      //Douchy
+      else if(this.idUsine === 10){
+        this.lectureCSV(event, ";", false, 28, 27, 16, 7, 12);
+      }  
       else this.lectureCSV(event, ";", false, 8, 6, 1, 11, 12);
     }
     //Pluzunet
     else if (this.typeImportTonnage.toLowerCase().includes("caktus")){
       //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
-      this.lectureCSV(event, ";", true, 59, 28, 7, 35, 6);
+      this.lectureCSV(event, ",", true, 24, 22, 14, 10, 33);
     }
-    //Sète
+    //Sète , Cergy
     else if (this.typeImportTonnage.toLowerCase().includes("hodja")){
       //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
       this.lectureCSV(event, ";", true, 9, 12, 0, 14);
@@ -485,39 +489,49 @@ export class ListEntreeComponent implements OnInit {
             else{
               EntreeSortie = results.data[i][posEntreeSortie]
             }
+
+            //Si la position du dechet est 9999 (valeur impossible dans un csv, alors c'est du dasri)
             var typeDechet
             if(posTypeDechet == 9999){
                typeDechet= "DASRI"
             }
             else typeDechet = results.data[i][posTypeDechet]
-            
-            this.dates.push(results.data[i][posDateEntree].substring(0,10));
-            
-            //Création de l'objet qui contient l'ensemble des infos nécessaires
-            let importCSV = {
-              client: results.data[i][posClient],
-              typeDechet: typeDechet,
-              dateEntree : results.data[i][posDateEntree].substring(0,10),
-              tonnage : +results.data[i][posTonnage].replace(/[^0-9,.]/g,"").replace(",",".")/divisionKgToTonnes,
-              entrant : EntreeSortie
-            };
-            this.csvArray.push(importCSV);
+            //Permet d'éviter l'erreur en cas de lignes vides
+            if(results.data[i][posDateEntree] != undefined){
+              if(results.data[i][posDateEntree] != ""){
+                //On ajoute toutes les dates dans le tableau dates
+                this.dates.push(results.data[i][posDateEntree].substring(0,10));
+              }              
+              //Création de l'objet qui contient l'ensemble des infos nécessaires
+              let importCSV = {
+                client: results.data[i][posClient],
+                typeDechet: typeDechet,
+                dateEntree : results.data[i][posDateEntree].substring(0,10),
+                tonnage : +results.data[i][posTonnage].replace(/[^0-9,.]/g,"").replace(",",".")/divisionKgToTonnes,
+                entrant : EntreeSortie
+              };
+              this.csvArray.push(importCSV);
+            }
           }
-          
+          //Fonction qui tranforme les dates string au format date afin de les comparer
           function compareDates(a: string, b: string){
             const dateA = new Date(a.split('/').reverse().join('/'));
             const dateB = new Date(b.split('/').reverse().join('/'));
             return dateA.getTime() - dateB.getTime();
           }
 
+          //On trie le tableau des dates
           this.dates.sort(compareDates);
 
+          //On récupère la date de début qui est donc la première date du tableau et on la met au format 'yyyy-mm-dd'
           const [day, month, year] = this.dates[0].split('/');
           const dateDeb = `${year}-${month}-${day}`;
 
+          //On récupère la date de fin qui est donc la dernière date du tableau et on la met au format 'yyyy-mm-dd'
           const [day2, month2, year2] = this.dates[this.dates.length-1].split('/');
           const dateFin = `${year2}-${month2}-${day2}`;
 
+          //On supprime toutes les mesures sur les entrants entre les deux dates avant de faire la nouvelle insertion
           this.moralEntitiesService.deleteMesuresEntrantsEntreDeuxDates(dateDeb,dateFin).subscribe((response)=>{
             this.insertTonnageCSV();
           })
@@ -549,14 +563,14 @@ export class ListEntreeComponent implements OnInit {
           correspondance.nomImport = correspondance.nomImport.toLowerCase().replace(/\s/g,"");
           correspondance.productImport = correspondance.productImport.toLowerCase().replace(/\s/g,"");
 
-          if(csv.entrant == "E" || csv.entrant == 1 || csv.entrant == "RECEPTION"){
+          if(csv.entrant == "E" || csv.entrant == 1 || csv.entrant == "RECEPTION" || csv.entrant == "ENTREE"){
             //Si il y a correspondance on fait traitement
             if( correspondance.nomImport == csv.client && correspondance.productImport == csv.typeDechet  /*|| (mr.produit == "dib/dea" && mr.produit.includes(csv.typeDechet)))*/ ){  
               let formatDate = csv.dateEntree.split('/')[2]+'-'+csv.dateEntree.split('/')[1]+'-'+csv.dateEntree.split('/')[0];
               let keyHash = formatDate+'_'+correspondance.ProductId+'_'+correspondance.ProducerId;
-              //si il y a deja une valeur dans la hashMap pour ce client et ce jour, on incrémente la valeur
               let value, valueRound;
               count = count + 1;;
+              //si il y a deja une valeur dans la hashMap pour ce client et ce jour, on incrémente la valeur
               if(this.stockageImport.has(keyHash)){
                 //@ts-ignore
                 value = this.stockageImport.get(keyHash)+csv.tonnage;
@@ -570,7 +584,8 @@ export class ListEntreeComponent implements OnInit {
             }
           }
         });
-        if(count == 0 && (csv.entrant == "E" || csv.entrant == 1 || csv.entrant == "RECEPTION")){
+        //Si sur ce dechet, nous n'avons pas trouvé de correspondant, count = 0, et que ce dechet est une entree, on la'jouter au tableau des dechet et clients manquants
+        if(count == 0 && (csv.entrant == "E" || csv.entrant == 1 || csv.entrant == "RECEPTION" || csv.entrant == "ENTREE")){
           dechetsManquants.push(dechetManquant);
           clientManquants.push(clientManquant);
         }
@@ -586,6 +601,7 @@ export class ListEntreeComponent implements OnInit {
       })
     });
 
+    //Si l'inserstion s'est bien passée, on affiche la liste des correspondances manquantes
     if (successInsert){
       var afficher = "";
 
@@ -617,6 +633,7 @@ export class ListEntreeComponent implements OnInit {
 
   //Import tonnage via HODJA
   recupHodja(form : NgForm){
+    let successInsert = true;
     this.stockageHodja.clear();
     let dateDebFormat = new Date(), dateFinFormat = new Date();
     let listDate = [];
@@ -679,8 +696,14 @@ export class ListEntreeComponent implements OnInit {
         //On parcours la HashMap pour insérer en BDD
         this.stockageHodja.forEach(async (value : number, key : String) =>{
           await this.moralEntitiesService.createMeasure(key.split('_')[0],value,parseInt(key.split('_')[1]),parseInt(key.split('_')[2])).subscribe((response) =>{
-            if (response == "Création du Measures OK"){
-              var afficher = "";
+            if (response != "Création du Measures OK"){
+              successInsert = false
+            }
+          });
+        })
+
+        if(successInsert == true){
+          var afficher = "";
 
               for(let i = 0; i< clientManquants.length; i++){
                 afficher += "Le client <strong>'" + clientManquants[i] + "'</strong> avec le déchet : <strong>'" + dechetsManquants[i] + "'</strong> n'a pas de correspondance dans CAP Exploitation <br>";
@@ -697,9 +720,7 @@ export class ListEntreeComponent implements OnInit {
                 icon: 'error',
                 text: 'Erreur lors de l\'insertion des valeurs ....',
               })
-            }
-          });
-        })
+        }
         await this.wait(350);
       });
     })
