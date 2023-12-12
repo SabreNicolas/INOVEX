@@ -10,6 +10,7 @@ import {permisFeuValidation} from "../../models/permisfeu-validation.model";
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 import {user} from "../../models/user.model";
 import { element } from 'src/models/element.model';
+import { groupement } from 'src/models/groupement.model';
 
 @Component({
   selector: 'app-reporting-ronde',
@@ -36,6 +37,7 @@ export class ReportingRondeComponent implements OnInit {
   public dateRechercher: string;
   public quart: number;
   public listElementsOfUsine : element[];
+  public listGroupements : groupement[];
 
   constructor(private rondierService : rondierService, private elementRef : ElementRef) {
     this.listRonde = [];
@@ -57,6 +59,7 @@ export class ReportingRondeComponent implements OnInit {
     this.listElementsOfZoneControl = [];
     this.listPermisFeuValidation = [];
     this.listElementsOfUsine = [];
+    this.listGroupements = [];
     //contient des chiffres pour l'itération des fours
     this.numbers = [];
     this.nbfour = 0;
@@ -115,6 +118,8 @@ export class ReportingRondeComponent implements OnInit {
   }
 
   afficherRonde() {
+    //on vide le tableau des groupements
+    this.listGroupements = [];
     // retourne une ronde à une date
     if (this.dateDeb != undefined) {
       //Recupère les rondes d'une dates et d'un quart
@@ -124,11 +129,22 @@ export class ReportingRondeComponent implements OnInit {
         this.listRonde = response.data;
         this.listRonde.forEach(async ronde => {
           await this.await(500);
+
           //Récupération des zones et de leurs éléments qui ont des valeurs sur la ronde
           this.rondierService.listZonesAndElementsWithValues(ronde.Id).subscribe(async (response) => {
             // @ts-ignore
             this.listElementsOfZone = response.BadgeAndElementsOfZone;
-            console.log(this.listElementsOfZone)
+
+            //ON récupère les groupements de la zone
+            // @ts-ignore
+            this.listElementsOfZone.forEach(zonesInfos => {
+                this.rondierService.getGroupements(zonesInfos.zoneId).subscribe(async (groupements) => {
+                  //@ts-ignore
+                  this.listGroupements = [...this.listGroupements, ...groupements.data];
+                }); 
+            });
+            //***FIN RECUP GROUPEMENT */
+
             //Récupération des éléments et leurs valeurs sur la ronde
             this.rondierService.reportingRonde(ronde.Id).subscribe(async (response) => {
               // @ts-ignore
@@ -149,7 +165,7 @@ export class ReportingRondeComponent implements OnInit {
                   let champValueContenu, champValueError;
                   //On affiche la valeur uniquement si elle a été saisie
                   if (reporting.value != "/") {
-                    champValueContenu = "" + reporting.value + " " + reporting.unit + " ";
+                    champValueContenu = "" + reporting.value + " <span style='color:blue; font-style:italic'>" + reporting.unit + "</span> ";
 
                     //Si le champValueContenu est vide on masque sur le reporting
                     let nomGroupement = document.getElementById(reporting.nom);
@@ -380,7 +396,7 @@ export class ReportingRondeComponent implements OnInit {
     //@ts-ignore
     var nameElt = document.getElementById("name").value;
     if(nameElt != ''){
-      this.filtreZone= nameElt.toLowerCase()
+      this.filtreZone= nameElt.toLowerCase();
       //@ts-ignore
       document.getElementById("type").value ="";
     }
@@ -391,7 +407,6 @@ export class ReportingRondeComponent implements OnInit {
     }
     // this.affichageQuart(this.quart);
     // this.ngOnInit();
-    //bug quand on passe d'un filtre à l'autre car on a plus les données.
   }
 
   async resetFiltre(){

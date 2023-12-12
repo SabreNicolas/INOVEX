@@ -71,6 +71,9 @@ import { CorrespondanceSortantsComponent } from './correspondance-sortants/corre
 import { idUsineService } from './services/idUsine.service';
 import { ListReactifsComponent } from './list-reactifs/list-reactifs.component';
 import { CorrespondanceReactifsComponent } from './correspondance-reactifs/correspondance-reactifs.component';
+import { FormulaireComponent } from './formulaire/formulaire.component';
+import { ListFormulairesComponent } from './list-formulaires/list-formulaires.component';
+import { formulaireService } from './services/formulaire.service';
 
 @NgModule({
   declarations: [
@@ -127,6 +130,8 @@ import { CorrespondanceReactifsComponent } from './correspondance-reactifs/corre
     CorrespondanceSortantsComponent,
     ListReactifsComponent,
     CorrespondanceReactifsComponent,
+    FormulaireComponent,
+    ListFormulairesComponent,
   ],
   imports: [
     BrowserModule,
@@ -148,7 +153,8 @@ import { CorrespondanceReactifsComponent } from './correspondance-reactifs/corre
     dateService,
     tokenApiService,
     cahierQuartService,
-    idUsineService
+    idUsineService,
+    formulaireService
   ],
   bootstrap: [AppComponent]
 })

@@ -26,7 +26,7 @@ export class moralEntitiesService {
         'Access-Control-Allow-Origin' : '*',
         'Authorization': 'Bearer ' + localStorage.getItem('token')
     }
-    private portAPI = 3100;
+    private portAPI = 3102;
     private portAPIHodja = 3101;
     private ip = "fr-couvinove301.prod.paprec.fr";
     //private ip = "localhost";
