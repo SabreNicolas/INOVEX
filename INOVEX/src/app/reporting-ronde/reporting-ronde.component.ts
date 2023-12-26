@@ -11,6 +11,7 @@ import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 import {user} from "../../models/user.model";
 import { element } from 'src/models/element.model';
 import { groupement } from 'src/models/groupement.model';
+declare var $ : any;
 
 @Component({
   selector: 'app-reporting-ronde',
@@ -134,7 +135,7 @@ export class ReportingRondeComponent implements OnInit {
           this.rondierService.listZonesAndElementsWithValues(ronde.Id).subscribe(async (response) => {
             // @ts-ignore
             this.listElementsOfZone = response.BadgeAndElementsOfZone;
-
+            console.log(this.listElementsOfZone)
             //ON récupère les groupements de la zone
             // @ts-ignore
             this.listElementsOfZone.forEach(zonesInfos => {
@@ -143,6 +144,10 @@ export class ReportingRondeComponent implements OnInit {
                   this.listGroupements = [...this.listGroupements, ...groupements.data];
                 }); 
             });
+            //Suppression du dernier groupement car toujours un doublon sur le dernier groupement
+            await this.await(2000);
+            this.listGroupements.pop();
+
             //***FIN RECUP GROUPEMENT */
 
             //Récupération des éléments et leurs valeurs sur la ronde
@@ -446,5 +451,22 @@ export class ReportingRondeComponent implements OnInit {
       
     }
   }
+  
+  afficherGroupement(groupement : number){
+    $('.'+String(groupement) + "-elements").toggle(1000);
+    $('.'+groupement + "-btnMoins").toggle();
+    $('.'+groupement + "-btnPlus").toggle();
+  }
+
+  afficherZone(zone : number){
+    
+    $('.'+String(zone) + "-Zone").toggle(1000);
+    $('.'+String(zone) + "-ZoneElements").hide(1000);
+    $('.'+String(zone) + "-ZonebtnPlus").show(1000);
+    $('.'+String(zone) + "-ZonebtnMoins").hide(1000);
+    $('.'+zone + "-btnMoins").toggle();
+    $('.'+zone + "-btnPlus").toggle();
+  }
+
 
 }

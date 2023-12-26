@@ -44,6 +44,7 @@
             <!--<th scope="col">#</th>-->
             <th scope="col">Nom</th>
             <th scope="col">Unité</th>
+            <th scope="col">Coefficient</th>
             <th scope="col">TAG eMonitoring</th>
             <th scope="col">Element contrôle rondier</th>
             <th scope="col">Code GMAO</th>
@@ -62,6 +63,12 @@
             </td>-->
             <td>{{pr.Name}}</td>
             <td>{{pr.Unit}}
+            </td>
+            <td>
+                {{pr.Coefficient}}
+                <button id="updateCoeff" (click)="updateCoeff(pr)" class="btn btn-light">
+                    <i class="far fa-edit"></i>
+                </button>
             </td>
             <td>
                 <strong>{{pr.TAG}}</strong> 

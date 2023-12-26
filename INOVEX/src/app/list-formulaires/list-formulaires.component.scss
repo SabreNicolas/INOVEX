@@ -1,0 +1,18 @@
+.container{
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    z-index: 10;
+    position: relative;
+}
+.card {
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+    transition: transform 0.3s;
+    cursor: pointer;
+}
+.card-title{
+    text-shadow: none;
+    color: black;
+}

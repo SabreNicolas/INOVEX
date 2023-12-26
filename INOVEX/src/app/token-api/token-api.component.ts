@@ -3,7 +3,6 @@ import { tokenApiService } from '../services/tokenApi.service';
 import {Router} from "@angular/router";
 import Swal from 'sweetalert2';
 import {token} from "../../models/tokens.model";
-
 @Component({
   selector: 'app-token-api',
   templateUrl: './token-api.component.html',

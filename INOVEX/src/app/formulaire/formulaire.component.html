@@ -1,1 +1,77 @@
-<p>formulaire works!</p>
+<h3 class="creation">Création d'un Formulaire : <button class="btn btn-success" style="margin-right: 5px;" (click)="createFormulaire()">Créer le formulaire</button>    </h3>
+
+
+<div class="row">
+    <div class="col-sm-5 col-sm-offset-1">
+        <form ngNativeValidate>
+            <div class="form-group">
+                <label for="nom">Nom du formulaire: * </label>
+                <input required type="text" id="nom" class="form-control" placeholder="Nom" name="nom" ngModel [(ngModel)]="nom">
+            </div>
+        </form>
+    </div>
+
+    <div class="table-style">
+        <!--table des client-->
+        <table class="table table-hover tableFixed">
+          <thead>
+            <tr class="table-secondary">
+                <th>ALIAS</th>
+                <th scope="col">Produit</th>
+                <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+                <td>
+                    <div class="form-group">
+                        <div class="form-group">
+                            <input type="text" id="alias" class="form-control" placeholder="Alias" name="alias" ngModel [(ngModel)]="alias">
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <input id="product" required class="form-control" list="datalistOptions" ngModel [(ngModel)]="productAjout" placeholder="Choisissez un produit CAP Exploitation" >
+                        <datalist id="datalistOptions">
+                            <option value="Choisissez un produit CAP Exploitation"></option>
+                            <option *ngFor="let product of listProducts" value="{{product.Name}}"></option>
+                        </datalist>
+                    </div>
+                </td>
+                <td>
+                    <button class="btn btn-success" style="margin-right: 5px;" (click)="ajoutProduct()">Valider</button>
+                </td>
+            </tr>
+          </tbody>
+        </table>
+    </div>
+
+    <div class="table-style">
+        <!--table des client-->
+        <table class="table table-ligth table-hover tableFixed">
+          <thead>
+            <tr class="table-secondary">
+                <th>ALIAS</th>
+                <th scope="col">Produit</th>
+                <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="table-light" *ngFor="let product of listAjout">
+                <td>
+                    {{product.alias}}  
+                </td>
+                <td>
+                    {{product.Name}}
+                </td>
+                <td>
+                    <button type="button" class="btn btn-danger" (click)="suppProduct(product.id,product.Name,product.alias)">
+                        <i class="fas fa-times"></i> 
+                    </button> 
+                </td>
+            </tr>
+          </tbody>
+        </table>
+    </div>
+</div>

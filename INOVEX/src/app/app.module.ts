@@ -74,6 +74,7 @@ import { CorrespondanceReactifsComponent } from './correspondance-reactifs/corre
 import { FormulaireComponent } from './formulaire/formulaire.component';
 import { ListFormulairesComponent } from './list-formulaires/list-formulaires.component';
 import { formulaireService } from './services/formulaire.service';
+import { SaisieFormulaireComponent } from './saisie-formulaire/saisie-formulaire.component';
 
 @NgModule({
   declarations: [
@@ -132,6 +133,7 @@ import { formulaireService } from './services/formulaire.service';
     CorrespondanceReactifsComponent,
     FormulaireComponent,
     ListFormulairesComponent,
+    SaisieFormulaireComponent,
   ],
   imports: [
     BrowserModule,

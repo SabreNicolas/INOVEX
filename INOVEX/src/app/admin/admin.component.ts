@@ -242,4 +242,24 @@ export class AdminComponent implements OnInit {
       }
     });
   }
+
+  //Mettre à jour le coefficient d'un produit
+  updateCoeff(pr: product){
+    var saisie = prompt('Veuillez saisir un coefficient pour ce produit',String(pr.Coefficient));
+    console.log(saisie);
+    if(saisie == null) return;
+    this.productsService.updateCoeff(saisie,pr.Id).subscribe((response)=>{
+      if (response == "Mise à jour du Coeff OK"){
+        Swal.fire("Le coefficient a bien été affecté !");
+        this.ngOnInit();
+      }
+      else {
+        Swal.fire({
+          icon: 'error',
+          text: "Erreur lors de l'affectation ....",
+        })
+      }
+    });
+
+  }
 }

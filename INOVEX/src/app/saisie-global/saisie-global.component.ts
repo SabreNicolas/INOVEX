@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Router} from "@angular/router";
 import { maintenance } from 'src/models/maintenance.model';
 import {user} from "../../models/user.model";
-
+declare var $ : any;
 @Component({
   selector: 'app-saisie-global',
   templateUrl: './saisie-global.component.html',
@@ -40,5 +40,12 @@ export class SaisieGlobalComponent implements OnInit {
         this.isSuperAdmin = true;
       }
     }
+  }
+
+  toogle(event : any){
+    console.log($("#"+event))
+    
+    $("#"+event).css('text-decoration','underline')
+    $("#"+event).css('color','BLUE')
   }
 }

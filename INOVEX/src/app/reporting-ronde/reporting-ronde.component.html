@@ -124,7 +124,7 @@
                     </button>-->
                 </td>
             </tr>
-            <tr class="table-info">
+            <tr class="table-info" *ngIf="idUsine != 7">
                 <td>Auteur de la ronde</td>
                 <td *ngFor="let ronde of listRonde" style="text-align: center">
                     <p aria-hidden="true">{{ronde.Nom}} {{ronde.Prenom}}</p>
@@ -169,20 +169,52 @@
                         <button class="btn btn-outline-secondary" (click)="editAnomalie(ronde.Id,elementsOfOneZone.zoneId)">
                             <i style="color:black;" class="far fa-edit" aria-hidden="true"></i>
                         </button>
+                        <ng-container *ngIf="idUsine == 7">
+                            <button class="btn btn-outline-secondary {{elementsOfOneZone.zoneId}}-btnPlus" (click)="afficherZone(elementsOfOneZone.zoneId);" >
+                                <i style="color:green;" class="fas fa-plus" aria-hidden="true"></i>
+                            </button>
+                            <button class="btn btn-outline-secondary hide {{elementsOfOneZone.zoneId}}-btnMoins" (click)="afficherZone(elementsOfOneZone.zoneId);" >
+                                <i style="color:red;" class="fas fa-minus" aria-hidden="true"></i>
+                            </button>
+                    </ng-container>
                     </td>
-                </tr>
+                </tr> 
+                <!-- Affichage des elements si on a pas de groupement -->
+                <ng-container *ngIf="listGroupements.length == 0">
+                    <!--affichage des elements si le groupement correspond-->
+                    <tr class="table-warning" *ngFor="let element of elementsOfOneZone.elements" >
+                        <ng-container *ngIf="(elementsOfOneZone.zone.toLowerCase().includes(this.filtreZone) || this.filtreZone == '')">
+                            <td id="{{element.nom}}">{{element.nom}}</td>
+                            <td *ngFor="let ronde of listRonde" style="text-align: center">
+                                    <div style="display: flex; flex-direction: column;" *ngIf="ronde.quart">
+                                        <p id="{{ronde.Id}}-{{element.Id}}"></p>
+                                        <p id="{{ronde.Id}}-{{element.Id}}-Error" style="display: none;"></p>
+                                        <p id="{{ronde.Id}}-{{element.Id}}-Regulateur" style="color: #22498c; display: none"></p>
+                                    </div>
+                                <!--</div>-->
+                            </td>
+                        </ng-container>
+                    </tr>
+                </ng-container>
                 <!--affichage du nom des groupements-->
                 <ng-container *ngFor="let groupement of listGroupements">
-                    <tr class="table-light Groupement-{{groupement.zoneId}}" *ngIf="listGroupements.length > 0 && elementsOfOneZone.zoneId == groupement.zoneId && (elementsOfOneZone.zone.toLowerCase().includes(this.filtreZone) || this.filtreZone == '')">
+                    <tr class="table-light Groupement-{{groupement.zoneId}} hide {{elementsOfOneZone.zoneId}}-Zone" *ngIf="elementsOfOneZone.zoneId == groupement.zoneId && (elementsOfOneZone.zone.toLowerCase().includes(this.filtreZone) || this.filtreZone == '')">
                         <td style="text-align: left; color: darkorange;">
                             <strong id="{{groupement.id}}">{{groupement.groupement}}</strong>
                         </td>
-                        <td></td>
+                        <td style="text-align: center">
+                            <button class="btn btn-outline-secondary {{groupement.id}}-btnPlus {{elementsOfOneZone.zoneId}}-ZonebtnPlus" (click)="afficherGroupement(groupement.id);" >
+                                <i style="color:green;" class="fas fa-plus" aria-hidden="true"></i>
+                            </button>
+                            <button class="btn btn-outline-secondary hide {{groupement.id}}-btnMoins {{elementsOfOneZone.zoneId}}-ZonebtnMoins" (click)="afficherGroupement(groupement.id);" >
+                                <i style="color:red;" class="fas fa-minus" aria-hidden="true"></i>
+                            </button>
+                        </td>
                     </tr>
                 
                     <!--affichage des elements si le groupement correspond-->
-                    <tr class="table-warning" *ngFor="let element of elementsOfOneZone.elements" >
-                        <ng-container *ngIf="(elementsOfOneZone.zone.toLowerCase().includes(this.filtreZone) || this.filtreZone == '') && element.groupement == groupement.groupement ">
+                    <tr class="table-warning hide {{groupement.id}}-elements {{elementsOfOneZone.zoneId}}-ZoneElements" *ngFor="let element of elementsOfOneZone.elements" >
+                        <ng-container *ngIf="(elementsOfOneZone.zone.toLowerCase().includes(this.filtreZone) || this.filtreZone == '') && (element.groupement == groupement.groupement)">
                             <td id="{{element.nom}}">{{element.nom}}</td>
                             <td *ngFor="let ronde of listRonde" style="text-align: center">
                                 <!--<div style="display: flex; flex-direction: column;" *ngFor="let reporting of listReporting">
@@ -210,6 +242,7 @@
                         </ng-container>
                     </tr>
                 </ng-container>
+               
             </tbody>
         </table>
     </div>
