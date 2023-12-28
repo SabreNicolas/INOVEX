@@ -74,6 +74,9 @@ const routes: Routes = [
             { path : 'conso', canActivate: [AuthGuard], component : ListConsoComponent },
             { path : 'arrets', canActivate: [AuthGuard], component : ArretsComponent },
             { path : 'listArrets', canActivate: [AuthGuard], component : ListArretsComponent },
+            { path : 'listForm', canActivate: [AuthGuard], component: ListFormulairesComponent},
+            { path : 'saisieForm', canActivate: [AuthGuard], component: SaisieFormulaireComponent},
+
         ]
     },
 

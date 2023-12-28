@@ -45,6 +45,7 @@ export class AdminGlobalComponent implements OnInit {
       //@ts-ignore
       this.categoriesService.sites = response.data;
     });
+    
   }
 
   download(file : string){

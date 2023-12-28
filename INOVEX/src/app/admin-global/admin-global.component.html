@@ -14,8 +14,8 @@
 
         <ul class="navbar-nav mr-auto">
 
-            <li *ngIf="isSuperAdmin" class="nav-item dropdown">
-                <a routerLink="./token" class="nav-link" id="token" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)="toogle('token')">
+            <li *ngIf="isSuperAdmin" class="nav-item dropdown" (click)="toogle('token')">
+                <a routerLink="./token" class="nav-link" id="token" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
                     Token
                 </a>
             </li>

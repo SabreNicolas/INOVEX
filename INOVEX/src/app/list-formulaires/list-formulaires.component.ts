@@ -13,9 +13,10 @@ import {moralEntitiesService} from "../services/moralentities.service";
 export class ListFormulairesComponent implements OnInit {
 
   public listFormulaires : formulaire[];
-
+  public isAdmin : number;
   constructor(private productsService : productsService, private moralEntitiesService : moralEntitiesService, private route : ActivatedRoute,private dateService : dateService) {
     this.listFormulaires=[];
+    this.isAdmin=0;
   }
 
   ngOnInit(): void {
@@ -24,6 +25,14 @@ export class ListFormulairesComponent implements OnInit {
       // @ts-ignore
       this.listFormulaires = response.data;
     })
+
+    //Récupération de l'utilisateur pour vérifier si il est admin => permettre suppression ronde si admin
+    var userLogged = localStorage.getItem('user');
+    if (typeof userLogged === "string") {
+      var userLoggedParse = JSON.parse(userLogged);
+      // @ts-ignore
+      this.isAdmin = userLoggedParse['isAdmin'];
+    }
   }
   
 }

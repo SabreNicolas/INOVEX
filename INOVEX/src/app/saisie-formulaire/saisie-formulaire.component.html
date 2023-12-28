@@ -1,11 +1,11 @@
 <div id="OneFormulaire" *ngIf="idForm!=0">
 
-    <a  routerLink="/admin/newForm" [queryParams]="{idForm: idForm}" > 
+    <a *ngIf="isAdmin == 1" routerLink="/admin/newForm" [queryParams]="{idForm: idForm}" > 
         <button class="btn btn btn-light edition" > 
             Modifier le formulaire
         </button>
     </a>
-    <button class="btn btn btn-danger suppression"  (click)="deleteFormulaire()"> 
+    <button *ngIf="isAdmin == 1" class="btn btn btn-danger suppression"  (click)="deleteFormulaire()"> 
         Supprimer le formulaire
     </button>
 

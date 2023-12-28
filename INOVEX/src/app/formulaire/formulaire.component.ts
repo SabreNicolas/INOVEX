@@ -124,7 +124,7 @@ export class FormulaireComponent implements OnInit {
     else{
       //On créé le formulaire puis on ajoute ses produits
       this.productsService.createFormulaire(this.nom).subscribe((response)=>{
-        var idForm = response['data'][0]['idForm'];
+        var idForm = response['data'][0]['idFormulaire'];
         for(let pr of this.listAjout){
           this.productsService.createFormulaireAffectation(pr.alias,idForm,pr.id).subscribe((response)=>{
             if(response == "Affectation OK"){
@@ -132,6 +132,7 @@ export class FormulaireComponent implements OnInit {
               this.nom="";
               this.productAjout="";
               this.alias="";
+              this.listAjout=[];
             }
           })
         }

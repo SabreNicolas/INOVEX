@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from "@angular/router";
-import { maintenance } from 'src/models/maintenance.model';
 import {user} from "../../models/user.model";
 declare var $ : any;
 @Component({
@@ -20,7 +19,7 @@ export class SaisieGlobalComponent implements OnInit {
     this.usine="";
     this.isSuperAdmin = false;
     this.isSaisie = false;
-    this.idUsine = 0;
+    this.idUsine = 0;    
   }
 
   ngOnInit(): void {
@@ -39,6 +38,14 @@ export class SaisieGlobalComponent implements OnInit {
         this.usine = this.userLogged['localisation'];
         this.isSuperAdmin = true;
       }
+    }
+
+    var loc = document.location.href;
+    console.log(loc)
+    var tabLoc = loc.split('/');
+    if(tabLoc[tabLoc.length - 1] == 'token'){
+      console.log($('#token'))
+      $('#token').hide()
     }
   }
 

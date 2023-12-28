@@ -22,6 +22,7 @@ export class SaisieFormulaireComponent implements OnInit {
   public dateFin : Date | undefined;
   public listDays : string[];
   public listProducts : any[];
+  public isAdmin : number;
 
   constructor(private productsService : productsService, private moralEntitiesService : moralEntitiesService, private route : ActivatedRoute,private dateService : dateService) {
     this.listFormulaires=[];
@@ -29,6 +30,7 @@ export class SaisieFormulaireComponent implements OnInit {
     this.nomForm="";
     this.listDays = [];
     this.listProducts = [];
+    this.isAdmin = 0;
 
     //Permet de récupérer l'id du formulaire à saisir
     this.route.queryParams.subscribe(params => {
@@ -47,6 +49,14 @@ export class SaisieFormulaireComponent implements OnInit {
       // @ts-ignore
       this.listProducts = response.data;
     })
+
+    //Récupération de l'utilisateur pour vérifier si il est admin => permettre suppression ronde si admin
+    var userLogged = localStorage.getItem('user');
+    if (typeof userLogged === "string") {
+      var userLoggedParse = JSON.parse(userLogged);
+      // @ts-ignore
+      this.isAdmin = userLoggedParse['isAdmin'];
+    }
   }
 
   //Mettre la periode du filtre
