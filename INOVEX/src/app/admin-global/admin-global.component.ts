@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { categoriesService } from '../services/categories.service';
 import { user } from 'src/models/user.model';
-declare var $ : any;
 @Component({
   selector: 'app-admin-global',
   templateUrl: './admin-global.component.html',
@@ -52,10 +51,4 @@ export class AdminGlobalComponent implements OnInit {
     window.open(file, '_blank');
   }
 
-  toogle(event : any){
-    $(".nav-link").css('text-decoration','none')
-    $(".nav-link").css('color','white')
-    $("#"+event).css('text-decoration','underline')
-    $("#"+event).css('color','BLUE')
-  }
 }

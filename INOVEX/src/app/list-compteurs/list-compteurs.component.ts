@@ -221,7 +221,8 @@ export class ListCompteursComponent implements OnInit {
     this.listCompteurs.forEach(cp =>{
       this.listDays.forEach(day => {
         var value = (<HTMLInputElement>document.getElementById(cp.Code + '-' + day)).value.replace(',', '.');
-        var valueInt: number = +value;
+        var Value2 = value.replace(" ", "");
+        var valueInt: number = +Value2;
         if (valueInt > 0.0) {
            //Si on est sur chinon, nsl ou pit, on insère les valeurs dans saisiemensuelle
           if(this.idUsine == 1 || this.idUsine == 2 ||this.idUsine == 3){

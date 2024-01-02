@@ -61,7 +61,11 @@
                     <input class="form-check-input" type="checkbox" id="{{pr.Id}}" (click)="addPr(pr.Id)">
                 </div>
             </td>-->
-            <td>{{pr.Name}}</td>
+            <td>{{pr.Name}} 
+                <button *ngIf="isSuperAdmin" class="btn btn-light" (click)="editionNomProduit(pr.Name)">
+                    <i class="fas fa-edit"></i>
+                </button>
+            </td>
             <td>{{pr.Unit}}
             </td>
             <td>

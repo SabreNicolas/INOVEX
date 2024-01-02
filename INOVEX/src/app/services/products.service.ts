@@ -507,7 +507,20 @@ export class productsService {
     //Mettre à jour le coefficient d'un produit
     updateCoeff(coeff : String, id : number){
         let requete = "https://"+this.ip+":"+this.portAPI+"/productUpdateCoeff/"+id+"?coeff="+coeff;
-        console.log(requete);
+        // console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<any>(requete,null,requestOptions);
+    }
+
+    //Mettre à jour le coefficient d'un produit
+    updateProductName(newName : string, lastName : string){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/updateProductName?newName="+newName + "&lastName=" +lastName;
+        // console.log(requete);
 
         const requestOptions = {
             headers: new HttpHeaders(this.headerDict),

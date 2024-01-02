@@ -94,7 +94,8 @@ export class ListReactifsComponent implements OnInit {
     this.listDays.forEach(date => {
       this.listProducts.forEach(pr =>{
         var value = (<HTMLInputElement>document.getElementById(pr.Id+'-'+date)).value.replace(',','.');
-        var valueInt : number = +value;
+        var Value2 = value.replace(" ", "");
+        var valueInt: number = +Value2;
         if (valueInt >0.0){
           this.mrService.createMeasure(date.substr(6,4)+'-'+date.substr(3,2)+'-'+date.substr(0,2),valueInt,pr.Id,0).subscribe((response)=>{
             if (response == "Création du Measures OK"){

@@ -101,7 +101,8 @@ export class ListQseComponent implements OnInit {
     this.listQse.forEach(cp =>{
       this.listDays.forEach(day =>{
         let value = (<HTMLInputElement>document.getElementById(cp.Code+'-'+day)).value.replace(',','.');
-        let valueInt : number = +value;
+        var Value2 = value.replace(" ", "");
+        var valueInt: number = +Value2;
         if (valueInt >0.0){
           this.moralEntitiesService.createMeasure(day.substr(6,4)+'-'+day.substr(3,2)+'-'+day.substr(0,2),valueInt,cp.Id, 0).subscribe((response)=>{
             if (response == "Création du Measures OK"){

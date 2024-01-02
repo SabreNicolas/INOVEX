@@ -58,6 +58,32 @@ export class arretsService {
             .get<depassement[]>(requete,requestOptions);
     }
 
+    //récupérer un dépassement
+    getOneDepassement(id:number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/getOneDepassement/"+id;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<depassement[]>(requete,requestOptions);
+    }
+
+    //récupérer un arrêt
+    getOneArret(id:number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/getOneArret/"+id;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<depassement[]>(requete,requestOptions);
+    }
+
     //récupérer la somme des dépassements pour un mois
     getDepassementsSum(dateDebut : string, dateFin : string){
         let requete = "https://"+this.ip+":"+this.portAPI+"/DepassementsSum/"+dateDebut+"/"+dateFin+"/"+this.idUsine;
@@ -104,6 +130,32 @@ export class arretsService {
     //insérer un arrêt
     createArret(dateDebut : string, dateFin : string, duree : number, idUser : number, dateSaisie : string, description : string, productId : number){
         let requete = "https://"+this.ip+":"+this.portAPI+"/Arrets?dateDebut="+dateDebut+"&dateFin="+dateFin+"&duree="+duree+"&user="+idUser+"&dateSaisie="+dateSaisie+"&description="+description+"&productId="+productId;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<any>(requete,null,requestOptions);
+    }
+
+    //modifier un arrêt
+    updateArret(id : number, dateDebut : string, dateFin : string, duree : number, idUser : number, dateSaisie : string, description : string, productId : number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/updateArret/"+id+"?dateDebut="+dateDebut+"&dateFin="+dateFin+"&duree="+duree+"&user="+idUser+"&dateSaisie="+dateSaisie+"&description="+description+"&productId="+productId;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<any>(requete,null,requestOptions);
+    }
+
+    //modifier un dépassement
+    updateDepassement(id : number, dateDebut : string, dateFin : string, duree : number, idUser : number, dateSaisie : string, description : string, productId : number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/updateDepassement/"+id+"?dateDebut="+dateDebut+"&dateFin="+dateFin+"&duree="+duree+"&user="+idUser+"&dateSaisie="+dateSaisie+"&description="+description+"&productId="+productId;
         //console.log(requete);
 
         const requestOptions = {

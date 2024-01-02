@@ -12,32 +12,32 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
 
-            <li *ngIf="isSaisie" class="nav-item dropdown" (click)="toogle('navbarDropdownListClients')">
+            <li *ngIf="isSaisie" class="nav-item dropdown" routerLinkActive="active">
                 <a routerLink="listClients" class="nav-link" id="navbarDropdownListClients" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
                     Liste des Clients
                 </a>
             </li>
 
-            <li *ngIf="isSaisie" class="nav-item dropdown" (click)="toogle('navbarDropdownEntree')">
+            <li *ngIf="isSaisie" class="nav-item dropdown" routerLinkActive="active">
                 <a routerLink="./entree" class="nav-link" id="navbarDropdownEntree" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
                     Entrants
                 </a>
             </li>
 
-            <li *ngIf="isSaisie" class="nav-item dropdown">
-                <a routerLink="./sortie" class="nav-link" id="navbarDropdownSortie" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)="toogle('navbarDropdownSortie')">
+            <li *ngIf="isSaisie" class="nav-item dropdown" routerLinkActive="active">
+                <a routerLink="./sortie" class="nav-link" id="navbarDropdownSortie" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
                     Sortants
                 </a>
             </li>
 
-            <li *ngIf="isSaisie" class="nav-item dropdown">
-                <a routerLink="reactifs" class="nav-link" id="navbarDropdownReactif" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)="toogle('navbarDropdownReactif')">
+            <li *ngIf="isSaisie" class="nav-item dropdown" routerLinkActive="active">
+                <a routerLink="reactifs" class="nav-link" id="navbarDropdownReactif" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
                     Réactifs et livraisons
                 </a>
             </li>
 
-            <li *ngIf="isSaisie" class="nav-item dropdown">
-                <a routerLink="listCompteurs" class="nav-link" id="navbarDropdownCompteurs" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)="toogle('navbarDropdownCompteurs')">
+            <li *ngIf="isSaisie" class="nav-item dropdown" routerLinkActive="active">
+                <a routerLink="listCompteurs" class="nav-link" id="navbarDropdownCompteurs" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
                     Compteurs & Autres
                 </a>
             </li>
@@ -48,20 +48,20 @@
                 </a>
             </li>-->
 
-            <li *ngIf="isSaisie" class="nav-item dropdown">
-                <a routerLink="analyses" [queryParams]="{ pci: 'false'}" class="nav-link" id="navbarDropdownAnalyse" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)="toogle('navbarDropdownAnalyse')">
+            <li *ngIf="isSaisie" class="nav-item dropdown" routerLinkActive="active">
+                <a routerLink="analyses" [queryParams]="{ pci: 'false'}" class="nav-link" id="navbarDropdownAnalyse" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
                     Analyses
                 </a>
             </li>
 
-            <li *ngIf="isSaisie" class="nav-item dropdown">
-                <a routerLink="conso" class="nav-link" id="navbarDropdownConso" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)="toogle('navbarDropdownConso')">
+            <li *ngIf="isSaisie" class="nav-item dropdown" routerLinkActive="active">
+                <a routerLink="conso" class="nav-link" id="navbarDropdownConso" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
                     Consommables
                 </a>
             </li>
 
-            <li *ngIf="isSaisie" class="nav-item dropdown">
-                <a routerLink="listForm" class="nav-link" id="navbarDropdownForm" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)="toogle('navbarDropdownForm')">
+            <li *ngIf="isSaisie" class="nav-item dropdown" routerLinkActive="active">
+                <a routerLink="listForm" class="nav-link" id="navbarDropdownForm" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
                     Formulaire
                 </a>
             </li>
@@ -72,23 +72,23 @@
                 </a>
             </li>-->
 
-            <li class="nav-item dropdown">
+            <li class="nav-item dropdown" routerLinkActive="active">
                 <a class="nav-link dropdown-toggle" id="navbarDropdownArrets" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Arrêts
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" routerLink="arrets" [queryParams]="{ isArret: 'true'}" (click)="toogle('navbarDropdownArrets')" >Saisie</a>
-                    <a class="dropdown-item" routerLink="listArrets" [queryParams]="{ isArret: 'true'}" (click)="toogle('navbarDropdownArrets')">Historique</a>
+                    <a class="dropdown-item" routerLink="arrets" [queryParams]="{ isArret: 'true'}" >Saisie</a>
+                    <a class="dropdown-item" routerLink="listArrets" [queryParams]="{ isArret: 'true'}" >Historique</a>
                 </div>
             </li>
 
-            <li class="nav-item dropdown">
+            <li class="nav-item dropdown" routerLinkActive="active">
                 <a class="nav-link dropdown-toggle" id="navbarDropdownDep" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Dépassements 1/2H
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" routerLink="arrets" [queryParams]="{ isArret: 'false'}" (click)="toogle('navbarDropdownDep')">Saisie</a>
-                    <a class="dropdown-item" routerLink="listArrets" [queryParams]="{ isArret: 'false'}" (click)="toogle('navbarDropdownDep')">Historique</a>
+                    <a class="dropdown-item" routerLink="arrets" [queryParams]="{ isArret: 'false'}">Saisie</a>
+                    <a class="dropdown-item" routerLink="listArrets" [queryParams]="{ isArret: 'false'}">Historique</a>
                 </div>
             </li>
 

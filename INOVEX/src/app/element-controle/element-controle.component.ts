@@ -181,17 +181,17 @@ export class ElementControleComponent implements OnInit {
       this.unit = form.value['unit'];
     }
     if(form.value['valeurDef'].length > 0){
-      this.defaultValue = (form.value['valeurDef'].replace(',','.'));
+      this.defaultValue = (form.value['valeurDef'].replace(',','.').replace(" ", ""));
     }
     if(this.needListValues){
       this.listValues = form.value['listValues'];
     }
     if(this.needBornes){
       if(form.value['valeurMin'].length > 0){
-        this.valeurMin = (form.value['valeurMin'].replace(',','.'));
+        this.valeurMin = (form.value['valeurMin'].replace(',','.').replace(" ", ""));
       }
       if(form.value['valeurMax'].length > 0){
-        this.valeurMax = (form.value['valeurMax'].replace(',','.'));
+        this.valeurMax = (form.value['valeurMax'].replace(',','.').replace(" ", ""));
       }
     }
     //Gestion des boolean

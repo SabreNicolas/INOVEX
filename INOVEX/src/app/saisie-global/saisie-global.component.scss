@@ -15,3 +15,7 @@
   z-index: 10;
 }
 
+.nav-item.active>a{
+  border-bottom: 2px solid blue;
+  color: black;
+}
