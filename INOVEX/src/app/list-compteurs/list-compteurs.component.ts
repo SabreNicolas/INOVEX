@@ -68,7 +68,7 @@ export class ListCompteursComponent implements OnInit {
    
     this.Code = codeCatSel;
     var name = (<HTMLInputElement>document.getElementById('name')).value;
-    this.name = name;
+    this.name = name.replace(/'/g,"''");
     /*Fin de prise en commpte des filtres */
     this.ngOnInit();
   }

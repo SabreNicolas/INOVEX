@@ -50,7 +50,7 @@ export class ZoneControleComponent implements OnInit {
 
   //création de la zone de controle
   onSubmit(form : NgForm) {
-    this.nom = form.value['nom'];
+    this.nom = form.value['nom'].replace(/'/g,"''");
     //On affecte la valeur si le four est coché
     if (form.controls['four'].touched){
       this.four = form.value['four'];
@@ -61,7 +61,7 @@ export class ZoneControleComponent implements OnInit {
     if(form.value['commentaire'].length < 1){
       this.commentaire = "_";
     }
-    else this.commentaire = form.value['commentaire'];
+    else this.commentaire = form.value['commentaire'].replace(/'/g,"''");
 
     this.rondierService.createZone(this.nom,this.commentaire,this.four).subscribe((response)=>{
       if (response == "Création de la zone OK"){

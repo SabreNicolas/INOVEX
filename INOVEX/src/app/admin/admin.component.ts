@@ -50,7 +50,7 @@ export class AdminComponent implements OnInit {
     var typeSel = typeElt.options[typeElt.selectedIndex].value;
     var name = (<HTMLInputElement>document.getElementById('name')).value;
     this.typeId = typeSel;
-    this.name = name;
+    this.name = name.replace(/'/g,"''");
     /*Fin de prise en commpte des filtres */
     this.getProducts();
   }

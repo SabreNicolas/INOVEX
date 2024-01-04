@@ -44,9 +44,9 @@ export class UserComponent implements OnInit {
 
   //création de l'utilisateur
   onSubmit(form : NgForm) {
-    this.nom = form.value['nom'];
-    this.prenom = form.value['prenom'];
-    this.login = form.value['identifiant'];
+    this.nom = form.value['nom'].replace(/'/g,"''");
+    this.prenom = form.value['prenom'].replace(/'/g,"''");
+    this.login = form.value['identifiant'].replace(/'/g,"''");
 
     //GESTION DES DROITS
     var rondier = document.getElementsByName('rondier');
@@ -107,7 +107,7 @@ export class UserComponent implements OnInit {
   }
 
   verifLogin(form : NgForm){
-    var login = form.value['identifiant'];
+    var login = form.value['identifiant'].replace(/'/g,"''");;
     this.loginService.getLogin(login).subscribe((response)=>{
       // @ts-ignore
       if(response.data.length > 0) {
