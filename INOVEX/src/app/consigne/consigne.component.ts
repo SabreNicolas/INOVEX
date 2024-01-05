@@ -30,7 +30,7 @@ export class ConsigneComponent implements OnInit {
 
   onSubmit(form : NgForm) {
     this.desc = form.value['desc'];
-    this.desc = this.desc.replace("'", " ").toLowerCase();
+    this.desc = this.desc.replace("'", " ");
     this.desc = this.desc.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, " ");
     this.dateFin = new Date(form.value['dateFin']);
     this.dateDebut = new Date(form.value['dateDebut']);

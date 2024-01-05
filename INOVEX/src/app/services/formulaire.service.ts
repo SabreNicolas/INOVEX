@@ -1,10 +1,10 @@
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Injectable} from "@angular/core";
-import { rapport } from "src/models/rapport.model";
 import { idUsineService } from "./idUsine.service";
+import { formulaire } from "src/models/formulaire.model";
 
 @Injectable()
-export class rapportsService {
+export class formulaireService {
 
     httpClient: HttpClient;
     private headerDict = {
@@ -17,39 +17,38 @@ export class rapportsService {
     private ip = "fr-couvinove301.prod.paprec.fr";
     //private ip = "localhost";
     private idUsine : number | undefined;
-    
+
     constructor(private http: HttpClient, private idUsineService : idUsineService) {
         this.httpClient = http;
         //@ts-ignore
         this.idUsine = this.idUsineService.getIdUsine();
     }
 
-    //récupérer les rapports pour l'usine sur laquelle on se trouve
-    getRapports() {
-        let requete = "https://"+this.ip+":"+this.portAPI+"/rapports/"+this.idUsine
-        //console.log(requete);
 
+    //création de formulaire
+    createFormulaire(nom : string, type : string){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/formulaire?nom="+nom+"&type="+type+"&idUsine="+this.idUsine;
+        //console.log(requete);
+  
+        const requestOptions = {
+          headers: new HttpHeaders(this.headerDict),
+        };
+  
+        return this.http
+          .put<any>(requete,null,requestOptions);
+    }
+
+    //récupérer les formulaires d'un site
+    getFormulaire() {
+        let requete = "https://"+this.ip+":"+this.portAPI+"/formulaires?idUsine="+this.idUsine;
+        //console.log(requete);
 
         const requestOptions = {
             headers: new HttpHeaders(this.headerDict),
         };
 
         return this.http
-            .get<rapport[]>(requete,requestOptions);
+            .get<formulaire[]>(requete,requestOptions);
     }
-
-        //récupérer les rapports pour l'usine sur laquelle on se trouve
-        getModeOPs() {
-            let requete = "https://"+this.ip+":"+this.portAPI+"/rapports/5"
-            //console.log(requete);
-    
-    
-            const requestOptions = {
-                headers: new HttpHeaders(this.headerDict),
-            };
-    
-            return this.http
-                .get<rapport[]>(requete,requestOptions);
-        }
 
 }

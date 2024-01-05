@@ -18,7 +18,7 @@ export class productsService {
         'Access-Control-Allow-Origin' : '*',
         'Authorization': 'Bearer ' + localStorage.getItem('token')
     }
-    private portAPI = 3100;
+    private portAPI = 3102;
     private ip = "fr-couvinove301.prod.paprec.fr";
     //private ip = "localhost";
     private idUsine : number | undefined;
@@ -279,6 +279,32 @@ export class productsService {
             .get<product[]>(requete,requestOptions);
     }
 
+    //récupérer un produit
+    getOneProduct(id : number) {
+        let requete = "https://"+this.ip+":"+this.portAPI+"/getOneProduct/"+id+"?idUsine="+this.idUsine;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<product>(requete,requestOptions);
+    }
+
+    //récupérer les produits d'une usine
+    getAllProducts() {
+        let requete = "https://"+this.ip+":"+this.portAPI+"/AllProducts?idUsine="+this.idUsine;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<product[]>(requete,requestOptions);
+    }
+
     //récupérer les produits par catégories => pour admin uniquement
     getAllProductsAndElementRondier(typeId : number, name : string) {
         let requete = "https://"+this.ip+":"+this.portAPI+"/ProductsAndElementRondier/"+typeId+"?Name="+name+"&idUsine="+this.idUsine;
@@ -292,6 +318,111 @@ export class productsService {
             .get<product[]>(requete,requestOptions);
     }
 
+
+    //créer un formulaire
+    createFormulaire(nom : string){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/createFormulaire?nom="+nom+"&idUsine="+this.idUsine;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<any>(requete,null,requestOptions);
+    }
+    
+    //mettre à jour le nom d'un formulaire
+    updateFormulaire(nom : string, idFormulaire : number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/updateFormulaire?nom="+nom+"&idFormulaire="+idFormulaire;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<any>(requete,null,requestOptions);
+    }
+
+    //créer les produits d'un formulaire
+    createFormulaireAffectation(alias : string, idFormulaire : number, idProduit : number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/createFormulaireAffectation?alias="+alias+"&idFormulaire="+idFormulaire+"&idProduit="+idProduit;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<any>(requete,null,requestOptions);
+    }
+
+    //récupérer les formulaires d'une usine
+    getFormulaires() {
+        let requete = "https://"+this.ip+":"+this.portAPI+"/getFormulaires?idUsine="+this.idUsine;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<any[]>(requete,requestOptions);
+    }
+
+    //récupérer un formulaire d'une usine
+    getOneFormulaire(idFormulaire:number) {
+        let requete = "https://"+this.ip+":"+this.portAPI+"/getOneFormulaire?idFormulaire="+idFormulaire;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<any[]>(requete,requestOptions);
+    }
+
+    //Récupérer les produits d'un formulaire
+    getProductsFormulaire(idFormulaire : number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/getProduitsFormulaire?idFormulaire="+idFormulaire;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<any[]>(requete,requestOptions);
+    }
+
+    //Supprimer les produits d'un formulaire
+    deleteProductFormulaire(idFormulaire : number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/deleteProduitFormulaire?idFormulaire="+idFormulaire;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .delete<any>(requete,requestOptions);
+    }
+
+    //Supprimer un formulaire
+    deleteFormulaire(idFormulaire : number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/deleteFormulaire?idFormulaire="+idFormulaire;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .delete<any>(requete,requestOptions);
+    }
+    
     //mettre à jour le enabled d'un produit
     setEnabled(Id: number, enabled : number){
         let requete = "https://"+this.ip+":"+this.portAPI+"/productEnabled/"+Id+"/"+enabled;
@@ -372,7 +503,32 @@ export class productsService {
         return this.http
             .put<any>(requete,null,requestOptions);
     }
-  
+    
+    //Mettre à jour le coefficient d'un produit
+    updateCoeff(coeff : String, id : number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/productUpdateCoeff/"+id+"?coeff="+coeff;
+        // console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<any>(requete,null,requestOptions);
+    }
+
+    //Mettre à jour le coefficient d'un produit
+    updateProductName(newName : string, lastName : string){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/updateProductName?newName="+newName + "&lastName=" +lastName;
+        // console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<any>(requete,null,requestOptions);
+    }
     /*
     ** FIN Partie IMAGINDATA
     */

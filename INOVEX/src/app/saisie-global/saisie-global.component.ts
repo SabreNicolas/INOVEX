@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from "@angular/router";
-import { maintenance } from 'src/models/maintenance.model';
 import {user} from "../../models/user.model";
-
 @Component({
   selector: 'app-saisie-global',
   templateUrl: './saisie-global.component.html',
@@ -20,7 +18,7 @@ export class SaisieGlobalComponent implements OnInit {
     this.usine="";
     this.isSuperAdmin = false;
     this.isSaisie = false;
-    this.idUsine = 0;
+    this.idUsine = 0;    
   }
 
   ngOnInit(): void {
@@ -41,4 +39,5 @@ export class SaisieGlobalComponent implements OnInit {
       }
     }
   }
+
 }

@@ -31,7 +31,7 @@ export class ModeOperatoireComponent implements OnInit {
 
   //Création mode opératoire
   onSubmit(form : NgForm) {
-    this.nom = form.value['nom'];
+    this.nom = form.value['nom'].replace(/'/g,"''");
     this.zoneId = form.value['zone'];
     this.rondierService.createModeOP(this.nom,this.fileToUpload,this.zoneId).subscribe((response)=>{
       if (response == "Création du modeOP OK"){

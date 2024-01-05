@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { categoriesService } from '../services/categories.service';
 import { user } from 'src/models/user.model';
-
 @Component({
   selector: 'app-admin-global',
   templateUrl: './admin-global.component.html',
@@ -45,6 +44,7 @@ export class AdminGlobalComponent implements OnInit {
       //@ts-ignore
       this.categoriesService.sites = response.data;
     });
+    
   }
 
   download(file : string){

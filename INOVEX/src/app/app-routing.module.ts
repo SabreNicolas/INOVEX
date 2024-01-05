@@ -52,6 +52,9 @@ import { OutilsComponent } from './outils/outils.component';
 import { CorrespondanceSortantsComponent } from './correspondance-sortants/correspondance-sortants.component';
 import { ListReactifsComponent } from './list-reactifs/list-reactifs.component';
 import { CorrespondanceReactifsComponent } from './correspondance-reactifs/correspondance-reactifs.component';
+import { FormulaireComponent } from './formulaire/formulaire.component';
+import { ListFormulairesComponent } from './list-formulaires/list-formulaires.component';
+import { SaisieFormulaireComponent } from './saisie-formulaire/saisie-formulaire.component';
 
 const routes: Routes = [
 
@@ -71,6 +74,9 @@ const routes: Routes = [
             { path : 'conso', canActivate: [AuthGuard], component : ListConsoComponent },
             { path : 'arrets', canActivate: [AuthGuard], component : ArretsComponent },
             { path : 'listArrets', canActivate: [AuthGuard], component : ListArretsComponent },
+            { path : 'listForm', canActivate: [AuthGuard], component: ListFormulairesComponent},
+            { path : 'saisieForm', canActivate: [AuthGuard], component: SaisieFormulaireComponent},
+
         ]
     },
 
@@ -165,6 +171,9 @@ const routes: Routes = [
             { path: 'finMois', canActivate: [AuthGuard], component: RondierFinMoisComponent},
             { path: 'correspondanceSortants', canActivate: [AuthGuard], component: CorrespondanceSortantsComponent},
             { path: 'CorrespondanceReactifs', canActivate: [AuthGuard], component: CorrespondanceReactifsComponent},
+            { path: 'newForm', canActivate: [AuthGuard], component: FormulaireComponent},
+            { path: 'forms', canActivate: [AuthGuard], component: ListFormulairesComponent},
+            { path: 'saisieForm', canActivate: [AuthGuard], component: SaisieFormulaireComponent},
 
         ]
     },

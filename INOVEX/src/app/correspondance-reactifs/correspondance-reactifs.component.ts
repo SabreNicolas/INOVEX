@@ -82,6 +82,7 @@ export class CorrespondanceReactifsComponent implements OnInit {
     }
 
     createCorrespondance(productImport : string, productId : number){
+      productImport = productImport.replace(/'/g,"''")
       this.moralEntitiesService.createImport_tonnageReactif(productId, productImport).subscribe((response) => {
         Swal.fire({
           icon: 'success',

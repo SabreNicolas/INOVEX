@@ -19,6 +19,7 @@ export class AdminComponent implements OnInit {
   public name : string;
   public listId : number[];
   public listElements : element[];
+  public isSuperAdmin : boolean;
 
   constructor(private productsService : productsService,private rondierService : rondierService) {
     this.typeId = 4;
@@ -26,11 +27,20 @@ export class AdminComponent implements OnInit {
     this.name ="";
     this.listId = [];
     this.listElements =[];
+    this.isSuperAdmin = false;
   }
 
   ngOnInit(): void {
     this.getProducts();
     this.getElements();
+    var userLogged = localStorage.getItem('user');
+    if (typeof userLogged === "string") {
+      var userLoggedParse = JSON.parse(userLogged);
+      //Si une localisation est stocké dans le localstorage, c'est que c'est un superAdmin et qu'il a choisi le site au début
+      if(userLoggedParse.hasOwnProperty('localisation')){
+        this.isSuperAdmin = true;
+      }
+    }
   }
 
   setFilters(){
@@ -40,7 +50,7 @@ export class AdminComponent implements OnInit {
     var typeSel = typeElt.options[typeElt.selectedIndex].value;
     var name = (<HTMLInputElement>document.getElementById('name')).value;
     this.typeId = typeSel;
-    this.name = name;
+    this.name = name.replace(/'/g,"''");
     /*Fin de prise en commpte des filtres */
     this.getProducts();
   }
@@ -238,6 +248,44 @@ export class AdminComponent implements OnInit {
         let idElementRondier = Number(result.value.split("_")[0]);
         this.rondierService.changeTypeRecupSetRondier(pr.Id,idElementRondier).subscribe((response) =>{
           this.ngOnInit();
+        })
+      }
+    });
+  }
+
+  //Mettre à jour le coefficient d'un produit
+  updateCoeff(pr: product){
+    var saisie = prompt('Veuillez saisir un coefficient pour ce produit',String(pr.Coefficient));
+    console.log(saisie);
+    if(saisie == null) return;
+    this.productsService.updateCoeff(saisie,pr.Id).subscribe((response)=>{
+      if (response == "Mise à jour du Coeff OK"){
+        Swal.fire("Le coefficient a bien été affecté !");
+        this.ngOnInit();
+      }
+      else {
+        Swal.fire({
+          icon: 'error',
+          text: "Erreur lors de l'affectation ....",
+        })
+      }
+    });
+
+  }
+
+  editionNomProduit(Name : string){
+    var saisie = prompt('Veuillez saisir un nouveau nom pour ce produit pour ce produit',String(Name));
+    console.log(saisie);
+    if(saisie == null) return;
+    this.productsService.updateProductName(saisie,Name).subscribe((response)=>{
+      if (response == "Changement du nom du produit OK"){
+        Swal.fire("Le nom a bien été changé !");
+        this.ngOnInit();
+      }
+      else {
+        Swal.fire({
+          icon: 'error',
+          text: "Erreur lors de l'affectation ....",
         })
       }
     });

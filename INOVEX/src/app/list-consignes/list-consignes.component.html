@@ -20,6 +20,8 @@
                 <td>{{consigne.dateHeureFin}}</td>
                 <td *ngSwitchCase=1 style="color: blue">Jour</td>
                 <td *ngSwitchCase=2 style="color: orange">Sécurité</td>
+                <td *ngSwitchCase=3 style="color: blue">Process</td>
+                <td *ngSwitchCase=4 style="color: black">Autres</td>
                 <td><button (click)="deleteConsigne(consigne.id)" id="deleteConsigne" class="btn btn-light">
                     <i class="fa fa-trash-o" aria-hidden="true"></i>
                 </button></td>

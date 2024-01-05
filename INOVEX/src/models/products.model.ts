@@ -12,4 +12,5 @@ export interface product{
     typeRecupEMonitoring : string;
     idElementRondier : number;
     nomElementRondier : string;
+    Coefficient : number;
 }

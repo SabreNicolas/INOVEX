@@ -6,14 +6,14 @@
         <div class="row">
             <div class="col-sm-3">
                 <div class="form-group">
-                    <select id="type" required class="form-select form-select-sm" aria-label=".form-select-sm example" name="type" ngModel>
-                        <option *ngFor="let arret of listArrets" selected value="{{arret.Id}}">{{arret.Name}}</option>
+                    <select id="type" required class="form-select form-select-sm" aria-label=".form-select-sm example" (change)="setFilters(false)" name="type" ngModel [(ngModel)]="arretId">
+                        <option *ngFor="let arret of listArrets" value="{{arret.Id}}">{{arret.Name}}</option>
                     </select>
                 </div>
             </div>
             <div class="col-sm-3">
                 <div class="form-group">
-                    <button class="btn btn-success" (click)="setFilters()">Valider</button>
+                    <button class="btn btn-success" (click)="setFilters(false)">Valider</button>
                 </div>
             </div>
         </div>
@@ -27,12 +27,22 @@
                 <h5><label>Période :</label></h5>
                 <div class="row">
                     <div class="col-lg-3">
-                        <input required type="datetime-local" step="1" id="dateDeb" class="form-control" placeholder="Date de début" name="dateDeb"
-                               ngModel>
+                        <input required type="datetime-local" step="1" id="dateDeb" class="form-control" placeholder="Date de début" name="dateDebut"
+                               ngModel [(ngModel)]="dateDebut">
                     </div>
                     <div class="col-lg-3">
                         <input required type="datetime-local" step="1" id="dateFin" class="form-control" placeholder="Date de fin" name="dateFin"
-                               ngModel>
+                               ngModel [(ngModel)]="dateFin">
+                    </div>
+                    <div class="col-lg-3" *ngIf="isArret == false">
+                        <div class="form-group">
+                            <button class="btn btn-primary" type="submit" (click)="set10min(f)">10min</button>
+                        </div>
+                    </div>
+                    <div class="col-lg-3" *ngIf="isArret == false">
+                        <div class="form-group">
+                            <button class="btn btn-primary" type="submit" (click)="set30min(f)">30min</button>
+                        </div>
                     </div>
                     <div class="col-sm-3">
                         <div class="form-group">
@@ -58,14 +68,14 @@
                 </div>
 
                 <h5 *ngIf="disponible || fortuit || programme">Catégorie : </h5>
-                <select *ngIf="disponible" id="disponible" class="form-select form-select-sm" aria-label=".form-select-sm example" name="disponible">
+                <select *ngIf="disponible" id="disponible" class="form-select form-select-sm" aria-label=".form-select-sm example" name="disponible" ngModel [(ngModel)]="disponibleSelect">
                     <option value="Manque de déchets">Manque de déchets</option>
                     <option value="Coupure électricité (si pas de production électrique sur le site)">Coupure électricité (si pas de production électrique sur le site)</option>
                     <option value="Non respect de l'arrêté prefectoral">Non respect de l'arrêté prefectoral</option>
                     <option value="Autre">Autre</option>
                 </select>
                 
-                <select *ngIf="fortuit" id="fortuit" class="form-select form-select-sm" aria-label=".form-select-sm example" name="fortuit" (change)="setSousCommentaire('fortuit')">
+                <select *ngIf="fortuit" id="fortuit" class="form-select form-select-sm" aria-label=".form-select-sm example" name="fortuit" (change)="setSousCommentaire('fortuit')" ngModel [(ngModel)]="fortuitSelect">
                     <option value="Four">Four</option>
                     <option value="Chaudière">Chaudière</option>
                     <option value="Traitement des fumées">Traitement des fumées</option>
@@ -73,13 +83,13 @@
                     <option value="Autre">Autre</option>
                 </select>
 
-                <select *ngIf="programme" id="programme" class="form-select form-select-sm" aria-label=".form-select-sm example" name="programme">
+                <select *ngIf="programme" id="programme" class="form-select form-select-sm" aria-label=".form-select-sm example" name="programme" ngModel [(ngModel)]="programmeSelect">
                     <option value="Arrêt technique">Arrêt technique</option>
                     <option value="Autre">Autre</option>
                 </select>
 
                 <h5 *ngIf = "fortuit">Sous-catégorie : </h5>
-                <select *ngIf="fortuit_four" id="fortuit_four" class="form-select form-select-sm" aria-label=".form-select-sm example" name="fortuit_four">
+                <select *ngIf="fortuit_four" id="fortuit_four" class="form-select form-select-sm" aria-label=".form-select-sm example" name="fortuit_four" [(ngModel)]="sousCommentaire">
                     <option value="Air de combustion">Air de combustion</option>
                     <option value="Alimentation four">Alimentation four</option>
                     <option value="Autres">Autres</option>
@@ -92,13 +102,13 @@
                     <option value="Autre">Autre</option>
                 </select>
 
-                <select *ngIf="fortuit_chaudiere" id="fortuit_chaudiere" class="form-select form-select-sm" aria-label=".form-select-sm example" name="fortuit_chaudiere">
+                <select *ngIf="fortuit_chaudiere" id="fortuit_chaudiere" class="form-select form-select-sm" aria-label=".form-select-sm example" name="fortuit_chaudiere" [(ngModel)]="sousCommentaire">
                     <option value="Fuite">Fuite</option>
                     <option value="Hors fuite">Hors fuite</option>
                     <option value="Autre">Autre</option>
                 </select>
 
-                <select *ngIf="fortuit_traitement" id="fortuit_traitement" class="form-select form-select-sm" aria-label=".form-select-sm example" name="fortuit_traitement">
+                <select *ngIf="fortuit_traitement" id="fortuit_traitement" class="form-select form-select-sm" aria-label=".form-select-sm example" name="fortuit_traitement" [(ngModel)]="sousCommentaire">
                     <option value="Electrofiltres">Electrofiltres</option>
                     <option value="Filtres à manches">Filtres à manches</option>
                     <option value="SCR">SCR</option>
@@ -109,7 +119,7 @@
                     <option value="Autre">Autre</option>
                 </select>
 
-                <select *ngIf="fortuit_commun" id="fortuit_commun" class="form-select form-select-sm" aria-label=".form-select-sm example" name="fortuit_commun">
+                <select *ngIf="fortuit_commun" id="fortuit_commun" class="form-select form-select-sm" aria-label=".form-select-sm example" name="fortuit_commun" [(ngModel)]="sousCommentaire">
                     <option value="Air comprimé">Air comprimé</option>
                     <option value="Contrôle commande">Contrôle commande</option>
                     <option value="Electricité (si dispo GA/GE)">Electricité (si dispo GA/GE)</option>

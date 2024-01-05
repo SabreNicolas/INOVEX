@@ -49,7 +49,8 @@ export class ListConsoComponent implements OnInit {
     this.listDays.forEach(day => {
       this.listConsos.forEach(con =>{
         var value = (<HTMLInputElement>document.getElementById(con.Id+'-'+day)).value.replace(',','.');
-        var valueInt : number = +value;
+        var Value2 = value.replace(" ", "");
+        var valueInt: number = +Value2;
         if (valueInt >0.0){
           this.mrService.createMeasure(day.substr(6,4)+'-'+day.substr(3,2)+'-'+day.substr(0,2),valueInt,con.Id,0).subscribe((response)=>{
             if (response == "Création du Measures OK"){

@@ -14,14 +14,14 @@
 
         <ul class="navbar-nav mr-auto">
 
-            <li *ngIf="isSuperAdmin" class="nav-item dropdown">
-                <a routerLink="./token" class="nav-link" id="navbarDropdownEntree" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <li *ngIf="isSuperAdmin" class="nav-item dropdown" routerLinkActive="active">
+                <a routerLink="./token" class="nav-link" id="token" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
                     Token
                 </a>
             </li>
 
-            <li class="nav-item dropdown">
-                <a routerLink="./modification" class="nav-link" id="navbarDropdownEntree" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <li class="nav-item dropdown" routerLinkActive="active">
+                <a routerLink="./modification" class="nav-link" id="modifProduits" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Modifier les Produits
                 </a>
             </li>
@@ -39,65 +39,75 @@
             </li> -->
 
 
-            <li class="nav-item dropdown">
-                <a routerLink="./clients" class="nav-link" id="navbarDropdownAddClients" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <li class="nav-item dropdown" routerLinkActive="active">
+                <a routerLink="./clients" class="nav-link" id="nouveauClient" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
                     Nouveau Client
                 </a>
             </li>
 
-            <li class="nav-item dropdown">
-                <a routerLink="./import" class="nav-link" id="navbarDropdownApporteurs" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <li class="nav-item dropdown" routerLinkActive="active">
+                <a routerLink="./import" class="nav-link" id="correspondanceApporteur" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
                     Correspondance apporteurs
                 </a>
             </li>
             
-            <li class="nav-item dropdown">
-                <a routerLink="./correspondanceSortants" class="nav-link" id="navbarDropdownSortants" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <li class="nav-item dropdown" routerLinkActive="active">
+                <a routerLink="./correspondanceSortants" class="nav-link" id="correspondanceSortants" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
                     Correspondance sortants
                 </a>
             </li>
 
-            <li class="nav-item dropdown">
-                <a routerLink="./CorrespondanceReactifs" class="nav-link" id="navbarDropdownSortants" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <li class="nav-item dropdown" routerLinkActive="active">
+                <a routerLink="./CorrespondanceReactifs" class="nav-link" id="correspondanceReactifs" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
                     Correspondance réactifs et livraisons
                 </a>
             </li>
 
-            <li *ngIf="isSuperAdmin" class="nav-item dropdown">
-                <a routerLink="./newSortant" class="nav-link" id="navbarDropdownSortie" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <li *ngIf="isSuperAdmin" class="nav-item dropdown" routerLinkActive="active">
+                <a routerLink="./newSortant" class="nav-link" id="nvSortant" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
                     Nouveau Sortant
                 </a>
             </li>
 
-            <li *ngIf="isSuperAdmin" class="nav-item dropdown">
-                <a routerLink="./newCompteur" class="nav-link" id="navbarDropdownCompteur" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <li *ngIf="isSuperAdmin" class="nav-item dropdown" routerLinkActive="active">
+                <a routerLink="./newCompteur" class="nav-link" id="nvCompteur" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Nouveau Compteur
                 </a>
             </li>
 
-            <li *ngIf="isSuperAdmin" class="nav-item dropdown">
-                <a routerLink="./newAnalyse" class="nav-link" id="navbarDropdownAnalyse" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <li *ngIf="isSuperAdmin" class="nav-item dropdown" routerLinkActive="active">
+                <a routerLink="./newAnalyse" class="nav-link" id="nvAnalyse" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Nouvelle Analyse
                 </a>
             </li>
 
-            <li *ngIf="isSuperAdmin" class="nav-item dropdown">
+            <li *ngIf="isSuperAdmin" class="nav-item dropdown" routerLinkActive="active">
                 <a routerLink="./newConso" class="nav-link" id="navbarDropdownConso" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Nouveau Consommable
                 </a>
             </li>
 
-            <li class="nav-item dropdown">
+            <li class="nav-item dropdown" routerLinkActive="active">
+                <a class="nav-link dropdown-toggle" id="navbarDropdownForm" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                    Formulaires
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" routerLink="./newForm" >Nouveau Formulaire</a>
+                    <a class="dropdown-item" routerLink="./forms">Liste des Formulaires</a>
+                </div>
+            </li>
+
+            <li class="nav-item dropdown" routerLinkActive="active">
                 <a class="nav-link dropdown-toggle" id="navbarDropdownUser" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Utilisateurs
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" routerLink="./newUser" >Nouvel Utilisateur</a>
-                    <a class="dropdown-item" routerLink="./users" >Liste des Utilisateurs</a>
+                    <a class="dropdown-item" routerLink="./users">Liste des Utilisateurs</a>
                 </div>
             </li>
 
-            <li class="nav-item dropdown">
+            <li class="nav-item dropdown" routerLinkActive="active">
                 <a class="nav-link dropdown-toggle" id="navbarDropdownRondier" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     RONDIER
                 </a>
