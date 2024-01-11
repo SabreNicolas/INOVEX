@@ -188,6 +188,7 @@ export class AdminComponent implements OnInit {
       else var saisie = prompt('Veuillez saisir un TAG',String(product.TAG));
     }
     if(saisie == null) return;
+    saisie = saisie.replace(/'/g,"''");
     this.productsService.setElement(saisie,product.Id,type).subscribe((response)=>{
       if (response == "Mise à jour du Code OK"){
         Swal.fire("Le code GMAO a bien été affecté !");
@@ -258,6 +259,7 @@ export class AdminComponent implements OnInit {
     var saisie = prompt('Veuillez saisir un coefficient pour ce produit',String(pr.Coefficient));
     console.log(saisie);
     if(saisie == null) return;
+    saisie = saisie.replace(/'/g,"''");
     this.productsService.updateCoeff(saisie,pr.Id).subscribe((response)=>{
       if (response == "Mise à jour du Coeff OK"){
         Swal.fire("Le coefficient a bien été affecté !");
@@ -275,8 +277,9 @@ export class AdminComponent implements OnInit {
 
   editionNomProduit(Name : string){
     var saisie = prompt('Veuillez saisir un nouveau nom pour ce produit pour ce produit',String(Name));
-    console.log(saisie);
     if(saisie == null) return;
+    saisie = saisie.replace(/'/g,"''");
+    Name = Name.replace(/'/g,"''");
     this.productsService.updateProductName(saisie,Name).subscribe((response)=>{
       if (response == "Changement du nom du produit OK"){
         Swal.fire("Le nom a bien été changé !");

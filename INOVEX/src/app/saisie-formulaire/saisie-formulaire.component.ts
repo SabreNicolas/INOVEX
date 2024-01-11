@@ -93,7 +93,7 @@ export class SaisieFormulaireComponent implements OnInit {
   getValues(){
     this.listDays.forEach(date => {
       this.listProducts.forEach(pr => {
-        console.log(pr.idProduct)
+        // console.log(pr.idProduct)
         this.productsService.getValueProducts(date.substr(6, 4) + '-' + date.substr(3, 2) + '-' + date.substr(0, 2), pr.idProduct).subscribe((response) => {
           if (response.data[0] != undefined && response.data[0].Value != 0) {
             (<HTMLInputElement>document.getElementById(pr.idProduct + '-' + date)).value = response.data[0].Value;

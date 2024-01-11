@@ -172,26 +172,26 @@ export class ElementControleComponent implements OnInit {
   
   //Création éléments contrôle
   onSubmit(form : NgForm) {
-    this.nom = form.value['nom'].replace("'"," ");
+    this.nom = form.value['nom'].replace(/'/g,"''");
     this.zoneId = form.value['zone'];
     if(this.zoneId.length < 2){
       this.ordreElem = form.value['ordreElem'];
     }
     if(form.value['unit'].length > 0){
-      this.unit = form.value['unit'];
+      this.unit = form.value['unit'].replace(/'/g,"''");
     }
     if(form.value['valeurDef'].length > 0){
-      this.defaultValue = (form.value['valeurDef'].replace(',','.').replace(" ", ""));
+      this.defaultValue = (form.value['valeurDef'].replace(',','.').replace(/'/g,"''"));
     }
     if(this.needListValues){
-      this.listValues = form.value['listValues'];
+      this.listValues = form.value['listValues'].replace(/'/g,"''");
     }
     if(this.needBornes){
       if(form.value['valeurMin'].length > 0){
-        this.valeurMin = (form.value['valeurMin'].replace(',','.').replace(" ", ""));
+        this.valeurMin = (form.value['valeurMin'].replace(',','.').replace(" ", "").replace(/'/g,"''"));
       }
       if(form.value['valeurMax'].length > 0){
-        this.valeurMax = (form.value['valeurMax'].replace(',','.').replace(" ", ""));
+        this.valeurMax = (form.value['valeurMax'].replace(',','.').replace(" ", "").replace(/'/g,"''"));
       }
     }
     //Gestion des boolean
@@ -204,7 +204,7 @@ export class ElementControleComponent implements OnInit {
     }
     else this.isCompteur = 0;
     //FIN Gestion des boolean
-
+    this.codeEquipement = this.codeEquipement.replace(/'/g,"''");
     if (this.elementId > 0){
       this.update();
     }

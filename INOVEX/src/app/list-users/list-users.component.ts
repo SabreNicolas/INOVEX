@@ -29,7 +29,7 @@ export class ListUsersComponent implements OnInit {
   setFilters(){
     /* Début prise en compte des filtres*/
     var login = (<HTMLInputElement>document.getElementById('login')).value;
-    this.loginLike = login;
+    this.loginLike = login.replace(/'/g,"''");
     /*Fin de prise en commpte des filtres */
     this.ngOnInit();
   }

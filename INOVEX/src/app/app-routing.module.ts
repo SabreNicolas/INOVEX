@@ -84,7 +84,7 @@ const routes: Routes = [
         path : 'accueil',
         canActivate: [AuthGuard],
         component : AcceuilComponent
-        //component : MaintenanceComponent
+        // component : MaintenanceComponent
     },
     
     {

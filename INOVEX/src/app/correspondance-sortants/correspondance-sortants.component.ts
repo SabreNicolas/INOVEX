@@ -68,13 +68,15 @@ export class CorrespondanceSortantsComponent implements OnInit {
       var typeElt = document.getElementById(idCorrespondanceString);
       // @ts-ignore
       var productId = typeElt.options[typeElt.selectedIndex].value;
-      this.moralEntitiesService.updateProductImportCorrespondanceSortant(idCorrespondance, productId).subscribe((response) => {
+      if(productId != ""){
+        this.moralEntitiesService.updateProductImportCorrespondanceSortant(idCorrespondance, productId).subscribe((response) => {
         Swal.fire({
            icon: 'success',
            text: 'Correspondance modifiée',
          });
          this.ngOnInit();
        })
+      }
     }
 
     //Mise à jour du nom de l'import ou du produit
@@ -101,13 +103,16 @@ export class CorrespondanceSortantsComponent implements OnInit {
 
     createCorrespondance(productImport : string, productId : number){
       productImport = productImport.replace(/'/g,"''")
-      this.moralEntitiesService.createImport_tonnageSortant(productId, productImport).subscribe((response) => {
-        Swal.fire({
-          icon: 'success',
-          text: 'Correspondance ajoutée',
-        });
-        this.ngOnInit();
-      })
+      if(productId != 0){
+        this.moralEntitiesService.createImport_tonnageSortant(productId, productImport).subscribe((response) => {
+          Swal.fire({
+            icon: 'success',
+            text: 'Correspondance ajoutée',
+          });
+          this.ngOnInit();
+        })
+      }
+      
     }
 
   supprimer(idCorrespondance : number){

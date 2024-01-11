@@ -70,24 +70,32 @@ export class FormulaireComponent implements OnInit {
 
   //Fonction qui permet d'ajouter un product dans la table d'ajout
   ajoutProduct(){
-    //On a une data list donc la value n'est pas l'id du produit
-    //On parcours la liste des produits CAP pour trouver l'id de celui-ci
-    var idAjout=0;
-    for(let pr of this.listProducts){
-      if(pr.Name == this.productAjout){
-        idAjout = pr.Id;
+    if(this.productAjout != "" && this.productAjout != "Choisissez un produit CAP Exploitation"){
+      //On a une data list donc la value n'est pas l'id du produit
+      //On parcours la liste des produits CAP pour trouver l'id de celui-ci
+      var idAjout=0;
+      var verif = 0;
+      for(let pr of this.listProducts){
+        if(pr.Name == this.productAjout){
+          idAjout = pr.Id;
+          verif ++;
+        }
       }
+      if(verif != 0){
+        //Si on a pas d'alias, on laisse le nom cap exploitation
+        if(this.alias==""){
+          this.alias = this.productAjout
+        } 
+        //on ajoute le produit dans listAjout
+        var ajout = { Name : this.productAjout, id : idAjout, alias : this.alias}
+        this.listAjout.push(ajout); 
+        this.alias="";
+        this.productAjout="";
+        idAjout=0;
+      }
+        
     }
-    //Si on a pas d'alias, on laisse le nom cap exploitation
-    if(this.alias==""){
-      this.alias = this.productAjout
-    } 
-    //on ajoute le produit dans listAjout
-    var ajout = { Name : this.productAjout, id : idAjout, alias : this.alias}
-    this.listAjout.push(ajout); 
-    this.alias="";
-    this.productAjout="";
-    idAjout=0;   
+     
   }
 
   //Fonction qui permet de supprimer un product de la table d'ajout
@@ -100,6 +108,8 @@ export class FormulaireComponent implements OnInit {
 
   //Fonction de création et d'édition de formulaire
   createFormulaire(){
+    this.nom = this.nom.replace(/'/g,"''");
+    
     //Si on est en édition
     if(this.idForm>0){
       //On modifie le nom du formulaire
@@ -108,6 +118,7 @@ export class FormulaireComponent implements OnInit {
         this.productsService.deleteProductFormulaire(this.idForm).subscribe((response)=>{
           //On ajoute les nouveaux produits
           for(let pr of this.listAjout){
+            pr.alias = pr.alias.replace(/'/g,"''");
             this.productsService.createFormulaireAffectation(pr.alias,this.idForm,pr.id).subscribe((response)=>{
               if(response == "Affectation OK"){
                 Swal.fire({text : 'Formulaire modifié !', icon :'success'});
@@ -126,6 +137,7 @@ export class FormulaireComponent implements OnInit {
       this.productsService.createFormulaire(this.nom).subscribe((response)=>{
         var idForm = response['data'][0]['idFormulaire'];
         for(let pr of this.listAjout){
+          pr.alias = pr.alias.replace(/'/g,"''");
           this.productsService.createFormulaireAffectation(pr.alias,idForm,pr.id).subscribe((response)=>{
             if(response == "Affectation OK"){
               Swal.fire({text : 'Nouveau formulaire créé', icon :'success'});

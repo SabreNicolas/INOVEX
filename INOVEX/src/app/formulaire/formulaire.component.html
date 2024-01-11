@@ -37,7 +37,7 @@
                     <div class="form-group">
                         <input id="product" required class="form-control" list="datalistOptions" ngModel [(ngModel)]="productAjout" placeholder="Choisissez un produit CAP Exploitation" >
                         <datalist id="datalistOptions">
-                            <option value="Choisissez un produit CAP Exploitation"></option>
+                            <option disabled=true value="Choisissez un produit CAP Exploitation"></option>
                             <option *ngFor="let product of listProducts" value="{{product.Name}}"></option>
                         </datalist>
                     </div>

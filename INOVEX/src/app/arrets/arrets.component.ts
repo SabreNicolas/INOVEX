@@ -340,7 +340,7 @@ export class ArretsComponent implements OnInit {
       this.commentaire = this.commentaire +" - "+ this.saisieLibre;
     }
     else this.commentaire = this.saisieLibre;
-    this.commentaire = this.commentaire.replace("'","''")
+    this.commentaire = this.commentaire.replace(/'/g,"''")
     this.transformDateFormat();
 
     //Si on est en mode création

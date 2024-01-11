@@ -116,9 +116,9 @@ export class MoralEntitiesComponent implements OnInit {
     if (this.address == '' || this.address == null){
       this.moralEntitiesService.adress = '_';
     }
-    else this.moralEntitiesService.adress = this.address.replace("'","''");
+    else this.moralEntitiesService.adress = this.address.replace(/'/g,"''");
 
-    this.moralEntitiesService.nom = this.name.replace("'","''");
+    this.moralEntitiesService.nom = this.name.replace(/'/g,"''");
     this.moralEntitiesService.unitPrice = +this.unitPrice.toString().replace(',','.');
 
     //GESTION DE LA DIFFERENCE DE CODE POUR DIB ET DEA
@@ -136,27 +136,27 @@ export class MoralEntitiesComponent implements OnInit {
     if (this.CAP == '' || this.CAP == null){
       this.moralEntitiesService.numCAP = '_';
     }
-    else this.moralEntitiesService.numCAP = this.CAP;
+    else this.moralEntitiesService.numCAP = this.CAP.replace(/'/g,"''");
 
     if (this.codeDechet == '' || this.codeDechet == null){
       this.moralEntitiesService.codeDechet = '_';
     }
-    else this.moralEntitiesService.codeDechet = this.codeDechet;
+    else this.moralEntitiesService.codeDechet = this.codeDechet.replace(/'/g,"''");
 
     if (this.nomClient == '' || this.nomClient == null){
       this.moralEntitiesService.nomClient = '_';
     }
-    else this.moralEntitiesService.nomClient = this.nomClient.replace("'","''");
+    else this.moralEntitiesService.nomClient = this.nomClient.replace(/'/g,"''");
 
     if (this.prenomClient == '' || this.prenomClient == null){
       this.moralEntitiesService.prenomClient = '_';
     }
-    else this.moralEntitiesService.prenomClient = this.prenomClient.replace("'","''");
+    else this.moralEntitiesService.prenomClient = this.prenomClient.replace(/'/g,"''");
 
     if (this.mailClient == '' || this.mailClient == null){
       this.moralEntitiesService.mailClient = '_';
     }
-    else this.moralEntitiesService.mailClient = this.mailClient.replace("'","''");
+    else this.moralEntitiesService.mailClient = this.mailClient.replace(/'/g,"''");
     //FIN INFOS SUPP
 
     //Mise à jour du client si édition

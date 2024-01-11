@@ -358,6 +358,7 @@ export class ReportingRondeComponent implements OnInit {
     if (value == null) {
       return; //break out of the function early
     }
+    value = value.replace(/'/g,"''");
     this.rondierService.updateMesureRondier(Id,value).subscribe((response)=>{
       if (response == "Mise à jour de la valeur OK"){
         Swal.fire("La valeur a bien été mis à jour !");
@@ -428,6 +429,7 @@ export class ReportingRondeComponent implements OnInit {
     if(commentaire == ""){
       nvCommentaire = prompt('Veuillez le nouveau commentaire','');
       if(nvCommentaire != null){
+        nvCommentaire = nvCommentaire.replace(/'/g,"''")
         this.rondierService.createAnomalie(rondeId, nvCommentaire, zoneId).subscribe((response) =>{
           Swal.fire({
             icon: 'success',
@@ -440,6 +442,7 @@ export class ReportingRondeComponent implements OnInit {
     else{
       nvCommentaire = prompt('Veuillez modifier le commentaire',commentaire);
       if(nvCommentaire != null){
+        nvCommentaire = nvCommentaire.replace(/'/g,"''")
         this.rondierService.updateAnomalie(rondeId,zoneId,nvCommentaire).subscribe((response) =>{
           Swal.fire({
             icon: 'success',
