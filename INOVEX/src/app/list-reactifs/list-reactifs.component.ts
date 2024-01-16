@@ -30,7 +30,7 @@ export class ListReactifsComponent implements OnInit {
   public stockageImport : Map<String,number>;
   public correspondance : any[];
   public dates : string[]
-
+  public dechetsManquants : Map<String,String>;
 
 
   constructor(private idUsineService : idUsineService,private moralEntitiesService : moralEntitiesService, private productsService : productsService, private categoriesService : categoriesService, private Papa : Papa, private mrService : moralEntitiesService,private dateService : dateService) {
@@ -39,6 +39,7 @@ export class ListReactifsComponent implements OnInit {
     this.typeImportTonnage = '';
     this.csvArray = [];
     this.stockageImport = new Map();
+    this.dechetsManquants = new Map();
     this.correspondance = [];
     this.idUsine = 0;
     this.dates = [];
@@ -347,7 +348,6 @@ export class ListReactifsComponent implements OnInit {
     let successInsert = true;
     this.stockageImport.clear();
     var count = 0 ;
-    let dechetsManquants: string[]  = [];
     //On supprime les valeurs entre les deux dates, pour tout les déchets présents dans le csv
     this.correspondance.forEach(correspondance => {
       this.moralEntitiesService.deleteMesuresReactifsEntreDeuxDates(dateDeDebut,dateDeFin, correspondance.productImport).subscribe((response)=>{
@@ -387,7 +387,7 @@ export class ListReactifsComponent implements OnInit {
 
       //Si sur ce dechet, nous n'avons pas trouvé de correspondant, count = 0, et que ce dechet est une sortie, on la'jouter au tableau des dechet
       if(count == 0 && (csv.entrant == "E" || csv.entrant == 1 || csv.entrant == "RECEPTION") ){
-        dechetsManquants.push(dechetManquant);
+        this.dechetsManquants.set(dechetManquant, dechetManquant);
       }
     });
     console.log(this.stockageImport)
@@ -405,9 +405,9 @@ export class ListReactifsComponent implements OnInit {
     if(successInsert == true){
       var afficher = "";
 
-      for(let i = 0; i< dechetsManquants.length; i++){
-        afficher += "Le déchet : <strong>'" + dechetsManquants[i] + "'</strong> n'a pas de correspondance dans CAP Exploitation <br>";
-      }
+      this.dechetsManquants.forEach(async (value : String, key : String) => {
+        afficher += "Le déchet : <strong>'" + key + "'</strong> n'a pas de correspondance dans CAP Exploitation <br>";
+      })
       afficher += "<strong>Pensez à faire la correspondance dans l'administration !</strong>";
       Swal.fire({
         html : afficher,

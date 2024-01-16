@@ -36,6 +36,7 @@ export class ListSortantsComponent implements OnInit {
   public correspondance : any[];
   //stockage données HODJA à envoyer
   public stockageHodja : Map<String,number>;
+  public dechetsManquants : Map<String,String>;
   public valuesHodja : valueHodja[];
   public dates : string[]
 
@@ -49,6 +50,7 @@ export class ListSortantsComponent implements OnInit {
     this.typeImportTonnage = '';
     this.csvArray = [];
     this.stockageImport = new Map();
+    this.dechetsManquants = new Map();
     this.correspondance = [];
     this.idUsine = 0;
     this.stockageHodja = new Map();
@@ -373,7 +375,6 @@ export class ListSortantsComponent implements OnInit {
     this.debCode = '20';
     this.stockageImport.clear();
     var count = 0 ;
-    let dechetsManquants: string[]  = [];
     //On supprime les valeurs entre les deux dates, pour tout les déchets présents dans le csv
     this.correspondance.forEach(correspondance => {
       this.moralEntitiesService.deleteMesuresSortantsEntreDeuxDates(dateDeDebut,dateDeFin, correspondance.productImport).subscribe((response)=>{
@@ -411,7 +412,7 @@ export class ListSortantsComponent implements OnInit {
       })
               //Si sur ce dechet, nous n'avons pas trouvé de correspondant, count = 0, et que ce dechet est une sortie, on la'jouter au tableau des dechet
       if(count == 0 && (csv.entrant == "S" || csv.entrant == 2 || csv.entrant == "EXPEDITION" || csv.entrant == "SORTIE") ){
-            dechetsManquants.push(dechetManquant);
+        this.dechetsManquants.set(dechetManquant, dechetManquant);
       }
     });
     //debug
@@ -428,9 +429,9 @@ export class ListSortantsComponent implements OnInit {
 
     if(successInsert == true){
       var afficher = "";
-      for(let i = 0; i< dechetsManquants.length; i++){
-        afficher += "Le déchet : <strong>'" + dechetsManquants[i] + "'</strong> n'a pas de correspondance dans CAP Exploitation <br>";
-      }
+      this.dechetsManquants.forEach(async (value : String, key : String) => {
+        afficher += "Le déchet : <strong>'" + key + "'</strong> n'a pas de correspondance dans CAP Exploitation <br>";
+      })
       afficher += "<strong>Pensez à faire la correspondance dans l'administration !</strong>";
       Swal.fire({
         html : afficher,

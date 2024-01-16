@@ -44,8 +44,8 @@ export class ListEntreeComponent implements OnInit {
   public valuesHodja : valueHodja[];
   //stockage données HODJA à envoyer
   public stockageHodja : Map<String,number>;
-  public dates : string[]
-
+  public dates : string[];
+  public clientManquants: Map<String,String>;
 
   constructor(private idUsineService : idUsineService, private moralEntitiesService : moralEntitiesService, private productsService : productsService, private Papa : Papa, private dateService : dateService) {
     this.debCode = '2';
@@ -58,6 +58,7 @@ export class ListEntreeComponent implements OnInit {
     this.typeImportTonnage = '';
     this.csvArray = [];
     this.stockageImport = new Map();
+    this.clientManquants = new Map();
     //**HODJA
     this.valuesHodja = [];
     this.stockageHodja = new Map();
@@ -387,7 +388,7 @@ export class ListEntreeComponent implements OnInit {
       //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
       //Thiverval
       if(this.idUsine === 11){
-        this.lectureCSV(event, ";", false, 23, 29, 2, 16, 1);
+        this.lectureCSV(event, ";", false, 6, 29, 2, 16, 1);
       }
       else this.lectureCSV(event, ";", true, 6, 31, 2, 16);
     }
@@ -553,8 +554,6 @@ export class ListEntreeComponent implements OnInit {
   //Insertion du tonnage récupéré depuis le fichier csv ADEMI
   insertTonnageCSV(){
     let successInsert = true;
-    let clientManquants: any[] = [];
-    let dechetsManquants: string[]  = [];
     this.debCode = '20';
     this.stockageImport.clear();
     var count = 0 ;
@@ -593,8 +592,7 @@ export class ListEntreeComponent implements OnInit {
         });
         //Si sur ce dechet, nous n'avons pas trouvé de correspondant, count = 0, et que ce dechet est une entree, on la'jouter au tableau des dechet et clients manquants
         if(count == 0 && (csv.entrant == "E" || csv.entrant == 1 || csv.entrant == "RECEPTION" || csv.entrant == "ENTREE")){
-          dechetsManquants.push(dechetManquant);
-          clientManquants.push(clientManquant);
+          this.clientManquants.set(dechetManquant +"-"+ clientManquant,dechetManquant +"-"+ clientManquant);
         }
     });
     //debug
@@ -611,10 +609,10 @@ export class ListEntreeComponent implements OnInit {
     //Si l'inserstion s'est bien passée, on affiche la liste des correspondances manquantes
     if (successInsert){
       var afficher = "";
+      this.clientManquants.forEach(async (value : String, key : String) => {       
+        afficher += "Le client <strong>'" + key.split("-")[1] + "'</strong> avec le déchet : <strong>'" + key.split("-")[0] + "'</strong> n'a pas de correspondance dans CAP Exploitation <br>";
+      });
 
-      for(let i = 0; i< clientManquants.length; i++){
-        afficher += "Le client <strong>'" + clientManquants[i] + "'</strong> avec le déchet : <strong>'" + dechetsManquants[i] + "'</strong> n'a pas de correspondance dans CAP Exploitation <br>";
-      }
       afficher += "<strong>Pensez à faire la correspondance dans l'administration !</strong>";
       Swal.fire({
         html : afficher,
