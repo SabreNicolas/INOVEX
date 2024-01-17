@@ -396,7 +396,7 @@ export class ListEntreeComponent implements OnInit {
     else if (this.typeImportTonnage.toLowerCase().includes("dpk")){
       //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
       //this.lectureCSV(event, ";", false, 21, 20, 7, 19);
-      this.lectureCSV(event, ";", false, 21, 20, 7, 19);
+      this.lectureCSV(event, ";", false, 21, 20, 7, 19,25);
     }
     //Calce
     else if (this.typeImportTonnage.toLowerCase().includes("informatique verte")){
@@ -569,7 +569,7 @@ export class ListEntreeComponent implements OnInit {
           correspondance.nomImport = correspondance.nomImport.toLowerCase().replace(/\s/g,"");
           correspondance.productImport = correspondance.productImport.toLowerCase().replace(/\s/g,"");
 
-          if(csv.entrant == "E" || csv.entrant == 1 || csv.entrant == "RECEPTION" || csv.entrant == "ENTREE"){
+          if(csv.entrant == "E" || csv.entrant == 1 || csv.entrant == "RECEPTION" || csv.entrant == "ENTREE" || csv.entrant == "ENTRANT"){
             //Si il y a correspondance on fait traitement
             if( correspondance.nomImport == csv.client && correspondance.productImport == csv.typeDechet  /*|| (mr.produit == "dib/dea" && mr.produit.includes(csv.typeDechet)))*/ ){  
               let formatDate = csv.dateEntree.split('/')[2]+'-'+csv.dateEntree.split('/')[1]+'-'+csv.dateEntree.split('/')[0];
@@ -591,7 +591,7 @@ export class ListEntreeComponent implements OnInit {
           }
         });
         //Si sur ce dechet, nous n'avons pas trouvé de correspondant, count = 0, et que ce dechet est une entree, on la'jouter au tableau des dechet et clients manquants
-        if(count == 0 && (csv.entrant == "E" || csv.entrant == 1 || csv.entrant == "RECEPTION" || csv.entrant == "ENTREE")){
+        if(count == 0 && (csv.entrant == "E" || csv.entrant == 1 || csv.entrant == "RECEPTION" || csv.entrant == "ENTREE" || csv.entrant == "ENTRANT")){
           this.clientManquants.set(dechetManquant +"-"+ clientManquant,dechetManquant +"-"+ clientManquant);
         }
     });

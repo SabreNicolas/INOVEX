@@ -179,7 +179,7 @@ export class ListReactifsComponent implements OnInit {
     //Saint-Saulve
     else if (this.typeImportTonnage.toLowerCase().includes("dpk")){
       //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
-      this.lectureCSV(event, ";", false, 20, 7, 19);
+      this.lectureCSV(event, ";", false, 20, 7, 19,25);
     }
     //Calce
     else if (this.typeImportTonnage.toLowerCase().includes("informatique verte")){
@@ -363,7 +363,7 @@ export class ListReactifsComponent implements OnInit {
           csv.typeDechet = csv.typeDechet.toLowerCase().replace(/\s/g,"");
           correspondance.productImport = correspondance.productImport.toLowerCase().replace(/\s/g,"");  
           
-          if(csv.entrant == "E" || csv.entrant == 1 || csv.entrant == "RECEPTION"){
+          if(csv.entrant == "E" || csv.entrant == 1 || csv.entrant == "RECEPTION" || csv.entrant == "REACTIF"){
             //Si il y a correspondance on fait traitement
             if( correspondance.productImport == csv.typeDechet ){
               let formatDate = csv.dateEntree.split('/')[2]+'-'+csv.dateEntree.split('/')[1]+'-'+csv.dateEntree.split('/')[0];
@@ -386,7 +386,7 @@ export class ListReactifsComponent implements OnInit {
       });
 
       //Si sur ce dechet, nous n'avons pas trouvé de correspondant, count = 0, et que ce dechet est une sortie, on la'jouter au tableau des dechet
-      if(count == 0 && (csv.entrant == "E" || csv.entrant == 1 || csv.entrant == "RECEPTION") ){
+      if(count == 0 && (csv.entrant == "E" || csv.entrant == 1 || csv.entrant == "RECEPTION" || csv.entrant == "REACTIF") ){
         this.dechetsManquants.set(dechetManquant, dechetManquant);
       }
     });

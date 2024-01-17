@@ -103,6 +103,7 @@ export class moralEntitiesService {
 
     //crée une nouvelle correspondance pour lecture csv
     createImport_tonnage(ProducerId : number, ProductId : number, nomImport : string, productImport : string){
+      nomImport = encodeURIComponent(nomImport)
       let requete = "https://"+this.ip+":"+this.portAPI+"/import_tonnage?ProducerId="+ProducerId+"&ProductId="+ProductId+"&nomImport="+nomImport+"&productImport="+productImport+"&idUsine="+this.idUsine;
       // console.log(requete);
 
@@ -206,8 +207,9 @@ export class moralEntitiesService {
     }
     //mettre à jour une correspondance
     updateCorrespondance(ProducerId : number ,nomImport : string ,productImport : string){
+      nomImport = encodeURIComponent(nomImport)
       let requete = "https://"+this.ip+":"+this.portAPI+"/updateCorrespondance?ProducerId="+ProducerId+"&nomImport="+nomImport+"&productImport="+productImport;
-      //console.log(requete);
+      console.log(requete);
 
       const requestOptions = {
         headers: new HttpHeaders(this.headerDict),
