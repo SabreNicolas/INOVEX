@@ -156,7 +156,7 @@ export class ReportingRondeComponent implements OnInit {
               response.data.forEach(reporting => {
                 //@ts-ignore
                 let champValue = document.getElementById(ronde.Id + "-" + reporting.elementId);
-                if (champValue != null || champValue != "") {
+                if (champValue != null) {
                   let champError = document.getElementById(ronde.Id + "-" + reporting.elementId + "-Error");
                   //SI on a un mode regulateur on affiche le champ et on affiche le mode
                   if (reporting.modeRegulateur != "undefined") {

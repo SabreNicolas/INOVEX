@@ -302,26 +302,27 @@ export class ArretsComponent implements OnInit {
         var selection = document.getElementById("fortuit");
         //@ts-ignore
         this.commentaire = selection.options[selection.selectedIndex].value;
-        
-        if(this.fortuit_chaudiere == true){
-          var selection2 = document.getElementById("fortuit_chaudiere");
-          //@ts-ignore
-          this.commentaire =  this.commentaire + " - " + selection2.options[selection2.selectedIndex].value;
-        }
-        else if(this.fortuit_commun == true){
-          var selection2 = document.getElementById("fortuit_commun");
-          //@ts-ignore
-          this.commentaire =  this.commentaire + " - " + selection2.options[selection2.selectedIndex].value;
-        }
-        else if(this.fortuit_four == true){
-          var selection2 = document.getElementById("fortuit_four");
-          //@ts-ignore
-          this.commentaire =  this.commentaire + " - " + selection2.options[selection2.selectedIndex].value;
-        }
-        else {
-          var selection2 = document.getElementById("fortuit_traitement");
-          //@ts-ignore
-          this.commentaire =  this.commentaire + " - " + selection2.options[selection2.selectedIndex].value;
+        if(this.commentaire != "Autre"){
+          if(this.fortuit_chaudiere == true){
+            var selection2 = document.getElementById("fortuit_chaudiere");
+            //@ts-ignore
+            this.commentaire =  this.commentaire + " - " + selection2.options[selection2.selectedIndex].value;
+          }
+          else if(this.fortuit_commun == true){
+            var selection2 = document.getElementById("fortuit_commun");
+            //@ts-ignore
+            this.commentaire =  this.commentaire + " - " + selection2.options[selection2.selectedIndex].value;
+          }
+          else if(this.fortuit_four == true){
+            var selection2 = document.getElementById("fortuit_four");
+            //@ts-ignore
+            this.commentaire =  this.commentaire + " - " + selection2.options[selection2.selectedIndex].value;
+          }
+          else {
+            var selection2 = document.getElementById("fortuit_traitement");
+            //@ts-ignore
+            this.commentaire =  this.commentaire + " - " + selection2.options[selection2.selectedIndex].value;
+          }
         }
       }
       else if(this.programme == true){
