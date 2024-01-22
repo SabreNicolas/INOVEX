@@ -92,8 +92,8 @@ export class ListCompteursComponent implements OnInit {
   }
 
   async setPeriod(form: NgForm){
-    //SI NSL OU SAINT SAULVE, on affiche en mensuel
-    if(this.idUsine == 1 ||this.idUsine == 3){
+    //SI Pithiviers
+    if(this.idUsine == 3){
       this.listDays = [];
       if(form.value['dateDeb'] != ''){
         var date = new Date(form.value['dateDeb']);
@@ -108,7 +108,7 @@ export class ListCompteursComponent implements OnInit {
           text: 'Date invalide',
         })
       }
-    }//Sinon on afficheen journalier
+    }//Sinon on affiche en journalier
     else {
       this.listDays = [];
       this.dateDeb = new Date((<HTMLInputElement>document.getElementById("dateDeb")).value);
@@ -191,8 +191,8 @@ export class ListCompteursComponent implements OnInit {
           i=0;
           await this.wait(500);
         }
-        //Si on est sur chinon, nsl ou pit, on récupère les valeurs dans saisiemensuelle
-        if(this.idUsine == 1 || this.idUsine == 2 || this.idUsine == 3){
+        //Si on est sur chinon, ou pit, on récupère les valeurs dans saisiemensuelle
+        if(this.idUsine == 2 || this.idUsine == 3){
           this.productsService.getValueCompteurs(date.substr(6, 4) + '-' + date.substr(3, 2) + '-' + date.substr(0, 2),pr.Code).subscribe((response) => {
             if (response.data[0] != undefined && response.data[0].Value != 0) {
               (<HTMLInputElement>document.getElementById(pr.Code + '-' + date)).value = response.data[0].Value;
@@ -224,8 +224,8 @@ export class ListCompteursComponent implements OnInit {
         var Value2 = value.replace(" ", "");
         var valueInt: number = +Value2;
         if (valueInt > 0.0) {
-           //Si on est sur chinon, nsl ou pit, on insère les valeurs dans saisiemensuelle
-          if(this.idUsine == 1 || this.idUsine == 2 ||this.idUsine == 3){
+          //Si on est sur chinon ou pit, on insère les valeurs dans saisiemensuelle
+          if(this.idUsine == 2 ||this.idUsine == 3){
             this.productsService.createMeasure(day.substr(6, 4) + '-' + day.substr(3, 2) + '-' + day.substr(0, 2), valueInt, cp.Code).subscribe((response) => {
               if (response == "Création du saisiemensuelle OK") {
                 Swal.fire("Les valeurs ont été insérées avec succès !");
@@ -274,7 +274,7 @@ export class ListCompteursComponent implements OnInit {
   }
 
   //mettre à 0 la value pour modificiation
-  //Si on est sur chinon, nsl ou pit, on supprime les valeurs dans saisiemensuelle
+  //Si on est sur chinon ou pit, on supprime les valeurs dans saisiemensuelle
   deleteCompteur(Code : string, date : string){
     this.productsService.createMeasure(date.substr(6,4)+'-'+date.substr(3,2)+'-'+date.substr(0,2),0,Code).subscribe((response)=>{
       if (response == "Création du saisiemensuelle OK"){
