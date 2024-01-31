@@ -103,7 +103,8 @@ export class moralEntitiesService {
 
     //crée une nouvelle correspondance pour lecture csv
     createImport_tonnage(ProducerId : number, ProductId : number, nomImport : string, productImport : string){
-      nomImport = encodeURIComponent(nomImport)
+      nomImport = encodeURIComponent(nomImport);
+      productImport = encodeURIComponent(productImport);
       let requete = "https://"+this.ip+":"+this.portAPI+"/import_tonnage?ProducerId="+ProducerId+"&ProductId="+ProductId+"&nomImport="+nomImport+"&productImport="+productImport+"&idUsine="+this.idUsine;
       // console.log(requete);
 
@@ -117,6 +118,7 @@ export class moralEntitiesService {
 
     //crée une nouvelle correspondance pour lecture csv
     createImport_tonnageSortant(ProductId : number,productImport : string){
+      productImport = encodeURIComponent(productImport);
       let requete = "https://"+this.ip+":"+this.portAPI+"/import_tonnageSortant?ProductId="+ProductId+"&productImport="+productImport+"&idUsine="+this.idUsine;
       // console.log(requete);
 
@@ -130,6 +132,7 @@ export class moralEntitiesService {
 
     //crée une nouvelle correspondance pour lecture csv
     createImport_tonnageReactif(ProductId : number,productImport : string){
+      productImport = encodeURIComponent(productImport);
       let requete = "https://"+this.ip+":"+this.portAPI+"/import_tonnageReactif?ProductId="+ProductId+"&productImport="+productImport+"&idUsine="+this.idUsine;
       // console.log(requete);
 
@@ -207,7 +210,8 @@ export class moralEntitiesService {
     }
     //mettre à jour une correspondance
     updateCorrespondance(ProducerId : number ,nomImport : string ,productImport : string){
-      nomImport = encodeURIComponent(nomImport)
+      nomImport = encodeURIComponent(nomImport);
+      productImport = encodeURIComponent(productImport);
       let requete = "https://"+this.ip+":"+this.portAPI+"/updateCorrespondance?ProducerId="+ProducerId+"&nomImport="+nomImport+"&productImport="+productImport;
       console.log(requete);
 
@@ -221,6 +225,7 @@ export class moralEntitiesService {
 
     //mettre à jour le nom dans le logiciel de pesée d'une correspondance de sortant
     updateNomImportCorrespondanceSortant(ProductId : number ,productImport : string){
+      productImport = encodeURIComponent(productImport);
       let requete = "https://"+this.ip+":"+this.portAPI+"/updateNomImportCorrespondanceSortant?ProductId="+ProductId+"&productImport="+productImport;
       //console.log(requete);
 
@@ -260,6 +265,7 @@ export class moralEntitiesService {
 
     //mettre à jour le nom dans le logiciel de pesée d'une correspondance de reactif
     updateNomImportCorrespondanceReactif(ProductId : number ,productImport : string){
+      productImport = encodeURIComponent(productImport);
       let requete = "https://"+this.ip+":"+this.portAPI+"/updateNomImportCorrespondanceReactif?ProductId="+ProductId+"&productImport="+productImport;
       //console.log(requete);
 

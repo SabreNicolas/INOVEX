@@ -25,11 +25,10 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <button class="btn btn-primary" type="submit" (click)="setPeriod(f)"><img src="assets/refresh.png"></button>
+                        <button style="margin-left: 0.5em" class="btn btn-secondary" (click)="set2Days(f)">2 Derniers Jours</button>
                         <button style="margin-left: 0.5em" class="btn btn-warning" (click)="setYesterday(f)">Hier</button>
                         <button style="margin-left: 0.5em" class="btn btn-info" (click)="setCurrentWeek(f)">Semaine en cours</button>
                         <button style="margin-left: 0.5em" class="btn btn-dark" (click)="setCurrentMonth(f)">Mois en cours</button>
-                        <!--SI import de type récupération HODJA-->
-                        <!-- <button style="margin-left: 0.5em" *ngIf="typeImportTonnage == 'Hodja'" class="btn btn-primary" (click)="recupHodja(f)">Récupération HODJA</button> -->
                     </div>
                 </div>
             </div>

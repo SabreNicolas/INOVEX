@@ -71,6 +71,12 @@ export class SaisieFormulaireComponent implements OnInit {
     this.getValues();
   }
 
+  //changer les dates pour saisir les 2 derniers jours
+  set2Days(form: NgForm){
+    this.dateService.set2Days(form);
+    this.setPeriod(form);
+  }
+
   //changer les dates pour saisir hier
   setYesterday(form: NgForm){
     this.dateService.setYesterday(form);

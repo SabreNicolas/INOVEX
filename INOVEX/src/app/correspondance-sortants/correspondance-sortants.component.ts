@@ -102,7 +102,7 @@ export class CorrespondanceSortantsComponent implements OnInit {
     }
 
     createCorrespondance(productImport : string, productId : number){
-      productImport = productImport.replace(/'/g,"''")
+      productImport = productImport.replace(/'/g,"''");
       if(productId != 0){
         this.moralEntitiesService.createImport_tonnageSortant(productId, productImport).subscribe((response) => {
           Swal.fire({

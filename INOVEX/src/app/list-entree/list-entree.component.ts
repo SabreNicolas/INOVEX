@@ -415,7 +415,7 @@ export class ListEntreeComponent implements OnInit {
     //Maubeuge
     else if (this.typeImportTonnage.toLowerCase().includes("tradim")){
       //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
-      this.lectureCSV(event, ";", true, 8, 6, 0, 5);
+      this.lectureCSV(event, ";", true, 8, 6, 0, 5, 11);
     }
     //Plouharnel / GIEN / Douchy/ Mourenx
     else if (this.typeImportTonnage.toLowerCase().includes("arpege masterk")){
@@ -445,10 +445,21 @@ export class ListEntreeComponent implements OnInit {
       //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
       this.lectureCSV(event, ";", true, 9, 12, 0, 14);
     }
+    //Vitré
+    else if (this.typeImportTonnage.toLowerCase().includes("pcs précia")){
+      //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
+      this.lectureCSV(event, ";", true, 13, 20, 4, 27, 31);
+    }
+    //Saint Ouen
+    else if (this.typeImportTonnage.toLowerCase().includes("syspeau")){
+      //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
+      this.lectureCSV(event, ";", true, 0, 18, 5, 9, 4);
+    }
   }
 
   //import tonnage via fichier
-  //Traitement du fichier csv ADEMI
+  //Traitement du fichier csv
+  //La position pour le sens n'est pas obligatoire
   lectureCSV(event : Event, delimiter : string, header : boolean, posClient : number, posTypeDechet : number, posDateEntree : number, posTonnage : number, posEntreeSortie? : number){
     this.loading();
     //@ts-ignore
@@ -569,7 +580,7 @@ export class ListEntreeComponent implements OnInit {
           correspondance.nomImport = correspondance.nomImport.toLowerCase().replace(/\s/g,"");
           correspondance.productImport = correspondance.productImport.toLowerCase().replace(/\s/g,"");
 
-          if(csv.entrant == "E" || csv.entrant == 1 || csv.entrant == "RECEPTION" || csv.entrant == "ENTREE" || csv.entrant == "ENTRANT"){
+          if(csv.entrant == "E" || csv.entrant == 1 || csv.entrant == "RECEPTION" || csv.entrant == "ENTREE" || csv.entrant == "ENTRANT" || csv.entrant == "INCINERABLES"){
             //Si il y a correspondance on fait traitement
             if( correspondance.nomImport == csv.client && correspondance.productImport == csv.typeDechet  /*|| (mr.produit == "dib/dea" && mr.produit.includes(csv.typeDechet)))*/ ){  
               let formatDate = csv.dateEntree.split('/')[2]+'-'+csv.dateEntree.split('/')[1]+'-'+csv.dateEntree.split('/')[0];
@@ -591,7 +602,7 @@ export class ListEntreeComponent implements OnInit {
           }
         });
         //Si sur ce dechet, nous n'avons pas trouvé de correspondant, count = 0, et que ce dechet est une entree, on la'jouter au tableau des dechet et clients manquants
-        if(count == 0 && (csv.entrant == "E" || csv.entrant == 1 || csv.entrant == "RECEPTION" || csv.entrant == "ENTREE" || csv.entrant == "ENTRANT")){
+        if(count == 0 && (csv.entrant == "E" || csv.entrant == 1 || csv.entrant == "RECEPTION" || csv.entrant == "ENTREE" || csv.entrant == "ENTRANT" || csv.entrant == "INCINERABLES")){
           this.clientManquants.set(dechetManquant +"-"+ clientManquant,dechetManquant +"-"+ clientManquant);
         }
     });

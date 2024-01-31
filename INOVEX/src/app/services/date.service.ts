@@ -26,6 +26,31 @@ export class dateService {
         text: 'La date de Fin est inférieure à la date de Départ !',
       })
     }
+
+    //changer les dates pour saisir les 2 derniers jours
+    set2Days(form: NgForm){
+      var date = new Date();
+      var yyyy = date.getFullYear();
+      var dd = String(date.getDate() - 1).padStart(2, '0');
+      var ddBefore = String(date.getDate() - 2).padStart(2, '0');
+      var mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
+      //Si après décrémentation du jour on a 0, on prend le dernier jour du mois dernier
+      if(dd === '00'){
+        dd = String(new Date(yyyy, date.getMonth(), 0).getDate()).padStart(2, '0');
+        mm = String(date.getMonth()).padStart(2, '0');
+      }
+      var day = yyyy + '-' + mm + '-' + dd;
+      if(ddBefore === '00'){
+        ddBefore = String(new Date(yyyy, date.getMonth(), 0).getDate()).padStart(2, '0');
+        mm = String(date.getMonth()).padStart(2, '0');
+      }
+      var dayBefore = yyyy + '-' + mm + '-' + ddBefore;
+      (<HTMLInputElement>document.getElementById("dateDeb")).value = dayBefore;
+      (<HTMLInputElement>document.getElementById("dateFin")).value = day;
+      form.value['dateDeb'] = dayBefore;
+      form.value['dateFin'] = day;
+  }
+
     //changer les dates pour saisir hier
     setYesterday(form: NgForm){
         var date = new Date();

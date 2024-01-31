@@ -20,8 +20,10 @@ export class ListArretsComponent implements OnInit {
   public dateDeb : Date | undefined;
   public dateFin : Date | undefined;
   public isArret : boolean = false; // 'true' si on saisie des arrêts et 'false' si dépassements
-  private nbfour : number;
+  public nbfour : number;
   public numbers : number[];
+  public nbGTA : number;
+  public nbRCU : number;
   public updateAfterDelete : boolean;
 
   constructor(private arretsService : arretsService, private rondierService : rondierService, private route : ActivatedRoute, private router : Router, private dateService : dateService) {
@@ -31,6 +33,8 @@ export class ListArretsComponent implements OnInit {
     this.stringDateDebut = '';
     this.stringDateFin = '';
     this.nbfour = 0;
+    this.nbGTA = 0;
+    this.nbRCU = 0;
     this.updateAfterDelete = false;
     //contient des chiffres pour l'itération des fours
     this.numbers = [];
@@ -49,6 +53,18 @@ export class ListArretsComponent implements OnInit {
       //@ts-ignore
       this.nbfour = response.data[0].nbLigne;
       this.numbers = Array(this.nbfour).fill(1).map((x,i) => i+1);
+    });
+
+    //Récupération du nombre de GTA du site
+    this.rondierService.nbGTA().subscribe((response)=>{
+      //@ts-ignore
+      this.nbGTA = response.data[0].nbGTA;
+    });
+
+    //Récupération du nombre de RCU du site
+    this.rondierService.nbRCU().subscribe((response)=>{
+      //@ts-ignore
+      this.nbRCU = response.data[0].nbReseauChaleur;
     });
 
     //Si on rafraichit après un delete on n'ajoute pas les heures dans la date

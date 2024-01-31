@@ -835,6 +835,32 @@ export class rondierService {
             .get<number>(requete,requestOptions);
     }
 
+    //Nombre de GTA dans l'usine
+    nbGTA(){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/nbGTA/"+this.idUsine;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<number>(requete,requestOptions);
+    }
+
+    //Nombre de RCU dans l'usine
+    nbRCU(){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/nbRCU/"+this.idUsine;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<number>(requete,requestOptions);
+    }
+
     /*
     FIN NB LIGNE USINE
      */
