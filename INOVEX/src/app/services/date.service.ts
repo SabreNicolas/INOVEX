@@ -34,17 +34,20 @@ export class dateService {
       var dd = String(date.getDate() - 1).padStart(2, '0');
       var ddBefore = String(date.getDate() - 2).padStart(2, '0');
       var mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
+      var mmBefore = String(date.getMonth() + 1).padStart(2, '0');
       //Si après décrémentation du jour on a 0, on prend le dernier jour du mois dernier
       if(dd === '00'){
         dd = String(new Date(yyyy, date.getMonth(), 0).getDate()).padStart(2, '0');
         mm = String(date.getMonth()).padStart(2, '0');
+        mmBefore = mm;
+        ddBefore = String(new Date(yyyy, date.getMonth(), 0).getDate() - 1).padStart(2, '0');
       }
-      var day = yyyy + '-' + mm + '-' + dd;
       if(ddBefore === '00'){
         ddBefore = String(new Date(yyyy, date.getMonth(), 0).getDate()).padStart(2, '0');
-        mm = String(date.getMonth()).padStart(2, '0');
+        mmBefore = String(date.getMonth()).padStart(2, '0');
       }
-      var dayBefore = yyyy + '-' + mm + '-' + ddBefore;
+      var day = yyyy + '-' + mm + '-' + dd;
+      var dayBefore = yyyy + '-' + mmBefore + '-' + ddBefore;
       (<HTMLInputElement>document.getElementById("dateDeb")).value = dayBefore;
       (<HTMLInputElement>document.getElementById("dateFin")).value = day;
       form.value['dateDeb'] = dayBefore;
