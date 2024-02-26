@@ -51,7 +51,7 @@
                             <button style="margin-left: 0.5em" class="btn btn-info" (click)="setCurrentWeek(f)">Semaine en cours</button>
                             <button style="margin-left: 0.5em" class="btn btn-dark" (click)="setCurrentMonth(f)">Mois en cours</button>
                             <!--SI import de type récupération HODJA-->
-                            <button *ngIf="typeImportTonnage == 'Hodja'" style="margin-left: 0.5em" class="btn btn-primary" (click)="recupHodja(f)">Récupération HODJA</button>
+                            <button *ngIf="typeImportTonnage == 'Hodja' && idUsine == 4" style="margin-left: 0.5em" class="btn btn-primary" (click)="recupHodja(f)">Récupération HODJA</button>
                         </div>
                     </div>
                 </div>

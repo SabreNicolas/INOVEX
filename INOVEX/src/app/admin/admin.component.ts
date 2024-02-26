@@ -232,7 +232,7 @@ export class AdminComponent implements OnInit {
     this.listElements.forEach(element =>{
       let id = String(element.Id)+"_rondier";
       //@ts-ignore
-      listElementsRondier[id] = element.nom;
+      listElementsRondier[id] = element.nomZone + ' - ' + element.nom;
     });
     Swal.fire({
       title: 'Veuillez choisir un élément rondier',
