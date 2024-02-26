@@ -396,7 +396,7 @@ export class ListEntreeComponent implements OnInit {
     else if (this.typeImportTonnage.toLowerCase().includes("dpk")){
       //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
       //this.lectureCSV(event, ";", false, 21, 20, 7, 19);
-      this.lectureCSV(event, ";", false, 21, 20, 7, 19,25);
+      this.lectureCSV(event, ";", false, 22, 21, 8, 20,26);
     }
     //Calce
     else if (this.typeImportTonnage.toLowerCase().includes("informatique verte")){
@@ -442,8 +442,15 @@ export class ListEntreeComponent implements OnInit {
     }
     //Sète , Cergy
     else if (this.typeImportTonnage.toLowerCase().includes("hodja")){
+      //Sète
       //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
-      this.lectureCSV(event, ";", true, 9, 12, 0, 14);
+      if(this.idUsine === 19){
+        this.lectureCSV(event, ",", true, 11, 13, 0, 16);
+      }
+      //Cergy
+      else {
+        this.lectureCSV(event, ",", true, 9, 12, 0, 14);
+      }
     }
     //Vitré
     else if (this.typeImportTonnage.toLowerCase().includes("pcs précia")){
