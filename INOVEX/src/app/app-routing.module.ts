@@ -55,6 +55,10 @@ import { CorrespondanceReactifsComponent } from './correspondance-reactifs/corre
 import { FormulaireComponent } from './formulaire/formulaire.component';
 import { ListFormulairesComponent } from './list-formulaires/list-formulaires.component';
 import { SaisieFormulaireComponent } from './saisie-formulaire/saisie-formulaire.component';
+import { ActuComponent } from './actu/actu.component';
+import { ListActusComponent } from './list-actus/list-actus.component';
+import { EvenementComponent } from './evenement/evenement.component';
+import { ListEvenementsComponent } from './list-evenements/list-evenements.component';
 
 const routes: Routes = [
 
@@ -131,6 +135,12 @@ const routes: Routes = [
             { path : 'listEquipe', canActivate: [AuthGuard], component: ListEquipeComponent },
             { path : 'newEquipe', canActivate: [AuthGuard], component: EquipeComponent },
             { path : 'outils', canActivate: [AuthGuard], component: OutilsComponent },
+            { path: 'newConsigne', canActivate: [AuthGuard], component: ConsigneComponent},
+            { path: 'consignes', canActivate: [AuthGuard], component: ListConsignesComponent},
+            { path: 'newActu', canActivate: [AuthGuard], component: ActuComponent},
+            { path: 'actu', canActivate: [AuthGuard], component: ListActusComponent},
+            { path: 'newEvenement', canActivate: [AuthGuard], component: EvenementComponent},
+            { path: 'evenement', canActivate: [AuthGuard], component: ListEvenementsComponent},
         ]
     },
 

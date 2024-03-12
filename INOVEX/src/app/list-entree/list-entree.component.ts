@@ -15,6 +15,7 @@ import { valueHodja } from 'src/models/valueHodja.model';
 import { dateService } from '../services/date.service';
 import { user } from 'src/models/user.model';
 import { idUsineService } from '../services/idUsine.service';
+import {DatePipe} from '@angular/common'
 
 @Component({
   selector: 'app-list-entree',
@@ -38,6 +39,8 @@ export class ListEntreeComponent implements OnInit {
   public listTypeDechets : string[];
   public typeImportTonnage : string;
   public csvArray : importCSV[];
+  public csvRegistre : any[];
+
   //stockage données ADEMI à envoyer
   public stockageImport : Map<String,number>;
   //**HODJA
@@ -47,10 +50,11 @@ export class ListEntreeComponent implements OnInit {
   public dates : string[];
   public clientManquants: Map<String,String>;
 
-  constructor(private idUsineService : idUsineService, private moralEntitiesService : moralEntitiesService, private productsService : productsService, private Papa : Papa, private dateService : dateService) {
+  constructor(private idUsineService : idUsineService,private datePipe:DatePipe, private moralEntitiesService : moralEntitiesService, private productsService : productsService, private Papa : Papa, private dateService : dateService) {
     this.debCode = '2';
     this.moralEntities = [];
     this.listDays = [];
+    this.csvRegistre = [];
     this.listTotal = [];
     this.monthCall = 0;
     this.listTypeDechetsCollecteurs = [];
@@ -362,6 +366,7 @@ export class ListEntreeComponent implements OnInit {
   exportExcel(){
     /* table id is passed over here */
     let element = document.getElementById('listEntree');
+    console.log(element)
     const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element,{raw:false,dateNF:'mm/dd/yyyy'}); //Attention les jours sont considérés comme mois !!!!
 
     /* generate workbook and add the worksheet */
@@ -371,6 +376,8 @@ export class ListEntreeComponent implements OnInit {
     /* save to file */
     XLSX.writeFile(wb, 'entrants.xlsx');
   }
+
+
 
   //import tonnage via fichier
   import(event : Event){
@@ -390,13 +397,16 @@ export class ListEntreeComponent implements OnInit {
       if(this.idUsine === 11){
         this.lectureCSV(event, ";", false, 6, 29, 2, 16, 1);
       }
-      else this.lectureCSV(event, ";", true, 6, 31, 2, 16);
+      else {
+        this.lectureCSV(event, ";", true, 6, 31, 2, 16);
+        this.registre_DNDTS(event);
+      }
     }
     //Saint-Saulve
     else if (this.typeImportTonnage.toLowerCase().includes("dpk")){
       //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
       //this.lectureCSV(event, ";", false, 21, 20, 7, 19);
-      this.lectureCSV(event, ";", false, 21, 20, 7, 19,25);
+      this.lectureCSV(event, ";", false, 22, 21, 8, 20,26);
     }
     //Calce
     else if (this.typeImportTonnage.toLowerCase().includes("informatique verte")){
@@ -438,17 +448,31 @@ export class ListEntreeComponent implements OnInit {
     //Pluzunet
     else if (this.typeImportTonnage.toLowerCase().includes("caktus")){
       //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
-      this.lectureCSV(event, ",", true, 24, 22, 14, 10, 33);
+      this.lectureCSV(event, ",", true, 31, 22, 14, 10, 33);
     }
     //Sète , Cergy
     else if (this.typeImportTonnage.toLowerCase().includes("hodja")){
+      //Sète
       //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
-      this.lectureCSV(event, ";", true, 9, 12, 0, 14);
+      if(this.idUsine === 19){
+        this.lectureCSV(event, ",", true, 11, 13, 0, 16);
+      }
+      //Cergy
+      else {
+        this.lectureCSV(event, ",", true, 9, 12, 0, 14);
+      }
     }
     //Vitré
-    else if (this.typeImportTonnage.toLowerCase().includes("pcs précia")){
+    else if (this.typeImportTonnage.toLowerCase().includes("pcs précia")){      
       //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
-      this.lectureCSV(event, ";", true, 13, 20, 4, 27, 31);
+      if(this.idUsine === 15){
+        //Vitré
+        this.lectureCSV(event, ";", true,13, 20, 4, 27, 31);
+      }
+      //Villefranche
+      else {
+        this.lectureCSV(event, ";", true,13, 19, 6, 11, 2);
+      }
     }
     //Saint Ouen
     else if (this.typeImportTonnage.toLowerCase().includes("syspeau")){
@@ -457,6 +481,173 @@ export class ListEntreeComponent implements OnInit {
     }
   }
 
+    //Export de la table dans fichier EXCEL
+    exportRegistreDNDTSExcel(){
+      if((<HTMLInputElement>document.getElementById("dateDeb")).value != "" && (<HTMLInputElement>document.getElementById("dateFin")).value != ""){
+        this.dateDeb = new Date((<HTMLInputElement>document.getElementById("dateDeb")).value);
+        this.dateFin = new Date((<HTMLInputElement>document.getElementById("dateFin")).value);
+      
+        var dateDebString = this.datePipe.transform(this.dateDeb,'yyyy-MM-dd')
+        var dateFinString = this.datePipe.transform(this.dateFin,'yyyy-MM-dd')
+
+        var nomFichier = "dnd-entrant du " + this.datePipe.transform(this.dateDeb,'dd-MM-yyyy') + " au " +this.datePipe.transform(this.dateFin,'dd-MM-yyyy')
+        this.moralEntitiesService.getRegistreDNDTSEntrants(dateDebString, dateFinString).subscribe((response)=>{
+          /* table id is passed over here */
+          let element = response.data
+          if(response.data.length >1){
+            const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(element); //Attention les jours sont considérés comme mois !!!!
+      
+            /* generate workbook and add the worksheet */
+            const wb: XLSX.WorkBook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'Entrants');
+        
+            // /* save to file */
+            XLSX.writeFile(wb, nomFichier+'.xlsx');
+          }
+          else {
+            Swal.fire({
+              icon: 'error',
+              text: 'Aucune donnée sur ces dates !',
+            })
+          }
+        })
+      }
+      else{
+        Swal.fire({
+          icon: 'error',
+          text: 'Veuillez entrer des dates',
+        })
+      }
+    }
+
+  registre_DNDTS(event : Event){
+    this.loading();
+    //@ts-ignore
+    var files = event.target.files; // FileList object
+    var file = files[0];
+    var reader = new FileReader();
+    var debut = 1;
+
+    reader.readAsText(file);
+    reader.onload = (event: any) => {
+      var csv = event.target.result; // Content of CSV file
+
+      //options à ajouter => pas d'entête, delimiter ;
+      this.Papa.parse(csv, {
+        skipEmptyLines: true,
+        delimiter: ";",
+        //False pour éviter de devoir utiliser le nom des entêtes et rester sur un tableau avec des indices.
+        header: false,
+        complete: async (results) => {
+          for (let i = debut; i < results.data.length; i++) {
+            if(results.data[i][0] != "Compteur" && results.data[i][0] != 'Somme'){
+              //Création de l'objet qui contient l'ensemble des infos nécessaires
+              let importCSV = {
+                numDePesee: results.data[i][0].replace(/'/g,"''"),
+                type: results.data[i][1].replace(/'/g,"''"),
+                date1: results.data[i][2].replace(/'/g,"''"),
+                codeBadge: results.data[i][3].replace(/'/g,"''"),
+                codeVehicule: results.data[i][4].replace(/'/g,"''"),
+                codeClient: results.data[i][5].replace(/'/g,"''"),
+                nomClient: results.data[i][6].replace(/'/g,"''"),
+                poids1: results.data[i][7].replace(/'/g,"''"),
+                poids1DSD: results.data[i][8].replace(/'/g,"''"),
+                poids1DateHeure: results.data[i][9].replace(/'/g,"''"),
+                pontBasculeP1: results.data[i][10].replace(/'/g,"''"),
+                date2:results.data[i][11].replace(/'/g,"''"),
+                poids2: results.data[i][12].replace(/'/g,"''"),
+                poids2DSD: results.data[i][13].replace(/'/g,"''"),
+                poids2DateHeure: results.data[i][14].replace(/'/g,"''"),
+                pontBasculeP2: results.data[i][15].replace(/'/g,"''"),
+                net : results.data[i][16].replace(/'/g,"''"),
+                tempsDeRetenue: results.data[i][17].replace(/'/g,"''"),
+                codeSociete: results.data[i][18].replace(/'/g,"''"),
+                nomSociete: results.data[i][19].replace(/'/g,"''"),
+                codeFamilleVehicule : results.data[i][20].replace(/'/g,"''"),
+                nomFamilleVehicule : results.data[i][21].replace(/'/g,"''"),
+                codeFamilleTransporteur: results.data[i][22].replace(/'/g,"''"),
+                nomFamilleTransporteur: results.data[i][23].replace(/'/g,"''"),
+                codeTransporteur: results.data[i][24].replace(/'/g,"''"),
+                nomTransporteur: results.data[i][25].replace(/'/g,"''"),
+                codeFamilleClient: results.data[i][26].replace(/'/g,"''"),
+                nomFamilleClient: results.data[i][27].replace(/'/g,"''"),
+                codeFamilleProduit: results.data[i][28].replace(/'/g,"''"),
+                nomFamilleProduit: results.data[i][29].replace(/'/g,"''"),
+                codeProduit: results.data[i][30].replace(/'/g,"''"),
+                nomProduit: results.data[i][31].replace(/'/g,"''"),
+                codeCollecte: results.data[i][32].replace(/'/g,"''"),
+                nomCollecte: results.data[i][33].replace(/'/g,"''"),
+                codeDestination: results.data[i][34].replace(/'/g,"''"),
+                nomDestination: results.data[i][35].replace(/'/g,"''"),
+                codeChantier: results.data[i][36].replace(/'/g,"''"),
+                nomChantier: results.data[i][37].replace(/'/g,"''"),
+                codeChauffeur: results.data[i][38].replace(/'/g,"''"),
+                nomChauffeur: results.data[i][39].replace(/'/g,"''"),
+                codeFamilleBenne: results.data[i][40].replace(/'/g,"''"),
+                nomFamilleBenne: results.data[i][41].replace(/'/g,"''"),
+                codeBenne: results.data[i][42].replace(/'/g,"''"),
+                nomBenne: results.data[i][43].replace(/'/g,"''"),
+                codeZoneDeStockage: results.data[i][44].replace(/'/g,"''"),
+                nomZoneDeStockage: results.data[i][45].replace(/'/g,"''"),
+                codeFichier1: results.data[i][46].replace(/'/g,"''"),
+                nomFichier1: results.data[i][47].replace(/'/g,"''"),
+                codeFichier2: results.data[i][48].replace(/'/g,"''"),
+                nomFichier2: results.data[i][49].replace(/'/g,"''"),
+                codeFichier3: results.data[i][50].replace(/'/g,"''"),
+                nomFichier3: results.data[i][51].replace(/'/g,"''"),
+                codeFichier4: results.data[i][52].replace(/'/g,"''"),
+                nomFichier4: results.data[i][53].replace(/'/g,"''"),
+                terminee: results.data[i][54].replace(/'/g,"''"),
+                supprimee: results.data[i][55].replace(/'/g,"''"),
+                modifie: results.data[i][56].replace(/'/g,"''"),
+                humidite: results.data[i][57].replace(/'/g,"''"),
+                proteine : results.data[i][58].replace(/'/g,"''"),
+                impurete: results.data[i][59].replace(/'/g,"''"),
+                poidsSpecifique: results.data[i][60].replace(/'/g,"''"),
+                parcelle: results.data[i][61].replace(/'/g,"''"),
+                calibration: results.data[i][62].replace(/'/g,"''"),
+                numeroCommande: results.data[i][63].replace(/'/g,"''"),
+                numeroDeBSB: results.data[i][64].replace(/'/g,"''"),
+                adresse1Societe: results.data[i][65].replace(/'/g,"''"),
+                adresse2Societe: results.data[i][66].replace(/'/g,"''"),
+                codePostalSociete: results.data[i][67].replace(/'/g,"''"),
+                villeSociete: results.data[i][68].replace(/'/g,"''"),
+                mobileSociete: results.data[i][69].replace(/'/g,"''"),
+                telephoneSociete: results.data[i][70].replace(/'/g,"''"),
+                faxSociete: results.data[i][71].replace(/'/g,"''"),
+                modeDegrade: results.data[i][72].replace(/'/g,"''"),
+                borne : results.data[i][73].replace(/'/g,"''"),
+                numeroDePeseeBorne: results.data[i][74].replace(/'/g,"''"),
+                creeLe : results.data[i][75].replace(/'/g,"''"),
+                creePar : results.data[i][76].replace(/'/g,"''"),
+                creeSur : results.data[i][77].replace(/'/g,"''"),
+                modifieLe: results.data[i][78].replace(/'/g,"''"),
+                modifiePar: results.data[i][79].replace(/'/g,"''"),
+                modifieSur: results.data[i][80].replace(/'/g,"''"),
+                adresseClient : results.data[i][81].replace(/'/g,"''") + results.data[i][82].replace(/'/g,"''"),
+                codePostalClient : results.data[i][83].replace(/'/g,"''"),
+                villeClient : results.data[i][84].replace(/'/g,"''"),
+                siret : results.data[i][85].replace(/'/g,"''"),
+                idUsine: this.idUsine
+              };
+              this.csvRegistre.push(importCSV);
+            }
+          }
+          console.log(this.csvRegistre)
+          this.removeloading();
+          this.moralEntitiesService.registreDNDTS(this.csvRegistre).subscribe((response)=>{
+            Swal.fire({
+              icon: 'success',
+              text: 'Valeurs insérées avec succès',
+            })
+          })
+        }
+        
+      });
+    }
+   
+
+  }
   //import tonnage via fichier
   //Traitement du fichier csv
   //La position pour le sens n'est pas obligatoire
@@ -580,7 +771,7 @@ export class ListEntreeComponent implements OnInit {
           correspondance.nomImport = correspondance.nomImport.toLowerCase().replace(/\s/g,"");
           correspondance.productImport = correspondance.productImport.toLowerCase().replace(/\s/g,"");
 
-          if(csv.entrant == "E" || csv.entrant == 1 || csv.entrant == "RECEPTION" || csv.entrant == "ENTREE" || csv.entrant == "ENTRANT" || csv.entrant == "INCINERABLES"){
+          if(csv.entrant.toLowerCase() == "e" || csv.entrant == 1 || csv.entrant.toLowerCase() == "reception" || csv.entrant.toLowerCase() == "entree" || csv.entrant.toLowerCase() == "entrant" || csv.entrant.toLowerCase() == "incinerables"){
             //Si il y a correspondance on fait traitement
             if( correspondance.nomImport == csv.client && correspondance.productImport == csv.typeDechet  /*|| (mr.produit == "dib/dea" && mr.produit.includes(csv.typeDechet)))*/ ){  
               let formatDate = csv.dateEntree.split('/')[2]+'-'+csv.dateEntree.split('/')[1]+'-'+csv.dateEntree.split('/')[0];
@@ -602,7 +793,7 @@ export class ListEntreeComponent implements OnInit {
           }
         });
         //Si sur ce dechet, nous n'avons pas trouvé de correspondant, count = 0, et que ce dechet est une entree, on la'jouter au tableau des dechet et clients manquants
-        if(count == 0 && (csv.entrant == "E" || csv.entrant == 1 || csv.entrant == "RECEPTION" || csv.entrant == "ENTREE" || csv.entrant == "ENTRANT" || csv.entrant == "INCINERABLES")){
+        if(count == 0 && (csv.entrant.toLowerCase() == "e" || csv.entrant == 1 || csv.entrant.toLowerCase() == "reception" || csv.entrant.toLowerCase() == "entree" || csv.entrant.toLowerCase() == "entrant" || csv.entrant.toLowerCase() == "incinerables")){
           this.clientManquants.set(dechetManquant +"-"+ clientManquant,dechetManquant +"-"+ clientManquant);
         }
     });

@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import {ActivatedRoute, Router} from "@angular/router";
 import {rondierService} from "../services/rondier.service";
 import { dateService } from '../services/date.service';
+import { idUsineService } from '../services/idUsine.service';
 
 @Component({
   selector: 'app-list-arrets',
@@ -25,8 +26,9 @@ export class ListArretsComponent implements OnInit {
   public nbGTA : number;
   public nbRCU : number;
   public updateAfterDelete : boolean;
+  public idUsine : number | undefined;
 
-  constructor(private arretsService : arretsService, private rondierService : rondierService, private route : ActivatedRoute, private router : Router, private dateService : dateService) {
+  constructor(private idUsineService : idUsineService, private arretsService : arretsService, private rondierService : rondierService, private route : ActivatedRoute, private router : Router, private dateService : dateService) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false; //permet de recharger le component au changement de paramètre
     this.listArretsDepassements = [];
     this.sumArretsDepassements = [];
@@ -36,6 +38,7 @@ export class ListArretsComponent implements OnInit {
     this.nbGTA = 0;
     this.nbRCU = 0;
     this.updateAfterDelete = false;
+    this.idUsine = this.idUsineService.getIdUsine();
     //contient des chiffres pour l'itération des fours
     this.numbers = [];
     this.route.queryParams.subscribe(params => {

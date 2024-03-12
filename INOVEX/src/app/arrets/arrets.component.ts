@@ -98,6 +98,23 @@ export class ArretsComponent implements OnInit {
       // @ts-ignore
       this.IdUser = this.userLogged['Id'];
     }
+    this.arretId = 0;
+    this.arretName = '';
+    this.duree = 0;
+    this.dateSaisie = new Date();
+    this.stringDateDebut = '';
+    this.stringDateFin = '';
+    this.stringDateSaisie = '';
+    this.sousCommentaire="";
+    this.commentaire = '_';
+    this.saisieLibre ="";
+    this.id=0;
+    this.fortuitSelect="";
+    this.programmeSelect="";
+    this.disponibleSelect="";
+    this.categorie="";
+    this.dateDebut = undefined;
+    this.dateFin=undefined
 
     //Si on est en mode édition
     if(this.id>0){
@@ -337,10 +354,13 @@ export class ArretsComponent implements OnInit {
       this.dateFin = this.dateDebut;
       this.commentaire = '_';
     }
-    if(this.commentaire != '_'){
-      this.commentaire = this.commentaire +" - "+ this.saisieLibre;
+    if(this.saisieLibre != null){
+      if(this.commentaire != '_'){
+        this.commentaire = this.commentaire +" - "+ this.saisieLibre;
+      }
+      else this.commentaire = this.saisieLibre;      
     }
-    else this.commentaire = this.saisieLibre;
+
     this.commentaire = this.commentaire.replace(/'/g,"''")
     this.transformDateFormat();
 
@@ -367,6 +387,7 @@ export class ArretsComponent implements OnInit {
           this.arretId = 0;
           this.arretName = '';
           this.duree = 0;
+          this.ngOnInit();
         } else {
           Swal.fire({
             icon: 'error',
@@ -386,6 +407,7 @@ export class ArretsComponent implements OnInit {
             this.arretId = 0;
             this.arretName = '';
             this.duree = 0;
+            this.ngOnInit();
           } else {
             Swal.fire({
               icon: 'error',
@@ -417,6 +439,7 @@ export class ArretsComponent implements OnInit {
             this.arretId = 0;
             this.arretName = '';
             this.duree = 0;
+            this.ngOnInit();
           } else {
             Swal.fire({
               icon: 'error',
@@ -436,6 +459,7 @@ export class ArretsComponent implements OnInit {
               this.arretId = 0;
               this.arretName = '';
               this.duree = 0;
+              this.ngOnInit();
             } else {
               Swal.fire({
                 icon: 'error',

@@ -26,7 +26,7 @@ export class rondierService {
         'Access-Control-Allow-Origin': '*',
         'Authorization': 'Bearer ' + localStorage.getItem('token')
     }
-    private portAPI = 3100;
+    private portAPI = 3102;
     private ip = "fr-couvinove301.prod.paprec.fr";
     //private ip = "localhost";
     private idUsine : number | undefined;
@@ -146,7 +146,17 @@ export class rondierService {
             .put<any>(requete,null,requestOptions);
     }
 
+    deleteBadge(id : number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/deleteBadge/"+id;
+        //console.log(requete);
 
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<any>(requete,null,requestOptions);
+    }
     /*
     FIN BADGE
      */
@@ -171,6 +181,34 @@ export class rondierService {
     //liste des zones de controle
     listZone(){
         let requete = "https://"+this.ip+":"+this.portAPI+"/zones/"+this.idUsine;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<zone[]>(requete,requestOptions);
+    }
+
+    //liste des zones de controle
+    listZoneAndAnomalieOfDay(date : string | undefined, quart:number){
+        if(date != undefined)
+            date = encodeURIComponent(date);
+        let requete = "https://"+this.ip+":"+this.portAPI+"/getZonesAndAnomaliesOfDay/"+this.idUsine+"/"+date+'?quart='+quart;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<zone[]>(requete,requestOptions);
+    }
+
+    //liste des zones de controle
+    listZonesRonde(rondeId : number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/zoneRonde/"+rondeId;
         //console.log(requete);
 
         const requestOptions = {
@@ -249,6 +287,20 @@ export class rondierService {
     }
 
     //Récupérer tout les groupements d'une usine
+    getGroupementsOfOneDay(date : string | undefined, quart:number){
+        if(date!=undefined){
+            date = encodeURIComponent(date)
+        }
+        let requete = "https://"+this.ip+":"+this.portAPI+"/getGroupementsOfOneDay/"+this.idUsine+"/"+date+"?quart="+quart;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<elementsOfZone[]>(requete,requestOptions);
+    }
     getAllGroupements(){
         let requete = "https://"+this.ip+":"+this.portAPI+"/getAllGroupements?idUsine="+this.idUsine;
         //console.log(requete);
@@ -335,6 +387,34 @@ export class rondierService {
     getElementsOfUsine(){
         
         let requete = "https://"+this.ip+":"+this.portAPI+"/elementsControleOfUsine/"+this.idUsine;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<element>(requete,requestOptions);
+    }
+
+    getElementsAndValuesOfDay(date : string | undefined, quart:number){
+        if(date != undefined)
+            date = encodeURIComponent(date)
+        let requete = "https://"+this.ip+":"+this.portAPI+"/getElementsAndValuesOfDay/"+this.idUsine+"/"+date+"?quart="+quart;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<element>(requete,requestOptions);
+    }
+
+    getAnomaliesOfOneDay(date : string | undefined,quart:number){
+        if(date != undefined)
+            date = encodeURIComponent(date)
+        let requete = "https://"+this.ip+":"+this.portAPI+"/getAnomaliesOfOneDay/"+this.idUsine+"/"+date+"?quart="+quart;
         //console.log(requete);
 
         const requestOptions = {
@@ -630,8 +710,8 @@ export class rondierService {
      */
 
     //liste des rondes pour une date donnée
-    listRonde(date : string){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/Rondes?date="+date+"&idUsine="+this.idUsine;
+    listRonde(date : any, quart:number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/Rondes?date="+date+"&idUsine="+this.idUsine+"&quart="+quart;
         //console.log(requete);
 
         const requestOptions = {
@@ -767,6 +847,20 @@ export class rondierService {
 
         return this.http
             .delete<any>(requete,requestOptions);
+    }
+
+    //création d'une consigne
+    //?commentaire=dggd&dateFin=fff&type=1
+    updateConsigne(desc: string, type: number, dateFin: string | null, dateDebut: string | null, id:number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/updateConsigne?commentaire="+desc+"&dateFin="+dateFin+"&dateDebut=" + dateDebut + "&type="+type+"&id="+id;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<any>(requete,null,requestOptions);
     }
 
     /*

@@ -1,4 +1,4 @@
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {Injectable} from "@angular/core";
 import { dechetsCollecteurs } from "src/models/dechetsCollecteurs.model";
 import { valueHodja } from "src/models/valueHodja.model";
@@ -26,7 +26,7 @@ export class moralEntitiesService {
         'Access-Control-Allow-Origin' : '*',
         'Authorization': 'Bearer ' + localStorage.getItem('token')
     }
-    private portAPI = 3100;
+    private portAPI = 3102;
     private portAPIHodja = 3101;
     private ip = "fr-couvinove301.prod.paprec.fr";
     //private ip = "localhost";
@@ -540,7 +540,49 @@ export class moralEntitiesService {
     */
 
 
+   //insérer une mesure
+  registreDNDTS(data:any){
+    let requete = "https://"+this.ip+":"+this.portAPI+"/registreDNDTS";
+    //console.log(requete);
 
+    const requestOptions = {
+        headers: new HttpHeaders(this.headerDict),
+    }; 
+
+    return this.http
+        .put<any>(requete,{data},requestOptions);
+  }
+
+     //Répérer les mesures du registre pour les sortants
+     getRegistreDNDTSEntrants(dateDeb:any, dateFin:any){
+      dateDeb = encodeURIComponent(dateDeb);
+      dateFin = encodeURIComponent(dateFin)
+      let requete = "https://"+this.ip+":"+this.portAPI+"/getRegistreDNDTSEntrants?idUsine="+this.idUsine+"&dateDeb="+dateDeb+"&dateFin="+dateFin;
+      //console.log(requete);
+  
+      const requestOptions = {
+          headers: new HttpHeaders(this.headerDict),
+      }; 
+  
+      return this.http
+          .get<any>(requete,requestOptions);
+    }
+
+    //Répérer les mesures du registre pour les sortants
+    getRegistreDNDTSSortants(dateDeb:any, dateFin:any){
+      dateDeb = encodeURIComponent(dateDeb);
+      dateFin = encodeURIComponent(dateFin)
+      let requete = "https://"+this.ip+":"+this.portAPI+"/getRegistreDNDTSSortants?idUsine="+this.idUsine+"&dateDeb="+dateDeb+"&dateFin="+dateFin;
+      //console.log(requete);
+  
+      const requestOptions = {
+          headers: new HttpHeaders(this.headerDict),
+      }; 
+  
+      return this.http
+          .get<any>(requete,requestOptions);
+    }
+    
     //GETTER & SETTER
     get nom(): string {
       return this._nom;

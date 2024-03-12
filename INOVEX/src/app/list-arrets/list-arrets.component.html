@@ -63,9 +63,31 @@
                 </tr>
                 </thead>
                 <tbody>
+                    <!--Chinon et Pithiviers n'ayant pas encore migré, on affiche tout quoi qu'il arrive-->
+                    <ng-container *ngIf="idUsine == 2 || idUsine == 3">
+                        <tr class="table-light" *ngFor="let arret of listArretsDepassements">
+                            <td class="fix">
+                                <a routerLink="/saisie/arrets" [queryParams]="{isArret: isArret, id :arret.Id }" > 
+                                    <button class="btn btn-light">
+                                        <i class="fa fa-edit" aria-hidden="true"></i>
+                                    </button>
+                                </a>
+                            </td>
+                            <td class="fix"><button class="btn btn-light" (click)="delete(arret.Id)"><i style="color: red" class="fa fa-trash-o" aria-hidden="true"></i></button></td>
+                            <td class="fix"><strong>{{arret.Name}}</strong></td>
+                            <td class="fix">{{arret.dateDebut}}</td>
+                            <td class="fix">{{arret.heureDebut}}</td>
+                            <td class="fix">{{arret.dateFin}}</td>
+                            <td class="fix">{{arret.heureFin}}</td>
+                            <td class="fix">{{arret.duree}}</td>
+                            <td class="fix">{{arret.description}}</td>
+                        </tr>
+                    </ng-container>
+
+
                 <tr class="table-light" style="color: blue;"><td class="fix"><strong>LIGNE 1</strong></td></tr>
                 <ng-container *ngFor="let arret of listArretsDepassements">
-                    <tr class="table-light" *ngIf="arret.Name.includes('LIGNE 1')">
+                    <tr class="table-light" *ngIf="arret.Name.includes('Four 1') || arret.Name.includes('LIGNE 1')">
                         <td class="fix">
                             <a routerLink="/saisie/arrets" [queryParams]="{isArret: isArret, id :arret.Id }" > 
                                 <button class="btn btn-light">
@@ -86,7 +108,7 @@
 
                 <tr *ngIf="nbfour > 1" class="table-light" style="color: blue;"><td class="fix"><strong>LIGNE 2</strong></td></tr>
                 <ng-container *ngFor="let arret of listArretsDepassements">
-                    <tr class="table-light" *ngIf="arret.Name.includes('LIGNE 2')">
+                    <tr class="table-light" *ngIf="arret.Name.includes('Four 2') || arret.Name.includes('LIGNE 2')">
                         <td class="fix">
                             <a routerLink="/saisie/arrets" [queryParams]="{isArret: isArret, id :arret.Id }" > 
                                 <button class="btn btn-light">
@@ -149,7 +171,7 @@
 
                 <tr *ngIf="isArret && nbGTA > 0" class="table-light" style="color: blue;"><td class="fix"><strong>GTA 1</strong></td></tr>
                 <ng-container *ngFor="let arret of listArretsDepassements">
-                    <tr class="table-light" *ngIf="arret.Name.includes('GTA 1')">
+                    <tr class="table-light" *ngIf="arret.Name.includes('GTA') || arret.Name.includes('GTA 1')">
                         <td class="fix">
                             <a routerLink="/saisie/arrets" [queryParams]="{isArret: isArret, id :arret.Id }" > 
                                 <button class="btn btn-light">

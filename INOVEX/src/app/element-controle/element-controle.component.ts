@@ -3,7 +3,7 @@ import {NgForm} from "@angular/forms";
 import {rondierService} from "../services/rondier.service";
 import {zone} from "../../models/zone.model";
 import Swal from "sweetalert2";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {element} from "../../models/element.model";
 import { groupement } from 'src/models/groupement.model';
 
@@ -40,7 +40,7 @@ export class ElementControleComponent implements OnInit {
   public idGroupement : number;
   public codeEquipement : string;
 
-  constructor(private rondierService : rondierService,  private route : ActivatedRoute) {
+  constructor(private rondierService : rondierService,  private route : ActivatedRoute, private router: Router) {
     this.listZone = [];
     this.nom = "";
     this.zoneId = [];
@@ -207,6 +207,7 @@ export class ElementControleComponent implements OnInit {
     this.codeEquipement = this.codeEquipement.replace(/'/g,"''");
     if (this.elementId > 0){
       this.update();
+      this.router.navigate(['/elements'])
     }
     else{
       this.zoneId.forEach(zoneId =>{
@@ -218,8 +219,10 @@ export class ElementControleComponent implements OnInit {
                 this.idGroupement = 0 ;
                 this.codeEquipement = "";
                 this.nom = "";
-                Swal.fire("L'élément de contrôle a bien été créé !");
+                // Swal.fire("L'élément de contrôle a bien été créé !");
+                this.router.navigate(['/admin/elements'])
               }
+              
               else {
                 Swal.fire({
                   icon: 'error',
@@ -267,7 +270,8 @@ export class ElementControleComponent implements OnInit {
   updateElement(ordre : number){
     this.rondierService.updateElement(this.elementId, this.zoneId[0], this.nom, this.valeurMin, this.valeurMax, this.typeChamp, this.unit, this.defaultValue, this.isRegulateur, this.listValues, this.isCompteur,ordre, this.idGroupement, this.codeEquipement).subscribe((response)=>{
       if (response == "Mise à jour de l'element OK"){
-        Swal.fire("L'élément de contrôle a bien été mis à jour !");
+        // Swal.fire("L'élément de contrôle a bien été mis à jour !");
+        this.router.navigate(['/admin/elements'])
       }
       else {
         Swal.fire({

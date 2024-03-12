@@ -11,6 +11,7 @@ import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 import {user} from "../../models/user.model";
 import { element } from 'src/models/element.model';
 import { groupement } from 'src/models/groupement.model';
+import { zone } from 'src/models/zone.model';
 declare var $ : any;
 
 @Component({
@@ -21,7 +22,8 @@ declare var $ : any;
 export class ReportingRondeComponent implements OnInit {
 
   public listRonde : ronde[];
-  public dateDeb : String | undefined;
+  public listZone : any[];
+  public dateDeb : string | undefined;
   public listAnomalie : anomalie[];
   public listElementsOfZone : elementsOfZone[];
   public listElementsOfZoneControl : elementsOfZone[];
@@ -37,16 +39,19 @@ export class ReportingRondeComponent implements OnInit {
   public isSuperAdmin : boolean;
   public dateRechercher: string;
   public quart: number;
-  public listElementsOfUsine : element[];
+  public listElementsOfUsine : any[];
   public listGroupements : groupement[];
-
+  public listeZoneUnique : Map<String,number>;
+  public listElementsUniques : any;
   constructor(private rondierService : rondierService, private elementRef : ElementRef) {
     this.listRonde = [];
+    this.listZone = [];
+    this.listeZoneUnique = new Map();
     this.usine="";
     this.isSuperAdmin = false;
     this.idUsine = 0;
     this.dateRechercher = "";
-    this.quart = 1;
+    this.quart = 0;
     var dt = new Date();
     dt.setDate(dt.getDate());
     var dd = String(dt.getDate()).padStart(2, '0');
@@ -61,6 +66,7 @@ export class ReportingRondeComponent implements OnInit {
     this.listPermisFeuValidation = [];
     this.listElementsOfUsine = [];
     this.listGroupements = [];
+    this.listElementsUniques = [];
     //contient des chiffres pour l'itération des fours
     this.numbers = [];
     this.nbfour = 0;
@@ -94,11 +100,6 @@ export class ReportingRondeComponent implements OnInit {
       }
     }
 
-    // this.rondierService.getElementsOfUsine().subscribe((response)=>{
-    //   //@ts-ignore
-    //   this.listElementsOfUsine = response.data;
-    // });
-
     this.listAnomalie = [];
     //this.listReporting = [];
 
@@ -115,154 +116,147 @@ export class ReportingRondeComponent implements OnInit {
     }
     else this.quart = 3;
 
-    this.afficherRonde();
+    this.afficherRonde(this.quart);
   }
 
-  afficherRonde() {
-    //on vide le tableau des groupements
+
+  afficherRonde(quart:number) {
+    this.listAnomalie=[];
+    this.listElementsOfUsine=[];
+    this.listeZoneUnique = new Map();
+    this.listRonde = [];
+    this.listZone = [];
+    this.listElementsUniques= [];
     this.listGroupements = [];
-    // retourne une ronde à une date
-    if (this.dateDeb != undefined) {
-      //Recupère les rondes d'une dates et d'un quart
-      // @ts-ignore
-      this.rondierService.affichageRonde(this.dateDeb, this.quart).subscribe((response) => {
-        // @ts-ignore
-        this.listRonde = response.data;
-        this.listRonde.forEach(async ronde => {
-          await this.await(500);
+    this.quart=quart;
 
-          //Récupération des zones et de leurs éléments qui ont des valeurs sur la ronde
-          this.rondierService.listZonesAndElementsWithValues(ronde.Id).subscribe(async (response) => {
-            // @ts-ignore
-            this.listElementsOfZone = response.BadgeAndElementsOfZone;
-            console.log(this.listElementsOfZone)
-            //ON récupère les groupements de la zone
-            // @ts-ignore
-            this.listElementsOfZone.forEach(zonesInfos => {
-                this.rondierService.getGroupements(zonesInfos.zoneId).subscribe(async (groupements) => {
-                  //@ts-ignore
-                  this.listGroupements = [...this.listGroupements, ...groupements.data];
-                }); 
-            });
-            //Suppression du dernier groupement car toujours un doublon sur le dernier groupement
-            await this.await(2000);
-            this.listGroupements.pop();
+    this.rondierService.listZoneAndAnomalieOfDay(this.dateDeb, quart).subscribe((response)=>{
+      //@ts-ignore
+      this.listZone = response.listZones
+      for(const ronde of this.listZone){
+        for(const zone of ronde['listZones']){
+          this.listeZoneUnique.set(zone['nom'],zone['Id']);
+        }
+      }
+      this.listZone=[];
+      for(const zone of this.listeZoneUnique){
+        this.listZone.push({"nom":zone[0],"id":zone[1]})
+      }
+    })  
 
-            //***FIN RECUP GROUPEMENT */
+    //Récupération du nombre de four du site
+    this.rondierService.nbLigne().subscribe((response) => {
+      //@ts-ignore
+      this.nbfour = response.data[0].nbLigne;
+      this.numbers = Array(this.nbfour).fill(1).map((x, i) => i + 1);
+    }); 
 
-            //Récupération des éléments et leurs valeurs sur la ronde
-            this.rondierService.reportingRonde(ronde.Id).subscribe(async (response) => {
-              // @ts-ignore
-              response.data.forEach(reporting => {
-                //@ts-ignore
-                let champValue = document.getElementById(ronde.Id + "-" + reporting.elementId);
-                if (champValue != null) {
-                  let champError = document.getElementById(ronde.Id + "-" + reporting.elementId + "-Error");
-                  //SI on a un mode regulateur on affiche le champ et on affiche le mode
-                  if (reporting.modeRegulateur != "undefined") {
-                    let champRegul = document.getElementById(ronde.Id + "-" + reporting.elementId + "-Regulateur");
-                    //let champValue = document.getElementById(ronde.Id+"-"+reporting.elementId);
-                    // @ts-ignore
-                    champRegul.style.display = "block";
-                    // @ts-ignore
-                    champRegul.innerText = reporting.modeRegulateur;
-                  }
-                  let champValueContenu, champValueError;
-                  //On affiche la valeur uniquement si elle a été saisie
-                  if (reporting.value != "/") {
-                    champValueContenu = "" + reporting.value + " <span style='color:blue; font-style:italic'>" + reporting.unit + "</span> ";
+    if(this.dateDeb != undefined)
+      this.rondierService.affichageRonde(this.dateDeb, quart).subscribe((response)=>{
+        //@ts-ignore
+        this.listRonde = response.data
+        // console.log(this.listRonde)
+      })
 
-                    //Si le champValueContenu est vide on masque sur le reporting
-                    let nomGroupement = document.getElementById(reporting.nom);
-                    if (champValueContenu == "" || champValueContenu == null) {
-                      if (nomGroupement != null) {
-                        nomGroupement.style.display = "none";
-                      }
-                      if (champValue != null) {
-                        champValue.style.display = "none";
-                      }
-                    }
+    this.rondierService.getElementsAndValuesOfDay(this.dateDeb, quart).subscribe((response)=>{
+      //@ts-ignore
+      this.listElementsOfUsine = response.data;
+      console.log(this.listElementsOfUsine)
+      var prompt = "";
+      var prompt0 = "";
+      $(document).ready(() =>{
+        setTimeout(() =>{
+          //Affichage des éléments
+          for(var i =this.listElementsOfUsine.length-1; i>0; i--){
+            if(this.listElementsOfUsine[i].nom != this.listElementsOfUsine[i-1].nom || this.listElementsOfUsine[i].zoneId != this.listElementsOfUsine[i-1].zoneId ){
+              if(this.idUsine == 7){
+                prompt ='<tr class="table-warning '+this.listElementsOfUsine[i].zoneId+'-ZoneElements '+this.listElementsOfUsine[i].idGroupement+'-elements" style="display:none">'
+                +'<td>'+this.listElementsOfUsine[i].nom+'</td>';
+              }
+              else {
+                prompt ='<tr class="table-warning '+this.listElementsOfUsine[i].zoneId+'-ZoneElements '+'">'
+                            +'<td>'+this.listElementsOfUsine[i].nom+'</td>';
+              }
+              for(const ronde of this.listRonde){
+                prompt = prompt + '<td style="text-align: center;" class="'+ronde.Id+'" id="'+ronde.Id+'--'+this.listElementsOfUsine[i].Id+'"></td>'
+              }
+              if(this.listElementsOfUsine[i].idGroupement != null){
+                var id = '#groupement--'+this.listElementsOfUsine[i].idGroupement
+                $(id).after(prompt)
+              }
+              else{
+                var id = '#zone--'+this.listElementsOfUsine[i].zoneId
+                $(id).after(prompt)
+              }
+            }
+          }
+          //Affichage du premier élément
+          if(this.idUsine == 7){
+            prompt0 ='<tr class="table-warning '+this.listElementsOfUsine[0].zoneId+'-ZoneElements '+this.listElementsOfUsine[0].idGroupement+'-elements" style="display:none">'
+                  +'<td>'+this.listElementsOfUsine[0].nom+'</td>';
+          }
+          else{
+            prompt0 ='<tr class="table-warning '+this.listElementsOfUsine[0].zoneId+'-ZoneElements '+'">'
+                  +'<td>'+this.listElementsOfUsine[0].nom+'</td>';
+          }
+          
+          for(const ronde of this.listRonde){
+            prompt0 = prompt0 + '<td style="text-align: center;" class="'+ronde.Id+'" id="'+ronde.Id+'--'+this.listElementsOfUsine[0].Id+'"></td>'
+          }
+          if(this.listElementsOfUsine[0].idGroupement != null){
+            var id = '#groupement--'+this.listElementsOfUsine[0].idGroupement
+            console.log($(id).after(prompt0))
+          }
+          else{
+            var id = '#zone--'+this.listElementsOfUsine[0].zoneId
+            console.log($(id).after(prompt0))
+          }
 
-                    //On vérifie que la valeur est réglementaire (entre les bornes ou correspond à la valeur par défaut)
-                    //Si curseur (type 1) => doit etre compris entre les bornes
-                    if ((reporting.typeChamp == "1") && (Number(reporting.value) < reporting.valeurMin || Number(reporting.value) > reporting.valeurMax)) {
-                      //On utilise champValue pour afficher le message
-                      // console.log(Number(reporting.value) + " "+ reporting.valeurMin+" "+reporting.valeurMax)
-                      // @ts-ignore
-                      champError.style.backgroundColor = "#ff726f";
-                      // @ts-ignore
-                      champValueError = "ATTENTION, doit être compris entre " + reporting.valeurMin + " " + reporting.unit + " & " + reporting.valeurMax + " " + reporting.unit;
-                    }
-                    //Si pas curseur (différent de type 1) => doit etre égal à la valeur par défaut
-                    if (reporting.typeChamp !== "1" && reporting.value != reporting.defaultValue && reporting.defaultValue.length > 0) {
-                      //On utilise champValue pour afficher le medssage
-                      // @ts-ignore
-                      champError.style.backgroundColor = "#ff726f";
-                      // @ts-ignore
-                      champValueError = "ATTENTION, la valeur par défaut est : " + reporting.defaultValue + " " + reporting.unit;
-                    }
-                  }
-                  //Sinon on surligne en rouge et on précise que ce n'est pas saisie
-                  else {
-                    // @ts-ignore
-                    champValue.style.backgroundColor = "red";
-                    // @ts-ignore
-                    champValueContenu = "NON SAISIE ";
-                  }
+          //Remplissage des valeurs
+          for(var i =0; i<this.listElementsOfUsine.length; i++){
+            var id = '#'+this.listElementsOfUsine[i].idRonde+'--'+this.listElementsOfUsine[i].Id
+            var promptVal =  "";
+            if(this.listElementsOfUsine[i].value == "/"){
+              promptVal += '<p style="background-color: red;">NON SAISIE</p>'
+            }
+            else {
+              promptVal += '<p>'+this.listElementsOfUsine[i].value+'</p>'
+            }
+            promptVal += '<button id="'+this.listElementsOfUsine[i].idMesure+'--'+this.listElementsOfUsine[i].value+'" class="btn btn-warning btn-sm updateValue" ><i class="fa fa-pencil-square-o updateValue" id="'+this.listElementsOfUsine[i].idMesure+'--'+this.listElementsOfUsine[i].value+'" aria-hidden="true"></i></button>'
+            if(this.listElementsOfUsine[i].value != this.listElementsOfUsine[i].defaultValue && this.listElementsOfUsine[i].defaultValue != ''){
+              promptVal += '<p style="background-color: #ff726f;">Attention la valeur par défaut est :'+this.listElementsOfUsine[i].defaultValue+'</p>'
+            }
+            if( this.listElementsOfUsine[i].typeChamp == "1" &&(this.listElementsOfUsine[i].value < this.listElementsOfUsine[i].valeurMin || this.listElementsOfUsine[i].value > this.listElementsOfUsine[i].valeurMax)){
+              promptVal += '<p style="background-color: #ff726f;" >Attention la valeur doit être comprise entre '+this.listElementsOfUsine[i].valeurMin+' et '+this.listElementsOfUsine[i].valeurMax+' </p>'
+            }
 
-                  // @ts-ignore
-                  champValue.innerHTML = champValueContenu;
-                  //On affiche le message d'erreur si nécessaire
-                  if ((reporting.typeChamp == "1" && (Number(reporting.value) < reporting.valeurMin || Number(reporting.value) > reporting.valeurMax)) || (reporting.typeChamp !== "1" && reporting.value !== reporting.defaultValue && reporting.defaultValue.length > 0)) {
-                    // @ts-ignore
-                    champError.innerHTML = champValueError;
-                    // @ts-ignore
-                    champError.style.display = "block"
-                  }
+            //Fonction pour modifier la valeur d'un élément
+            $(id).append(promptVal).on('click','.updateValue', (event : any)=>{
+              var id = event.target.id.split('--')[0]
+              var value = event.target.id.split('--')[1]
+              console.log(id)
+              console.log(value)
+              this.updateValueElement(id,value);
+            })
+              
+          }
+        },1000)
+      })
+      this.setFilters();
+    })
 
-                  //Création du button d'update de la valeur si utilisateur admin
-                  if (this.isAdmin || this.isChefQuart) {
-                    const button = document.createElement("button");
-                    button.className = "btn btn-warning btn-sm";
-                    button.id = "update" + reporting.Id;
-                    const i = document.createElement("i");
-                    i.className = "fa fa-pencil-square-o";
-                    button.appendChild(i);
-                    button.addEventListener('click', (e) => {
-                      this.updateValueElement(reporting.Id, reporting.value);
-                    });
-                    // @ts-ignore
-                    champValue.appendChild(button);
-                  }
-                  //FIN Création du button edit
-                }
+    this.rondierService.getGroupementsOfOneDay(this.dateDeb, quart).subscribe((response)=>{
+      //@ts-ignore
+      this.listGroupements = response.data
+      // console.log(this.listGroupements)
+    })
 
-              });
-              //Récupération des anomalies sur la ronde
-              this.rondierService.listAnomalies(ronde.Id).subscribe((response) => {
-                // @ts-ignore
-                response.data.forEach(anomalie => {
-                  this.listAnomalie.push(anomalie);
-                });
-              });
-            });
-          });
-        });
+    this.rondierService.getAnomaliesOfOneDay(this.dateDeb, quart).subscribe((response)=>{
+      //@ts-ignore
+      this.listAnomalie = response.data
+      // console.log(this.listAnomalie)
+    })
 
-        //Récupération des validations de permis de feu
-        this.rondierService.listPermisFeuValidation(this.dateDeb).subscribe((response) => {
-          // @ts-ignore
-          this.listPermisFeuValidation = response.data;
-        });
-
-        //Récupération du nombre de four du site
-        this.rondierService.nbLigne().subscribe((response) => {
-          //@ts-ignore
-          this.nbfour = response.data[0].nbLigne;
-          this.numbers = Array(this.nbfour).fill(1).map((x, i) => i + 1);
-        });
-      });
-    }
   }
 
   await(ms : number){
@@ -310,13 +304,6 @@ export class ReportingRondeComponent implements OnInit {
     (<HTMLInputElement>document.getElementById("dateDeb")).value = day;
     form.value['dateDeb'] = day;
     this.setPeriod(form);
-  }
-
-  //récupère le quart demandé et l'affiche
-  affichageQuart(quart:number) {
-    // this.ngOnInit();
-    this.quart = quart;
-    this.afficherRonde();
   }
 
   deleteRonde(id : number){
@@ -367,26 +354,6 @@ export class ReportingRondeComponent implements OnInit {
     });
   }
 
-  /*downloadImage(anomalie : anomalie){
-    // Obtain a blob: URL for the image data.
-    var binary = '';
-    // @ts-ignore
-    var arrayBufferView = new Uint8Array(anomalie.photo.data);
-    console.log(arrayBufferView);
-    var len =  arrayBufferView.byteLength;
-    for (var i = 0; i < len; i++) {
-      binary += String.fromCharCode(  arrayBufferView[ i ] );
-    }
-    var blob = new Blob( [ arrayBufferView ], { type: "image/jpeg" } );
-    var urlCreator = window.URL || window.webkitURL;
-    var imageUrl = urlCreator.createObjectURL( blob );
-    console.log(blob);
-    console.log(imageUrl);
-    var img = document.getElementById( "image" );
-    // @ts-ignore
-    img.src = imageUrl;
-  }*/
-
   downloadImage(urlPhoto : string) {
     window.open(urlPhoto, '_blank');
   }
@@ -401,25 +368,36 @@ export class ReportingRondeComponent implements OnInit {
   async setFilters(){
     //@ts-ignore
     var nameElt = document.getElementById("name").value;
+    var typeElt= null;
     if(nameElt != ''){
       this.filtreZone= nameElt.toLowerCase();
       //@ts-ignore
       document.getElementById("type").value ="";
     }
     else{
-      var typeElt = document.getElementById("type");
+      typeElt = document.getElementById("type");
       // @ts-ignore
       this.filtreZone = typeElt.options[typeElt.selectedIndex].value.toLowerCase();
     }
-    // this.affichageQuart(this.quart);
-    // this.ngOnInit();
+    $(".table-warning").hide();
+    $(".table-light").hide();
+
+    for(const zone of this.listZone){
+      if(zone.nom.toLowerCase().includes(this.filtreZone) || zone.nom.toLowerCase() == this.filtreZone){
+        // console.log(zone.id)
+        if(this.idUsine != 7) $("."+zone.id+"-ZoneElements").show();
+        $("#zone--"+zone.id).show();
+        $("."+zone.id+"-Zone").show();
+
+      }
+    }
   }
 
   async resetFiltre(){
     this.filtreZone="";
     //@ts-ignore
     document.getElementById("name").value = "";
-    this.affichageQuart(this.quart);
+    this.afficherRonde(this.quart);
   }
 
   editAnomalie(rondeId : number, zoneId : number){
@@ -462,7 +440,7 @@ export class ReportingRondeComponent implements OnInit {
   }
 
   afficherZone(zone : number){
-    
+    console.log($('.'+String(zone) + "-Zone"))
     $('.'+String(zone) + "-Zone").toggle(1000);
     $('.'+String(zone) + "-ZoneElements").hide(1000);
     $('.'+String(zone) + "-ZonebtnPlus").show(1000);

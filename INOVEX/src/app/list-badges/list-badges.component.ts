@@ -77,6 +77,47 @@ export class ListBadgesComponent implements OnInit {
     this.ngOnInit();
   }
 
-
+  deleteBadge(badgeId: number){
+    Swal.fire({
+      title: 'Êtes-vous sûr(e) ?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Oui, supprimer',
+      cancelButtonText: 'Annuler'
+    })
+    .then((result) => {
+      if (result.isConfirmed) {
+        //Appel api pour supprimer le badge
+        this.rondierService.deleteBadge(badgeId).subscribe((response)=>{
+          if (response == "Suppression du badge OK"){
+            Swal.fire("Le badge a été supprimé !");
+            this.ngOnInit();
+          }
+          else {
+            Swal.fire({
+              icon: 'error',
+              text: 'Erreur.... Impossible de supprimer le badge du badge',
+            })
+          }
+        });
+        // Pop-up de supprssion effectuée
+        Swal.fire(
+          'Supprimé !',
+          'Votre élément a été supprimé.',
+          'success'
+        );
+      } 
+      else {
+        // Pop-up d'annulation de la suppression
+        Swal.fire(
+          'Annulé',
+          'La suppression a été annulée.',
+          'error'
+        );
+      }
+    });
+  }
 
 }
