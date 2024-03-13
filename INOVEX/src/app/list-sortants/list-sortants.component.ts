@@ -415,7 +415,7 @@ export class ListSortantsComponent implements OnInit {
           csv.typeDechet = csv.typeDechet.toLowerCase().replace(/\s/g,"");
           correspondance.productImport = correspondance.productImport.toLowerCase().replace(/\s/g,"");  
           
-          if(csv.entrant.toLowerCase() == "s" || csv.entrant == 2 || csv.entrant.toLowerCase() == "expedition" || csv.entrant.toLowerCase() == "sortie" || csv.entrant.toLowerCase() == "sortant" || csv.entrant.toLowerCase() == "sous produits" || csv.entrant.toLowerCase() == "recyclables"){
+          if(csv.entrant.toLowerCase() == "s" || csv.entrant.toLowerCase() == "expédition" || csv.entrant == 2 || csv.entrant.toLowerCase() == "expedition" || csv.entrant.toLowerCase() == "sortie" || csv.entrant.toLowerCase() == "sortant" || csv.entrant.toLowerCase() == "sous produits" || csv.entrant.toLowerCase() == "recyclables"){
             //Si il y a correspondance on fait traitement
             if( correspondance.productImport == csv.typeDechet ){
               let formatDate = csv.dateEntree.split('/')[2]+'-'+csv.dateEntree.split('/')[1]+'-'+csv.dateEntree.split('/')[0];
@@ -437,7 +437,7 @@ export class ListSortantsComponent implements OnInit {
           }
       })
       //Si sur ce dechet, nous n'avons pas trouvé de correspondant, count = 0, et que ce dechet est une sortie, on la'jouter au tableau des dechet
-      if(count == 0 && (csv.entrant.toLowerCase() == "s" || csv.entrant == 2 || csv.entrant.toLowerCase() == "expedition" || csv.entrant.toLowerCase() == "sortie" || csv.entrant.toLowerCase() == "sortant" || csv.entrant.toLowerCase() == "sous produits" || csv.entrant.toLowerCase() == "recyclables") ){
+      if(count == 0 && (csv.entrant.toLowerCase() == "s" || csv.entrant.toLowerCase() == "expédition" || csv.entrant == 2 || csv.entrant.toLowerCase() == "expedition" || csv.entrant.toLowerCase() == "sortie" || csv.entrant.toLowerCase() == "sortant" || csv.entrant.toLowerCase() == "sous produits" || csv.entrant.toLowerCase() == "recyclables") ){
         this.dechetsManquants.set(dechetManquant, dechetManquant);
       }
     });
