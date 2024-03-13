@@ -81,6 +81,12 @@ import { ActuComponent } from './actu/actu.component';
 import { ListActusComponent } from './list-actus/list-actus.component';
 import { EvenementComponent } from './evenement/evenement.component';
 import { ListEvenementsComponent } from './list-evenements/list-evenements.component';
+import { CalendrierComponent } from './calendrier/calendrier.component';
+import { CommonModule } from '@angular/common';
+import { FlatpickrModule } from 'angularx-flatpickr';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+// import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -147,13 +153,22 @@ import { ListEvenementsComponent } from './list-evenements/list-evenements.compo
     ListActusComponent,
     EvenementComponent,
     ListEvenementsComponent,
+    CalendrierComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    DragDropModule
+    DragDropModule,
+    CommonModule,
+    FormsModule,
+    // NgbModalModule,
+    FlatpickrModule.forRoot(),
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory,
+    }),
   ],
   providers: [
     moralEntitiesService,
