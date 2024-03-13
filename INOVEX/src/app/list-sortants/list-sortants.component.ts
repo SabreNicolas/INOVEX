@@ -14,6 +14,8 @@ import { importCSV } from 'src/models/importCSV.model';
 import { user } from 'src/models/user.model';
 import { idUsineService } from '../services/idUsine.service';
 import { valueHodja } from 'src/models/valueHodja.model';
+import {DatePipe} from '@angular/common'
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-list-sortants',
@@ -42,7 +44,7 @@ export class ListSortantsComponent implements OnInit {
 
 
 
-  constructor(private idUsineService : idUsineService, private moralEntitiesService : moralEntitiesService,private productsService : productsService, private categoriesService : categoriesService, private Papa : Papa, private mrService : moralEntitiesService,private dateService : dateService) {
+  constructor(private idUsineService : idUsineService,private datePipe:DatePipe,private moralEntitiesService : moralEntitiesService,private productsService : productsService, private categoriesService : categoriesService, private Papa : Papa, private mrService : moralEntitiesService,private dateService : dateService) {
     this.debCode = '';
     this.listProducts = [];
     this.listDays = [];
@@ -263,8 +265,15 @@ export class ListSortantsComponent implements OnInit {
     }
     //Vitré
     else if (this.typeImportTonnage.toLowerCase().includes("pcs précia")){
-      //delimiter,header,typedechet,dateEntree,tonnage, posEntreeSortie
-      this.lectureCSV(event, ";", true, 20, 4, 27, 31);
+      //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
+      if(this.idUsine === 15){
+        //Vitré
+        this.lectureCSV(event, ";", true, 20, 4, 27, 31);
+      }
+      //Villefranche
+      else {
+        this.lectureCSV(event, ";", true, 19, 6, 11, 2);
+      }
     }
     //Saint Ouen
     else if (this.typeImportTonnage.toLowerCase().includes("syspeau")){
@@ -406,7 +415,7 @@ export class ListSortantsComponent implements OnInit {
           csv.typeDechet = csv.typeDechet.toLowerCase().replace(/\s/g,"");
           correspondance.productImport = correspondance.productImport.toLowerCase().replace(/\s/g,"");  
           
-          if(csv.entrant.toLowerCase() == "s" || csv.entrant == 2 || csv.entrant.toLowerCase() == "expedition" || csv.entrant.toLowerCase() == "sortie" || csv.entrant.toLowerCase() == "sortant" || csv.entrant.toLowerCase() == "sous produits" || csv.entrant.toLowerCase() == "recyclables"){
+          if(csv.entrant.toLowerCase() == "s" || csv.entrant.toLowerCase() == "expédition" || csv.entrant == 2 || csv.entrant.toLowerCase() == "expedition" || csv.entrant.toLowerCase() == "sortie" || csv.entrant.toLowerCase() == "sortant" || csv.entrant.toLowerCase() == "sous produits" || csv.entrant.toLowerCase() == "recyclables"){
             //Si il y a correspondance on fait traitement
             if( correspondance.productImport == csv.typeDechet ){
               let formatDate = csv.dateEntree.split('/')[2]+'-'+csv.dateEntree.split('/')[1]+'-'+csv.dateEntree.split('/')[0];
@@ -428,7 +437,7 @@ export class ListSortantsComponent implements OnInit {
           }
       })
       //Si sur ce dechet, nous n'avons pas trouvé de correspondant, count = 0, et que ce dechet est une sortie, on la'jouter au tableau des dechet
-      if(count == 0 && (csv.entrant.toLowerCase() == "s" || csv.entrant == 2 || csv.entrant.toLowerCase() == "expedition" || csv.entrant.toLowerCase() == "sortie" || csv.entrant.toLowerCase() == "sortant" || csv.entrant.toLowerCase() == "sous produits" || csv.entrant.toLowerCase() == "recyclables") ){
+      if(count == 0 && (csv.entrant.toLowerCase() == "s" || csv.entrant.toLowerCase() == "expédition" || csv.entrant == 2 || csv.entrant.toLowerCase() == "expedition" || csv.entrant.toLowerCase() == "sortie" || csv.entrant.toLowerCase() == "sortant" || csv.entrant.toLowerCase() == "sous produits" || csv.entrant.toLowerCase() == "recyclables") ){
         this.dechetsManquants.set(dechetManquant, dechetManquant);
       }
     });
@@ -476,6 +485,47 @@ export class ListSortantsComponent implements OnInit {
     return new Promise(resolve => {
       setTimeout(resolve, ms);
     });
+  }
+
+  //Export de la table dans fichier EXCEL
+  exportRegistreDNDTSExcel(){
+    if((<HTMLInputElement>document.getElementById("dateDeb")).value != "" && (<HTMLInputElement>document.getElementById("dateFin")).value != ""){
+      this.dateDeb = new Date((<HTMLInputElement>document.getElementById("dateDeb")).value);
+      this.dateFin = new Date((<HTMLInputElement>document.getElementById("dateFin")).value);
+    
+      var dateDebString = this.datePipe.transform(this.dateDeb,'yyyy-MM-dd')
+      var dateFinString = this.datePipe.transform(this.dateFin,'yyyy-MM-dd')
+
+      var nomFichier = "dnd-sortant du " + this.datePipe.transform(this.dateDeb,'dd-MM-yyyy') + " au " +this.datePipe.transform(this.dateFin,'dd-MM-yyyy')
+      console.log(nomFichier)
+      console.log(dateDebString);
+      this.moralEntitiesService.getRegistreDNDTSSortants(dateDebString, dateFinString).subscribe((response)=>{
+        /* table id is passed over here */
+        let element = response.data
+        if(response.data.length >1){
+          const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(element); //Attention les jours sont considérés comme mois !!!!
+    
+          /* generate workbook and add the worksheet */
+          const wb: XLSX.WorkBook = XLSX.utils.book_new();
+          XLSX.utils.book_append_sheet(wb, ws, 'Entrants');
+      
+          // /* save to file */
+          XLSX.writeFile(wb, nomFichier+'.xlsx');
+        }
+        else {
+          Swal.fire({
+            icon: 'error',
+            text: 'Aucune donnée sur ces dates !',
+          })
+        }
+      })
+    }
+    else{
+      Swal.fire({
+        icon: 'error',
+        text: 'Veuillez entrer des dates',
+      })
+    }
   }
 
   //Import tonnage via HODJA
@@ -569,3 +619,5 @@ export class ListSortantsComponent implements OnInit {
     })
   }
 }
+
+

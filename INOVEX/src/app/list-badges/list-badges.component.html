@@ -81,10 +81,12 @@
             <thead>
             <tr class="table-secondary">
                 <th scope="col">Badge</th>
+                <th scope="col">UID</th>
                 <th scope="col">Utilisateur</th>
                 <th scope="col">Zone</th>
                 <th scope="col">Etat d'activation</th>
                 <th scope="col">Retirer Affectation</th>
+                <th scope="col">Supprimer le badge</th>
             </tr>
             </thead>
             <!--BADGES LIBRES-->
@@ -96,11 +98,13 @@
                 <td></td>
                 <td></td>
                 <td></td>
+                <td></td>
             </tr>
             </tbody>
             <tbody *ngFor="let b of listBadgeLibre">
             <tr class="table-light">
                 <td>{{b.Id}}</td>
+                <td>{{b.uid}}</td>
                 <td><button id="setUser" class="btn btn-primary" routerLink="../gestionBadge" [queryParams]="{ isUser: 'true', badgeId: b.Id}">
                     Affecter à un utilisateur
                 </button></td>
@@ -114,6 +118,9 @@
                     <i class="fa fa-check-circle" aria-hidden="true"></i>
                 </button></td>
                 <td></td>
+                <td><button id="setEnabled" (click)="deleteBadge(b.Id)" class="btn btn-outline-danger">
+                    <i class="fa fa-trash" aria-hidden="true"></i>
+                </button></td>
             </tr>
             </tbody>
             <br>
@@ -127,11 +134,13 @@
                 <td></td>
                 <td></td>
                 <td></td>
+                <td></td>
             </tr>
             </tbody>
             <tbody *ngFor="let b of listBadgeUser">
             <tr class="table-light">
                 <td>{{b.Id}}</td>
+                <td>{{b.uid}}</td>
                 <td>{{b.affect}}</td>
                 <td>/</td>
                 <td *ngIf="b.isEnabled == false"><button id="setDisabledUser" (click)="setActivation(b.Id,1)" class="btn btn-outline-danger">
@@ -143,7 +152,7 @@
                 <td><button id="resetAffectationUser" (click)="resetAffectation(b.Id)" class="btn btn btn-outline-primary">
                     <i class="fa fa-ban" aria-hidden="true"></i>
                 </button></td>
-
+                <td></td>
             </tr>
             </tbody>
             <br>
@@ -157,11 +166,14 @@
                 <td></td>
                 <td></td>
                 <td></td>
+                <td></td>
+
             </tr>
             </tbody>
             <tbody *ngFor="let b of listBadgeZone">
             <tr class="table-light">
                 <td>{{b.Id}}</td>
+                <td>{{b.uid}}</td>
                 <td>/</td>
                 <td>{{b.affect}}</td>
                 <td *ngIf="b.isEnabled == false"><button id="setDisabledZone" (click)="setActivation(b.Id,1)" class="btn btn-outline-danger">
@@ -173,6 +185,7 @@
                 <td><button id="resetAffectationZone" (click)="resetAffectation(b.Id)" class="btn btn btn-outline-primary">
                     <i class="fa fa-ban" aria-hidden="true"></i>
                 </button></td>
+                <td></td>
             </tr>
             </tbody>
         </table>

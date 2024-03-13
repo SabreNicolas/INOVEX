@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MoralEntitiesComponent } from './moral-entities/moral-entities.component';
@@ -75,6 +74,13 @@ import { FormulaireComponent } from './formulaire/formulaire.component';
 import { ListFormulairesComponent } from './list-formulaires/list-formulaires.component';
 import { formulaireService } from './services/formulaire.service';
 import { SaisieFormulaireComponent } from './saisie-formulaire/saisie-formulaire.component';
+import { ListEvementComponent } from './list-evement/list-evement.component';
+import { ListActionsComponent } from './list-actions/list-actions.component';
+import { ActionComponent } from './action/action.component';
+import { ActuComponent } from './actu/actu.component';
+import { ListActusComponent } from './list-actus/list-actus.component';
+import { EvenementComponent } from './evenement/evenement.component';
+import { ListEvenementsComponent } from './list-evenements/list-evenements.component';
 
 @NgModule({
   declarations: [
@@ -134,6 +140,13 @@ import { SaisieFormulaireComponent } from './saisie-formulaire/saisie-formulaire
     FormulaireComponent,
     ListFormulairesComponent,
     SaisieFormulaireComponent,
+    ListEvementComponent,
+    ListActionsComponent,
+    ActionComponent,
+    ActuComponent,
+    ListActusComponent,
+    EvenementComponent,
+    ListEvenementsComponent,
   ],
   imports: [
     BrowserModule,

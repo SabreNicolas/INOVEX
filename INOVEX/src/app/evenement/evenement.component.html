@@ -1,0 +1,90 @@
+<h1 class="creation">Création d'un évènement :</h1>
+
+<div>
+    <div class="row">
+
+        <div class="form-group" id="photo">
+            <input type="file" id="fichier" class="form-control" required name="fichier" accept=".jpg,.jpeg,.png" (change)="saveFile($event)"><img *ngIf="imgSrc" [src]="imgSrc" alt="image" id="imgUpload">
+            <p style="font-size: smaller; color: grey">*Format image !</p>
+        </div>
+
+        <div class="col-md-5">
+            <div class="form-group">
+                <label for="desc">Groupement : * </label>
+                <input required type="text" id="groupementGMAO" class="form-control" placeholder="Groupement GMAO" name="groupementGMAO" ngModel [(ngModel)]="groupementGMAO">
+            </div>
+    
+    
+            <div class="form-group">
+                <label for="desc">Titre : * </label>
+                <input required type="text" id="titre" class="form-control" placeholder="Titre" name="titre" ngModel [(ngModel)]="titre">
+            </div>
+    
+            <div class="form-group">
+                <label>Début date validité : *</label>
+                <input required type="datetime-local" id="dateDebut" class="form-control" placeholder="Date de début de validité" name="dateDebut" ngModel [(ngModel)]="dateDeb">
+            </div>
+    
+            <div class="form-group">
+                <label for="desc">Descripion : </label>
+                <input required type="text" id="description" class="form-control" placeholder="description" name="description" ngModel [(ngModel)]="description">
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="desc">Equipement : * </label>
+                <input required type="text" id="equipementGMAO" class="form-control" placeholder="Equipement GMAO" name="equipementGMAO" ngModel [(ngModel)]="equipementGMAO">
+            </div>
+    
+            <div class="form-group">
+                <label for="desc">Cause : </label>
+                <input required type="text" id="cause" class="form-control" placeholder="cause" name="cause" ngModel [(ngModel)]="cause">
+            </div>
+                
+            <div class="form-group">
+                <label>Fin date validité : *</label>
+                <input required type="datetime-local" id="dateFin" class="form-control" placeholder="Date de validité" name="dateFin" ngModel [(ngModel)]="dateFin">
+            </div>
+                
+            <div class="form-group">
+                <label>Importance : *</label>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <select required class="form-select" aria-label=".form-select-sm example" name="importance" ngModel [(ngModel)]="importance">
+                                <option value=0 style="background-color: rgb(81, 196, 81);">Faible</option>
+                                <option value=1 style="background-color: rgb(245, 171, 35);">Neutre</option>
+                                <option value=2 style="background-color: rgb(248, 75, 75);">Elevée</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-9">
+        
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="demandeTravaux" ngModel [(ngModel)]="demandeTravaux" >
+                <label class="form-check-label" for="demandeTravaux">
+                  Demande de travaux (oui/non)
+                </label>
+            </div>
+    
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="consigne" ngModel [(ngModel)]="consigne" >
+                <label class="form-check-label" for="consigne">
+                  Consigne (oui/non)
+                </label>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-success btn-lg" (click)="newEvenement()">Valider</button>
+                <button class="btn btn-danger btn-lg">Annuler</button>
+            </div>
+        
+            <p style="font-size: smaller; color: grey">* : Obligatoire</p>
+        </div>
+    </div>
+</div>

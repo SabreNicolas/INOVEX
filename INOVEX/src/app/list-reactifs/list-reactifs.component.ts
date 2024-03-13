@@ -236,8 +236,15 @@ export class ListReactifsComponent implements OnInit {
     }
     //Vitré
     else if (this.typeImportTonnage.toLowerCase().includes("pcs précia")){
-      //delimiter,header,typedechet,dateEntree,tonnage, posEntreeSortie
-      this.lectureCSV(event, ";", true, 20, 4, 27, 31);
+      //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
+      if(this.idUsine === 15){
+        //Vitré
+        this.lectureCSV(event, ";", true, 20, 4, 27, 31);
+      }
+      //Villefranche
+      else {
+        this.lectureCSV(event, ";", true, 19, 6, 11, 2);
+      }
     }
     //Saint Ouen
     else if (this.typeImportTonnage.toLowerCase().includes("syspeau")){
@@ -380,7 +387,7 @@ export class ListReactifsComponent implements OnInit {
           csv.typeDechet = csv.typeDechet.toLowerCase().replace(/\s/g,"");
           correspondance.productImport = correspondance.productImport.toLowerCase().replace(/\s/g,"");  
           
-          if(csv.entrant.toLowerCase() == "e" || csv.entrant.toLowerCase() == 1 || csv.entrant.toLowerCase() == "reception" || csv.entrant.toLowerCase() == "reactif" || csv.entrant.toLowerCase() == "consommable"){
+          if(csv.entrant.toLowerCase() == "e" || csv.entrant.toLowerCase() == "réception" || csv.entrant.toLowerCase() == 1 || csv.entrant.toLowerCase() == "reception" || csv.entrant.toLowerCase() == "reactif" || csv.entrant.toLowerCase() == "consommable"){
             //Si il y a correspondance on fait traitement
             if( correspondance.productImport == csv.typeDechet ){
               let formatDate = csv.dateEntree.split('/')[2]+'-'+csv.dateEntree.split('/')[1]+'-'+csv.dateEntree.split('/')[0];
@@ -403,7 +410,7 @@ export class ListReactifsComponent implements OnInit {
       });
 
       //Si sur ce dechet, nous n'avons pas trouvé de correspondant, count = 0, et que ce dechet est une sortie, on la'jouter au tableau des dechet
-      if(count == 0 && (csv.entrant.toLowerCase() == "e" || csv.entrant.toLowerCase() == 1 || csv.entrant.toLowerCase() == "reception" || csv.entrant.toLowerCase() == "reactif" || csv.entrant.toLowerCase() == "consommable") ){
+      if(count == 0 && (csv.entrant.toLowerCase() == "e" || csv.entrant.toLowerCase() == "réception" || csv.entrant.toLowerCase() == 1 || csv.entrant.toLowerCase() == "reception" || csv.entrant.toLowerCase() == "reactif" || csv.entrant.toLowerCase() == "consommable") ){
         this.dechetsManquants.set(dechetManquant, dechetManquant);
       }
     });

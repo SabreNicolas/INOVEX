@@ -59,6 +59,7 @@
         </form>
 
         <button id="exportExcel" class="btn btn-outline-success btn-lg float-left" (click)="exportExcel()">Excel</button>
+        <button *ngIf="idUsine == 1" id="exportExcel" class="btn btn-outline-success btn-lg float-left" (click)="exportRegistreDNDTSExcel()">Registre DNDTS</button>
 
     </div>
 
