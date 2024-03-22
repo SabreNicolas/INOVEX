@@ -448,7 +448,7 @@ export class ListEntreeComponent implements OnInit {
     //Pluzunet
     else if (this.typeImportTonnage.toLowerCase().includes("caktus")){
       //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
-      this.lectureCSV(event, ",", true, 31, 22, 14, 10, 33);
+      this.lectureCSV(event, ";", true, 31, 27, 14, 10, 11);
     }
     //Sète , Cergy
     else if (this.typeImportTonnage.toLowerCase().includes("hodja")){

@@ -220,7 +220,7 @@ export class ListReactifsComponent implements OnInit {
     //Pluzunet
     else if (this.typeImportTonnage.toLowerCase().includes("caktus")){
       //delimiter,header,typedechet,dateEntree,tonnage, posEntreeSortie
-      this.lectureCSV(event, ",", true, 22, 14, 10, 33);
+      this.lectureCSV(event, ";", true, 27, 14, 10, 11);
     }
     //Sète, CERGY
     else if (this.typeImportTonnage.toLowerCase().includes("hodja")){
