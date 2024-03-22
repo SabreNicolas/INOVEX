@@ -59,6 +59,14 @@ import { ActuComponent } from './actu/actu.component';
 import { ListActusComponent } from './list-actus/list-actus.component';
 import { EvenementComponent } from './evenement/evenement.component';
 import { ListEvenementsComponent } from './list-evenements/list-evenements.component';
+import { CalendrierComponent } from './calendrier/calendrier.component';
+import { AcceuilCahierQuartComponent } from './acceuil-cahier-quart/acceuil-cahier-quart.component';
+import { RecapRondeComponent } from './recap-ronde/recap-ronde.component';
+import { ListActionsComponent } from './list-actions/list-actions.component';
+import { ActionComponent } from './action/action.component';
+import { EnregistrementEquipeComponent } from './enregistrement-equipe/enregistrement-equipe.component';
+import { ListEnregistrementEquipeComponent } from './list-enregistrement-equipe/list-enregistrement-equipe.component';
+import { RechercheComponent } from './recherche/recherche.component';
 
 const routes: Routes = [
 
@@ -131,7 +139,7 @@ const routes: Routes = [
         canActivate: [AuthGuard],
         component : cahierQuart,
         children : [
-            { path : '', canActivate: [AuthGuard], component: ListEquipeComponent },
+            { path : '', canActivate: [AuthGuard], component: AcceuilCahierQuartComponent },
             { path : 'listEquipe', canActivate: [AuthGuard], component: ListEquipeComponent },
             { path : 'newEquipe', canActivate: [AuthGuard], component: EquipeComponent },
             { path : 'outils', canActivate: [AuthGuard], component: OutilsComponent },
@@ -141,6 +149,14 @@ const routes: Routes = [
             { path: 'actu', canActivate: [AuthGuard], component: ListActusComponent},
             { path: 'newEvenement', canActivate: [AuthGuard], component: EvenementComponent},
             { path: 'evenement', canActivate: [AuthGuard], component: ListEvenementsComponent},
+            { path : 'calendrier', canActivate: [AuthGuard], component: CalendrierComponent},
+            { path : 'acceuil', canActivate: [AuthGuard], component: AcceuilCahierQuartComponent},
+            { path : 'recapRonde', canActivate: [AuthGuard], component: RecapRondeComponent},
+            { path : 'action', canActivate: [AuthGuard], component: ListActionsComponent},
+            { path : 'newAction', canActivate: [AuthGuard], component: ActionComponent},
+            { path : 'newEnregistrementEquipe', canActivate: [AuthGuard], component: EnregistrementEquipeComponent},
+            { path : 'enregistrementEquipe', canActivate: [AuthGuard], component: ListEnregistrementEquipeComponent},
+            { path : 'recherche', canActivate: [AuthGuard], component: RechercheComponent},
         ]
     },
 

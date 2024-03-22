@@ -6,6 +6,7 @@ import {NgForm} from "@angular/forms";
 import { dateService } from '../services/date.service';
 import {moralEntitiesService} from "../services/moralentities.service";
 import Swal from 'sweetalert2';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-saisie-formulaire',
@@ -103,6 +104,7 @@ export class SaisieFormulaireComponent implements OnInit {
         this.productsService.getValueProducts(date.substr(6, 4) + '-' + date.substr(3, 2) + '-' + date.substr(0, 2), pr.idProduct).subscribe((response) => {
           if (response.data[0] != undefined && response.data[0].Value != 0) {
             (<HTMLInputElement>document.getElementById(pr.idProduct + '-' + date)).value = response.data[0].Value;
+            (<HTMLInputElement>document.getElementById(pr.idProduct + '-' + date + '-hide')).innerHTML = response.data[0].Value;
           }
           else (<HTMLInputElement>document.getElementById(pr.idProduct + '-' + date)).value = '';
         });
@@ -169,5 +171,20 @@ export class SaisieFormulaireComponent implements OnInit {
         }
       });
     }
+
+      //Export de la table dans fichier EXCEL
+  exportExcel(){
+    /* table id is passed over here */
+    let element = document.getElementById('tableSaisie');
+    const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element,{raw:false,dateNF:'mm/dd/yyyy'}); //Attention les jours sont considérés comme mois !!!!
+
+    /* generate workbook and add the worksheet */
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Historique');
+
+    /* save to file */
+    XLSX.writeFile(wb, 'Historique.xlsx');
+  }
+
 
 }

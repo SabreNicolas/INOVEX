@@ -41,6 +41,19 @@ export class cahierQuartService {
           .get<user[]>(requete,requestOptions);
     }
 
+    //Récupérer les rondiers sans équipe
+    getUsersRondier(){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/UsersRondier?idUsine=" + this.idUsine;
+  
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+  
+        return this.http
+            .get<user[]>(requete,requestOptions);
+    }
+
+
     //Récupérer les zones d'une usine
     getZones(){
         let requete = "https://"+this.ip+":"+this.portAPI+"/zones/"+this.idUsine;
@@ -53,9 +66,24 @@ export class cahierQuartService {
           .get<zone[]>(requete,requestOptions);
     }
 
+    /////Equipes////
+
     //Créer une nouvelle équipe
-    nouvelleEquipe(nomEquipe :string, quart : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/equipe?nomEquipe="+nomEquipe +"&quart="+ quart +"&idChefQuart=" + this.idUser;
+    nouvelleEquipe(nomEquipe :string, quart : number, date : string){
+        date = encodeURIComponent(date)
+        let requete = "https://"+this.ip+":"+this.portAPI+"/equipe?nomEquipe="+nomEquipe +"&quart="+ quart +"&idChefQuart=" + this.idUser+"&date="+date;
+
+      const requestOptions = {
+          headers: new HttpHeaders(this.headerDict),
+      };
+
+      return this.http
+          .put<any>(requete,null,requestOptions);
+    }
+
+    //Créer une nouvel enregistrement d'équipe
+    nouvelEnregistrementEquipe(nomEquipe :string){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/enregistrementEquipe?nomEquipe="+nomEquipe;
 
       const requestOptions = {
           headers: new HttpHeaders(this.headerDict),
@@ -68,6 +96,18 @@ export class cahierQuartService {
     //Ajouter les utilisateur à une équipe
     nouvelleAffectationEquipe(idUser : number,idEquipe : number ,idZone : number ,poste : string){
         let requete = "https://"+this.ip+":"+this.portAPI+"/affectationEquipe?idRondier="+idUser +"&idEquipe="+ idEquipe+"&idZone=" + idZone +"&poste="+poste;
+    
+          const requestOptions = {
+              headers: new HttpHeaders(this.headerDict),
+          };
+    
+          return this.http
+              .put<any>(requete,null,requestOptions);
+    }
+
+    //Ajouter les utilisateur à un enregistrement équipe
+    nouvelEnregistrementAffectationEquipe(idUser : number,idEquipe : number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/enregistrementAffectationEquipe?idRondier="+idUser +"&idEquipe="+ idEquipe;
     
           const requestOptions = {
               headers: new HttpHeaders(this.headerDict),
@@ -90,9 +130,49 @@ export class cahierQuartService {
               .get<any>(requete,requestOptions);
     }
     
+    //Récupérer les équipes enregistrées d'une usine
+    getEquipesEnregistrees(){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/getEquipesEnregistrees?&idUsine="+ this.idUsine;
+           //console.log(requete);
+    
+          const requestOptions = {
+              headers: new HttpHeaders(this.headerDict),
+          };
+    
+          return this.http
+              .get<any>(requete,requestOptions);
+    }
+
+    //Récupérer les noms des équipes enregistrées d'une usine
+    getNomsEquipesEnregistrees(){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/getNomsEquipesEnregistrees?&idUsine="+ this.idUsine;
+           //console.log(requete);
+    
+          const requestOptions = {
+              headers: new HttpHeaders(this.headerDict),
+          };
+    
+          return this.http
+              .get<any>(requete,requestOptions);
+    }
+
     //Récupérer une seule équipe
     getOneEquipe(idEquipe : number){
         let requete = "https://"+this.ip+":"+this.portAPI+"/getOneEquipe?&idUsine="+ this.idUsine + "&idEquipe=" + idEquipe;
+        //   console.log(requete);
+    
+    
+          const requestOptions = {
+              headers: new HttpHeaders(this.headerDict),
+          };
+    
+          return this.http
+              .get<any>(requete,requestOptions);
+    }
+
+    //Récupérer une seule équipe enregistrée
+    getOneEnregistrementEquipe(idEquipe : any){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/getOneEnregistrementEquipe?&idUsine="+ this.idUsine + "&idEquipe=" + idEquipe;
         //   console.log(requete);
     
     
@@ -116,10 +196,34 @@ export class cahierQuartService {
               .put<any>(requete,null,requestOptions);
     }
 
+    //Mise à jour des infos d'une équipe enregistrée
+    udpateEnregistrementEquipe(nomEquipe : string, idEquipe : number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/updateEnregistrementEquipe?&nomEquipe="+ nomEquipe + "&idEquipe="+idEquipe  +"&idChefQuart=" + this.idUser;
+        
+          const requestOptions = {
+              headers: new HttpHeaders(this.headerDict),
+          };
+    
+          return this.http
+              .put<any>(requete,null,requestOptions);
+    }
 
     //Supprimer une une équipe
     deleteEquipe(idEquipe : number){
         let requete = "https://"+this.ip+":"+this.portAPI+"/deleteEquipe/"+idEquipe;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .delete<any>(requete,requestOptions);
+    }
+
+    //Supprimer une une équipe enregistrée
+    deleteEnregistrementEquipe(idEquipe : number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/deleteEnregistrementEquipe/"+idEquipe;
         //console.log(requete);
 
         const requestOptions = {
@@ -143,18 +247,20 @@ export class cahierQuartService {
             .delete<any>(requete,requestOptions);
     }
 
-
-     //Récupérer une actualité
-     getOneConsigne(idConsigne : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/getOneConsigne?idConsigne="+idConsigne;
+    //Supprimer les Rondiers d'une équipe enregistre
+    deleteEnregistrementAffectationEquipe(idEquipe : number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/deleteEnregistrementAffectationEquipe/"+idEquipe;
+        //console.log(requete);
 
         const requestOptions = {
-          headers: new HttpHeaders(this.headerDict),
+            headers: new HttpHeaders(this.headerDict),
         };
 
         return this.http
-            .get<any>(requete,requestOptions);
+            .delete<any>(requete,requestOptions);
     }
+
+
 
     /****Actualités *******/
 
@@ -209,7 +315,19 @@ export class cahierQuartService {
             .get<any>(requete,requestOptions);
     }
 
-    //Modifier une actualité
+    //Récupérer toutes actualité
+    getActusActives(){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/getActusActives?idUsine="+this.idUsine;
+
+        const requestOptions = {
+          headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<any>(requete,requestOptions);
+    }
+
+    //Valider une actualité
     validerActu(idActu : number){
         let requete = "https://"+this.ip+":"+this.portAPI+"/validerActu?idActu="+idActu;
 
@@ -221,7 +339,7 @@ export class cahierQuartService {
         .put<any>(requete,null,requestOptions);
     }
 
-    //Modifier une actualité
+    //invalider une actualité
     invaliderActu(idActu : number){
         let requete = "https://"+this.ip+":"+this.portAPI+"/invaliderActu?idActu="+idActu;
 
@@ -233,8 +351,20 @@ export class cahierQuartService {
         .put<any>(requete,null,requestOptions);
     }
 
+  //Récupérer les actus d'une usine entre deux dates avec filtre sur le nom et l'importance
+  getActusEntreDeuxDates(dateDeb : string, dateFin : string, titre : string, importance : number){
+      titre = encodeURIComponent(titre)
+      let requete = "https://"+this.ip+":"+this.portAPI+"/getActusEntreDeuxDates?idUsine="+this.idUsine+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&titre="+titre+"&importance="+importance
 
-        /****Evenement *******/
+      const requestOptions = {
+        headers: new HttpHeaders(this.headerDict),
+      };
+
+      return this.http
+          .get<any>(requete,requestOptions);
+  }
+
+    /****Evenement *******/
 
     //Créer un nouvel évènement
     newEvenement(titre:string,fileToUpload:File, importance:number, dateDeb:string, dateFin:string, groupementGMAO:string, equipementGMAO : string, cause : string, description:string, consigne : number, demandeTravaux : number){
@@ -244,10 +374,7 @@ export class cahierQuartService {
         cause = encodeURIComponent(cause);
         description = encodeURIComponent(description);
         //utilisation de formData pour conserver le format du fichier
-        const formData = new FormData();
-        // @ts-ignore
-        formData.append('fichier', fileToUpload, fileToUpload.name);
-        let requete = "https://"+this.ip+":"+this.portAPI+"/evenement?titre="+titre+"&importance="+importance+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&idUsine="+this.idUsine+"&groupementGMAO="+groupementGMAO+"&equipementGMAO="+equipementGMAO+"&cause="+cause+"&description="+description+"&consigne="+consigne+"&demandeTravaux="+demandeTravaux;
+
         const headers = new HttpHeaders();
         // @ts-ignore
         headers.append('Content-Type', null);
@@ -256,8 +383,20 @@ export class cahierQuartService {
           headers: headers,
         };
 
-        return this.http
-          .put<any>(requete,formData,requestOptions);
+        let requete = "https://"+this.ip+":"+this.portAPI+"/evenement?titre="+titre+"&importance="+importance+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&idUsine="+this.idUsine+"&groupementGMAO="+groupementGMAO+"&equipementGMAO="+equipementGMAO+"&cause="+cause+"&description="+description+"&consigne="+consigne+"&demandeTravaux="+demandeTravaux;
+
+        if(fileToUpload != undefined){
+            const formData = new FormData();
+            formData.append('fichier', fileToUpload, fileToUpload.name);
+    
+            return this.http
+            .put<any>(requete,formData,requestOptions);
+        }
+        else {
+            return this.http
+            .put<any>(requete,null,requestOptions);
+        }
+        
     }
 
     //Modifier un évènement
@@ -279,7 +418,7 @@ export class cahierQuartService {
     }
    
 
-    //Récupérer une actualité
+    //Récupérer un évènement
     getOneEvenement(idEvenement : number){
         let requete = "https://"+this.ip+":"+this.portAPI+"/getOneEvenement?idEvenement="+idEvenement;
 
@@ -291,7 +430,7 @@ export class cahierQuartService {
             .get<any>(requete,requestOptions);
     }
 
-    //Récupérer toutes actualité
+    //Récupérer tout les évènements
     getAllEvenement(){
         let requete = "https://"+this.ip+":"+this.portAPI+"/getAllEvenement?idUsine="+this.idUsine;
 
@@ -303,7 +442,33 @@ export class cahierQuartService {
             .get<any>(requete,requestOptions);
     }
 
-    //Supprimer une une équipe
+    //Récupérer toutes les évènements entre deux dates
+    getEvenementsEntreDeuxDates(dateDeb : string, dateFin : string, titre : string, groupementGMAO : string, equipementGMAO : string, importance : number){
+        titre = encodeURIComponent(titre)
+
+        let requete = "https://"+this.ip+":"+this.portAPI+"/getEvenementsEntreDeuxDates?idUsine="+this.idUsine+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&titre="+titre+"&groupementGMAO="+groupementGMAO+"&equipementGMAO="+equipementGMAO+"&importance="+importance;
+
+        const requestOptions = {
+          headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<any>(requete,requestOptions);
+    }
+
+    //Récupérer tout les évènements d'une ronde
+    getEvenementsRonde(dateDeb : string, dateFin : string){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/getEvenementsRonde?idUsine="+this.idUsine+"&dateDeb="+dateDeb+"&dateFin="+dateFin;
+
+        const requestOptions = {
+          headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<any>(requete,requestOptions);
+    }
+
+    //Supprimer une évènement
     deleteEvenement(id : number){
         let requete = "https://"+this.ip+":"+this.portAPI+"/deleteEvenement/"+id;
         //console.log(requete);
@@ -315,4 +480,226 @@ export class cahierQuartService {
         return this.http
             .delete<any>(requete,requestOptions);
     }
+
+    //Calendrier
+
+    //Récupérer toutes les zones du calendrier
+    getAllZonesCalendrier(){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/getAllZonesCalendrier?idUsine="+this.idUsine;
+
+        const requestOptions = {
+          headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<any>(requete,requestOptions);
+    }
+
+    //Récupérer les zones d'une ronde du calendrier
+    getZonesCalendrierRonde(dateDeb : string, dateFin : string){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/getZonesCalendrierRonde?idUsine="+this.idUsine+"&dateDeb="+dateDeb+"&dateFin="+dateFin;;
+
+        const requestOptions = {
+          headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<any>(requete,requestOptions);
+    }
+
+    //Récupérer une équipe sur une ronde
+    getEquipeRonde(quart : number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/getEquipeRonde?idUsine="+this.idUsine+"&quart="+quart;
+
+        const requestOptions = {
+          headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<any>(requete,requestOptions);
+    }
+
+    //Récupérer une équipe sur un  quart
+    getEquipeQuart(quart : number, date : string){
+        date = encodeURIComponent(date)
+        let requete = "https://"+this.ip+":"+this.portAPI+"/getEquipeQuart?idUsine="+this.idUsine+"&quart="+quart+"&date="+date;
+
+        const requestOptions = {
+          headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<any>(requete,requestOptions);
+    }
+
+    //Récupérer toutes les ation du calendrier
+    getAllActionsCalendrier(){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/getAllActionsCalendrier?idUsine="+this.idUsine;
+
+        const requestOptions = {
+          headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<any>(requete,requestOptions);
+    }
+
+    //Créer une nouvelle zone dans le calendrier
+    newCalendrierZone(idRonde:number, dateDeb:string, quart:number, dateFin:string){
+
+        let requete = "https://"+this.ip+":"+this.portAPI+"/newCalendrierZone?idRonde="+idRonde+"&quart="+quart+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&idUsine="+this.idUsine;
+
+        const requestOptions = {
+          headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+          .put<any>(requete,null,requestOptions);
+    }
+
+    //Créer une nouvelle action dans le calendrier
+    newCalendrierAction(idAction:number, dateDeb:string, quart:number, dateFin:string){
+
+        let requete = "https://"+this.ip+":"+this.portAPI+"/newCalendrierAction?idAction="+idAction+"&quart="+quart+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&idUsine="+this.idUsine;
+
+        const requestOptions = {
+          headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+          .put<any>(requete,null,requestOptions);
+    }
+
+    //Modifier une action dans le calendrier
+    updateCalendrierAction(idAction:number, dateDeb:string, quart:number, dateFin:string){
+
+        let requete = "https://"+this.ip+":"+this.portAPI+"/updateCalendrierAction?idAction="+idAction+"&quart="+quart+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&idUsine="+this.idUsine;
+
+        const requestOptions = {
+          headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+          .put<any>(requete,null,requestOptions);
+    }
+
+    //Créer une nouvelle actualité
+    newAction(nom:string, dateDeb:string, dateFin:string){
+
+        let requete = "https://"+this.ip+":"+this.portAPI+"/newAction?nom="+nom+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&idUsine="+this.idUsine;
+
+        const requestOptions = {
+          headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+          .put<any>(requete,null,requestOptions);
+    }
+    
+
+    //Supprimer un évènement du calendrier
+    deleteCalendrier(id : number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/deleteCalendrier/"+id;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .delete<any>(requete,requestOptions);
+    }
+
+
+    ////Actions////
+
+    //Récupérer toutes les actions d'une ronde
+    getActionsRonde(dateDeb : string, dateFin : string){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/getActionsRonde?idUsine="+this.idUsine+"&dateDeb="+dateDeb+"&dateFin="+dateFin;
+
+        const requestOptions = {
+          headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<any>(requete,requestOptions);
+    }
+
+    //Récupérer toutes les action
+    getAllAction(){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/getAllAction?idUsine="+this.idUsine;
+
+        const requestOptions = {
+          headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<any>(requete,requestOptions);
+    }
+
+    //Récupérer toutes les action entre deux dates d'une usine avec filtre sur le titre et l'importance
+    getActionsEntreDeuxDates(dateDeb : string, dateFin : string, titre : string){
+        titre = encodeURIComponent(titre)
+        let requete = "https://"+this.ip+":"+this.portAPI+"/getActionsEntreDeuxDates?idUsine="+this.idUsine+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&titre="+titre
+
+        const requestOptions = {
+          headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<any>(requete,requestOptions);
+    }
+
+  //Récupérer une action
+  getOneAction(idAction : number){
+    let requete = "https://"+this.ip+":"+this.portAPI+"/getOneAction?idAction="+idAction;
+
+    const requestOptions = {
+      headers: new HttpHeaders(this.headerDict),
+    };
+
+    return this.http
+        .get<any>(requete,requestOptions);
+  }
+
+  //Modifier une action
+  updateAction(nom:string, dateDeb:string, dateFin:string, idAction : number){
+    nom = encodeURIComponent(nom);
+    let requete = "https://"+this.ip+":"+this.portAPI+"/updateAction?nom="+nom+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&idAction="+idAction;
+
+    const requestOptions = {
+      headers: new HttpHeaders(this.headerDict),
+    };
+
+    return this.http
+      .put<any>(requete,null,requestOptions);
+  }
+
+  ////Consignes
+
+
+  //Récupérer une consigne
+ getOneConsigne(idConsigne : number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/getOneConsigne?idConsigne="+idConsigne;
+  
+        const requestOptions = {
+          headers: new HttpHeaders(this.headerDict),
+        };
+  
+        return this.http
+            .get<any>(requete,requestOptions);
+    }
+
+  //Récupérer toutes les consignes entre deux dates d'une usine avec filtre sur le titre et l'importance
+  getConsignesEntreDeuxDates(dateDeb : string, dateFin : string, titre : string){
+    titre = encodeURIComponent(titre)
+    let requete = "https://"+this.ip+":"+this.portAPI+"/getConsignesEntreDeuxDates?idUsine="+this.idUsine+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&titre="+titre
+
+    const requestOptions = {
+      headers: new HttpHeaders(this.headerDict),
+    };
+
+    return this.http
+        .get<any>(requete,requestOptions);
+}
 }

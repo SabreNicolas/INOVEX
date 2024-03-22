@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { cahierQuartService } from '../services/cahierQuart.service';
-import {DatePipe} from "@angular/common";
+import {DatePipe, Location} from "@angular/common";
 import Swal from 'sweetalert2';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-actu',
@@ -17,7 +17,7 @@ export class ActuComponent implements OnInit {
   public dateFin : Date | undefined;
   public idActu : number;
 
-  constructor(public cahierQuartService : cahierQuartService, private datePipe : DatePipe,private route : ActivatedRoute) {
+  constructor(public cahierQuartService : cahierQuartService, private datePipe : DatePipe,private route : ActivatedRoute, private location : Location) {
     this.titre = "";
     this.importance = 0;
     this.idActu = 0;
@@ -33,7 +33,9 @@ export class ActuComponent implements OnInit {
    }
 
   ngOnInit(): void {
+    //Si on est en mode édition
     if(this.idActu > 0){
+      //On récupère l'actu
       this.cahierQuartService.getOneActu(this.idActu).subscribe((response) =>{
         this.titre = response.data[0]['titre'];
         this.importance = response.data[0]['importance'];
@@ -43,7 +45,9 @@ export class ActuComponent implements OnInit {
     }
   }
 
+  //Création ou édition d'une actualité
   newActu(){
+    //Il faut avoir renseigné une date de début
     if(this.dateDeb != undefined){
       var dateDebString = this.datePipe.transform(this.dateDeb,'yyyy-MM-dd HH:mm');
     }
@@ -51,6 +55,7 @@ export class ActuComponent implements OnInit {
       Swal.fire('Veuillez choisir une date de début','La saisie a été annulée.','error');
       return;
     }
+    //Il faut avoir renseigné une date de fin
     if(this.dateFin != undefined){
       var dateFinString = this.datePipe.transform(this.dateFin,'yyyy-MM-dd HH:mm');
     }
@@ -58,14 +63,17 @@ export class ActuComponent implements OnInit {
       Swal.fire('Veuillez choisir une date de Fin','La saisie a été annulée.','error');
       return;
     }
+    //Il faut avoir renseigné un titre
     if(this.titre == "" ){
       Swal.fire('Veuillez renseigner le titre de l\'actualité','La saisie a été annulée.','error');
       return;
     }
+    //On vérifie si les deux dates sont valides
     if(this.dateFin < this.dateDeb){
       Swal.fire('Les dates ne correspondent pas','La saisie a été annulée.','error');
       return;
     }
+    //Choix de la phrase à afficher en fonction du mode
     if(this.idActu > 0){
       var question = 'Êtes-vous sûr(e) de modifier cette Actu ?'
     }
@@ -91,6 +99,7 @@ export class ActuComponent implements OnInit {
             console.log(response)
             if(response == "Création de l'actu OK !"){
               Swal.fire({text : 'Nouvelle actualité créée', icon :'success'});
+              this.location.back();
             }
           });
         }  

@@ -1,0 +1,158 @@
+<div class="form-check">
+    <div id="checkbox">
+        <div>
+            <input class="form-check-input" type="checkbox" value="" id="evenement" name="evenement" [(ngModel)]="evenement">
+            <label class="form-check-label" for="evenement">
+                Evènements
+            </label>
+        </div>
+        
+        <div>
+            <input class="form-check-input" type="checkbox" value="" id="actu" name="actu" [(ngModel)]="actu">
+            <label class="form-check-label" for="actu">
+                Actualités
+            </label>
+        </div>
+        
+            <div>
+            <input class="form-check-input" type="checkbox" value="" id="consigne" name="consigne" [(ngModel)]="consigne">
+            <label class="form-check-label" for="consigne">
+                Consignes
+            </label>
+        </div>
+        
+            <div>
+            <input class="form-check-input" type="checkbox" value="" id="action" name="action" [(ngModel)]="action">
+            <label class="form-check-label" for="action">
+                Actions
+            </label>
+        </div>
+
+    </div>
+
+    <div id="form">
+        <div class="form-group">
+            <label for="desc">Titre : * </label>
+            <input required type="text" id="titre" class="form-control" placeholder="Titre" name="titre" ngModel [(ngModel)]="titre">
+        </div>
+        
+        <div class="form-group" *ngIf="evenement">
+            <label for="desc">Groupement : * </label>
+            <input required type="text" id="groupementGMAO" class="form-control" placeholder="Groupement GMAO" name="groupementGMAO" ngModel [(ngModel)]="groupementGMAO">
+        </div>
+
+        <div class="form-group" *ngIf="evenement">
+            <label for="desc">Equipement : * </label>
+            <input required type="text" id="equipementGMAO" class="form-control" placeholder="Equipement GMAO" name="equipementGMAO" ngModel [(ngModel)]="equipementGMAO">
+        </div>
+
+        <div class="form-group">
+            <label>Début date validité : *</label>
+            <input required type="datetime-local" id="dateDebut" class="form-control" placeholder="Date de début de validité" name="dateDebut" ngModel [(ngModel)]="dateDeb">
+        </div>
+            
+        <div class="form-group">
+            <label>Fin date validité : *</label>
+            <input required type="datetime-local" id="dateFin" class="form-control" placeholder="Date de validité" name="dateFin" ngModel [(ngModel)]="dateFin">
+        </div>
+
+        <div class="form-group">
+            <label>Importance : *</label>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <select required class="form-select" aria-label=".form-select-sm example" name="importance" ngModel [(ngModel)]="importance">
+                            <option value=3>Tout</option>
+                            <option value=0 style="background-color: rgb(81, 196, 81);">Faible</option>
+                            <option value=1 style="background-color: rgb(245, 171, 35);">Neutre</option>
+                            <option value=2 style="background-color: rgb(248, 75, 75);">Elevée</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <p style="font-size: smaller; color: grey">* : Obligatoire</p>
+
+    <div class="form-group">
+        <button class="btn btn-success btn-lg" (click)="recherche()">Valider</button>
+        <button class="btn btn-danger btn-lg">Annuler</button>
+    </div>
+
+    <div class="form-group">
+        <button class="btn btn-success btn-lg" (click)="exportExcel()">
+            <i class="far fa-file-excel"></i>
+        </button>
+    </div>
+
+    <div class="table-style">
+        <!--table des consignes-->
+        <table class="table tableFixed" id="tableResultats">
+            <thead>
+            <tr class="table-secondary">
+                <th scope="col">Type</th>
+                <th scope="col">Nom</th>
+                <th scope="col" *ngIf="evenement">Groupement GMAO</th>
+                <th scope="col" *ngIf="evenement">Equipement GMAO</th>
+                <th scope="col" *ngIf="evenement">Cause</th>
+                <th scope="col">Date de Début de validité</th>
+                <th scope="col">Date de Fin de validité</th>
+                <th scope="col" *ngIf="evenement">Demande de travaux</th>
+                <th scope="col" *ngIf="evenement">Photo</th>
+                <th scope="col">#</th>
+            </tr>
+            </thead>
+            <tbody *ngFor="let event of resultTableau">
+            <tr class="color--{{event.importance}} line" >
+                <td >{{event.typeDonnee}}</td>
+                <td> {{event.nom}} </td>
+                <td *ngIf="evenement == true">{{event.groupementGMAO}}</td>
+                <td *ngIf="evenement == true">{{event.equipementGMAO}}</td>
+                <td *ngIf="evenement == true">{{event.cause}}</td>
+                <td> {{event.date_heure_debut}} </td>
+                <td> {{event.date_heure_fin}} </td>
+                <td *ngIf="evenement">{{event.demande_travaux}}</td>
+                <td *ngIf="evenement">
+                    <!-- Balise caché avec la valeur pour export Excel car impossible d'exporter valeurs si inputs dans table -->
+                    <p style="display: none;" id="export">{{event.url}}</p>
+                    <a *ngIf="event.url != ''" routerLink="../../{{event.url}}">
+                        <button class="btn btn-success">
+                            <i class="fas fa-image"></i> 
+                        </button>
+                    </a>
+                </td>
+                <td *ngIf="event.typeDonnee == 'Evènement'">
+                    <a  routerLink="/cahierQuart/newEvenement" target="_blank" [queryParams]="{idEvenement: event.id}" > 
+                        <button class="btn btn btn-light edition">
+                            <i class="far fa-edit"></i>
+                        </button>
+                    </a>
+                </td>
+                <td *ngIf="event.typeDonnee == 'Consigne'">
+                    <a  routerLink="/cahierQuart/newConsigne" target="_blank" [queryParams]="{idConsigne: event.id}" > 
+                        <button class="btn btn btn-light edition">
+                            <i class="far fa-edit"></i>
+                        </button>
+                    </a>
+                </td>
+                <td *ngIf="event.typeDonnee == 'Actualité'">
+                    <a  routerLink="/cahierQuart/newActu" target="_blank" [queryParams]="{idActu: event.id}" > 
+                        <button class="btn btn btn-light edition">
+                            <i class="far fa-edit"></i>
+                        </button>
+                    </a>
+                </td>
+                <td *ngIf="event.typeDonnee == 'Action'">
+                    <a  routerLink="/cahierQuart/newAction" target="_blank" [queryParams]="{idAction: event.id, quart : event.quart}" > 
+                        <button class="btn btn btn-light edition">
+                            <i class="far fa-edit"></i>
+                        </button>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>

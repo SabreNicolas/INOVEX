@@ -21,7 +21,7 @@ import { ListRapportsComponent } from './list-rapports/list-rapports.component';
 import {arretsService} from "./services/arrets.service";
 import { ListArretsComponent } from './list-arrets/list-arrets.component';
 import { ArretsComponent } from './arrets/arrets.component';
-import {DatePipe} from "@angular/common";
+import {DatePipe, registerLocaleData} from "@angular/common";
 import { AdminComponent } from './admin/admin.component';
 import { AdminGlobalComponent } from './admin-global/admin-global.component';
 import { SortantsComponent } from './sortants/sortants.component';
@@ -74,7 +74,6 @@ import { FormulaireComponent } from './formulaire/formulaire.component';
 import { ListFormulairesComponent } from './list-formulaires/list-formulaires.component';
 import { formulaireService } from './services/formulaire.service';
 import { SaisieFormulaireComponent } from './saisie-formulaire/saisie-formulaire.component';
-import { ListEvementComponent } from './list-evement/list-evement.component';
 import { ListActionsComponent } from './list-actions/list-actions.component';
 import { ActionComponent } from './action/action.component';
 import { ActuComponent } from './actu/actu.component';
@@ -84,10 +83,29 @@ import { ListEvenementsComponent } from './list-evenements/list-evenements.compo
 import { CalendrierComponent } from './calendrier/calendrier.component';
 import { CommonModule } from '@angular/common';
 import { FlatpickrModule } from 'angularx-flatpickr';
-import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { CalendarDateFormatter, CalendarModule, CalendarNativeDateFormatter, DateAdapter, DateFormatterParams } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
-// import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import localeFr from '@angular/common/locales/fr';
+import { AcceuilCahierQuartComponent } from './acceuil-cahier-quart/acceuil-cahier-quart.component';
+import { RecapRondeComponent } from './recap-ronde/recap-ronde.component';
+import { EnregistrementEquipeComponent } from './enregistrement-equipe/enregistrement-equipe.component';
+import { ListEnregistrementEquipeComponent } from './list-enregistrement-equipe/list-enregistrement-equipe.component';
+import { RechercheComponent } from './recherche/recherche.component';
 
+
+registerLocaleData(localeFr, 'fr');
+class CustomDateFormatter extends CalendarNativeDateFormatter{
+  public override dayViewHour({ date, locale }: DateFormatterParams): string {
+    return new Intl.DateTimeFormat(locale, {hour : 'numeric', minute: 'numeric'}).format(date)
+  }
+
+  public override weekViewHour({ date, locale }: DateFormatterParams): string {
+    return new Intl.DateTimeFormat(locale, {hour : 'numeric', minute: 'numeric'}).format(date)
+
+  }
+}
 @NgModule({
   declarations: [
     AppComponent,
@@ -146,7 +164,6 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
     FormulaireComponent,
     ListFormulairesComponent,
     SaisieFormulaireComponent,
-    ListEvementComponent,
     ListActionsComponent,
     ActionComponent,
     ActuComponent,
@@ -154,16 +171,22 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
     EvenementComponent,
     ListEvenementsComponent,
     CalendrierComponent,
+    AcceuilCahierQuartComponent,
+    RecapRondeComponent,
+    EnregistrementEquipeComponent,
+    ListEnregistrementEquipeComponent,
+    RechercheComponent,
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
     DragDropModule,
     CommonModule,
     FormsModule,
-    // NgbModalModule,
+    NgbModalModule,
     FlatpickrModule.forRoot(),
     CalendarModule.forRoot({
       provide: DateAdapter,
@@ -172,6 +195,7 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
   ],
   providers: [
     moralEntitiesService,
+    {provide: CalendarDateFormatter, useClass: CustomDateFormatter},
     categoriesService,
     productsService,
     arretsService,

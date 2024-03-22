@@ -1,5 +1,22 @@
+<!-- Bloc de choix du mode de création -->
+<div id="divCreation" *ngIf="idEquipe == 0">
+    <h3>Choix de l'équipe</h3>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="new" id="new" value="new" [(ngModel)]="radioSelect" (click)="showNewEquipe()">
+      <label class="form-check-label" for="new">
+        Nouvelle équipe
+      </label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="enregistree" id="enregistree" value="enregistree" (click)="showEquipeEnregistree()" [(ngModel)]="radioSelect">
+      <label class="form-check-label" for="enregistree">
+        Equipe enregistrée
+      </label>
+    </div>
+</div>
+
 <div id="container">
-    <div id="gauche">
+    <div id="gauche" style="display: none;">
         <h3>Liste des rondiers sans équipe</h3>
         <div id="test" class="overflow-auto">
         <table class="table table-hover tableFixed" id="listRondier" cdkDropList [cdkDropListData]="listUsers" [cdkDropListConnectedTo]="'listAjout'" (cdkDropListDropped)="onItemDropped($event)" >
@@ -25,30 +42,26 @@
         </div>
     </div>
 
-    <div id="droite">
+    <div id="droite" style="display: none;">
         <h3>Création de la nouvelle équipe :</h3>
-
         <div id="choix">
-            <div class="mb-3">  
+            <div class="mb-3" id="newEquipe" style="display: none;">  
                 <label for="nomEquipe" class="form-label">Nom de l'équipe *</label>  
-                <select class="form-select" id="nomEquipe" #nomEquipe name="name" required ngModel [(ngModel)]="name">
-                    <option value="Equipe 1">Equipe 1</option>
-                    <option value="Equipe 2">Equipe 2</option>
-                    <option value="Equipe 3">Equipe 3</option>
-                    <option value="Equipe 4">Equipe 4</option>
-                    <option value="Equipe 5">Equipe 5</option>
-                    <option value="Equipe 6">Equipe 6</option>
+                <input required type="text" id="nomEquipe" class="form-control" #nomEquipe placeholder="Nom de l'équipe" name="nomEquipe" ngModel [(ngModel)]="name">
+
+            </div>
+
+            <div class="mb-3" id="equipesEnregistrees" style="display: none;">  
+                <label for="nomEquipeEnregistree" class="form-label">Nom de l'équipe *</label>  
+                <select class="form-select" id="nomEquipeEnregistree" #nomEquipeEnregistree name="name" required ngModel [(ngModel)]="idEquipeEnregistree" (change)="chargerRondiersEquipeEnregistree()">
+                    <option value="0">Choisissez une équipe</option>
+                    <option *ngFor="let equipe of equipesEnregistrees" value="{{equipe.id}}-{{equipe.equipe}}">{{equipe.equipe}}</option>
                 </select>
             </div>
-    
+
             <div class="mb-3">
                 <label for="quart" class="form-label">Période :</label>
                 <strong>{{periode}} du {{dateDuJour}}</strong>
-                <!-- <select class="form-select" id="quart" #quart name="periode" required ngModel [(ngModel)]="periode">
-                    <option value="matin">Quart du matin</option>
-                    <option value="apres-midi">Quart de l'après-midi</option>
-                    <option value="nuit">Quart de nuit</option>
-                </select> -->
             </div>
         </div>
         
@@ -90,7 +103,8 @@
             </table>
         </div>
         <p style="font-size: smaller; color: grey" id="legende">* : Obligatoire</p>
-        <button id="creer" type="submit" class="btn btn-success" (click)="nouvelleEquipe(nomEquipe.value)">Soumettre</button>  
+        <button *ngIf="radioSelect == 'new' || radioSelect == ''" id="creer" type="submit" class="btn btn-success" (click)="nouvelleEquipe(nomEquipe.value)">Soumettre</button>  
+        <button *ngIf="radioSelect == 'enregistree'" id="creer" type="submit" class="btn btn-success" (click)="nouvelleEquipe(nomEquipeEnregistree.value)">Soumettre</button>  
         <button class="btn btn-danger" onclick="window.location.replace('/cahierQuart')">Annuler</button>
     </div>  
 </div>

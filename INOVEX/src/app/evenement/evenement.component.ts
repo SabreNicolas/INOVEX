@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { cahierQuartService } from '../services/cahierQuart.service';
-import {DatePipe} from "@angular/common";
+import {DatePipe, Location} from "@angular/common";
 import Swal from 'sweetalert2';
 import { ActivatedRoute } from '@angular/router';
 import { consigne } from 'src/models/consigne.model';
 declare var $ : any;
+import {rondierService} from "../services/rondier.service";
 
 @Component({
   selector: 'app-evenement',
@@ -26,7 +27,7 @@ export class EvenementComponent implements OnInit {
   fileToUpload: File | undefined;
   public imgSrc !: any
 
-  constructor(public cahierQuartService : cahierQuartService, private datePipe : DatePipe,private route : ActivatedRoute) {
+  constructor(public cahierQuartService : cahierQuartService, private rondierService : rondierService, private datePipe : DatePipe,private route : ActivatedRoute, private location : Location) {
     this.titre = "";
     this.importance = 0;
     this.idEvenement = 0;
@@ -48,7 +49,9 @@ export class EvenementComponent implements OnInit {
    }
 
   ngOnInit(): void {
+    //Si on est en mode édition
     if(this.idEvenement > 0){
+      //On récupère l'aévènement
       this.cahierQuartService.getOneEvenement(this.idEvenement).subscribe((response) =>{
         this.titre = response.data[0]['titre'];
         this.importance = response.data[0]['importance'];
@@ -66,8 +69,9 @@ export class EvenementComponent implements OnInit {
     }
   }
 
-  
+  //Création ou édition d'un évènement
   newEvenement(){
+    //Il faut avoir renseigné une date de début
     if(this.dateDeb != undefined){
       var dateDebString = this.datePipe.transform(this.dateDeb,'yyyy-MM-dd HH:mm');
     }
@@ -75,6 +79,7 @@ export class EvenementComponent implements OnInit {
       Swal.fire('Veuillez choisir une date de début','La saisie a été annulée.','error');
       return;
     }
+    //Il faut avoir renseigné une date de fin
     if(this.dateFin != undefined){
       var dateFinString = this.datePipe.transform(this.dateFin,'yyyy-MM-dd HH:mm');
     }
@@ -82,47 +87,54 @@ export class EvenementComponent implements OnInit {
       Swal.fire('Veuillez choisir une date de Fin','La saisie a été annulée.','error');
       return;
     }
+    //Il faut avoir renseigné un nom
     if(this.titre == "" ){
       Swal.fire('Veuillez renseigner le titre de l\'actualité','La saisie a été annulée.','error');
       return;
     }
+    //Il faut que les deux dates soient cohérentes
     if(this.dateFin < this.dateDeb){
       Swal.fire('Les dates ne correspondent pas','La saisie a été annulée.','error');
       return;
     }
+    //Si la case demande de travaux est choché on la met a un pour l'insertion sinon elle est a 'true'
     if(this.demandeTravaux){
       this.demandeTravaux=1;
     }
     else this.demandeTravaux=0;
+    //Si on la case consigne est cochée on la crée
     if(this.consigne){
       this.consigne=1;
+      this.rondierService.createConsigne(this.titre,5,dateFinString,dateDebString).subscribe((response)=>{
+      })
     }
     else this.consigne=0;
+    //Choix de la phrase à afficher en fonction du mode
     if(this.idEvenement > 0){
       var question = 'Êtes-vous sûr(e) de modifier cet évènement ?'
     }
     else var question = 'Êtes-vous sûr(e) de créer cet évènement ?'
-    //Demande de confirmation de création d'équipe
+    //Demande de confirmation de l'évènement
     Swal.fire({title: question ,icon: 'warning',showCancelButton: true,confirmButtonColor: '#3085d6',cancelButtonColor: '#d33',confirmButtonText: 'Oui, créer',cancelButtonText: 'Annuler'
     }).then((result) => {
       if (result.isConfirmed) {
-        //Si on est en mode édition d'une actu on va dans la fonction update
+        //Si on est en mode édition 
         if (this.idEvenement != 0){
           //@ts-ignore
           this.cahierQuartService.updateEvenement(this.titre,this.importance,dateDebString,dateFinString, this.groupementGMAO, this.equipementGMAO, this.cause,this.description, this.consigne, this.demandeTravaux, this.idEvenement).subscribe((response)=>{
-            console.log(response)
             if(response == "Modification de l'evenement OK !"){
               Swal.fire({text : 'Evènement modifiée !', icon :'success'});
+              this.location.back();
             }
           });        
         }
-        //Sinon on créé l'actu
+        //Sinon on créé 
         else{
           //@ts-ignore
           this.cahierQuartService.newEvenement(this.titre,this.fileToUpload,this.importance,dateDebString,dateFinString, this.groupementGMAO, this.equipementGMAO, this.cause,this.description, this.consigne, this.demandeTravaux).subscribe((response)=>{
-            console.log(response)
             if(response == "Création de l'evenement OK !"){
               Swal.fire({text : 'Nouvel évènement créée', icon :'success'});
+              this.location.back();
             }
           });
         }  
@@ -155,4 +167,9 @@ export class EvenementComponent implements OnInit {
     } 
     else Swal.fire('Aucun fichier choisi....')
   }
+
+  goBack(){
+    this.location.back();
+  }
+
 }
