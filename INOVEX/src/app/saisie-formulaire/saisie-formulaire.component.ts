@@ -170,9 +170,10 @@ export class SaisieFormulaireComponent implements OnInit {
           Swal.fire('Annulé','La suprression a été annulée.','error');
         }
       });
-    }
+  }
 
-      //Export de la table dans fichier EXCEL
+  
+  //Export de la table dans fichier EXCEL
   exportExcel(){
     /* table id is passed over here */
     let element = document.getElementById('tableSaisie');

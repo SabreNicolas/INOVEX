@@ -406,7 +406,7 @@ export class ListEntreeComponent implements OnInit {
     else if (this.typeImportTonnage.toLowerCase().includes("dpk")){
       //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
       //this.lectureCSV(event, ";", false, 21, 20, 7, 19);
-      this.lectureCSV(event, ";", false, 22, 21, 8, 20,26);
+      this.lectureCSV(event, ";", false, 21, 20, 7, 19, 25);
     }
     //Calce
     else if (this.typeImportTonnage.toLowerCase().includes("informatique verte")){
@@ -436,11 +436,11 @@ export class ListEntreeComponent implements OnInit {
       }
       //Douchy
       else if(this.idUsine === 10){
-        this.lectureCSV(event, ";", false, 28, 27, 16, 7, 12);
+        this.lectureCSV(event, ";", true, 28, 27, 16, 7);
       }
       //Mourenx
       else if(this.idUsine === 18){
-        this.lectureCSV(event, ";", false, 11, 13, 1,7 );
+        this.lectureCSV(event, ";", false, 11, 13, 1, 7);
       }   
       //Plouharnel 
       else this.lectureCSV(event, ";", false, 8, 6, 1, 11, 12);
@@ -455,7 +455,7 @@ export class ListEntreeComponent implements OnInit {
       //Sète
       //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
       if(this.idUsine === 19){
-        this.lectureCSV(event, ",", true, 11, 13, 0, 16);
+        this.lectureCSV(event, ";", true, 8, 11, 0, 14);
       }
       //Cergy
       else {
@@ -471,7 +471,7 @@ export class ListEntreeComponent implements OnInit {
       }
       //Villefranche
       else {
-        this.lectureCSV(event, ";", true,23, 19, 6, 11, 2);
+        this.lectureCSV(event, ";", true, 23, 19, 6, 11, 2);
       }
     }
     //Saint Ouen
@@ -711,7 +711,7 @@ export class ListEntreeComponent implements OnInit {
               if(results.data[i][posDateEntree] != ""){
                 //On ajoute toutes les dates dans le tableau dates
                 this.dates.push(results.data[i][posDateEntree].substring(0,10));
-              }              
+              } 
               //Création de l'objet qui contient l'ensemble des infos nécessaires
               let importCSV = {
                 client: results.data[i][posClient],
