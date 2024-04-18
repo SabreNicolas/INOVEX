@@ -33,7 +33,7 @@
 
 <div class="rapportsList">
     <a *ngFor="let rapport of listRapports" target="_self" (click)="download(rapport.url)">
-        <div *ngIf="rapport.nom.includes('Tableau de Bord')" class="card">
+        <div *ngIf="rapport.nom.includes('Tableau de Bord') || (rapport.nom.includes('Annuel') && !rapport.nom.includes('personnalisable')) || rapport.nom.includes('Journalier') || rapport.nom.includes('Arrêts')" class="card">
             <img src="assets/excel.png" class="card-img-top" alt="...">
             <div class="card-body">
                 <p class="card-text">{{rapport.nom}}</p>
@@ -42,7 +42,7 @@
     </a>
 </div>
 
-<h2 class="center">Annuel :</h2>
+<!--<h2 class="center">Annuel :</h2>
 
 <div class="rapportsList">
     <a *ngFor="let rapport of listRapports" target="_self" (click)="download(rapport.url)">
@@ -53,13 +53,13 @@
             </div>
         </div>
     </a>
-</div>
+</div>-->
 
 <h2 class="center">Divers :</h2>
 
 <div class="rapportsList">
     <a *ngFor="let rapport of listRapports" target="_self" (click)="download(rapport.url)">
-        <div *ngIf="!rapport.nom.includes('Entrées') && !rapport.nom.includes('Sorties') && !rapport.nom.includes('Facturation') && !rapport.nom.includes('Tableau de Bord') && !rapport.nom.includes('Annuel')" class="card">
+        <div *ngIf="!rapport.nom.includes('Entrées') && !rapport.nom.includes('Sorties') && !rapport.nom.includes('Facturation') && !rapport.nom.includes('Tableau de Bord') && (!rapport.nom.includes('Annuel') || rapport.nom.includes('personnalisable')) && !rapport.nom.includes('Journalier') && !rapport.nom.includes('Arrêts')" class="card">
             <img src="assets/excel.png" class="card-img-top" alt="...">
             <div class="card-body">
                 <p class="card-text">{{rapport.nom}}</p>

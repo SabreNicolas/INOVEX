@@ -406,7 +406,7 @@ export class ListEntreeComponent implements OnInit {
     else if (this.typeImportTonnage.toLowerCase().includes("dpk")){
       //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
       //this.lectureCSV(event, ";", false, 21, 20, 7, 19);
-      this.lectureCSV(event, ";", false, 22, 21, 8, 20,26);
+      this.lectureCSV(event, ";", false, 21, 20, 7, 19, 25);
     }
     //Calce
     else if (this.typeImportTonnage.toLowerCase().includes("informatique verte")){
@@ -436,7 +436,7 @@ export class ListEntreeComponent implements OnInit {
       }
       //Douchy
       else if(this.idUsine === 10){
-        this.lectureCSV(event, ";", false, 28, 27, 16, 7, 12);
+        this.lectureCSV(event, ";", true, 28, 27, 16, 7);
       }
       //Mourenx
       else if(this.idUsine === 18){
@@ -448,14 +448,14 @@ export class ListEntreeComponent implements OnInit {
     //Pluzunet
     else if (this.typeImportTonnage.toLowerCase().includes("caktus")){
       //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
-      this.lectureCSV(event, ";", true, 31, 27, 14, 10, 11);
+      this.lectureCSV(event, ",", true, 31, 27, 14, 10, 11);
     }
     //Sète , Cergy
     else if (this.typeImportTonnage.toLowerCase().includes("hodja")){
       //Sète
       //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
       if(this.idUsine === 19){
-        this.lectureCSV(event, ",", true, 11, 13, 0, 16);
+        this.lectureCSV(event, ";", true, 8, 11, 0, 14);
       }
       //Cergy
       else {
@@ -744,8 +744,7 @@ export class ListEntreeComponent implements OnInit {
           //On supprime toutes les mesures sur les entrants entre les deux dates avant de faire la nouvelle insertion
           this.moralEntitiesService.deleteMesuresEntrantsEntreDeuxDates(dateDeb,dateFin).subscribe((response)=>{
             this.insertTonnageCSV();
-          })
-          //console.log(this.csvArray);
+          });
           
           this.removeloading();
         }

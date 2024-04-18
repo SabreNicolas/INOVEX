@@ -44,7 +44,7 @@ export class ArretsComponent implements OnInit {
   public fortuit_traitement : boolean = false;
   public fortuit_commun : boolean = false;
   public saisieLibre : string;
-  public id : number;
+  public id : number = 0;
   public sousCommentaire : string;
   public programmeSelect : string;
   public fortuitSelect : string;
@@ -108,7 +108,7 @@ export class ArretsComponent implements OnInit {
     this.sousCommentaire="";
     this.commentaire = '_';
     this.saisieLibre ="";
-    this.id=0;
+    //this.id=0;
     this.fortuitSelect="";
     this.programmeSelect="";
     this.disponibleSelect="";
@@ -421,7 +421,7 @@ export class ArretsComponent implements OnInit {
       if (this.isArret == true) {
         this.arretsService.updateArret(this.id, this.stringDateDebut, this.stringDateFin, this.duree, this.IdUser, this.stringDateSaisie, this.commentaire, this.arretId).subscribe((response) => {
           if (response == "Modif de l'arret OK") {
-            Swal.fire("L'arrêt a bien été créé !");
+            Swal.fire("L'arrêt a bien été modifié !");
             //envoi d'un mail si arrêt intempestif ou arrêt GTA
             if (this.arretName.includes("FORTUIT") || this.arretName.includes("GTA")) {
               this.arretsService.sendEmail(this.stringDateDebut.substr(8, 2) + '-' + this.stringDateDebut.substr(5, 2) + '-' + this.stringDateDebut.substr(0, 4), this.stringDateDebut.substr(11, 5), this.duree, this.arretName, this.commentaire).subscribe((response) => {
@@ -454,7 +454,7 @@ export class ArretsComponent implements OnInit {
         else {
           this.arretsService.updateDepassement(this.id,this.stringDateDebut, this.stringDateFin, this.duree, this.IdUser, this.stringDateSaisie, this.commentaire, this.arretId).subscribe((response) => {
             if (response == "Modif du dep ok") {
-              Swal.fire("Le dépassement a bien été créé !");
+              Swal.fire("Le dépassement a bien été modifié !");
               form.reset();
               this.arretId = 0;
               this.arretName = '';

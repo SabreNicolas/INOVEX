@@ -208,7 +208,7 @@ export class ListSortantsComponent implements OnInit {
     //Saint-Saulve
     else if (this.typeImportTonnage.toLowerCase().includes("dpk")){
       //delimiter,header,typedechet,dateEntree,tonnage, posEntreeSortie
-      this.lectureCSV(event, ";", false, 21, 8, 20,26);
+      this.lectureCSV(event, ";", false, 20, 7, 19, 25);
     }
     //Calce
     else if (this.typeImportTonnage.toLowerCase().includes("informatique verte")){
@@ -238,7 +238,7 @@ export class ListSortantsComponent implements OnInit {
       }
       //Douchy
       else if(this.idUsine === 10){
-        this.lectureCSV(event, ";", false, 27, 16, 7, 12);
+        this.lectureCSV(event, ";", true, 27, 16, 7);
       }
       //Mourenx
       else if(this.idUsine === 18){
@@ -249,14 +249,14 @@ export class ListSortantsComponent implements OnInit {
     //Pluzunet
     else if (this.typeImportTonnage.toLowerCase().includes("caktus")){
       //delimiter,header,typedechet,dateEntree,tonnage, posEntreeSortie
-      this.lectureCSV(event, ";", true, 27, 14, 10, 11);
+      this.lectureCSV(event, ",", true, 27, 14, 10, 11);
     }
     //Sète, CERGY
     else if (this.typeImportTonnage.toLowerCase().includes("hodja")){
       //Sète
       //delimiter,header,typedechet,dateEntree,tonnage, posEntreeSortie
       if(this.idUsine === 19){
-        this.lectureCSV(event, ",", true, 13, 0, 16);
+        this.lectureCSV(event, ";", true, 11, 0, 14);
       }
       //Cergy
       else {
@@ -364,7 +364,13 @@ export class ListSortantsComponent implements OnInit {
           const [day2, month2, year2] = this.dates[this.dates.length-1].split('/');
           const dateDeFin = `${year2}-${month2}-${day2}`;
 
-          this.insertTonnageCSV(dateDeDebut,dateDeFin);          
+          //On supprime les valeurs entre les deux dates, pour tout les déchets présents dans le csv
+          this.correspondance.forEach(correspondance => {
+            this.moralEntitiesService.deleteMesuresSortantsEntreDeuxDates(dateDeDebut,dateDeFin, correspondance.productImport).subscribe((response)=>{
+              this.insertTonnageCSV();
+            });    
+          });
+
           this.removeloading();
         }
       });
@@ -387,6 +393,7 @@ export class ListSortantsComponent implements OnInit {
     // @ts-ignore
     element.classList.add('loaderBloc');
   }
+
   removeloading(){
       var element = document.getElementById('spinner');
       // @ts-ignore
@@ -395,17 +402,14 @@ export class ListSortantsComponent implements OnInit {
       // @ts-ignore
       element.classList.remove('loaderBloc');
   }
-  //Insertion du tonnage récupéré depuis le fichier csv ADEMI
-  insertTonnageCSV(dateDeDebut : string, dateDeFin : string){
+
+  //Insertion du tonnage récupéré depuis le fichier csv
+  insertTonnageCSV(){
     let successInsert = true;
     this.debCode = '20';
     this.stockageImport.clear();
     var count = 0 ;
-    //On supprime les valeurs entre les deux dates, pour tout les déchets présents dans le csv
-    this.correspondance.forEach(correspondance => {
-      this.moralEntitiesService.deleteMesuresSortantsEntreDeuxDates(dateDeDebut,dateDeFin, correspondance.productImport).subscribe((response)=>{
-      });    
-    })
+    
     this.csvArray.forEach(csv => {
       var dechetManquant = csv.typeDechet;
       count = 0;
