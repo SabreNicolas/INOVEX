@@ -5,7 +5,10 @@ import {zone} from "../../models/zone.model";
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop'
 import Swal from 'sweetalert2';
 import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
+import { format } from 'date-fns';
+declare var $ : any;
 @Component({
   selector: 'app-equipe',
   templateUrl: './equipe.component.html',
@@ -21,15 +24,21 @@ export class EquipeComponent implements OnInit {
   public periode : string;
   public quart : number;
   public dateDuJour : string;
+  public radioSelect : string;
+  public equipesEnregistrees : any[];
+  public idEquipeEnregistree : string;
 
-  constructor(private cahierQuartService :cahierQuartService,private route : ActivatedRoute) {
+  constructor(private cahierQuartService :cahierQuartService,private route : ActivatedRoute, private router : Router) {
     this.listUsers = [];
     this.listAjout = [];
     this.listZone = [];
-    this.name = "Equipe 1";
+    this.equipesEnregistrees = [];
+    this.name = "";
     this.idEquipe = 0;
     this.periode = "matin";
     this.quart = 0;
+    this.radioSelect = ""
+    this.idEquipeEnregistree = "0";
 
     //Permet de savoir si on est en mode édition ou création
     this.route.queryParams.subscribe(params => {
@@ -39,19 +48,39 @@ export class EquipeComponent implements OnInit {
       else {
         this.idEquipe = 0;
       }
+
+      if(params.quart != undefined){
+        this.quart = params.quart;
+      }
+      else {
+        this.quart = 0;
+      }
+
+      if(this.quart == 1){
+        this.periode = "matin";
+      }
+      else if(this.quart == 2){
+        this.periode = "apres-midi";
+      }
+      else {
+        this.periode = "nuit";
+      }
+
     });
 
     const date = new Date();
-
     const options : Intl.DateTimeFormatOptions = {year: 'numeric', month:'numeric', day:'numeric'};
     const dateFormateur = new Intl.DateTimeFormat('fr-FR', options);
     this.dateDuJour = dateFormateur.format(date);
    }
 
   ngOnInit(): void {
-
+    
     //Si on est en mode édition
     if(this.idEquipe > 0){
+      $("#gauche").show()
+      $("#droite").show()
+      $("#newEquipe").show();
       //On récupère l'quipe concernée
       this.cahierQuartService.getOneEquipe(this.idEquipe).subscribe((response) =>{
         this.name = response.data[0]['equipe'];
@@ -69,10 +98,10 @@ export class EquipeComponent implements OnInit {
         let zoneId; 
         if(response.data[0]['idRondier'] != null){
           for(var i = 0;i<response.data.length;i++){
-            if(response.data[i]['idZone'] > 0){
-              zoneId = response.data[i]['idZone'];
-            }
-            else zoneId = 0;
+            // if(response.data[i]['idZone'] > 0){
+            //   zoneId = response.data[i]['idZone'];
+            // }
+            // else zoneId = 0;
             this.listAjout.push({Id : response.data[i]['idRondier'], Prenom : response.data[i]['prenomRondier'],Nom : response.data[i]['nomRondier'], Poste : response.data[i]['poste'], Zone : zoneId});
           }
         }
@@ -104,18 +133,18 @@ export class EquipeComponent implements OnInit {
   }
 
   nouvelleEquipe(nomEquipe :string/*, quart :string*/){
-
-    var quartNombre;
-
+    if(this.radioSelect == "enregistree"){
+      nomEquipe = nomEquipe.split('-')[1]
+    }
     //Boucle qui permet de vérifier que chaque utilisateur à bien un poste ou une zone de contrôle
     for(const user of this.listAjout){
-
+      
       var rechercheZone = user.Nom +"_"+user.Prenom+"_zone";
-      var idZone = parseInt((<HTMLInputElement>document.getElementById(rechercheZone)).value);
-      if(Number.isNaN(idZone)){
-        Swal.fire('Veuillez affecter une ronde à chaque personne !','La saisie a été annulée.','error');
-        return
-      }
+      // var idZone = parseInt((<HTMLInputElement>document.getElementById(rechercheZone)).value);
+      // if(Number.isNaN(idZone)){
+      //   Swal.fire('Veuillez affecter une ronde à chaque personne !','La saisie a été annulée.','error');
+      //   return
+      // }
 
       var recherchePoste = user.Nom +"_"+user.Prenom+"_poste";
       var idPoste = (<HTMLInputElement>document.getElementById(recherchePoste)).value;
@@ -137,23 +166,13 @@ export class EquipeComponent implements OnInit {
       Swal.fire({title: 'Êtes-vous sûr(e) de créer cette équipe ?',icon: 'warning',showCancelButton: true,confirmButtonColor: '#3085d6',cancelButtonColor: '#d33',confirmButtonText: 'Oui, créer',cancelButtonText: 'Annuler'
       }).then((result) => {
         if (result.isConfirmed) {
-          // //On change le quart en nombre
-          // if(quart === "matin"){
-          //   quartNombre = 1;
-          // }
-          // else if(quart === "apres-midi"){
-          //   quartNombre = 2;
-          // }
-          // else {
-          //   quartNombre = 3;
-          // }
           //Si on est en mode édition d'une équipe on va dans la fonction update
           if (this.idEquipe > 0){
             this.update(this.quart);
           }
           //Sinon on créé l'équipe
           else{
-            this.cahierQuartService.nouvelleEquipe(nomEquipe,this.quart).subscribe((response) => {
+            this.cahierQuartService.nouvelleEquipe(nomEquipe,this.quart,format(new Date(),'yyyy-MM-dd')).subscribe((response) => {
               //On vide les input pour une nouvelle création
               (<HTMLInputElement>document.getElementById("nomEquipe")).value ="";
              
@@ -179,14 +198,15 @@ export class EquipeComponent implements OnInit {
     for(const user of this.listAjout){
       var idUser = user.Id;
       var rechercheZone = user.Nom +"_"+user.Prenom+"_zone";
-      var idZone = parseInt((<HTMLInputElement>document.getElementById(rechercheZone)).value);
+      // var idZone = parseInt((<HTMLInputElement>document.getElementById(rechercheZone)).value);
       var recherchePoste = user.Nom +"_"+user.Prenom+"_poste";
       var poste = (<HTMLInputElement>document.getElementById(recherchePoste)).value;
 
       if(idUser>0){
-        this.cahierQuartService.nouvelleAffectationEquipe(idUser,idEquipe,idZone,poste).subscribe((response) => {
+        this.cahierQuartService.nouvelleAffectationEquipe(idUser,idEquipe,0,poste).subscribe((response) => {
           Swal.fire({text : 'Nouvelle équipe créée', icon :'success'});
           this.listAjout = [];
+          this.router.navigate(['/cahierQuart/calendrier'])
         });
       }
     }
@@ -227,6 +247,61 @@ export class EquipeComponent implements OnInit {
     this.cahierQuartService.deleteAffectationEquipe(idEquipe).subscribe((response) => {
       this.ajoutAffectationEquipe(idEquipe);
     })
+  }
+
+  //Fonction permettant d'afficher la création d'une nouvelle équipe
+  showNewEquipe(){
+    this.listUsers = []
+    //On récupère la liste des utilisateurs rondiers sans équipe => finalement on récupère même ceux ayant déjà une équipe :)
+    this.cahierQuartService.getUsersRondierSansEquipe().subscribe((response)=>{
+      // @ts-ignore
+      this.listUsers = response.data;
+    })
+    this.listAjout = [];
+    this.idEquipeEnregistree = "0";
+    $("#gauche").show();
+    $("#droite").show();
+    $("#newEquipe").show();
+    $("#equipesEnregistrees").hide();
+  }
+
+  //Fonction permettant d'afficher la création d'une équipe déjà enregistrée
+  showEquipeEnregistree(){
+    this.listUsers = []
+    //On récupère la liste des utilisateurs rondiers sans équipe => finalement on récupère même ceux ayant déjà une équipe :)
+    this.cahierQuartService.getUsersRondierSansEquipe().subscribe((response)=>{
+      // @ts-ignore
+      this.listUsers = response.data;
+    })
+    this.listAjout = [];
+    this.idEquipeEnregistree = "0";
+    $("#gauche").show();
+    $("#droite").show();
+    $("#newEquipe").hide();
+    $("#equipesEnregistrees").show();
+    //On récupère l'quipe concernée
+    this.cahierQuartService.getNomsEquipesEnregistrees().subscribe((response) =>{
+      this.equipesEnregistrees = response.data;
+      console.log(this.equipesEnregistrees)
+    })
+
+  }
+
+  //Fonction qui permet de charger une équipe lors de sa sélection
+  chargerRondiersEquipeEnregistree(){
+    this.listAjout = [];
+    var id = this.idEquipeEnregistree.split('-')[0];
+    console.log(this.idEquipeEnregistree)
+    if(this.idEquipeEnregistree != '-'){
+      this.cahierQuartService.getOneEnregistrementEquipe(id).subscribe((response) =>{
+        if(response.data[0]['idRondier'] != null){
+          for(var i = 0;i<response.data.length;i++){
+            this.listAjout.push({Id : response.data[i]['idRondier'], Prenom : response.data[i]['prenomRondier'],Nom : response.data[i]['nomRondier']});
+          }
+        }
+      })
+    }
+    
   }
 }
 

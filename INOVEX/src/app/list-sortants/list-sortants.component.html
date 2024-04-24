@@ -58,7 +58,9 @@
             </div>
         </form>
     </div>
-    <button *ngIf="idUsine == 1" id="exportExcel" class="btn btn-outline-success btn-lg float-left" (click)="exportRegistreDNDTSExcel()">Registre DNDTS</button>
+    <button *ngIf="idUsine == 1" id="exportExcel" class="btn btn-info btn-lg float-left" (click)="exportRegistreDNDTSExcel()">
+        Registre DNDTS <i class="far fa-file-excel"></i>
+    </button>
 
     <!--table de saisie-->
     <div class="table-style">

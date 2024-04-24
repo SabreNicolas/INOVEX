@@ -4,7 +4,6 @@ import Swal from 'sweetalert2';
 import {product} from "../../models/products.model";
 import {element} from "../../models/element.model";
 import {rondierService} from "../services/rondier.service";
-import { identifierModuleUrl } from '@angular/compiler';
 
 
 @Component({

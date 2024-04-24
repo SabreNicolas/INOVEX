@@ -83,7 +83,7 @@ export class ListUsersComponent implements OnInit {
       else {
         Swal.fire({
           icon: 'error',
-          text: 'Erreur lors de la suppression de l\'utilisateur....',
+          text: 'Impossible de supprimer l\'utilisateur suite à l\'historique des quarts.',
         })
       }
     });

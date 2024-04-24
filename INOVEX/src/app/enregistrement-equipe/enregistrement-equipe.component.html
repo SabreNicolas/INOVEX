@@ -1,0 +1,70 @@
+<div id="container">
+    <div id="gauche">
+        <h3>Liste des rondiers sans équipe</h3>
+        <div id="test" class="overflow-auto">
+        <table class="table table-hover tableFixed" id="listRondier" cdkDropList [cdkDropListData]="listUsers" [cdkDropListConnectedTo]="'listAjout'" (cdkDropListDropped)="onItemDropped($event)" >
+            <thead>
+                <tr class="table-secondary">
+                    <th scope="col">Nom</th>
+                    <th scope="col">Prénom</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let user of listUsers" cdkDrag>
+            <tr class="table-light"  >
+                <td>{{user.Nom}}</td>
+                <td>{{user.Prenom}}</td>
+                <td>
+                    <button type="button" class="btn btn-success" (click)="ajoutUser(user)">
+                        <i class="fas fa-arrow-right"></i> 
+                    </button> 
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        </div>
+    </div>
+
+    <div id="droite">
+        <h3>Création de la nouvelle équipe :</h3>
+
+        <div id="choix">
+            <div class="mb-3">  
+                <label for="nomEquipe" class="form-label">Nom de l'équipe *</label>  
+                <select class="form-select" id="nomEquipe" #nomEquipe name="name" required ngModel [(ngModel)]="name">
+                    <option value="Equipe 1">Equipe 1</option>
+                    <option value="Equipe 2">Equipe 2</option>
+                    <option value="Equipe 3">Equipe 3</option>
+                    <option value="Equipe 4">Equipe 4</option>
+                    <option value="Equipe 5">Equipe 5</option>
+                    <option value="Equipe 6">Equipe 6</option>
+                </select>
+            </div>
+        </div>
+        
+        <div id="tableAjout" class="overflow-auto">
+            <table class="table table-hover tableFixed" id="listAjout" cdkDropList  [cdkDropListData]="listAjout" [cdkDropListConnectedTo]="'listRondier'" (cdkDropListDropped)="onItemDropped($event)">
+                <thead>
+                <tr class="table-secondary">
+                    <th scope="col">Nom</th>
+                    <th scope="col">Prénom</th>
+                    <th></th>
+                </thead>
+                <tbody >
+                    <tr *ngFor="let user of listAjout" class="table-light" cdkDrag>
+                        <td>{{user.Nom}}</td>
+                        <td>{{user.Prenom}}</td>
+                        <td>
+                            <button type="button" class="btn btn-danger" (click)="suppUser(user)">
+                                <i class="fas fa-times"></i> 
+                            </button> 
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <p style="font-size: smaller; color: grey" id="legende">* : Obligatoire</p>
+        <button id="creer" type="submit" class="btn btn-success" (click)="nouvelleEquipe(nomEquipe.value)">Soumettre</button>  
+        <button class="btn btn-danger" onclick="window.location.replace('/cahierQuart')">Annuler</button>
+    </div>  
+</div>

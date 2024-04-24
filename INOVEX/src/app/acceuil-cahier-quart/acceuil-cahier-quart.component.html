@@ -1,0 +1,87 @@
+<div class="row">
+
+    <div class="col-md-4">
+        <h2 style="text-align: center;">Actualités</h2>
+        <!--table des consignes-->
+        <table class="table table-hover tableFixed">
+            <thead>
+            <tr class="table-secondary">
+                <th scope="col">Actualité</th>
+                <th scope="col">Date de Début de validité</th>
+                <th scope="col">Date de Fin de validité</th>
+            </tr>
+            </thead>
+            <tbody *ngFor="let actu of listActu">
+            <tr class="table-light" >
+                <td>{{actu.titre}}</td>
+                <td>{{actu.date_heure_debut}}</td>
+                <td>{{actu.date_heure_fin}}</td> 
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-4">
+        <h2 style="text-align: center;">Maintenances</h2>
+        <!--table des consignes-->
+        <table class="table table-hover tableFixed">
+            <thead>
+            <tr class="table-secondary">
+                <th scope="col">Actualité</th>
+                <th scope="col">Date de Début de validité</th>
+                <th scope="col">Date de Fin de validité</th>
+            </tr>
+            </thead>
+            <tbody *ngFor="let actu of listActu">
+            <tr class="table-light" >
+                <td>{{actu.titre}}</td>
+                <td>{{actu.date_heure_debut}}</td>
+                <td>{{actu.date_heure_fin}}</td> 
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-4">
+        <h2 style="text-align: center;">Info Sécu</h2>
+        <!--table des consignes-->
+        <table class="table table-hover tableFixed">
+            <thead>
+            <tr class="table-secondary">
+                <th scope="col">Actualité</th>
+                <th scope="col">Date de Début de validité</th>
+                <th scope="col">Date de Fin de validité</th>
+            </tr>
+            </thead>
+            <tbody *ngFor="let actu of listActu">
+            <tr class="table-light" >
+                <td>{{actu.titre}}</td>
+                <td>{{actu.date_heure_debut}}</td>
+                <td>{{actu.date_heure_fin}}</td> 
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="container">
+    <a  routerLink="/cahierQuart/recapRonde" [queryParams]="{quart: 1}" >  
+        <div  class="card" >
+            <div class="card-body">
+                <h5 class="card-title">Quart du matin</h5>   
+            </div>
+        </div>
+    </a>
+    <a  routerLink="/cahierQuart/recapRonde" [queryParams]="{quart: 2}" >  
+        <div  class="card" >
+            <div class="card-body">
+                <h5 class="card-title">Quart de l'après-midi</h5>   
+            </div>
+        </div>
+    </a>
+    <a  routerLink="/cahierQuart/recapRonde" [queryParams]="{quart: 3}" >  
+        <div  class="card" >
+            <div class="card-body">
+                <h5 class="card-title">Quart de nuit</h5>   
+            </div>
+        </div>
+    </a>
+</div>

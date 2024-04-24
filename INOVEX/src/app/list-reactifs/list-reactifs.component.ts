@@ -365,6 +365,7 @@ export class ListReactifsComponent implements OnInit {
     // @ts-ignore
     element.classList.add('loaderBloc');
   }
+
   removeloading(){
       var element = document.getElementById('spinner');
       // @ts-ignore
@@ -416,18 +417,16 @@ export class ListReactifsComponent implements OnInit {
         this.dechetsManquants.set(dechetManquant, dechetManquant);
       }
     });
-    console.log(this.stockageImport)
-    //debug
-    //console.log(this.stockageImport);
+
     //on parcours la hashmap pour insertion en BDD
     this.stockageImport.forEach(async (value : number, key : String) => {
-
-      await this.mrService.createMeasure(key.split('_')[0],value,parseInt(key.split('_')[1]),0).subscribe((response) =>{
+      this.mrService.createMeasure(key.split('_')[0],value,parseInt(key.split('_')[1]),0).subscribe((response) =>{
         if (response != "Création du Measures OK"){
           successInsert = false
-        }
-      })
+        };
+      });
     });
+
     if(successInsert == true){
       var afficher = "";
 

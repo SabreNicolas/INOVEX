@@ -5,7 +5,7 @@
     </a>
     <div class="table-style">
         <!--table des consignes-->
-        <table class="table table-hover tableFixed">
+        <table class="table tableFixed">
             <thead>
             <tr class="table-secondary">
                 <th scope="col">Titre</th>
@@ -23,7 +23,7 @@
             </tr>
             </thead>
             <tbody *ngFor="let evenement of listEvenement">
-            <tr class="table-light line" >
+            <tr class="color--{{evenement.importance}} line" >
                 <td>{{evenement.titre}}</td>
                 <td>{{evenement.description}}</td>
                 <td>{{evenement.cause}}</td>

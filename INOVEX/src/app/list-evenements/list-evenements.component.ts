@@ -26,9 +26,9 @@ export class ListEvenementsComponent implements OnInit {
     });
   }
 
-  //suppression d'une consigne
+  //suppression d'un évènement
   deleteEvenement(id : number){
-    Swal.fire({title: "Etes vous sûr de vouloir supprimer cet évènement ?" ,icon: 'warning',showCancelButton: true,confirmButtonColor: '#3085d6',cancelButtonColor: '#d33',confirmButtonText: 'Oui, créer',cancelButtonText: 'Annuler'
+    Swal.fire({title: "Etes vous sûr de vouloir supprimer cet évènement ?" ,icon: 'warning',showCancelButton: true,confirmButtonColor: '#3085d6',cancelButtonColor: '#d33',confirmButtonText: 'Oui, supprimer',cancelButtonText: 'Annuler'
     }).then((result) => {
       if (result.isConfirmed) {
         this.cahierQuartService.deleteEvenement(id).subscribe((response)=>{
@@ -46,7 +46,7 @@ export class ListEvenementsComponent implements OnInit {
       }  
       else {
         // Pop-up d'annulation de la suppression
-        Swal.fire('Annulé','La création a été annulée.','error');
+        Swal.fire('Annulé','La suppression a été annulée.','error');
       }
     });
   }

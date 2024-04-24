@@ -84,7 +84,7 @@ export class ArretsComponent implements OnInit {
         this.getProductsDep("60104");
       }
       if(params.id > 0){
-        this.id=params.id
+        this.id=params.id;
       }
     });
   }
@@ -144,7 +144,7 @@ export class ArretsComponent implements OnInit {
       //Si on est en mode arrets
       else{
         this.arretsService.getOneArret(this.id).subscribe(async (response)=>{
-          console.log(response)
+          console.log(response);
           //@ts-ignore
           this.arretId =  response.data[0].productId;
           //@ts-ignore

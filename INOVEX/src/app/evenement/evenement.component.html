@@ -4,7 +4,7 @@
     <div class="row">
 
         <div class="form-group" id="photo">
-            <input type="file" id="fichier" class="form-control" required name="fichier" accept=".jpg,.jpeg,.png" (change)="saveFile($event)"><img *ngIf="imgSrc" [src]="imgSrc" alt="image" id="imgUpload">
+            <input *ngIf="idEvenement == 0" type="file" id="fichier" class="form-control" required name="fichier" accept=".jpg,.jpeg,.png" (change)="saveFile($event)"><img *ngIf="imgSrc" [src]="imgSrc" alt="image" id="imgUpload">
             <p style="font-size: smaller; color: grey">*Format image !</p>
         </div>
 
@@ -73,7 +73,7 @@
                 </label>
             </div>
     
-            <div class="form-check">
+            <div class="form-check" *ngIf="idEvenement==0">
                 <input class="form-check-input" type="checkbox" value="" id="consigne" ngModel [(ngModel)]="consigne" >
                 <label class="form-check-label" for="consigne">
                   Consigne (oui/non)
@@ -81,7 +81,7 @@
             </div>
             <div class="form-group">
                 <button class="btn btn-success btn-lg" (click)="newEvenement()">Valider</button>
-                <button class="btn btn-danger btn-lg">Annuler</button>
+                <button class="btn btn-danger btn-lg" (click)="goBack()">Annuler</button>
             </div>
         
             <p style="font-size: smaller; color: grey">* : Obligatoire</p>

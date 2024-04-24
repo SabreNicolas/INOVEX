@@ -440,7 +440,7 @@ export class ListEntreeComponent implements OnInit {
       }
       //Mourenx
       else if(this.idUsine === 18){
-        this.lectureCSV(event, ";", false, 11, 13, 1,7 );
+        this.lectureCSV(event, ";", false, 11, 13, 1, 7);
       }   
       //Plouharnel 
       else this.lectureCSV(event, ";", false, 8, 6, 1, 11, 12);
@@ -471,7 +471,7 @@ export class ListEntreeComponent implements OnInit {
       }
       //Villefranche
       else {
-        this.lectureCSV(event, ";", true,23, 19, 6, 11, 2);
+        this.lectureCSV(event, ";", true, 23, 19, 6, 11, 2);
       }
     }
     //Saint Ouen
@@ -711,7 +711,7 @@ export class ListEntreeComponent implements OnInit {
               if(results.data[i][posDateEntree] != ""){
                 //On ajoute toutes les dates dans le tableau dates
                 this.dates.push(results.data[i][posDateEntree].substring(0,10));
-              }              
+              } 
               //Création de l'objet qui contient l'ensemble des infos nécessaires
               let importCSV = {
                 client: results.data[i][posClient],
