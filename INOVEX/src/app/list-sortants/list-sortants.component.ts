@@ -370,7 +370,7 @@ export class ListSortantsComponent implements OnInit {
               this.insertTonnageCSV();
             });    
           });
-          
+
           this.removeloading();
         }
       });
@@ -393,6 +393,7 @@ export class ListSortantsComponent implements OnInit {
     // @ts-ignore
     element.classList.add('loaderBloc');
   }
+
   removeloading(){
       var element = document.getElementById('spinner');
       // @ts-ignore
@@ -401,6 +402,7 @@ export class ListSortantsComponent implements OnInit {
       // @ts-ignore
       element.classList.remove('loaderBloc');
   }
+
   //Insertion du tonnage récupéré depuis le fichier csv
   insertTonnageCSV(){
     let successInsert = true;

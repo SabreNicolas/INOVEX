@@ -375,7 +375,7 @@ export class ListReactifsComponent implements OnInit {
       element.classList.remove('loaderBloc');
   }
 
-  //Insertion du tonnage récupéré depuis le fichier csv
+  //Insertion du tonnage récupéré depuis le fichier csv ADEMI
   insertTonnageCSV(){
     let successInsert = true;
     this.stockageImport.clear();

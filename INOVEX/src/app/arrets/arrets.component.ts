@@ -44,7 +44,7 @@ export class ArretsComponent implements OnInit {
   public fortuit_traitement : boolean = false;
   public fortuit_commun : boolean = false;
   public saisieLibre : string;
-  public id = 0;
+  public id : number = 0;
   public sousCommentaire : string;
   public programmeSelect : string;
   public fortuitSelect : string;

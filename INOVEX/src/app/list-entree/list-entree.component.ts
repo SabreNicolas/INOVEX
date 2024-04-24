@@ -744,8 +744,7 @@ export class ListEntreeComponent implements OnInit {
           //On supprime toutes les mesures sur les entrants entre les deux dates avant de faire la nouvelle insertion
           this.moralEntitiesService.deleteMesuresEntrantsEntreDeuxDates(dateDeb,dateFin).subscribe((response)=>{
             this.insertTonnageCSV();
-          })
-          //console.log(this.csvArray);
+          });
           
           this.removeloading();
         }

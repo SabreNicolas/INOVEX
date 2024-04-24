@@ -104,6 +104,7 @@ export class SaisieFormulaireComponent implements OnInit {
         this.productsService.getValueProducts(date.substr(6, 4) + '-' + date.substr(3, 2) + '-' + date.substr(0, 2), pr.idProduct).subscribe((response) => {
           if (response.data[0] != undefined && response.data[0].Value != 0) {
             (<HTMLInputElement>document.getElementById(pr.idProduct + '-' + date)).value = response.data[0].Value;
+            //On compléte également la balise p caché pour l'export Excel
             (<HTMLInputElement>document.getElementById(pr.idProduct + '-' + date + '-hide')).innerHTML = response.data[0].Value;
           }
           else (<HTMLInputElement>document.getElementById(pr.idProduct + '-' + date)).value = '';
@@ -172,7 +173,6 @@ export class SaisieFormulaireComponent implements OnInit {
       });
   }
 
-  
   //Export de la table dans fichier EXCEL
   exportExcel(){
     /* table id is passed over here */
@@ -186,6 +186,5 @@ export class SaisieFormulaireComponent implements OnInit {
     /* save to file */
     XLSX.writeFile(wb, 'Historique.xlsx');
   }
-
 
 }
