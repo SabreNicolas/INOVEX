@@ -98,10 +98,10 @@ export class EquipeComponent implements OnInit {
         let zoneId; 
         if(response.data[0]['idRondier'] != null){
           for(var i = 0;i<response.data.length;i++){
-            if(response.data[i]['idZone'] > 0){
-              zoneId = response.data[i]['idZone'];
-            }
-            else zoneId = 0;
+            // if(response.data[i]['idZone'] > 0){
+            //   zoneId = response.data[i]['idZone'];
+            // }
+            // else zoneId = 0;
             this.listAjout.push({Id : response.data[i]['idRondier'], Prenom : response.data[i]['prenomRondier'],Nom : response.data[i]['nomRondier'], Poste : response.data[i]['poste'], Zone : zoneId});
           }
         }
@@ -140,11 +140,11 @@ export class EquipeComponent implements OnInit {
     for(const user of this.listAjout){
       
       var rechercheZone = user.Nom +"_"+user.Prenom+"_zone";
-      var idZone = parseInt((<HTMLInputElement>document.getElementById(rechercheZone)).value);
-      if(Number.isNaN(idZone)){
-        Swal.fire('Veuillez affecter une ronde à chaque personne !','La saisie a été annulée.','error');
-        return
-      }
+      // var idZone = parseInt((<HTMLInputElement>document.getElementById(rechercheZone)).value);
+      // if(Number.isNaN(idZone)){
+      //   Swal.fire('Veuillez affecter une ronde à chaque personne !','La saisie a été annulée.','error');
+      //   return
+      // }
 
       var recherchePoste = user.Nom +"_"+user.Prenom+"_poste";
       var idPoste = (<HTMLInputElement>document.getElementById(recherchePoste)).value;
@@ -198,12 +198,12 @@ export class EquipeComponent implements OnInit {
     for(const user of this.listAjout){
       var idUser = user.Id;
       var rechercheZone = user.Nom +"_"+user.Prenom+"_zone";
-      var idZone = parseInt((<HTMLInputElement>document.getElementById(rechercheZone)).value);
+      // var idZone = parseInt((<HTMLInputElement>document.getElementById(rechercheZone)).value);
       var recherchePoste = user.Nom +"_"+user.Prenom+"_poste";
       var poste = (<HTMLInputElement>document.getElementById(recherchePoste)).value;
 
       if(idUser>0){
-        this.cahierQuartService.nouvelleAffectationEquipe(idUser,idEquipe,idZone,poste).subscribe((response) => {
+        this.cahierQuartService.nouvelleAffectationEquipe(idUser,idEquipe,0,poste).subscribe((response) => {
           Swal.fire({text : 'Nouvelle équipe créée', icon :'success'});
           this.listAjout = [];
           this.router.navigate(['/cahierQuart/calendrier'])
@@ -282,6 +282,7 @@ export class EquipeComponent implements OnInit {
     //On récupère l'quipe concernée
     this.cahierQuartService.getNomsEquipesEnregistrees().subscribe((response) =>{
       this.equipesEnregistrees = response.data;
+      console.log(this.equipesEnregistrees)
     })
 
   }
@@ -291,13 +292,16 @@ export class EquipeComponent implements OnInit {
     this.listAjout = [];
     var id = this.idEquipeEnregistree.split('-')[0];
     console.log(this.idEquipeEnregistree)
-    this.cahierQuartService.getOneEnregistrementEquipe(id).subscribe((response) =>{
-      if(response.data[0]['idRondier'] != null){
-        for(var i = 0;i<response.data.length;i++){
-          this.listAjout.push({Id : response.data[i]['idRondier'], Prenom : response.data[i]['prenomRondier'],Nom : response.data[i]['nomRondier']});
+    if(this.idEquipeEnregistree != '-'){
+      this.cahierQuartService.getOneEnregistrementEquipe(id).subscribe((response) =>{
+        if(response.data[0]['idRondier'] != null){
+          for(var i = 0;i<response.data.length;i++){
+            this.listAjout.push({Id : response.data[i]['idRondier'], Prenom : response.data[i]['prenomRondier'],Nom : response.data[i]['nomRondier']});
+          }
         }
-      }
-    })
+      })
+    }
+    
   }
 }
 

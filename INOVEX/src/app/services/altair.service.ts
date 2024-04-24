@@ -11,7 +11,6 @@ export class AltairService {
   private headerDict = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'Access-Control-Allow-Origin' : '*',
   }
   // private portAPI = 3102;
   private ip = "https://paprec.altairsystem.fr/altairtestrest";
@@ -39,8 +38,10 @@ export class AltairService {
     // formData.append('password', 'nsabre');
     // formData.append('username', 'nsabre');
   
-    const formData = "{\r\n \"username\":\"nsabre\",\r\n \"password\":\"nsabre\",\r\n}"
+    var formData = '{"username": "nsabre","password": "nsabre"}'
+    formData = JSON.parse(formData);
     console.log(formData)
+    console.log(requestOptions)
     //@ts-ignore
     return this.http.post<any>(requete,formData,requestOptions);
   }

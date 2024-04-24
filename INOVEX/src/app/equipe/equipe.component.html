@@ -72,7 +72,7 @@
                     <th scope="col">Nom</th>
                     <th scope="col">Prénom</th>
                     <th scope="col">Poste</th>
-                    <th scope="col">Ronde</th>
+                    <!-- <th scope="col">Ronde</th> -->
                     <th></th>
                 </thead>
                 <tbody >
@@ -87,12 +87,12 @@
                                 <option value="Chef de Quart">Chef de Quart</option>
                             </select>
                         </td>
-                        <td>
+                        <!-- <td>
                             <select class="form-select" id="{{user.Nom}}_{{user.Prenom}}_zone" id="ronde" name="ronde" required ngModel [(ngModel)]="user.Zone">
                                 <option value="0">Pontier</option>
                                 <option *ngFor="let zone of listZone" value="{{zone.Id}}">{{zone.nom}}</option>
                             </select>
-                        </td>
+                        </td> -->
                         <td>
                             <button type="button" class="btn btn-danger" (click)="suppUser(user)">
                                 <i class="fas fa-times"></i> 

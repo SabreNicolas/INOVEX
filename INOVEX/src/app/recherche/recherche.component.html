@@ -32,17 +32,17 @@
 
     <div id="form">
         <div class="form-group">
-            <label for="desc">Titre : * </label>
+            <label for="desc">Titre : </label>
             <input required type="text" id="titre" class="form-control" placeholder="Titre" name="titre" ngModel [(ngModel)]="titre">
         </div>
         
         <div class="form-group" *ngIf="evenement">
-            <label for="desc">Groupement : * </label>
+            <label for="desc">Groupement : </label>
             <input required type="text" id="groupementGMAO" class="form-control" placeholder="Groupement GMAO" name="groupementGMAO" ngModel [(ngModel)]="groupementGMAO">
         </div>
 
         <div class="form-group" *ngIf="evenement">
-            <label for="desc">Equipement : * </label>
+            <label for="desc">Equipement : </label>
             <input required type="text" id="equipementGMAO" class="form-control" placeholder="Equipement GMAO" name="equipementGMAO" ngModel [(ngModel)]="equipementGMAO">
         </div>
 
@@ -57,7 +57,7 @@
         </div>
 
         <div class="form-group">
-            <label>Importance : *</label>
+            <label>Importance :</label>
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group">

@@ -64,6 +64,8 @@ export class CalendrierComponent implements OnInit{
         secondary: '#FDF1BA'
       }
     };
+
+    
   }
   
   ngOnInit(): void {
@@ -74,7 +76,7 @@ export class CalendrierComponent implements OnInit{
     $('#CreationAction').hide();
 
     //On vide le tableau d'évènement
-    this.events = []
+    this.events = [];
 
     //On récupère les zones du calendrier
     this.cahierQuartService.getAllZonesCalendrier().subscribe((response)=>{
@@ -141,6 +143,7 @@ export class CalendrierComponent implements OnInit{
       // @ts-ignore
       this.listZone = response.data;
     });
+    
   }
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
@@ -157,6 +160,10 @@ export class CalendrierComponent implements OnInit{
     }
   }
 
+  cacherActu(){
+    // $("#actualiser_calendrier").hide();
+    console.log("test")
+  }
   //Fonction de la librairie calendar pour modifier la durée d'un évènement (non utilisée pour nous)
   eventTimesChanged({
     event,

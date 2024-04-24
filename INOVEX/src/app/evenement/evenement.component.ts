@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { consigne } from 'src/models/consigne.model';
 declare var $ : any;
 import {rondierService} from "../services/rondier.service";
+import { AltairService } from '../services/altair.service';
 
 @Component({
   selector: 'app-evenement',
@@ -27,7 +28,7 @@ export class EvenementComponent implements OnInit {
   fileToUpload: File | undefined;
   public imgSrc !: any
 
-  constructor(public cahierQuartService : cahierQuartService, private rondierService : rondierService, private datePipe : DatePipe,private route : ActivatedRoute, private location : Location) {
+  constructor(public altairService : AltairService,public cahierQuartService : cahierQuartService, private rondierService : rondierService, private datePipe : DatePipe,private route : ActivatedRoute, private location : Location) {
     this.titre = "";
     this.importance = 0;
     this.idEvenement = 0;
@@ -46,6 +47,9 @@ export class EvenementComponent implements OnInit {
         this.idEvenement = 0;
       }
     });
+    this.altairService.login().subscribe((reponse)=>{
+      console.log(reponse)
+    })
    }
 
   ngOnInit(): void {
