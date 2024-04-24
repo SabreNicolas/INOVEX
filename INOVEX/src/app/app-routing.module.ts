@@ -74,7 +74,7 @@ const routes: Routes = [
         path : 'saisie',
         canActivate: [AuthGuard],
         component : SaisieGlobalComponent,
-        //component : MaintenanceComponent,
+        // component : MaintenanceComponent,
         children: [
             { path : '', canActivate: [AuthGuard], component:  ArretsComponent },
             { path : 'listClients', canActivate: [AuthGuard], component: ListMoralEntitiesComponent },
@@ -164,7 +164,7 @@ const routes: Routes = [
         path : 'admin',
         canActivate: [AuthGuard],
         component : AdminGlobalComponent,
-        //component : MaintenanceComponent,
+        // component : MaintenanceComponent,
         children: [
             { path: '', canActivate: [AuthGuard], component:  AdminComponent },
             { path: 'token', canActivate: [AuthGuard], component:  TokenApiComponent },
