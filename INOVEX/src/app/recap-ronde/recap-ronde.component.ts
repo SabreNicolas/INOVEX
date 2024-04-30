@@ -79,7 +79,7 @@ export class RecapRondeComponent implements OnInit {
     //Récupération des zones pour la ronde en cours
     this.cahierQuartService.getZonesCalendrierRonde(this.dateDebString, this.dateFinString).subscribe((response)=>{
       // @ts-ignore
-      this.listZone = response.data;
+      this.listZone = response.BadgeAndElementsOfZone;
     });
     
     //Récupération de l'id de l'équipe pour la ronde si l'équipe est déjà crée
