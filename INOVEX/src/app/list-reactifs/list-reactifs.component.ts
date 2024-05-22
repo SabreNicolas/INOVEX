@@ -172,7 +172,7 @@ export class ListReactifsComponent implements OnInit {
       //delimiter,header,typedechet,dateEntree,tonnage, posEntreeSortie
       //Thiverval
       if(this.idUsine === 11){
-        this.lectureCSV(event, ";", true, 29, 2, 16, 1);
+        this.lectureCSV(event, ";", true, 29, 14, 16, 1);
       }
       else this.lectureCSV(event, ";", false, 31, 2, 16);
     }
@@ -250,6 +250,11 @@ export class ListReactifsComponent implements OnInit {
     else if (this.typeImportTonnage.toLowerCase().includes("syspeau")){
       //delimiter,header,typedechet,dateEntree,tonnage, posEntreeSortie
       this.lectureCSV(event, ";", true, 18, 5, 9, 4);
+    }
+    //Saint-barth
+    else if (this.typeImportTonnage.toLowerCase().includes("quantum")){
+      //delimiter,header,typedechet,dateEntree,tonnage, posEntreeSortie
+      this.lectureCSV(event, ";", true, 3, 0, 6, 1);
     }
   }
 
@@ -390,7 +395,7 @@ export class ListReactifsComponent implements OnInit {
           csv.typeDechet = csv.typeDechet.toLowerCase().replace(/\s/g,"");
           correspondance.productImport = correspondance.productImport.toLowerCase().replace(/\s/g,"");  
           
-          if(csv.entrant.toLowerCase() == "e" || csv.entrant.toLowerCase() == "réception" || csv.entrant.toLowerCase() == 1 || csv.entrant.toLowerCase() == "reception" || csv.entrant.toLowerCase() == "reactif" || csv.entrant.toLowerCase() == "consommable"){
+          if(csv.entrant.toLowerCase() == "e" || csv.entrant == 1 || csv.entrant.toLowerCase() == "réception" || csv.entrant.toLowerCase() == "reception" || csv.entrant.toLowerCase().includes("entree") || csv.entrant.toLowerCase() == "entrée" || csv.entrant.toLowerCase() == "entrant" || csv.entrant.toLowerCase() == "incinerables"){
             //Si il y a correspondance on fait traitement
             if( correspondance.productImport == csv.typeDechet ){
               let formatDate = csv.dateEntree.split('/')[2]+'-'+csv.dateEntree.split('/')[1]+'-'+csv.dateEntree.split('/')[0];
@@ -413,7 +418,7 @@ export class ListReactifsComponent implements OnInit {
       });
 
       //Si sur ce dechet, nous n'avons pas trouvé de correspondant, count = 0, et que ce dechet est une sortie, on la'jouter au tableau des dechet
-      if(count == 0 && (csv.entrant.toLowerCase() == "e" || csv.entrant.toLowerCase() == "réception" || csv.entrant.toLowerCase() == 1 || csv.entrant.toLowerCase() == "reception" || csv.entrant.toLowerCase() == "reactif" || csv.entrant.toLowerCase() == "consommable") ){
+      if(count == 0 && (csv.entrant.toLowerCase() == "e" || csv.entrant == 1 || csv.entrant.toLowerCase() == "réception" || csv.entrant.toLowerCase() == "reception" || csv.entrant.toLowerCase().includes("entree") || csv.entrant.toLowerCase() == "entrée" || csv.entrant.toLowerCase() == "entrant" || csv.entrant.toLowerCase() == "incinerables")){
         this.dechetsManquants.set(dechetManquant, dechetManquant);
       }
     });

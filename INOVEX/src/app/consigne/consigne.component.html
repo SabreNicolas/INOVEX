@@ -5,8 +5,18 @@
 
         <form ngNativeValidate #f="ngForm">
 
+            <div class="form-group" id="photo">
+                <input *ngIf="idConsigne == 0" type="file" id="fichier" class="form-control" required name="fichier" accept=".jpg,.jpeg,.png" (change)="saveFile($event)">
+                <img *ngIf="imgSrc" [src]="imgSrc" alt="image" id="imgUpload">
+            </div>
+
             <div class="form-group">
-                <label for="desc">Description : * </label>
+                <label for="desc">Titre : * </label>
+                <input required type="text" id="titre" class="form-control" placeholder="Titre" name="titre" ngModel [(ngModel)]="titre">
+            </div>
+
+            <div class="form-group">
+                <label for="desc">Description :  </label>
                 <input required type="text" id="desc" class="form-control" placeholder="Description" name="desc"  ngModel [(ngModel)]="desc">
             </div>
 
@@ -34,7 +44,7 @@
             </div>
             
             <div class="form-group">
-                <label>Fin date validité : *</label>
+                <label>Fin date validité : </label>
                 <input required type="datetime-local" id="dateFin" class="form-control" placeholder="Date de validité" name="dateFin"
                 ngModel [(ngModel)]="dateFin">
             </div>

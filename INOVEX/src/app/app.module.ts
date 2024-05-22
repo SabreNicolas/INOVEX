@@ -93,6 +93,11 @@ import { RecapRondeComponent } from './recap-ronde/recap-ronde.component';
 import { EnregistrementEquipeComponent } from './enregistrement-equipe/enregistrement-equipe.component';
 import { ListEnregistrementEquipeComponent } from './list-enregistrement-equipe/list-enregistrement-equipe.component';
 import { RechercheComponent } from './recherche/recherche.component';
+import { ListAnomaliesComponent } from './list-anomalies/list-anomalies.component';
+import { ListLiensExternesComponent } from './list-liens-externes/list-liens-externes.component';
+import { LiensExternesComponent } from './liens-externes/liens-externes.component';
+import { RecapRondePrecedenteComponent } from './recap-ronde-precedente/recap-ronde-precedente.component';
+import { RecapRondeListeComponent } from './recap-ronde-liste/recap-ronde-liste.component';
 
 
 registerLocaleData(localeFr, 'fr');
@@ -176,6 +181,11 @@ class CustomDateFormatter extends CalendarNativeDateFormatter{
     EnregistrementEquipeComponent,
     ListEnregistrementEquipeComponent,
     RechercheComponent,
+    ListAnomaliesComponent,
+    ListLiensExternesComponent,
+    LiensExternesComponent,
+    RecapRondePrecedenteComponent,
+    RecapRondeListeComponent,
   ],
   imports: [
     BrowserModule,

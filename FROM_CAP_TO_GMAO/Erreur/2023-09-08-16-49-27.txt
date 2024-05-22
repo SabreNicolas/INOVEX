@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "D:\FROM_CAP_TO_GMAO\Altair_V2.py", line 120, in getEquipLoc
+    reponseJson = json.loads(data.decode("utf-8"))
+NameError: name 'json' is not defined

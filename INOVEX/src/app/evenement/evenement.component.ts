@@ -19,6 +19,7 @@ export class EvenementComponent implements OnInit {
   public dateDeb : Date | undefined;
   public dateFin : Date | undefined;
   public idEvenement : number;
+  public idAnomalie : number;
   public groupementGMAO : string;
   public equipementGMAO : string;
   public demandeTravaux : number;
@@ -27,17 +28,21 @@ export class EvenementComponent implements OnInit {
   public description : string;
   fileToUpload: File | undefined;
   public imgSrc !: any
+  public dupliquer : number;
 
   constructor(public altairService : AltairService,public cahierQuartService : cahierQuartService, private rondierService : rondierService, private datePipe : DatePipe,private route : ActivatedRoute, private location : Location) {
     this.titre = "";
     this.importance = 0;
     this.idEvenement = 0;
+    this.idAnomalie = 0;
     this.groupementGMAO ="";
     this.equipementGMAO =""
     this.demandeTravaux=0;
     this.consigne = 0;
     this.cause ="";
     this.description = "";
+    this.dupliquer = 0;
+
     //Permet de savoir si on est en mode édition ou création
     this.route.queryParams.subscribe(params => {
       if(params.idEvenement != undefined){
@@ -46,9 +51,22 @@ export class EvenementComponent implements OnInit {
       else {
         this.idEvenement = 0;
       }
+      if(params.idAnomalie != undefined){
+        this.idAnomalie = params.idAnomalie;
+      }
+      else {
+        this.idAnomalie = 0;
+      }
+      if(params.dupliquer != undefined){
+        this.dupliquer = params.dupliquer;
+      }
+      else {
+        this.dupliquer = 0;
+      }
     });
     this.altairService.login().subscribe((reponse)=>{
       console.log(reponse)
+      console.log("test")
     })
    }
 
@@ -64,11 +82,37 @@ export class EvenementComponent implements OnInit {
         this.groupementGMAO = response.data[0]['groupementGMAO'];
         this.equipementGMAO = response.data[0]['equipementGMAO'];
         this.demandeTravaux = response.data[0]['demande_travaux'];
+        if(this.demandeTravaux == 1){
+          $("#dateFin").show();
+          $("#equipementGMAO").show();
+          $("#groupementGMAO").show();
+        }
+        $('#demandeTravaux').hide();
+        $('#demandeTravauxLabel').hide();
         this.description = response.data[0]['description'];
         this.consigne = response.data[0]['consigne'];
         this.cause = response.data[0]['cause'];
         this.imgSrc = response.data[0]['url'];
+        
+        if(this.dupliquer == 1){
+          this.idEvenement = 0
+        }
+      })
+    }
+    else{
+      //@ts-ignore
+      this.dateDeb = this.datePipe.transform(new Date(),'yyyy-MM-ddTHH:mm');
+      this.dateFin = this.dateDeb;
+    }
 
+
+    if(this.idAnomalie > 0){
+      this.rondierService.getOneAnomalie(this.idAnomalie).subscribe((response)=>{
+        console.log(response)
+        //@ts-ignore
+        this.description = response.data[0]['commentaire']
+        //@ts-ignore
+        this.imgSrc = response.data[0]['photo']
       })
     }
   }
@@ -109,8 +153,15 @@ export class EvenementComponent implements OnInit {
     //Si on la case consigne est cochée on la crée
     if(this.consigne){
       this.consigne=1;
-      this.rondierService.createConsigne(this.titre,5,dateFinString,dateDebString).subscribe((response)=>{
-      })
+      if(this.fileToUpload != undefined){
+        this.rondierService.createConsigne(this.titre,this.description,5,dateFinString,dateDebString,this.fileToUpload).subscribe((response)=>{
+        })
+      }
+      else{
+        this.rondierService.createConsigne(this.titre,this.description,5,dateFinString,dateDebString,null).subscribe((response)=>{
+        })
+      }
+      
     }
     else this.consigne=0;
     //Choix de la phrase à afficher en fonction du mode
@@ -126,9 +177,11 @@ export class EvenementComponent implements OnInit {
         if (this.idEvenement != 0){
           //@ts-ignore
           this.cahierQuartService.updateEvenement(this.titre,this.importance,dateDebString,dateFinString, this.groupementGMAO, this.equipementGMAO, this.cause,this.description, this.consigne, this.demandeTravaux, this.idEvenement).subscribe((response)=>{
-            if(response == "Modification de l'evenement OK !"){
-              Swal.fire({text : 'Evènement modifiée !', icon :'success'});
-              this.location.back();
+            if(response != undefined){
+              this.cahierQuartService.historiqueEvenementUpdate(this.idEvenement).subscribe((response)=>{
+                Swal.fire({text : 'Evènement modifiée !', icon :'success'});
+                this.location.back();
+              })
             }
           });        
         }
@@ -136,9 +189,18 @@ export class EvenementComponent implements OnInit {
         else{
           //@ts-ignore
           this.cahierQuartService.newEvenement(this.titre,this.fileToUpload,this.importance,dateDebString,dateFinString, this.groupementGMAO, this.equipementGMAO, this.cause,this.description, this.consigne, this.demandeTravaux).subscribe((response)=>{
-            if(response == "Création de l'evenement OK !"){
+            if(response != undefined){
               Swal.fire({text : 'Nouvel évènement créée', icon :'success'});
-              this.location.back();
+              this.idEvenement = response['data'][0]['Id'];
+              this.cahierQuartService.historiqueEvenementCreate(this.idEvenement).subscribe((response)=>{
+                if(this.idAnomalie > 0){
+                  this.rondierService.updateAnomalieSetEvenement(this.idAnomalie).subscribe((response)=>{
+                    this.location.back();
+                  })
+                } 
+                else this.location.back(); 
+              })
+                          
             }
           });
         }  
@@ -176,4 +238,17 @@ export class EvenementComponent implements OnInit {
     this.location.back();
   }
 
+  clickDemandeTravaux(){
+    if($("input#demandeTravaux").is(':checked')){
+      $("#dateFin").show();
+      $("#equipementGMAO").show();
+      $("#groupementGMAO").show();
+    }
+    else{
+      $("#dateFin").hide();
+      $("#equipementGMAO").hide();
+      $("#groupementGMAO").hide();
+
+    }
+  }
 }

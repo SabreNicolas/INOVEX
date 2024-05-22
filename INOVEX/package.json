@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "set NODE_OPTIONS=--openssl-legacy-provider && ng serve --port 8100 --host 0.0.0.0 --disable-host-check --ssl true --ssl-cert E:\\INOVEX\\serverV2.crt --ssl-key E:\\INOVEX\\serverV2-decrypted.key",
+    "start": "set NODE_OPTIONS=--openssl-legacy-provider && ng serve --port 8101 --host 0.0.0.0 --disable-host-check --ssl true --ssl-cert E:\\INOVEX\\serverV2.crt --ssl-key E:\\INOVEX\\serverV2-decrypted.key",
     "watch": "ng build --watch --configuration development"
   },
   "private": true,

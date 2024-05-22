@@ -33,7 +33,9 @@ export class ListEvenementsComponent implements OnInit {
       if (result.isConfirmed) {
         this.cahierQuartService.deleteEvenement(id).subscribe((response)=>{
           if (response == "Suppression de l'evenement OK"){
-            Swal.fire("L'evenement a bien été supprimé !");
+            this.cahierQuartService.historiqueEvenementDelete(id).subscribe((response)=>{
+              Swal.fire("L'evenement a bien été supprimé !");
+            })
           }
           else {
             Swal.fire({

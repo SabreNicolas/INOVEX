@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "D:\FROM_CAP_TO_GMAO\Altair_V2.py", line 127, in getEquipLoc
+    equipment={"codeequipment": equip["codeequipment"], "description": equip["description"], "fkcodeequipemnt" : equip.get("fkcodeequipemnt"), "fkcodelocation" : equip["fkcodelocation"]}
+KeyError: 'fkcodelocation'

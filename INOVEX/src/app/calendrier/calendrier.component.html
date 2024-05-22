@@ -1,3 +1,9 @@
+<div id="spinner">
+  <div><h1>Chargement en cours...</h1></div>
+  <div id="spinnerBloc">
+  </div>
+</div>
+
 <!-- Création d'une action / ronde pour le calendrier -->
 
 <button class="btn btn-success" id="create" (click)="addEvent()">
@@ -57,8 +63,11 @@
     </select>
   </div>
 
-  <div class="form-group">
-    <p *ngIf="periodicite != 0">Fin après <input type="number" name="occurences" id="occurences" value="10" [(ngModel)]="occurences"> occurences</p>
+  <div class="form-group" *ngIf="periodicite != 0">
+    <p >Fin après <input type="number" name="occurences" id="occurences" value="10" [(ngModel)]="occurences"> occurences 
+    <button class="btn btn-success" id="maxOccurence" (click)="maxOccurence()">
+      Max
+    </button></p>
   </div>
 
   <button class="btn btn-success" id="valider" (click)="createEvenementCalendrier()">

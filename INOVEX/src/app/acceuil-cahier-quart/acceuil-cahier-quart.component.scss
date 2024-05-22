@@ -70,3 +70,35 @@
     width: 100%;
     text-align: center;
 }
+
+.card2 {
+    width: 200px;
+    height: 150px;
+    overflow: hidden;
+    transition: transform 0.3s;
+    cursor: pointer;
+}
+
+.cacard2rd.expanded {
+    position: fixed;
+    top: 45%;
+    left: 50%;
+    width: 90% ;
+    height: 90%;
+    transform: translate(-50%, -50%) ;
+    z-index: 9999;
+    overflow: auto;
+}
+.card2 .titreListe{
+    margin-top: 60px;
+}
+.card2.expanded .titreListe{
+    margin-top: 0px;
+}
+
+.card2.expanded .edition{
+    display: block;
+}
+.card2.expanded .suppression{
+    display: block;
+}
