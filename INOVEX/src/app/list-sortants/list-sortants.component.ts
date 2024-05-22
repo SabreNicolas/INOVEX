@@ -201,7 +201,7 @@ export class ListSortantsComponent implements OnInit {
       //delimiter,header,typedechet,dateEntree,tonnage, posEntreeSortie
       //Thiverval
       if(this.idUsine === 11){
-        this.lectureCSV(event, ";", false, 29, 2, 16, 1);
+        this.lectureCSV(event, ";", false, 29, 14, 16, 1);
       }
       else this.lectureCSV(event, ";", true, 31, 2, 16);
     }
@@ -279,6 +279,11 @@ export class ListSortantsComponent implements OnInit {
     else if (this.typeImportTonnage.toLowerCase().includes("syspeau")){
       //delimiter,header,typedechet,dateEntree,tonnage, posEntreeSortie
       this.lectureCSV(event, ";", true, 18, 5, 9, 4);
+    }
+    //Saint-barth
+    else if (this.typeImportTonnage.toLowerCase().includes("quantum")){
+      //delimiter,header,typedechet,dateEntree,tonnage, posEntreeSortie
+      this.lectureCSV(event, ";", true, 3, 0, 6, 1);
     }
   }
 

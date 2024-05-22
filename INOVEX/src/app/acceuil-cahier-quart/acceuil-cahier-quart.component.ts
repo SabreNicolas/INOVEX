@@ -10,9 +10,11 @@ import { Actualite } from 'src/models/actualite.model';
 export class AcceuilCahierQuartComponent implements OnInit {
   
   public listActu : Actualite[];
+  public listLien : any[];
 
   constructor(private altairService : AltairService, private cahierQuartService : cahierQuartService){
     this.listActu = [];
+    this.listLien = [];
 
   }
   ngOnInit(): void {
@@ -20,5 +22,11 @@ export class AcceuilCahierQuartComponent implements OnInit {
       // @ts-ignore
       this.listActu = response.data;
     });
+    this.cahierQuartService.getActifsLiensExternes().subscribe((response)=>{
+      // @ts-ignore
+      this.listLien = response.data;
+    });
+
+    
   }
 }

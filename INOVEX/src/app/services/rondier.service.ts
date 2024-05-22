@@ -26,7 +26,7 @@ export class rondierService {
         'Access-Control-Allow-Origin': '*',
         'Authorization': 'Bearer ' + localStorage.getItem('token')
     }
-    private portAPI = 3100;
+    private portAPI = 3102;
     private ip = "fr-couvinove301.prod.paprec.fr";
     //private ip = "localhost";
     private idUsine : number | undefined;
@@ -798,16 +798,30 @@ export class rondierService {
      */
     //création d'une consigne
     //?commentaire=dggd&dateFin=fff&type=1
-    createConsigne(desc: string, type: number, dateFin: string | null, dateDebut: string | null){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/consigne?commentaire="+desc+"&dateFin="+dateFin+"&dateDebut=" + dateDebut + "&type="+type+"&idUsine="+this.idUsine;
+    createConsigne(titre : string,desc: string, type: number, dateFin: string | null, dateDebut: string | null,fileToUpload:File|null){
+        titre = encodeURIComponent(titre);
+        let requete = "https://"+this.ip+":"+this.portAPI+"/consigne?commentaire="+desc+"&dateFin="+dateFin+"&dateDebut=" + dateDebut + "&type="+type+"&idUsine="+this.idUsine+"&titre="+titre;
         //console.log(requete);
 
+        const headers = new HttpHeaders();
+        // @ts-ignore
+        headers.append('Content-Type', null);
+        headers.append('Accept', 'application/json');
         const requestOptions = {
-            headers: new HttpHeaders(this.headerDict),
+          headers: headers,
         };
 
-        return this.http
+        if(fileToUpload != undefined){
+            const formData = new FormData();
+            formData.append('fichier', fileToUpload, fileToUpload.name);
+    
+            return this.http
+            .put<any>(requete,formData,requestOptions);
+        }
+        else {
+            return this.http
             .put<any>(requete,null,requestOptions);
+        }
     }
 
     //liste des consignes en cours de validité
@@ -846,13 +860,14 @@ export class rondierService {
         };
 
         return this.http
-            .delete<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
 
     //création d'une consigne
     //?commentaire=dggd&dateFin=fff&type=1
-    updateConsigne(desc: string, type: number, dateFin: string | null, dateDebut: string | null, id:number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/updateConsigne?commentaire="+desc+"&dateFin="+dateFin+"&dateDebut=" + dateDebut + "&type="+type+"&id="+id;
+    updateConsigne(titre : string, desc: string, type: number, dateFin: string | null, dateDebut: string | null, id:number){
+        titre = encodeURIComponent(titre);
+        let requete = "https://"+this.ip+":"+this.portAPI+"/updateConsigne?commentaire="+desc+"&dateFin="+dateFin+"&dateDebut=" + dateDebut + "&type="+type+"&id="+id + "&titre="+titre;
         //console.log(requete);
 
         const requestOptions = {
@@ -885,6 +900,33 @@ export class rondierService {
             .get<anomalie[]>(requete,requestOptions);
     }
 
+    //liste des anomalies sur une usine
+    getAllAnomalies(){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/getAllAnomalies?idUsine="+this.idUsine;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<anomalie[]>(requete,requestOptions);
+    }
+
+    //liste d'une anomalie'
+    getOneAnomalie(idAnomalie : number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/getOneAnomalie?idAnomalie="+idAnomalie;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<anomalie[]>(requete,requestOptions);
+    }
+     
+
     updateAnomalie(rondeId : number,zoneId : number, commentaire : string){
         let requete = "https://"+this.ip+":"+this.portAPI+"/updateAnomalie?rondeId="+rondeId+"&zoneId="+zoneId +"&commentaire=" + commentaire;
         //console.log(requete);
@@ -895,6 +937,19 @@ export class rondierService {
 
         return this.http
             .put<anomalie[]>(requete,requestOptions);
+    }
+
+    updateAnomalieSetEvenement(idAnomalie : number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/updateAnomalieSetEvenement?idAnomalie="+idAnomalie;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<any>(requete,null,requestOptions);
+    
     }
 
     createAnomalie(rondeId : number, commentaire : string, zoneId : number){

@@ -13,20 +13,27 @@ import { cahierQuartService } from '../services/cahierQuart.service';
 })
 export class ConsigneComponent implements OnInit {
 
+  public titre : string
   public desc : string;
   public type : number;
   public dateDebut : Date | undefined;
   private stringDateDebut : string | null;
   public dateFin : Date | undefined;
   private stringDateFin : string | null;
-  private idConsigne : number;
+  public idConsigne : number;
+  fileToUpload: File | undefined;
+  public imgSrc !: any
+  public dupliquer : number;
+
 
   constructor(private rondierService : rondierService,public cahierQuartService : cahierQuartService, private datePipe : DatePipe,private route : ActivatedRoute) {
     this.desc = "";
+    this.titre ="";
     this.type = 1;
     this.stringDateFin = "";
     this.stringDateDebut ="";
     this.idConsigne = 0;
+    this.dupliquer = 0;
 
     //Permet de savoir si on est en mode édition ou création
     this.route.queryParams.subscribe(params => {
@@ -36,16 +43,28 @@ export class ConsigneComponent implements OnInit {
       else {
         this.idConsigne = 0;
       }
+      if(params.dupliquer != undefined){
+        this.dupliquer = params.dupliquer;
+      }
+      else {
+        this.dupliquer = 0;
+      }
     });
   }
 
   ngOnInit(): void {
     if(this.idConsigne != 0){
       this.cahierQuartService.getOneConsigne(this.idConsigne).subscribe((response)=>{
+        this.titre = response.data[0]['titre'];
         this.dateDebut = response.data[0]['date_heure_debut'];
-        this.desc = response.data[0]['commentaire']
-        this.type = response.data[0]['type']
-        this.dateFin = response.data[0]['date_heure_fin']
+        this.desc = response.data[0]['commentaire'];
+        this.type = response.data[0]['type'];
+        if(response.data[0]['date_heure_fin'] != "2099-01-01 00:00"){
+          this.dateFin = response.data[0]['date_heure_fin']
+        }
+        if(this.dupliquer == 1){
+          this.idConsigne = 0
+        }
       })
     }
   }
@@ -54,11 +73,26 @@ export class ConsigneComponent implements OnInit {
     this.desc = form.value['desc'];
     this.desc = this.desc.replace("'", " ");
     this.desc = this.desc.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, " ");
-    this.dateFin = new Date(form.value['dateFin']);
+
+    if(this.dateFin == undefined){
+      this.dateFin = new Date("2099-01-01 00:00");
+      this.stringDateFin = "2099-01-01 00:00";
+    }
+    else {
+      this.dateFin = new Date(form.value['dateFin']);
+    }
     this.dateDebut = new Date(form.value['dateDebut']);
     this.stringDateFin = this.datePipe.transform(this.dateFin,'yyyy-MM-dd HH:mm');
     this.stringDateDebut = this.datePipe.transform(this.dateDebut,'yyyy-MM-dd HH:mm');
     this.type = form.value['type'];
+    
+    if(this.titre == ''){
+      Swal.fire({
+        icon: 'error',
+        text: 'Veuillez renseigner un titre !',
+      })
+      return;
+    }
     
     if(this.dateDebut != undefined && this.dateDebut > this.dateFin){
       Swal.fire({
@@ -68,9 +102,11 @@ export class ConsigneComponent implements OnInit {
     }
     else {
       if(this.idConsigne > 0){
-        this.rondierService.updateConsigne(this.desc,this.type,this.stringDateFin,this.stringDateDebut,this.idConsigne).subscribe((response)=>{
+        this.rondierService.updateConsigne(this.titre,this.desc,this.type,this.stringDateFin,this.stringDateDebut,this.idConsigne).subscribe((response)=>{
           if (response == "Modification de la consigne OK"){
-            Swal.fire("La consigne a bien été modifiée !");
+            this.cahierQuartService.historiqueConsigneUpdate(this.idConsigne).subscribe((response)=>{
+              Swal.fire("La consigne a bien été modifiée !");
+            })
           }
           else {
             Swal.fire({
@@ -81,9 +117,13 @@ export class ConsigneComponent implements OnInit {
         });
       }
       else{
-        this.rondierService.createConsigne(this.desc,this.type,this.stringDateFin,this.stringDateDebut).subscribe((response)=>{
-          if (response == "Création de la consigne OK"){
-            Swal.fire("La consigne a bien été créé !");
+        //@ts-ignore
+        this.rondierService.createConsigne(this.titre,this.desc,this.type,this.stringDateFin,this.stringDateDebut,this.fileToUpload).subscribe((response)=>{
+          if (response != undefined){
+            this.idConsigne = response['data'][0]['Id'];
+            this.cahierQuartService.historiqueConsigneCreate(this.idConsigne).subscribe((response)=>{
+              Swal.fire("La consigne a bien été créé !");
+            })
           }
           else {
             Swal.fire({
@@ -102,6 +142,27 @@ export class ConsigneComponent implements OnInit {
     form.controls['dateFin'].reset();
     form.controls['type'].reset();
     form.controls['dateDebut'].reset();
+  }
+
+  //Method déclenché dès que le fichier sélectionné change
+  //Stockage du fichier chaque fois qu'un fichier est upload
+  saveFile(event : Event) {
+    //Récupération du fichier dans l'input
+    // @ts-ignore
+    this.fileToUpload = (<HTMLInputElement>event.target).files[0];
+    // @ts-ignore
+    //console.log((<HTMLInputElement>event.target).files[0]);
+
+    // @ts-ignore
+    if (event.target.value) {
+      // @ts-ignore
+      const file = event.target.files[0];
+      this.fileToUpload = file;
+      const reader = new FileReader();
+      reader.onload = e => this.imgSrc = reader.result;
+      reader.readAsDataURL(file);
+    } 
+    else Swal.fire('Aucun fichier choisi....')
   }
 
 }

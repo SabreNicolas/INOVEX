@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "C:\Users\sautetp\OneDrive - PAPREC FRANCE\Documents\tempScript\VERSCAPEX\Altair_V2.py", line 21, in getAltairToken
+    reponse=reponseJson["token"] #selecionne le token dans l'objet reponse au format Json
+KeyError: 'token'

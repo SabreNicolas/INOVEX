@@ -1,6 +1,8 @@
-<a routerLink="../newEquipe" [queryParams]="{quart: quart, idEquipe: idEquipe}" role="button" class="btn btn-primary" id="create">
+<a (click)="priseDeQuart()" role="button" class="btn btn-primary" id="create">
     Prise de quart
 </a>
+
+<!-- routerLink="../newEquipe" [queryParams]="{quart: quart, idEquipe: idEquipe}" -->
 
 <!-- Tableau des consignes -->
 <div class="consignes" *ngIf="consignes.length > 0">
@@ -8,13 +10,18 @@
       <thead>
         <tr>
           <th scope="col">Consigne</th>
+          <th scope="col">Description</th>
           <th scope="col">Date de Fin</th>
+          <th scope="col">Fichier</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let consigne of consignes">
+          <th scope="row">{{consigne.titre}}</th>
           <th scope="row">{{consigne.commentaire}}</th>
           <td>{{consigne.dateHeureFin}}</td>
+          <td *ngIf="consigne.url != null" (click)="downloadFile(consigne.url)"><i class="fas fa-download" ></i></td>
+          <td *ngIf="consigne.url == null">/</td>
         </tr>
       </tbody>
     </table>

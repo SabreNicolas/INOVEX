@@ -67,6 +67,11 @@ import { ActionComponent } from './action/action.component';
 import { EnregistrementEquipeComponent } from './enregistrement-equipe/enregistrement-equipe.component';
 import { ListEnregistrementEquipeComponent } from './list-enregistrement-equipe/list-enregistrement-equipe.component';
 import { RechercheComponent } from './recherche/recherche.component';
+import { ListAnomaliesComponent } from './list-anomalies/list-anomalies.component';
+import { ListLiensExternesComponent } from './list-liens-externes/list-liens-externes.component';
+import { LiensExternesComponent } from './liens-externes/liens-externes.component';
+import { RecapRondePrecedenteComponent } from './recap-ronde-precedente/recap-ronde-precedente.component';
+import { RecapRondeListeComponent } from './recap-ronde-liste/recap-ronde-liste.component';
 
 const routes: Routes = [
 
@@ -157,6 +162,13 @@ const routes: Routes = [
             { path : 'newEnregistrementEquipe', canActivate: [AuthGuard], component: EnregistrementEquipeComponent},
             { path : 'enregistrementEquipe', canActivate: [AuthGuard], component: ListEnregistrementEquipeComponent},
             { path : 'recherche', canActivate: [AuthGuard], component: RechercheComponent},
+            { path : 'anomalies', canActivate: [AuthGuard], component: ListAnomaliesComponent},
+            { path : 'reporting', canActivate: [AuthGuard], component: ReportingRondeComponent},
+            { path : 'liensExternes', canActivate: [AuthGuard], component: ListLiensExternesComponent},
+            { path : 'newLienExterne', canActivate: [AuthGuard], component: LiensExternesComponent},
+            { path : 'recapRondePrecedente', canActivate: [AuthGuard], component: RecapRondePrecedenteComponent},
+            { path : 'recapRondeListe', canActivate: [AuthGuard], component: RecapRondeListeComponent},
+
         ]
     },
 

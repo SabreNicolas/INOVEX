@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "D:\FROM_CAP_TO_GMAO\Altair_V2.py", line 113, in getEquipLoc
+    conn.request("GET", "/"+base+"rest/rest/all/equipment/list/EQUIPMENT", "", headers)
+NameError: name 'base' is not defined

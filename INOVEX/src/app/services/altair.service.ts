@@ -27,23 +27,20 @@ export class AltairService {
   //Créer une nouvelle équipe
   login(){
     let requete = this.ip+"/rest/system/login"
-
+    var headers = {
+        'Content-Type': 'application/json'
+        }    
+        
     const requestOptions = {
-        headers: new HttpHeaders(this.headerDict),
+        headers: new HttpHeaders(headers),
     };
-
-    // const formData = new FormData();
-    // // @ts-ignore
     
-    // formData.append('password', 'nsabre');
-    // formData.append('username', 'nsabre');
-  
-    var formData = '{"username": "nsabre","password": "nsabre"}'
-    formData = JSON.parse(formData);
-    console.log(formData)
+    var payload = "{\r\n  \"username\":\"psautet\",\r\n  \"password\":\"psautet\",\r\n  \"site\":\"PLUZUNET\",\r\n  \"passwordprehashed\": false\r\n\r\n}"
+    console.log(payload)
     console.log(requestOptions)
-    //@ts-ignore
-    return this.http.post<any>(requete,formData,requestOptions);
+    console.log(this.http.post<any>(requete,payload,requestOptions))
+
+    return this.http.post<any>(requete,payload,requestOptions);
   }
 
 }

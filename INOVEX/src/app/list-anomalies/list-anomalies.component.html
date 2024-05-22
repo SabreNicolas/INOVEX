@@ -1,0 +1,41 @@
+<div *ngIf="listAnomalies">
+
+    <div class="table-style">
+        <!--table des consignes-->
+        <table class="table table-hover tableFixed">
+            <thead>
+            <tr class="table-secondary">
+                <th scope="col">Zone</th>
+                <th scope="col">Anomalie</th>
+                <th scope="col">Date de la ronde</th>
+                <th scope="col">Quart</th>
+                <th scope="col">Photo</th>
+                <th scope="col">Créer un évènement</th>
+            </tr>
+            </thead>
+            <tbody *ngFor="let anomalie of listAnomalies">
+            <tr class="table-light" [ngSwitch]="anomalie.quart">
+                <td>{{anomalie.nom}}</td>
+                <td>{{anomalie.commentaire}}</td>
+                <td>{{anomalie.dateHeure}}</td>
+                <td *ngSwitchCase=1 style="color: blue">Matin</td>
+                <td *ngSwitchCase=2 style="color: orange">Après-midi</td>
+                <td *ngSwitchCase=3 style="color: blue">Nuit</td>
+                <td>
+                    <button class="btn btn-outline-secondary"  *ngIf="anomalie.photo != undefined" (click)="downloadImage(anomalie.photo)">
+                        <i style="color:black;" class="fa fa-camera" aria-hidden="true"></i>
+                    </button>
+                </td>
+                <td *ngIf="anomalie.evenement == 1">
+                    Evènement déjà créé
+                </td>
+                <td *ngIf="anomalie.evenement == 0">
+                    <a routerLink="../newEvenement" [queryParams]="{idAnomalie: anomalie.id}" role="button" class="btn btn-primary" id="create">
+                        Créer un évènement
+                    </a>
+                </td>
+            <!-- </tr> -->
+            </tbody>
+        </table>
+    </div>
+</div>

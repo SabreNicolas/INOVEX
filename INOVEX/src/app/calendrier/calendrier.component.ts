@@ -8,11 +8,13 @@ import { DatePipe } from '@angular/common';
 import {rondierService} from "../services/rondier.service";
 import { zone } from 'src/models/zone.model';
 import Swal from 'sweetalert2';
+import { delay } from 'rxjs/operators';
 declare var $ : any;
 
 @Component({
   selector: 'app-calendrier',
   templateUrl: './calendrier.component.html',
+  styleUrls: ['./calendrier.component.scss']
 })
 
 export class CalendrierComponent implements OnInit{
@@ -257,7 +259,8 @@ export class CalendrierComponent implements OnInit{
   }
 
   //Fonction permettant de créer un évènement dans le calendrier
-  createEvenementCalendrier(){
+  async createEvenementCalendrier(){
+    this.loading();
     //On parcours la liste des quarts choisis
     for(const quart of this.quart){
       //On récupère l'heure de fin en fonction du quart
@@ -306,6 +309,8 @@ export class CalendrierComponent implements OnInit{
       else {
         //Si on a une periodicite, on boucle pour ajouter autant de fois que d'occurences demandées
         for(var i = 0; i < this.occurences; i++){
+          await this.pause(1);
+          console.log("ici");
           //Si on est en quotidient
           if(this.periodicite == 1){
             var dateDeb2 = format(addDays(parseISO(this.dateDeb), i),'yyyy-MM-dd') + ' ' + heureDeb
@@ -337,6 +342,7 @@ export class CalendrierComponent implements OnInit{
           //Si on ajoute une action
           else {
             this.cahierQuartService.newAction(this.nomAction, dateDeb2, dateFin).subscribe((response)=>{
+              console.log("ici");
               this.cahierQuartService.newCalendrierAction(response.data[0].id, response.data[0].date_heure_debut, quart, response.data[0].date_heure_fin).subscribe((response) => {
                 var dateFin = "";
               })
@@ -345,7 +351,12 @@ export class CalendrierComponent implements OnInit{
         }
       }
     }
+    this.removeloading();
     this.ngOnInit();
+  }
+
+  pause(millisecondes : number){
+    return new Promise<void>(resolve => setTimeout(resolve, millisecondes));
   }
 
   //Fonction qui permet de cacher le bloc de création
@@ -356,5 +367,25 @@ export class CalendrierComponent implements OnInit{
     $('#create').show();
     $('#hideCreation').hide();
     $('#divCreation').hide();
+  }
+
+  maxOccurence(){
+
+  this.occurences = 1000;
+  }
+
+  loading(){
+    $("#spinner").addClass('loader');
+    $("#spinnerBloc").addClass('loaderBloc');
+  }
+
+
+  removeloading(){
+      var element = document.getElementById('spinner');
+      // @ts-ignore
+      element.classList.remove('loader');
+      var element = document.getElementById('spinnerBloc');
+      // @ts-ignore
+      element.classList.remove('loaderBloc');
   }
 }

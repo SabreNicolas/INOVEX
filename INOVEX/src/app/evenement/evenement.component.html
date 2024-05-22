@@ -9,9 +9,9 @@
         </div>
 
         <div class="col-md-5">
-            <div class="form-group">
+            <div class="form-group" style="display: none;" id="groupementGMAO">
                 <label for="desc">Groupement : * </label>
-                <input required type="text" id="groupementGMAO" class="form-control" placeholder="Groupement GMAO" name="groupementGMAO" ngModel [(ngModel)]="groupementGMAO">
+                <input required type="text" class="form-control" placeholder="Groupement GMAO" name="groupementGMAO" ngModel [(ngModel)]="groupementGMAO">
             </div>
     
     
@@ -26,25 +26,26 @@
             </div>
     
             <div class="form-group">
-                <label for="desc">Descripion : </label>
-                <input required type="text" id="description" class="form-control" placeholder="description" name="description" ngModel [(ngModel)]="description">
+                <label for="desc">Description : </label>
+                <textarea required name="description" id="description" class="form-control" cols="30" rows="10" ngModel  placeholder="Description" [(ngModel)]="description"> </textarea>
+                <!-- <input required type="text" id="description" class="form-control" placeholder="Description" name="description" ngModel [(ngModel)]="description"> -->
             </div>
         </div>
 
         <div class="col-md-6">
-            <div class="form-group">
+            <div class="form-group" style="display: none;" id="equipementGMAO" >
                 <label for="desc">Equipement : * </label>
-                <input required type="text" id="equipementGMAO" class="form-control" placeholder="Equipement GMAO" name="equipementGMAO" ngModel [(ngModel)]="equipementGMAO">
+                <input required type="text" class="form-control" placeholder="Equipement GMAO" name="equipementGMAO" ngModel [(ngModel)]="equipementGMAO">
             </div>
     
             <div class="form-group">
                 <label for="desc">Cause : </label>
-                <input required type="text" id="cause" class="form-control" placeholder="cause" name="cause" ngModel [(ngModel)]="cause">
+                <input required type="text" id="cause" class="form-control" placeholder="cause" name="Cause" ngModel [(ngModel)]="cause">
             </div>
                 
-            <div class="form-group">
+            <div class="form-group" style="display: none;" id="dateFin">
                 <label>Fin date validité : *</label>
-                <input required type="datetime-local" id="dateFin" class="form-control" placeholder="Date de validité" name="dateFin" ngModel [(ngModel)]="dateFin">
+                <input required type="datetime-local" class="form-control" placeholder="Date de validité" name="dateFin" ngModel [(ngModel)]="dateFin">
             </div>
                 
             <div class="form-group">
@@ -66,9 +67,9 @@
         <div class="col-9">
         
 
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="demandeTravaux" ngModel [(ngModel)]="demandeTravaux" >
-                <label class="form-check-label" for="demandeTravaux">
+            <div class="form-check" >
+                <input class="form-check-input" type="checkbox" value="" id="demandeTravaux" ngModel [(ngModel)]="demandeTravaux" (click)="clickDemandeTravaux()" >
+                <label class="form-check-label" for="demandeTravaux" id="demandeTravauxLabel">
                   Demande de travaux (oui/non)
                 </label>
             </div>

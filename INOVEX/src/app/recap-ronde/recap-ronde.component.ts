@@ -80,6 +80,7 @@ export class RecapRondeComponent implements OnInit {
     this.cahierQuartService.getZonesCalendrierRonde(this.dateDebString, this.dateFinString).subscribe((response)=>{
       // @ts-ignore
       this.listZone = response.BadgeAndElementsOfZone;
+      console.log(this.listZone)
     });
     
     //Récupération de l'id de l'équipe pour la ronde si l'équipe est déjà crée
@@ -195,5 +196,25 @@ export class RecapRondeComponent implements OnInit {
         Swal.fire('Annulé','La suppression a été annulée.','error');
       }
     });
+  }
+
+  priseDeQuart(){
+    //Demande de confirmation de création d'équipe
+    Swal.fire({title: 'Avez vous pris connaissance des consignes ?',icon: 'warning',showCancelButton: true,confirmButtonColor: '#3085d6',cancelButtonColor: '#d33',confirmButtonText: 'Oui',cancelButtonText: 'Non'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.cahierQuartService.historiquePriseQuart().subscribe((response)=>{
+          window.location.href = "https://fr-couvinove300.prod.paprec.fr:8101/cahierQuart/newEquipe?quart="+this.quart+"&idEquipe="+this.idEquipe
+        })
+      }
+      else {
+        // Pop-up d'annulation de la suppression
+        Swal.fire('Annulé','La prise de quart a été annulée.','error');
+      }
+    }); 
+  }
+
+  downloadFile(consigne : string){
+    window.open(consigne, '_blank');
   }
 }

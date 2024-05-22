@@ -18,8 +18,9 @@
                 <th scope="col">Demande de travaux</th>
                 <th scope="col">Création de consigne</th>
                 <th scope="col">Photo</th>
-                <th scope="col">#</th>
-                <th scope="col">#</th>
+                <th scope="col">Dupliquer</th>
+                <th scope="col">Editer</th>
+                <th scope="col">Supprimer</th>
             </tr>
             </thead>
             <tbody *ngFor="let evenement of listEvenement">
@@ -37,6 +38,13 @@
                 <td *ngIf="evenement.consigne == 1">Crée</td>
                 <td *ngIf="evenement.consigne == 0">Aucune</td>
                 <td><img src="{{evenement.url}}" alt=""></td>
+                <td>
+                    <a  routerLink="/cahierQuart/newEvenement" [queryParams]="{idEvenement: evenement.id, dupliquer : 1}" > 
+                        <button class="btn btn btn-light edition">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </a>
+                </td>
                 <td>
                     <a  routerLink="/cahierQuart/newEvenement" [queryParams]="{idEvenement: evenement.id}" > 
                         <button class="btn btn btn-light edition">

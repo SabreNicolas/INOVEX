@@ -1,0 +1,48 @@
+<div *ngIf="listLien">
+
+    <a routerLink="../newLienExterne" role="button" class="btn btn-primary" id="create">
+        Créer un lien
+    </a>
+    <div class="table-style">
+        <!--table des consignes-->
+        <table class="table tableFixed">
+            <thead>
+            <tr class="table-secondary">
+                <th scope="col">Nom</th>
+                <th scope="col">url</th>
+                <th scope="col">Actif ?</th>
+                <th scope="col">#</th>
+                <th scope="col">#</th>
+            </tr>
+            </thead>
+            <tbody *ngFor="let lien of listLien">
+            <tr>
+                <td>{{lien.nom}}</td>
+                <td>{{lien.url}}</td>
+                <td *ngIf="!lien.actif"> 
+                    <button class="btn btn btn-light" (click)='activerLien(lien.id, lien.actif)'>
+                        <i style="color: green" class="fas fa-check"></i>
+                    </button>
+                </td>
+                <td *ngIf="lien.actif"> 
+                    <button class="btn btn btn-light" (click)='activerLien(lien.id, lien.actif)'>
+                        <i style="color: red" class="fas fa-times-circle"></i>
+                    </button>
+                </td>
+                <td>
+                    <a  routerLink="/cahierQuart/newLienExterne" [queryParams]="{idLien: lien.id}" > 
+                        <button class="btn btn btn-light edition">
+                            <i class="far fa-edit"></i>
+                        </button>
+                    </a>
+                </td>
+                <td>
+                    <button (click)="deleteLienExterne(lien.id)" id="deleteLienExterne" class="btn btn-light">
+                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

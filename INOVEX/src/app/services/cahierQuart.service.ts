@@ -5,6 +5,7 @@ import { site } from "src/models/site.model";
 import { user } from "src/models/user.model";
 import { zone } from "src/models/zone.model";
 import { idUsineService } from "./idUsine.service";
+import {DatePipe, Location} from "@angular/common";
 
 @Injectable()
 export class cahierQuartService {
@@ -17,13 +18,13 @@ export class cahierQuartService {
         'Access-Control-Allow-Origin' : '*',
         'Authorization': 'Bearer ' + localStorage.getItem('token')
     }
-    private portAPI = 3100;
+    private portAPI = 3102;
     private ip = "fr-couvinove301.prod.paprec.fr";
     //private ip = "localhost";
     private idUsine : number | undefined;
     private idUser : number | undefined;
 
-    constructor(private http: HttpClient, private idUsineService : idUsineService) {
+    constructor(private http: HttpClient, private idUsineService : idUsineService,private datePipe : DatePipe) {
         this.httpClient = http;
         this.idUsine = this.idUsineService.getIdUsine();
         this.idUser = this.idUsineService.getIdUser();
@@ -265,10 +266,10 @@ export class cahierQuartService {
     /****Actualités *******/
 
     //Créer une nouvelle actualité
-    newActu(titre:string, importance:number, dateDeb:string, dateFin:string){
+    newActu(titre:string, importance:number, dateDeb:string, dateFin:string, description : string){
         titre = encodeURIComponent(titre);
-        console.log(dateDeb)
-        let requete = "https://"+this.ip+":"+this.portAPI+"/actu?titre="+titre+"&importance="+importance+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&idUsine="+this.idUsine;
+        description = encodeURIComponent(description);
+        let requete = "https://"+this.ip+":"+this.portAPI+"/actu?titre="+titre+"&importance="+importance+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&idUsine="+this.idUsine+"&description="+description;
 
         const requestOptions = {
           headers: new HttpHeaders(this.headerDict),
@@ -279,9 +280,10 @@ export class cahierQuartService {
     }
 
     //Modifier une actualité
-    updateActu(titre:string, importance:number, dateDeb:string, dateFin:string, idActu : number){
+    updateActu(titre:string, importance:number, dateDeb:string, dateFin:string, idActu : number, description : string){
         titre = encodeURIComponent(titre);
-        let requete = "https://"+this.ip+":"+this.portAPI+"/updateActu?titre="+titre+"&importance="+importance+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&idActu="+idActu;
+        description = encodeURIComponent(description);
+        let requete = "https://"+this.ip+":"+this.portAPI+"/updateActu?titre="+titre+"&importance="+importance+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&idActu="+idActu+"&description="+description;
 
         const requestOptions = {
           headers: new HttpHeaders(this.headerDict),
@@ -478,7 +480,7 @@ export class cahierQuartService {
         };
 
         return this.http
-            .delete<any>(requete,requestOptions);
+            .put<any>(requete,null,requestOptions);
     }
 
     //Calendrier
@@ -596,6 +598,17 @@ export class cahierQuartService {
           .put<any>(requete,null,requestOptions);
     }
     
+    //Récupérer toutes les actus d'une ronde
+    getActusRonde(dateDeb : string, dateFin : string){
+      let requete = "https://"+this.ip+":"+this.portAPI+"/getActusRonde?idUsine="+this.idUsine+"&dateDeb="+dateDeb+"&dateFin="+dateFin;
+
+      const requestOptions = {
+        headers: new HttpHeaders(this.headerDict),
+      };
+
+      return this.http
+          .get<any>(requete,requestOptions);
+    }
 
     //Supprimer un évènement du calendrier
     deleteCalendrier(id : number){
@@ -701,5 +714,243 @@ export class cahierQuartService {
 
     return this.http
         .get<any>(requete,requestOptions);
-}
+  }
+
+
+  ////////////////////
+  //  Liens externes//
+  ////////////////////
+
+  getOneLienExterne(idLien : number){
+    let requete = "https://"+this.ip+":"+this.portAPI+"/getOneLienExterne?idLien="+idLien
+
+    const requestOptions = {
+      headers: new HttpHeaders(this.headerDict),
+    };
+
+    return this.http
+        .get<any>(requete,requestOptions);
+  }
+
+  getAllLiensExternes(){
+    let requete = "https://"+this.ip+":"+this.portAPI+"/getAllLiensExternes?idUsine="+this.idUsine
+
+    const requestOptions = {
+      headers: new HttpHeaders(this.headerDict),
+    };
+
+    return this.http
+        .get<any>(requete,requestOptions);
+  }
+
+  getActifsLiensExternes(){
+    let requete = "https://"+this.ip+":"+this.portAPI+"/getActifsLiensExternes?idUsine="+this.idUsine
+
+    const requestOptions = {
+      headers: new HttpHeaders(this.headerDict),
+    };
+
+    return this.http
+        .get<any>(requete,requestOptions);
+  }
+
+  updateLienExterne(nom : string, url : string, idLien : number){
+    nom = encodeURIComponent(nom);
+    url = encodeURIComponent(url);
+    let requete = "https://"+this.ip+":"+this.portAPI+"/updateLienExterne?nom="+nom+"&url="+url+"&idLien="+idLien;
+
+    const requestOptions = {
+      headers: new HttpHeaders(this.headerDict),
+    };
+
+    return this.http
+      .put<any>(requete,null,requestOptions);
+  }
+
+  newLienExterne(nom : string, url : string){
+    let requete = "https://"+this.ip+":"+this.portAPI+"/newLienExterne?nom="+nom+"&url="+url+"&idUsine="+this.idUsine;
+
+    const requestOptions = {
+      headers: new HttpHeaders(this.headerDict),
+    };
+
+    return this.http
+      .put<any>(requete,null,requestOptions);
+  }
+
+  //Activer un lien
+  activerLien(idLien : number){
+    let requete = "https://"+this.ip+":"+this.portAPI+"/activerLien?idLien="+idLien;
+
+    const requestOptions = {
+      headers: new HttpHeaders(this.headerDict),
+    };
+
+    return this.http
+      .put<any>(requete,null,requestOptions);
+  }
+
+  //Désactiver un lien
+  desactiverLien(idLien : number){
+    let requete = "https://"+this.ip+":"+this.portAPI+"/desactiverLien?idLien="+idLien;
+
+    const requestOptions = {
+      headers: new HttpHeaders(this.headerDict),
+    };
+
+    return this.http
+      .put<any>(requete,null,requestOptions);
+  }
+
+    //Supprimer un lien externe
+    deleteLienExterne(id : number){
+      let requete = "https://"+this.ip+":"+this.portAPI+"/deleteLienExterne?idLien="+id;
+
+      const requestOptions = {
+          headers: new HttpHeaders(this.headerDict),
+      };
+
+      return this.http
+          .delete<any>(requete,requestOptions);
+    }
+
+
+  ////////////////////
+  //    Historique  //
+  ////////////////////
+
+  //Créer un nouvel historique d'évènement
+  historiqueEvenementCreate(idEvenement:number){
+
+    var dateHeure : any = new Date();
+    dateHeure = this.datePipe.transform(dateHeure,'yyyy-MM-dd HH:mm');
+    let requete = "https://"+this.ip+":"+this.portAPI+"/historiqueEvenementCreate?idUser="+this.idUser+"&idEvenement="+idEvenement+"&dateHeure="+dateHeure+"&idUsine="+this.idUsine;
+
+    const requestOptions = {
+      headers: new HttpHeaders(this.headerDict),
+    };
+
+    return this.http
+      .put<any>(requete,null,requestOptions);
+  }
+
+  //Créer un nouvel historique d'évènement
+  historiqueEvenementUpdate(idEvenement:number){
+
+    var dateHeure : any = new Date();
+    dateHeure = this.datePipe.transform(dateHeure,'yyyy-MM-dd HH:mm');
+    let requete = "https://"+this.ip+":"+this.portAPI+"/historiqueEvenementUpdate?idUser="+this.idUser+"&idEvenement="+idEvenement+"&dateHeure="+dateHeure+"&idUsine="+this.idUsine;
+
+    const requestOptions = {
+      headers: new HttpHeaders(this.headerDict),
+    };
+
+    return this.http
+      .put<any>(requete,null,requestOptions);
+  }
+
+  //Créer un nouvel historique d'évènement
+  historiqueEvenementDelete(idEvenement:number){
+
+    var dateHeure : any = new Date();
+    dateHeure = this.datePipe.transform(dateHeure,'yyyy-MM-dd HH:mm');
+    let requete = "https://"+this.ip+":"+this.portAPI+"/historiqueEvenementDelete?idUser="+this.idUser+"&idEvenement="+idEvenement+"&dateHeure="+dateHeure+"&idUsine="+this.idUsine;
+  
+    const requestOptions = {
+      headers: new HttpHeaders(this.headerDict),
+    };
+  
+    return this.http
+      .put<any>(requete,null,requestOptions);
+  }
+
+  //Créer un nouvel historique de prise de quart
+  historiquePriseQuart(){
+
+    var dateHeure : any = new Date();
+    dateHeure = this.datePipe.transform(dateHeure,'yyyy-MM-dd HH:mm');
+    let requete = "https://"+this.ip+":"+this.portAPI+"/historiquePriseQuart?idUser="+this.idUser+"&dateHeure="+dateHeure+"&idUsine="+this.idUsine;
+
+    const requestOptions = {
+      headers: new HttpHeaders(this.headerDict),
+    };
+
+    return this.http
+      .put<any>(requete,null,requestOptions);
+  }
+
+  //Créer un nouvel historique d'actu
+  historiqueActuCreate(idActu:number){
+
+    var dateHeure : any = new Date();
+    dateHeure = this.datePipe.transform(dateHeure,'yyyy-MM-dd HH:mm');
+    let requete = "https://"+this.ip+":"+this.portAPI+"/historiqueActuCreate?idUser="+this.idUser+"&idActu="+idActu+"&dateHeure="+dateHeure+"&idUsine="+this.idUsine;
+
+    const requestOptions = {
+      headers: new HttpHeaders(this.headerDict),
+    };
+
+    return this.http
+      .put<any>(requete,null,requestOptions);
+  }
+
+  //Créer un nouvel historique d'actu
+  historiqueActuUpdate(idActu:number){
+
+    var dateHeure : any = new Date();
+    dateHeure = this.datePipe.transform(dateHeure,'yyyy-MM-dd HH:mm');
+    let requete = "https://"+this.ip+":"+this.portAPI+"/historiqueActuUpdate?idUser="+this.idUser+"&idActu="+idActu+"&dateHeure="+dateHeure+"&idUsine="+this.idUsine;
+
+    const requestOptions = {
+      headers: new HttpHeaders(this.headerDict),
+    };
+
+    return this.http
+      .put<any>(requete,null,requestOptions);
+  }
+
+  //Créer un nouvel historique de consigne
+  historiqueConsigneCreate(idConsigne:number){
+
+    var dateHeure : any = new Date();
+    dateHeure = this.datePipe.transform(dateHeure,'yyyy-MM-dd HH:mm');
+    let requete = "https://"+this.ip+":"+this.portAPI+"/historiqueConsigneCreate?idUser="+this.idUser+"&idConsigne="+idConsigne+"&dateHeure="+dateHeure+"&idUsine="+this.idUsine;
+
+    const requestOptions = {
+      headers: new HttpHeaders(this.headerDict),
+    };
+
+    return this.http
+      .put<any>(requete,null,requestOptions);
+  }
+
+  //Créer un nouvel historique de consgine
+  historiqueConsigneUpdate(idConsigne:number){
+
+    var dateHeure : any = new Date();
+    dateHeure = this.datePipe.transform(dateHeure,'yyyy-MM-dd HH:mm');
+    let requete = "https://"+this.ip+":"+this.portAPI+"/historiqueConsigneUpdate?idUser="+this.idUser+"&idConsigne="+idConsigne+"&dateHeure="+dateHeure+"&idUsine="+this.idUsine;
+
+    const requestOptions = {
+      headers: new HttpHeaders(this.headerDict),
+    };
+
+    return this.http
+      .put<any>(requete,null,requestOptions);
+  }
+  //Créer un nouvel historique de consgine
+  historiqueConsigneDelete(idConsigne:number){
+
+    var dateHeure : any = new Date();
+    dateHeure = this.datePipe.transform(dateHeure,'yyyy-MM-dd HH:mm');
+    let requete = "https://"+this.ip+":"+this.portAPI+"/historiqueConsigneDelete?idUser="+this.idUser+"&idConsigne="+idConsigne+"&dateHeure="+dateHeure+"&idUsine="+this.idUsine;
+
+    const requestOptions = {
+      headers: new HttpHeaders(this.headerDict),
+    };
+
+    return this.http
+      .put<any>(requete,null,requestOptions);
+  }
+
 }

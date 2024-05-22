@@ -6,5 +6,6 @@ export interface Actualite {
     date_heure_fin : string;
     importance : number;
     isValide : number;
+    description : string;
 
 }

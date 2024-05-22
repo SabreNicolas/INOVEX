@@ -1,0 +1,6 @@
+{
+    "/api":{
+        "target": "https://paprec.altairsystem.fr/altairtestrest",
+        "secure": false
+    }
+}
