@@ -1,4 +1,4 @@
-<h2 style="text-align: center;">Liens externes :</h2>
+<h2 *ngIf="listLien.length != 0" style="text-align: center;">Liens externes :</h2>
 <div class="container">
     <ng-container *ngFor="let lien of listLien">
         <a href="{{lien.url}}" target="_blank">  

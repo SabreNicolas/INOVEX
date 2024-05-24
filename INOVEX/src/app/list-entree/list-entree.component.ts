@@ -469,6 +469,10 @@ export class ListEntreeComponent implements OnInit {
         //Vitré
         this.lectureCSV(event, ";", true,13, 20, 4, 27, 31);
       }
+      else if(this.idUsine === 26) {
+        //PONTEX
+        this.lectureCSV(event, ";", true, 34, 19, 11, 6, 3);
+      }
       //Villefranche
       else {
         this.lectureCSV(event, ";", true, 23, 19, 6, 11, 2);
@@ -779,20 +783,22 @@ export class ListEntreeComponent implements OnInit {
             //Si il y a correspondance on fait traitement
             if( correspondance.nomImport == csv.client && correspondance.productImport == csv.typeDechet  /*|| (mr.produit == "dib/dea" && mr.produit.includes(csv.typeDechet)))*/ ){  
               let formatDate = csv.dateEntree.split('/')[2]+'-'+csv.dateEntree.split('/')[1]+'-'+csv.dateEntree.split('/')[0];
-              let keyHash = formatDate+'_'+correspondance.ProductId+'_'+correspondance.ProducerId;
-              let value, valueRound;
-              count = count + 1;;
-              //si il y a deja une valeur dans la hashMap pour ce client et ce jour, on incrémente la valeur
-              if(this.stockageImport.has(keyHash)){
+              if(formatDate != 'undefined-undefined-'){
+                let keyHash = formatDate+'_'+correspondance.ProductId+'_'+correspondance.ProducerId;
+                let value, valueRound;
+                count = count + 1;;
+                //si il y a deja une valeur dans la hashMap pour ce client et ce jour, on incrémente la valeur
+                if(this.stockageImport.has(keyHash)){
+                  //@ts-ignore
+                  value = this.stockageImport.get(keyHash)+csv.tonnage;
+                  valueRound = parseFloat(value.toFixed(3));
+                  this.stockageImport.set(keyHash,valueRound);
+                }
+                else
+                //Sinon on insére dans la hashMap
                 //@ts-ignore
-                value = this.stockageImport.get(keyHash)+csv.tonnage;
-                valueRound = parseFloat(value.toFixed(3));
-                this.stockageImport.set(keyHash,valueRound);
+                this.stockageImport.set(keyHash,parseFloat(csv.tonnage.toFixed(3)));
               }
-              else
-              //Sinon on insére dans la hashMap
-              //@ts-ignore
-              this.stockageImport.set(keyHash,parseFloat(csv.tonnage.toFixed(3)));
             }
           }
         });
