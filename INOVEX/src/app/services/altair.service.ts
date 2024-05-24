@@ -13,7 +13,7 @@ export class AltairService {
       'Accept': 'application/json',
   }
   // private portAPI = 3102;
-  private ip = "https://paprec.altairsystem.fr/altairtestrest";
+  private ip = "https://paprec.altairsystem.fr:443/altairtestrest";
   //private ip = "localhost";
   private idUsine : number | undefined;
 
@@ -27,20 +27,24 @@ export class AltairService {
   //Créer une nouvelle équipe
   login(){
     let requete = this.ip+"/rest/system/login"
-    var headers = {
-        'Content-Type': 'application/json'
-        }    
-        
-    const requestOptions = {
-        headers: new HttpHeaders(headers),
-    };
+    console.log(requete)
+            
+    const requestOptions = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
     
+    var headers = {
+      headers : requestOptions
+    }
+
+    var url = "https://cors-anywhere.herokuapp.com/" + requete
+
     var payload = "{\r\n  \"username\":\"psautet\",\r\n  \"password\":\"psautet\",\r\n  \"site\":\"PLUZUNET\",\r\n  \"passwordprehashed\": false\r\n\r\n}"
     console.log(payload)
     console.log(requestOptions)
-    console.log(this.http.post<any>(requete,payload,requestOptions))
+    console.log(this.http.post<any>(requete,payload,headers))
 
-    return this.http.post<any>(requete,payload,requestOptions);
+    return this.http.post<any>(url,payload,headers);
   }
 
 }

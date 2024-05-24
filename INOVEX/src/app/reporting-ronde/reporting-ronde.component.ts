@@ -22,6 +22,7 @@ declare var $ : any;
 export class ReportingRondeComponent implements OnInit {
 
   public listRonde : ronde[];
+  public listReprise : any[];
   public listZone : any[];
   public dateDeb : string | undefined;
   public listAnomalie : anomalie[];
@@ -46,6 +47,7 @@ export class ReportingRondeComponent implements OnInit {
   constructor(private rondierService : rondierService, private elementRef : ElementRef) {
     this.listRonde = [];
     this.listZone = [];
+    this.listReprise = [];
     this.listeZoneUnique = new Map();
     this.usine="";
     this.isSuperAdmin = false;
@@ -144,6 +146,10 @@ export class ReportingRondeComponent implements OnInit {
       }
     })  
 
+    this.rondierService.getReprisesRonde().subscribe((response)=>{
+      //@ts-ignore
+      this.listReprise = response.data
+    })
     //Récupération du nombre de four du site
     this.rondierService.nbLigne().subscribe((response) => {
       //@ts-ignore
@@ -449,5 +455,63 @@ export class ReportingRondeComponent implements OnInit {
     $('.'+zone + "-btnPlus").toggle();
   }
 
+  repriseDeRonde(){
+    Swal.fire({ 
+      title: 'Veuillez choisir une date et une option', 
+      html: ` <input type="date" id="date-input" class="swal2-input"> 
+      <select id="option-select" class="swal2-select"> 
+      <option value="" disabled selected>Choisissez un quart</option> 
+      <option value="1">Matin</option> 
+      <option value="2">Après-midi</option> 
+      <option value="3">Nuit</option> 
+      </select> `
+      , 
+      focusConfirm: false, 
+      preConfirm: () => { 
+        //@ts-ignore
+        const date = Swal.getPopup().querySelector('#date-input').value; 
+        //@ts-ignore
+        const option = Swal.getPopup().querySelector('#option-select').value; 
+        if (!date || !option) { 
+          Swal.showValidationMessage(`Veuillez remplir les deux champs`); 
+        } 
+        return { date: date, option: option }; 
+      } 
+    })
+    .then((result) => { 
+      if (result.isConfirmed) { 
+        console.log(`Date choisie: ${result.value.date}`); 
+        console.log(`Option choisie: ${result.value.option}`); 
+        this.rondierService.createRepriseDeRonde(result.value.date,result.value.option).subscribe((response)=>{
+          this.ngOnInit();
+        })
+      } 
+    }); 
+  }
 
+  //suppression d'une reprise
+  deleteRepriseRonde(id : number){
+    
+    Swal.fire({title: "Etes vous sûr de vouloir supprimer ?" ,icon: 'warning',showCancelButton: true,confirmButtonColor: '#3085d6',cancelButtonColor: '#d33',confirmButtonText: 'Oui, supprimer',cancelButtonText: 'Annuler'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.rondierService.deleteRepriseRonde(id).subscribe((response)=>{
+          if (response == "Suppression de la reprise OK"){
+            Swal.fire("La reprise a bien été supprimé !");
+          }
+          else {
+            Swal.fire({
+              icon: 'error',
+              text: 'Erreur lors de la suppression....',
+            })
+          }
+        });
+        this.ngOnInit();
+      }  
+      else {
+        // Pop-up d'annulation de la suppression
+        Swal.fire('Annulé','La suppression a été annulée.','error');
+      }
+    });
+  }
 }

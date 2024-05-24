@@ -1013,4 +1013,42 @@ export class rondierService {
     /*
     FIN NB LIGNE USINE
      */
+
+    createRepriseDeRonde(date : Date, quart : number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/createRepriseDeRonde?date="+date + "&quart=" + quart +"&idUsine=" + this.idUsine;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<anomalie[]>(requete,requestOptions);
+    }
+
+    //Nombre de RCU dans l'usine
+    getReprisesRonde(){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/getReprisesRonde/"+this.idUsine;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<number>(requete,requestOptions);
+    }
+
+    deleteRepriseRonde(id : number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/deleteRepriseRonde?id="+id;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+        .delete<any>(requete,requestOptions);
+    }
+
 }

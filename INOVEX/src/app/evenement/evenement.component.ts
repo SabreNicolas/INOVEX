@@ -64,9 +64,9 @@ export class EvenementComponent implements OnInit {
         this.dupliquer = 0;
       }
     });
-    this.altairService.login().subscribe((reponse)=>{
-      console.log(reponse)
+    this.altairService.login().subscribe((response)=>{
       console.log("test")
+      console.log(response)
     })
    }
 
