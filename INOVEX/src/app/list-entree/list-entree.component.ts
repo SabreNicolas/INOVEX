@@ -795,6 +795,7 @@ export class ListEntreeComponent implements OnInit {
                 let keyHash = formatDate+'_'+correspondance.ProductId+'_'+correspondance.ProducerId;
                 let value, valueRound;
                 count = count + 1;
+
                 //si il y a deja une valeur dans la hashMap pour ce client et ce jour, on incrémente la valeur
                 if(this.stockageImport.has(keyHash)){
                   //@ts-ignore
