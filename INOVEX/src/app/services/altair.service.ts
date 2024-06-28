@@ -7,7 +7,6 @@ import { idUsineService } from "./idUsine.service";
 })
 export class AltairService {
 
-  httpClient: HttpClient;
   private headerDict = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
@@ -18,7 +17,6 @@ export class AltairService {
   private idUsine : number | undefined;
 
   constructor(private http: HttpClient, private idUsineService : idUsineService) {
-      this.httpClient = http;
       //@ts-ignore
       this.idUsine = this.idUsineService.getIdUsine();
   }
@@ -30,14 +28,18 @@ export class AltairService {
     console.log(requete)
             
     const requestOptions = new HttpHeaders({
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': 'https://paprec.altairsystem.fr',
+      'Access-Control-Allow-Methods': 'GET, POST, PATCH, PUT, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token'
     });
     
     var headers = {
       headers : requestOptions
     }
 
-    var url = "https://cors-anywhere.herokuapp.com/" + requete
+    //var url = "https://cors-anywhere.herokuapp.com/" + requete
+    var url = requete
 
     var payload = "{\r\n  \"username\":\"psautet\",\r\n  \"password\":\"psautet\",\r\n  \"site\":\"PLUZUNET\",\r\n  \"passwordprehashed\": false\r\n\r\n}"
     console.log(payload)

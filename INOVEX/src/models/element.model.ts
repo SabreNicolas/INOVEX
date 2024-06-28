@@ -14,4 +14,5 @@ export interface element{
     groupement : string;
     idGroupement : number;
     CodeEquipement : string;
+    infoSup : string;
 }
