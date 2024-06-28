@@ -39,6 +39,8 @@ export class ElementControleComponent implements OnInit {
   public listGroupements : groupement[];
   public idGroupement : number;
   public codeEquipement : string;
+  public infoSup : boolean;
+  public infoSupValue : string;
 
   constructor(private rondierService : rondierService,  private route : ActivatedRoute, private router: Router) {
     this.listZone = [];
@@ -60,6 +62,8 @@ export class ElementControleComponent implements OnInit {
     this.listGroupements = [];
     this.idGroupement = 0;
     this.codeEquipement ="";
+    this.infoSup = false;
+    this.infoSupValue = "";
     //Récupération de l'id de l'élément pour modification
     this.route.queryParams.subscribe(params => {
       if(params.element != undefined){
@@ -116,6 +120,11 @@ export class ElementControleComponent implements OnInit {
             if("'"+this.zoneId[0].toString()+"'" === selectZone.options[i].value.split(": ")[1]){
               selectZone.options[i].selected = true;
             }
+          }
+          //Gestion de la pastille info sup
+          if(this.element.infoSup.length > 0){
+            this.infoSup = true;
+            this.infoSupValue = this.element.infoSup;
           }
         });
       }
@@ -203,6 +212,14 @@ export class ElementControleComponent implements OnInit {
       this.isCompteur = 1;
     }
     else this.isCompteur = 0;
+    //Si la case est coché pour la pastille on insère la valeur
+    if(this.infoSup){
+      this.infoSupValue = form.value['infoSupValue'].replace(/'/g,"''");
+    }
+    //Sinon on envoi une chaine vide
+    else{
+      this.infoSupValue = '';
+    }
     //FIN Gestion des boolean
     this.codeEquipement = this.codeEquipement.replace(/'/g,"''");
     if (this.elementId > 0){
@@ -214,7 +231,7 @@ export class ElementControleComponent implements OnInit {
         this.rondierService.updateOrdreElement(zoneId,this.ordreElem).subscribe((response)=>{
           // @ts-ignore
           if (response == "Mise à jour des ordres OK"){
-            this.rondierService.createElement(zoneId, this.nom, this.valeurMin, this.valeurMax, this.typeChamp, this.unit, this.defaultValue, this.isRegulateur,this.listValues,this.isCompteur, Number(this.ordreElem)+1, this.idGroupement, this.codeEquipement).subscribe((response)=>{
+            this.rondierService.createElement(zoneId, this.nom, this.valeurMin, this.valeurMax, this.typeChamp, this.unit, this.defaultValue, this.isRegulateur,this.listValues,this.isCompteur, Number(this.ordreElem)+1, this.idGroupement, this.codeEquipement, this.infoSupValue).subscribe((response)=>{
               if (response == "Création de l'élément OK"){
                 this.idGroupement = 0 ;
                 this.codeEquipement = "";
@@ -268,7 +285,7 @@ export class ElementControleComponent implements OnInit {
   }
 
   updateElement(ordre : number){
-    this.rondierService.updateElement(this.elementId, this.zoneId[0], this.nom, this.valeurMin, this.valeurMax, this.typeChamp, this.unit, this.defaultValue, this.isRegulateur, this.listValues, this.isCompteur,ordre, this.idGroupement, this.codeEquipement).subscribe((response)=>{
+    this.rondierService.updateElement(this.elementId, this.zoneId[0], this.nom, this.valeurMin, this.valeurMax, this.typeChamp, this.unit, this.defaultValue, this.isRegulateur, this.listValues, this.isCompteur,ordre, this.idGroupement, this.codeEquipement, this.infoSupValue).subscribe((response)=>{
       if (response == "Mise à jour de l'element OK"){
         // Swal.fire("L'élément de contrôle a bien été mis à jour !");
         this.router.navigate(['/admin/elements'])

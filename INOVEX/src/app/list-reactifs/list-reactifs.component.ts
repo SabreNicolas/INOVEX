@@ -402,7 +402,7 @@ export class ListReactifsComponent implements OnInit {
       this.correspondance.forEach(correspondance => {
 
           csv.typeDechet = csv.typeDechet.toLowerCase().replace(/\s/g,"");
-          correspondance.productImport = correspondance.productImport.toLowerCase().replace(/\s/g,"");  
+          correspondance.productImport = correspondance.productImport.toLowerCase().replace(/\s/g,"");
           
           if(csv.entrant.toLowerCase() == "e" || csv.entrant == 1 || csv.entrant.toLowerCase() == "réception" || csv.entrant.toLowerCase() == "reception" || csv.entrant.toLowerCase().includes("entree") || csv.entrant.toLowerCase() == "entrée" || csv.entrant.toLowerCase() == "entrant" || csv.entrant.toLowerCase() == "incinerables" || csv.entrant.toLowerCase() == "consommables"){
             //Si il y a correspondance on fait traitement

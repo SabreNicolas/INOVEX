@@ -3,6 +3,40 @@
 </div>
 <button routerLink="" class="btn btn-outline-primary btn-lg btnRetour"><i class="fa fa-home"></i> Accueil</button>
 
+
+<div class="table-style">
+    <h3 style="text-align: center;">Reprise de ronde
+        <a (click)="repriseDeRonde()" role="button"  class="btn btn-primary" id="create">
+            +
+        </a>
+    </h3>
+    <!--table des consignes-->
+    <table class="table tableFixed" *ngIf="listReprise.length != 0">
+        <thead>
+        <tr class="table-secondary">
+            <th scope="col">Date</th>
+            <th scope="col">Quart</th>
+            <th scope="col">Termine ?</th>
+            <th scope="col">Supprimer</th>
+        </tr>
+        </thead>
+        <tbody *ngFor="let reprise of listReprise">
+        <tr class="table-light">
+            <td>{{reprise.date}}</td>
+            <td *ngIf="reprise.quart==1">Matin</td>
+            <td *ngIf="reprise.quart==2">Après-midi</td>
+            <td *ngIf="reprise.quart==3">Nuit</td>
+            <td>{{reprise.termine}}</td>
+            <td>
+                <button (click)="deleteRepriseRonde(reprise.id)" id="reprise" class="btn btn-light">
+                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
 <div class="blocReporting">
     <div>
         <!--date-->

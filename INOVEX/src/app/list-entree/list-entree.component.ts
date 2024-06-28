@@ -443,7 +443,7 @@ export class ListEntreeComponent implements OnInit {
         this.lectureCSV(event, ";", false, 11, 13, 1, 7);
       }   
       //Plouharnel 
-      else this.lectureCSV(event, ";", false, 8, 6, 1, 11, 12);
+      else this.lectureCSV(event, ";", true, 8, 6, 1, 11, 12);
     }
     //Pluzunet
     else if (this.typeImportTonnage.toLowerCase().includes("caktus")){
@@ -556,6 +556,7 @@ export class ListEntreeComponent implements OnInit {
           for (let i = debut; i < results.data.length; i++) {
             if(results.data[i][0] != "Compteur" && results.data[i][0] != 'Somme'){
               //Création de l'objet qui contient l'ensemble des infos nécessaires
+              console.log(results.data[i]);
               let importCSV = {
                 numDePesee: results.data[i][0].replace(/'/g,"''"),
                 type: results.data[i][1].replace(/'/g,"''"),
@@ -726,6 +727,7 @@ export class ListEntreeComponent implements OnInit {
                 //On ajoute toutes les dates dans le tableau dates
                 this.dates.push(results.data[i][posDateEntree].substring(0,10));
               } 
+              //console.log(results.data[i]);
               //Création de l'objet qui contient l'ensemble des infos nécessaires
               let importCSV = {
                 client: results.data[i][posClient],
@@ -772,6 +774,7 @@ export class ListEntreeComponent implements OnInit {
     this.debCode = '20';
     this.stockageImport.clear();
     var count = 0 ;
+    //console.log(this.csvArray);
 
     this.csvArray.forEach(csv => {
       var clientManquant = csv.client;
@@ -791,7 +794,8 @@ export class ListEntreeComponent implements OnInit {
               if(formatDate != 'undefined-undefined-'){
                 let keyHash = formatDate+'_'+correspondance.ProductId+'_'+correspondance.ProducerId;
                 let value, valueRound;
-                count = count + 1;;
+                count = count + 1;
+
                 //si il y a deja une valeur dans la hashMap pour ce client et ce jour, on incrémente la valeur
                 if(this.stockageImport.has(keyHash)){
                   //@ts-ignore
