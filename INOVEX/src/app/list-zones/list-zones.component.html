@@ -29,7 +29,7 @@
                 <td style="text-align: center" *ngIf="z.four1 === 0"><i style="color: red" class="fa fa-times" aria-hidden="true"></i></td>
                 <td style="text-align: center" *ngIf="z.four2 === 1"><i style="color: green" class="fa fa-check" aria-hidden="true"></i></td>
                 <td style="text-align: center" *ngIf="z.four2 === 0"><i style="color: red" class="fa fa-times" aria-hidden="true"></i></td>-->
-                <td>{{z.four}}</td>
+                <td><span class="badge rounded-pill bg-secondary">{{z.four}}</span></td>
                 <td>
                     <button id="deleteZone" (click)="deleteZone(z.Id)" class="btn btn-danger">
                         <i class="fas fa-trash-alt"></i>

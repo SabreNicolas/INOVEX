@@ -12,12 +12,12 @@
 
             <div class="form-group">
                 <label for="desc">Titre : * </label>
-                <input required type="text" id="titre" class="form-control" placeholder="Titre" name="titre" ngModel [(ngModel)]="titre">
+                <input required maxlength="249" type="text" id="titre" class="form-control" placeholder="Titre" name="titre" ngModel [(ngModel)]="titre">
             </div>
 
             <div class="form-group">
                 <label for="desc">Description :  </label>
-                <input required type="text" id="desc" class="form-control" placeholder="Description" name="desc"  ngModel [(ngModel)]="desc">
+                <textarea required type="text" maxlength="249" id="desc" class="form-control" placeholder="Description" name="desc"  ngModel [(ngModel)]="desc"></textarea>
             </div>
 
             <div class="form-group">
