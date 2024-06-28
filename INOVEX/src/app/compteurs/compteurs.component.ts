@@ -4,6 +4,7 @@ import {productsService} from "../services/products.service";
 import {categoriesService} from "../services/categories.service";
 import { category } from 'src/models/categories.model';
 import Swal from 'sweetalert2';
+import { idUsineService } from "src/app/services/idUsine.service";
 
 @Component({
   selector: 'app-compteurs',
@@ -15,11 +16,15 @@ export class CompteursComponent implements OnInit {
   public listCategories : category[];
   public Code : string;
   public typeId : number;
+  public estUnique : boolean;
+  public idUsine : number;
 
-  constructor(private productsService : productsService, private categoriesService : categoriesService) {
+  constructor(private productsService : productsService, private categoriesService : categoriesService, private idUsineService : idUsineService) {
     this.listCategories = [];
     this.Code = "";
     this.typeId = 4; // 4 for compteur
+    this.estUnique = false;
+    this.idUsine = this.idUsineService.getIdUsine();
   }
 
   ngOnInit(): void {
@@ -71,22 +76,33 @@ export class CompteursComponent implements OnInit {
 
     await this.wait(500);
 
-    //On va créer le compteur pour l'ensemble des sites = > Référentiel produit unique
-    this.categoriesService.sites.forEach(site => {
-      this.productsService.createProduct(this.typeId, site.id).subscribe((response)=>{
-        if (response == "Création du produit OK"){
-          Swal.fire("Le compteur a bien été créé !");
-        }
-        else {
-          Swal.fire({
-            icon: 'error',
-            text: 'Erreur lors de la création du compteur ....',
-          })
-        }
+    //Si la case produit unique n'est pas coché => on va créer le produit pour l'ensemble des sites
+    if(!form.value['isReferentiel']){
+      //On va créer le compteur pour l'ensemble des sites = > Référentiel produit unique
+      this.categoriesService.sites.forEach(site => {
+        this.createCompteur(site.id);
       });
-    });
+    }
+    //sinon on va le créer pour le site actif uniquement
+    else{
+      this.createCompteur(this.idUsine);
+    }
 
     this.resetFields(form);
+  }
+
+  createCompteur(siteId : number){
+    this.productsService.createProduct(this.typeId, siteId).subscribe((response)=>{
+      if (response == "Création du produit OK"){
+        Swal.fire("Le compteur a bien été créé !");
+      }
+      else {
+        Swal.fire({
+          icon: 'error',
+          text: 'Erreur lors de la création du compteur ....',
+        })
+      }
+    });
   }
 
   resetFields(form: NgForm){
@@ -96,6 +112,8 @@ export class CompteursComponent implements OnInit {
     form.value['unit']='';
     form.controls['tag'].reset();
     form.value['tag']='';
+    form.controls['isReferentiel'].reset();
+    form.value['isReferentiel']='';
   }
 
 }

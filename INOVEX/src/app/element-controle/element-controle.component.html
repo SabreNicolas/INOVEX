@@ -84,12 +84,12 @@
 
             <div *ngIf="needBornes" class="form-group">
                 <label for="valeurMin">Valeur minimale : </label>
-                <input type="number" id="valeurMin" class="form-control" placeholder="Valeur minimale" name="valeurMin" ngModel [(ngModel)]="valeurMin">
+                <input type="number" step=".01" id="valeurMin" class="form-control" placeholder="Valeur minimale" name="valeurMin" ngModel [(ngModel)]="valeurMin">
             </div>
 
             <div *ngIf="needBornes" class="form-group">
                 <label for="valeurMax">Valeur maximale : </label>
-                <input type="number" id="valeurMax" class="form-control" placeholder="Valeur maximale" name="valeurMax" ngModel [(ngModel)]="valeurMax">
+                <input type="number" step=".01" id="valeurMax" class="form-control" placeholder="Valeur maximale" name="valeurMax" ngModel [(ngModel)]="valeurMax">
             </div>
 
             <div *ngIf="needListValues" class="form-group">
