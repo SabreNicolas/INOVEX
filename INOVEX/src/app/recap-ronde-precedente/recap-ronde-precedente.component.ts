@@ -1,12 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { cahierQuartService } from '../services/cahierQuart.service';
 import { ActivatedRoute } from '@angular/router';
 import { addDays, format, subDays } from 'date-fns';
 import {rondierService} from "../services/rondier.service";
 import { zone } from 'src/models/zone.model';
 import Swal from 'sweetalert2';
+import autoTable from 'jspdf-autotable';
+import html2canvas from 'html2canvas';
 declare var $ : any;
-
+import jsPDF from 'jspdf'
 @Component({
   selector: 'app-recap-ronde-precedente',
   templateUrl: './recap-ronde-precedente.component.html',
@@ -26,6 +28,7 @@ export class RecapRondePrecedenteComponent {
   public idEquipe : number;
   public nomEquipe : string;
   public listRondier : any[];
+  @ViewChild('pdfTable') pdfContent!: ElementRef;
 
   constructor(public cahierQuartService : cahierQuartService,private route : ActivatedRoute,private rondierService : rondierService,) {
     this.listAction = [];
@@ -128,7 +131,17 @@ export class RecapRondePrecedenteComponent {
     Swal.fire({title: 'Avez vous pris connaissance des infos du quart précedent ?',icon: 'warning',showCancelButton: true,confirmButtonColor: '#3085d6',cancelButtonColor: '#d33',confirmButtonText: 'Oui',cancelButtonText: 'Non'
     }).then((result) => {
       if (result.isConfirmed) {
-        window.location.href = "https://fr-couvinove300.prod.paprec.fr:8101/cahierQuart/recapRonde?quart="+this.quart
+        html2canvas(this.pdfContent.nativeElement).then((canvas) =>{
+          const doc = new jsPDF();
+          const imgData = canvas.toDataURL('image/png')
+          const imgProps = doc.getImageProperties(imgData)
+          const pdfWidth = doc.internal.pageSize.getWidth();
+          const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width
+          doc.addImage(imgData, 'PNG', 0,0, pdfWidth, pdfHeight)
+          doc.save('result.pdf')
+        })
+        
+        // window.location.href = "https://fr-couvinove300.prod.paprec.fr:8101/cahierQuart/recapRonde?quart="+this.quart
       }
       else {
         // Pop-up d'annulation de la suppression

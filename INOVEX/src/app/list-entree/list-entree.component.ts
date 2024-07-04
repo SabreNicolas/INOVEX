@@ -16,6 +16,7 @@ import { dateService } from '../services/date.service';
 import { user } from 'src/models/user.model';
 import { idUsineService } from '../services/idUsine.service';
 import {DatePipe} from '@angular/common'
+import * as FileSaver from 'file-saver';
 
 @Component({
   selector: 'app-list-entree',
@@ -509,14 +510,13 @@ export class ListEntreeComponent implements OnInit {
           /* table id is passed over here */
           let element = response.data
           if(response.data.length >1){
-            const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(element); //Attention les jours sont considérés comme mois !!!!
-      
-            /* generate workbook and add the worksheet */
-            const wb: XLSX.WorkBook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, 'Entrants');
-        
+            const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(element); 
+
+            const csv = XLSX.utils.sheet_to_csv(ws)
+            FileSaver.saveAs(new Blob([csv], {type : 'text/csv; charset=utf-8'}), nomFichier + '.csv')
+
             // /* save to file */
-            XLSX.writeFile(wb, nomFichier+'.xlsx');
+            // XLSX.writeFile(wb, nomFichier+'.xlsx');
           }
           else {
             Swal.fire({
@@ -729,14 +729,17 @@ export class ListEntreeComponent implements OnInit {
               } 
               //console.log(results.data[i]);
               //Création de l'objet qui contient l'ensemble des infos nécessaires
-              let importCSV = {
-                client: results.data[i][posClient],
-                typeDechet: typeDechet,
-                dateEntree : results.data[i][posDateEntree].substring(0,10),
-                tonnage : +results.data[i][posTonnage].replace(/[^0-9,.]/g,"").replace(",",".")/divisionKgToTonnes,
-                entrant : EntreeSortie
-              };
-              this.csvArray.push(importCSV);
+              if( results.data[i][posDateEntree] != undefined && results.data[i][posTonnage] != undefined){
+                let importCSV = {
+                  client: results.data[i][posClient],
+                  typeDechet: typeDechet,
+                  dateEntree : results.data[i][posDateEntree].substring(0,10),
+                  tonnage : +results.data[i][posTonnage].replace(/[^0-9,.]/g,"").replace(",",".")/divisionKgToTonnes,
+                  entrant : EntreeSortie
+                };
+                this.csvArray.push(importCSV);
+              }
+              
             }
           }
           //Fonction qui tranforme les dates string au format date afin de les comparer
