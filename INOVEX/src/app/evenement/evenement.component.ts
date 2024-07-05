@@ -22,6 +22,10 @@ export class EvenementComponent implements OnInit {
   public idAnomalie : number;
   public groupementGMAO : string;
   public equipementGMAO : string;
+  public listGroupementsGMAOMap : Map<String,String>;
+  public listGroupementGMAOTable : any [];
+  public listEquipementGMAO : any[];
+  public listEquipementGMAOFiltre: any[];
   public demandeTravaux : number;
   public consigne : number;
   public cause : string;
@@ -29,6 +33,7 @@ export class EvenementComponent implements OnInit {
   fileToUpload: File | undefined;
   public imgSrc !: any
   public dupliquer : number;
+  private token: string;
 
   constructor(public altairService : AltairService,public cahierQuartService : cahierQuartService, private rondierService : rondierService, private datePipe : DatePipe,private route : ActivatedRoute, private location : Location) {
     this.titre = "";
@@ -36,12 +41,17 @@ export class EvenementComponent implements OnInit {
     this.idEvenement = 0;
     this.idAnomalie = 0;
     this.groupementGMAO ="";
+    this.listGroupementsGMAOMap = new Map();
+    this.listGroupementGMAOTable = [];
+    this.listEquipementGMAOFiltre = [];
+    this.listEquipementGMAO = [];
     this.equipementGMAO =""
     this.demandeTravaux=0;
     this.consigne = 0;
     this.cause ="";
     this.description = "";
     this.dupliquer = 0;
+    this.token = "";
 
     //Permet de savoir si on est en mode édition ou création
     this.route.queryParams.subscribe(params => {
@@ -64,10 +74,7 @@ export class EvenementComponent implements OnInit {
         this.dupliquer = 0;
       }
     });
-    this.altairService.login().subscribe((response)=>{
-      console.log("test")
-      console.log(response)
-    })
+    
    }
 
   ngOnInit(): void {
@@ -114,6 +121,47 @@ export class EvenementComponent implements OnInit {
         //@ts-ignore
         this.imgSrc = response.data[0]['photo']
       })
+    }
+
+    this.altairService.login().subscribe((response)=>{
+      this.token = response.token
+
+      this.altairService.getEquipements(this.token).subscribe((response)=>{
+        this.listEquipementGMAO= response.equipment;
+        this.listEquipementGMAOFiltre = this.listEquipementGMAO;
+
+        for(let equipement of this.listEquipementGMAO){
+          this.listGroupementsGMAOMap.set(equipement.fkcodelocation,equipement.fkcodelocation)
+        }
+        this.listGroupementGMAOTable = Array.from(this.listGroupementsGMAOMap.keys())
+
+      })
+    })
+
+    
+    
+  }
+
+  updateElements(){
+    this.listEquipementGMAOFiltre = [];
+
+    if(this.groupementGMAO == ""){
+      this.listEquipementGMAOFiltre = this.listEquipementGMAO
+    }
+    else{
+      for(let equipement of this.listEquipementGMAO){
+        if(equipement.fkcodelocation == this.groupementGMAO){
+          this.listEquipementGMAOFiltre.push(equipement)
+        }
+      }
+    }
+  }
+
+  updateGroupements(){
+    for(let equipement of this.listEquipementGMAO){
+      if(equipement.codeequipment == this.equipementGMAO.split('---')[0]){
+        this.groupementGMAO = equipement.fkcodelocation
+      }
     }
   }
 

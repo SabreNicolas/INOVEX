@@ -10,8 +10,11 @@
 
         <div class="col-md-5">
             <div class="form-group" style="display: none;" id="groupementGMAO">
-                <label for="desc">Groupement : * </label>
-                <input required type="text" class="form-control" placeholder="Groupement GMAO" name="groupementGMAO" ngModel [(ngModel)]="groupementGMAO">
+                <label for="product">Groupement GMAO : * </label>
+                <select id="product" (change)="updateElements()" required class="form-control" ngModel [(ngModel)]="groupementGMAO" >
+                    <option value="">Choisissez un produit CAP Exploitation</option>
+                    <option *ngFor="let groupement of listGroupementGMAOTable" value="{{groupement}}">{{groupement}}</option>
+                </select>
             </div>
     
     
@@ -34,8 +37,11 @@
 
         <div class="col-md-6">
             <div class="form-group" style="display: none;" id="equipementGMAO" >
-                <label for="desc">Equipement : * </label>
-                <input required type="text" class="form-control" placeholder="Equipement GMAO" name="equipementGMAO" ngModel [(ngModel)]="equipementGMAO">
+                <label for="product">Equipement GMAO : * </label>
+                <select id="product" (change)="updateGroupements()" required class="form-control" ngModel [(ngModel)]="equipementGMAO" >
+                    <option value="">Choisissez un produit CAP Exploitation</option>
+                    <option *ngFor="let equipement of listEquipementGMAOFiltre" value="{{equipement.codeequipment}}---{{equipement.description}}">{{equipement.codeequipment}}---{{equipement.description}}</option>
+                </select>
             </div>
     
             <div class="form-group">

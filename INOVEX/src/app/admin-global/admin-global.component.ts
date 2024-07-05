@@ -111,7 +111,7 @@ export class AdminGlobalComponent implements OnInit {
             tableBody.push(dataToAdd);
             dataToAdd = [];
             dataToAdd.push(
-              {text: zone.elements[0].nom, fontSize: 8,style: 'tableHeader',margin: [0,0,0,0]},
+              {text : zone.elements[0].nom, fontSize: 8,style: 'tableHeader',margin: [0,0,0,0]},
               {text : '',  margin: [0,0,0,0], style: 'tableCell'},
               {text : '',  margin: [0,0,0,0], style: 'tableCell'},
               {text : '',  margin: [0,0,0,0], style: 'tableCell'}
@@ -121,10 +121,15 @@ export class AdminGlobalComponent implements OnInit {
           }
           else{
             dataToAdd.push(
-              {text: zone.elements[0].nom, fontSize: 8,style: 'tableHeader',margin: [0,0,0,0]},
-              {text : '',  margin: [0,0,0,0], style: 'tableCell'},
-              {text : '',  margin: [0,0,0,0], style: 'tableCell'},
-              {text : '',  margin: [0,0,0,0], style: 'tableCell'}
+              {text : [
+                {text : zone.elements[0].nom + "\n "},
+                {text : "unit : " + zone.elements[0].unit + "\n", color:"red"},
+                {text : "bornes : " + zone.elements[0].valeurMin + " - " + zone.elements[0].valeurMax, color:"blue"},
+              ], 
+              fontSize: 8,style: 'tableHeader',margin: [0,0,0,0]},
+              {text : zone.elements[0].listValues.replace(/ /g, " / "), fontSize: 8, alignment: 'center', valign: 'middle', margin: [0,0,0,0], style: 'tableCell'},
+              {text : zone.elements[0].listValues.replace(/ /g, " / "), fontSize: 8, alignment: 'center', valign: 'middle', margin: [0,0,0,0], style: 'tableCell'},
+              {text : zone.elements[0].listValues.replace(/ /g, " / "), fontSize: 8, alignment: 'center', valign: 'middle', margin: [0,0,0,0], style: 'tableCell'}
             )
             tableBody.push(dataToAdd);
             dataToAdd = [];
@@ -138,10 +143,15 @@ export class AdminGlobalComponent implements OnInit {
               dataToAdd = [];
             }
             dataToAdd.push(
-              {text: zone.elements[i].nom, fontSize: 8,style: 'tableHeader',margin: [0,0,0,0]},
-              {text : '',  margin: [0,0,0,0], style: 'tableCell'},
-              {text : '',  margin: [0,0,0,0], style: 'tableCell'},
-              {text : '',  margin: [0,0,0,0], style: 'tableCell'}
+              {text : [
+                {text : zone.elements[i].nom + "\n "},
+                {text : "unit : " + zone.elements[i].unit + "\n", color:"red"},
+                {text : "bornes : " + zone.elements[i].valeurMin + " - " + zone.elements[i].valeurMax, color:"blue"},
+              ], 
+              fontSize: 8,style: 'tableHeader',margin: [0,0,0,0]},
+              {text : zone.elements[i].listValues.replace(/ /g, " / "), fontSize: 8, alignment: 'center', valign: 'middle', margin: [0,0,0,0], style: 'tableCell'},
+              {text : zone.elements[i].listValues.replace(/ /g, " / "), fontSize: 8, alignment: 'center', valign: 'middle', margin: [0,0,0,0], style: 'tableCell'},
+              {text : zone.elements[i].listValues.replace(/ /g, " / "), fontSize: 8, alignment: 'center', valign: 'middle', margin: [0,0,0,0], style: 'tableCell'}
             )
             tableBody.push(dataToAdd);
             dataToAdd = [];
