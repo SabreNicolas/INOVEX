@@ -5,6 +5,7 @@ import { addDays, format, subDays } from 'date-fns';
 import {rondierService} from "../services/rondier.service";
 import { zone } from 'src/models/zone.model';
 import Swal from 'sweetalert2';
+import { PopupService } from '../services/popup.service';
 declare var $ : any;
 
 @Component({
@@ -30,7 +31,7 @@ export class RecapRondeListeComponent {
   public listRondier : any[];
   public dateDebForm : string;
 
-  constructor(public cahierQuartService : cahierQuartService,private route : ActivatedRoute,private rondierService : rondierService,) {
+  constructor(public cahierQuartService : cahierQuartService, private popupService : PopupService, private route : ActivatedRoute,private rondierService : rondierService,) {
     this.listAction = [];
     this.listConsigne = [];
     this.listZone = [];
@@ -160,7 +161,7 @@ export class RecapRondeListeComponent {
       }
       else {
         // Pop-up d'annulation de la suppression
-        Swal.fire('Annulé','La prise de quart a été annulée.','error');
+        this.popupService.alertErrorForm('La prise de quart a été annulée.');
       }
     }); 
   }

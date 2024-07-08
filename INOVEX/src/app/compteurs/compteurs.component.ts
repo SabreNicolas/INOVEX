@@ -3,8 +3,8 @@ import { NgForm } from '@angular/forms';
 import {productsService} from "../services/products.service";
 import {categoriesService} from "../services/categories.service";
 import { category } from 'src/models/categories.model';
-import Swal from 'sweetalert2';
 import { idUsineService } from "src/app/services/idUsine.service";
+import { PopupService } from '../services/popup.service';
 
 @Component({
   selector: 'app-compteurs',
@@ -19,7 +19,7 @@ export class CompteursComponent implements OnInit {
   public estUnique : boolean;
   public idUsine : number;
 
-  constructor(private productsService : productsService, private categoriesService : categoriesService, private idUsineService : idUsineService) {
+  constructor(private productsService : productsService, private popupService : PopupService, private categoriesService : categoriesService, private idUsineService : idUsineService) {
     this.listCategories = [];
     this.Code = "";
     this.typeId = 4; // 4 for compteur
@@ -94,13 +94,10 @@ export class CompteursComponent implements OnInit {
   createCompteur(siteId : number){
     this.productsService.createProduct(this.typeId, siteId).subscribe((response)=>{
       if (response == "Création du produit OK"){
-        Swal.fire("Le compteur a bien été créé !");
+        this.popupService.alertSuccessForm("Le compteur a bien été créé !");
       }
       else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Erreur lors de la création du compteur ....',
-        })
+        this.popupService.alertSuccessForm('Erreur lors de la création du compteur ....')
       }
     });
   }

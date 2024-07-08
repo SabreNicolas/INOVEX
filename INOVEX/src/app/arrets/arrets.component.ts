@@ -3,10 +3,10 @@ import {arretsService} from "../services/arrets.service";
 import {productsService} from "../services/products.service";
 import {product} from "../../models/products.model";
 import {NgForm} from "@angular/forms";
-import Swal from "sweetalert2";
 import { DatePipe } from '@angular/common';
 import {ActivatedRoute, Router} from "@angular/router";
 import {user} from "../../models/user.model";
+import { PopupService } from '../services/popup.service';
 declare var $ : any;
 @Component({
   selector: 'app-arrets',
@@ -51,7 +51,7 @@ export class ArretsComponent implements OnInit {
   public disponibleSelect : string;
   public categorie : string;
 
-  constructor(private arretsService : arretsService, private productsService : productsService, private datePipe : DatePipe, private route : ActivatedRoute, private router : Router) {
+  constructor(private arretsService : arretsService, private popupService : PopupService, private productsService : productsService, private datePipe : DatePipe, private route : ActivatedRoute, private router : Router) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false; //permet de recharger le component au changement de paramètre
     this.IdUser = 0;
     this.listArrets = [];
@@ -292,10 +292,7 @@ export class ArretsComponent implements OnInit {
         this.duree = 0;
         form.controls['dateFin'].reset();
         form.value['dateFin'] = '';
-        Swal.fire({
-          icon: 'error',
-          text: 'La date/heure de Fin est inférieure à la date/heure de Départ !',
-        })
+        this.popupService.alertErrorForm('La date/heure de Fin est inférieure à la date/heure de Départ !')
       }
       // @ts-ignore
       else this.duree = ((new Date(this.dateFin)-new Date(this.dateDebut))/1000)/3600; //conversion de millisecondes vers heures
@@ -369,17 +366,14 @@ export class ArretsComponent implements OnInit {
       if (this.isArret == true) {
       this.arretsService.createArret(this.stringDateDebut, this.stringDateFin, this.duree, this.IdUser, this.stringDateSaisie, this.commentaire, this.arretId).subscribe((response) => {
         if (response == "Création de l'arret OK") {
-          Swal.fire("L'arrêt a bien été créé !");
+          this.popupService.alertSuccessForm("L'arrêt a bien été créé !");
           //envoi d'un mail si arrêt intempestif ou arrêt GTA
           if (this.arretName.includes("FORTUIT") || this.arretName.includes("GTA")) {
             this.arretsService.sendEmail(this.stringDateDebut.substr(8, 2) + '-' + this.stringDateDebut.substr(5, 2) + '-' + this.stringDateDebut.substr(0, 4), this.stringDateDebut.substr(11, 5), this.duree, this.arretName, this.commentaire).subscribe((response) => {
               if (response == "mail OK") {
-                Swal.fire("Un mail d'alerte à été envoyé !");
+                this.popupService.alertSuccessForm("Un mail d'alerte à été envoyé !");
               } else {
-                Swal.fire({
-                  icon: 'error',
-                  text: 'Erreur lors de l\'envoi du mail ....',
-                })
+                this.popupService.alertErrorForm('Erreur lors de l\'envoi du mail ....')
               }
             });
           }
@@ -389,10 +383,7 @@ export class ArretsComponent implements OnInit {
           this.duree = 0;
           this.ngOnInit();
         } else {
-          Swal.fire({
-            icon: 'error',
-            text: 'Erreur lors de la création de l\'arrêt ....',
-          })
+          this.popupService.alertErrorForm('Erreur lors de la création de l\'arrêt ....')
         }
       });
       }
@@ -402,17 +393,14 @@ export class ArretsComponent implements OnInit {
       else {
         this.arretsService.createDepassement(this.stringDateDebut, this.stringDateFin, this.duree, this.IdUser, this.stringDateSaisie, this.commentaire, this.arretId).subscribe((response) => {
           if (response == "Création du DEP OK") {
-            Swal.fire("Le dépassement a bien été créé !");
+            this.popupService.alertSuccessForm("Le dépassement a bien été créé !");
             form.reset();
             this.arretId = 0;
             this.arretName = '';
             this.duree = 0;
             this.ngOnInit();
           } else {
-            Swal.fire({
-              icon: 'error',
-              text: 'Erreur lors de la création du dépassement .... Un même dépassement existe peut-être déjà pour ce jour',
-            })
+            this.popupService.alertErrorForm('Erreur lors de la création du dépassement .... Un même dépassement existe peut-être déjà pour ce jour')
           }
         });
       }
@@ -421,17 +409,14 @@ export class ArretsComponent implements OnInit {
       if (this.isArret == true) {
         this.arretsService.updateArret(this.id, this.stringDateDebut, this.stringDateFin, this.duree, this.IdUser, this.stringDateSaisie, this.commentaire, this.arretId).subscribe((response) => {
           if (response == "Modif de l'arret OK") {
-            Swal.fire("L'arrêt a bien été modifié !");
+            this.popupService.alertSuccessForm("L'arrêt a bien été modifié !");
             //envoi d'un mail si arrêt intempestif ou arrêt GTA
             if (this.arretName.includes("FORTUIT") || this.arretName.includes("GTA")) {
               this.arretsService.sendEmail(this.stringDateDebut.substr(8, 2) + '-' + this.stringDateDebut.substr(5, 2) + '-' + this.stringDateDebut.substr(0, 4), this.stringDateDebut.substr(11, 5), this.duree, this.arretName, this.commentaire).subscribe((response) => {
                 if (response == "mail OK") {
-                  Swal.fire("Un mail d'alerte à été envoyé !");
+                  this.popupService.alertSuccessForm("Un mail d'alerte à été envoyé !");
                 } else {
-                  Swal.fire({
-                    icon: 'error',
-                    text: 'Erreur lors de l\'envoi du mail ....',
-                  })
+                  this.popupService.alertErrorForm('Erreur lors de l\'envoi du mail ....')
                 }
               });
             }
@@ -441,10 +426,7 @@ export class ArretsComponent implements OnInit {
             this.duree = 0;
             this.ngOnInit();
           } else {
-            Swal.fire({
-              icon: 'error',
-              text: 'Erreur lors de la création de l\'arrêt ....',
-            })
+            this.popupService.alertErrorForm('Erreur lors de la création de l\'arrêt ....')
           }
         });
         }
@@ -454,17 +436,14 @@ export class ArretsComponent implements OnInit {
         else {
           this.arretsService.updateDepassement(this.id,this.stringDateDebut, this.stringDateFin, this.duree, this.IdUser, this.stringDateSaisie, this.commentaire, this.arretId).subscribe((response) => {
             if (response == "Modif du dep ok") {
-              Swal.fire("Le dépassement a bien été modifié !");
+              this.popupService.alertSuccessForm("Le dépassement a bien été modifié !");
               form.reset();
               this.arretId = 0;
               this.arretName = '';
               this.duree = 0;
               this.ngOnInit();
             } else {
-              Swal.fire({
-                icon: 'error',
-                text: 'Erreur lors de la création du dépassement .... Un même dépassement existe peut-être déjà pour ce jour',
-              })
+              this.popupService.alertErrorForm('Erreur lors de la création du dépassement .... Un même dépassement existe peut-être déjà pour ce jour')
             }
           });
         }

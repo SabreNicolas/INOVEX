@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { rondierService } from '../services/rondier.service';
 import { groupement } from '../../models/groupement.model';
 import Swal from 'sweetalert2';
+import { PopupService } from '../services/popup.service';
 
 
 @Component({
@@ -13,7 +14,7 @@ export class ListGroupementsComponent implements OnInit {
 
   public listGroupement  :groupement[];
 
-  constructor(public rondierService : rondierService) { 
+  constructor(public rondierService : rondierService, private popupService : PopupService) { 
     this.listGroupement = [];
   }
 
@@ -35,13 +36,13 @@ export class ListGroupementsComponent implements OnInit {
       }).then((result) => {
         if (result.isConfirmed) {
           this.rondierService.deleteGroupement(idGroupement).subscribe((response)=>{
-            Swal.fire('Confirmé','La suprression a été effectuée.','success');
+            this.popupService.alertSuccessForm('La suprression a été effectuée.');
             this.ngOnInit();
           })
         } 
         else {
           // Pop-up d'annulation de la suppression
-          Swal.fire('Annulé','La suprression a été annulée.','error');
+          this.popupService.alertErrorForm('La suprression a été annulée.');
         }
       });
   }

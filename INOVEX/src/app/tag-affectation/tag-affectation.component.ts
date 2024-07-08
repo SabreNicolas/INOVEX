@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { product } from 'src/models/products.model';
 import {productsService} from "../services/products.service";
-import Swal from "sweetalert2";
+import { PopupService } from '../services/popup.service';
 
 @Component({
   selector: 'app-tag-affectation',
@@ -14,7 +14,7 @@ export class TagAffectationComponent implements OnInit {
   public productId : number;
   public listProducts : product[];
 
-  constructor(private productsService : productsService) { 
+  constructor(private productsService : productsService, private popupService : PopupService) { 
     this.tag = "";
     this.productId = 0;
     this.listProducts = [];
@@ -30,14 +30,11 @@ export class TagAffectationComponent implements OnInit {
   onSubmit(){
     this.productsService.setElement(this.tag,this.productId,"TAG").subscribe((response)=>{
       if (response == "Mise à jour du TAG OK"){
-        Swal.fire("Le TAG a bien été affecté !");
+        this.popupService.alertSuccessForm("Le TAG a bien été affecté !");
         this.ngOnInit();
       }
       else {
-        Swal.fire({
-          icon: 'error',
-          text: "Erreur lors de l'affectation du TAG ....",
-        })
+        this.popupService.alertErrorForm("Erreur lors de l'affectation du TAG ....")
       }
     });
   }

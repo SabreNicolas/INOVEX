@@ -12,6 +12,7 @@ import {user} from "../../models/user.model";
 import { element } from 'src/models/element.model';
 import { groupement } from 'src/models/groupement.model';
 import { zone } from 'src/models/zone.model';
+import { PopupService } from '../services/popup.service';
 declare var $ : any;
 
 @Component({
@@ -44,7 +45,7 @@ export class ReportingRondeComponent implements OnInit {
   public listGroupements : groupement[];
   public listeZoneUnique : Map<String,number>;
   public listElementsUniques : any;
-  constructor(private rondierService : rondierService, private elementRef : ElementRef) {
+  constructor(private rondierService : rondierService, private elementRef : ElementRef, private popupService : PopupService) {
     this.listRonde = [];
     this.listZone = [];
     this.listReprise = [];
@@ -329,7 +330,7 @@ export class ReportingRondeComponent implements OnInit {
       if (result.isConfirmed) {
         this.rondierService.deleteRonde(id).subscribe((response)=>{
           if (response == "Suppression de la ronde OK"){
-            Swal.fire("La ronde a bien été supprimé !");
+            this.popupService.alertSuccessForm("La ronde a bien été supprimé !");
             this.ngOnInit();
           }
         });
@@ -340,7 +341,7 @@ export class ReportingRondeComponent implements OnInit {
   clotureRonde(id : number){
     this.rondierService.closeRonde(id).subscribe((response)=>{
       if (response == "Cloture de la ronde OK"){
-        Swal.fire("La ronde a bien été cloturé !");
+        this.popupService.alertSuccessForm("La ronde a bien été cloturé !");
         this.ngOnInit();
       }
     });
@@ -354,7 +355,7 @@ export class ReportingRondeComponent implements OnInit {
     value = value.replace(/'/g,"''");
     this.rondierService.updateMesureRondier(Id,value).subscribe((response)=>{
       if (response == "Mise à jour de la valeur OK"){
-        Swal.fire("La valeur a bien été mis à jour !");
+        this.popupService.alertSuccessForm("La valeur a bien été mis à jour !");
         this.ngOnInit();
       }
     });
@@ -415,10 +416,7 @@ export class ReportingRondeComponent implements OnInit {
       if(nvCommentaire != null){
         nvCommentaire = nvCommentaire.replace(/'/g,"''")
         this.rondierService.createAnomalie(rondeId, nvCommentaire, zoneId).subscribe((response) =>{
-          Swal.fire({
-            icon: 'success',
-            text: 'Commentaire modifié',
-          });
+          this.popupService.alertSuccessForm('Commentaire modifié');
           this.ngOnInit();
         })
       }
@@ -428,10 +426,7 @@ export class ReportingRondeComponent implements OnInit {
       if(nvCommentaire != null){
         nvCommentaire = nvCommentaire.replace(/'/g,"''")
         this.rondierService.updateAnomalie(rondeId,zoneId,nvCommentaire).subscribe((response) =>{
-          Swal.fire({
-            icon: 'success',
-            text: 'Commentaire modifié',
-          });
+          this.popupService.alertSuccessForm('Commentaire modifié');
           this.ngOnInit();
         })
       }
@@ -497,20 +492,17 @@ export class ReportingRondeComponent implements OnInit {
       if (result.isConfirmed) {
         this.rondierService.deleteRepriseRonde(id).subscribe((response)=>{
           if (response == "Suppression de la reprise OK"){
-            Swal.fire("La reprise a bien été supprimé !");
+            this.popupService.alertSuccessForm("La reprise a bien été supprimé !");
           }
           else {
-            Swal.fire({
-              icon: 'error',
-              text: 'Erreur lors de la suppression....',
-            })
+            this.popupService.alertErrorForm('Erreur lors de la suppression....')
           }
         });
         this.ngOnInit();
       }  
       else {
         // Pop-up d'annulation de la suppression
-        Swal.fire('Annulé','La suppression a été annulée.','error');
+        this.popupService.alertErrorForm('La suppression a été annulée.');
       }
     });
   }

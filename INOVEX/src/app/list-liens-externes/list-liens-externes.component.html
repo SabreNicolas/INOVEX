@@ -21,12 +21,12 @@
                 <td>{{lien.url}}</td>
                 <td *ngIf="!lien.actif"> 
                     <button class="btn btn btn-light" (click)='activerLien(lien.id, lien.actif)'>
-                        <i style="color: green" class="fas fa-check"></i>
+                        <i style="color: red" class="fas fa-times-circle"></i>
                     </button>
                 </td>
                 <td *ngIf="lien.actif"> 
                     <button class="btn btn btn-light" (click)='activerLien(lien.id, lien.actif)'>
-                        <i style="color: red" class="fas fa-times-circle"></i>
+                        <i style="color: green" class="fas fa-check"></i>
                     </button>
                 </td>
                 <td>

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { productsService } from '../services/products.service';
 import { product } from 'src/models/products.model';
-import Swal from 'sweetalert2';
 import { ActivatedRoute } from '@angular/router';
+import { PopupService } from '../services/popup.service';
 
 @Component({
   selector: 'app-formulaire',
@@ -18,7 +18,7 @@ export class FormulaireComponent implements OnInit {
   public productAjout : string;
   public idForm : number;
 
-  constructor(private productsService : productsService,private route : ActivatedRoute) { 
+  constructor(private productsService : productsService, private popupService : PopupService, private route : ActivatedRoute) { 
     this.nom = "";
     this.alias="";
     this.listProducts = [];
@@ -121,7 +121,7 @@ export class FormulaireComponent implements OnInit {
             pr.alias = pr.alias.replace(/'/g,"''");
             this.productsService.createFormulaireAffectation(pr.alias,this.idForm,pr.id).subscribe((response)=>{
               if(response == "Affectation OK"){
-                Swal.fire({text : 'Formulaire modifié !', icon :'success'});
+                this.popupService.alertSuccessForm('Formulaire modifié !');
                 this.nom="";
                 this.productAjout="";
                 this.alias="";
@@ -140,7 +140,7 @@ export class FormulaireComponent implements OnInit {
           pr.alias = pr.alias.replace(/'/g,"''");
           this.productsService.createFormulaireAffectation(pr.alias,idForm,pr.id).subscribe((response)=>{
             if(response == "Affectation OK"){
-              Swal.fire({text : 'Nouveau formulaire créé', icon :'success'});
+              this.popupService.alertSuccessForm('Nouveau formulaire créé');
               this.nom="";
               this.productAjout="";
               this.alias="";

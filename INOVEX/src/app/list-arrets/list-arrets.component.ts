@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import {arretsService} from "../services/arrets.service";
 import {NgForm} from "@angular/forms";
-import Swal from "sweetalert2";
 import {ActivatedRoute, Router} from "@angular/router";
 import {rondierService} from "../services/rondier.service";
 import { dateService } from '../services/date.service';
 import { idUsineService } from '../services/idUsine.service';
+import { PopupService } from '../services/popup.service';
 
 @Component({
   selector: 'app-list-arrets',
@@ -28,7 +28,7 @@ export class ListArretsComponent implements OnInit {
   public updateAfterDelete : boolean;
   public idUsine : number | undefined;
 
-  constructor(private idUsineService : idUsineService, private arretsService : arretsService, private rondierService : rondierService, private route : ActivatedRoute, private router : Router, private dateService : dateService) {
+  constructor(private idUsineService : idUsineService, private popupService : PopupService, private arretsService : arretsService, private rondierService : rondierService, private route : ActivatedRoute, private router : Router, private dateService : dateService) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false; //permet de recharger le component au changement de paramètre
     this.listArretsDepassements = [];
     this.sumArretsDepassements = [];
@@ -121,21 +121,15 @@ export class ListArretsComponent implements OnInit {
   }
 
   setPeriod(form: NgForm) {
-    if(form.value['dateDeb'] != "" && form.value['dateFin'] != ""){
+    if((form.value['dateDeb'] != "" && form.value['dateFin'] != "") ||  (this.dateFin != undefined && this.dateDeb != undefined)){
       if(form.value['dateDeb'].length < 1 && form.value['dateFin'].length < 1){
-        Swal.fire({
-          icon: 'error',
-          text: 'Période non valide !',
-        });
+        this.popupService.alertErrorForm('Période non valide !');
       }
       else{
         this.dateDeb = new Date((<HTMLInputElement>document.getElementById("dateDeb")).value);
         this.dateFin = new Date((<HTMLInputElement>document.getElementById("dateFin")).value);
         if (this.dateFin < this.dateDeb) {
-          Swal.fire({
-            icon: 'error',
-            text: 'La date de Fin est inférieure à la date de Départ !',
-          })
+          this.popupService.alertErrorForm('La date de Fin est inférieure à la date de Départ !')
         }
         else {
           var mmF = String(this.dateDeb.getMonth() + 1).padStart(2, '0'); //January is 0!
@@ -190,13 +184,10 @@ export class ListArretsComponent implements OnInit {
     if (this.isArret == true) {
       this.arretsService.deleteArret(id).subscribe((response) => {
         if (response == "Suppression de l'arrêt OK") {
-          Swal.fire("L'arrêt a bien été supprimé !");
+          this.popupService.alertSuccessForm("L'arrêt a bien été supprimé !");
           this.ngOnInit();
         } else {
-          Swal.fire({
-            icon: 'error',
-            text: 'Erreur lors de la suppression de l\'arrêt ....',
-          })
+          this.popupService.alertErrorForm('Erreur lors de la suppression de l\'arrêt ....')
         }
       });
     }
@@ -207,13 +198,10 @@ export class ListArretsComponent implements OnInit {
     else {
       this.arretsService.deleteDepassement(id).subscribe((response) => {
         if (response == "Suppression du DEP OK") {
-          Swal.fire("Le dépassement a bien été supprimé !");
+          this.popupService.alertSuccessForm("Le dépassement a bien été supprimé !");
           this.ngOnInit();
         } else {
-          Swal.fire({
-            icon: 'error',
-            text: 'Erreur lors de la suppression du dépassement ....',
-          })
+          this.popupService.alertErrorForm('Erreur lors de la suppression du dépassement ....')
         }
       });
     }

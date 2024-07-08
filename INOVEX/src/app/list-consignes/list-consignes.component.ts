@@ -3,6 +3,7 @@ import {rondierService} from "../services/rondier.service";
 import {consigne} from "../../models/consigne.model";
 import Swal from "sweetalert2";
 import { cahierQuartService } from '../services/cahierQuart.service';
+import { PopupService } from '../services/popup.service';
 
 @Component({
   selector: 'app-list-consignes',
@@ -13,7 +14,7 @@ export class ListConsignesComponent implements OnInit {
 
   public listConsignes : any[];
 
-  constructor(private rondierService : rondierService,public cahierQuartService : cahierQuartService) {
+  constructor(private rondierService : rondierService,public cahierQuartService : cahierQuartService, private popupService : PopupService) {
     this.listConsignes = [];
   }
 
@@ -21,7 +22,6 @@ export class ListConsignesComponent implements OnInit {
     this.rondierService.listAllConsignes().subscribe((response)=>{
       // @ts-ignore
       this.listConsignes = response.data;
-      console.log(this.listConsignes)
     });
   }
 
@@ -30,14 +30,11 @@ export class ListConsignesComponent implements OnInit {
     this.rondierService.deleteConsigne(id).subscribe((response)=>{
       if (response == "Suppression de la consigne OK"){
         this.cahierQuartService.historiqueConsigneDelete(id).subscribe((response)=>{
-          Swal.fire("La consigne a bien été supprimé !");
+          this.popupService.alertSuccessForm("La consigne a bien été supprimé !");
         })
       }
       else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Erreur lors de la suppression de la consigne....',
-        })
+        this.popupService.alertErrorForm('Erreur lors de la suppression de la consigne....')
       }
     });
     this.ngOnInit();

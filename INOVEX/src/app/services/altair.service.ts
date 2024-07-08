@@ -131,4 +131,24 @@ export class AltairService {
     return this.http.post<any>(url,payload,headers);
   }
 
+  //Créer une nouvelle équipe
+  createDI(token:string, description: string, fkcodelocalisation:string, fkcodeequipment:string, commentaire:string,priority:string,type:string,creationdate:string,createdby:string,fkcodemask:string){
+    let requete = this.ip+"/rest/system/login"
+            
+    const requestOptions = new HttpHeaders({
+      'Authorization': 'Bearer '+token,
+      'Content-Type': 'application/json'
+    });
+
+    var headers = {
+      headers : requestOptions
+    }
+
+    var url = requete
+
+    var payload = "{\r\n  \"description\": \""+description+"\",\r\n  \"fkcodelocalisation\": \""+fkcodelocalisation+"\",\r\n  \"fkcodeequipment\": \""+fkcodeequipment+"\",\r\n  \"wrm1\": \""+commentaire+"\",\r\n  \"priority\": \""+priority+"\",\r\n  \"type\": \""+type+"\",\r\n \"creationdate\": \""+creationdate+"\",\r\n  \"createdby\": \""+createdby+"\",\r\n  \"fkcodemask\": \""+fkcodemask+"\"\r\n}"
+  
+    return this.http.post<any>(url,payload,headers);
+  }
+
 }

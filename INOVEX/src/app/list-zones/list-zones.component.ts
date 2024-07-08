@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {rondierService} from "../services/rondier.service";
 import {zone} from "../../models/zone.model";
 import Swal from "sweetalert2";
+import { PopupService } from '../services/popup.service';
 
 @Component({
   selector: 'app-list-zones',
@@ -12,7 +13,7 @@ export class ListZonesComponent implements OnInit {
 
   public listZone : zone[];
 
-  constructor(private rondierService : rondierService) {
+  constructor(private rondierService : rondierService, private popupService : PopupService) {
     this.listZone = [];
   }
 
@@ -30,13 +31,10 @@ export class ListZonesComponent implements OnInit {
       // @ts-ignore
       this.rondierService.updateCommentaire(zone.Id,commentaire).subscribe((response)=>{
         if (response == "Mise à jour du commentaire OK"){
-          Swal.fire("Le Commentaire a été mis à jour !");
+          this.popupService.alertSuccessForm("Le Commentaire a été mis à jour !");
         }
         else {
-          Swal.fire({
-            icon: 'error',
-            text: 'Erreur lors de la mise à jour du Commentaire ....',
-          })
+          this.popupService.alertErrorForm('Erreur lors de la mise à jour du Commentaire ....')
         }
       });
       this.ngOnInit();
@@ -50,13 +48,10 @@ export class ListZonesComponent implements OnInit {
       // @ts-ignore
       this.rondierService.updateNomZone(zone.Id,nom).subscribe((response)=>{
         if (response == "Mise à jour du nom OK"){
-          Swal.fire("Le Nom a été mis à jour !");
+          this.popupService.alertSuccessForm("Le Nom a été mis à jour !");
         }
         else {
-          Swal.fire({
-            icon: 'error',
-            text: 'Erreur lors de la mise à jour du Nom ....',
-          })
+          this.popupService.alertErrorForm('Erreur lors de la mise à jour du Nom ....')
         }
       });
       this.ngOnInit();
@@ -70,20 +65,17 @@ export class ListZonesComponent implements OnInit {
         if (result.isConfirmed) {
           this.rondierService.deleteZone(id).subscribe((response)=>{
             if (response == "Suppression OK"){
-              Swal.fire("La zone a été supprimée !");
+              this.popupService.alertSuccessForm("La zone a été supprimée !");
               this.ngOnInit();
             }
             else {
-              Swal.fire({
-                icon: 'error',
-                text: 'Erreur lors de Suppression ....',
-              })
+              this.popupService.alertErrorForm('Erreur lors de Suppression ....')
             }
           });
         } 
         else {
           // Pop-up d'annulation de la suppression
-          Swal.fire('Annulé','La suprression a été annulée.','error');
+          this.popupService.alertSuccessForm('La suprression a été annulée.');
         }
       });
   }

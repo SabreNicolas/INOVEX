@@ -7,6 +7,7 @@ import { dateService } from '../services/date.service';
 import {moralEntitiesService} from "../services/moralentities.service";
 import Swal from 'sweetalert2';
 import * as XLSX from 'xlsx';
+import { PopupService } from '../services/popup.service';
 
 @Component({
   selector: 'app-saisie-formulaire',
@@ -25,7 +26,7 @@ export class SaisieFormulaireComponent implements OnInit {
   public listProducts : any[];
   public isAdmin : number;
 
-  constructor(private productsService : productsService, private moralEntitiesService : moralEntitiesService, private route : ActivatedRoute,private dateService : dateService) {
+  constructor(private productsService : productsService, private popupService : PopupService, private moralEntitiesService : moralEntitiesService, private route : ActivatedRoute,private dateService : dateService) {
     this.listFormulaires=[];
     this.idForm=0;
     this.nomForm="";
@@ -123,13 +124,10 @@ export class SaisieFormulaireComponent implements OnInit {
         if (valueInt >0.0){
           this.moralEntitiesService.createMeasure(date.substr(6,4)+'-'+date.substr(3,2)+'-'+date.substr(0,2),valueInt,pr.idProduct,0).subscribe((response)=>{
             if (response == "Création du Measures OK"){
-              Swal.fire("Les valeurs ont été insérées avec succès !");
+              this.popupService.alertSuccessForm("Les valeurs ont été insérées avec succès !");
             }
             else {
-              Swal.fire({
-                icon: 'error',
-                text: 'Erreur lors de l\'insertion des valeurs ....',
-              })
+              this.popupService.alertErrorForm('Erreur lors de l\'insertion des valeurs ....')
             }
           });
         }
@@ -141,14 +139,11 @@ export class SaisieFormulaireComponent implements OnInit {
   delete(Id : number, date : string){
     this.moralEntitiesService.createMeasure(date.substr(6,4)+'-'+date.substr(3,2)+'-'+date.substr(0,2),0,Id,0).subscribe((response)=>{
       if (response == "Création du Measures OK"){
-        Swal.fire("La valeur a bien été supprimé !");
+        this.popupService.alertSuccessForm("La valeur a bien été supprimé !");
         (<HTMLInputElement>document.getElementById(Id + '-' + date)).value = '';
       }
       else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Erreur lors de la suppression de la valeur ....',
-        })
+        this.popupService.alertErrorForm('Erreur lors de la suppression de la valeur ....')
       }
     });
   }
@@ -162,13 +157,14 @@ export class SaisieFormulaireComponent implements OnInit {
           this.productsService.deleteProductFormulaire(this.idForm).subscribe((response)=>{
             this.productsService.deleteFormulaire(this.idForm).subscribe((response)=>{
               this.idForm=0;
+              this.popupService.alertSuccessForm("Le formulaire a bien été supprimé !");
               this.ngOnInit();
             })
           }) 
         }
         else {
           // Pop-up d'annulation de la suppression
-          Swal.fire('Annulé','La suprression a été annulée.','error');
+          this.popupService.alertErrorForm('La suprression a été annulée.');
         }
       });
   }

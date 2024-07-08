@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { cahierQuartService } from '../services/cahierQuart.service';
 import Swal from "sweetalert2";
+import { PopupService } from '../services/popup.service';
 
 @Component({
   selector: 'app-list-evenements',
@@ -13,7 +14,7 @@ export class ListEvenementsComponent implements OnInit {
   public dateDebString : string;
   public dateFinString : string;
 
-  constructor(public cahierQuartService : cahierQuartService,) {
+  constructor(public cahierQuartService : cahierQuartService,private popupService : PopupService) {
     this.listEvenement = [];
     this.dateDebString = "";
     this.dateFinString = "";
@@ -34,21 +35,18 @@ export class ListEvenementsComponent implements OnInit {
         this.cahierQuartService.deleteEvenement(id).subscribe((response)=>{
           if (response == "Suppression de l'evenement OK"){
             this.cahierQuartService.historiqueEvenementDelete(id).subscribe((response)=>{
-              Swal.fire("L'evenement a bien été supprimé !");
+              this.popupService.alertSuccessForm("L'evenement a bien été supprimé !");
             })
           }
           else {
-            Swal.fire({
-              icon: 'error',
-              text: "Erreur lors de la suppression de l'evenement....",
-            })
+            this.popupService.alertErrorForm("Erreur lors de la suppression de l'evenement....")
           }
         });
         this.ngOnInit();
       }  
       else {
         // Pop-up d'annulation de la suppression
-        Swal.fire('Annulé','La suppression a été annulée.','error');
+        this.popupService.alertErrorForm('La suppression a été annulée.');
       }
     });
   }

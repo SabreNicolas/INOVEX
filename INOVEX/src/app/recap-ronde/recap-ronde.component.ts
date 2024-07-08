@@ -5,6 +5,7 @@ import { addDays, format } from 'date-fns';
 import {rondierService} from "../services/rondier.service";
 import { zone } from 'src/models/zone.model';
 import Swal from 'sweetalert2';
+import { PopupService } from '../services/popup.service';
 declare var $ : any;
 
 @Component({
@@ -26,7 +27,7 @@ export class RecapRondeComponent implements OnInit {
   public nomAction : string;
   public idEquipe : number;
 
-  constructor(public cahierQuartService : cahierQuartService,private route : ActivatedRoute,private rondierService : rondierService,) {
+  constructor(public cahierQuartService : cahierQuartService,private popupService : PopupService, private route : ActivatedRoute,private rondierService : rondierService,) {
     this.listAction = [];
     this.listZoneOfUsine = [];
     this.listZoneSelection = [];
@@ -155,20 +156,17 @@ export class RecapRondeComponent implements OnInit {
       if (result.isConfirmed) {
         this.cahierQuartService.deleteCalendrier(id).subscribe((response)=>{
           if (response == "Suppression de l'evenement du calendrier OK"){
-            Swal.fire("L'évènement a bien été supprimé !");
+            this.popupService.alertSuccessForm("L'évènement a bien été supprimé !");
             this.ngOnInit();
           }
           else {
-            Swal.fire({
-              icon: 'error',
-              text: "Erreur lors de la suppression de l'évènement....",
-            })
+            this.popupService.alertErrorForm("Erreur lors de la suppression de l'évènement....")
           }
         });
       }  
       else {
         // Pop-up d'annulation de la suppression
-        Swal.fire('Annulé','La suppression a été annulée.','error');
+        this.popupService.alertErrorForm('La suppression a été annulée.');
       }
     });
   }
@@ -180,20 +178,17 @@ export class RecapRondeComponent implements OnInit {
       if (result.isConfirmed) {
         this.cahierQuartService.deleteCalendrier(id).subscribe((response)=>{
           if (response == "Suppression de l'evenement du calendrier OK"){
-            Swal.fire("L'évènement a bien été supprimé !");
+            this.popupService.alertSuccessForm("L'évènement a bien été supprimé !");
             this.ngOnInit();
           }
           else {
-            Swal.fire({
-              icon: 'error',
-              text: "Erreur lors de la suppression de l'évènement....",
-            })
+            this.popupService.alertErrorForm("Erreur lors de la suppression de l'évènement....")
           }
         });
       }  
       else {
         // Pop-up d'annulation de la suppression
-        Swal.fire('Annulé','La suppression a été annulée.','error');
+        this.popupService.alertErrorForm('La suppression a été annulée.');
       }
     });
   }
@@ -209,7 +204,7 @@ export class RecapRondeComponent implements OnInit {
       }
       else {
         // Pop-up d'annulation de la suppression
-        Swal.fire('Annulé','La prise de quart a été annulée.','error');
+        this.popupService.alertSuccessForm('La prise de quart a été annulée.');
       }
     }); 
   }

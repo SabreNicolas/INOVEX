@@ -98,6 +98,7 @@ import { ListLiensExternesComponent } from './list-liens-externes/list-liens-ext
 import { LiensExternesComponent } from './liens-externes/liens-externes.component';
 import { RecapRondePrecedenteComponent } from './recap-ronde-precedente/recap-ronde-precedente.component';
 import { RecapRondeListeComponent } from './recap-ronde-liste/recap-ronde-liste.component';
+import { PopupService } from './services/popup.service';
 
 
 registerLocaleData(localeFr, 'fr');
@@ -209,6 +210,7 @@ class CustomDateFormatter extends CalendarNativeDateFormatter{
     categoriesService,
     productsService,
     arretsService,
+    PopupService,
     DatePipe,
     loginService,
     AuthGuard,

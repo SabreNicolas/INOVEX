@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { ActivatedRoute } from '@angular/router';
 import { user } from 'src/models/user.model';
 import { idUsineService } from '../services/idUsine.service';
+import { PopupService } from '../services/popup.service';
 
 @Component({
   selector: 'app-groupement',
@@ -23,7 +24,7 @@ export class GroupementComponent implements OnInit {
   public userLogged!: user;
   public idUsine : number;
   
-  constructor(public rondierService : rondierService,private route : ActivatedRoute, private idUsineService : idUsineService) { 
+  constructor(public rondierService : rondierService,private route : ActivatedRoute, private popupService : PopupService,  private idUsineService : idUsineService) { 
     this.listGroupement = [];
     this.listZone = [];
     this.idZone = 0;
@@ -84,23 +85,23 @@ export class GroupementComponent implements OnInit {
             if (result.isConfirmed) {
               this.groupement = this.groupement.replace(/'/g,"''");
               this.rondierService.createGroupement(this.idZone, this.groupement).subscribe((response) => {
-              Swal.fire({text : 'Nouveau groupement créé', icon : 'success',});
+                this.popupService.alertSuccessForm('Nouveau groupement créé');
               this.groupement="";
               this.idZone=0;
             })
             } 
             else {
               // Pop-up d'annulation de la suppression
-              Swal.fire('Annulé','La création a été annulée.','error');
+              this.popupService.alertErrorForm('La création a été annulée.');
             }
           });
         }
         else {
-          Swal.fire('Veuillez choisir une zone pour le groupement !','La saisie a été annulée.','error');
+          this.popupService.alertErrorForm('Veuillez choisir une zone pour le groupement ! La saisie a été annulée.');
         }
       }
       else {
-        Swal.fire('Veuillez entrer le nom du groupement !','La saisie a été annulée.','error');
+        this.popupService.alertErrorForm('Veuillez entrer le nom du groupement ! La saisie a été annulée.');
       }
     }
   }
@@ -115,22 +116,22 @@ export class GroupementComponent implements OnInit {
           if (result.isConfirmed) {
             this.groupement =this.groupement.replace(/'/g,"''");
             this.rondierService.updateGroupement(this.idGroupement,this.groupement,this.idZone).subscribe((response) => {
-              Swal.fire({text :'Groupement modifié !', icon :'success'});
+              this.popupService.alertSuccessForm('Groupement modifié !');
               window.location.replace('/admin/groupement')
             })
           } 
           else {
             // Pop-up d'annulation de la suppression
-            Swal.fire('Annulé','La modification a été annulée.','error');
+            this.popupService.alertErrorForm('La modification a été annulée.');
           }
         });
       }
       else {
-        Swal.fire('Veuillez choisir une zone pour le groupement !','La saisie a été annulée.','error');
+        this.popupService.alertErrorForm('Veuillez choisir une zone pour le groupement ! La saisie a été annulée.');
       }
     }
     else {
-      Swal.fire('Veuillez entrer le nom du groupement !','La saisie a été annulée.','error');
+      this.popupService.alertSuccessForm('Veuillez entrer le nom du groupement ! La saisie a été annulée.');
     }
   }
 }

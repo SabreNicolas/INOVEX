@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {NgForm} from "@angular/forms";
 import {rondierService} from "../services/rondier.service";
-import Swal from "sweetalert2";
 import {DatePipe} from "@angular/common";
 import { ActivatedRoute } from '@angular/router';
 import { cahierQuartService } from '../services/cahierQuart.service';
+import { PopupService } from '../services/popup.service';
 
 @Component({
   selector: 'app-consigne',
@@ -26,7 +26,7 @@ export class ConsigneComponent implements OnInit {
   public dupliquer : number;
 
 
-  constructor(private rondierService : rondierService,public cahierQuartService : cahierQuartService, private datePipe : DatePipe,private route : ActivatedRoute) {
+  constructor(private rondierService : rondierService, private popupService : PopupService, public cahierQuartService : cahierQuartService, private datePipe : DatePipe,private route : ActivatedRoute) {
     this.desc = "";
     this.titre ="";
     this.type = 1;
@@ -87,32 +87,23 @@ export class ConsigneComponent implements OnInit {
     this.type = form.value['type'];
     
     if(this.titre == ''){
-      Swal.fire({
-        icon: 'error',
-        text: 'Veuillez renseigner un titre !',
-      })
+      this.popupService.alertErrorForm('Veuillez renseigner un titre !')
       return;
     }
     
     if(this.dateDebut != undefined && this.dateDebut > this.dateFin){
-      Swal.fire({
-        icon: 'error',
-        text: 'La date de début et la date de fin ne correspondent pas !',
-      })
+      this.popupService.alertErrorForm('La date de début et la date de fin ne correspondent pas !')
     }
     else {
       if(this.idConsigne > 0){
         this.rondierService.updateConsigne(this.titre,this.desc,this.type,this.stringDateFin,this.stringDateDebut,this.idConsigne).subscribe((response)=>{
           if (response == "Modification de la consigne OK"){
             this.cahierQuartService.historiqueConsigneUpdate(this.idConsigne).subscribe((response)=>{
-              Swal.fire("La consigne a bien été modifiée !");
+              this.popupService.alertSuccessForm("La consigne a bien été modifiée !");
             })
           }
           else {
-            Swal.fire({
-              icon: 'error',
-              text: 'Erreur lors de la création de la consigne ....',
-            })
+            this.popupService.alertErrorForm('Erreur lors de la création de la consigne ....')
           }
         });
       }
@@ -122,14 +113,11 @@ export class ConsigneComponent implements OnInit {
           if (response != undefined){
             this.idConsigne = response['data'][0]['Id'];
             this.cahierQuartService.historiqueConsigneCreate(this.idConsigne).subscribe((response)=>{
-              Swal.fire("La consigne a bien été créé !");
+              this.popupService.alertSuccessForm("La consigne a bien été créé !");
             })
           }
           else {
-            Swal.fire({
-              icon: 'error',
-              text: 'Erreur lors de la création de la consigne ....',
-            })
+            this.popupService.alertErrorForm('Erreur lors de la création de la consigne ....')
           }
         });
         this.resetFields(form);
@@ -162,7 +150,7 @@ export class ConsigneComponent implements OnInit {
       reader.onload = e => this.imgSrc = reader.result;
       reader.readAsDataURL(file);
     } 
-    else Swal.fire('Aucun fichier choisi....')
+    else this.popupService.alertErrorForm('Aucun fichier choisi....')
   }
 
 }

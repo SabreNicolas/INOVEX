@@ -9,6 +9,7 @@ import autoTable from 'jspdf-autotable';
 import html2canvas from 'html2canvas';
 declare var $ : any;
 import jsPDF from 'jspdf'
+import { PopupService } from '../services/popup.service';
 @Component({
   selector: 'app-recap-ronde-precedente',
   templateUrl: './recap-ronde-precedente.component.html',
@@ -30,7 +31,7 @@ export class RecapRondePrecedenteComponent {
   public listRondier : any[];
   @ViewChild('pdfTable') pdfContent!: ElementRef;
 
-  constructor(public cahierQuartService : cahierQuartService,private route : ActivatedRoute,private rondierService : rondierService,) {
+  constructor(public cahierQuartService : cahierQuartService, private popupService : PopupService, private route : ActivatedRoute,private rondierService : rondierService,) {
     this.listAction = [];
     this.listConsigne = [];
     this.listZone = [];
@@ -50,6 +51,12 @@ export class RecapRondePrecedenteComponent {
       }
       else {
         this.quart = 0;
+      }
+      if(params.idEquipe != undefined){
+        this.idEquipe = params.idEquipe;
+      }
+      else {
+        this.idEquipe = 0;
       }
     });
   }
@@ -141,11 +148,11 @@ export class RecapRondePrecedenteComponent {
           doc.save('result.pdf')
         })
         
-        // window.location.href = "https://fr-couvinove300.prod.paprec.fr:8101/cahierQuart/recapRonde?quart="+this.quart
+        window.location.href = "https://fr-couvinove300.prod.paprec.fr:8101/cahierQuart/newEquipe?quart="+this.quart+"&idEquipe="+this.idEquipe
       }
       else {
         // Pop-up d'annulation de la suppression
-        Swal.fire('Annulé','La prise de quart a été annulée.','error');
+        this.popupService.alertErrorForm('La prise de quart a été annulée.');
       }
     }); 
   }

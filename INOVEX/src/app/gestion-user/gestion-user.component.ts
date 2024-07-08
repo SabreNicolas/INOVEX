@@ -3,7 +3,7 @@ import {user} from "../../models/user.model";
 import {Md5} from "ts-md5";
 import {NgForm} from "@angular/forms";
 import {loginService} from "../services/login.service";
-import Swal from "sweetalert2";
+import { PopupService } from '../services/popup.service';
 
 @Component({
   selector: 'app-gestion-user',
@@ -27,7 +27,7 @@ export class GestionUserComponent implements OnInit {
   hide1 : boolean = true;
   hide2 : boolean = true;
 
-  constructor(private loginService : loginService) {
+  constructor(private loginService : loginService,private popupService : PopupService) {
     this.badOldPwd = true;
     this.pwdNotMatch = true;
     this.storedLogin = "";
@@ -55,13 +55,10 @@ export class GestionUserComponent implements OnInit {
     this.storedLogin = this.storedLogin.replace("'","''");
     this.loginService.updatePwd(this.storedLogin,MD5pwd).subscribe((response)=>{
       if (response == "Mise à jour du mot de passe OK"){
-        Swal.fire("Mot de passe mis à jour avec succès !");
+        this.popupService.alertSuccessForm("Mot de passe mis à jour avec succès !");
       }
       else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Erreur lors de la mise à jour du mot de passe ....',
-        })
+        this.popupService.alertErrorForm('Erreur lors de la mise à jour du mot de passe ....')
       }
     });
 

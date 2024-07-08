@@ -17,6 +17,7 @@ import { user } from 'src/models/user.model';
 import { idUsineService } from '../services/idUsine.service';
 import {DatePipe} from '@angular/common'
 import * as FileSaver from 'file-saver';
+import { PopupService } from '../services/popup.service';
 
 @Component({
   selector: 'app-list-entree',
@@ -51,7 +52,7 @@ export class ListEntreeComponent implements OnInit {
   public dates : string[];
   public clientManquants: Map<String,String>;
 
-  constructor(private idUsineService : idUsineService,private datePipe:DatePipe, private moralEntitiesService : moralEntitiesService, private productsService : productsService, private Papa : Papa, private dateService : dateService) {
+  constructor(private idUsineService : idUsineService,private datePipe:DatePipe, private popupService : PopupService,  private moralEntitiesService : moralEntitiesService, private productsService : productsService, private Papa : Papa, private dateService : dateService) {
     this.debCode = '2';
     this.moralEntities = [];
     this.listDays = [];
@@ -180,13 +181,10 @@ export class ListEntreeComponent implements OnInit {
           if (valueInt >0.0){
             this.moralEntitiesService.createMeasure(date.substr(6,4)+'-'+date.substr(3,2)+'-'+date.substr(0,2),valueInt,mr.productId,mr.Id).subscribe((response)=>{
               if (response == "Création du Measures OK"){
-                Swal.fire("Les valeurs ont été insérées avec succès !");
+                this.popupService.alertSuccessForm("Les valeurs ont été insérées avec succès !");
               }
               else {
-                Swal.fire({
-                  icon: 'error',
-                  text: 'Erreur lors de l\'insertion des valeurs ....',
-                })
+                this.popupService.alertErrorForm('Erreur lors de l\'insertion des valeurs ....')
               }
             });
           }
@@ -244,14 +242,11 @@ export class ListEntreeComponent implements OnInit {
   delete(Id : number, productId : number, date : string){
     this.moralEntitiesService.createMeasure(date.substr(6,4)+'-'+date.substr(3,2)+'-'+date.substr(0,2),0,productId,Id).subscribe((response)=>{
       if (response == "Création du Measures OK"){
-        Swal.fire("La valeur a bien été supprimé !");
+        this.popupService.alertSuccessForm("La valeur a bien été supprimé !");
         (<HTMLInputElement>document.getElementById(Id + '-' + productId + '-' + date)).value = '';
       }
       else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Erreur lors de la suppression de la valeur ....',
-        })
+        this.popupService.alertErrorForm('Erreur lors de la suppression de la valeur ....')
       }
     });
     this.getTotaux();
@@ -288,13 +283,10 @@ export class ListEntreeComponent implements OnInit {
           // @ts-ignore
           this.moralEntitiesService.createMeasure(date.substr(6,4)+'-'+date.substr(3,2)+'-'+date.substr(0,2),valueInt,product.Id,0).subscribe((response)=>{
             if (response == "Création du Measures OK"){
-              Swal.fire("Les valeurs ont été insérées avec succès !");
+              this.popupService.alertSuccessForm("Les valeurs ont été insérées avec succès !");
             }
             else {
-              Swal.fire({
-                icon: 'error',
-                text: 'Erreur lors de l\'insertion des valeurs ....',
-              })
+              this.popupService.alertSuccessForm('Erreur lors de l\'insertion des valeurs ....')
             }
           });
         }
@@ -306,14 +298,11 @@ export class ListEntreeComponent implements OnInit {
   deleteContainer(Id : number, date : string){
     this.moralEntitiesService.createMeasure(date.substr(6,4)+'-'+date.substr(3,2)+'-'+date.substr(0,2),0,Id,0).subscribe((response)=>{
       if (response == "Création du Measures OK"){
-        Swal.fire("La valeur a bien été supprimé !");
+        this.popupService.alertSuccessForm("La valeur a bien été supprimé !");
         (<HTMLInputElement>document.getElementById(Id + '-' + date)).value = '';
       }
       else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Erreur lors de la suppression de la valeur ....',
-        })
+        this.popupService.alertSuccessForm('Erreur lors de la suppression de la valeur ....')
       }
     });
   }
@@ -519,18 +508,12 @@ export class ListEntreeComponent implements OnInit {
             // XLSX.writeFile(wb, nomFichier+'.xlsx');
           }
           else {
-            Swal.fire({
-              icon: 'error',
-              text: 'Aucune donnée sur ces dates !',
-            })
+            this.popupService.alertErrorForm('Aucune donnée sur ces dates !')
           }
         })
       }
       else{
-        Swal.fire({
-          icon: 'error',
-          text: 'Veuillez entrer des dates',
-        })
+        this.popupService.alertErrorForm('Veuillez entrer des dates')
       }
     }
 
@@ -651,10 +634,7 @@ export class ListEntreeComponent implements OnInit {
           console.log(this.csvRegistre)
           this.removeloading();
           this.moralEntitiesService.registreDNDTS(this.csvRegistre).subscribe((response)=>{
-            Swal.fire({
-              icon: 'success',
-              text: 'Valeurs insérées avec succès',
-            })
+            this.popupService.alertSuccessForm('Valeurs insérées avec succès')
           })
         }
         
@@ -845,17 +825,11 @@ export class ListEntreeComponent implements OnInit {
       });
     }
     else {
-      Swal.fire({
-        icon: 'error',
-        text: 'Erreur lors de l\'insertion des valeurs ....',
-      })
+      this.popupService.alertErrorForm('Erreur lors de l\'insertion des valeurs ....')
     }
 
     if(this.stockageImport.size == 0 ){
-      Swal.fire({
-        icon: 'error',
-        text: 'Aucune valeur n\'a été insérée, aucune correspondance n\'a été trouvée',
-      })
+      this.popupService.alertErrorForm('Aucune valeur n\'a été insérée, aucune correspondance n\'a été trouvée')
     }
 
   }
@@ -945,10 +919,7 @@ export class ListEntreeComponent implements OnInit {
               });
             }
             else {
-              Swal.fire({
-                icon: 'error',
-                text: 'Erreur lors de l\'insertion des valeurs ....',
-              })
+              this.popupService.alertErrorForm('Erreur lors de l\'insertion des valeurs ....')
         }
         await this.wait(350);
       });

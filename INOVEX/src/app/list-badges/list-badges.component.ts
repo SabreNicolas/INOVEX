@@ -4,6 +4,7 @@ import {badge} from "../../models/badge.model";
 import {badgeAffect} from "../../models/badgeAffect.model";
 import Swal from "sweetalert2";
 import {permisFeu} from "../../models/permisFeu.model";
+import { PopupService } from '../services/popup.service';
 
 @Component({
   selector: 'app-list-badges',
@@ -19,7 +20,7 @@ export class ListBadgesComponent implements OnInit {
   public listPermisFeu : permisFeu[];
 
 
-  constructor(private rondierService : rondierService) {
+  constructor(private rondierService : rondierService, private popupService : PopupService) {
     this.listBadgeLibre = [];
     this.listBadgeUser = [];
     this.listBadgeZone = [];
@@ -50,13 +51,10 @@ export class ListBadgesComponent implements OnInit {
   setActivation(badgeId : number, enabled : number){
     this.rondierService.updateEnabled(badgeId,enabled).subscribe((response)=>{
       if (response == "Mise à jour de l'activation OK"){
-        Swal.fire("L'état d'activation a été mis à jour !");
+        this.popupService.alertSuccessForm("L'état d'activation a été mis à jour !");
       }
       else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Erreur lors du changement de l\'état d\'activation ....',
-        })
+        this.popupService.alertErrorForm('Erreur lors du changement de l\'état d\'activation ....')
       }
     });
     this.ngOnInit();
@@ -65,13 +63,10 @@ export class ListBadgesComponent implements OnInit {
   resetAffectation(badgeId : number){
     this.rondierService.updateAffectLibre(badgeId).subscribe((response)=>{
       if (response == "Mise à jour de l'affectation OK"){
-        Swal.fire("L'affectation a été retiré avec succés !");
+        this.popupService.alertSuccessForm("L'affectation a été retiré avec succés !");
       }
       else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Erreur.... Impossible de retirer l\'affectation du badge',
-        })
+        this.popupService.alertErrorForm('Erreur.... Impossible de retirer l\'affectation du badge')
       }
     });
     this.ngOnInit();
@@ -92,30 +87,19 @@ export class ListBadgesComponent implements OnInit {
         //Appel api pour supprimer le badge
         this.rondierService.deleteBadge(badgeId).subscribe((response)=>{
           if (response == "Suppression du badge OK"){
-            Swal.fire("Le badge a été supprimé !");
+            this.popupService.alertSuccessForm("Le badge a été supprimé !");
             this.ngOnInit();
           }
           else {
-            Swal.fire({
-              icon: 'error',
-              text: 'Erreur.... Impossible de supprimer le badge du badge',
-            })
+            this.popupService.alertErrorForm('Erreur.... Impossible de supprimer le badge du badge')
           }
         });
         // Pop-up de supprssion effectuée
-        Swal.fire(
-          'Supprimé !',
-          'Votre élément a été supprimé.',
-          'success'
-        );
+        this.popupService.alertSuccessForm('Votre élément a été supprimé.' );
       } 
       else {
         // Pop-up d'annulation de la suppression
-        Swal.fire(
-          'Annulé',
-          'La suppression a été annulée.',
-          'error'
-        );
+        this.popupService.alertErrorForm('La suppression a été annulée.');
       }
     });
   }

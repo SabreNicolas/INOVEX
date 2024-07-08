@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {NgForm} from "@angular/forms";
-import Swal from "sweetalert2";
 import {rondierService} from "../services/rondier.service";
 import { user } from 'src/models/user.model';
 import { idUsineService } from '../services/idUsine.service';
+import { PopupService } from '../services/popup.service';
 
 @Component({
   selector: 'app-zone-controle',
@@ -21,7 +21,7 @@ export class ZoneControleComponent implements OnInit {
   public userLogged!: user;
   private idUsine: number;
 
-  constructor(private rondierService : rondierService, private idUsineService : idUsineService) {
+  constructor(private rondierService : rondierService, private popupService : PopupService, private idUsineService : idUsineService) {
     this.nom ="";
     this.commentaire="";
     this.nbfour = 0;
@@ -65,13 +65,10 @@ export class ZoneControleComponent implements OnInit {
 
     this.rondierService.createZone(this.nom,this.commentaire,this.four).subscribe((response)=>{
       if (response == "Création de la zone OK"){
-        Swal.fire("La zone de contrôle a bien été créé !");
+        this.popupService.alertSuccessForm("La zone de contrôle a bien été créé !");
       }
       else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Erreur lors de la création de la zone de contrôle ....',
-        })
+        this.popupService.alertSuccessForm('Erreur lors de la création de la zone de contrôle ....')
       }
     });
 

@@ -3,6 +3,7 @@ import { cahierQuartService } from '../services/cahierQuart.service';
 import {DatePipe, Location} from "@angular/common";
 import Swal from 'sweetalert2';
 import { ActivatedRoute, Router } from '@angular/router';
+import { PopupService } from '../services/popup.service';
 
 @Component({
   selector: 'app-actu',
@@ -19,7 +20,7 @@ export class ActuComponent implements OnInit {
   public description : string;
   public dupliquer : number;
 
-  constructor(public cahierQuartService : cahierQuartService, private datePipe : DatePipe,private route : ActivatedRoute, private location : Location) {
+  constructor(public cahierQuartService : cahierQuartService, private popupService : PopupService, private datePipe : DatePipe,private route : ActivatedRoute, private location : Location) {
     this.titre = "";
     this.importance = 0;
     this.idActu = 0;
@@ -68,7 +69,7 @@ export class ActuComponent implements OnInit {
       var dateDebString = this.datePipe.transform(this.dateDeb,'yyyy-MM-dd HH:mm');
     }
     else {
-      Swal.fire('Veuillez choisir une date de début','La saisie a été annulée.','error');
+      this.popupService.alertErrorForm('Veuillez choisir une date de début. La saisie a été annulée.');
       return;
     }
     //Il faut avoir renseigné une date de fin
@@ -76,17 +77,17 @@ export class ActuComponent implements OnInit {
       var dateFinString = this.datePipe.transform(this.dateFin,'yyyy-MM-dd HH:mm');
     }
     else {
-      Swal.fire('Veuillez choisir une date de Fin','La saisie a été annulée.','error');
+      this.popupService.alertErrorForm('Veuillez choisir une date de Fin. La saisie a été annulée.');
       return;
     }
     //Il faut avoir renseigné un titre
     if(this.titre == "" ){
-      Swal.fire('Veuillez renseigner le titre de l\'actualité','La saisie a été annulée.','error');
+      this.popupService.alertErrorForm('Veuillez renseigner le titre de l\'actualité. La saisie a été annulée.');
       return;
     }
     //On vérifie si les deux dates sont valides
     if(this.dateFin < this.dateDeb){
-      Swal.fire('Les dates ne correspondent pas','La saisie a été annulée.','error');
+      this.popupService.alertSuccessForm('Les dates ne correspondent pas. La saisie a été annulée.');
       return;
     }
     //Choix de la phrase à afficher en fonction du mode
@@ -104,7 +105,7 @@ export class ActuComponent implements OnInit {
           this.cahierQuartService.updateActu(this.titre,this.importance,dateDebString,dateFinString, this.idActu,this.description).subscribe((response)=>{
             if(response == "Modif de l'actu OK !"){
               this.cahierQuartService.historiqueActuUpdate(this.idActu).subscribe((response)=>{
-                Swal.fire({text : 'Atualité modifiée !', icon :'success'});
+                this.popupService.alertSuccessForm('Atualité modifiée !');
               })
             }
           });        
@@ -117,7 +118,7 @@ export class ActuComponent implements OnInit {
             if(response != undefined){
               this.idActu = response['data'][0]['Id'];
               this.cahierQuartService.historiqueActuCreate(this.idActu).subscribe((response)=>{
-                Swal.fire({text : 'Nouvelle actualité créée', icon :'success'});
+                this.popupService.alertSuccessForm('Nouvelle actualité créée');
               })
               this.location.back();
             }
@@ -126,7 +127,7 @@ export class ActuComponent implements OnInit {
       } 
       else {
         // Pop-up d'annulation de la suppression
-        Swal.fire('Annulé','La création a été annulée.','error');
+        this.popupService.alertErrorForm('La création a été annulée.');
       }
     });
     

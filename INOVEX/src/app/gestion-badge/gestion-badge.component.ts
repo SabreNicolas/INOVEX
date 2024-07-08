@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {rondierService} from "../services/rondier.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {NgForm} from "@angular/forms";
-import Swal from "sweetalert2";
 import {delay} from "rxjs/operators";
+import { PopupService } from '../services/popup.service';
 
 @Component({
   selector: 'app-gestion-badge',
@@ -17,7 +17,7 @@ export class GestionBadgeComponent implements OnInit {
   public badgeId : number = 0;
   public labelSelect : string;
 
-  constructor(private rondierService : rondierService, private route : ActivatedRoute, private router : Router) {
+  constructor(private rondierService : rondierService, private route : ActivatedRoute, private router : Router,private popupService : PopupService) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false; //permet de recharger le component au changement de paramètre
     this.listAffect = [];
     this.route.queryParams.subscribe(params => {
@@ -61,14 +61,11 @@ export class GestionBadgeComponent implements OnInit {
 
     this.rondierService.updateAffect(this.badgeId, form.value['affect'], typeAffect).subscribe((response)=>{
       if (response == "Mise à jour de l'affectation OK"){
-        Swal.fire("Badge affecté avec succés !");
+        this.popupService.alertSuccessForm("Badge affecté avec succés !");
         this.router.navigateByUrl('/admin/badges');
       }
       else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Erreur lors de l\'affectation du badge....',
-        })
+        this.popupService.alertSuccessForm('Erreur lors de l\'affectation du badge....')
       }
     });
 

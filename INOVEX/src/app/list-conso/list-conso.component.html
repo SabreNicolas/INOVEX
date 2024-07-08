@@ -39,7 +39,7 @@
             <tbody>
             <tr class="table-light" *ngFor="let con of listConsos">
                 <td class="fix"><strong>{{con.Name}}</strong></td>
-                <td class="fix">{{con.Unit}}</td>
+                <td class="fix"><span class="badge bg-dark">{{con.Unit}}</span></td>
                 <td *ngFor="let day of listDays">
                     <div class="flex">
                         <input type="text" id="{{con.Id}}-{{day}}" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">

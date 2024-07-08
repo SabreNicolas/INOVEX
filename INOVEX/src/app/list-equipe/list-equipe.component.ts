@@ -4,6 +4,7 @@ import { equipe } from "../../models/equipe.model";
 import Swal from 'sweetalert2';
 import { consigne } from 'src/models/consigne.model';
 import { rondierService } from '../services/rondier.service';
+import { PopupService } from '../services/popup.service';
 
 @Component({
   selector: 'app-list-equipe',
@@ -16,7 +17,7 @@ export class ListEquipeComponent implements OnInit {
   public consignes : consigne[];
   public dateDuJour : string;
 
-  constructor(public cahierQuartService : cahierQuartService, public rondierService : rondierService){
+  constructor(public cahierQuartService : cahierQuartService, public rondierService : rondierService, private popupService : PopupService){
     this.equipes = [];
     this.consignes = [];
     const date = new Date();
@@ -76,13 +77,13 @@ export class ListEquipeComponent implements OnInit {
           this.cahierQuartService.deleteAffectationEquipe(idEquipe).subscribe((response) => {
             this.cahierQuartService.deleteEquipe(idEquipe).subscribe((response) => {
               this.ngOnInit();
-              Swal.fire('Confirmé','La suprression a été effectuée.','success');
+              this.popupService.alertSuccessForm('La suprression a été effectuée.');
             })
           })
         } 
         else {
           // Pop-up d'annulation de la suppression
-          Swal.fire('Annulé','La suprression a été annulée.','error');
+          this.popupService.alertErrorForm('La suprression a été annulée.');
         }
       });
   }

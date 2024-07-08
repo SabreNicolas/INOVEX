@@ -66,16 +66,16 @@
                     <i class="fas fa-edit"></i>
                 </button>
             </td>
-            <td>{{pr.Unit}}
+            <td><span class="badge bg-dark">{{pr.Unit}}</span>
             </td>
             <td>
-                {{pr.Coefficient}}
+                <span class="badge rounded-pill bg-secondary">{{pr.Coefficient}}</span>
                 <button id="updateCoeff" (click)="updateCoeff(pr)" class="btn btn-light">
                     <i class="far fa-edit"></i>
                 </button>
             </td>
             <td>
-                <strong>{{pr.TAG}}</strong> 
+                <strong><span class="badge bg-success">{{pr.TAG}}</span></strong> 
                 <button *ngIf="pr.idElementRondier == null && pr.typeId != 1 && pr.typeId != 5" id="setTAG" (click)="setElement(pr,'TAG')" class="btn btn-light">
                     <i class="far fa-edit"></i>
                 </button>
@@ -85,7 +85,7 @@
             </td>
             
             <td >
-                <strong>{{pr.nomElementRondier}}</strong>
+                <strong><span class="badge bg-primary">{{pr.nomElementRondier}}</span></strong>
                 <button *ngIf="(pr.TAG == '' || pr.TAG == null) && pr.typeId != 1 && pr.typeId != 5" id="setRondier" (click)="setElementRondier(pr)" class="btn btn-light">
                     <i class="far fa-edit"></i>
                 </button>

@@ -9,6 +9,7 @@ import {rondierService} from "../services/rondier.service";
 import { zone } from 'src/models/zone.model';
 import Swal from 'sweetalert2';
 import { delay } from 'rxjs/operators';
+import { PopupService } from '../services/popup.service';
 declare var $ : any;
 
 @Component({
@@ -43,7 +44,7 @@ export class CalendrierComponent implements OnInit{
   public nomAction : string;
   public radioSelect : string;
 
-  constructor(private modal: NgbModal,private rondierService : rondierService, public cahierQuartService : cahierQuartService, private datePipe: DatePipe) {
+  constructor(private modal: NgbModal, private popupService : PopupService, private rondierService : rondierService, public cahierQuartService : cahierQuartService, private datePipe: DatePipe) {
     this.events = [];
     this.nomAction = "";
     this.radioSelect = "";
@@ -213,21 +214,18 @@ export class CalendrierComponent implements OnInit{
       if (result.isConfirmed) {
         this.cahierQuartService.deleteCalendrier(id).subscribe((response)=>{
           if (response == "Suppression de l'evenement du calendrier OK"){
-            Swal.fire("L'évènement a bien été supprimé !");
+            this.popupService.alertSuccessForm("L'évènement a bien été supprimé !");
             this.ngOnInit();
             close();
           }
           else {
-            Swal.fire({
-              icon: 'error',
-              text: "Erreur lors de la suppression de l'évènement....",
-            })
+            this.popupService.alertErrorForm("Erreur lors de la suppression de l'évènement....")
           }
         });
       }  
       else {
         // Pop-up d'annulation de la suppression
-        Swal.fire('Annulé','La suppression a été annulée.','error');
+        this.popupService.alertErrorForm('La suppression a été annulée.');
       }
     });
   }

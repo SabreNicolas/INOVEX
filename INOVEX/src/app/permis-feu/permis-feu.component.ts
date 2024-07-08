@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import {NgForm} from "@angular/forms";
 import {badge} from "../../models/badge.model";
 import {rondierService} from "../services/rondier.service";
-import Swal from "sweetalert2";
 import {DatePipe} from "@angular/common";
 import {ActivatedRoute, Router} from "@angular/router";
+import { PopupService } from '../services/popup.service';
 
 @Component({
   selector: 'app-permis-feu',
@@ -22,7 +22,7 @@ export class PermisFeuComponent implements OnInit {
   public zone : string;
   public numero : string;
 
-  constructor(private rondierService : rondierService, private datePipe : DatePipe, private route : ActivatedRoute, private router : Router) {
+  constructor(private rondierService : rondierService,private popupService : PopupService, private datePipe : DatePipe, private route : ActivatedRoute, private router : Router) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false; //permet de recharger le component au changement de paramètre
     this.listBadge = [];
     this.dateHeureDeb = "";
@@ -57,13 +57,10 @@ export class PermisFeuComponent implements OnInit {
     }
     this.rondierService.createPermisFeu(this.dateHeureDeb,this.dateHeureFinFormatBDD,this.badgeId,this.zone,this.isPermisFeu,this.numero).subscribe((response)=>{
       if (response == "Création du permis de feu OK"){
-        Swal.fire("Le permis de feu/zone de consignation a bien été créé !");
+        this.popupService.alertSuccessForm("Le permis de feu/zone de consignation a bien été créé !");
       }
       else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Erreur lors de la création du permis de feu/zone de consignation ....',
-        })
+        this.popupService.alertErrorForm('Erreur lors de la création du permis de feu/zone de consignation ....')
       }
     });
   }

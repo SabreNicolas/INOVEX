@@ -3,6 +3,7 @@ import { cahierQuartService } from '../services/cahierQuart.service';
 import {DatePipe, Location} from "@angular/common";
 import Swal from 'sweetalert2';
 import { ActivatedRoute, Router } from '@angular/router';
+import { PopupService } from '../services/popup.service';
 
 @Component({
   selector: 'app-liens-externes',
@@ -15,7 +16,7 @@ export class LiensExternesComponent {
   public url : string;
   public idLien : number;
 
-  constructor(public cahierQuartService : cahierQuartService, private datePipe : DatePipe,private route : ActivatedRoute, private location : Location) {
+  constructor(public cahierQuartService : cahierQuartService, private popupService : PopupService, private datePipe : DatePipe,private route : ActivatedRoute, private location : Location) {
     this.nom = "";
     this.idLien = 0;
     this.url = "";
@@ -47,12 +48,12 @@ export class LiensExternesComponent {
   newLienExterne(){
     //Il faut avoir renseigné un nom
     if(this.nom == "" ){
-      Swal.fire('Veuillez renseigner le nom du fichier correspondant au lien','La saisie a été annulée.','error');
+      this.popupService.alertErrorForm('Veuillez renseigner le nom du fichier correspondant au lien. La saisie a été annulée.');
       return;
     }
     //Il faut avoir renseigné un url
     if(this.url == "" ){
-      Swal.fire('Veuillez renseigner l\'url du fichier','La saisie a été annulée.','error');
+      this.popupService.alertErrorForm('Veuillez renseigner l\'url du fichier. La saisie a été annulée.');
       return;
     }
     //Choix de la phrase à afficher en fonction du mode
@@ -68,7 +69,7 @@ export class LiensExternesComponent {
         if (this.idLien != 0){
           this.cahierQuartService.updateLienExterne(this.nom,this.url,this.idLien).subscribe((response)=>{
             if(response == "Modif du lien OK !"){
-              Swal.fire({text : 'Lien modifié !', icon :'success'});
+              this.popupService.alertSuccessForm('Lien modifié !');
             }
           });        
         }
@@ -77,7 +78,7 @@ export class LiensExternesComponent {
           this.cahierQuartService.newLienExterne(this.nom,this.url).subscribe((response)=>{
             console.log(response)
             if(response == "Création du lien OK !"){
-              Swal.fire({text : 'Nouveau lien créé', icon :'success'});
+              this.popupService.alertSuccessForm('Nouveau lien créé');
               this.location.back();
             }
           });
@@ -85,7 +86,7 @@ export class LiensExternesComponent {
       } 
       else {
         // Pop-up d'annulation de la création
-        Swal.fire('Annulé','La création a été annulée.','error');
+        this.popupService.alertErrorForm('La création a été annulée.');
       }
     });
   }

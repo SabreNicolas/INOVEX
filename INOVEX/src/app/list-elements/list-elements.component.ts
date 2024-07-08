@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {zone} from "../../models/zone.model";
 import {rondierService} from "../services/rondier.service";
 import {element} from "../../models/element.model";
-import Swal from "sweetalert2";
+import { PopupService } from '../services/popup.service';
 
 @Component({
   selector: 'app-list-elements',
@@ -15,7 +15,7 @@ export class ListElementsComponent implements OnInit {
   public zoneId : number;
   public listElements : element[];
 
-  constructor(private rondierService : rondierService) {
+  constructor(private rondierService : rondierService, private popupService : PopupService) {
     this.listZone = [];
     this.zoneId = 0;
     this.listElements = [];
@@ -47,13 +47,10 @@ export class ListElementsComponent implements OnInit {
   deleteElement(id : number){
     this.rondierService.deleteElement(id).subscribe((response)=>{
       if (response == "Suppression de l'élément OK"){
-        Swal.fire("L'élément de contrôle a bien été supprimé !");
+        this.popupService.alertSuccessForm("L'élément de contrôle a bien été supprimé !");
       }
       else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Erreur lors de la suppression de l\'élément de contrôle....',
-        })
+        this.popupService.alertSuccessForm('Erreur lors de la suppression de l\'élément de contrôle....')
       }
     });
     this.ngOnInit();

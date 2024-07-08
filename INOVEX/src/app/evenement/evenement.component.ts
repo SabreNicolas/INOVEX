@@ -7,6 +7,7 @@ import { consigne } from 'src/models/consigne.model';
 declare var $ : any;
 import {rondierService} from "../services/rondier.service";
 import { AltairService } from '../services/altair.service';
+import { PopupService } from '../services/popup.service';
 
 @Component({
   selector: 'app-evenement',
@@ -35,7 +36,7 @@ export class EvenementComponent implements OnInit {
   public dupliquer : number;
   private token: string;
 
-  constructor(public altairService : AltairService,public cahierQuartService : cahierQuartService, private rondierService : rondierService, private datePipe : DatePipe,private route : ActivatedRoute, private location : Location) {
+  constructor(public altairService : AltairService, private popupService : PopupService, public cahierQuartService : cahierQuartService, private rondierService : rondierService, private datePipe : DatePipe,private route : ActivatedRoute, private location : Location) {
     this.titre = "";
     this.importance = 0;
     this.idEvenement = 0;
@@ -172,7 +173,7 @@ export class EvenementComponent implements OnInit {
       var dateDebString = this.datePipe.transform(this.dateDeb,'yyyy-MM-dd HH:mm');
     }
     else {
-      Swal.fire('Veuillez choisir une date de début','La saisie a été annulée.','error');
+      this.popupService.alertErrorForm('Veuillez choisir une date de début. La saisie a été annulée.');
       return;
     }
     //Il faut avoir renseigné une date de fin
@@ -180,17 +181,17 @@ export class EvenementComponent implements OnInit {
       var dateFinString = this.datePipe.transform(this.dateFin,'yyyy-MM-dd HH:mm');
     }
     else {
-      Swal.fire('Veuillez choisir une date de Fin','La saisie a été annulée.','error');
+      this.popupService.alertErrorForm('Veuillez choisir une date de Fin. La saisie a été annulée.');
       return;
     }
     //Il faut avoir renseigné un nom
     if(this.titre == "" ){
-      Swal.fire('Veuillez renseigner le titre de l\'actualité','La saisie a été annulée.','error');
+      this.popupService.alertErrorForm('Veuillez renseigner le titre de l\'actualité. La saisie a été annulée.');
       return;
     }
     //Il faut que les deux dates soient cohérentes
     if(this.dateFin < this.dateDeb){
-      Swal.fire('Les dates ne correspondent pas','La saisie a été annulée.','error');
+      this.popupService.alertErrorForm('Les dates ne correspondent pas. La saisie a été annulée.');
       return;
     }
     //Si la case demande de travaux est choché on la met a un pour l'insertion sinon elle est a 'true'
@@ -227,7 +228,7 @@ export class EvenementComponent implements OnInit {
           this.cahierQuartService.updateEvenement(this.titre,this.importance,dateDebString,dateFinString, this.groupementGMAO, this.equipementGMAO, this.cause,this.description, this.consigne, this.demandeTravaux, this.idEvenement).subscribe((response)=>{
             if(response != undefined){
               this.cahierQuartService.historiqueEvenementUpdate(this.idEvenement).subscribe((response)=>{
-                Swal.fire({text : 'Evènement modifiée !', icon :'success'});
+                this.popupService.alertSuccessForm('Evènement modifiée !');
                 this.location.back();
               })
             }
@@ -238,7 +239,7 @@ export class EvenementComponent implements OnInit {
           //@ts-ignore
           this.cahierQuartService.newEvenement(this.titre,this.fileToUpload,this.importance,dateDebString,dateFinString, this.groupementGMAO, this.equipementGMAO, this.cause,this.description, this.consigne, this.demandeTravaux).subscribe((response)=>{
             if(response != undefined){
-              Swal.fire({text : 'Nouvel évènement créée', icon :'success'});
+              this.popupService.alertSuccessForm('Nouvel évènement créée');
               this.idEvenement = response['data'][0]['Id'];
               this.cahierQuartService.historiqueEvenementCreate(this.idEvenement).subscribe((response)=>{
                 if(this.idAnomalie > 0){
@@ -255,7 +256,7 @@ export class EvenementComponent implements OnInit {
       } 
       else {
         // Pop-up d'annulation de la suppression
-        Swal.fire('Annulé','La création a été annulée.','error');
+        this.popupService.alertErrorForm('La création a été annulée.');
       }
     });
     
@@ -279,7 +280,7 @@ export class EvenementComponent implements OnInit {
       reader.onload = e => this.imgSrc = reader.result;
       reader.readAsDataURL(file);
     } 
-    else Swal.fire('Aucun fichier choisi....')
+    else this.popupService.alertErrorForm('Aucun fichier choisi....')
   }
 
   goBack(){

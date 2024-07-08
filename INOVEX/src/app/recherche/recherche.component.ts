@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { format, parseISO } from 'date-fns';
-import Swal from 'sweetalert2';
 import { cahierQuartService } from '../services/cahierQuart.service';
 import * as XLSX from 'xlsx';
+import { PopupService } from '../services/popup.service';
 
 @Component({
   selector: 'app-recherche',
@@ -25,7 +25,7 @@ export class RechercheComponent implements OnInit {
   public groupementGMAO : string;
   public importance : number;
 
-  constructor(public cahierQuartService : cahierQuartService,){
+  constructor(public cahierQuartService : cahierQuartService, private popupService : PopupService){
 
     this.evenement = false;
     this.consigne = false;
@@ -54,7 +54,7 @@ export class RechercheComponent implements OnInit {
       var dateDebString = format(parseISO(this.dateDeb),'yyyy-MM-dd HH:mm');
     }
     else {
-      Swal.fire('Veuillez choisir une date de début','La saisie a été annulée.','error');
+      this.popupService.alertErrorForm('Veuillez choisir une date de début. La saisie a été annulée.');
       return;
     }
 
@@ -63,13 +63,13 @@ export class RechercheComponent implements OnInit {
       var dateFinString = format(parseISO(this.dateFin),'yyyy-MM-dd HH:mm');
     }
     else {
-      Swal.fire('Veuillez choisir une date de Fin','La saisie a été annulée.','error');
+      this.popupService.alertErrorForm('Veuillez choisir une date de Fin. La saisie a été annulée.');
       return;
     }
 
     //Il faut des dates cohérentes
     if(this.dateFin < this.dateDeb){
-      Swal.fire('Les dates ne correspondent pas','La saisie a été annulée.','error');
+      this.popupService.alertErrorForm('Les dates ne correspondent pas. La saisie a été annulée.');
       return;
     }
     

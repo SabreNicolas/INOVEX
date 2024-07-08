@@ -34,7 +34,7 @@
             <tr class="table-light" *ngFor="let s of listReactifsAvecCorrespondance; let i = index">
                <!-- <td><strong>{{s.Name}}</strong> -->
                <td>
-                   {{s.productImport}}
+                    <span style="font-size: 15px;" class="badge bg-primary">{{s.productImport}}</span>
                    <button class="btn btn-light" (click)="editionNomImport(s.Id, s.productImport)">
                      <i class="fas fa-edit"></i>
                    </button>

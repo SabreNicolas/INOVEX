@@ -1,10 +1,13 @@
 import { Injectable } from "@angular/core";
-import Swal from 'sweetalert2';
 import {NgForm} from "@angular/forms";
+import { PopupService } from "./popup.service";
 
 @Injectable()
 export class dateService {
 
+    constructor(private popupService : PopupService){
+
+    }
     //récupérer les jours de la période
     getDays(start : Date, end : Date) {
         for(var arr=[],dt=new Date(start); dt<=end; dt.setDate(dt.getDate()+1)){
@@ -21,10 +24,7 @@ export class dateService {
     mauvaiseEntreeDate(form: NgForm) {
       form.controls['dateFin'].reset();
       form.value['dateFin'] = '';
-      Swal.fire({
-        icon: 'error',
-        text: 'La date de Fin est inférieure à la date de Départ !',
-      })
+      this.popupService.alertErrorForm('La date de Fin est inférieure à la date de Départ !')
     }
 
     //changer les dates pour saisir les 2 derniers jours

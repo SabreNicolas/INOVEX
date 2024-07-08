@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { cahierQuartService } from '../services/cahierQuart.service';
 import {Actualite} from "../../models/actualite.model";
-import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-list-actus',

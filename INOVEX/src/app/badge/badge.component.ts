@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {NgForm} from "@angular/forms";
 import {rondierService} from "../services/rondier.service";
-import Swal from "sweetalert2";
 import {permisFeu} from "../../models/permisFeu.model";
+import { PopupService } from '../services/popup.service';
 
 @Component({
   selector: 'app-badge',
@@ -13,7 +13,7 @@ export class BadgeComponent implements OnInit {
 
   private uid : string;
 
-  constructor(private rondierService : rondierService) {
+  constructor(private rondierService : rondierService, private popupService : PopupService) {
     this.uid = "";
   }
 
@@ -27,14 +27,11 @@ export class BadgeComponent implements OnInit {
       if (response == "Création du badge OK"){
         this.rondierService.lastIdBadge().subscribe((response)=>{
           // @ts-ignore
-          Swal.fire("Badge créé avec succés, il porte le numéro : "+response.data[0].Id);
+          this.popupService.alertSuccessForm("Badge créé avec succés, il porte le numéro : "+response.data[0].Id,10000);
         });
       }
       else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Erreur lors de la création du badge .... Identifiant déjà utilisé',
-        })
+        this.popupService.alertSuccessForm('Erreur lors de la création du badge .... Identifiant déjà utilisé')
       }
     });
 
