@@ -15,7 +15,7 @@
                 <th scope="col">Equipement GMAO</th>
                 <th scope="col">Date de Début de validité</th>
                 <th scope="col">Date de Fin de validité</th>
-                <th scope="col">Demande de travaux</th>
+                <th scope="col">Demande d'intervention</th>
                 <th scope="col">Création de consigne</th>
                 <th scope="col">Photo</th>
                 <th scope="col">Dupliquer</th>
@@ -32,9 +32,7 @@
                 <td>{{evenement.equipementGMAO}}</td>
                 <td>{{evenement.date_heure_debut}}</td>
                 <td>{{evenement.date_heure_fin}}</td>
-                <td *ngIf="evenement.demande_travaux == 1">Travaux pré-demandés</td>
-                <td *ngIf="evenement.demande_travaux == 0">Aucun</td>
-                <td *ngIf="evenement.demande_travaux == 2">Travaux demandés</td>
+                <td>{{evenement.demande_travaux}}</td>
                 <td *ngIf="evenement.consigne == 1">Crée</td>
                 <td *ngIf="evenement.consigne == 0">Aucune</td>
                 <td><img src="{{evenement.url}}" alt=""></td>

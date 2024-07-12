@@ -25,7 +25,7 @@ export class AltairService {
   //Créer une nouvelle équipe
   getEquipements(token:string){
     let requete = this.ip+"/rest/refdata/all/equipment/list/EQUIPMENT"
-            
+    //enlever status rebut
     const requestOptions = new HttpHeaders({
       'Authorization': 'Bearer '+token,
       'Content-Type': 'application/json'
@@ -125,6 +125,9 @@ export class AltairService {
         break;
       case 29:
         break;
+      case 30:
+        site="CALCE"
+        break;
     }
     var payload = "{\r\n  \"username\":\"nsabre\",\r\n  \"password\":\"nsabre\",\r\n  \"site\":\""+site+"\",\r\n  \"passwordprehashed\": false\r\n\r\n}"
 
@@ -132,8 +135,36 @@ export class AltairService {
   }
 
   //Créer une nouvelle équipe
-  createDI(token:string, description: string, fkcodelocalisation:string, fkcodeequipment:string, commentaire:string,priority:string,type:string,creationdate:string,createdby:string,fkcodemask:string){
-    let requete = this.ip+"/rest/system/login"
+  createDI(token:string, description: string, fkcodelocalisation:string, fkcodeequipment:string, failurecode:string, priority:number, wrm1:string){
+    let requete = this.ip+"/rest/work/all/workrequest/create/WORKREQUEST"
+            
+    const requestOptions = new HttpHeaders({
+      'Authorization': 'Bearer '+token,
+      'Content-Type': 'application/json',
+      'accept': 'application/json'
+    });
+
+    var headers = {
+      headers : requestOptions
+    }
+
+    var url = requete
+
+    if(priority == 0){
+      var prio = "BASSE"
+    }
+    else if(priority == 1){
+      var prio = "MOYENNE"
+    }
+    else var prio = "HAUTE"
+    var payload = "{\r\n  \"description\": \""+description+"\",\r\n  \"fkcodelocation\": \""+fkcodelocalisation+"\",\r\n  \"fkcodeequipment\": \""+fkcodeequipment+"\",\r\n  \"wrm1\": \""+wrm1+"\",\r\n  \"priority\": \""+prio+"\",\r\n  \"failurecode\": \""+failurecode+"\"\r\n}"
+ 
+    return this.http.post<any>(url,payload,headers);
+  }
+
+  //Créer une nouvelle équipe
+  getMaintenance(token:string){
+    let requete = this.ip+"/rest/work/all/workorder/list/WORKORDER"
             
     const requestOptions = new HttpHeaders({
       'Authorization': 'Bearer '+token,
@@ -146,9 +177,6 @@ export class AltairService {
 
     var url = requete
 
-    var payload = "{\r\n  \"description\": \""+description+"\",\r\n  \"fkcodelocalisation\": \""+fkcodelocalisation+"\",\r\n  \"fkcodeequipment\": \""+fkcodeequipment+"\",\r\n  \"wrm1\": \""+commentaire+"\",\r\n  \"priority\": \""+priority+"\",\r\n  \"type\": \""+type+"\",\r\n \"creationdate\": \""+creationdate+"\",\r\n  \"createdby\": \""+createdby+"\",\r\n  \"fkcodemask\": \""+fkcodemask+"\"\r\n}"
-  
-    return this.http.post<any>(url,payload,headers);
+    return this.http.get<any>(url,headers);
   }
-
 }

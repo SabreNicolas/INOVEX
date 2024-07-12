@@ -82,7 +82,7 @@
 <br /><br /><br />
 
 
-<div id="actualiser_calendrier">
+<!-- <div id="actualiser_calendrier">
   <div
     class="btn btn-primary"
     mwlCalendarToday
@@ -91,7 +91,7 @@
       Actualiser    <img src="assets/refresh.png">
   </div>
   
-</div>
+</div> -->
 
       
 <div class="row text-center">
@@ -203,13 +203,18 @@
   <div class="modal-body">
     <div>
       Du <strong>{{modalData?.dateDeb}}</strong> au <strong> {{modalData?.dateFin}} </strong>
+      <br><br>
+      <div *ngFor="let ronde of modalData?.ronde">
+        Zone : <strong>{{ronde.nom}}</strong> 
+        <button type="button" class="btn btn-outline-danger" (click)="deleteEvenement(ronde.id);close()">
+          <i class="fas fa-trash"></i>
+        </button>
+      </div>
     </div>
   </div>
   <div class="modal-footer">
     
-    <button type="button" class="btn btn-outline-secondary" (click)="deleteEvenement(modalData?.event?.id)">
-      Supprimer l'évènement
-    </button>
+    
     <button type="button" class="btn btn-outline-secondary" (click)="close()">
       OK
     </button>

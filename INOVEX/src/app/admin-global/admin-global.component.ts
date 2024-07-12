@@ -96,7 +96,6 @@ export class AdminGlobalComponent implements OnInit {
       var dataToAdd: any[] = [];
       //@ts-ignore
       this.listZones =response.BadgeAndElementsOfZone
-      console.log(response)
         for await (let zone of this.listZones){
           dataToAdd.push(
             {text: zone.zone, style: 'tableHeader',fontSize: 8,color:'#007FFF', colSpan: 4, alignment: 'center',margin: [0,0,0,0]},

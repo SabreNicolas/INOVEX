@@ -123,14 +123,16 @@ export class EvenementComponent implements OnInit {
         this.imgSrc = response.data[0]['photo']
       })
     }
-
     this.altairService.login().subscribe((response)=>{
       this.token = response.token
 
       this.altairService.getEquipements(this.token).subscribe((response)=>{
-        this.listEquipementGMAO= response.equipment;
+        for(let equipment of response.equipment){
+          if(equipment.status != "REBUT"){
+            this.listEquipementGMAO.push(equipment)
+          }
+        }
         this.listEquipementGMAOFiltre = this.listEquipementGMAO;
-
         for(let equipement of this.listEquipementGMAO){
           this.listGroupementsGMAOMap.set(equipement.fkcodelocation,equipement.fkcodelocation)
         }
@@ -168,6 +170,7 @@ export class EvenementComponent implements OnInit {
 
   //Création ou édition d'un évènement
   newEvenement(){
+    this.dateFin = this.dateDeb
     //Il faut avoir renseigné une date de début
     if(this.dateDeb != undefined){
       var dateDebString = this.datePipe.transform(this.dateDeb,'yyyy-MM-dd HH:mm');
@@ -236,20 +239,40 @@ export class EvenementComponent implements OnInit {
         }
         //Sinon on créé 
         else{
+          if(this.demandeTravaux == 1){
+            this.altairService.createDI(this.token,this.titre, this.groupementGMAO, this.equipementGMAO.split('---')[0], this.cause, this.importance, this.description).subscribe((response) =>{
+              //@ts-ignore
+              this.cahierQuartService.newEvenement(this.titre,this.fileToUpload,this.importance,dateDebString,dateFinString, this.groupementGMAO, this.equipementGMAO, this.cause,this.description, this.consigne, response.codeworkrequest).subscribe((response)=>{
+                if(response != undefined){
+                  this.popupService.alertSuccessForm('Nouvel évènement créée');
+                  this.idEvenement = response['data'][0]['Id'];
+                  
+                  console.log(response)
+                  this.cahierQuartService.historiqueEvenementCreate(this.idEvenement).subscribe((response)=>{
+                    if(this.idAnomalie > 0){
+                      this.rondierService.updateAnomalieSetEvenement(this.idAnomalie).subscribe((response)=>{
+                        this.location.back();
+                      })
+                    } 
+                    else this.location.back(); 
+                  })        
+                }
+              });
+            })
+          }
           //@ts-ignore
           this.cahierQuartService.newEvenement(this.titre,this.fileToUpload,this.importance,dateDebString,dateFinString, this.groupementGMAO, this.equipementGMAO, this.cause,this.description, this.consigne, this.demandeTravaux).subscribe((response)=>{
             if(response != undefined){
               this.popupService.alertSuccessForm('Nouvel évènement créée');
-              this.idEvenement = response['data'][0]['Id'];
+              this.idEvenement = response['data'][0]['Id'];    
               this.cahierQuartService.historiqueEvenementCreate(this.idEvenement).subscribe((response)=>{
-                if(this.idAnomalie > 0){
+                 if(this.idAnomalie > 0){
                   this.rondierService.updateAnomalieSetEvenement(this.idAnomalie).subscribe((response)=>{
                     this.location.back();
                   })
                 } 
                 else this.location.back(); 
-              })
-                          
+              })        
             }
           });
         }  

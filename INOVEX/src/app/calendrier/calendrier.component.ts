@@ -30,6 +30,7 @@ export class CalendrierComponent implements OnInit{
     event: CalendarEvent;
     dateDeb : any;
     dateFin : any;
+    ronde : any;
   } | undefined;
   public refresh: Subject<any> = new Subject();
   public events: CalendarEvent[];
@@ -56,15 +57,23 @@ export class CalendrierComponent implements OnInit{
     this.colors = {
       red: {
         primary: '#ad2121',
-        secondary: '#FAE3E3'
+        secondary: '#FAE3E3',
+        secondaryText:'black'
       },
       blue: {
         primary: '#1e90ff',
-        secondary: '#D1E8FF'
+        secondary: '#D1E8FF',
+        secondaryText:'black'
       },
       yellow: {
         primary: '#e3bc08',
-        secondary: '#FDF1BA'
+        secondary: '#FDF1BA',
+        secondaryText:'black'
+      },
+      green: {
+        primary: "#01D758",
+        secondary: "#87E990",
+        secondaryText:'black'
       }
     };
 
@@ -77,37 +86,57 @@ export class CalendrierComponent implements OnInit{
     $('#CreationRondeAction').hide();
     $('#CreationRonde').hide();
     $('#CreationAction').hide();
-
+    
     //On vide le tableau d'évènement
     this.events = [];
 
     //On récupère les zones du calendrier
     this.cahierQuartService.getAllZonesCalendrier().subscribe((response)=>{
       //On parcours les zones pour les ajouter une par une dans le tableau d'évènement
-      for(const event of response.data){
-        if(event.date_heure_debut.split('T')[1] == '05:00:00.000Z'){
+      var tabRondes : any[] = [];
+      tabRondes.push(response.data[0])
+      for(var i =1 ; i < response.data.length; i++){
+        var event = response.data[i];
+        var eventP = response.data[i-1];
+        if(eventP.date_heure_debut.split('T')[1] == '05:00:00.000Z'){
           var color = '#71C1F9'
+          var texte = "Quart du matin"
         }
-        else if((event.date_heure_debut.split('T')[1] == '13:00:00.000Z')){
+        else if((eventP.date_heure_debut.split('T')[1] == '13:00:00.000Z')){
           var color = '#73FF97'
+          var texte = "Quart de l'après-midi"
         }
         else {
           var color = '#F1FF6A'
+          var texte = "Quart de nuit"
         }
-        this.events.push(
-          {
-            start: new Date(event.date_heure_debut.split('-')[0],event.date_heure_debut.split('-')[1]- 1, event.date_heure_debut.split('-')[2].split('T')[0] ,event.date_heure_debut.split('-')[2].split('T')[1].split(':')[0],0,0),
-            end: new Date(event.date_heure_fin.split('-')[0],event.date_heure_fin.split('-')[1]- 1, event.date_heure_fin.split('-')[2].split('T')[0] ,event.date_heure_fin.split('-')[2].split('T')[1].split(':')[0],0,0),
-            title: event.nom,
-            allDay: false,
-            color: {
-              primary: '#1e90ff',
-              secondary: color
-            },
-            id : event.id
-          }
-        )
+
+        if(eventP.date_heure_debut == event.date_heure_debut){
+          tabRondes.push(event);
+        }
+        else{
+          this.events.push(
+            {
+              start: new Date(eventP.date_heure_debut.split('-')[0],eventP.date_heure_debut.split('-')[1]- 1, eventP.date_heure_debut.split('-')[2].split('T')[0] ,eventP.date_heure_debut.split('-')[2].split('T')[1].split(':')[0],0,0),
+              end: new Date(eventP.date_heure_fin.split('-')[0],eventP.date_heure_fin.split('-')[1]- 1, eventP.date_heure_fin.split('-')[2].split('T')[0] ,eventP.date_heure_fin.split('-')[2].split('T')[1].split(':')[0],0,0),
+              title: texte,
+              allDay: false,
+              color: {
+                primary: '#1e90ff',
+                secondary: color,
+                secondaryText:'black'
+              },
+              id : event.id,
+              ronde : tabRondes
+            }
+          )
+          tabRondes = [];
+          tabRondes.push(event)
+        }
+        
       }
+      this.setView(CalendarView.Day)
+      // this.setView(CalendarView.Week)
     })
 
     //On récupère les actions du calendrier
@@ -115,13 +144,13 @@ export class CalendrierComponent implements OnInit{
       //On parcours les actions pour les ajouter une par une dans le tableau d'évènement
       for(const event of response.data){
         if(event.date_heure_debut.split('T')[1] == '05:00:00.000Z'){
-          var color = '#27A2F7'
+          var color = this.colors.blue
         }
         else if((event.date_heure_debut.split('T')[1] == '13:00:00.000Z')){
-          var color = '#35D55E'
+          var color = this.colors.green
         }
         else {
-          var color = '#D3E51D'
+          var color = this.colors.yellow
         }
         this.events.push(
           {
@@ -131,14 +160,12 @@ export class CalendrierComponent implements OnInit{
             end: new Date(event.date_heure_fin.split('-')[0],event.date_heure_fin.split('-')[1]- 1, event.date_heure_fin.split('-')[2].split('T')[0] ,event.date_heure_fin.split('-')[2].split('T')[1].split(':')[0],0,0),
             title: event.nom,
             allDay: false,
-            color: {
-              primary: '#ff5e5e',
-              secondary: color
-            },
-            id : event.id
+            color: color,
+            id : event.id,
           }
         )
       }
+      this.setView(CalendarView.Week)
     })
   
     //On récupère la liste des zones d'une usine pour la création d'évènement du calendrier
@@ -195,8 +222,10 @@ export class CalendrierComponent implements OnInit{
                       'nom': event.title, 
                       'event' :event,
                       'dateDeb' : dateDeb,
-                      'dateFin' : dateFin
+                      'dateFin' : dateFin,
+                      'ronde' : event.ronde
                     };
+    console.log(this.modalData)                    
     this.modal.open(this.modalContent, { size: 'lg' });
   }
 
@@ -216,7 +245,6 @@ export class CalendrierComponent implements OnInit{
           if (response == "Suppression de l'evenement du calendrier OK"){
             this.popupService.alertSuccessForm("L'évènement a bien été supprimé !");
             this.ngOnInit();
-            close();
           }
           else {
             this.popupService.alertErrorForm("Erreur lors de la suppression de l'évènement....")

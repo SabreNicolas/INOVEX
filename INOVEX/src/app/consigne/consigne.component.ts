@@ -128,7 +128,7 @@ export class ConsigneComponent implements OnInit {
   resetFields(form: NgForm){
     form.controls['desc'].reset();
     form.controls['dateFin'].reset();
-    form.controls['type'].reset();
+    // form.controls['type'].reset();
     form.controls['dateDebut'].reset();
   }
 

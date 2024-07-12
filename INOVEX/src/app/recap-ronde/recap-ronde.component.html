@@ -146,9 +146,7 @@
                     <td>{{evenement.cause}}</td>
                     <td>{{evenement.date_heure_debut}}</td>
                     <td>{{evenement.date_heure_fin}}</td>
-                    <td *ngIf="evenement.demande_travaux == 1">Travaux pré-demandés</td>
-                    <td *ngIf="evenement.demande_travaux == 0">Aucune</td>
-                    <td *ngIf="evenement.demande_travaux == 2">Travaux demandés</td>
+                    <td>{{evenement.demande_travaux}}</td>
                     <td>
                         <a routerLink="../../{{evenement.url}}">
                             <button class="btn btn-success">
