@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -99,6 +99,15 @@ import { LiensExternesComponent } from './liens-externes/liens-externes.componen
 import { RecapRondePrecedenteComponent } from './recap-ronde-precedente/recap-ronde-precedente.component';
 import { RecapRondeListeComponent } from './recap-ronde-liste/recap-ronde-liste.component';
 import { PopupService } from './services/popup.service';
+import { MatCardModule } from '@angular/material/card';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatTableModule } from '@angular/material/table';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatInputModule } from '@angular/material/input';
 
 
 registerLocaleData(localeFr, 'fr');
@@ -198,6 +207,18 @@ class CustomDateFormatter extends CalendarNativeDateFormatter{
     CommonModule,
     FormsModule,
     NgbModalModule,
+    MatCardModule,
+    MatButtonModule,
+    CommonModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatTableModule,
+    MatTabsModule,
+    MatSelectModule,
+    MatDividerModule,
+    MatInputModule,
     FlatpickrModule.forRoot(),
     CalendarModule.forRoot({
       provide: DateAdapter,

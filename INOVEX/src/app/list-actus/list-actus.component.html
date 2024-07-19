@@ -1,8 +1,64 @@
+
+<ng-template let-data #myCreateActuDialog>
+    <h1 class="creation" style="text-align: center;">Création d'une actualité :</h1>
+
+    <mat-dialog-content>
+        <div class="row">
+            <div>
+        
+                <div class="form-group">
+                    <label for="desc">Titre : * </label>
+                    <input required type="text" id="titre" class="form-control" placeholder="Titre" name="titre" ngModel [(ngModel)]="titre">
+                </div>
+        
+                <div class="form-group">
+                    <label>Importance : *</label>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <select required class="form-select" aria-label=".form-select-sm example" name="importance" ngModel [(ngModel)]="importance">
+                                    <option value=0 style="background-color: rgb(81, 196, 81);">Faible</option>
+                                    <option value=1 style="background-color: rgb(245, 171, 35);">Neutre</option>
+                                    <option value=2 style="background-color: rgb(248, 75, 75);">Elevée</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="form-group">
+                    <label>Début date validité : *</label>
+                    <input required type="datetime-local" id="dateDebut" class="form-control" placeholder="Date de début de validité" name="dateDebut" ngModel [(ngModel)]="dateDeb">
+                </div>
+                    
+                <div class="form-group">
+                    <label>Fin date validité : *</label>
+                    <input required type="datetime-local" id="dateFin" class="form-control" placeholder="Date de validité" name="dateFin" ngModel [(ngModel)]="dateFin">
+                </div>
+        
+                <div class="form-group">
+                    <label for="desc">Description : </label>
+                    <textarea required name="description" id="description" class="form-control" cols="30" rows="5" ngModel  placeholder="Description" [(ngModel)]="description"> </textarea>
+                    <!-- <input required type="text" id="description" class="form-control" placeholder="Description" name="description" ngModel [(ngModel)]="description"> -->
+                </div>
+        
+                <p style="font-size: smaller; color: grey">* : Obligatoire</p>
+        
+                <div class="form-group">
+                    <button class="btn btn-success btn-lg" (click)="newActu()">Valider</button>
+                    <button [mat-dialog-close]="true" class="btn btn-danger btn-lg">Annuler</button>
+                </div>
+            </div>
+        </div>
+    </mat-dialog-content>
+</ng-template>
+
 <div *ngIf="listActu">
 
-    <a routerLink="../newActu" role="button" class="btn btn-primary" id="create">
+    <a (click)="ouvrirDialogCreerActu()" role="button" class="btn btn-primary" id="create">
         Créer une actualité
     </a>
+    
     <div class="table-style">
         <!--table des consignes-->
         <table class="table tableFixed">
@@ -34,31 +90,17 @@
                     </button>
                 </td>
                 <td>
-                    <a  routerLink="/cahierQuart/newActu" [queryParams]="{idActu: actu.id, dupliquer : 1}" > 
-                        <button class="btn btn btn-light edition">
-                            <i class="far fa-copy"></i>
-                        </button>
-                    </a>
+                    <button class="btn btn btn-light edition" (click)="ouvrirDialogModifActu(actu.id,1)">
+                        <i class="far fa-copy"></i>
+                    </button>
                 </td>
                 <td>
-                    <a  routerLink="/cahierQuart/newActu" [queryParams]="{idActu: actu.id}" > 
-                        <button class="btn btn btn-light edition">
-                            <i class="far fa-edit"></i>
-                        </button>
-                    </a>
+                    <button class="btn btn btn-light edition" (click)="ouvrirDialogModifActu(actu.id,0)">
+                        <i class="far fa-edit"></i>
+                    </button>
                 </td>
             </tr>
             </tbody>
         </table>
     </div>
 </div>
-
-
-<!-- <ng-template let-data #myCreateActuDialog>
-    <h2 mat-dialog-title>Créer une actu</h2>
-    <div mat-dialog-content>
-        <form [formGroup]="formCreateActu"></form>
-        <mat-label>Titre</mat-label>
-        <input mat-input type="text" name="" id="">
-    </div>
-</ng-template> -->

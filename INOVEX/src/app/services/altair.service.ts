@@ -179,4 +179,38 @@ export class AltairService {
 
     return this.http.get<any>(url,headers);
   }
+
+  //Créer une nouvelle équipe
+  getOneDI(token:string, id: string){
+    let requete = this.ip+"/rest/work/all/workrequest/show/workrequest/"+id
+    //enlever status rebut
+    const requestOptions = new HttpHeaders({
+      'Authorization': 'Bearer '+token,
+      'Content-Type': 'application/json'
+    });
+    
+    var headers = {
+      headers : requestOptions
+    }
+    var url = requete    
+
+    return this.http.get<any>(url,headers);
+  }
+
+  //Créer une nouvelle équipe
+  getOneDT(token:string, id: string){
+    let requete = this.ip+"/rest/work/all/workorder/show/workorder/"+id
+    //enlever status rebut
+    const requestOptions = new HttpHeaders({
+      'Authorization': 'Bearer '+token,
+      'Content-Type': 'application/json'
+    });
+    
+    var headers = {
+      headers : requestOptions
+    }
+    var url = requete    
+
+    return this.http.get<any>(url,headers);
+  }
 }

@@ -311,6 +311,7 @@ export class EvenementComponent implements OnInit {
   }
 
   clickDemandeTravaux(){
+    console.log(this.demandeTravaux)
     if($("input#demandeTravaux").is(':checked')){
       $("#dateFin").show();
       $("#equipementGMAO").show();
@@ -320,7 +321,6 @@ export class EvenementComponent implements OnInit {
       $("#dateFin").hide();
       $("#equipementGMAO").hide();
       $("#groupementGMAO").hide();
-
     }
   }
 }

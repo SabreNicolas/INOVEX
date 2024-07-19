@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import {rondierService} from "../services/rondier.service";
 import {badge} from "../../models/badge.model";
 import {badgeAffect} from "../../models/badgeAffect.model";
 import Swal from "sweetalert2";
 import {permisFeu} from "../../models/permisFeu.model";
 import { PopupService } from '../services/popup.service';
+import {NgForm} from "@angular/forms";
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-list-badges',
@@ -12,19 +14,24 @@ import { PopupService } from '../services/popup.service';
   styleUrls: ['./list-badges.component.scss']
 })
 export class ListBadgesComponent implements OnInit {
+  
+  @ViewChild('myCreateBadgeDialog') createBadgeDialog = {} as TemplateRef<any>;
 
   public listBadgeLibre : badge[];
   public listBadgeUser : badgeAffect[];
   public listBadgeZone : badgeAffect[];
   //contient les permis de feu et zone de consignation => si isPermisFeu = 0 alors zone de consignation
   public listPermisFeu : permisFeu[];
+  private uid : string;
+  public dialogRef = {};
 
-
-  constructor(private rondierService : rondierService, private popupService : PopupService) {
+  constructor(private rondierService : rondierService, private popupService : PopupService, private dialog : MatDialog) {
     this.listBadgeLibre = [];
     this.listBadgeUser = [];
     this.listBadgeZone = [];
     this.listPermisFeu = [];
+    this.uid = "";
+
   }
 
 
@@ -104,4 +111,38 @@ export class ListBadgesComponent implements OnInit {
     });
   }
 
+  //création du badge
+  onSubmit(form : NgForm) {
+    this.uid = form.value['idBadge'];
+    this.rondierService.createBadge(this.uid).subscribe((response)=>{
+      if (response == "Création du badge OK"){
+        this.rondierService.lastIdBadge().subscribe((response)=>{
+          // @ts-ignore
+          this.popupService.alertSuccessForm("Badge créé avec succés, il porte le numéro : "+response.data[0].Id,10000);
+          this.dialog.closeAll();
+        });
+      }
+      else {
+        this.popupService.alertSuccessForm('Erreur lors de la création du badge .... Identifiant déjà utilisé')
+      }
+    });
+
+    this.resetFields(form);
+  }
+
+  resetFields(form: NgForm){
+    form.controls['idBadge'].reset();
+    form.value['idBadge']='';
+  }
+
+  ouvrirDialogCreerBadge(){
+    this.dialogRef = this.dialog.open(this.createBadgeDialog,{
+      width:'60%',
+      disableClose:false,
+      autoFocus:true,
+    })
+    this.dialog.afterAllClosed.subscribe((response)=>{
+      this.ngOnInit();
+    })
+  }
 }

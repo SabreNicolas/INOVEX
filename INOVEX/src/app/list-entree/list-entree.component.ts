@@ -457,7 +457,7 @@ export class ListEntreeComponent implements OnInit {
       //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
       if(this.idUsine === 15){
         //Vitré
-        this.lectureCSV(event, ";", true,13, 20, 4, 27, 31);
+        this.lectureCSV(event, ";", true,13, 20, 4, 28, 31);
       }
       else if(this.idUsine === 26) {
         //PONTEX
@@ -772,9 +772,10 @@ export class ListEntreeComponent implements OnInit {
 
           if(csv.entrant.toLowerCase() == "e" || csv.entrant == 1 || csv.entrant.toLowerCase() == "réception" || csv.entrant.toLowerCase() == "reception" || csv.entrant.toLowerCase().includes("entree") || csv.entrant.toLowerCase() == "entrée" || csv.entrant.toLowerCase() == "entrant" || csv.entrant.toLowerCase() == "incinerables"){
             //Si il y a correspondance on fait traitement
+           
             if( correspondance.nomImport == csv.client && correspondance.productImport == csv.typeDechet  /*|| (mr.produit == "dib/dea" && mr.produit.includes(csv.typeDechet)))*/ ){  
               let formatDate = csv.dateEntree.split('/')[2]+'-'+csv.dateEntree.split('/')[1]+'-'+csv.dateEntree.split('/')[0];
-              if(formatDate != 'undefined-undefined-'){
+              if(!formatDate.includes('undefined')){
                 let keyHash = formatDate+'_'+correspondance.ProductId+'_'+correspondance.ProducerId;
                 let value, valueRound;
                 count = count + 1;

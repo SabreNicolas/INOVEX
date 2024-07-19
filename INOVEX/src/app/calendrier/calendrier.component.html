@@ -6,74 +6,77 @@
 
 <!-- Création d'une action / ronde pour le calendrier -->
 
-<button class="btn btn-success" id="create" (click)="addEvent()">
+<button class="btn btn-success" id="create" (click)="ouvrirDialogCreerEvent()">
   + 
 </button>
-<button class="btn btn-danger" id="hideCreation" (click)="hideCreation()" style="display: none;">
-  -
-</button>
-<div id="divCreation" style="display: none;">
-  <div class="form-check">
-    <input class="form-check-input" type="radio" name="ronde" id="ronde" value="zone" [(ngModel)]="radioSelect" (click)="showCreationRonde()">
-    <label class="form-check-label" for="ronde">
-      Zones à contrôler
-    </label>
-  </div>
-  <div class="form-check">
-    <input class="form-check-input" type="radio" name="ronde" id="action" value="action" [(ngModel)]="radioSelect" (click)="showCreationAction()">
-    <label class="form-check-label" for="action">
-      Actions
-    </label>
-  </div>
-</div>
+<ng-template let-data #myCreateEventDialog>
+  <h1 class="creation" style="text-align: center;">Ajout d'une zone/action :</h1>
 
-<div id="CreationRondeAction"  style="display: none;">
-  <div class="form-group" id="CreationRonde" style="display: none;">
-    <label>Choisissez vos zones</label>
-    <select multiple class="form-select form-select-sm" aria-label=".form-select-sm example" [(ngModel)]="listZoneSelection">
-      <option *ngFor="let z of listZone" value="{{z.Id}}">{{z.nom}}</option>
-    </select>
-  </div>
-  <div class="form-group" id="CreationAction" style="display: none;">
-    <label>Liste des actions :</label>
-    <input type="text" id="actions" class="form-control" placeholder="Liste des actions" name="nomAction" [(ngModel)]="nomAction"/>
-  </div>
+  <mat-dialog-content>
+    <div id="divCreation">
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="ronde" id="ronde" value="zone" [(ngModel)]="radioSelect" (click)="showCreationRonde()">
+        <label class="form-check-label" for="ronde">
+          Zones à contrôler
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="ronde" id="action" value="action" [(ngModel)]="radioSelect" (click)="showCreationAction()">
+        <label class="form-check-label" for="action">
+          Actions
+        </label>
+      </div>
+    </div>
 
-  <div class="form-group">
-    <label>Date :</label>
-    <input type="date" id="dateDeb" class="form-control" placeholder="Date de début" name="dateDeb" [(ngModel)]="dateDeb"/>
-  </div>
+    <div id="CreationRondeAction"  style="display: none;">
+      <div class="form-group" id="CreationRonde" style="display: none;">
+        <label>Choisissez vos zones</label>
+        <select multiple class="form-select form-select-sm" aria-label=".form-select-sm example" [(ngModel)]="listZoneSelection">
+          <option *ngFor="let z of listZone" value="{{z.Id}}">{{z.nom}}</option>
+        </select>
+      </div>
+      <div class="form-group" id="CreationAction" style="display: none;">
+        <label>Liste des actions :</label>
+        <input type="text" id="actions" class="form-control" placeholder="Liste des actions" name="nomAction" [(ngModel)]="nomAction"/>
+      </div>
 
-  <div class="form-group">
-    <label>Périodicité :</label>
-    <select class="form-select form-select-sm" aria-label=".form-select-sm example" [(ngModel)]="periodicite">
-      <option value="0">Aucune</option>
-      <option value="1">Quotidien</option>
-      <option value="2">Hebdo</option>
-      <option value="3">Mensuel</option>
-    </select>
-  </div>
-    
-  <div class="form-group">
-    <label>Quart :</label>
-    <select multiple class="form-select form-select-sm" aria-label=".form-select-sm example" [(ngModel)]="quart">
-      <option value="1">Matin</option>
-      <option value="2">Après-midi</option>
-      <option value="3">Nuit</option>
-    </select>
-  </div>
+      <div class="form-group">
+        <label>Date :</label>
+        <input type="date" id="dateDeb" class="form-control" placeholder="Date de début" name="dateDeb" [(ngModel)]="dateDeb"/>
+      </div>
 
-  <div class="form-group" *ngIf="periodicite != 0">
-    <p >Fin après <input type="number" name="occurences" id="occurences" value="10" [(ngModel)]="occurences"> occurences 
-    <button class="btn btn-success" id="maxOccurence" (click)="maxOccurence()">
-      Max
-    </button></p>
-  </div>
+      <div class="form-group">
+        <label>Périodicité :</label>
+        <select class="form-select form-select-sm" aria-label=".form-select-sm example" [(ngModel)]="periodicite">
+          <option value="0">Aucune</option>
+          <option value="1">Quotidien</option>
+          <option value="2">Hebdo</option>
+          <option value="3">Mensuel</option>
+        </select>
+      </div>
+        
+      <div class="form-group">
+        <label>Quart :</label>
+        <select multiple class="form-select form-select-sm" aria-label=".form-select-sm example" [(ngModel)]="quart">
+          <option value="1">Matin</option>
+          <option value="2">Après-midi</option>
+          <option value="3">Nuit</option>
+        </select>
+      </div>
 
-  <button class="btn btn-success" id="valider" (click)="createEvenementCalendrier()">
-    Valider
-  </button>
-</div>
+      <div class="form-group" *ngIf="periodicite != 0">
+        <p >Fin après <input type="number" name="occurences" id="occurences" value="10" [(ngModel)]="occurences"> occurences 
+        <button class="btn btn-success" id="maxOccurence" (click)="maxOccurence()">
+          Max
+        </button></p>
+      </div>
+
+      <button class="btn btn-success" id="valider" (click)="createEvenementCalendrier()">
+        Valider
+      </button>
+    </div>
+  </mat-dialog-content>
+</ng-template>
 
 
 
@@ -208,6 +211,11 @@
         Zone : <strong>{{ronde.nom}}</strong> 
         <button type="button" class="btn btn-outline-danger" (click)="deleteEvenement(ronde.id);close()">
           <i class="fas fa-trash"></i>
+        </button>
+      </div>
+      <div *ngIf="modalData?.isAction">
+        <button type="button" class="btn btn-outline-secondary" (click)="deleteEvenement(modalData?.event?.id)">
+          Supprimer l'évènement
         </button>
       </div>
     </div>

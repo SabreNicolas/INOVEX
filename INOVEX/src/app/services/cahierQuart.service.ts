@@ -30,6 +30,42 @@ export class cahierQuartService {
         this.idUser = this.idUsineService.getIdUser();
     }
 
+    //Récupérer une localisation du site
+    getOneLocalisation(){
+      let requete = "https://"+this.ip+":"+this.portAPI+"/getOneLocalisation/" + this.idUsine;
+
+      const requestOptions = {
+          headers: new HttpHeaders(this.headerDict),
+      };
+
+      return this.http
+          .get<user[]>(requete,requestOptions);
+    }
+
+    //Récupérer les anmoalies d'une ronde
+    getAnomaliesOfOneRonde(date : string, quart : number){
+      let requete = "https://"+this.ip+":"+this.portAPI+"/getAnomaliesOfOneRonde?date="+date+"&quart="+quart;
+
+      const requestOptions = {
+          headers: new HttpHeaders(this.headerDict),
+      };
+
+      return this.http
+          .get<user[]>(requete,requestOptions);
+    }
+
+    //Récupérer les rondiers sans équipe
+    getOneUser(){
+      let requete = "https://"+this.ip+":"+this.portAPI+"/getOneUser/" + this.idUser;
+
+      const requestOptions = {
+          headers: new HttpHeaders(this.headerDict),
+      };
+
+      return this.http
+          .get<user[]>(requete,requestOptions);
+    }
+
     //Récupérer les rondiers sans équipe
     getUsersRondierSansEquipe(){
       let requete = "https://"+this.ip+":"+this.portAPI+"/usersRondierSansEquipe?idUsine=" + this.idUsine;
@@ -386,7 +422,7 @@ export class cahierQuartService {
         };
 
         let requete = "https://"+this.ip+":"+this.portAPI+"/evenement?titre="+titre+"&importance="+importance+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&idUsine="+this.idUsine+"&groupementGMAO="+groupementGMAO+"&equipementGMAO="+equipementGMAO+"&cause="+cause+"&description="+description+"&consigne="+consigne+"&demandeTravaux="+demandeTravaux;
-
+        console.log(fileToUpload)
         if(fileToUpload != undefined){
             const formData = new FormData();
             formData.append('fichier', fileToUpload, fileToUpload.name);

@@ -1,3 +1,7 @@
+<a role="button" (click)="ouvrirDialogCreerGroupement()" class="btn btn-primary" id="create">
+    Créer un groupement
+</a>
+
 <div *ngIf="listGroupement">
 
     <h1  class="creation">Voici la liste des groupements </h1>
@@ -19,7 +23,7 @@
                 <tr class="table-light">
                     <td>{{g.groupement}}</td>
                     <td>
-                        <button id="setName"  class="btn btn-outline-primary" routerLink="/admin/newGroupement" [queryParams]="{idGroupement: g.id}">
+                        <button id="setName"  class="btn btn-outline-primary" (click)="ouvrirDialogUpdateGroupement(g.id)">
                             <i class="fa fa-pencil"></i>
                         </button>
                     </td>
@@ -33,3 +37,35 @@
         </table>
     </div>
 </div>
+
+<ng-template let-data #myCreateGroupementDialog>
+    <h1 class="creation" style="text-align: center;">Création d'un groupement :</h1>
+
+    <mat-dialog-content>
+        <div class="row">
+            <div>
+
+                    <div class="form-group">
+                        <label for="choixZone">Selectionnez la {{denomination}} du groupement *</label><br>
+                        <select name="zone" id="choixZone" ngModel [(ngModel)]="idZone" class="form-control">
+                            <option value="0">-- Veuillez selectionner une {{denomination}} --</option>
+                            <option *ngFor ="let zone of listZone" value="{{zone.Id}}">{{zone.nom}}</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="groupement">Nom : *</label>
+                        <input required type="text" id="groupement" class="form-control" placeholder="Nom du groupement" ngModel [(ngModel)]="groupement">
+                    </div>
+
+                    <p style="font-size: smaller; color: grey">* : Obligatoire</p>
+
+                    <div class="form-group">
+                        <button class="btn btn-success btn-lg" (click)="createGroupement()">Valider</button>
+                        <button class="btn btn-danger btn-lg" onclick="window.location.replace('/admin/groupement')">Annuler</button>
+                    </div>
+
+            </div>
+        </div>
+    </mat-dialog-content>
+</ng-template>

@@ -1,8 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import {rondierService} from "../services/rondier.service";
 import {zone} from "../../models/zone.model";
 import Swal from "sweetalert2";
 import { PopupService } from '../services/popup.service';
+import { user } from 'src/models/user.model';
+import { idUsineService } from '../services/idUsine.service';
+import {NgForm} from "@angular/forms";
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-list-zones',
@@ -11,17 +15,103 @@ import { PopupService } from '../services/popup.service';
 })
 export class ListZonesComponent implements OnInit {
 
-  public listZone : zone[];
+  @ViewChild('myCreateZoneDialog') createZoneDialog = {} as TemplateRef<any>;
 
-  constructor(private rondierService : rondierService, private popupService : PopupService) {
+  public listZone : zone[];
+  private nom : string;
+  private commentaire : string;
+  private nbfour : number;
+  public numbers : number[]; 
+  private four : number;
+  public denomination : string;
+  public userLogged!: user;
+  private idUsine: number;
+  public dialogRef = {};
+
+  constructor(private rondierService : rondierService, private dialog : MatDialog, private popupService : PopupService, private idUsineService : idUsineService) {
     this.listZone = [];
+    this.nom ="";
+    this.commentaire="";
+    this.nbfour = 0;
+    //contient des chiffres pour l'itération des fours
+    this.numbers = [];
+    this.four = 0;
+    this.denomination ="";
+    this.idUsine=0;
   }
 
   ngOnInit(): void {
+
     this.rondierService.listZone().subscribe((response)=>{
       // @ts-ignore
       this.listZone = response.data;
     });
+    
+    //Récupération du nombre de four du site
+    this.rondierService.nbLigne().subscribe((response)=>{
+      //@ts-ignore
+      this.nbfour = response.data[0].nbLigne;
+      this.numbers = Array(this.nbfour).fill(1).map((x,i) => i+1);
+    });
+
+    this.idUsine = this.idUsineService.getIdUsine();
+    if(this.idUsine==7){
+      this.denomination = "Ronde";
+    }
+    else this.denomination = "Zone de contrôle";
+    
+  }
+
+  //création de la zone de controle
+  onSubmit(form : NgForm) {
+    this.nom = form.value['nom'].replace(/'/g,"''");
+    //On affecte la valeur si le four est coché
+    if (form.controls['four'].touched){
+      this.four = form.value['four'];
+    }
+    //Sinon 0 pour commun
+    else this.four = 0;
+    //Gestion commentaire
+    if(form.value['commentaire'].length < 1){
+      this.commentaire = "_";
+    }
+    else this.commentaire = form.value['commentaire'].replace(/'/g,"''");
+
+    this.rondierService.createZone(this.nom,this.commentaire,this.four).subscribe((response)=>{
+      if (response == "Création de la zone OK"){
+        this.popupService.alertSuccessForm("La zone de contrôle a bien été créé !");
+        this.dialog.closeAll();
+      }
+      else {
+        this.popupService.alertSuccessForm('Erreur lors de la création de la zone de contrôle ....')
+      }
+    });
+
+    this.resetFields(form);
+  }
+
+  ouvrirDialogCreerZone(){
+    this.dialogRef = this.dialog.open(this.createZoneDialog,{
+      width:'60%',
+      disableClose:false,
+      autoFocus:true,
+    })
+    this.dialog.afterAllClosed.subscribe((response)=>{
+      this.ngOnInit();
+    })
+  }
+
+  resetFields(form: NgForm){
+    form.controls['nom'].reset();
+    form.value['nom']='';
+    //form.controls['commentaire'].reset();
+    form.value['commentaire']='_';
+    form.controls['four'].reset();
+    form.value['four'] = 0;
+  }
+
+  resetFourZone(form: NgForm) {
+    form.controls['four'].reset();
   }
 
   //mis à jour du commentaire d'une zone

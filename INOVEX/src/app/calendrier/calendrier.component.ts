@@ -10,6 +10,7 @@ import { zone } from 'src/models/zone.model';
 import Swal from 'sweetalert2';
 import { delay } from 'rxjs/operators';
 import { PopupService } from '../services/popup.service';
+import { MatDialog } from '@angular/material/dialog';
 declare var $ : any;
 
 @Component({
@@ -20,6 +21,8 @@ declare var $ : any;
 
 export class CalendrierComponent implements OnInit{
   @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any> | undefined;
+  @ViewChild('myCreateEventDialog') createEventDialog = {} as TemplateRef<any>;
+
   public view: CalendarView = CalendarView.Week;
   public listZone : zone[];
   public listZoneSelection : number[];
@@ -31,6 +34,7 @@ export class CalendrierComponent implements OnInit{
     dateDeb : any;
     dateFin : any;
     ronde : any;
+    isAction : boolean | undefined;
   } | undefined;
   public refresh: Subject<any> = new Subject();
   public events: CalendarEvent[];
@@ -44,8 +48,9 @@ export class CalendrierComponent implements OnInit{
   public occurences : number;
   public nomAction : string;
   public radioSelect : string;
+  public dialogRef = {};
 
-  constructor(private modal: NgbModal, private popupService : PopupService, private rondierService : rondierService, public cahierQuartService : cahierQuartService, private datePipe: DatePipe) {
+  constructor(private modal: NgbModal, private dialog : MatDialog, private popupService : PopupService, private rondierService : rondierService, public cahierQuartService : cahierQuartService, private datePipe: DatePipe) {
     this.events = [];
     this.nomAction = "";
     this.radioSelect = "";
@@ -87,6 +92,13 @@ export class CalendrierComponent implements OnInit{
     $('#CreationRonde').hide();
     $('#CreationAction').hide();
     
+    this.listZone = [];
+    this.listZoneSelection = [];
+    this.dateDeb = undefined;
+    this.periodicite = 0;
+    this.nomAction = "";
+
+
     //On vide le tableau d'évènement
     this.events = [];
 
@@ -162,6 +174,7 @@ export class CalendrierComponent implements OnInit{
             allDay: false,
             color: color,
             id : event.id,
+            isAction:true
           }
         )
       }
@@ -190,10 +203,6 @@ export class CalendrierComponent implements OnInit{
     }
   }
 
-  cacherActu(){
-    // $("#actualiser_calendrier").hide();
-    console.log("test")
-  }
   //Fonction de la librairie calendar pour modifier la durée d'un évènement (non utilisée pour nous)
   eventTimesChanged({
     event,
@@ -223,7 +232,8 @@ export class CalendrierComponent implements OnInit{
                       'event' :event,
                       'dateDeb' : dateDeb,
                       'dateFin' : dateFin,
-                      'ronde' : event.ronde
+                      'ronde' : event.ronde,
+                      'isAction' : event.isAction
                     };
     console.log(this.modalData)                    
     this.modal.open(this.modalContent, { size: 'lg' });
@@ -378,7 +388,7 @@ export class CalendrierComponent implements OnInit{
       }
     }
     this.removeloading();
-    this.ngOnInit();
+    this.dialog.closeAll();
   }
 
   pause(millisecondes : number){
@@ -396,15 +406,13 @@ export class CalendrierComponent implements OnInit{
   }
 
   maxOccurence(){
-
-  this.occurences = 1000;
+    this.occurences = 1000;
   }
 
   loading(){
     $("#spinner").addClass('loader');
     $("#spinnerBloc").addClass('loaderBloc');
   }
-
 
   removeloading(){
       var element = document.getElementById('spinner');
@@ -413,5 +421,16 @@ export class CalendrierComponent implements OnInit{
       var element = document.getElementById('spinnerBloc');
       // @ts-ignore
       element.classList.remove('loaderBloc');
+  }
+
+  ouvrirDialogCreerEvent(){
+    this.dialogRef = this.dialog.open(this.createEventDialog,{
+      width:'60%',
+      disableClose:false,
+      autoFocus:true,
+    })
+    this.dialog.afterAllClosed.subscribe((response)=>{
+      this.ngOnInit();
+    })
   }
 }

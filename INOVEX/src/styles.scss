@@ -4,6 +4,8 @@ body{
   background-color: grey; /*Différencier la pré-prod*/
 }
 
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+
 .tableFixed > thead th {
   position: -webkit-sticky; /* for Safari */
   position: sticky;
