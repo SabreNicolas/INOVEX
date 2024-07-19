@@ -47,16 +47,16 @@
               <td><strong>{{mr.Name}}</strong></td>
               <td>{{mr.numCAP}}</td>
               <td>{{mr.codeDechet}}</td>
-              <td>{{mr.produit}} {{mr.collecteur}}</td>
-              <td>{{mr.UnitPrice}}</td>
+              <td><h5><span class="badge bg-primary">{{mr.produit}} {{mr.collecteur}}</span></h5></td>
+              <td><span class="badge rounded-pill bg-secondary">{{mr.UnitPrice}}</span></td>
               <td>
-                  {{mr.nomImport}}
+                  <span style="font-size: 15px;" class="badge bg-warning text-dark">{{mr.nomImport}}</span>
                   <button class="btn btn-light" (click)="edition(mr.Id,mr.productId,mr.nomImport, mr.productImport,'nom')">
                     <i class="fas fa-edit"></i>
                   </button>
               </td>
               <td>
-                  {{mr.productImport}}
+                  <span style="font-size: 15px;" class="badge bg-warning text-dark">{{mr.productImport}}</span>
                   <button class="btn btn-light" (click)="edition(mr.Id,mr.productId,mr.nomImport, mr.productImport,'product')">
                     <i class="fas fa-edit"></i>
                   </button>

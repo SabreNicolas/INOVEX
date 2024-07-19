@@ -3,6 +3,7 @@ import {category} from "../../models/categories.model";
 import {categoriesService} from "../services/categories.service";
 import {NgForm} from "@angular/forms";
 import Swal from "sweetalert2";
+import { PopupService } from '../services/popup.service';
 
 @Component({
   selector: 'app-categories',
@@ -13,7 +14,7 @@ export class CategoriesComponent implements OnInit {
 
   public listCategories : category[];
 
-  constructor(private categoriesService : categoriesService) {
+  constructor(private categoriesService : categoriesService, private popupService : PopupService) {
     this.listCategories = [];
   }
 
@@ -31,13 +32,10 @@ export class CategoriesComponent implements OnInit {
     this.categoriesService.parentId = form.value['parent'];
     this.categoriesService.createCategory().subscribe((response)=>{
       if (response == "Création de la catégorie OK"){
-        Swal.fire("La catégorie a bien été créé !");
+        this.popupService.alertSuccessForm("La catégorie a bien été créé !");
       }
       else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Erreur lors de la création de la catégorie ....',
-        })
+        this.popupService.alertErrorForm('Erreur lors de la création de la catégorie ....')
       }
     });
 

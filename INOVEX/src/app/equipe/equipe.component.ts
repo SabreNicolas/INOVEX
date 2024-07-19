@@ -8,6 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 
 import { format } from 'date-fns';
+import { PopupService } from '../services/popup.service';
 declare var $ : any;
 @Component({
   selector: 'app-equipe',
@@ -28,7 +29,7 @@ export class EquipeComponent implements OnInit {
   public equipesEnregistrees : any[];
   public idEquipeEnregistree : string;
 
-  constructor(private cahierQuartService :cahierQuartService,private route : ActivatedRoute, private router : Router) {
+  constructor(private cahierQuartService :cahierQuartService,private route : ActivatedRoute ,private popupService : PopupService, private router : Router) {
     this.listUsers = [];
     this.listAjout = [];
     this.listZone = [];
@@ -142,24 +143,24 @@ export class EquipeComponent implements OnInit {
       var rechercheZone = user.Nom +"_"+user.Prenom+"_zone";
       var idZone = parseInt((<HTMLInputElement>document.getElementById(rechercheZone)).value);
       if(Number.isNaN(idZone)){
-        Swal.fire('Veuillez affecter une ronde à chaque personne !','La saisie a été annulée.','error');
+        this.popupService.alertErrorForm('Veuillez affecter une ronde à chaque personne ! La saisie a été annulée.');
         return
       }
 
       var recherchePoste = user.Nom +"_"+user.Prenom+"_poste";
       var idPoste = (<HTMLInputElement>document.getElementById(recherchePoste)).value;
       if(idPoste == ""){
-        Swal.fire('Veuillez affecter un poste à chaque personne !','La saisie a été annulée.','error');
+        this.popupService.alertErrorForm('Veuillez affecter un poste à chaque personne ! La saisie a été annulée.');
         return
       }
     }
     if(this.listAjout.length == 0){
-      Swal.fire('Veuillez ajouter des personnes à l\'équipe !','La saisie a été annulée.','error');
+      this.popupService.alertErrorForm('Veuillez ajouter des personnes à l\'équipe ! La saisie a été annulée.');
       return
     }
     //On vérifie si il y a un nom d'équipe
     if(nomEquipe ===""){
-      Swal.fire('Veuillez saisir un nom d\'équipe !','La saisie a été annulée.','error');
+      this.popupService.alertErrorForm('Veuillez saisir un nom d\'équipe ! La saisie a été annulée.');
     }
     else {
       //Demande de confirmation de création d'équipe
@@ -186,7 +187,7 @@ export class EquipeComponent implements OnInit {
         } 
         else {
           // Pop-up d'annulation de la suppression
-          Swal.fire('Annulé','La création a été annulée.','error');
+          this.popupService.alertSuccessForm('La création a été annulée.');
         }
       });
     }
@@ -204,7 +205,7 @@ export class EquipeComponent implements OnInit {
 
       if(idUser>0){
         this.cahierQuartService.nouvelleAffectationEquipe(idUser,idEquipe,idZone,poste).subscribe((response) => {
-          Swal.fire({text : 'Nouvelle équipe créée', icon :'success'});
+          this.popupService.alertSuccessForm('Nouvelle équipe créée');
           this.listAjout = [];
           this.router.navigate(['/cahierQuart/calendrier'])
         });

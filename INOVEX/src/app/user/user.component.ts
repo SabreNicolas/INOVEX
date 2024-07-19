@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {NgForm} from "@angular/forms";
 import {loginService} from "../services/login.service";
 import {Md5} from "ts-md5";
-import Swal from "sweetalert2";
+import { PopupService } from '../services/popup.service';
 
 @Component({
   selector: 'app-user',
@@ -23,7 +23,7 @@ export class UserComponent implements OnInit {
   public isChefQuart : number;//0 ou 1
   public loginUsed : boolean;
 
-  constructor(private loginService : loginService) {
+  constructor(private loginService : loginService, private popupService : PopupService) {
     this.nom = '';
     this.prenom = '';
     this.pwd = 'temporaire';
@@ -84,13 +84,10 @@ export class UserComponent implements OnInit {
     this.loginService.createUser(this.nom,this.prenom,this.login,this.MD5pwd,this.isRondier,this.isSaisie, this.isQSE, this.isRapport,this.isChefQuart,this.isAdmin).subscribe((response)=>{
       // console.log(response);
       if (response == "Création de l'utilisateur OK"){
-        Swal.fire("L'utilisateur a bien été créé !");
+        this.popupService.alertSuccessForm("L'utilisateur a bien été créé !");
       }
       else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Erreur lors de la création de l\'utilisateur ....',
-        })
+        this.popupService.alertErrorForm('Erreur lors de la création de l\'utilisateur ....')
       }
     });
 

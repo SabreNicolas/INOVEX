@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import {NgForm} from "@angular/forms";
 import {rondierService} from "../services/rondier.service";
 import {zone} from "../../models/zone.model";
-import Swal from "sweetalert2";
 import {ActivatedRoute, Router} from "@angular/router";
 import {element} from "../../models/element.model";
 import { groupement } from 'src/models/groupement.model';
+import { PopupService } from '../services/popup.service';
 
 @Component({
   selector: 'app-element-controle',
@@ -42,7 +42,7 @@ export class ElementControleComponent implements OnInit {
   public infoSup : boolean;
   public infoSupValue : string;
 
-  constructor(private rondierService : rondierService,  private route : ActivatedRoute, private router: Router) {
+  constructor(private rondierService : rondierService,  private popupService : PopupService,  private route : ActivatedRoute, private router: Router) {
     this.listZone = [];
     this.nom = "";
     this.zoneId = [];
@@ -236,23 +236,17 @@ export class ElementControleComponent implements OnInit {
                 this.idGroupement = 0 ;
                 this.codeEquipement = "";
                 this.nom = "";
-                // Swal.fire("L'élément de contrôle a bien été créé !");
+                this.popupService.alertSuccessForm("L'élément de contrôle a bien été créé !");
                 this.router.navigate(['/admin/elements'])
               }
               
               else {
-                Swal.fire({
-                  icon: 'error',
-                  text: 'Erreur lors de la création de l\'élément de contrôle ....',
-                })
+                this.popupService.alertErrorForm('Erreur lors de la création de l\'élément de contrôle ....')
               }
             });
           }
           else {
-            Swal.fire({
-              icon: 'error',
-              text: 'Erreur lors de la création de l\'élément de contrôle ....',
-            })
+            this.popupService.alertErrorForm('Erreur lors de la création de l\'élément de contrôle ....')
           }
         });
       });
@@ -272,10 +266,7 @@ export class ElementControleComponent implements OnInit {
           this.updateElement(Number(this.ordreElem)+1);
         }
         else {
-          Swal.fire({
-            icon: 'error',
-            text: 'Erreur lors de la création de l\'élément de contrôle ....',
-          })
+          this.popupService.alertErrorForm('Erreur lors de la création de l\'élément de contrôle ....')
         }
       });
     }
@@ -287,14 +278,11 @@ export class ElementControleComponent implements OnInit {
   updateElement(ordre : number){
     this.rondierService.updateElement(this.elementId, this.zoneId[0], this.nom, this.valeurMin, this.valeurMax, this.typeChamp, this.unit, this.defaultValue, this.isRegulateur, this.listValues, this.isCompteur,ordre, this.idGroupement, this.codeEquipement, this.infoSupValue).subscribe((response)=>{
       if (response == "Mise à jour de l'element OK"){
-        // Swal.fire("L'élément de contrôle a bien été mis à jour !");
+        this.popupService.alertSuccessForm("L'élément de contrôle a bien été mis à jour !");
         this.router.navigate(['/admin/elements'])
       }
       else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Erreur lors de la mise à jour de l\'élément de contrôle ....',
-        })
+        this.popupService.alertErrorForm('Erreur lors de la mise à jour de l\'élément de contrôle ....')
       }
     });
   }

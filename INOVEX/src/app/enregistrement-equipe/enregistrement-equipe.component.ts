@@ -5,6 +5,7 @@ import {zone} from "../../models/zone.model";
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop'
 import Swal from 'sweetalert2';
 import { ActivatedRoute } from '@angular/router';
+import { PopupService } from '../services/popup.service';
 
 
 @Component({
@@ -19,7 +20,7 @@ export class EnregistrementEquipeComponent implements OnInit {
   public name : string;
   public idEquipe : number;
 
-  constructor(private cahierQuartService :cahierQuartService,private route : ActivatedRoute) {
+  constructor(private cahierQuartService :cahierQuartService,private route : ActivatedRoute, private popupService : PopupService) {
     
     this.listUsers = [];
     this.listAjout = [];
@@ -74,12 +75,12 @@ export class EnregistrementEquipeComponent implements OnInit {
   nouvelleEquipe(nomEquipe :string/*, quart :string*/){
 
     if(this.listAjout.length == 0){
-      Swal.fire('Veuillez ajouter des personnes à l\'équipe !','La saisie a été annulée.','error');
+      this.popupService.alertErrorForm('Veuillez ajouter des personnes à l\'équipe ! La saisie a été annulée.');
       return
     }
     //On vérifie si il y a un nom d'équipe
     if(nomEquipe ===""){
-      Swal.fire('Veuillez saisir un nom d\'équipe !','La saisie a été annulée.','error');
+      this.popupService.alertErrorForm('Veuillez saisir un nom d\'équipe ! La saisie a été annulée.');
     }
     else {
       //Demande de confirmation de création d'équipe
@@ -104,7 +105,7 @@ export class EnregistrementEquipeComponent implements OnInit {
         } 
         else {
           // Pop-up d'annulation de la suppression
-          Swal.fire('Annulé','La création a été annulée.','error');
+          this.popupService.alertErrorForm('La création a été annulée.');
         }
       });
     }
@@ -117,7 +118,7 @@ export class EnregistrementEquipeComponent implements OnInit {
 
       if(idUser>0){
         this.cahierQuartService.nouvelEnregistrementAffectationEquipe(idUser,idEquipe).subscribe((response) => {
-          Swal.fire({text : 'Nouvelle équipe créée', icon :'success'});
+          this.popupService.alertSuccessForm('Nouvelle équipe créée');
           this.listAjout = [];
         });
       }

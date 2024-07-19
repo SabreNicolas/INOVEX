@@ -1,8 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
 body{
-  background: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url("assets/paprec.png") fixed no-repeat bottom left 0.5em, url("assets/Usine2_40.png") fixed no-repeat bottom right;
-  // background-color: grey; /*Différencier la pré-prod*/
+  // background: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url("assets/paprec.png") fixed no-repeat bottom left 0.5em, url("assets/Usine2_40.png") fixed no-repeat bottom right;
+  background-color: grey; /*Différencier la pré-prod*/
 }
+
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
 
 .tableFixed > thead th {
   position: -webkit-sticky; /* for Safari */

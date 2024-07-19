@@ -6,7 +6,7 @@
         <form ngNativeValidate #f="ngForm">
 
             <div class="form-group" id="photo">
-                <input *ngIf="idConsigne == 0" type="file" id="fichier" class="form-control" required name="fichier" accept=".jpg,.jpeg,.png" (change)="saveFile($event)">
+                <input *ngIf="idConsigne == 0" type="file" id="fichier" class="form-control" name="fichier" accept=".jpg,.jpeg,.png" (change)="saveFile($event)">
                 <img *ngIf="imgSrc" [src]="imgSrc" alt="image" id="imgUpload">
             </div>
 
@@ -17,7 +17,7 @@
 
             <div class="form-group">
                 <label for="desc">Description :  </label>
-                <textarea required type="text" maxlength="249" id="desc" class="form-control" placeholder="Description" name="desc"  ngModel [(ngModel)]="desc"></textarea>
+                <textarea type="text" maxlength="249" id="desc" class="form-control" placeholder="Description" name="desc"  ngModel [(ngModel)]="desc"></textarea>
             </div>
 
             <div class="form-group">
@@ -25,7 +25,7 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <select required class="form-select" aria-label=".form-select-sm example" name="type"  ngModel [(ngModel)]="type">
+                            <select class="form-select" aria-label=".form-select-sm example" name="type"  ngModel [(ngModel)]="type">
                                 <option value=1>Consigne du "Jour"</option>
                                 <option value=2>Consigne de Sécurité</option>
                                 <option value=3>Consigne Process</option>

@@ -4,6 +4,7 @@ import {DatePipe, Location} from "@angular/common";
 import Swal from 'sweetalert2';
 import { ActivatedRoute, Router } from '@angular/router';
 import { addDays, format, parseISO } from 'date-fns';
+import { PopupService } from '../services/popup.service';
 
 @Component({
   selector: 'app-action',
@@ -17,7 +18,7 @@ export class ActionComponent implements OnInit {
   public dateDeb : Date | undefined;
   public idAction : number;
 
-  constructor(public cahierQuartService : cahierQuartService, private datePipe : DatePipe,private route : ActivatedRoute, private location : Location) {
+  constructor(public cahierQuartService : cahierQuartService, private popupService : PopupService, private datePipe : DatePipe,private route : ActivatedRoute, private location : Location) {
     this.nom = "";
     this.quart = 1;
     this.idAction = 0;
@@ -60,12 +61,12 @@ export class ActionComponent implements OnInit {
       var dateDebString = this.datePipe.transform(this.dateDeb,'yyyy-MM-dd HH:mm');
     }
     else {
-      Swal.fire('Veuillez choisir une date de début','La saisie a été annulée.','error');
+      this.popupService.alertErrorForm('Veuillez choisir une date de début. La saisie a été annulée.');
       return;
     }
     //Il faut avoir renseigné un nom
     if(this.nom == "" ){
-      Swal.fire('Veuillez renseigner le nom de l\'action','La saisie a été annulée.','error');
+      this.popupService.alertErrorForm('Veuillez renseigner le nom de l\'action. La saisie a été annulée.');
       return;
     }
     //Choix de la phrase à afficher en fonction du mode
@@ -107,7 +108,7 @@ export class ActionComponent implements OnInit {
           this.cahierQuartService.updateAction(this.nom, dateDeb2, dateFin, this.idAction).subscribe((response)=>{
             this.cahierQuartService.updateCalendrierAction(this.idAction, dateDeb2, this.quart, dateFin).subscribe((response) => {
               var dateFin = "";
-              Swal.fire({text : 'Action modifiée', icon :'success'});
+              this.popupService.alertSuccessForm('Action modifiée');
               this.location.back();
             })
           })
@@ -118,7 +119,7 @@ export class ActionComponent implements OnInit {
           this.cahierQuartService.newAction(this.nom, dateDeb2, dateFin).subscribe((response)=>{
             this.cahierQuartService.newCalendrierAction(response.data[0].id, response.data[0].date_heure_debut, this.quart, response.data[0].date_heure_fin).subscribe((response) => {
               var dateFin = "";
-              Swal.fire({text : 'Nouvelle action créée', icon :'success'});
+              this.popupService.alertSuccessForm('Nouvelle action créée');
               this.location.back();
             })
           })
@@ -126,7 +127,7 @@ export class ActionComponent implements OnInit {
       } 
       else {
         // Pop-up d'annulation de la suppression
-        Swal.fire('Annulé','La création a été annulée.','error');
+        this.popupService.alertErrorForm('La création a été annulée.');
       }
     });
   }

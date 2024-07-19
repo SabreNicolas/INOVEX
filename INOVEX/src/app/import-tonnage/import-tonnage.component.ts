@@ -4,6 +4,7 @@ import Swal from 'sweetalert2';
 import {moralEntity} from "../../models/moralEntity.model";
 import { dechetsCollecteurs } from 'src/models/dechetsCollecteurs.model';
 import { user } from 'src/models/user.model';
+import { PopupService } from '../services/popup.service';
 
 @Component({
   selector: 'app-import-tonnage',
@@ -21,7 +22,7 @@ export class ImportTonnageComponent implements OnInit {
   public nomImport : string;
   public productImport : string;
 
-  constructor(private moralEntitiesService : moralEntitiesService) {
+  constructor(private moralEntitiesService : moralEntitiesService, private popupService : PopupService) {
     this.debCode = '';
     this.listId = [];
     this.moralEntities = [];
@@ -131,20 +132,14 @@ export class ImportTonnageComponent implements OnInit {
     //@ts-ignore
     if(verifNomImport != null || verifProductImport != null){
       this.moralEntitiesService.updateCorrespondance(ProducerId,nomImport,productImport).subscribe((response) => {
-        Swal.fire({
-          icon: 'success',
-          text: 'Correspondance modifiée',
-        });
+        this.popupService.alertSuccessForm('Correspondance modifiée');
         this.ngOnInit();
       })
     }
     //Sinon on la crée
     else {
       this.moralEntitiesService.createImport_tonnage(ProducerId, ProductId, nomImport, productImport).subscribe((response) => {
-        Swal.fire({
-          icon: 'success',
-          text: 'Correspondance ajoutée',
-        });
+        this.popupService.alertSuccessForm('Correspondance ajoutée');
         this.ngOnInit();
       })
     }

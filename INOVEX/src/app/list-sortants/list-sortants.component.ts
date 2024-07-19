@@ -16,6 +16,7 @@ import { idUsineService } from '../services/idUsine.service';
 import { valueHodja } from 'src/models/valueHodja.model';
 import {DatePipe} from '@angular/common'
 import * as XLSX from 'xlsx';
+import { PopupService } from '../services/popup.service';
 
 @Component({
   selector: 'app-list-sortants',
@@ -44,7 +45,7 @@ export class ListSortantsComponent implements OnInit {
 
 
 
-  constructor(private idUsineService : idUsineService,private datePipe:DatePipe,private moralEntitiesService : moralEntitiesService,private productsService : productsService, private categoriesService : categoriesService, private Papa : Papa, private mrService : moralEntitiesService,private dateService : dateService) {
+  constructor(private idUsineService : idUsineService, private popupService : PopupService, private datePipe:DatePipe,private moralEntitiesService : moralEntitiesService,private productsService : productsService, private categoriesService : categoriesService, private Papa : Papa, private mrService : moralEntitiesService,private dateService : dateService) {
     this.debCode = '';
     this.listProducts = [];
     this.listDays = [];
@@ -129,13 +130,10 @@ export class ListSortantsComponent implements OnInit {
         if (valueInt >0.0){
           this.mrService.createMeasure(date.substr(6,4)+'-'+date.substr(3,2)+'-'+date.substr(0,2),valueInt,pr.Id,0).subscribe((response)=>{
             if (response == "Création du Measures OK"){
-              Swal.fire("Les valeurs ont été insérées avec succès !");
+              this.popupService.alertSuccessForm("Les valeurs ont été insérées avec succès !");
             }
             else {
-              Swal.fire({
-                icon: 'error',
-                text: 'Erreur lors de l\'insertion des valeurs ....',
-              })
+              this.popupService.alertErrorForm('Erreur lors de l\'insertion des valeurs ....')
             }
           });
         }
@@ -169,14 +167,11 @@ export class ListSortantsComponent implements OnInit {
   delete(Id : number, date : string){
     this.mrService.createMeasure(date.substr(6,4)+'-'+date.substr(3,2)+'-'+date.substr(0,2),0,Id,0).subscribe((response)=>{
       if (response == "Création du Measures OK"){
-        Swal.fire("La valeur a bien été supprimé !");
+        this.popupService.alertSuccessForm("La valeur a bien été supprimé !");
         (<HTMLInputElement>document.getElementById(Id + '-' + date)).value = '';
       }
       else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Erreur lors de la suppression de la valeur ....',
-        })
+        this.popupService.alertErrorForm('Erreur lors de la suppression de la valeur ....')
       }
     });
   }
@@ -486,17 +481,11 @@ export class ListSortantsComponent implements OnInit {
       });
     }
     else {
-      Swal.fire({
-        icon: 'error',
-        text: 'Erreur lors de l\'insertion des valeurs ....',
-      })
+      this.popupService.alertErrorForm('Erreur lors de l\'insertion des valeurs ....')
     }
 
     if(this.stockageImport.size == 0 ){
-      Swal.fire({
-        icon: 'error',
-        text: 'Aucune valeur n\'a été insérée, aucune correspondance n\'a été trouvée',
-      })
+      this.popupService.alertErrorForm('Aucune valeur n\'a été insérée, aucune correspondance n\'a été trouvée')
     }
   }
 
@@ -533,18 +522,12 @@ export class ListSortantsComponent implements OnInit {
           XLSX.writeFile(wb, nomFichier+'.xlsx');
         }
         else {
-          Swal.fire({
-            icon: 'error',
-            text: 'Aucune donnée sur ces dates !',
-          })
+          this.popupService.alertErrorForm('Aucune donnée sur ces dates !')
         }
       })
     }
     else{
-      Swal.fire({
-        icon: 'error',
-        text: 'Veuillez entrer des dates',
-      })
+      this.popupService.alertErrorForm('Veuillez entrer des dates')
     }
   }
 
@@ -629,10 +612,7 @@ export class ListSortantsComponent implements OnInit {
             title :"Les valeurs ont été insérées avec succès !"
           });            }
           else {
-            Swal.fire({
-            icon: 'error',
-            text: 'Erreur lors de l\'insertion des valeurs ....',
-            })
+            this.popupService.alertErrorForm('Erreur lors de l\'insertion des valeurs ....')
           }
         await this.wait(350);
       });

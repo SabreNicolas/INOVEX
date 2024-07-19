@@ -5,6 +5,7 @@ import { productsService } from '../services/products.service';
 import { categoriesService } from '../services/categories.service';
 import { category } from 'src/models/categories.model';
 import { product } from 'src/models/products.model';
+import { PopupService } from '../services/popup.service';
 
 @Component({
   selector: 'app-correspondance-sortants',
@@ -21,7 +22,7 @@ export class CorrespondanceSortantsComponent implements OnInit {
   public produitACreer: number;
 
 
-  constructor(private productsService : productsService, private categoriesService : categoriesService, private moralEntitiesService : moralEntitiesService) {
+  constructor(private productsService : productsService, private popupService : PopupService, private categoriesService : categoriesService, private moralEntitiesService : moralEntitiesService) {
     this.debCode = '';
     this.listSortantsAvecCorrespondance = [];
     this.nomFichier ="";
@@ -70,10 +71,7 @@ export class CorrespondanceSortantsComponent implements OnInit {
       var productId = typeElt.options[typeElt.selectedIndex].value;
       if(productId != ""){
         this.moralEntitiesService.updateProductImportCorrespondanceSortant(idCorrespondance, productId).subscribe((response) => {
-        Swal.fire({
-           icon: 'success',
-           text: 'Correspondance modifiée',
-         });
+        this.popupService.alertSuccessForm('Correspondance modifiée');
          this.ngOnInit();
        })
       }
@@ -93,10 +91,7 @@ export class CorrespondanceSortantsComponent implements OnInit {
       // Si on a une correspondance, on met à jour celle ci
       // @ts-ignore
       this.moralEntitiesService.updateNomImportCorrespondanceSortant(productId,productImport).subscribe((response) => {
-       Swal.fire({
-          icon: 'success',
-          text: 'Correspondance modifiée',
-        });
+       this.popupService.alertSuccessForm('Correspondance modifiée');
         this.ngOnInit();
       })
     }
@@ -105,10 +100,7 @@ export class CorrespondanceSortantsComponent implements OnInit {
       productImport = productImport.replace(/'/g,"''");
       if(productId != 0){
         this.moralEntitiesService.createImport_tonnageSortant(productId, productImport).subscribe((response) => {
-          Swal.fire({
-            icon: 'success',
-            text: 'Correspondance ajoutée',
-          });
+          this.popupService.alertSuccessForm('Correspondance ajoutée');
           this.ngOnInit();
         })
       }
@@ -121,20 +113,17 @@ export class CorrespondanceSortantsComponent implements OnInit {
       if (result.isConfirmed) {
         this.moralEntitiesService.deleteCorrespondance(idCorrespondance).subscribe((response) => {
           if (response == "Suppression de la correspondance OK"){
-            Swal.fire("La correspondance a été supprimée !");
+            this.popupService.alertSuccessForm("La correspondance a été supprimée !");
             this.ngOnInit();
           }
           else {
-            Swal.fire({
-              icon: 'error',
-              text: 'Erreur lors de Suppression ....',
-            })
+            this.popupService.alertErrorForm('Erreur lors de Suppression ....')
           }
         });
       } 
       else {
         // Pop-up d'annulation de la suppression
-        Swal.fire('Annulé','La suprression a été annulée.','error');
+        this.popupService.alertErrorForm('La suprression a été annulée.');
       }
     });
   }

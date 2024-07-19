@@ -4,6 +4,7 @@ import Swal from 'sweetalert2';
 import { productsService } from '../services/products.service';
 import { categoriesService } from '../services/categories.service';
 import { category } from 'src/models/categories.model';
+import { PopupService } from '../services/popup.service';
 
 @Component({
   selector: 'app-correspondance-reactifs',
@@ -17,7 +18,7 @@ export class CorrespondanceReactifsComponent implements OnInit {
   public produitACreer: number;
 
 
-  constructor(private productsService : productsService, private categoriesService : categoriesService, private moralEntitiesService : moralEntitiesService) {
+  constructor(private productsService : productsService, private popupService : PopupService, private categoriesService : categoriesService, private moralEntitiesService : moralEntitiesService) {
     this.listReactifsAvecCorrespondance = [];
     this.listReactifs = [];
     this.nomAjout ="";
@@ -52,10 +53,7 @@ export class CorrespondanceReactifsComponent implements OnInit {
       var productId = typeElt.options[typeElt.selectedIndex].value;
       if(productId != ""){
         this.moralEntitiesService.updateProductImportCorrespondanceReactif(idCorrespondance, productId).subscribe((response) => {
-          Swal.fire({
-            icon: 'success',
-            text: 'Correspondance modifiée',
-          });
+          this.popupService.alertSuccessForm('Correspondance modifiée');
           this.ngOnInit();
         })
       }
@@ -75,10 +73,7 @@ export class CorrespondanceReactifsComponent implements OnInit {
       // Si on a une correspondance, on met à jour celle ci
       // @ts-ignore
       this.moralEntitiesService.updateNomImportCorrespondanceReactif(productId,productImport).subscribe((response) => {
-       Swal.fire({
-          icon: 'success',
-          text: 'Correspondance modifiée',
-        });
+       this.popupService.alertSuccessForm('Correspondance modifiée');
         this.ngOnInit();
       })
     }
@@ -87,10 +82,7 @@ export class CorrespondanceReactifsComponent implements OnInit {
       productImport = productImport.replace(/'/g,"''")
       if(productId != 0){
         this.moralEntitiesService.createImport_tonnageReactif(productId, productImport).subscribe((response) => {
-          Swal.fire({
-            icon: 'success',
-            text: 'Correspondance ajoutée',
-          });
+          this.popupService.alertSuccessForm('Correspondance ajoutée');
           this.ngOnInit();
         })
       }
@@ -102,20 +94,17 @@ export class CorrespondanceReactifsComponent implements OnInit {
       if (result.isConfirmed) {
         this.moralEntitiesService.deleteCorrespondanceReactif(idCorrespondance).subscribe((response) => {
           if (response == "Suppression de la correspondance OK"){
-            Swal.fire("La correspondance a été supprimée !");
+            this.popupService.alertSuccessForm("La correspondance a été supprimée !");
             this.ngOnInit();
           }
           else {
-            Swal.fire({
-              icon: 'error',
-              text: 'Erreur lors de Suppression ....',
-            })
+            this.popupService.alertErrorForm('Erreur lors de Suppression ....')
           }
         });
       } 
       else {
         // Pop-up d'annulation de la suppression
-        Swal.fire('Annulé','La suprression a été annulée.','error');
+        this.popupService.alertErrorForm('La suprression a été annulée.');
       }
     });
   }

@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import {productsService} from "../services/products.service";
 import {categoriesService} from "../services/categories.service";
 import { category } from 'src/models/categories.model';
-import Swal from 'sweetalert2';
 import {product} from "../../models/products.model";
 import {NgForm} from "@angular/forms";
 import * as XLSX from 'xlsx';
 import { dateService } from '../services/date.service';
 import { moralEntitiesService } from '../services/moralentities.service';
 import { idUsineService } from '../services/idUsine.service';
+import { PopupService } from '../services/popup.service';
 
 @Component({
   selector: 'app-list-compteurs',
@@ -26,7 +26,7 @@ export class ListCompteursComponent implements OnInit {
   public dateFin : Date | undefined;
   public name : string;
 
-  constructor(private idUsineService : idUsineService, private productsService : productsService, private categoriesService : categoriesService, private dateService : dateService, private mrService : moralEntitiesService) {
+  constructor(private idUsineService : idUsineService, private popupService : PopupService, private productsService : productsService, private categoriesService : categoriesService, private dateService : dateService, private mrService : moralEntitiesService) {
     this.listCategories = [];
     this.listCompteurs = [];
     this.Code = '';
@@ -103,10 +103,7 @@ export class ListCompteursComponent implements OnInit {
         this.listDays.push(dd + '/' + mm + '/' + yyyy);
       }
       else{
-        Swal.fire({
-          icon: 'error',
-          text: 'Date invalide',
-        })
+        this.popupService.alertErrorForm('Date invalide')
       }
     }//Sinon on affiche en journalier
     else {
@@ -228,12 +225,9 @@ export class ListCompteursComponent implements OnInit {
           if(this.idUsine == 2 ||this.idUsine == 3){
             this.productsService.createMeasure(day.substr(6, 4) + '-' + day.substr(3, 2) + '-' + day.substr(0, 2), valueInt, cp.Code).subscribe((response) => {
               if (response == "Création du saisiemensuelle OK") {
-                Swal.fire("Les valeurs ont été insérées avec succès !");
+                this.popupService.alertSuccessForm("Les valeurs ont été insérées avec succès !");
               } else {
-                Swal.fire({
-                  icon: 'error',
-                  text: 'Erreur lors de l\'insertion des valeurs ....',
-                })
+                this.popupService.alertErrorForm('Erreur lors de l\'insertion des valeurs ....')
               }
             });
           }
@@ -241,13 +235,10 @@ export class ListCompteursComponent implements OnInit {
           else{
             this.mrService.createMeasure(day.substr(6,4)+'-'+day.substr(3,2)+'-'+day.substr(0,2),valueInt,cp.Id,0).subscribe((response)=>{
               if (response == "Création du Measures OK"){
-                Swal.fire("Les valeurs ont été insérées avec succès !");
+                this.popupService.alertSuccessForm("Les valeurs ont été insérées avec succès !");
               }
               else {
-                Swal.fire({
-                  icon: 'error',
-                  text: 'Erreur lors de l\'insertion des valeurs ....',
-                })
+                this.popupService.alertErrorForm('Erreur lors de l\'insertion des valeurs ....')
               }
             });
           }
@@ -261,14 +252,11 @@ export class ListCompteursComponent implements OnInit {
   delete(Id : number, date : string, Code : string){
     this.mrService.createMeasure(date.substr(6,4)+'-'+date.substr(3,2)+'-'+date.substr(0,2),0,Id,0).subscribe((response)=>{
       if (response == "Création du Measures OK"){
-        Swal.fire("La valeur a bien été supprimé !");
+        this.popupService.alertSuccessForm("La valeur a bien été supprimé !");
         (<HTMLInputElement>document.getElementById(Code + '-' + date)).value = '';
       }
       else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Erreur lors de la suppression de la valeur ....',
-        })
+        this.popupService.alertErrorForm('Erreur lors de la suppression de la valeur ....')
       }
     });
   }
@@ -278,14 +266,11 @@ export class ListCompteursComponent implements OnInit {
   deleteCompteur(Code : string, date : string){
     this.productsService.createMeasure(date.substr(6,4)+'-'+date.substr(3,2)+'-'+date.substr(0,2),0,Code).subscribe((response)=>{
       if (response == "Création du saisiemensuelle OK"){
-        Swal.fire("La valeur a bien été supprimé !");
+        this.popupService.alertSuccessForm("La valeur a bien été supprimé !");
         (<HTMLInputElement>document.getElementById(Code + '-' + date)).value = '';
       }
       else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Erreur lors de la suppression de la valeur ....',
-        })
+        this.popupService.alertErrorForm( 'Erreur lors de la suppression de la valeur ....')
       }
     });
   } 

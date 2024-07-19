@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {category} from "../../models/categories.model";
 import {NgForm} from "@angular/forms";
-import Swal from "sweetalert2";
 import {productsService} from "../services/products.service";
 import {categoriesService} from "../services/categories.service";
+import { PopupService } from '../services/popup.service';
 
 @Component({
   selector: 'app-new-analyse',
@@ -16,7 +16,7 @@ export class NewAnalyseComponent implements OnInit {
   public Code : string;
   public typeId : number;
 
-  constructor(private productsService : productsService, private categoriesService : categoriesService) {
+  constructor(private productsService : productsService,  private popupService : PopupService, private categoriesService : categoriesService) {
     this.listCategories = [];
     this.Code = "";
     this.typeId = 6; // 6 for analyse
@@ -75,13 +75,10 @@ export class NewAnalyseComponent implements OnInit {
     this.categoriesService.sites.forEach(site => {
       this.productsService.createProduct(this.typeId, site.id).subscribe((response)=>{
         if (response == "Création du produit OK"){
-          Swal.fire("L'analyse a bien été créé !");
+          this.popupService.alertSuccessForm("L'analyse a bien été créé !");
         }
         else {
-          Swal.fire({
-            icon: 'error',
-            text: "Erreur lors de la création de l'analyse ....",
-          })
+          this.popupService.alertSuccessForm("Erreur lors de la création de l'analyse ....")
         }
       });
     });

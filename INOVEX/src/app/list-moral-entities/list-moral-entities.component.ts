@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {moralEntitiesService} from "../services/moralentities.service";
-import Swal from 'sweetalert2';
 import {moralEntity} from "../../models/moralEntity.model";
 import { dechetsCollecteurs } from 'src/models/dechetsCollecteurs.model';
 import { user } from 'src/models/user.model';
+import { PopupService } from '../services/popup.service';
 
 @Component({
   selector: 'app-list-moral-entities',
@@ -21,7 +21,7 @@ export class ListMoralEntitiesComponent implements OnInit {
   public listTypeDechets : string[];
   public listCollecteurs : string[];
 
-  constructor(private moralEntitiesService : moralEntitiesService) {
+  constructor(private moralEntitiesService : moralEntitiesService, private popupService : PopupService) {
     this.debCode = '';
     this.listId = [];
     this.isAdmin = 0;
@@ -124,13 +124,10 @@ export class ListMoralEntitiesComponent implements OnInit {
       // @ts-ignore
       this.moralEntitiesService.setPrix(prix.replace(',','.'),MR.Id).subscribe((response)=>{
         if (response == "Mise à jour du prix unitaire OK"){
-          Swal.fire("Le Prix a été mis à jour !");
+          this.popupService.alertSuccessForm("Le Prix a été mis à jour !");
         }
         else {
-          Swal.fire({
-            icon: 'error',
-            text: 'Erreur lors de la mise à jour du Prix ....',
-          })
+          this.popupService.alertErrorForm('Erreur lors de la mise à jour du Prix ....')
         }
       });
       this.ngOnInit();
@@ -146,13 +143,10 @@ export class ListMoralEntitiesComponent implements OnInit {
     // @ts-ignore
     this.moralEntitiesService.setCAP(cap,MR.Id).subscribe((response)=>{
       if (response == "Mise à jour du CAP OK"){
-        Swal.fire("Le n° de du CAP a été mis à jour !");
+        this.popupService.alertSuccessForm("Le n° de du CAP a été mis à jour !");
       }
       else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Erreur lors de la mise à jour du n° du CAP ....',
-        })
+        this.popupService.alertErrorForm('Erreur lors de la mise à jour du n° du CAP ....')
       }
     });
     this.ngOnInit();
@@ -167,13 +161,10 @@ export class ListMoralEntitiesComponent implements OnInit {
     // @ts-ignore
     this.moralEntitiesService.setName(name,MR.Id).subscribe((response)=>{
       if (response == "Changement de nom du client OK"){
-        Swal.fire("Le Nom a été mis à jour !");
+        this.popupService.alertSuccessForm("Le Nom a été mis à jour !");
       }
       else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Erreur lors de la mise à jour du Nom ....',
-        })
+        this.popupService.alertErrorForm('Erreur lors de la mise à jour du Nom ....')
       }
     });
     this.ngOnInit();
@@ -191,13 +182,10 @@ export class ListMoralEntitiesComponent implements OnInit {
   async setVisibility(idMr : number, visibility : number){
     this.moralEntitiesService.setEnabled(idMr,visibility).subscribe((response)=>{
       if (response == "Changement de visibilité du client OK"){
-        Swal.fire("La visibilité du client a bien été changé !");
+        this.popupService.alertSuccessForm("La visibilité du client a bien été changé !");
       }
       else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Erreur lors du changement de visibilité du client ....',
-        })
+        this.popupService.alertErrorForm('Erreur lors du changement de visibilité du client ....')
       }
     });
     await this.wait(50);
@@ -225,16 +213,13 @@ export class ListMoralEntitiesComponent implements OnInit {
           // console.log("Le Prix a été mis à jour !");
         }
         else {
-          Swal.fire({
-            icon: 'error',
-            text: 'Erreur lors de la mise à jour du Prix ....',
-          })
+          this.popupService.alertErrorForm('Erreur lors de la mise à jour du Prix ....')
         }
       });
     }
     this.listId = [];
     this.ngOnInit();
-    Swal.fire("Le Prix a été mis à jour !");
+    this.popupService.alertSuccessForm("Le Prix a été mis à jour !");
   }
 
 

@@ -4,6 +4,7 @@ import Swal from 'sweetalert2';
 import {product} from "../../models/products.model";
 import {element} from "../../models/element.model";
 import {rondierService} from "../services/rondier.service";
+import { PopupService } from '../services/popup.service';
 
 
 @Component({
@@ -20,7 +21,7 @@ export class AdminComponent implements OnInit {
   public listElements : element[];
   public isSuperAdmin : boolean;
 
-  constructor(private productsService : productsService,private rondierService : rondierService) {
+  constructor(private productsService : productsService,private rondierService : rondierService, private popupService : PopupService) {
     this.typeId = 4;
     this.listProducts = [];
     this.name ="";
@@ -74,13 +75,10 @@ export class AdminComponent implements OnInit {
   async setVisibility(idPR : number, visibility : number){
     this.productsService.setEnabled(idPR,visibility).subscribe((response)=>{
       if (response == "Changement de visibilité du client OK"){
-        Swal.fire("La visibilité à bien été mise à jour");
+        this.popupService.alertSuccessForm("La visibilité à bien été mise à jour");
       }
       else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Erreur lors du changement de visibilité du produit ....',
-        })
+        this.popupService.alertErrorForm("Erreur lors du changement de visibilité du produit ....");
       }
     });
     await this.wait(5);
@@ -96,13 +94,10 @@ export class AdminComponent implements OnInit {
     // @ts-ignore
     this.productsService.setUnit(unit,PR.Id).subscribe((response)=>{
       if (response == "Mise à jour de l'unité OK"){
-        Swal.fire("L'unité a été mise à jour !");
+        this.popupService.alertSuccessForm("L'unité a été mise à jour !");
       }
       else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Erreur lors de la mise à jour de l\'unité ....',
-        })
+        this.popupService.alertErrorForm('Erreur lors de la mise à jour de l\'unité ....')
       }
     });
     this.getProducts();
@@ -118,13 +113,10 @@ export class AdminComponent implements OnInit {
     // @ts-ignore
     this.productsService.setType(type,PR.Id).subscribe((response)=>{
       if (response == "Changement de catégorie du produit OK"){
-        Swal.fire("Le type a été changé !");
+        this.popupService.alertSuccessForm("Le type a été changé !");
       }
       else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Erreur lors de la mise à jour du type ....',
-        })
+        this.popupService.alertErrorForm('Erreur lors de la mise à jour du type ....')
       }
     });
     this.getProducts();
@@ -150,19 +142,16 @@ export class AdminComponent implements OnInit {
       // @ts-ignore
       this.productsService.setType(type,this.listId[i]).subscribe((response)=>{
         if (response == "Changement de catégorie du produit OK"){
-          Swal.fire("Le type a été changé !");
+          this.popupService.alertSuccessForm("Le type a été changé !");
         }
         else {
-          Swal.fire({
-            icon: 'error',
-            text: 'Erreur lors de la mise à jour du type ....',
-          })
+          this.popupService.alertErrorForm('Erreur lors de la mise à jour du type ....')
         }
       });
       this.getProducts();
     }
     this.listId = [];
-    Swal.fire("Le type a été mis à jour !");
+    this.popupService.alertSuccessForm("Le type a été mis à jour !");
   }
 
   //Fonction pour attendre
@@ -176,9 +165,9 @@ export class AdminComponent implements OnInit {
   setElement(product : product,type : string){
     if(type=="CodeEquipement"){
       if(product.CodeEquipement == null){
-        var saisie = prompt('Veuillez saisir un code GMAO','');
+        var saisie = prompt('Veuillez saisir un commentaire','');
       }
-      else var saisie = prompt('Veuillez saisir un code GMAO',String(product.CodeEquipement));
+      else var saisie = prompt('Veuillez saisir un commentaire',String(product.CodeEquipement));
     }
     else {
       if(product.TAG == null){
@@ -190,18 +179,15 @@ export class AdminComponent implements OnInit {
     saisie = saisie.replace(/'/g,"''");
     this.productsService.setElement(saisie,product.Id,type).subscribe((response)=>{
       if (response == "Mise à jour du Code OK"){
-        Swal.fire("Le code GMAO a bien été affecté !");
+        this.popupService.alertSuccessForm("Le commentaire a bien été enregistré !");
         this.ngOnInit();
       }
       else if (response == "Mise à jour du TAG OK"){
-        Swal.fire("Le TAG a bien été affecté !");
+        this.popupService.alertSuccessForm("Le TAG a bien été affecté !");
         this.ngOnInit();
       }
       else {
-        Swal.fire({
-          icon: 'error',
-          text: "Erreur lors de l'affectation ....",
-        })
+        this.popupService.alertErrorForm("Erreur lors de l'affectation ....")
       }
     });
   }
@@ -210,13 +196,10 @@ export class AdminComponent implements OnInit {
   updateTypeRecup(id : number, typeRecupEMonitoring : string){
     this.productsService.updateTypeRecup(id,typeRecupEMonitoring).subscribe((response)=>{
       if (response == "Changement du type de récupération OK"){
-        Swal.fire("Le type a été changé !");
+        this.popupService.alertSuccessForm("Le type a été changé !");
       }
       else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Erreur lors de la mise à jour du type ....',
-        })
+        this.popupService.alertErrorForm('Erreur lors de la mise à jour du type ....')
       }
     });
   }
@@ -247,6 +230,7 @@ export class AdminComponent implements OnInit {
         //On récupérer l'id de l'élément rondier que l'on a stocké dans la clef de la liste
         let idElementRondier = Number(result.value.split("_")[0]);
         this.rondierService.changeTypeRecupSetRondier(pr.Id,idElementRondier).subscribe((response) =>{
+          this.popupService.alertSuccessForm("L'élément rondier a été enregistré !");
           this.ngOnInit();
         })
       }
@@ -261,14 +245,11 @@ export class AdminComponent implements OnInit {
     saisie = saisie.replace(/'/g,"''");
     this.productsService.updateCoeff(saisie,pr.Id).subscribe((response)=>{
       if (response == "Mise à jour du Coeff OK"){
-        Swal.fire("Le coefficient a bien été affecté !");
+        this.popupService.alertSuccessForm("Le coefficient a bien été affecté !");
         this.ngOnInit();
       }
       else {
-        Swal.fire({
-          icon: 'error',
-          text: "Erreur lors de l'affectation ....",
-        })
+        this.popupService.alertErrorForm("Erreur lors de l'affectation ....")
       }
     });
 
@@ -281,14 +262,11 @@ export class AdminComponent implements OnInit {
     Name = Name.replace(/'/g,"''");
     this.productsService.updateProductName(saisie,Name).subscribe((response)=>{
       if (response == "Changement du nom du produit OK"){
-        Swal.fire("Le nom a bien été changé !");
+        this.popupService.alertSuccessForm("Le nom a bien été changé !");
         this.ngOnInit();
       }
       else {
-        Swal.fire({
-          icon: 'error',
-          text: "Erreur lors de l'affectation ....",
-        })
+        this.popupService.alertErrorForm("Erreur lors de l'affectation ....")
       }
     });
   }

@@ -26,7 +26,7 @@ export class rondierService {
         'Access-Control-Allow-Origin': '*',
         'Authorization': 'Bearer ' + localStorage.getItem('token')
     }
-    private portAPI = 3100;
+    private portAPI = 3102;
     private ip = "fr-couvinove301.prod.paprec.fr";
     //private ip = "localhost";
     private idUsine : number | undefined;
@@ -359,6 +359,7 @@ export class rondierService {
     //création de l'élément de controle
     //?zoneId=1&nom=ddd&valeurMin=1.4&valeurMax=2.5&typeChamp=1&isFour=0&isGlobal=1&unit=tonnes&defaultValue=1.7&isRegulateur=0&listValues=1;2;3&isCompteur=1&ordre=5&infoSup=zhhz
     createElement(zoneId : number, nom : string, valeurMin : number, valeurMax : number, typeChamp : number, unit : string, defaultValue : number, isRegulateur : number, listValues : string, isCompteur : number, ordre : number, idGroupement : number, codeEquipement : string, infoSupValue : string){
+        nom = encodeURIComponent(nom);
         let requete = "https://"+this.ip+":"+this.portAPI+"/element?zoneId="+zoneId+"&nom="+nom+"&valeurMin="+valeurMin+"&valeurMax="+valeurMax+"&typeChamp="+typeChamp+"&unit="+unit+"&defaultValue="+defaultValue+"&isRegulateur="+isRegulateur+"&listValues="+listValues+"&isCompteur="+isCompteur+"&ordre="+ordre +"&idGroupement="+idGroupement+"&codeEquipement="+codeEquipement+"&infoSup="+infoSupValue;
         console.log(requete);
 
@@ -373,6 +374,7 @@ export class rondierService {
     //update de l'élément de controle ayant comme id
     //?zoneId=1&nom=ddd&valeurMin=1.4&valeurMax=2.5&typeChamp=1&isFour=0&isGlobal=1&unit=tonnes&defaultValue=1.7&isRegulateur=0&listValues=1;2;3&isCompteur=1&ordre=5&infoSup=zhhz
     updateElement(Id : number, zoneId : number, nom : string, valeurMin : number, valeurMax : number, typeChamp : number, unit : string, defaultValue : number, isRegulateur : number, listValues : string, isCompteur : number, ordre : number, idGroupement : number, codeEquipement : string, infoSupValue : string){
+        nom = encodeURIComponent(nom);
         let requete = "https://"+this.ip+":"+this.portAPI+"/updateElement/"+Id+"?zoneId="+zoneId+"&nom="+nom+"&valeurMin="+valeurMin+"&valeurMax="+valeurMax+"&typeChamp="+typeChamp+"&unit="+unit+"&defaultValue="+defaultValue+"&isRegulateur="+isRegulateur+"&listValues="+listValues+"&isCompteur="+isCompteur+"&ordre="+ordre+"&idGroupement="+idGroupement+"&codeEquipement="+codeEquipement+"&infoSup="+infoSupValue;
         //console.log(requete);
 
@@ -800,6 +802,8 @@ export class rondierService {
     //?commentaire=dggd&dateFin=fff&type=1
     createConsigne(titre : string,desc: string, type: number, dateFin: string | null, dateDebut: string | null,fileToUpload:File|null){
         titre = encodeURIComponent(titre);
+        desc = encodeURIComponent(desc)
+
         let requete = "https://"+this.ip+":"+this.portAPI+"/consigne?commentaire="+desc+"&dateFin="+dateFin+"&dateDebut=" + dateDebut + "&type="+type+"&idUsine="+this.idUsine+"&titre="+titre;
         //console.log(requete);
 
@@ -867,6 +871,7 @@ export class rondierService {
     //?commentaire=dggd&dateFin=fff&type=1
     updateConsigne(titre : string, desc: string, type: number, dateFin: string | null, dateDebut: string | null, id:number){
         titre = encodeURIComponent(titre);
+        desc = encodeURIComponent(desc)
         let requete = "https://"+this.ip+":"+this.portAPI+"/updateConsigne?commentaire="+desc+"&dateFin="+dateFin+"&dateDebut=" + dateDebut + "&type="+type+"&id="+id + "&titre="+titre;
         //console.log(requete);
 

@@ -7,6 +7,7 @@ import { consigne } from 'src/models/consigne.model';
 declare var $ : any;
 import {rondierService} from "../services/rondier.service";
 import { AltairService } from '../services/altair.service';
+import { PopupService } from '../services/popup.service';
 
 @Component({
   selector: 'app-evenement',
@@ -22,6 +23,10 @@ export class EvenementComponent implements OnInit {
   public idAnomalie : number;
   public groupementGMAO : string;
   public equipementGMAO : string;
+  public listGroupementsGMAOMap : Map<String,String>;
+  public listGroupementGMAOTable : any [];
+  public listEquipementGMAO : any[];
+  public listEquipementGMAOFiltre: any[];
   public demandeTravaux : number;
   public consigne : number;
   public cause : string;
@@ -29,19 +34,25 @@ export class EvenementComponent implements OnInit {
   fileToUpload: File | undefined;
   public imgSrc !: any
   public dupliquer : number;
+  private token: string;
 
-  constructor(public altairService : AltairService,public cahierQuartService : cahierQuartService, private rondierService : rondierService, private datePipe : DatePipe,private route : ActivatedRoute, private location : Location) {
+  constructor(public altairService : AltairService, private popupService : PopupService, public cahierQuartService : cahierQuartService, private rondierService : rondierService, private datePipe : DatePipe,private route : ActivatedRoute, private location : Location) {
     this.titre = "";
     this.importance = 0;
     this.idEvenement = 0;
     this.idAnomalie = 0;
     this.groupementGMAO ="";
+    this.listGroupementsGMAOMap = new Map();
+    this.listGroupementGMAOTable = [];
+    this.listEquipementGMAOFiltre = [];
+    this.listEquipementGMAO = [];
     this.equipementGMAO =""
     this.demandeTravaux=0;
     this.consigne = 0;
     this.cause ="";
     this.description = "";
     this.dupliquer = 0;
+    this.token = "";
 
     //Permet de savoir si on est en mode édition ou création
     this.route.queryParams.subscribe(params => {
@@ -64,10 +75,7 @@ export class EvenementComponent implements OnInit {
         this.dupliquer = 0;
       }
     });
-    this.altairService.login().subscribe((response)=>{
-      console.log("test")
-      console.log(response)
-    })
+    
    }
 
   ngOnInit(): void {
@@ -115,16 +123,60 @@ export class EvenementComponent implements OnInit {
         this.imgSrc = response.data[0]['photo']
       })
     }
+    this.altairService.login().subscribe((response)=>{
+      this.token = response.token
+
+      this.altairService.getEquipements(this.token).subscribe((response)=>{
+        for(let equipment of response.equipment){
+          if(equipment.status != "REBUT"){
+            this.listEquipementGMAO.push(equipment)
+          }
+        }
+        this.listEquipementGMAOFiltre = this.listEquipementGMAO;
+        for(let equipement of this.listEquipementGMAO){
+          this.listGroupementsGMAOMap.set(equipement.fkcodelocation,equipement.fkcodelocation)
+        }
+        this.listGroupementGMAOTable = Array.from(this.listGroupementsGMAOMap.keys())
+
+      })
+    })
+
+    
+    
+  }
+
+  updateElements(){
+    this.listEquipementGMAOFiltre = [];
+
+    if(this.groupementGMAO == ""){
+      this.listEquipementGMAOFiltre = this.listEquipementGMAO
+    }
+    else{
+      for(let equipement of this.listEquipementGMAO){
+        if(equipement.fkcodelocation == this.groupementGMAO){
+          this.listEquipementGMAOFiltre.push(equipement)
+        }
+      }
+    }
+  }
+
+  updateGroupements(){
+    for(let equipement of this.listEquipementGMAO){
+      if(equipement.codeequipment == this.equipementGMAO.split('---')[0]){
+        this.groupementGMAO = equipement.fkcodelocation
+      }
+    }
   }
 
   //Création ou édition d'un évènement
   newEvenement(){
+    this.dateFin = this.dateDeb
     //Il faut avoir renseigné une date de début
     if(this.dateDeb != undefined){
       var dateDebString = this.datePipe.transform(this.dateDeb,'yyyy-MM-dd HH:mm');
     }
     else {
-      Swal.fire('Veuillez choisir une date de début','La saisie a été annulée.','error');
+      this.popupService.alertErrorForm('Veuillez choisir une date de début. La saisie a été annulée.');
       return;
     }
     //Il faut avoir renseigné une date de fin
@@ -132,17 +184,17 @@ export class EvenementComponent implements OnInit {
       var dateFinString = this.datePipe.transform(this.dateFin,'yyyy-MM-dd HH:mm');
     }
     else {
-      Swal.fire('Veuillez choisir une date de Fin','La saisie a été annulée.','error');
+      this.popupService.alertErrorForm('Veuillez choisir une date de Fin. La saisie a été annulée.');
       return;
     }
     //Il faut avoir renseigné un nom
     if(this.titre == "" ){
-      Swal.fire('Veuillez renseigner le titre de l\'actualité','La saisie a été annulée.','error');
+      this.popupService.alertErrorForm('Veuillez renseigner le titre de l\'actualité. La saisie a été annulée.');
       return;
     }
     //Il faut que les deux dates soient cohérentes
     if(this.dateFin < this.dateDeb){
-      Swal.fire('Les dates ne correspondent pas','La saisie a été annulée.','error');
+      this.popupService.alertErrorForm('Les dates ne correspondent pas. La saisie a été annulée.');
       return;
     }
     //Si la case demande de travaux est choché on la met a un pour l'insertion sinon elle est a 'true'
@@ -179,7 +231,7 @@ export class EvenementComponent implements OnInit {
           this.cahierQuartService.updateEvenement(this.titre,this.importance,dateDebString,dateFinString, this.groupementGMAO, this.equipementGMAO, this.cause,this.description, this.consigne, this.demandeTravaux, this.idEvenement).subscribe((response)=>{
             if(response != undefined){
               this.cahierQuartService.historiqueEvenementUpdate(this.idEvenement).subscribe((response)=>{
-                Swal.fire({text : 'Evènement modifiée !', icon :'success'});
+                this.popupService.alertSuccessForm('Evènement modifiée !');
                 this.location.back();
               })
             }
@@ -187,27 +239,47 @@ export class EvenementComponent implements OnInit {
         }
         //Sinon on créé 
         else{
+          if(this.demandeTravaux == 1){
+            this.altairService.createDI(this.token,this.titre, this.groupementGMAO, this.equipementGMAO.split('---')[0], this.cause, this.importance, this.description).subscribe((response) =>{
+              //@ts-ignore
+              this.cahierQuartService.newEvenement(this.titre,this.fileToUpload,this.importance,dateDebString,dateFinString, this.groupementGMAO, this.equipementGMAO, this.cause,this.description, this.consigne, response.codeworkrequest).subscribe((response)=>{
+                if(response != undefined){
+                  this.popupService.alertSuccessForm('Nouvel évènement créée');
+                  this.idEvenement = response['data'][0]['Id'];
+                  
+                  console.log(response)
+                  this.cahierQuartService.historiqueEvenementCreate(this.idEvenement).subscribe((response)=>{
+                    if(this.idAnomalie > 0){
+                      this.rondierService.updateAnomalieSetEvenement(this.idAnomalie).subscribe((response)=>{
+                        this.location.back();
+                      })
+                    } 
+                    else this.location.back(); 
+                  })        
+                }
+              });
+            })
+          }
           //@ts-ignore
           this.cahierQuartService.newEvenement(this.titre,this.fileToUpload,this.importance,dateDebString,dateFinString, this.groupementGMAO, this.equipementGMAO, this.cause,this.description, this.consigne, this.demandeTravaux).subscribe((response)=>{
             if(response != undefined){
-              Swal.fire({text : 'Nouvel évènement créée', icon :'success'});
-              this.idEvenement = response['data'][0]['Id'];
+              this.popupService.alertSuccessForm('Nouvel évènement créée');
+              this.idEvenement = response['data'][0]['Id'];    
               this.cahierQuartService.historiqueEvenementCreate(this.idEvenement).subscribe((response)=>{
-                if(this.idAnomalie > 0){
+                 if(this.idAnomalie > 0){
                   this.rondierService.updateAnomalieSetEvenement(this.idAnomalie).subscribe((response)=>{
                     this.location.back();
                   })
                 } 
                 else this.location.back(); 
-              })
-                          
+              })        
             }
           });
         }  
       } 
       else {
         // Pop-up d'annulation de la suppression
-        Swal.fire('Annulé','La création a été annulée.','error');
+        this.popupService.alertErrorForm('La création a été annulée.');
       }
     });
     
@@ -231,7 +303,7 @@ export class EvenementComponent implements OnInit {
       reader.onload = e => this.imgSrc = reader.result;
       reader.readAsDataURL(file);
     } 
-    else Swal.fire('Aucun fichier choisi....')
+    else this.popupService.alertErrorForm('Aucun fichier choisi....')
   }
 
   goBack(){
@@ -239,6 +311,7 @@ export class EvenementComponent implements OnInit {
   }
 
   clickDemandeTravaux(){
+    console.log(this.demandeTravaux)
     if($("input#demandeTravaux").is(':checked')){
       $("#dateFin").show();
       $("#equipementGMAO").show();
@@ -248,7 +321,6 @@ export class EvenementComponent implements OnInit {
       $("#dateFin").hide();
       $("#equipementGMAO").hide();
       $("#groupementGMAO").hide();
-
     }
   }
 }

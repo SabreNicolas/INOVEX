@@ -4,6 +4,7 @@ import Swal from 'sweetalert2';
 import {product} from "../../models/products.model";
 import { moralEntitiesService } from '../services/moralentities.service';
 import { productsService } from '../services/products.service';
+import { PopupService } from '../services/popup.service';
 
 @Component({
   selector: 'app-list-qse',
@@ -16,7 +17,7 @@ export class ListQseComponent implements OnInit {
   public listDays : string[];
 
 
-  constructor(private productsService : productsService, private moralEntitiesService: moralEntitiesService) { 
+  constructor(private productsService : productsService, private moralEntitiesService: moralEntitiesService, private popupService : PopupService) { 
     this.listQse = [];
     this.listDays = [];
   }
@@ -106,13 +107,10 @@ export class ListQseComponent implements OnInit {
         if (valueInt >0.0){
           this.moralEntitiesService.createMeasure(day.substr(6,4)+'-'+day.substr(3,2)+'-'+day.substr(0,2),valueInt,cp.Id, 0).subscribe((response)=>{
             if (response == "Création du Measures OK"){
-              Swal.fire("Les valeurs ont été insérées avec succès !");
+              this.popupService.alertSuccessForm("Les valeurs ont été insérées avec succès !");
             }
             else {
-              Swal.fire({
-                icon: 'error',
-                text: 'Erreur lors de l\'insertion des valeurs ....',
-              })
+              this.popupService.alertErrorForm('Erreur lors de l\'insertion des valeurs ....')
             }
           });
         }
@@ -124,14 +122,11 @@ export class ListQseComponent implements OnInit {
   delete(Id : number, date : string, Code: string){
     this.moralEntitiesService.createMeasure(date.substr(6,4)+'-'+date.substr(3,2)+'-'+date.substr(0,2),0,Id, 0).subscribe((response)=>{
       if (response == "Création du Measures OK"){
-        Swal.fire("La valeur a bien été supprimé !");
+        this.popupService.alertSuccessForm("La valeur a bien été supprimé !");
         (<HTMLInputElement>document.getElementById(Code + '-' + date)).value = '';
       }
       else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Erreur lors de la suppression de la valeur ....',
-        })
+        this.popupService.alertErrorForm('Erreur lors de la suppression de la valeur ....')
       }
     });
   }

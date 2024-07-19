@@ -4,6 +4,7 @@ import {moralEntitiesService} from "../services/moralentities.service";
 import Swal from 'sweetalert2';
 import { dechetsCollecteurs } from 'src/models/dechetsCollecteurs.model';
 import { ActivatedRoute } from '@angular/router';
+import { PopupService } from '../services/popup.service';
 
 @Component({
   selector: 'app-moral-entities',
@@ -31,7 +32,7 @@ export class MoralEntitiesComponent implements OnInit {
   public listTypeDechets : string[];
   public listCollecteurs : string[];
 
-  constructor(private moralEntitiesService : moralEntitiesService, private route : ActivatedRoute) {
+  constructor(private moralEntitiesService : moralEntitiesService, private route : ActivatedRoute, private popupService : PopupService) {
     this.code = '';
     this.produit = "201";
     this.collecteur = "01";
@@ -166,13 +167,10 @@ export class MoralEntitiesComponent implements OnInit {
     else{
       this.moralEntitiesService.createMoralEntity().subscribe((response)=>{
         if (response == "Création du client OK"){
-          Swal.fire("Le client a bien été créé !");
+          this.popupService.alertSuccessForm("Le client a bien été créé !");
         }
         else {
-          Swal.fire({
-            icon: 'error',
-            text: 'Erreur lors de la création du client ....',
-          })
+          this.popupService.alertErrorForm('Erreur lors de la création du client ....')
         }
       });
     }
@@ -213,13 +211,10 @@ export class MoralEntitiesComponent implements OnInit {
   update(){
     this.moralEntitiesService.updateMoralEntity(this.mrId).subscribe((response)=>{
       if (response == "Mise à jour du MR OK"){
-        Swal.fire("Le client a bien été mis à jour !");
+        this.popupService.alertSuccessForm("Le client a bien été mis à jour !");
       }
       else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Erreur lors de la mise à jour du client ....',
-        })
+        this.popupService.alertErrorForm('Erreur lors de la mise à jour du client ....')
       }
     });
   }

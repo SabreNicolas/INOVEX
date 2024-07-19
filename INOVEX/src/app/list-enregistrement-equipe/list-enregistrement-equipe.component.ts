@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { cahierQuartService } from '../services/cahierQuart.service';
 import { equipe } from "../../models/equipe.model";
 import Swal from 'sweetalert2';
+import { PopupService } from '../services/popup.service';
 
 @Component({
   selector: 'app-list-enregistrement-equipe',
@@ -13,7 +14,7 @@ export class ListEnregistrementEquipeComponent implements OnInit {
 
   public equipes : any[];
 
-  constructor(public cahierQuartService : cahierQuartService,){
+  constructor(public cahierQuartService : cahierQuartService,private popupService : PopupService){
     
     this.equipes = [];
 
@@ -35,13 +36,13 @@ export class ListEnregistrementEquipeComponent implements OnInit {
           this.cahierQuartService.deleteEnregistrementAffectationEquipe(idEquipe).subscribe((response) => {
             this.cahierQuartService.deleteEnregistrementEquipe(idEquipe).subscribe((response) => {
               this.ngOnInit();
-              Swal.fire('Confirmé','La suprression a été effectuée.','success');
+              this.popupService.alertSuccessForm('La suprression a été effectuée.');
             })
           })
         } 
         else {
           // Pop-up d'annulation de la suppression
-          Swal.fire('Annulé','La suprression a été annulée.','error');
+          this.popupService.alertErrorForm('La suprression a été annulée.');
         }
       });
   }

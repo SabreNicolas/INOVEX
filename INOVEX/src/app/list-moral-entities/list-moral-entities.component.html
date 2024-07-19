@@ -55,8 +55,8 @@
               <td><strong>{{mr.Name}}</strong></td>
               <td>{{mr.numCAP}}</td>
               <td>{{mr.codeDechet}}</td>
-              <td>{{mr.produit}} {{mr.collecteur}}</td>
-              <td>{{mr.UnitPrice}}</td>
+              <td><span class="badge bg-info text-dark">{{mr.produit}} {{mr.collecteur}}</span></td>
+              <td><span class="badge rounded-pill bg-secondary">{{mr.UnitPrice}}</span></td>
               <td><button id="setCAP" (click)="setCAP(mr)" class="btn btn-primary">
                 Changer le n° du CAP
               </button></td>

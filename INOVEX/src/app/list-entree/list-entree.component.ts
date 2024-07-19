@@ -16,6 +16,8 @@ import { dateService } from '../services/date.service';
 import { user } from 'src/models/user.model';
 import { idUsineService } from '../services/idUsine.service';
 import {DatePipe} from '@angular/common'
+import * as FileSaver from 'file-saver';
+import { PopupService } from '../services/popup.service';
 
 @Component({
   selector: 'app-list-entree',
@@ -50,7 +52,7 @@ export class ListEntreeComponent implements OnInit {
   public dates : string[];
   public clientManquants: Map<String,String>;
 
-  constructor(private idUsineService : idUsineService,private datePipe:DatePipe, private moralEntitiesService : moralEntitiesService, private productsService : productsService, private Papa : Papa, private dateService : dateService) {
+  constructor(private idUsineService : idUsineService,private datePipe:DatePipe, private popupService : PopupService,  private moralEntitiesService : moralEntitiesService, private productsService : productsService, private Papa : Papa, private dateService : dateService) {
     this.debCode = '2';
     this.moralEntities = [];
     this.listDays = [];
@@ -179,13 +181,10 @@ export class ListEntreeComponent implements OnInit {
           if (valueInt >0.0){
             this.moralEntitiesService.createMeasure(date.substr(6,4)+'-'+date.substr(3,2)+'-'+date.substr(0,2),valueInt,mr.productId,mr.Id).subscribe((response)=>{
               if (response == "Création du Measures OK"){
-                Swal.fire("Les valeurs ont été insérées avec succès !");
+                this.popupService.alertSuccessForm("Les valeurs ont été insérées avec succès !");
               }
               else {
-                Swal.fire({
-                  icon: 'error',
-                  text: 'Erreur lors de l\'insertion des valeurs ....',
-                })
+                this.popupService.alertErrorForm('Erreur lors de l\'insertion des valeurs ....')
               }
             });
           }
@@ -243,14 +242,11 @@ export class ListEntreeComponent implements OnInit {
   delete(Id : number, productId : number, date : string){
     this.moralEntitiesService.createMeasure(date.substr(6,4)+'-'+date.substr(3,2)+'-'+date.substr(0,2),0,productId,Id).subscribe((response)=>{
       if (response == "Création du Measures OK"){
-        Swal.fire("La valeur a bien été supprimé !");
+        this.popupService.alertSuccessForm("La valeur a bien été supprimé !");
         (<HTMLInputElement>document.getElementById(Id + '-' + productId + '-' + date)).value = '';
       }
       else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Erreur lors de la suppression de la valeur ....',
-        })
+        this.popupService.alertErrorForm('Erreur lors de la suppression de la valeur ....')
       }
     });
     this.getTotaux();
@@ -287,13 +283,10 @@ export class ListEntreeComponent implements OnInit {
           // @ts-ignore
           this.moralEntitiesService.createMeasure(date.substr(6,4)+'-'+date.substr(3,2)+'-'+date.substr(0,2),valueInt,product.Id,0).subscribe((response)=>{
             if (response == "Création du Measures OK"){
-              Swal.fire("Les valeurs ont été insérées avec succès !");
+              this.popupService.alertSuccessForm("Les valeurs ont été insérées avec succès !");
             }
             else {
-              Swal.fire({
-                icon: 'error',
-                text: 'Erreur lors de l\'insertion des valeurs ....',
-              })
+              this.popupService.alertSuccessForm('Erreur lors de l\'insertion des valeurs ....')
             }
           });
         }
@@ -305,14 +298,11 @@ export class ListEntreeComponent implements OnInit {
   deleteContainer(Id : number, date : string){
     this.moralEntitiesService.createMeasure(date.substr(6,4)+'-'+date.substr(3,2)+'-'+date.substr(0,2),0,Id,0).subscribe((response)=>{
       if (response == "Création du Measures OK"){
-        Swal.fire("La valeur a bien été supprimé !");
+        this.popupService.alertSuccessForm("La valeur a bien été supprimé !");
         (<HTMLInputElement>document.getElementById(Id + '-' + date)).value = '';
       }
       else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Erreur lors de la suppression de la valeur ....',
-        })
+        this.popupService.alertSuccessForm('Erreur lors de la suppression de la valeur ....')
       }
     });
   }
@@ -467,7 +457,7 @@ export class ListEntreeComponent implements OnInit {
       //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
       if(this.idUsine === 15){
         //Vitré
-        this.lectureCSV(event, ";", true,13, 20, 4, 27, 31);
+        this.lectureCSV(event, ";", true,13, 20, 4, 28, 31);
       }
       else if(this.idUsine === 26) {
         //PONTEX
@@ -509,28 +499,21 @@ export class ListEntreeComponent implements OnInit {
           /* table id is passed over here */
           let element = response.data
           if(response.data.length >1){
-            const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(element); //Attention les jours sont considérés comme mois !!!!
-      
-            /* generate workbook and add the worksheet */
-            const wb: XLSX.WorkBook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, 'Entrants');
-        
+            const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(element); 
+
+            const csv = XLSX.utils.sheet_to_csv(ws)
+            FileSaver.saveAs(new Blob([csv], {type : 'text/csv; charset=utf-8'}), nomFichier + '.csv')
+
             // /* save to file */
-            XLSX.writeFile(wb, nomFichier+'.xlsx');
+            // XLSX.writeFile(wb, nomFichier+'.xlsx');
           }
           else {
-            Swal.fire({
-              icon: 'error',
-              text: 'Aucune donnée sur ces dates !',
-            })
+            this.popupService.alertErrorForm('Aucune donnée sur ces dates !')
           }
         })
       }
       else{
-        Swal.fire({
-          icon: 'error',
-          text: 'Veuillez entrer des dates',
-        })
+        this.popupService.alertErrorForm('Veuillez entrer des dates')
       }
     }
 
@@ -651,10 +634,7 @@ export class ListEntreeComponent implements OnInit {
           console.log(this.csvRegistre)
           this.removeloading();
           this.moralEntitiesService.registreDNDTS(this.csvRegistre).subscribe((response)=>{
-            Swal.fire({
-              icon: 'success',
-              text: 'Valeurs insérées avec succès',
-            })
+            this.popupService.alertSuccessForm('Valeurs insérées avec succès')
           })
         }
         
@@ -729,14 +709,17 @@ export class ListEntreeComponent implements OnInit {
               } 
               //console.log(results.data[i]);
               //Création de l'objet qui contient l'ensemble des infos nécessaires
-              let importCSV = {
-                client: results.data[i][posClient],
-                typeDechet: typeDechet,
-                dateEntree : results.data[i][posDateEntree].substring(0,10),
-                tonnage : +results.data[i][posTonnage].replace(/[^0-9,.]/g,"").replace(",",".")/divisionKgToTonnes,
-                entrant : EntreeSortie
-              };
-              this.csvArray.push(importCSV);
+              if( results.data[i][posDateEntree] != undefined && results.data[i][posTonnage] != undefined){
+                let importCSV = {
+                  client: results.data[i][posClient],
+                  typeDechet: typeDechet,
+                  dateEntree : results.data[i][posDateEntree].substring(0,10),
+                  tonnage : +results.data[i][posTonnage].replace(/[^0-9,.]/g,"").replace(",",".")/divisionKgToTonnes,
+                  entrant : EntreeSortie
+                };
+                this.csvArray.push(importCSV);
+              }
+              
             }
           }
           //Fonction qui tranforme les dates string au format date afin de les comparer
@@ -789,9 +772,10 @@ export class ListEntreeComponent implements OnInit {
 
           if(csv.entrant.toLowerCase() == "e" || csv.entrant == 1 || csv.entrant.toLowerCase() == "réception" || csv.entrant.toLowerCase() == "reception" || csv.entrant.toLowerCase().includes("entree") || csv.entrant.toLowerCase() == "entrée" || csv.entrant.toLowerCase() == "entrant" || csv.entrant.toLowerCase() == "incinerables"){
             //Si il y a correspondance on fait traitement
+           
             if( correspondance.nomImport == csv.client && correspondance.productImport == csv.typeDechet  /*|| (mr.produit == "dib/dea" && mr.produit.includes(csv.typeDechet)))*/ ){  
               let formatDate = csv.dateEntree.split('/')[2]+'-'+csv.dateEntree.split('/')[1]+'-'+csv.dateEntree.split('/')[0];
-              if(formatDate != 'undefined-undefined-'){
+              if(!formatDate.includes('undefined')){
                 let keyHash = formatDate+'_'+correspondance.ProductId+'_'+correspondance.ProducerId;
                 let value, valueRound;
                 count = count + 1;
@@ -842,17 +826,11 @@ export class ListEntreeComponent implements OnInit {
       });
     }
     else {
-      Swal.fire({
-        icon: 'error',
-        text: 'Erreur lors de l\'insertion des valeurs ....',
-      })
+      this.popupService.alertErrorForm('Erreur lors de l\'insertion des valeurs ....')
     }
 
     if(this.stockageImport.size == 0 ){
-      Swal.fire({
-        icon: 'error',
-        text: 'Aucune valeur n\'a été insérée, aucune correspondance n\'a été trouvée',
-      })
+      this.popupService.alertErrorForm('Aucune valeur n\'a été insérée, aucune correspondance n\'a été trouvée')
     }
 
   }
@@ -942,10 +920,7 @@ export class ListEntreeComponent implements OnInit {
               });
             }
             else {
-              Swal.fire({
-                icon: 'error',
-                text: 'Erreur lors de l\'insertion des valeurs ....',
-              })
+              this.popupService.alertErrorForm('Erreur lors de l\'insertion des valeurs ....')
         }
         await this.wait(350);
       });

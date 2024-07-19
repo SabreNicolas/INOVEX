@@ -3,8 +3,8 @@ import {NgForm} from "@angular/forms";
 import {element} from "../../models/element.model";
 import {rondierService} from "../services/rondier.service";
 import {productsService} from "../services/products.service";
-import Swal from "sweetalert2";
 import {product} from "../../models/products.model";
+import { PopupService } from '../services/popup.service';
 
 @Component({
   selector: 'app-rondier-fin-mois',
@@ -17,7 +17,7 @@ export class RondierFinMoisComponent implements OnInit {
   public listCompteurs : product[];
   public listDays : string[];
 
-  constructor(private productsService : productsService, private rondierService : rondierService) {
+  constructor(private productsService : productsService, private popupService : PopupService, private rondierService : rondierService) {
     this.listDays = [];
     this.listCompteursRondier = [];
     this.listCompteurs = [];
@@ -92,12 +92,9 @@ export class RondierFinMoisComponent implements OnInit {
               if (valueInt > 0.0) {
                 this.productsService.createMeasure(day.substr(6, 4) + '-' + day.substr(3, 2) + '-' + day.substr(0, 2), valueInt, compteur.Code).subscribe((response) => {
                   if (response == "Création du saisiemensuelle OK") {
-                    Swal.fire("Les valeurs ont été insérées avec succès !");
+                    this.popupService.alertSuccessForm("Les valeurs ont été insérées avec succès !");
                   } else {
-                    Swal.fire({
-                      icon: 'error',
-                      text: 'Erreur lors de l\'insertion des valeurs ....',
-                    })
+                    this.popupService.alertErrorForm('Erreur lors de l\'insertion des valeurs ....')
                   }
                 });
               }

@@ -3,6 +3,7 @@ import { tokenApiService } from '../services/tokenApi.service';
 import {Router} from "@angular/router";
 import Swal from 'sweetalert2';
 import {token} from "../../models/tokens.model";
+import { PopupService } from '../services/popup.service';
 @Component({
   selector: 'app-token-api',
   templateUrl: './token-api.component.html',
@@ -13,7 +14,7 @@ export class TokenApiComponent implements OnInit {
   public token !: string;
   public listTokens : token[];
 
-  constructor(private router : Router, private tokenApiService : tokenApiService) {
+  constructor(private router : Router, private tokenApiService : tokenApiService, private popupService : PopupService) {
     this.token = "";
     this.listTokens = [];
    }
@@ -39,11 +40,7 @@ export class TokenApiComponent implements OnInit {
         var text2;
         //Si le texte entré par l'utilisateur est vide on affiche une erreur
         if (text =="") {
-          Swal.fire(
-            'Veuillez saisir une affectation !',
-            'La saisie a été annulée.',
-            'error'
-          );
+          this.popupService.alertErrorForm('Veuillez saisir une affectation ! La saisie a été annulée.');
           return;
         }
         text2 = text.replace(/'/g,"''");
@@ -51,22 +48,14 @@ export class TokenApiComponent implements OnInit {
         this.tokenApiService.generateAcessToken(text2).subscribe((response)=>{
           this.token = "Bearer " + response;
           //Affichage d'un pop-up de validation
-          Swal.fire(
-            'Token enregistré !',
-            `Le token a été affecté à : ${text}`,
-            'success'
-          );
+          this.popupService.alertSuccessForm('Token enregistré !' + `Le token a été affecté à : ${text}`);
           //On récupère la nouvelle liste de token pour actualiser le tableau
           this.getTokens()
         });
       } 
       else {
         // Pop-pup si l'utilisateur annule
-        Swal.fire(
-          'Annulé',
-          'La saisie a été annulée.',
-          'error'
-        );
+        this.popupService.alertErrorForm('La saisie a été annulée.');
       }
     });
   }
@@ -100,19 +89,11 @@ export class TokenApiComponent implements OnInit {
           this.getTokens();
         })
         // Pop-up de supprssion effectuée
-        Swal.fire(
-          'Supprimé !',
-          'Votre élément a été supprimé.',
-          'success'
-        );
+        this.popupService.alertSuccessForm('Votre élément a été supprimé.');
       } 
       else {
         // Pop-up d'annulation de la suppression
-        Swal.fire(
-          'Annulé',
-          'La suppression a été annulée.',
-          'error'
-        );
+        this.popupService.alertErrorForm('La suppression a été annulée.');
       }
     });
   }
@@ -135,11 +116,7 @@ export class TokenApiComponent implements OnInit {
         var text2;
         //Si le texte entré par l'utilisateur est vide on affiche une erreur
         if (text =="") {
-          Swal.fire(
-            'Veuillez saisir une affectation !',
-            'La saisie a été annulée.',
-            'error'
-          );
+          this.popupService.alertErrorForm('La saisie a été annulée.');
           return;
         }
         text2 = text.replace(/'/g,"''");
@@ -147,20 +124,12 @@ export class TokenApiComponent implements OnInit {
         this.tokenApiService.updateToken(id,text2).subscribe((response)=>{
           this.token = "Bearer " + response;
           //Pop-up de confirmation de la modification
-          Swal.fire(
-            'Token enregistré !',
-            `Le token a été affecté à : ${text}`,
-            'success'
-          );
+          this.popupService.alertSuccessForm('Token enregistré !'+` Le token a été affecté à : ${text}`);
           this.getTokens()
         });
       } else {
         // Pop-up d'annulation de l'utilisateur
-        Swal.fire(
-          'Annulé',
-          'La saisie a été annulée.',
-          'error'
-        );
+        this.popupService.alertErrorForm('La saisie a été annulée.');
       }
     });
   }

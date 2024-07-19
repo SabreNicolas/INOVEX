@@ -11,6 +11,7 @@ import {Papa} from 'ngx-papaparse';
 import { importCSV } from 'src/models/importCSV.model';
 import { user } from 'src/models/user.model';
 import { idUsineService } from '../services/idUsine.service';
+import { PopupService } from '../services/popup.service';
 
 @Component({
   selector: 'app-list-reactifs',
@@ -33,7 +34,7 @@ export class ListReactifsComponent implements OnInit {
   public dechetsManquants : Map<String,String>;
 
 
-  constructor(private idUsineService : idUsineService,private moralEntitiesService : moralEntitiesService, private productsService : productsService, private categoriesService : categoriesService, private Papa : Papa, private mrService : moralEntitiesService,private dateService : dateService) {
+  constructor(private idUsineService : idUsineService, private popupService : PopupService, private moralEntitiesService : moralEntitiesService, private productsService : productsService, private categoriesService : categoriesService, private Papa : Papa, private mrService : moralEntitiesService,private dateService : dateService) {
     this.listProducts = [];
     this.listDays = [];
     this.typeImportTonnage = '';
@@ -100,13 +101,10 @@ export class ListReactifsComponent implements OnInit {
         if (valueInt >0.0){
           this.mrService.createMeasure(date.substr(6,4)+'-'+date.substr(3,2)+'-'+date.substr(0,2),valueInt,pr.Id,0).subscribe((response)=>{
             if (response == "Création du Measures OK"){
-              Swal.fire("Les valeurs ont été insérées avec succès !");
+              this.popupService.alertSuccessForm("Les valeurs ont été insérées avec succès !");
             }
             else {
-              Swal.fire({
-                icon: 'error',
-                text: 'Erreur lors de l\'insertion des valeurs ....',
-              })
+              this.popupService.alertErrorForm('Erreur lors de l\'insertion des valeurs ....')
             }
           });
         }
@@ -140,14 +138,11 @@ export class ListReactifsComponent implements OnInit {
   delete(Id : number, date : string){
     this.mrService.createMeasure(date.substr(6,4)+'-'+date.substr(3,2)+'-'+date.substr(0,2),0,Id,0).subscribe((response)=>{
       if (response == "Création du Measures OK"){
-        Swal.fire("La valeur a bien été supprimé !");
+        this.popupService.alertSuccessForm("La valeur a bien été supprimé !");
         (<HTMLInputElement>document.getElementById(Id + '-' + date)).value = '';
       }
       else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Erreur lors de la suppression de la valeur ....',
-        })
+        this.popupService.alertErrorForm('Erreur lors de la suppression de la valeur ....')
       }
     });
   }
@@ -457,16 +452,10 @@ export class ListReactifsComponent implements OnInit {
       });
     }
     else {
-      Swal.fire({
-        icon: 'error',
-        text: 'Erreur lors de l\'insertion des valeurs ....',
-      })
+      this.popupService.alertErrorForm('Erreur lors de l\'insertion des valeurs ....')
     }
     if(this.stockageImport.size == 0 ){
-      Swal.fire({
-        icon: 'error',
-        text: 'Aucune valeur n\'a été insérée, aucune correspondance n\'a été trouvée',
-      })
+      this.popupService.alertErrorForm('Aucune valeur n\'a été insérée, aucune correspondance n\'a été trouvée')
     }
     
   }

@@ -10,8 +10,11 @@
 
         <div class="col-md-5">
             <div class="form-group" style="display: none;" id="groupementGMAO">
-                <label for="desc">Groupement : * </label>
-                <input required type="text" class="form-control" placeholder="Groupement GMAO" name="groupementGMAO" ngModel [(ngModel)]="groupementGMAO">
+                <label for="product">Groupement GMAO : * </label>
+                <select id="product" (change)="updateElements()" required class="form-control" ngModel [(ngModel)]="groupementGMAO" >
+                    <option value="">Choisissez un produit CAP Exploitation</option>
+                    <option *ngFor="let groupement of listGroupementGMAOTable" value="{{groupement}}">{{groupement}}</option>
+                </select>
             </div>
     
     
@@ -34,19 +37,51 @@
 
         <div class="col-md-6">
             <div class="form-group" style="display: none;" id="equipementGMAO" >
-                <label for="desc">Equipement : * </label>
-                <input required type="text" class="form-control" placeholder="Equipement GMAO" name="equipementGMAO" ngModel [(ngModel)]="equipementGMAO">
+                <label for="product">Equipement GMAO : * </label>
+                <select id="product" (change)="updateGroupements()" required class="form-control" ngModel [(ngModel)]="equipementGMAO" >
+                    <option value="">Choisissez un produit CAP Exploitation</option>
+                    <option *ngFor="let equipement of listEquipementGMAOFiltre" value="{{equipement.codeequipment}}---{{equipement.description}}">{{equipement.codeequipment}}---{{equipement.description}}</option>
+                </select>
             </div>
     
             <div class="form-group">
                 <label for="desc">Cause : </label>
-                <input required type="text" id="cause" class="form-control" placeholder="cause" name="Cause" ngModel [(ngModel)]="cause">
+                <select id="cause" required class="form-control" ngModel [(ngModel)]="cause" >
+                    <option disabled value="">Choisissez une cause</option>
+                    <option value="ARRET">Arrêt</option>
+                    <option value="ECHAUF">Echauffement</option>
+                    <option value="VIBR">Vibration</option>
+                    <option value="ACCEPTABLE">Acceptable/Non défaillant</option>
+                    <option value="BLOQUE">Bloqué</option>
+                    <option value="CASSE">Cassé</option>
+                    <option value="CONNEXION">Connexion perdue ou faible</option>
+                    <option value="CORRODE">Rouillé/Corrodé</option>
+                    <option value="ENDOMMAGE">Endommagé/déchiré</option>
+                    <option value="DETERIORE">Détérioré/Déchiré</option>
+                    <option value="SALE">Sale/Huileux</option>
+                    <option value="FUITEEXT">Fuite externe</option>
+                    <option value="NIVEAU">Niveau bas</option>
+                    <option value="GROUNDED">A terre/Déformé</option>
+                    <option value="VIBRATION">Déséquilibré/Vibration</option>
+                    <option value="INCOMPLET">Incomplet</option>
+                    <option value="INOPERABLE">Inutilisable</option>
+                    <option value="FUITEINT">Fuite interne</option>
+                    <option value="MANQUANT">Manquant</option>
+                    <option value="NONCONNECTE">Non connecté</option>
+                    <option value="NONMONTE">Non monté</option>
+                    <option value="NONAJUSTE">Non ajusté</option>
+                    <option value="NONCALIBRE">Non calibré</option>
+                    <option value="SURCHAUFFE">En surchauffe/Brulé/Explosé</option>
+                    <option value="GRIFFE">Griffé/Entaillé/Piqué</option>
+                    <option value="NONUTILISE">Non utilisé</option>
+                    <option value="BRUIT_ANORMAL">Bruit anormal</option>
+                </select>
             </div>
                 
-            <div class="form-group" style="display: none;" id="dateFin">
+            <!-- <div class="form-group" style="display: none;" id="dateFin">
                 <label>Fin date validité : *</label>
                 <input required type="datetime-local" class="form-control" placeholder="Date de validité" name="dateFin" ngModel [(ngModel)]="dateFin">
-            </div>
+            </div> -->
                 
             <div class="form-group">
                 <label>Importance : *</label>
@@ -70,7 +105,7 @@
             <div class="form-check" >
                 <input class="form-check-input" type="checkbox" value="" id="demandeTravaux" ngModel [(ngModel)]="demandeTravaux" (click)="clickDemandeTravaux()" >
                 <label class="form-check-label" for="demandeTravaux" id="demandeTravauxLabel">
-                  Demande de travaux (oui/non)
+                  Demande d'intervention (oui/non)
                 </label>
             </div>
     

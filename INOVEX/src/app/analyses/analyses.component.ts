@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import {productsService} from "../services/products.service";
 import {categoriesService} from "../services/categories.service";
 import { category } from 'src/models/categories.model';
-import Swal from 'sweetalert2';
 import {NgForm} from "@angular/forms";
 import {product} from "../../models/products.model";
 import {moralEntitiesService} from "../services/moralentities.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import { dateService } from '../services/date.service';
+import { PopupService } from '../services/popup.service';
 
 @Component({
   selector: 'app-analyses',
@@ -22,7 +22,7 @@ export class AnalysesComponent implements OnInit {
   public listDays : string[];
   public isPCI : boolean = false; // 'true' si on saisie des pci et 'false' si analyses
 
-  constructor(private productsService : productsService, private categoriesService : categoriesService, private mrService : moralEntitiesService, private route : ActivatedRoute, private router : Router, private dateService : dateService) {
+  constructor(private productsService : productsService, private popupService : PopupService, private categoriesService : categoriesService, private mrService : moralEntitiesService, private route : ActivatedRoute, private router : Router, private dateService : dateService) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false; //permet de recharger le component au changement de paramètre
     this.listCategories = [];
     this.listAnalyses = [];
@@ -84,10 +84,7 @@ export class AnalysesComponent implements OnInit {
       this.getValues();
     }
     else{
-      Swal.fire({
-        icon: 'error',
-        text: 'Date invalide',
-      })
+      this.popupService.alertErrorForm('Date invalide')
     }
   }
 
@@ -131,13 +128,10 @@ export class AnalysesComponent implements OnInit {
         if (valueInt >0.0){
           this.mrService.createMeasure(day.substr(6,4)+'-'+day.substr(3,2)+'-'+day.substr(0,2),valueInt,an.Id,0).subscribe((response)=>{
             if (response == "Création du Measures OK"){
-              Swal.fire("Les valeurs ont été insérées avec succès !");
+              this.popupService.alertSuccessForm("Les valeurs ont été insérées avec succès !");
             }
             else {
-              Swal.fire({
-                icon: 'error',
-                text: 'Erreur lors de l\'insertion des valeurs ....',
-              })
+              this.popupService.alertErrorForm('Erreur lors de l\'insertion des valeurs ....')
             }
           });
         }
@@ -149,14 +143,11 @@ export class AnalysesComponent implements OnInit {
   delete(Id : number, date : string){
     this.mrService.createMeasure(date.substr(6,4)+'-'+date.substr(3,2)+'-'+date.substr(0,2),0,Id,0).subscribe((response)=>{
       if (response == "Création du Measures OK"){
-        Swal.fire("La valeur a bien été supprimé !");
+        this.popupService.alertSuccessForm("La valeur a bien été supprimé !");
         (<HTMLInputElement>document.getElementById(Id + '-' + date)).value = '';
       }
       else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Erreur lors de la suppression de la valeur ....',
-        })
+        this.popupService.alertErrorForm('Erreur lors de la suppression de la valeur ....')
       }
     });
   }
