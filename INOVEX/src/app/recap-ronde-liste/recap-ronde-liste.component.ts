@@ -157,7 +157,7 @@ export class RecapRondeListeComponent {
     Swal.fire({title: 'Avez vous pris connaissance des infos du quart précedent ?',icon: 'warning',showCancelButton: true,confirmButtonColor: '#3085d6',cancelButtonColor: '#d33',confirmButtonText: 'Oui',cancelButtonText: 'Non'
     }).then((result) => {
       if (result.isConfirmed) {
-        window.location.href = "https://fr-couvinove300.prod.paprec.fr:8101/cahierQuart/recapRonde?quart="+this.quart
+        window.location.href = "https://fr-couvinove300.prod.paprec.fr:8100/cahierQuart/recapRonde?quart="+this.quart
       }
       else {
         // Pop-up d'annulation de la suppression
