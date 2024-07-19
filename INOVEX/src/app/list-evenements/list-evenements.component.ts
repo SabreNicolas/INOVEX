@@ -227,7 +227,7 @@ export class ListEvenementsComponent implements OnInit {
     this.idEvenement = id
     this.dialogRef = this.dialog.open(this.createEventDialog,{
       width:'40%',
-      disableClose:false,
+      disableClose:true,
       autoFocus:true,
     })
 
@@ -239,13 +239,6 @@ export class ListEvenementsComponent implements OnInit {
       this.groupementGMAO = response.data[0]['groupementGMAO'];
       this.equipementGMAO = response.data[0]['equipementGMAO'];
       this.demandeTravaux = response.data[0]['demande_travaux'];
-      if(this.demandeTravaux == 1 || this.demandeTravaux != 0){
-        $("#dateFin").show();
-        $("#equipementGMAO").show();
-        $("#groupementGMAO").show();
-      }
-      $('#demandeTravaux').hide();
-      $('#demandeTravauxLabel').hide();
       this.description = response.data[0]['description'];
       this.consigne = response.data[0]['consigne'];
       this.cause = response.data[0]['cause'];
@@ -253,6 +246,15 @@ export class ListEvenementsComponent implements OnInit {
       
       if(dupliquer == 1){
         this.idEvenement = 0
+        $("#equipementGMAO").show();
+        $("#groupementGMAO").show();
+        
+        this.groupementGMAO ="";
+        this.equipementGMAO ="";
+      }
+      else{
+        $('#demandeTravaux').hide();
+        $('#demandeTravauxLabel').hide();
       }
     })
     
@@ -291,15 +293,15 @@ export class ListEvenementsComponent implements OnInit {
       this.popupService.alertErrorForm('Les dates ne correspondent pas. La saisie a été annulée.');
       return;
     }
-    
 
-    if(this.demandeTravaux != 0){
+    if(this.demandeTravaux != 0 && this.idEvenement == 0){
       console.log(this.equipementGMAO)
       if(this.equipementGMAO == ""){
         this.popupService.alertErrorForm('Veuillez choisir un équipement pour la DI');
         return;
       }
     }
+    
     //Si on la case consigne est cochée on la crée
     if(this.consigne){
       this.consigne=1;
@@ -393,8 +395,8 @@ export class ListEvenementsComponent implements OnInit {
           const timeZone = 'Europe/Paris';
           const zoneDateDeb = toZonedTime(dateDeb, timeZone)
           const zoneDateFin = toZonedTime(dateFin, timeZone)
-          this.planifieDebutBT = format(zoneDateDeb, 'dd/MM:yyy HH:mm')
-          this.planifieFinBT = format(zoneDateFin, 'dd/MM:yyy HH:mm')
+          this.planifieDebutBT = format(zoneDateDeb, 'dd/MM/yyyy HH:mm')
+          this.planifieFinBT = format(zoneDateFin, 'dd/MM/yyyy HH:mm')
 
           this.statusBT = response.status
           this.ouvrirDialogDT();

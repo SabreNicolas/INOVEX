@@ -93,7 +93,7 @@ export class ListZonesComponent implements OnInit {
   ouvrirDialogCreerZone(){
     this.dialogRef = this.dialog.open(this.createZoneDialog,{
       width:'60%',
-      disableClose:false,
+      disableClose:true,
       autoFocus:true,
     })
     this.dialog.afterAllClosed.subscribe((response)=>{

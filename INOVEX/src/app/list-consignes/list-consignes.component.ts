@@ -89,7 +89,7 @@ export class ListConsignesComponent implements OnInit {
   ouvrirDialogCreerConsigne(){
     this.dialogRef = this.dialog.open(this.createConsigneDialog,{
       width:'40%',
-      disableClose:false,
+      disableClose:true,
       autoFocus:true,
     })
     this.dialog.afterAllClosed.subscribe((response)=>{
@@ -121,7 +121,7 @@ export class ListConsignesComponent implements OnInit {
     this.idConsigne = id
     this.dialogRef = this.dialog.open(this.createConsigneDialog,{
       width:'40%',
-      disableClose:false,
+      disableClose:true,
       autoFocus:true,
     })
     this.cahierQuartService.getOneConsigne(this.idConsigne).subscribe((response)=>{

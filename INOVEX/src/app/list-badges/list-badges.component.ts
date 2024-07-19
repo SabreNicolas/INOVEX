@@ -138,7 +138,7 @@ export class ListBadgesComponent implements OnInit {
   ouvrirDialogCreerBadge(){
     this.dialogRef = this.dialog.open(this.createBadgeDialog,{
       width:'60%',
-      disableClose:false,
+      disableClose:true,
       autoFocus:true,
     })
     this.dialog.afterAllClosed.subscribe((response)=>{

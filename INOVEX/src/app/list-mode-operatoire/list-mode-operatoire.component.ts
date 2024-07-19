@@ -62,7 +62,7 @@ export class ListModeOperatoireComponent implements OnInit {
   ouvrirDialogCreerModeOP(){
     this.dialogRef = this.dialog.open(this.createModeOPDialog,{
       width:'60%',
-      disableClose:false,
+      disableClose:true,
       autoFocus:true,
     })
     this.dialog.afterAllClosed.subscribe((response)=>{

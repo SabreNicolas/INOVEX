@@ -83,14 +83,13 @@ export class ListElementsComponent implements OnInit {
       this.zoneId = this.listZone[0].Id
       this.setListElementsOfZone();
     });
-
     
   }
 
   ouvrirDialogCreerElement(){
     this.dialogRef = this.dialog.open(this.createElementDialog,{
       width:'60%',
-      disableClose:false,
+      disableClose:true,
       autoFocus:true,
     })
     this.dialog.afterAllClosed.subscribe((response)=>{
@@ -102,7 +101,7 @@ export class ListElementsComponent implements OnInit {
     this.elementId = id;
     this.dialogRef = this.dialog.open(this.createElementDialog,{
       width:'60%',
-      disableClose:false,
+      disableClose:true,
       autoFocus:true,
     })
     this.rondierService.getOneElement(this.elementId).subscribe((response)=>{
@@ -126,7 +125,6 @@ export class ListElementsComponent implements OnInit {
         this.idGroupement = 0;
       }
       this.getElements();
-      console.log(this.element.ordre-1)
       this.ordreElem = this.element.ordre-1;
       this.changeType(null);
       //Gestion du mode regulateur

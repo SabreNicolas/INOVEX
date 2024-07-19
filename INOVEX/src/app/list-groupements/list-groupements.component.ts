@@ -152,7 +152,7 @@ export class ListGroupementsComponent implements OnInit {
   ouvrirDialogCreerGroupement(){
     this.dialogRef = this.dialog.open(this.createGroupementDialog,{
       width:'60%',
-      disableClose:false,
+      disableClose:true,
       autoFocus:true,
     })
     this.dialog.afterAllClosed.subscribe((response)=>{
@@ -164,7 +164,7 @@ export class ListGroupementsComponent implements OnInit {
     this.idGroupement = id;
     this.dialogRef = this.dialog.open(this.createGroupementDialog,{
       width:'60%',
-      disableClose:false,
+      disableClose:true,
       autoFocus:true,
     })
     this.rondierService.getOneGroupement(id).subscribe((response)=>{

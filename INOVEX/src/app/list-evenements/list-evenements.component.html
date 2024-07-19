@@ -33,10 +33,10 @@
                 <td>{{evenement.date_heure_debut}}</td>
                 <td>{{evenement.date_heure_fin}}</td>
                 <td>
-                    <a *ngIf="evenement.demande_travaux != 0" (click)="getDI(evenement.demande_travaux)" role="button" class="btn btn-outline-secondary">
+                    <a *ngIf="evenement.demande_travaux != 0 && evenement.demande_travaux != 'false' " (click)="getDI(evenement.demande_travaux)" role="button" class="btn btn-outline-secondary">
                         {{evenement.demande_travaux}}
                     </a>
-                    <p *ngIf="evenement.demande_travaux == 0">Aucune</p>
+                    <p *ngIf="evenement.demande_travaux == 0 || evenement.demande_travaux == 'false'">Aucune</p>
                 </td>
                 <td *ngIf="evenement.consigne == 1">Crée</td>
                 <td *ngIf="evenement.consigne == 0">Aucune</td>

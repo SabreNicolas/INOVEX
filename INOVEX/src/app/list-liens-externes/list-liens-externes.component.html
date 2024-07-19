@@ -68,7 +68,7 @@
 
                 <div class="form-group">
                     <button class="btn btn-success btn-lg" (click)="newLienExterne()">Valider</button>
-                    <button class="btn btn-danger btn-lg">Annuler</button>
+                    <button [mat-dialog-close]="true" class="btn btn-danger btn-lg">Annuler</button>
                 </div>
             </div>
         </div>

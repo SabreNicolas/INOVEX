@@ -117,7 +117,7 @@ export class ListAnomaliesComponent {
   ouvrirDialogCreerEvent(id : number){
     this.dialogRef = this.dialog.open(this.createEventDialog,{
       width:'60%',
-      disableClose:false,
+      disableClose:true,
       autoFocus:true,
     })
     this.idAnomalie = id;

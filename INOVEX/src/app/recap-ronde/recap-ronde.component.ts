@@ -430,7 +430,7 @@ export class RecapRondeComponent implements OnInit {
   ouvrirDialogCreerEvent(){
     this.dialogRef = this.dialog.open(this.createEventDialog,{
       width:'60%',
-      disableClose:false,
+      disableClose:true,
       autoFocus:true,
     })
     this.dialog.afterAllClosed.subscribe((response)=>{

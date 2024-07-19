@@ -72,7 +72,7 @@ export class ListActusComponent implements OnInit {
   ouvrirDialogCreerActu(){
     this.dialogRef = this.dialog.open(this.createActuDialog,{
       width:'40%',
-      disableClose:false,
+      disableClose:true,
       autoFocus:true,
     })
     this.dialog.afterAllClosed.subscribe((response)=>{
@@ -85,7 +85,7 @@ export class ListActusComponent implements OnInit {
     this.idActu = id
     this.dialogRef = this.dialog.open(this.createActuDialog,{
       width:'40%',
-      disableClose:false,
+      disableClose:true,
       autoFocus:true,
     })
     this.cahierQuartService.getOneActu(this.idActu).subscribe((response) =>{

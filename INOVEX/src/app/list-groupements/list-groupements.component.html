@@ -62,7 +62,7 @@
 
                     <div class="form-group">
                         <button class="btn btn-success btn-lg" (click)="createGroupement()">Valider</button>
-                        <button class="btn btn-danger btn-lg" onclick="window.location.replace('/admin/groupement')">Annuler</button>
+                        <button [mat-dialog-close]="true" class="btn btn-danger btn-lg">Annuler</button>
                     </div>
 
             </div>

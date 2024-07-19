@@ -71,7 +71,7 @@ export class ListLiensExternesComponent {
   ouvrirDialogCreerLien(){
     this.dialogRef = this.dialog.open(this.createLienDialog,{
       width:'40%',
-      disableClose:false,
+      disableClose:true,
       autoFocus:true,
     })
     this.dialog.afterAllClosed.subscribe((response)=>{
