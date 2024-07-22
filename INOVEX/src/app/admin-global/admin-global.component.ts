@@ -3,8 +3,6 @@ import { categoriesService } from '../services/categories.service';
 import { user } from 'src/models/user.model';
 import * as pdfMake from 'pdfmake/build/pdfMake';
 import * as pdfFonts from 'pdfMake/build/vfs_fonts'
-import { style } from '@angular/animations';
-import { table } from 'console';
 import { rondierService } from '../services/rondier.service';
 
 //@ts-ignore
@@ -102,23 +100,16 @@ export class AdminGlobalComponent implements OnInit {
           )
           tableBody.push(dataToAdd);
           dataToAdd = [];
-    
-          if(zone.elements[0].groupement != null){
-            dataToAdd.push(
-              {text: zone.elements[0].groupement,fontSize: 8, style: 'tableHeader',color: '#FF7F50',colSpan: 4, alignment: 'left',margin: [0,0,0,0]},
-            )
-            tableBody.push(dataToAdd);
-            dataToAdd = [];
-            dataToAdd.push(
-              {text : zone.elements[0].nom, fontSize: 8,style: 'tableHeader',margin: [0,0,0,0]},
-              {text : '',  margin: [0,0,0,0], style: 'tableCell'},
-              {text : '',  margin: [0,0,0,0], style: 'tableCell'},
-              {text : '',  margin: [0,0,0,0], style: 'tableCell'}
-            )
-            tableBody.push(dataToAdd);
-            dataToAdd = [];
-          }
-          else{
+
+          if(zone.elements[0] != undefined){
+            //Si on a un groupement -> on l'affiche
+            if(zone.elements[0].groupement != null){
+              dataToAdd.push(
+                {text: zone.elements[0].groupement,fontSize: 8, style: 'tableHeader',color: '#FF7F50',colSpan: 4, alignment: 'left',margin: [0,0,0,0]},
+              )
+              tableBody.push(dataToAdd);
+              dataToAdd = [];
+            }
             dataToAdd.push(
               {text : [
                 {text : zone.elements[0].nom + "\n "},
@@ -134,6 +125,7 @@ export class AdminGlobalComponent implements OnInit {
             dataToAdd = [];
           }
           for (var i=1; i< zone.elements.length; i++){
+            //Si le groupement est différent du groupement de l'élément précédent, on affiche le groupement
             if(zone.elements[i].groupement != zone.elements[i-1].groupement){
               dataToAdd.push(
                 {text: zone.elements[i].groupement,fontSize: 8, style: 'tableHeader',color: '#FF7F50',colSpan: 4, alignment: 'left',margin: [0,0,0,0]},
