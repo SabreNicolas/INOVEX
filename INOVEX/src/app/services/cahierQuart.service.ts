@@ -44,7 +44,7 @@ export class cahierQuartService {
 
     //Récupérer les anmoalies d'une ronde
     getAnomaliesOfOneRonde(date : string, quart : number){
-      let requete = "https://"+this.ip+":"+this.portAPI+"/getAnomaliesOfOneRonde?date="+date+"&quart="+quart;
+      let requete = "https://"+this.ip+":"+this.portAPI+"/getAnomaliesOfOneRonde?date="+date+"&quart="+quart+"&idUsine="+this.idUsine;
 
       const requestOptions = {
           headers: new HttpHeaders(this.headerDict),

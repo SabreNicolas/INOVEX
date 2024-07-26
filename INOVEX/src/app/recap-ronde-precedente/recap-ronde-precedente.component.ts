@@ -159,7 +159,6 @@ export class RecapRondePrecedenteComponent {
     this.cahierQuartService.getAnomaliesOfOneRonde(dateFr, this.quartPrecedent).subscribe((response)=>{
       //@ts-ignore
       this.listAnomalies = response.data;
-      console.log(this.listAnomalies)
     })
   }
 
