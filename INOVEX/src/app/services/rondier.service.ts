@@ -301,6 +301,7 @@ export class rondierService {
         return this.http
             .get<elementsOfZone[]>(requete,requestOptions);
     }
+    
     getAllGroupements(){
         let requete = "https://"+this.ip+":"+this.portAPI+"/getAllGroupements?idUsine="+this.idUsine;
         //console.log(requete);

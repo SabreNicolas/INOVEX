@@ -6,6 +6,7 @@ import { PopupService } from '../services/popup.service';
 import { groupement } from 'src/models/groupement.model';
 import {NgForm} from "@angular/forms";
 import { MatDialog } from '@angular/material/dialog';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-list-elements',
@@ -79,7 +80,7 @@ export class ListElementsComponent implements OnInit {
     this.rondierService.listZone().subscribe((response)=>{
       // @ts-ignore
       this.listZone = response.data;
-      this.zoneId = this.listZone[0].Id
+      //this.zoneId = this.listZone[0].Id
       this.setListElementsOfZone();
     });
     
@@ -169,15 +170,30 @@ export class ListElementsComponent implements OnInit {
 
   //suppression d'un element de controle
   deleteElement(id : number){
-    this.rondierService.deleteElement(id).subscribe((response)=>{
-      if (response == "Suppression de l'élément OK"){
-        this.popupService.alertSuccessForm("L'élément de contrôle a bien été supprimé !");
+    Swal.fire({
+      title : 'Voulez-vous supprimer cet élément de ronde ?',
+      icon : 'warning',
+      showCancelButton : true,
+      confirmButtonColor : '#3085d6',
+      cancelButtonColor : '#d33',
+      confirmButtonText : 'Oui',
+      cancelButtonText : 'Non'
+    }).then(async (result)=>{
+      if(result.isConfirmed){
+        this.rondierService.deleteElement(id).subscribe((response)=>{
+          if (response == "Suppression de l'élément OK"){
+            this.popupService.alertSuccessForm("L'élément de contrôle a bien été supprimé !");
+          }
+          else {
+            this.popupService.alertSuccessForm('Erreur lors de la suppression de l\'élément de contrôle....')
+          }
+        });
+        this.ngOnInit();
       }
-      else {
-        this.popupService.alertSuccessForm('Erreur lors de la suppression de l\'élément de contrôle....')
+      else{
+        this.popupService.alertErrorForm('Annulation de la suppression')
       }
     });
-    this.ngOnInit();
   }
 
   getPreviousItem(index :number){
