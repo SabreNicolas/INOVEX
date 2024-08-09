@@ -235,7 +235,7 @@ export class CalendrierComponent implements OnInit{
                       'ronde' : event.ronde,
                       'isAction' : event.isAction
                     };
-    console.log(this.modalData)                    
+    //console.log(this.modalData)                    
     this.modal.open(this.modalContent, { size: 'lg' });
   }
 
@@ -247,19 +247,34 @@ export class CalendrierComponent implements OnInit{
   }
 
   //Fonction permettant de supprimer un évènement
-  deleteEvenement(id: any) {
+  deleteEvenement(id: any, deleteOccurence : boolean) {
     Swal.fire({title: "Etes vous sûr de vouloir supprimer cet évènement ?" ,icon: 'warning',showCancelButton: true,confirmButtonColor: '#3085d6',cancelButtonColor: '#d33',confirmButtonText: 'Oui, supprimer',cancelButtonText: 'Annuler'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.cahierQuartService.deleteCalendrier(id).subscribe((response)=>{
-          if (response == "Suppression de l'evenement du calendrier OK"){
-            this.popupService.alertSuccessForm("L'évènement a bien été supprimé !");
-            this.ngOnInit();
-          }
-          else {
-            this.popupService.alertErrorForm("Erreur lors de la suppression de l'évènement....")
-          }
-        });
+        //SI on veut supprimer l'occurence (fonctionne uniquement sur les actions)
+        if(deleteOccurence){
+          //On supprime les actions de l'occurence
+          this.cahierQuartService.deleteEvents(id).subscribe((response)=>{
+            if (response == "Suppression de l'occurence du calendrier OK"){
+              this.popupService.alertSuccessForm("L'occurence a bien été supprimé !");
+              this.ngOnInit();
+            }
+            else {
+              this.popupService.alertErrorForm("Erreur lors de la suppression de l'occurence....")
+            }
+          });
+        }
+        else{
+          this.cahierQuartService.deleteCalendrier(id).subscribe((response)=>{
+            if (response == "Suppression de l'evenement du calendrier OK"){
+              this.popupService.alertSuccessForm("L'évènement a bien été supprimé !");
+              this.ngOnInit();
+            }
+            else {
+              this.popupService.alertErrorForm("Erreur lors de la suppression de l'évènement....")
+            }
+          });
+        }
       }  
       else {
         // Pop-up d'annulation de la suppression

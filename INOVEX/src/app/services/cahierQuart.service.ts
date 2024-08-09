@@ -659,6 +659,18 @@ export class cahierQuartService {
             .delete<any>(requete,requestOptions);
     }
 
+    //Supprimer les évenement suivants de celui choisi (pour supprimer occurence sur une action)
+    deleteEvents(id : number){
+      let requete = "https://"+this.ip+":"+this.portAPI+"/deleteEventsSuivant/"+id;
+
+      const requestOptions = {
+        headers: new HttpHeaders(this.headerDict),
+      };
+
+      return this.http
+          .delete<any>(requete,requestOptions);
+    }
+
 
     ////Actions////
 

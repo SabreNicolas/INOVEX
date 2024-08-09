@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AltairService } from '../services/altair.service';
 import { cahierQuartService } from '../services/cahierQuart.service';
 import { Actualite } from 'src/models/actualite.model';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-acceuil-cahier-quart',
   templateUrl: './acceuil-cahier-quart.component.html',
@@ -14,7 +15,7 @@ export class AcceuilCahierQuartComponent implements OnInit {
   private token: string;
   public listMaintenance : any[];
 
-  constructor(private altairService : AltairService, private cahierQuartService : cahierQuartService){
+  constructor(private altairService : AltairService, private cahierQuartService : cahierQuartService, private router : Router){
     this.listActu = [];
     this.listLien = [];
     this.token = "";
@@ -38,4 +39,11 @@ export class AcceuilCahierQuartComponent implements OnInit {
       })
     })
   }
+
+  finQuart() {
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    this.router.navigate(['/']);
+  }
+
 }
