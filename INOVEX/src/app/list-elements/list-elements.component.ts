@@ -22,7 +22,7 @@ export class ListElementsComponent implements OnInit {
   public zoneId : number;
   public listElements : element[];
   public nom : string;
-  public zoneIdSelect : any[];
+  public zoneIdSelect : number;
   public listElement : element[];
   public ordreElem : number;
   public valeurMin : number;
@@ -54,7 +54,7 @@ export class ListElementsComponent implements OnInit {
     this.zoneId = 0;
     this.listElements = [];
     this.nom = "";
-    this.zoneIdSelect = [];
+    this.zoneIdSelect = 0;
     this.listElement = [];
     this.ordreElem = 99;
     this.valeurMin = 0;
@@ -109,7 +109,7 @@ export class ListElementsComponent implements OnInit {
       this.element = response.data[0];
       this.nom = this.element.nom;
       //this.zoneIdSelect[0] = this.element.zoneId;
-      this.zoneIdSelect = [this.element.zoneId.toString()];
+      this.zoneIdSelect = this.element.zoneId;
       this.getGroupement();
       this.valeurMin = this.element.valeurMin;
       this.valeurMax = this.element.valeurMax;
@@ -126,6 +126,7 @@ export class ListElementsComponent implements OnInit {
         this.idGroupement = 0;
       }
       this.getElements();
+      
       this.ordreElem = this.element.ordre-1;
       this.changeType(null);
       //Gestion du mode regulateur
@@ -232,7 +233,7 @@ export class ListElementsComponent implements OnInit {
 
   //Récupération des éléments de la zone par ordre
   getElements(){
-    this.rondierService.listElementofZone(this.zoneIdSelect[0]).subscribe((response)=>{
+    this.rondierService.listElementofZone(this.zoneIdSelect).subscribe((response)=>{
       // @ts-ignore
       this.listElement = response.data;
     });
@@ -240,17 +241,16 @@ export class ListElementsComponent implements OnInit {
 
   getGroupement(){
     this.idGroupement = 0;
-    if(this.zoneIdSelect.length == 1 ){
-      this.rondierService.getGroupements(this.zoneIdSelect[0]).subscribe((response)=>{
-        // @ts-ignore
-        this.listGroupements = response.data;
-        if(this.listGroupements.length < 1 ){
-          this.idGroupement = 0;
-        }
+    this.rondierService.getGroupements(this.zoneIdSelect).subscribe((response)=>{
+      // @ts-ignore
+      this.listGroupements = response.data;
+      if(this.listGroupements.length < 1 ){
+        this.idGroupement = 0;
+      }
 
-        this.getElements();
-      });
-    }
+      this.getElements();
+    });
+    
   }
   
   //Création éléments contrôle
@@ -259,9 +259,7 @@ export class ListElementsComponent implements OnInit {
     this.checkboxCompteur = <HTMLInputElement>document.getElementsByName('compteur')[0];
     this.nom = form.value['nom'].replace(/'/g,"''");
     this.zoneIdSelect = form.value['zone'];
-    if(this.zoneIdSelect.length < 2){
-      this.ordreElem = form.value['ordreElem'];
-    }
+    this.ordreElem = form.value['ordreElem'];
     if(form.value['unit'].length > 0){
       this.unit = form.value['unit'].replace(/'/g,"''");
     }
@@ -302,11 +300,10 @@ export class ListElementsComponent implements OnInit {
       this.update();
     }
     else{
-      this.zoneIdSelect.forEach(zoneId =>{
-        this.rondierService.updateOrdreElement(zoneId,this.ordreElem).subscribe((response)=>{
+        this.rondierService.updateOrdreElement(this.zoneIdSelect,this.ordreElem).subscribe((response)=>{
           // @ts-ignore
           if (response == "Mise à jour des ordres OK"){
-            this.rondierService.createElement(zoneId, this.nom, this.valeurMin, this.valeurMax, this.typeChamp, this.unit, this.defaultValue, this.isRegulateur,this.listValues,this.isCompteur, Number(this.ordreElem)+1, this.idGroupement, this.codeEquipement, this.infoSupValue).subscribe((response)=>{
+            this.rondierService.createElement(this.zoneIdSelect, this.nom, this.valeurMin, this.valeurMax, this.typeChamp, this.unit, this.defaultValue, this.isRegulateur,this.listValues,this.isCompteur, Number(this.ordreElem)+1, this.idGroupement, this.codeEquipement, this.infoSupValue).subscribe((response)=>{
               if (response == "Création de l'élément OK"){
                 this.idGroupement = 0 ;
                 this.codeEquipement = "";
@@ -325,7 +322,7 @@ export class ListElementsComponent implements OnInit {
             this.popupService.alertErrorForm('Erreur lors de la création de l\'élément de contrôle ....');
           }
         });
-      });
+      
     }
   }
 
@@ -334,7 +331,7 @@ export class ListElementsComponent implements OnInit {
   update(){
     //Permet de ne pas mettre à jour les ordres si on ne change pas la position dans la zone
     if(this.element.ordre != this.ordreElem + 1){
-      this.rondierService.updateOrdreElement(this.zoneIdSelect[0],this.ordreElem).subscribe((response)=>{
+      this.rondierService.updateOrdreElement(this.zoneIdSelect,this.ordreElem).subscribe((response)=>{
         // @ts-ignore
         if (response == "Mise à jour des ordres OK"){
           this.updateElement(Number(this.ordreElem)+1);
@@ -350,7 +347,7 @@ export class ListElementsComponent implements OnInit {
   }
 
   updateElement(ordre : number){
-    this.rondierService.updateElement(this.elementId, this.zoneIdSelect[0], this.nom, this.valeurMin, this.valeurMax, this.typeChamp, this.unit, this.defaultValue, this.isRegulateur, this.listValues, this.isCompteur,ordre, this.idGroupement, this.codeEquipement, this.infoSupValue).subscribe((response)=>{
+    this.rondierService.updateElement(this.elementId, this.zoneIdSelect, this.nom, this.valeurMin, this.valeurMax, this.typeChamp, this.unit, this.defaultValue, this.isRegulateur, this.listValues, this.isCompteur,ordre, this.idGroupement, this.codeEquipement, this.infoSupValue).subscribe((response)=>{
       if (response == "Mise à jour de l'element OK"){
         this.popupService.alertSuccessForm("L'élément de contrôle a bien été mis à jour !");
         this.dialog.closeAll();
@@ -366,7 +363,7 @@ export class ListElementsComponent implements OnInit {
     this.zoneId = 0;
     this.listElements = [];
     this.nom = "";
-    this.zoneIdSelect = [];
+    this.zoneIdSelect = 0;
     this.listElement = [];
     this.ordreElem = 1;
     this.valeurMin = 0;

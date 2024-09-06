@@ -247,6 +247,7 @@ export class CalendrierComponent implements OnInit{
   }
 
   //Fonction permettant de supprimer un évènement
+  //TODO erreur sur Calce fait planté api ici
   deleteEvenement(id: any, deleteOccurence : boolean) {
     Swal.fire({title: "Etes vous sûr de vouloir supprimer cet évènement ?" ,icon: 'warning',showCancelButton: true,confirmButtonColor: '#3085d6',cancelButtonColor: '#d33',confirmButtonText: 'Oui, supprimer',cancelButtonText: 'Annuler'
     }).then((result) => {
@@ -257,7 +258,7 @@ export class CalendrierComponent implements OnInit{
           this.cahierQuartService.deleteEvents(id).subscribe((response)=>{
             if (response == "Suppression de l'occurence du calendrier OK"){
               this.popupService.alertSuccessForm("L'occurence a bien été supprimé !");
-              this.ngOnInit();
+              //this.ngOnInit();
             }
             else {
               this.popupService.alertErrorForm("Erreur lors de la suppression de l'occurence....")

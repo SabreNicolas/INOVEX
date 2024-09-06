@@ -4,6 +4,17 @@
     margin-bottom: 10px;
 }
 
+#libelleQuart{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #134592;
+    color: white;
+    border: solid 1px #134592;
+    border-radius: 3px;
+    flex-direction: column;
+}
+
 .color--0{
     background-color: lightgreen;
 }

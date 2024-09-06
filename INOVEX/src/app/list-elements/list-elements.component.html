@@ -104,17 +104,17 @@
                     <div class="form-group">
                         <label>Zone de contrôle : *</label>
                         <div class="row">
-                            <mat-form-field class="col-sm-6">
+                            <div class="col-sm-6">
                                 <div class="form-group">
-                                    <mat-select required id="zone" class="select form-select form-select-sm" aria-label=".form-select-sm example" name="zone" ngModel multiple [(ngModel)]="zoneIdSelect" (selectionChange)="getGroupement()">
-                                        <mat-option *ngFor="let z of listZone" value="{{z.Id}}">{{z.nom}}</mat-option>
-                                    </mat-select>
+                                    <select required id="zone" class="select form-select form-select-sm" aria-label=".form-select-sm example" name="zone" ngModel [(ngModel)]="zoneIdSelect" (change)="getGroupement()">
+                                        <option *ngFor="let z of listZone" value="{{z.Id}}">{{z.nom}}</option>
+                                    </select>
                                 </div>
-                            </mat-form-field>
+                            </div>
                         </div>
                     </div>
 
-                    <div *ngIf="zoneIdSelect.length < 2 && zoneIdSelect.length > 0 && listGroupements.length != 0" class="form-group">
+                    <div *ngIf="listGroupements.length != 0" class="form-group">
                         <label>Groupement : <strong>(Veuillez choisir à quel Groupement appartient l'élément)</strong></label>
                         <div class="row">
                             <div class="col-sm-6">
@@ -128,13 +128,13 @@
                         </div>
                     </div>
 
-                    <div *ngIf="zoneIdSelect.length < 2" class="form-group">
+                    <div class="form-group">
                         <label>Ordre : * <strong>(Veuillez choisir après quel élément placer celui en cours de création)</strong></label>
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <select required id="ordreElem" class="select form-select form-select-sm" aria-label=".form-select-sm example" name="ordreElem" ngModel [(ngModel)]="ordreElem">
-                                        <option value=0>--DEBUT DE LA ZONE--</option>
+                                        <option value="0">--DEBUT DE LA ZONE--</option>
                                         <option *ngFor="let e of listElement" value={{e.ordre}}>{{e.ordre}} - {{e.nom}}</option>
                                     </select>
                                 </div>

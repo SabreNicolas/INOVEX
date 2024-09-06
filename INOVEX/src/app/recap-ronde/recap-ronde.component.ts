@@ -28,6 +28,8 @@ export class RecapRondeComponent implements OnInit {
   public consignes : any[];
   public dateDebString : string;
   public dateFinString : string;
+  public dateDebStringToShow : string;
+  public dateFinStringToShow : string;
   public quart : number;
   public nomAction : string;
   public idEquipe : number;
@@ -54,6 +56,11 @@ export class RecapRondeComponent implements OnInit {
   public consigne : number;
   public description : string;
   public cause : string;
+  public quartLibelle : string;
+  public saisieAutorise : boolean;
+  public nomEquipe : string;
+  public listRondier : any[];
+  public userPrecedent : string;
 
   constructor(public altairService : AltairService, private route : ActivatedRoute, private rondierService : rondierService, private datePipe : DatePipe, public cahierQuartService : cahierQuartService, private dialog : MatDialog,private popupService : PopupService) {
     this.listAction = [];
@@ -64,6 +71,8 @@ export class RecapRondeComponent implements OnInit {
     this.consignes = [];
     this.dateDebString = "";
     this.dateFinString = "";
+    this.dateDebStringToShow = "";
+    this.dateFinStringToShow = "";
     this.quart = 0;
     this.nomAction = "";
     this.idEquipe = 0;
@@ -85,6 +94,11 @@ export class RecapRondeComponent implements OnInit {
     this.listEquipementGMAO = [];
     this.equipementGMAO =""
     this.cause ="";
+    this.quartLibelle = "";
+    this.saisieAutorise = false;
+    this.nomEquipe = "";
+    this.listRondier = [];
+    this.userPrecedent = "";
 
     this.altairService.login().subscribe((response)=>{
       this.token = response.token
@@ -115,24 +129,49 @@ export class RecapRondeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    //Récupération de l'heure actuelle pour vérifier si on a le droit d'ajouter des actions et autre (on ne peut plus le faire sur un quart terminé)
+    let heure = new Date().getHours();
+
     //Récupération de la date de début et de la date de fin en fonction du quart 
     if(this.quart == 1){
-      this.dateDebString = format(new Date(),'yyyy-MM-dd') + ' 05:00:00.000'
-      this.dateFinString = format(new Date(),'yyyy-MM-dd') + ' 13:00:00.000'
+      this.dateDebString = format(new Date(),'yyyy-MM-dd') + ' 05:00:00.000';
+      this.dateDebStringToShow = format(new Date(),'dd/MM/yyyy') + ' 05:00';
+      this.dateFinString = format(new Date(),'yyyy-MM-dd') + ' 13:00:00.000';
+      this.dateFinStringToShow = format(new Date(),'dd/MM/yyyy') + ' 13:00';
+      this.quartLibelle = 'MATIN';
+      if(heure >= 5 && heure < 13){
+        this.saisieAutorise = true;
+      }
     }
     else if(this.quart == 2){
-      this.dateDebString = format(new Date(),'yyyy-MM-dd') + ' 13:00:00.000'
-      this.dateFinString = format(new Date(),'yyyy-MM-dd') + ' 21:00:00.000'
+      this.dateDebString = format(new Date(),'yyyy-MM-dd') + ' 13:00:00.000';
+      this.dateDebStringToShow = format(new Date(),'dd/MM/yyyy') + ' 13:00';
+      this.dateFinString = format(new Date(),'yyyy-MM-dd') + ' 21:00:00.000';
+      this.dateFinStringToShow = format(new Date(),'dd/MM/yyyy') + ' 21:00';
+      this.quartLibelle = 'APRES-MIDI';
+      if(heure >= 13 && heure < 21){
+        this.saisieAutorise = true;
+      }
     }
     else{
-      this.dateDebString = format(new Date(),'yyyy-MM-dd') + ' 21:00:00.000'
-      this.dateFinString = format(addDays(new Date(), 1),'yyyy-MM-dd') + ' 05:00:00.000'
+      this.dateDebString = format(new Date(),'yyyy-MM-dd') + ' 21:00:00.000';
+      this.dateDebStringToShow = format(new Date(),'dd/MM/yyyy') + ' 21:00';
+      this.dateFinString = format(addDays(new Date(), 1),'yyyy-MM-dd') + ' 05:00:00.000';
+      this.dateFinStringToShow = format(addDays(new Date(), 1),'dd/MM/yyyy') + ' 05:00';
+      this.quartLibelle = 'NUIT';
+      if(heure >= 21 && heure < 5){
+        this.saisieAutorise = true;
+      }
     }
     
     //Récupération des action pour la ronde en cours
     this.cahierQuartService.getActionsRonde(this.dateDebString, this.dateFinString).subscribe((response)=>{
       // @ts-ignore
       this.listAction = response.data;
+      // mettre en place un décodage pour ne plus avoir espace en format %20
+      for (let i = 0; i < this.listAction.length; i++) {
+        this.listAction[i].nom = decodeURI(this.listAction[i].nom);
+      }
     });
 
     //Récupération des évènement pour la ronde en cours
@@ -164,6 +203,27 @@ export class RecapRondeComponent implements OnInit {
     this.rondierService.listConsignes().subscribe((response) => {
       //@ts-ignore
       this.consignes = response.data;
+    });
+
+    //Récupération de l'id de l'équipe pour la ronde si l'équipe est déjà crée
+    this.cahierQuartService.getEquipeQuart(this.quart,format(new Date(this.dateDebString),'yyyy-MM-dd')).subscribe((response)=>{
+      // @ts-ignore
+      this.idEquipe = response.data[0].id;
+      //Si on est en mode édition
+      if(this.idEquipe > 0){
+        //On récupère l'équipe concernée
+        this.cahierQuartService.getOneEquipe(this.idEquipe).subscribe((response) =>{
+          this.nomEquipe = response.data[0]['equipe'];
+          if(response.data[0]['idRondier'] != null){
+            for(var i = 0;i<response.data.length;i++){
+              this.listRondier.push({Id : response.data[i]['idRondier'], Prenom : response.data[i]['prenomRondier'],Nom : response.data[i]['nomRondier'], Poste : response.data[i]['poste']});
+              if(response.data[i]['poste'] == 'Chef de Quart'){
+                this.userPrecedent = response.data[i]['prenomRondier'] + ' ' + response.data[i]['nomRondier'] ;
+              }
+            }
+          }
+        })
+      }
     });
   }
 
@@ -208,6 +268,8 @@ export class RecapRondeComponent implements OnInit {
   createAction(){
     this.cahierQuartService.newAction(this.nomAction, this.dateDebString,this.dateFinString).subscribe((response)=>{
       this.cahierQuartService.newCalendrierAction(response.data[0].id, response.data[0].date_heure_debut, this.quart, response.data[0].date_heure_fin).subscribe((response) => {
+        //réinitialiser le champ de saisie
+        this.nomAction = "";
         this.ngOnInit();
       })
     })

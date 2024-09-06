@@ -1,6 +1,35 @@
-<a (click)="priseDeQuart()" role="button" class="btn btn-primary" id="create">
-    Prise de quart
-</a>
+<input [disabled]="idEquipe != 0" value="Prise de Quart" type="button" (click)="priseDeQuart()" class="btn btn-primary" id="create"/>
+
+<div id="libelleQuart">
+    <h3>Quart du {{quartLibelle}} - {{dateDebStringToShow}} à {{dateFinStringToShow}}</h3>
+
+    <div *ngIf="idEquipe > 0">
+        <h4 style="text-align: center;">
+            Equipe Existante sur le quart : {{nomEquipe}}
+        </h4>
+        <!--table des rondiers-->
+        <table class="table table-hover tableFixed">
+            <thead>
+            <tr class="table-secondary">
+                <th scope="col">Nom</th>
+                <th scope="col">Prenom</th>
+                <th scope="col">Poste</th>
+            </tr>
+            </thead>
+            <tbody *ngFor="let rondier of listRondier">
+            <tr class="table-light" >
+                <td>{{rondier.Nom}}</td>
+                <td>
+                    {{rondier.Prenom}}
+                </td>
+                <td>
+                    {{rondier.Poste}}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 
 <!-- routerLink="../newEquipe" [queryParams]="{quart: quart, idEquipe: idEquipe}" -->
 
@@ -32,7 +61,7 @@
     <!-- Tableau des zones -->
     <div class="col-md-3">
         <h2 style="text-align: center;">Zones à contrôler
-            <button class="btn btn-success" id="createZone" (click)="newZone()">
+            <button [disabled]="!saisieAutorise" class="btn btn-success" id="createZone" (click)="newZone()">
                 + 
             </button>
             <button class="btn btn-danger" id="hideZone" (click)="hideZone()" style="display: none;">
@@ -76,7 +105,7 @@
     <!-- Tableau des actions -->
     <div class="col-md-3">
         <h2 style="text-align: center;">Actions
-            <button class="btn btn-success" id="createAction" (click)="newAction()">
+            <button [disabled]="!saisieAutorise" class="btn btn-success" id="createAction" (click)="newAction()">
                 + 
             </button>
             <button class="btn btn-danger" id="hideAction" (click)="hideAction()" style="display: none;">
@@ -119,7 +148,7 @@
         <h2 style="text-align: center;">
             Evènements
             <a (click)="ouvrirDialogCreerEvent()" role="button">
-                <button class="btn btn-success">
+                <button [disabled]="!saisieAutorise" class="btn btn-success">
                     + 
                 </button>
             </a>

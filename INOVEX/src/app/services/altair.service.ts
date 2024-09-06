@@ -12,7 +12,7 @@ export class AltairService {
       'Accept': 'application/json',
   }
   // private portAPI = 3102;
-  private ip = "/altairtestrest";
+  private ip = "/altairrest";
   //private ip = "localhost";
   private idUsine : number | undefined;
 
@@ -129,7 +129,7 @@ export class AltairService {
         site="CALCE"
         break;
     }
-    var payload = "{\r\n  \"username\":\"nsabre\",\r\n  \"password\":\"nsabre\",\r\n  \"site\":\""+site+"\",\r\n  \"passwordprehashed\": false\r\n\r\n}"
+    var payload = "{\r\n  \"username\":\"capexploitation\",\r\n  \"password\":\"capexploitation\",\r\n  \"site\":\""+site+"\",\r\n  \"passwordprehashed\": false\r\n\r\n}"
 
     return this.http.post<any>(url,payload,headers);
   }

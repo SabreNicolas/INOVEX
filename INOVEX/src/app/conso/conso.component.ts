@@ -33,13 +33,13 @@ export class ConsoComponent implements OnInit {
   }
 
   async onSubmit(form : NgForm){
-    if (form.value['unit']==''){
-      this.productsService.unit = '/';
+    if (form.value['unit'] == null){
+      this.productsService.unit = '';
     }
     else this.productsService.unit = form.value['unit'];
 
-    if (form.value['tag']==''){
-      this.productsService.tag = '/';
+    if (form.value['tag'] == null){
+      this.productsService.tag = '';
     }
     else this.productsService.tag = form.value['tag'];
 

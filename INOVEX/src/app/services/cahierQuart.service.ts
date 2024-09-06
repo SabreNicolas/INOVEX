@@ -623,15 +623,15 @@ export class cahierQuartService {
 
     //Créer une nouvelle actualité
     newAction(nom:string, dateDeb:string, dateFin:string){
+      nom = encodeURIComponent(nom);
+      let requete = "https://"+this.ip+":"+this.portAPI+"/newAction?nom="+nom+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&idUsine="+this.idUsine;
 
-        let requete = "https://"+this.ip+":"+this.portAPI+"/newAction?nom="+nom+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&idUsine="+this.idUsine;
+      const requestOptions = {
+        headers: new HttpHeaders(this.headerDict),
+      };
 
-        const requestOptions = {
-          headers: new HttpHeaders(this.headerDict),
-        };
-
-        return this.http
-          .put<any>(requete,null,requestOptions);
+      return this.http
+        .put<any>(requete,null,requestOptions);
     }
     
     //Récupérer toutes les actus d'une ronde

@@ -451,7 +451,7 @@ export class RecapRondePrecedenteComponent {
     pdfMake.createPdf(pdfContent).download('Résumé quart du ' + quart + ' du ' + this.formatDateTime(this.dateDebString))
     
     await this.delay(1000)
-    window.location.href = "https://fr-couvinove300.prod.paprec.fr:8100/cahierQuart/newEquipe?quart="+this.quart+"&idEquipe="+this.idEquipe
+    window.location.href = "https://fr-couvinove300.prod.paprec.fr:8100/cahierQuart/newEquipe?quart="+this.quart
   }
 
   delay(ms : number){

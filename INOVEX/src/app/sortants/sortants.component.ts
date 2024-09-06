@@ -37,18 +37,13 @@ export class SortantsComponent implements OnInit {
   }
 
   async onSubmit(form : NgForm){
-    if (form.value['unit']==''){
-      this.productsService.unit = '/';
-    }
-    else this.productsService.unit = form.value['unit'];
-
-    if (form.value['tag']==''){
-      this.productsService.tag = '/';
-    }
-    else this.productsService.tag = form.value['tag'];
-
+    this.productsService.unit = form.value['unit'];
+    this.productsService.tag = form.value['tag'];
     this.productsService.nom = form.value['nom'];
     this.Code = form.value['categorie'];
+
+    if(this.productsService.tag == null) this.productsService.tag = '';
+    if(this.productsService.unit == null) this.productsService.unit = '';
 
     let lastCodeUsine = 0, lastCodeGlobal = 0;
     //On va chercher pour chaque site le dernierCode et on stocke le plus grand de tout les sites confondu pour avoir une uniformité

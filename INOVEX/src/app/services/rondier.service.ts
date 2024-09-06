@@ -404,7 +404,7 @@ export class rondierService {
         if(date != undefined)
             date = encodeURIComponent(date)
         let requete = "https://"+this.ip+":"+this.portAPI+"/getElementsAndValuesOfDay/"+this.idUsine+"/"+date+"?quart="+quart;
-        //console.log(requete);
+        console.log(requete);
 
         const requestOptions = {
             headers: new HttpHeaders(this.headerDict),
