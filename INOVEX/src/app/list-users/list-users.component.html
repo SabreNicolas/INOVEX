@@ -25,8 +25,7 @@
     <table class="table table-hover tableFixed">
         <thead>
         <tr class="table-secondary">
-            <th scope="col">Nom</th>
-            <th scope="col">Prénom</th>
+            <th scope="col">Nom Prénom</th>
             <th scope="col">Identifiant</th>
             <th scope="col">Mot de Passe</th>
             <th scope="col">Rondier</th>
@@ -40,9 +39,19 @@
         </thead>
         <tbody *ngFor="let user of listUsers">
         <tr class="table-light">
-            <td>{{user.Nom}}</td>
-            <td>{{user.Prenom}}</td>
-            <td><span style="font-size: 15px;" class="badge bg-success">{{user.login}}</span></td>
+            <td>{{user.Nom}} {{user.Prenom}}</td>
+            <td>
+                <span style="font-size: 15px;" class="badge bg-success">{{user.login}}</span><br>
+                <span style="font-size: 12px;" class="badge bg-secondary">Email : {{user.email}}</span> 
+                <button class="btn btn btn-light edition" (click)="changeInfos(user.login,'email', user.email)">
+                    <i class="far fa-edit"></i>
+                </button>
+                <br>
+                <span style="font-size: 12px;" class="badge bg-secondary">Login GMAO : {{user.loginGMAO}}</span>
+                <button class="btn btn btn-light edition" (click)="changeInfos(user.login,'loginGMAO', user.loginGMAO)">
+                    <i class="far fa-edit"></i>
+                </button>
+            </td>
             <td><button id="setPrice" (click)="resetPwd(user.login)" class="btn btn-primary">
                 Reset mot de passe
             </button></td>

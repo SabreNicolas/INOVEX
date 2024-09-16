@@ -382,22 +382,25 @@ export class ListEvenementsComponent implements OnInit {
 
   getDI(id : string){
     this.altairService.getOneDI(this.token,id).subscribe((response) =>{
-      console.log(response)
-      this.DI = id
-      this.BT = response.fkcodeworkorder
+      console.log(response);
+      this.DI = id;
+      this.BT = response.fkcodeworkorder;
+      let timeZone = 'Europe/Paris';
       if(response.fkcodeworkorder != undefined){
         this.altairService.getOneDT(this.token,this.BT).subscribe((response) =>{
           this.descriptionBT = response.description
           this.responsableBT = response.fkcodelaborincharge
           this.commentaireBT = response.wom1
-          const dateDeb = parseISO(response.targstartdate)
-          const dateFin = parseISO(response.targenddate)
-          const timeZone = 'Europe/Paris';
-          const zoneDateDeb = toZonedTime(dateDeb, timeZone)
-          const zoneDateFin = toZonedTime(dateFin, timeZone)
-          this.planifieDebutBT = format(zoneDateDeb, 'dd/MM/yyyy HH:mm')
-          this.planifieFinBT = format(zoneDateFin, 'dd/MM/yyyy HH:mm')
-
+          if(response.targstartdate != undefined){
+            const dateDeb = parseISO(response.targstartdate)
+            const zoneDateDeb = toZonedTime(dateDeb, timeZone)
+            this.planifieDebutBT = format(zoneDateDeb, 'dd/MM/yyyy HH:mm')
+          }
+          if(response.targenddate != undefined){
+            const dateFin = parseISO(response.targenddate)
+            const zoneDateFin = toZonedTime(dateFin, timeZone)
+            this.planifieFinBT = format(zoneDateFin, 'dd/MM/yyyy HH:mm')
+          }
           this.statusBT = response.status
           this.ouvrirDialogDT();
         })

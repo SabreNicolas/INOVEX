@@ -3,6 +3,7 @@ import {user} from "../../models/user.model";
 import {loginService} from "../services/login.service";
 import Swal from "sweetalert2";
 import {Md5} from "ts-md5";
+import { PopupService } from '../services/popup.service';
 
 @Component({
   selector: 'app-list-users',
@@ -14,7 +15,7 @@ export class ListUsersComponent implements OnInit {
   public listUsers : user[];
   public loginLike : string;
 
-  constructor(private loginService : loginService) {
+  constructor(private loginService : loginService, private popupService : PopupService) {
     this.listUsers = [];
     this.loginLike = "";
   }
@@ -39,13 +40,10 @@ export class ListUsersComponent implements OnInit {
     login = login.replace("'","''");
     this.loginService.updatePwd(login,Md5.hashStr('temporaire')).subscribe((response)=>{
       if (response == "Mise à jour du mot de passe OK"){
-        Swal.fire("Mot de passe mis à jour avec succès !");
+        this.popupService.alertSuccessForm("Mot de passe mis à jour avec succès !");
       }
       else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Erreur lors de la mise à jour du mot de passe ....',
-        })
+        this.popupService.alertErrorForm('Erreur lors de la mise à jour du mot de passe ....');
       }
     });
   }
@@ -60,13 +58,10 @@ export class ListUsersComponent implements OnInit {
   async changeDroit(login : string, right : number, choix : string){
     this.loginService.updateDroit(login,right,choix).subscribe((response)=>{
       if (response == "Mise à jour du droit OK"){
-        Swal.fire("Les droits ont bien été mis à jour !");
+        this.popupService.alertSuccessForm("Les droits ont bien été mis à jour !");
       }
       else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Erreur lors de la mise à jour des droits',
-        })
+        this.popupService.alertErrorForm('Erreur lors de la mise à jour des droits');
       }
     });
     await this.wait(50);
@@ -78,13 +73,27 @@ export class ListUsersComponent implements OnInit {
   async deleteUser(id : number){
     this.loginService.deleteUser(id).subscribe((response)=>{
       if (response == "Suppression du user OK"){
-        Swal.fire("L'utilisateur a bien été supprimé !");
+        this.popupService.alertSuccessForm("L'utilisateur a bien été supprimé !");
       }
       else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Impossible de supprimer l\'utilisateur suite à l\'historique des quarts.',
-        })
+        this.popupService.alertErrorForm('Impossible de supprimer l\'utilisateur suite à l\'historique des quarts.');
+      }
+    });
+    await this.wait(50);
+    this.ngOnInit();
+  }
+
+  //changement des infos du user => loginGMAO ou email
+  async changeInfos(login : string, info : string, infoValue : string){
+    //@ts-ignore
+    infoValue = prompt("Veuillez saisir le "+info+" de l'utilisateur",infoValue);
+    //@ts-ignore
+    this.loginService.updateInfos(login,info,infoValue).subscribe((response)=>{
+      if (response == "Mise à jour info OK"){
+        this.popupService.alertSuccessForm('Les infos ont bien été mis à jour !');
+      }
+      else {
+        this.popupService.alertErrorForm('Erreur lors de la mise à jour des infos');
       }
     });
     await this.wait(50);

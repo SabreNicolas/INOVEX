@@ -1,6 +1,6 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { cahierQuartService } from '../services/cahierQuart.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { addDays, format } from 'date-fns';
 import {rondierService} from "../services/rondier.service";
 import { zone } from 'src/models/zone.model';
@@ -9,6 +9,7 @@ import { PopupService } from '../services/popup.service';
 import { AltairService } from '../services/altair.service';
 import { DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
+import { Actualite } from 'src/models/actualite.model';
 declare var $ : any;
 
 @Component({
@@ -61,8 +62,10 @@ export class RecapRondeComponent implements OnInit {
   public nomEquipe : string;
   public listRondier : any[];
   public userPrecedent : string;
+  public listActu : Actualite[];
+  public hideEquipe : boolean;
 
-  constructor(public altairService : AltairService, private route : ActivatedRoute, private rondierService : rondierService, private datePipe : DatePipe, public cahierQuartService : cahierQuartService, private dialog : MatDialog,private popupService : PopupService) {
+  constructor(public altairService : AltairService, private route : ActivatedRoute, private rondierService : rondierService, private datePipe : DatePipe, public cahierQuartService : cahierQuartService, private dialog : MatDialog,private popupService : PopupService, private router : Router) {
     this.listAction = [];
     this.listZoneOfUsine = [];
     this.listZoneSelection = [];
@@ -99,6 +102,8 @@ export class RecapRondeComponent implements OnInit {
     this.nomEquipe = "";
     this.listRondier = [];
     this.userPrecedent = "";
+    this.listActu = [];
+    this.hideEquipe = true;
 
     this.altairService.login().subscribe((response)=>{
       this.token = response.token
@@ -131,6 +136,7 @@ export class RecapRondeComponent implements OnInit {
   ngOnInit(): void {
     //Récupération de l'heure actuelle pour vérifier si on a le droit d'ajouter des actions et autre (on ne peut plus le faire sur un quart terminé)
     let heure = new Date().getHours();
+    this.listRondier = [];
 
     //Récupération de la date de début et de la date de fin en fonction du quart 
     if(this.quart == 1){
@@ -154,12 +160,21 @@ export class RecapRondeComponent implements OnInit {
       }
     }
     else{
-      this.dateDebString = format(new Date(),'yyyy-MM-dd') + ' 21:00:00.000';
-      this.dateDebStringToShow = format(new Date(),'dd/MM/yyyy') + ' 21:00';
-      this.dateFinString = format(addDays(new Date(), 1),'yyyy-MM-dd') + ' 05:00:00.000';
-      this.dateFinStringToShow = format(addDays(new Date(), 1),'dd/MM/yyyy') + ' 05:00';
-      this.quartLibelle = 'NUIT';
-      if(heure >= 21 && heure < 5){
+      if(heure < 5){
+        this.dateDebString = format(addDays(new Date(), -1),'yyyy-MM-dd') + ' 21:00:00.000';
+        this.dateDebStringToShow = format(addDays(new Date(), -1),'dd/MM/yyyy') + ' 21:00';
+        this.dateFinString = format(new Date(),'yyyy-MM-dd') + ' 05:00:00.000';
+        this.dateFinStringToShow = format(new Date(),'dd/MM/yyyy') + ' 05:00';
+        this.quartLibelle = 'NUIT';
+      }
+      else{
+        this.dateDebString = format(new Date(),'yyyy-MM-dd') + ' 21:00:00.000';
+        this.dateDebStringToShow = format(new Date(),'dd/MM/yyyy') + ' 21:00';
+        this.dateFinString = format(addDays(new Date(), 1),'yyyy-MM-dd') + ' 05:00:00.000';
+        this.dateFinStringToShow = format(addDays(new Date(), 1),'dd/MM/yyyy') + ' 05:00';
+        this.quartLibelle = 'NUIT';
+      }
+      if(heure >= 21 || heure < 5){
         this.saisieAutorise = true;
       }
     }
@@ -184,14 +199,14 @@ export class RecapRondeComponent implements OnInit {
     this.cahierQuartService.getZonesCalendrierRonde(this.dateDebString, this.dateFinString).subscribe((response)=>{
       // @ts-ignore
       this.listZone = response.BadgeAndElementsOfZone;
-      console.log(this.listZone)
+      console.log(this.listZone);
     });
     
     //Récupération de l'id de l'équipe pour la ronde si l'équipe est déjà crée
-    this.cahierQuartService.getEquipeQuart(this.quart,format(new Date(),'yyyy-MM-dd')).subscribe((response)=>{
-      // @ts-ignore
-      this.idEquipe = response.data[0].id;
-    });
+    // this.cahierQuartService.getEquipeQuart(this.quart,format(new Date(),'yyyy-MM-dd')).subscribe((response)=>{
+    //   // @ts-ignore
+    //   this.idEquipe = response.data[0].id;
+    // });
 
     //Récupération des zones de l'usine pour l'ajout d'une zone
     this.rondierService.listZone().subscribe((response)=>{
@@ -203,6 +218,12 @@ export class RecapRondeComponent implements OnInit {
     this.rondierService.listConsignes().subscribe((response) => {
       //@ts-ignore
       this.consignes = response.data;
+    });
+
+    //On récupère la liste des actus actives sur le quart
+    this.cahierQuartService.getActusQuart(1).subscribe((response)=>{
+      // @ts-ignore
+      this.listActu = response.data;
     });
 
     //Récupération de l'id de l'équipe pour la ronde si l'équipe est déjà crée
@@ -539,5 +560,19 @@ export class RecapRondeComponent implements OnInit {
         this.groupementGMAO = equipement.fkcodelocation
       }
     }
+  }
+
+  splitDescription(descr: string) {
+    return descr.split('\n');
+  }
+
+  finQuart() {
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    this.router.navigate(['/']);
+  }
+
+  changeEquipeVisible(){
+    this.hideEquipe = !this.hideEquipe;
   }
 }

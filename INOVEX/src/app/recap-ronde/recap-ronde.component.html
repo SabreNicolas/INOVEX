@@ -1,14 +1,15 @@
-<input [disabled]="idEquipe != 0" value="Prise de Quart" type="button" (click)="priseDeQuart()" class="btn btn-primary" id="create"/>
+<button [disabled]="idEquipe != 0 || !saisieAutorise" type="button" (click)="priseDeQuart()" class="btn btn-primary" id="create">Prise de Quart</button>
+<button [disabled]="!saisieAutorise || !(idEquipe != 0 && saisieAutorise)" type="button" (click)="finQuart()" class="btn btn-warning" id="create">FIN DE QUART</button>
 
 <div id="libelleQuart">
     <h3>Quart du {{quartLibelle}} - {{dateDebStringToShow}} à {{dateFinStringToShow}}</h3>
 
     <div *ngIf="idEquipe > 0">
         <h4 style="text-align: center;">
-            Equipe Existante sur le quart : {{nomEquipe}}
+            Equipe Existante sur le quart : {{nomEquipe}} <button class="btn btn-light" (click)="changeEquipeVisible()"><i class="fa fa-level-down" aria-hidden="true"></i></button>
         </h4>
         <!--table des rondiers-->
-        <table class="table table-hover tableFixed">
+        <table [hidden]="hideEquipe" class="table table-hover tableFixed">
             <thead>
             <tr class="table-secondary">
                 <th scope="col">Nom</th>
@@ -81,8 +82,8 @@
                 Valider
             </button>
         </div>
-        <!--table des consignes-->
-        <table class="table table-hover tableFixed">
+        <!--table des zones-->
+        <table class="table tableFixed">
             <thead>
             <tr class="table-secondary">
                 <th scope="col">Nom</th>
@@ -90,12 +91,12 @@
             </tr>
             </thead>
             <tbody *ngFor="let zone of listZone">
-            <tr class="table-light" >
+            <tr [ngStyle]="{'background-color' : zone.termine == 1 ? 'lightgreen' : 'lightcoral'}">
                 <td>{{zone.zone}}</td>
                 <td>
-                    <button type="button" class="btn btn-outline-danger" (click)="deleteAction(zone.id)">
+                    <button [disabled]="!saisieAutorise" type="button" class="btn btn-outline-danger" (click)="deleteAction(zone.id)">
                         <i class="fas fa-trash"></i>
-                      </button>
+                    </button>
                 </td>
             </tr>
             </tbody>
@@ -134,7 +135,7 @@
             <tr class="table-light" >
                 <td>{{action.nom}}</td>
                 <td>
-                    <button type="button" class="btn btn-outline-danger" (click)="deleteAction(action.id)">
+                    <button [disabled]="!saisieAutorise" type="button" class="btn btn-outline-danger" (click)="deleteAction(action.id)">
                         <i class="fas fa-trash"></i>
                     </button>
                 </td>
@@ -189,6 +190,29 @@
             </table>
         </div>
     </div>
+</div>
+
+<div class="col-md-13" style="display: flex; flex-direction: column; align-items: center;">
+    <h2 style="text-align: center;">Actualités</h2>
+    <!--table des actus-->
+    <table class="table tableFixed" style="width: 50%;">
+        <thead>
+        <tr class="table-secondary">
+            <th scope="col">Actualité</th>
+            <th scope="col">Description</th>
+            <!--<th scope="col">Date de Début de validité</th>
+            <th scope="col">Date de Fin de validité</th>-->
+        </tr>
+        </thead>
+        <tbody *ngFor="let actu of listActu">
+        <tr class="color--{{actu.importance}}" >
+            <td>{{actu.titre}}</td>
+            <td><p *ngFor="let descr of splitDescription(actu.description)">{{descr}}</p></td>
+            <!--<td>{{actu.date_heure_debut}}</td>
+            <td>{{actu.date_heure_fin}}</td>-->
+        </tr>
+        </tbody>
+    </table>
 </div>
 
 

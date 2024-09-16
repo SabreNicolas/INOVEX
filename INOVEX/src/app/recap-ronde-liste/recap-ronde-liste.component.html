@@ -1,12 +1,13 @@
-
-            <input type="date" id="date" class="form-control" placeholder="Date de début" name="date" ngModel [(ngModel)]="dateDebForm">
-            <select id="quart" required class="form-select form-select-sm" aria-label=".form-select-sm example" name="quart" [(ngModel)]="quart">
-                <option value="0">Veuillez choisir un quart</option>
-                <option value="1">Matin</option>
-                <option value="2">Après-midi</option>
-                <option value="3">Nuit</option>
-            </select>
-            <button class="btn btn-success" (click)="setFilters()">Valider</button>
+<div class="col-md-6" style="display: flex;">
+    <input type="date" id="date" class="form-control" placeholder="Date de début" name="date" ngModel [(ngModel)]="dateDebForm">
+    <select id="quart" required class="form-select form-select-sm" aria-label=".form-select-sm example" name="quart" [(ngModel)]="quart">
+        <option value="0">Veuillez choisir un quart</option>
+        <option value="1">Matin</option>
+        <option value="2">Après-midi</option>
+        <option value="3">Nuit</option>
+    </select>
+    <button class="btn btn-success" (click)="setFilters()">Valider</button>
+</div>
 
 <h2 style="text-align: center;">
     {{nomEquipe}}

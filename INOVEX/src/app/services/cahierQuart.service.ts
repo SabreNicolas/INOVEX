@@ -302,10 +302,10 @@ export class cahierQuartService {
     /****Actualités *******/
 
     //Créer une nouvelle actualité
-    newActu(titre:string, importance:number, dateDeb:string, dateFin:string, description : string){
+    newActu(titre:string, importance:number, dateDeb:string, dateFin:string, description : string, forQuart : number, maillist : string){
         titre = encodeURIComponent(titre);
         description = encodeURIComponent(description);
-        let requete = "https://"+this.ip+":"+this.portAPI+"/actu?titre="+titre+"&importance="+importance+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&idUsine="+this.idUsine+"&description="+description;
+        let requete = "https://"+this.ip+":"+this.portAPI+"/actu?titre="+titre+"&importance="+importance+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&idUsine="+this.idUsine+"&description="+description+"&isQuart="+forQuart+"&maillist="+maillist;
 
         const requestOptions = {
           headers: new HttpHeaders(this.headerDict),
@@ -316,10 +316,10 @@ export class cahierQuartService {
     }
 
     //Modifier une actualité
-    updateActu(titre:string, importance:number, dateDeb:string, dateFin:string, idActu : number, description : string){
+    updateActu(titre:string, importance:number, dateDeb:string, dateFin:string, idActu : number, description : string, forQuart : number){
         titre = encodeURIComponent(titre);
         description = encodeURIComponent(description);
-        let requete = "https://"+this.ip+":"+this.portAPI+"/updateActu?titre="+titre+"&importance="+importance+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&idActu="+idActu+"&description="+description;
+        let requete = "https://"+this.ip+":"+this.portAPI+"/updateActu?titre="+titre+"&importance="+importance+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&idActu="+idActu+"&description="+description+"&isQuart="+forQuart;
 
         const requestOptions = {
           headers: new HttpHeaders(this.headerDict),
@@ -353,9 +353,9 @@ export class cahierQuartService {
             .get<any>(requete,requestOptions);
     }
 
-    //Récupérer toutes actualité
-    getActusActives(){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/getActusActives?idUsine="+this.idUsine;
+    //Récupérer toutes actualité étant lié à un quart
+    getActusQuart(isQuart : number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/getActusQuart?idUsine="+this.idUsine+"&isQuart="+isQuart;
 
         const requestOptions = {
           headers: new HttpHeaders(this.headerDict),
@@ -365,7 +365,7 @@ export class cahierQuartService {
             .get<any>(requete,requestOptions);
     }
 
-    //Valider une actualité
+    //Valider une actualité => permet enfaite de la lier à un quart
     validerActu(idActu : number){
         let requete = "https://"+this.ip+":"+this.portAPI+"/validerActu?idActu="+idActu;
 
@@ -377,7 +377,7 @@ export class cahierQuartService {
         .put<any>(requete,null,requestOptions);
     }
 
-    //invalider une actualité
+    //invalider une actualité => permet enfaite de ne pas la lier à un quart
     invaliderActu(idActu : number){
         let requete = "https://"+this.ip+":"+this.portAPI+"/invaliderActu?idActu="+idActu;
 

@@ -47,6 +47,16 @@ export class loginService {
             .get<user[]>(requete,requestOptions);
     }
 
+    //récupérer la list des utilisateurs ayant un email
+    getUsersEmail() {
+        let requete = "https://"+this.ip+":"+this.portAPI+"/UsersEmail?idUsine="+this.idUsine;
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+        return this.http
+            .get<user[]>(requete,requestOptions);
+    }
+
     //récupérer le login pour voir si il est déjà utilisé
     getLogin(login : string) {
         let requete = "https://"+this.ip+":"+this.portAPI+"/User/"+login;
@@ -91,6 +101,18 @@ export class loginService {
     //Mise à jour des droits rondier ou saisie ou qse ou rapports ou chef de quart ou admin
     updateDroit(login : string, droit : number, choix : string){
         let requete = "https://"+this.ip+":"+this.portAPI+"/"+choix+"/"+login+"/"+droit;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+        return this.http
+            .put<any>(requete,null,requestOptions);
+    }
+
+    //Mise à jour des infos => email ou loginGMAO
+    updateInfos(login : string, info : string, infoValue : string){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/UserInfos/"+login+"/"+info+"?infoValue="+infoValue;
         //console.log(requete);
 
         const requestOptions = {

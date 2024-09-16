@@ -1,12 +1,13 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { DatePipe,Location } from '@angular/common';
 import { MatDialog} from '@angular/material/dialog';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {loginService} from "../services/login.service";
 import { Actualite } from 'src/models/actualite.model';
 import { cahierQuartService } from '../services/cahierQuart.service';
 import { PopupService } from '../services/popup.service';
 import { ActivatedRoute } from '@angular/router';
 import Swal from 'sweetalert2';
+import { user } from 'src/models/user.model';
 
 @Component({
   selector: 'app-list-actus',
@@ -27,14 +28,20 @@ export class ListActusComponent implements OnInit {
   public idActu : number;
   public description : string;
   public dupliquer : number;  public dialogRef = {};
+  public forQuart : boolean | number;
+  public listUsers : user[];
+  public listEmail : string[];
 
-  constructor(public cahierQuartService : cahierQuartService,private popupService : PopupService, private formbuilder: FormBuilder, private dialog : MatDialog, private datePipe : DatePipe,private route : ActivatedRoute, private location : Location) {
+  constructor(public cahierQuartService : cahierQuartService,private popupService : PopupService, private loginService : loginService, private dialog : MatDialog, private datePipe : DatePipe,private route : ActivatedRoute, private location : Location) {
     this.listActu = [];
     this.titre = "";
     this.importance = 0;
     this.idActu = 0;
     this.description = "";
-    this.dupliquer = 0;    
+    this.dupliquer = 0;
+    this.forQuart = false; 
+    this.listUsers = [];
+    this.listEmail = [];
   }
   
   ngOnInit(): void {
@@ -42,6 +49,12 @@ export class ListActusComponent implements OnInit {
       // @ts-ignore
       this.listActu = response.data;
     });
+
+    this.loginService.getUsersEmail().subscribe((response)=>{
+      // @ts-ignore 
+      this.listUsers = response.data;
+    });
+
     this.titre = "";
     this.importance = 0;
     this.idActu = 0;
@@ -49,20 +62,21 @@ export class ListActusComponent implements OnInit {
     this.dupliquer = 0;    
     this.dateDeb = undefined;
     this.dateFin = undefined;
+    this.forQuart = false;
+    this.listEmail = [];
   }
 
   terminerActu(id:number, isValide : number){
-    console.log(isValide)
     if(isValide == 1){
       this.cahierQuartService.invaliderActu(id).subscribe((response)=>{
         this.ngOnInit();
-        this.popupService.alertSuccessForm("Actu non validée")
+        this.popupService.alertSuccessForm("Actu non lié à un quart")
       });
     }
     else{
       this.cahierQuartService.validerActu(id).subscribe((response)=>{
         this.ngOnInit();
-        this.popupService.alertSuccessForm("Actu validée")
+        this.popupService.alertSuccessForm("Actu lié à un quart")
       });
     }
   }
@@ -93,6 +107,7 @@ export class ListActusComponent implements OnInit {
       this.cahierQuartService.getOneActu(this.idActu).subscribe((response) =>{
         this.titre = response.data[0]['titre'];
         this.importance = response.data[0]['importance'];
+        this.forQuart = response.data[0]['isValide'];
         this.description = response.data[0]['description'];
         this.dateDeb = response.data[0]['date_heure_debut'].replace(' ','T').replace('Z','');
         this.dateFin = response.data[0]['date_heure_fin'].replace(' ','T').replace('Z','');
@@ -141,6 +156,12 @@ export class ListActusComponent implements OnInit {
       this.popupService.alertSuccessForm('Les dates ne correspondent pas. La saisie a été annulée.');
       return;
     }
+    //On transforme la case à coché pour lié l'action à un quart en number
+    if(this.forQuart){
+      this.forQuart = 1
+    }
+    else this.forQuart = 0;
+
     //Choix de la phrase à afficher en fonction du mode
     if(this.idActu > 0){
       var question = 'Êtes-vous sûr(e) de modifier cette Actu ?'
@@ -153,7 +174,7 @@ export class ListActusComponent implements OnInit {
         //Si on est en mode édition d'une actu on va dans la fonction update
         if (this.idActu != 0){
           //@ts-ignore
-          this.cahierQuartService.updateActu(this.titre,this.importance,dateDebString,dateFinString, this.idActu,this.description).subscribe((response)=>{
+          this.cahierQuartService.updateActu(this.titre,this.importance,dateDebString,dateFinString, this.idActu,this.description, this.forQuart).subscribe((response)=>{
             if(response == "Modif de l'actu OK !"){
               this.cahierQuartService.historiqueActuUpdate(this.idActu).subscribe((response)=>{
                 this.popupService.alertSuccessForm('Atualité modifiée !');
@@ -165,8 +186,15 @@ export class ListActusComponent implements OnInit {
         }
         //Sinon on créé l'actu
         else{
+          //Si des utilisateurs ont été sélectionné pour un envoi de mail, on crée une chaine correspondant à la maillist en partant du tableau de mail
+          let stringEmail = "";
+          if(this.listEmail.length > 0){
+            this.listEmail.forEach(email => {
+              stringEmail += email+";";
+            });
+          }
           //@ts-ignore
-          this.cahierQuartService.newActu(this.titre,this.importance,dateDebString,dateFinString,this.description).subscribe((response)=>{
+          this.cahierQuartService.newActu(this.titre,this.importance,dateDebString,dateFinString,this.description, this.forQuart, stringEmail).subscribe((response)=>{
             console.log(response)
             if(response != undefined){
               this.idActu = response['data'][0]['Id'];

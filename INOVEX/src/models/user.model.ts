@@ -3,6 +3,8 @@ export interface user{
     Nom : string;
     Prenom : string;
     login : string;
+    email : string;
+    loginGMAO : string;
     pwd : string;
     isRondier : boolean;
     isSaisie : boolean;

@@ -22,7 +22,7 @@ export class AcceuilCahierQuartComponent implements OnInit {
     this.listMaintenance = [];
   }
   ngOnInit(): void {
-    this.cahierQuartService.getActusActives().subscribe((response)=>{
+    this.cahierQuartService.getActusQuart(0).subscribe((response)=>{
       // @ts-ignore
       this.listActu = response.data;
     });
@@ -46,4 +46,8 @@ export class AcceuilCahierQuartComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
+  splitDescription(descr: string) {
+    return descr.split('\n');
+  }
+  
 }

@@ -15,24 +15,24 @@
     <button type="button" (click)="finQuart()" class="btn btn-warning" id="finQuart">FIN DE QUART</button>
         
 
-    <div class="col-md-13">
+    <div class="col-md-13" style="display: flex; flex-direction: column; align-items: center;">
         <h2 style="text-align: center;">Actualités</h2>
         <!--table des consignes-->
-        <table class="table table-hover tableFixed">
+        <table class="table tableFixed" style="width: 70%;">
             <thead>
             <tr class="table-secondary">
                 <th scope="col">Actualité</th>
                 <th scope="col">Description</th>
-                <th scope="col">Date de Début de validité</th>
-                <th scope="col">Date de Fin de validité</th>
+                <!--<th scope="col">Date de Début de validité</th>
+                <th scope="col">Date de Fin de validité</th>-->
             </tr>
             </thead>
             <tbody *ngFor="let actu of listActu">
-            <tr class="table-light" >
+            <tr class="color--{{actu.importance}}" >
                 <td>{{actu.titre}}</td>
-                <td>{{actu.description}}</td>
-                <td>{{actu.date_heure_debut}}</td>
-                <td>{{actu.date_heure_fin}}</td> 
+                <td><p *ngFor="let descr of splitDescription(actu.description)">{{descr}}</p></td>
+                <!--<td>{{actu.date_heure_debut}}</td>
+                <td>{{actu.date_heure_fin}}</td>-->
             </tr>
             </tbody>
         </table>
