@@ -235,9 +235,10 @@ export class RecapRondeComponent implements OnInit {
         //On récupère l'équipe concernée
         this.cahierQuartService.getOneEquipe(this.idEquipe).subscribe((response) =>{
           this.nomEquipe = response.data[0]['equipe'];
+          console.log(response.data[0]);
           if(response.data[0]['idRondier'] != null){
             for(var i = 0;i<response.data.length;i++){
-              this.listRondier.push({Id : response.data[i]['idRondier'], Prenom : response.data[i]['prenomRondier'],Nom : response.data[i]['nomRondier'], Poste : response.data[i]['poste']});
+              this.listRondier.push({Id : response.data[i]['idRondier'], Prenom : response.data[i]['prenomRondier'],Nom : response.data[i]['nomRondier'], Poste : response.data[i]['poste'], Zone : response.data[i]['zone']});
               if(response.data[i]['poste'] == 'Chef de Quart'){
                 this.userPrecedent = response.data[i]['prenomRondier'] + ' ' + response.data[i]['nomRondier'] ;
               }
@@ -438,7 +439,8 @@ export class RecapRondeComponent implements OnInit {
         //Sinon on créé 
         else{
           if(this.demandeTravaux != 0){
-            this.altairService.createDI(this.token,this.titre, this.groupementGMAO, this.equipementGMAO.split('---')[0], this.cause, this.importance, this.description).subscribe((response) =>{
+            //TODO : récupérer le userGMAO du user
+            this.altairService.createDI(this.token,this.titre, this.groupementGMAO, this.equipementGMAO.split('---')[0], this.cause, this.importance, this.description, 'capexploitation').subscribe((response) =>{
               //@ts-ignore
               this.cahierQuartService.newEvenement(this.titre,this.fileToUpload,this.importance,dateDebString,dateFinString, this.groupementGMAO, this.equipementGMAO, this.cause,this.description, this.consigne, response.codeworkrequest).subscribe((response)=>{
                 if(response != undefined){

@@ -353,6 +353,18 @@ export class cahierQuartService {
             .get<any>(requete,requestOptions);
     }
 
+    //Récupérer toutes actualité avec la date courante entre la date de début et la date de fin
+    getAllActuDateCourante(){
+      let requete = "https://"+this.ip+":"+this.portAPI+"/getAllActuDateCourante?idUsine="+this.idUsine;
+
+      const requestOptions = {
+        headers: new HttpHeaders(this.headerDict),
+      };
+
+      return this.http
+          .get<any>(requete,requestOptions);
+    }
+
     //Récupérer toutes actualité étant lié à un quart
     getActusQuart(isQuart : number){
         let requete = "https://"+this.ip+":"+this.portAPI+"/getActusQuart?idUsine="+this.idUsine+"&isQuart="+isQuart;
@@ -401,6 +413,19 @@ export class cahierQuartService {
       return this.http
           .get<any>(requete,requestOptions);
   }
+
+  //Supprimer une actu
+  deleteActu(id : number){
+    let requete = "https://"+this.ip+":"+this.portAPI+"/deleteActu/"+id;
+    //console.log(requete);
+
+    const requestOptions = {
+        headers: new HttpHeaders(this.headerDict),
+    };
+
+    return this.http
+        .put<any>(requete,null,requestOptions);
+}
 
     /****Evenement *******/
 

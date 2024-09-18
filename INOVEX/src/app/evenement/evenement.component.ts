@@ -240,7 +240,8 @@ export class EvenementComponent implements OnInit {
         //Sinon on créé 
         else{
           if(this.demandeTravaux == 1){
-            this.altairService.createDI(this.token,this.titre, this.groupementGMAO, this.equipementGMAO.split('---')[0], this.cause, this.importance, this.description).subscribe((response) =>{
+            //TODO
+            this.altairService.createDI(this.token,this.titre, this.groupementGMAO, this.equipementGMAO.split('---')[0], this.cause, this.importance, this.description, 'capexploitation').subscribe((response) =>{
               //@ts-ignore
               this.cahierQuartService.newEvenement(this.titre,this.fileToUpload,this.importance,dateDebString,dateFinString, this.groupementGMAO, this.equipementGMAO, this.cause,this.description, this.consigne, response.codeworkrequest).subscribe((response)=>{
                 if(response != undefined){

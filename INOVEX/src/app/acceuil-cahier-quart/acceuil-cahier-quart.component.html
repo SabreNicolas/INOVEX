@@ -13,31 +13,41 @@
 <div class="row">
 
     <button type="button" (click)="finQuart()" class="btn btn-warning" id="finQuart">FIN DE QUART</button>
-        
 
-    <div class="col-md-13" style="display: flex; flex-direction: column; align-items: center;">
+    <div class="col-md-13" style="display: flex; flex-direction: column;" *ngIf="listActu.length > 0">
         <h2 style="text-align: center;">Actualités</h2>
+        <!--Liste des actus non lié à un quart-->
+        <div style="display: flex; justify-content: space-evenly;">
+            <div class="card cardActu" *ngFor="let actu of listActu">
+                <div class="card-body" class="color--{{actu.importance}}">
+                    <h5 class="card-title">{{actu.titre}}</h5>
+                    <p class="card-text" *ngFor="let descr of splitDescription(actu.description)">{{descr}}</p> 
+                </div>
+            </div>
+        </div>
+
         <!--table des consignes-->
-        <table class="table tableFixed" style="width: 70%;">
+        <!--<table class="table tableFixed" style="width: 70%;">
             <thead>
             <tr class="table-secondary">
                 <th scope="col">Actualité</th>
                 <th scope="col">Description</th>
-                <!--<th scope="col">Date de Début de validité</th>
-                <th scope="col">Date de Fin de validité</th>-->
+                <th scope="col">Date de Début de validité</th>
+                <th scope="col">Date de Fin de validité</th>
             </tr>
             </thead>
             <tbody *ngFor="let actu of listActu">
             <tr class="color--{{actu.importance}}" >
                 <td>{{actu.titre}}</td>
                 <td><p *ngFor="let descr of splitDescription(actu.description)">{{descr}}</p></td>
-                <!--<td>{{actu.date_heure_debut}}</td>
-                <td>{{actu.date_heure_fin}}</td>-->
+                <td>{{actu.date_heure_debut}}</td>
+                <td>{{actu.date_heure_fin}}</td>
             </tr>
             </tbody>
-        </table>
+        </table>-->
     </div>
-    <div class="col-md-13">
+
+    <div class="col-md-13" *ngIf="listMaintenance.length > 0">
         <h2 style="text-align: center;">Maintenances</h2>
         <!--table des consignes-->
         <table class="table table-hover tableFixed">
@@ -84,7 +94,8 @@
     <a  routerLink="/cahierQuart/recapRonde" [queryParams]="{quart: 1}" >  
         <div  class="card" >
             <div class="card-body">
-                <h5 class="card-title">Quart du matin</h5>   
+                <h5 class="card-title">Quart du matin</h5>
+                <p class="card-text">05:00 - 13:00</p>
             </div>
         </div>
     </a>
@@ -92,7 +103,8 @@
     <a  routerLink="/cahierQuart/recapRonde" [queryParams]="{quart: 2}" >  
         <div  class="card" >
             <div class="card-body">
-                <h5 class="card-title">Quart de l'après-midi</h5>   
+                <h5 class="card-title">Quart de l'après-midi</h5>
+                <p class="card-text">13:00 - 21:00</p> 
             </div>
         </div>
     </a>
@@ -101,6 +113,7 @@
         <div  class="card" >
             <div class="card-body">
                 <h5 class="card-title">Quart de nuit</h5>   
+                <p class="card-text">21:00 - 05:00</p>
             </div>
         </div>
     </a>

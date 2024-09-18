@@ -91,7 +91,8 @@
                 <th scope="col">Date de Fin de validité</th>
                 <th scope="col">Lié à un quart ?</th>
                 <th scope="col">Dupliquer</th>
-                <th scope="col">#</th>
+                <th scope="col">Editer</th>
+                <th scope="col">Supprimer</th>
             </tr>
             </thead>
             <tbody *ngFor="let actu of listActu">
@@ -120,6 +121,11 @@
                 <td>
                     <button class="btn btn btn-light edition" (click)="ouvrirDialogModifActu(actu.id,0)">
                         <i class="far fa-edit"></i>
+                    </button>
+                </td>
+                <td>
+                    <button (click)="deleteActu(actu.id)" id="deleteActu" class="btn btn-light">
+                        <i class="fa fa-trash-o" aria-hidden="true" style="color: red;"></i>
                     </button>
                 </td>
             </tr>

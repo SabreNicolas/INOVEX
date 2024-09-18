@@ -12,9 +12,17 @@
     transition: transform 0.3s;
     cursor: pointer;
 }
+
+.cardActu {
+    width: 400px !important;
+    height: max-content !important;
+    cursor: help !important;
+}
+
 .card-title{
     text-shadow: none;
 }
+
 .card.expanded {
     position: fixed;
     top: 45%;

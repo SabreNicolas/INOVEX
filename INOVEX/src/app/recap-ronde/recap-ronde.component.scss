@@ -26,3 +26,27 @@
 .color--2{
     background-color: lightcoral;
 }
+
+.card {
+    overflow: hidden;
+    transition: transform 0.3s;
+    height: max-content;
+    cursor: help;
+}
+
+.cardActu {
+    width: 45%;
+}
+
+.cardElem {
+    padding: 10px !important;
+    width: 100%;
+}
+
+.card-body{
+    padding: 1px !important;
+}
+
+.card-title{
+    text-shadow: none;
+}

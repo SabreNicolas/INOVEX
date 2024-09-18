@@ -22,7 +22,7 @@ export class AltairService {
   }
 
 
-  //Créer une nouvelle équipe
+  //Récupérer la liste des "quipements"
   getEquipements(token:string){
     let requete = this.ip+"/rest/refdata/all/equipment/list/EQUIPMENT"
     //enlever status rebut
@@ -39,7 +39,7 @@ export class AltairService {
     return this.http.get<any>(url,headers);
   }
 
-  //Créer une nouvelle équipe
+  //Se connecter
   login(){
     let requete = this.ip+"/rest/system/login"
             
@@ -134,8 +134,8 @@ export class AltairService {
     return this.http.post<any>(url,payload,headers);
   }
 
-  //Créer une nouvelle équipe
-  createDI(token:string, description: string, fkcodelocalisation:string, fkcodeequipment:string, failurecode:string, priority:number, wrm1:string){
+  //Créer une DI
+  createDI(token:string, description: string, fkcodelocalisation:string, fkcodeequipment:string, failurecode:string, priority:number, wrm1:string, userGMAO:string){
     let requete = this.ip+"/rest/work/all/workrequest/create/WORKREQUEST"
             
     const requestOptions = new HttpHeaders({
@@ -157,12 +157,12 @@ export class AltairService {
       var prio = "MOYENNE"
     }
     else var prio = "HAUTE"
-    var payload = "{\r\n  \"description\": \""+description+"\",\r\n  \"fkcodelocation\": \""+fkcodelocalisation+"\",\r\n  \"fkcodeequipment\": \""+fkcodeequipment+"\",\r\n  \"wrm1\": \""+wrm1+"\",\r\n  \"priority\": \""+prio+"\",\r\n  \"failurecode\": \""+failurecode+"\"\r\n}"
+    var payload = "{\r\n  \"description\": \""+description+"\",\r\n  \"fkcodelocation\": \""+fkcodelocalisation+"\",\r\n  \"fkcodeequipment\": \""+fkcodeequipment+"\",\r\n  \"wrm1\": \""+wrm1+"\",\r\n  \"priority\": \""+prio+"\",\r\n  \"failurecode\": \""+failurecode+"\",\r\n  \"createdby\": \""+userGMAO+"\"\r\n}"
  
     return this.http.post<any>(url,payload,headers);
   }
 
-  //Créer une nouvelle équipe
+  //Récupérer les maintenances
   getMaintenance(token:string){
     let requete = this.ip+"/rest/work/all/workorder/list/WORKORDER"
             
@@ -180,7 +180,7 @@ export class AltairService {
     return this.http.get<any>(url,headers);
   }
 
-  //Créer une nouvelle équipe
+  //Récupérer une DI
   getOneDI(token:string, id: string){
     let requete = this.ip+"/rest/work/all/workrequest/show/workrequest/"+id
     //enlever status rebut
@@ -197,7 +197,7 @@ export class AltairService {
     return this.http.get<any>(url,headers);
   }
 
-  //Créer une nouvelle équipe
+  //Récupérer un BT
   getOneDT(token:string, id: string){
     let requete = this.ip+"/rest/work/all/workorder/show/workorder/"+id
     //enlever status rebut

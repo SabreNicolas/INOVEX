@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, NgModule, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { DatePipe,Location } from '@angular/common';
 import { MatDialog} from '@angular/material/dialog';
 import {loginService} from "../services/login.service";
@@ -45,7 +45,8 @@ export class ListActusComponent implements OnInit {
   }
   
   ngOnInit(): void {
-    this.cahierQuartService.getAllActu().subscribe((response)=>{
+
+    this.cahierQuartService.getAllActuDateCourante().subscribe((response)=>{
       // @ts-ignore
       this.listActu = response.data;
     });
@@ -213,5 +214,27 @@ export class ListActusComponent implements OnInit {
       }
     });
     
+  }
+
+  //suppression d'une actu
+  deleteActu(id : number){
+    Swal.fire({title: "Etes vous sûr de vouloir supprimer cette actu ?" ,icon: 'warning',showCancelButton: true,confirmButtonColor: '#3085d6',cancelButtonColor: '#d33',confirmButtonText: 'Oui, supprimer',cancelButtonText: 'Annuler'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.cahierQuartService.deleteActu(id).subscribe((response)=>{
+          if (response == "Suppression de l'actu OK"){
+            this.popupService.alertSuccessForm("L'actu a bien été supprimé !");
+          }
+          else {
+            this.popupService.alertErrorForm("Erreur lors de la suppression de l'actu....")
+          }
+        });
+        this.ngOnInit();
+      }  
+      else {
+        // Pop-up d'annulation de la suppression
+        this.popupService.alertErrorForm('La suppression a été annulée.');
+      }
+    });
   }
 }

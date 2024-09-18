@@ -33,6 +33,7 @@
     "jquery": "^3.6.0",
     "jspdf-autotable": "^3.8.2",
     "ngx-papaparse": "^7.0.0",
+    "ngx-quill": "^13.0.0",
     "pdfmake": "^0.2.10",
     "popper.js": "^1.16.1",
     "rxjs": "~6.6.0",

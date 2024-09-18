@@ -15,6 +15,7 @@
                 <th scope="col">Nom</th>
                 <th scope="col">Prenom</th>
                 <th scope="col">Poste</th>
+                <th scope="col">Zone</th>
             </tr>
             </thead>
             <tbody *ngFor="let rondier of listRondier">
@@ -25,6 +26,9 @@
                 </td>
                 <td>
                     {{rondier.Poste}}
+                </td>
+                <td>
+                    {{rondier.Zone}}
                 </td>
             </tr>
             </tbody>
@@ -61,158 +65,154 @@
 
     <!-- Tableau des zones -->
     <div class="col-md-3">
-        <h2 style="text-align: center;">Zones à contrôler
-            <button [disabled]="!saisieAutorise" class="btn btn-success" id="createZone" (click)="newZone()">
-                + 
-            </button>
-            <button class="btn btn-danger" id="hideZone" (click)="hideZone()" style="display: none;">
-                -
-            </button>
-            
-        </h2>
-        <div id="divCreationZone"  style="display: none;">
-            <div class="form-group" id="CreationRonde">
-                <label>Choisissez vos zones</label>
-                <select multiple class="form-select form-select-sm" aria-label=".form-select-sm example" [(ngModel)]="listZoneSelection">
-                  <option *ngFor="let z of listZoneOfUsine" value="{{z.Id}}">{{z.nom}}</option>
-                </select>
-            </div>
-
-            <button class="btn btn-success" id="valider" (click)="createZone();" >
-                Valider
-            </button>
-        </div>
-        <!--table des zones-->
-        <table class="table tableFixed">
-            <thead>
-            <tr class="table-secondary">
-                <th scope="col">Nom</th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody *ngFor="let zone of listZone">
-            <tr [ngStyle]="{'background-color' : zone.termine == 1 ? 'lightgreen' : 'lightcoral'}">
-                <td>{{zone.zone}}</td>
-                <td>
-                    <button [disabled]="!saisieAutorise" type="button" class="btn btn-outline-danger" (click)="deleteAction(zone.id)">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <!-- Tableau des actions -->
-    <div class="col-md-3">
-        <h2 style="text-align: center;">Actions
-            <button [disabled]="!saisieAutorise" class="btn btn-success" id="createAction" (click)="newAction()">
-                + 
-            </button>
-            <button class="btn btn-danger" id="hideAction" (click)="hideAction()" style="display: none;">
-                -
-            </button>
-        </h2>
-        <div id="divCreationAction"  style="display: none;">
-            <div class="form-group" id="CreationRonde">
-                <label for="desc">Nom : * </label>
-                <input required type="text" id="nom" class="form-control" placeholder="Nom" name="nomAction" ngModel [(ngModel)]="nomAction">
-            </div>
-
-            <button class="btn btn-success" id="valider" (click)="createAction();" >
-                Valider
-            </button>
-        </div>
-        <!--table des actions-->
-        <table class="table table-hover tableFixed">
-            <thead>
-            <tr class="table-secondary">
-                <th scope="col">Description</th>
-                <th scope="col"></th>
-            </tr>
-            </thead>
-            <tbody *ngFor="let action of listAction">
-            <tr class="table-light" >
-                <td>{{action.nom}}</td>
-                <td>
-                    <button [disabled]="!saisieAutorise" type="button" class="btn btn-outline-danger" (click)="deleteAction(action.id)">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <!-- Tableau des Evènements -->
-    <div class="col-md-6">
-        <h2 style="text-align: center;">
-            Evènements
-            <a (click)="ouvrirDialogCreerEvent()" role="button">
-                <button [disabled]="!saisieAutorise" class="btn btn-success">
+        <div class="card cardElem">
+            <h2 style="text-align: center;">Zones à contrôler
+                <button [disabled]="!saisieAutorise" class="btn btn-success" id="createZone" (click)="newZone()">
                     + 
                 </button>
-            </a>
-        </h2>
-        
-        <div class="table-style">
-            <!--table des consignes-->
+                <button class="btn btn-danger" id="hideZone" (click)="hideZone()" style="display: none;">
+                    -
+                </button>
+                
+            </h2>
+            <div id="divCreationZone"  style="display: none;">
+                <div class="form-group" id="CreationRonde">
+                    <label>Choisissez vos zones</label>
+                    <select multiple class="form-select form-select-sm" aria-label=".form-select-sm example" [(ngModel)]="listZoneSelection">
+                    <option *ngFor="let z of listZoneOfUsine" value="{{z.Id}}">{{z.nom}}</option>
+                    </select>
+                </div>
+
+                <button class="btn btn-success" id="valider" (click)="createZone();" >
+                    Valider
+                </button>
+            </div>
+            <!--table des zones-->
             <table class="table tableFixed">
                 <thead>
                 <tr class="table-secondary">
-                    <th scope="col">Titre</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Cause</th>
-                    <th scope="col">Date de Début </th>
-                    <th scope="col">Date de Fin</th>
-                    <th scope="col">Demande de travaux</th>
-                    <th scope="col">Photo</th>
+                    <th scope="col">Nom</th>
+                    <th></th>
                 </tr>
                 </thead>
-                <tbody *ngFor="let evenement of listEvenement">
-                <tr class=" line color--{{evenement.importance}}">
-                    <td>{{evenement.titre}}</td>
-                    <td>{{evenement.description}}</td>
-                    <td>{{evenement.cause}}</td>
-                    <td>{{evenement.date_heure_debut}}</td>
-                    <td>{{evenement.date_heure_fin}}</td>
-                    <td>{{evenement.demande_travaux}}</td>
+                <tbody *ngFor="let zone of listZone">
+                <tr [ngStyle]="{'background-color' : zone.termine == 1 ? 'lightgreen' : 'lightcoral'}">
+                    <td>{{zone.zone}}</td>
                     <td>
-                        <a routerLink="../../{{evenement.url}}" *ngIf="evenement.url != ''">
-                            <button class="btn btn-success">
-                                <i class="fas fa-image"></i> 
-                            </button>
-                        </a>
+                        <button [disabled]="!saisieAutorise" type="button" class="btn btn-outline-danger" (click)="deleteAction(zone.id)">
+                            <i class="fas fa-trash"></i>
+                        </button>
                     </td>
-                    
                 </tr>
                 </tbody>
             </table>
         </div>
     </div>
+
+    <!-- Tableau des actions -->
+    <div class="col-md-3">
+        <div class="card cardElem">
+            <h2 style="text-align: center;">Actions
+                <button [disabled]="!saisieAutorise" class="btn btn-success" id="createAction" (click)="newAction()">
+                    + 
+                </button>
+                <button class="btn btn-danger" id="hideAction" (click)="hideAction()" style="display: none;">
+                    -
+                </button>
+            </h2>
+            <div id="divCreationAction"  style="display: none;">
+                <div class="form-group" id="CreationRonde">
+                    <label for="desc">Nom : * </label>
+                    <input required type="text" id="nom" class="form-control" placeholder="Nom" name="nomAction" ngModel [(ngModel)]="nomAction">
+                </div>
+
+                <button class="btn btn-success" id="valider" (click)="createAction();" >
+                    Valider
+                </button>
+            </div>
+            <!--table des actions-->
+            <table class="table table-hover tableFixed">
+                <thead>
+                <tr class="table-secondary">
+                    <th scope="col">Description</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody *ngFor="let action of listAction">
+                <tr class="table-light" >
+                    <td>{{action.nom}}</td>
+                    <td>
+                        <button [disabled]="!saisieAutorise" type="button" class="btn btn-outline-danger" (click)="deleteAction(action.id)">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Tableau des Evènements -->
+    <div class="col-md-6">
+        <div class="card cardElem">
+            <h2 style="text-align: center;">
+                Evènements
+                <a (click)="ouvrirDialogCreerEvent()" role="button">
+                    <button [disabled]="!saisieAutorise" class="btn btn-success">
+                        + 
+                    </button>
+                </a>
+            </h2>
+            
+            <div class="table-style">
+                <!--table des events-->
+                <table class="table tableFixed">
+                    <thead>
+                    <tr class="table-secondary">
+                        <th scope="col">Titre</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Cause</th>
+                        <th scope="col">Date de Début </th>
+                        <th scope="col">Date de Fin</th>
+                        <th scope="col">Demande de travaux</th>
+                        <th scope="col">Photo</th>
+                    </tr>
+                    </thead>
+                    <tbody *ngFor="let evenement of listEvenement">
+                    <tr class=" line color--{{evenement.importance}}">
+                        <td>{{evenement.titre}}</td>
+                        <td>{{evenement.description}}</td>
+                        <td>{{evenement.cause}}</td>
+                        <td>{{evenement.date_heure_debut}}</td>
+                        <td>{{evenement.date_heure_fin}}</td>
+                        <td>{{evenement.demande_travaux}}</td>
+                        <td>
+                            <a routerLink="../../{{evenement.url}}" *ngIf="evenement.url != ''">
+                                <button class="btn btn-success">
+                                    <i class="fas fa-image"></i> 
+                                </button>
+                            </a>
+                        </td>
+                        
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div class="col-md-13" style="display: flex; flex-direction: column; align-items: center;">
+<div class="col-md-13" style="display: flex; flex-direction: column;">
     <h2 style="text-align: center;">Actualités</h2>
-    <!--table des actus-->
-    <table class="table tableFixed" style="width: 50%;">
-        <thead>
-        <tr class="table-secondary">
-            <th scope="col">Actualité</th>
-            <th scope="col">Description</th>
-            <!--<th scope="col">Date de Début de validité</th>
-            <th scope="col">Date de Fin de validité</th>-->
-        </tr>
-        </thead>
-        <tbody *ngFor="let actu of listActu">
-        <tr class="color--{{actu.importance}}" >
-            <td>{{actu.titre}}</td>
-            <td><p *ngFor="let descr of splitDescription(actu.description)">{{descr}}</p></td>
-            <!--<td>{{actu.date_heure_debut}}</td>
-            <td>{{actu.date_heure_fin}}</td>-->
-        </tr>
-        </tbody>
-    </table>
+    <!--Liste des actus non lié à un quart-->
+    <div style="display: flex; justify-content: space-evenly;">
+        <div class="card cardActu" *ngFor="let actu of listActu">
+            <div class="card-body" class="color--{{actu.importance}}">
+                <h5 class="card-title">{{actu.titre}}</h5>
+                <p class="card-text" *ngFor="let descr of splitDescription(actu.description)">{{descr}}</p> 
+            </div>
+        </div>
+    </div>
 </div>
 
 
