@@ -17,8 +17,8 @@ export class AltairService {
   private idUsine : number | undefined;
 
   constructor(private http: HttpClient, private idUsineService : idUsineService) {
-      //@ts-ignore
-      this.idUsine = this.idUsineService.getIdUsine();
+    //@ts-ignore
+    this.idUsine = this.idUsineService.getIdUsine();
   }
 
 
@@ -135,8 +135,25 @@ export class AltairService {
   }
 
   //Créer une DI
-  createDI(token:string, description: string, fkcodelocalisation:string, fkcodeequipment:string, failurecode:string, priority:number, wrm1:string, userGMAO:string){
-    let requete = this.ip+"/rest/work/all/workrequest/create/WORKREQUEST"
+  createDI(token:string, description: string, fkcodelocalisation:string, fkcodeequipment:string, failurecode:string, priority:number, wrm1:string){
+    //Par défaut on renseigne le user GMAO CAP Exploitation
+    let userGMAO = "capexploitation";
+
+    //On récupère le login GMAO de l'ustilisateur
+    var userLogged = localStorage.getItem('user');
+    if (typeof userLogged === "string") {
+        var userLoggedParse = JSON.parse(userLogged);
+
+        //Récupération de lu login GMAO
+        if(userLoggedParse['loginGMAO'] != ""){
+          //ON update le login GMAO si on connait le login du user
+          userGMAO = userLoggedParse['loginGMAO'];
+        }
+    }
+    /**FIN RECUP USER GMAO */
+
+    let requete = this.ip+"/rest/work/all/workrequest/create/WORKREQUEST";
+    console.log(userGMAO);
             
     const requestOptions = new HttpHeaders({
       'Authorization': 'Bearer '+token,

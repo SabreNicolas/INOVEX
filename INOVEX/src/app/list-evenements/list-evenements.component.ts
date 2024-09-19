@@ -342,7 +342,7 @@ export class ListEvenementsComponent implements OnInit {
         else{
           if(this.demandeTravaux != 0){
             //TODO
-            this.altairService.createDI(this.token,this.titre, this.groupementGMAO, this.equipementGMAO.split('---')[0], this.cause, this.importance, this.description, 'capexploitation').subscribe((response) =>{
+            this.altairService.createDI(this.token,this.titre, this.groupementGMAO, this.equipementGMAO.split('---')[0], this.cause, this.importance, this.description).subscribe((response) =>{
               console.log(response)
               //@ts-ignore
               this.cahierQuartService.newEvenement(this.titre,this.fileToUpload,this.importance,dateDebString,dateFinString, this.groupementGMAO, this.equipementGMAO, this.cause,this.description, this.consigne, response.codeworkrequest).subscribe((response)=>{
@@ -383,7 +383,6 @@ export class ListEvenementsComponent implements OnInit {
 
   getDI(id : string){
     this.altairService.getOneDI(this.token,id).subscribe((response) =>{
-      console.log(response);
       this.DI = id;
       this.BT = response.fkcodeworkorder;
       let timeZone = 'Europe/Paris';
@@ -392,13 +391,15 @@ export class ListEvenementsComponent implements OnInit {
           this.descriptionBT = response.description
           this.responsableBT = response.fkcodelaborincharge
           this.commentaireBT = response.wom1
-          if(response.targstartdate != undefined){
-            const dateDeb = parseISO(response.targstartdate)
+          //targstartdate
+          if(response.eststartdate != undefined){
+            const dateDeb = parseISO(response.eststartdate)
             const zoneDateDeb = toZonedTime(dateDeb, timeZone)
             this.planifieDebutBT = format(zoneDateDeb, 'dd/MM/yyyy HH:mm')
           }
-          if(response.targenddate != undefined){
-            const dateFin = parseISO(response.targenddate)
+          //targenddate
+          if(response.estenddate != undefined){
+            const dateFin = parseISO(response.estenddate)
             const zoneDateFin = toZonedTime(dateFin, timeZone)
             this.planifieFinBT = format(zoneDateFin, 'dd/MM/yyyy HH:mm')
           }

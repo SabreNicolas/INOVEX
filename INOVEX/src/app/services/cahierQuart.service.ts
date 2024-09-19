@@ -447,7 +447,6 @@ export class cahierQuartService {
         };
 
         let requete = "https://"+this.ip+":"+this.portAPI+"/evenement?titre="+titre+"&importance="+importance+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&idUsine="+this.idUsine+"&groupementGMAO="+groupementGMAO+"&equipementGMAO="+equipementGMAO+"&cause="+cause+"&description="+description+"&consigne="+consigne+"&demandeTravaux="+demandeTravaux;
-        console.log(fileToUpload)
         if(fileToUpload != undefined){
             const formData = new FormData();
             formData.append('fichier', fileToUpload, fileToUpload.name);

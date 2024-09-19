@@ -153,6 +153,10 @@
 }
 
 .lisseret{
-    border-bottom: solid rgb(154,196,89) 2px;
+    border-bottom: solid rgba(154,196,89,0.5) 2px;
     margin-top: 2em;
+}
+
+img{
+    opacity: 0.5;
 }
