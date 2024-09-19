@@ -2,7 +2,7 @@
 <div class="container">
     <ng-container *ngFor="let lien of listLien">
         <a href="{{lien.url}}" target="_blank">  
-            <div  class="card2" >
+            <div class="card2">
                 <div class="card-body">
                     <h5 class="card-title"><span class="badge bg-primary">{{lien.nom}}</span></h5>   
                 </div>
@@ -15,13 +15,17 @@
     <button type="button" (click)="finQuart()" class="btn btn-warning" id="finQuart">FIN DE QUART</button>
 
     <div class="col-md-13" style="display: flex; flex-direction: column;" *ngIf="listActu.length > 0">
-        <h2 style="text-align: center;">Actualités</h2>
+        <h2 style="text-align: center; color: rgb(154,196,89);;">Actualités</h2>
         <!--Liste des actus non lié à un quart-->
         <div style="display: flex; justify-content: space-evenly;">
             <div class="card cardActu" *ngFor="let actu of listActu">
-                <div class="card-body" class="color--{{actu.importance}}">
-                    <h5 class="card-title">{{actu.titre}}</h5>
-                    <p class="card-text" *ngFor="let descr of splitDescription(actu.description)">{{descr}}</p> 
+                <!--<div class="card-body" class="color--{{actu.importance}}">-->
+                <div class="card-body" class="color--3">
+                    <h5 class="card-title" [ngStyle]="{'color' : actu.importance == 2 ? 'red' : 'rgb(27,37,51)'}">{{actu.titre}}>{{actu.titre}}</h5>
+                    <p class="card-text" *ngFor="let descr of splitDescription(actu.description)">{{descr}}</p>
+                    <p *ngIf="actu.importance == 0" class="card-text color--{{actu.importance}}">Importance : Faible</p>
+                    <p *ngIf="actu.importance == 1" class="card-text color--{{actu.importance}}">Importance : Neutre</p>
+                    <p *ngIf="actu.importance == 2" class="card-text color--{{actu.importance}}">Importance : Elevée</p>
                 </div>
             </div>
         </div>
@@ -89,32 +93,41 @@
     </div> -->
 </div>
 
+<div class="lisseret"></div>
+
 <div class="container">
     <!-- <a  routerLink="/cahierQuart/recapRondePrecedente" [queryParams]="{quart: 1}" >   -->
     <a  routerLink="/cahierQuart/recapRonde" [queryParams]="{quart: 1}" >  
         <div  class="card" >
-            <div class="card-body">
-                <h5 class="card-title">Quart du matin</h5>
-                <p class="card-text">05:00 - 13:00</p>
+            <div class="card-body color--3">
+                <h5 class="card-title card-quart">Quart du matin</h5>
+                <p class="card-text card-importance">05:00 - 13:00</p>
             </div>
         </div>
     </a>
     <!-- <a  routerLink="/cahierQuart/recapRondePrecedente" [queryParams]="{quart: 2}" >   -->
     <a  routerLink="/cahierQuart/recapRonde" [queryParams]="{quart: 2}" >  
         <div  class="card" >
-            <div class="card-body">
-                <h5 class="card-title">Quart de l'après-midi</h5>
-                <p class="card-text">13:00 - 21:00</p> 
+            <div class="card-body color--3">
+                <h5 class="card-title card-quart">Quart de l'après-midi</h5>
+                <p class="card-text card-importance">13:00 - 21:00</p> 
             </div>
         </div>
     </a>
     <!-- <a  routerLink="/cahierQuart/recapRondePrecedente" [queryParams]="{quart: 3}" >   -->
     <a  routerLink="/cahierQuart/recapRonde" [queryParams]="{quart: 3}" >  
         <div  class="card" >
-            <div class="card-body">
-                <h5 class="card-title">Quart de nuit</h5>   
-                <p class="card-text">21:00 - 05:00</p>
+            <div class="card-body color--3">
+                <h5 class="card-title card-quart">Quart de nuit</h5>   
+                <p class="card-text card-importance">21:00 - 05:00</p>
             </div>
         </div>
     </a>
+</div>
+
+<div class="row" style="display:flex;">
+    <div class="lisseret col-md-11"></div>
+    <div class="col-md-1">
+        <img src="../../assets/globe-paprec.png" alt="Globe logo PAPREC" />
+    </div>
 </div>

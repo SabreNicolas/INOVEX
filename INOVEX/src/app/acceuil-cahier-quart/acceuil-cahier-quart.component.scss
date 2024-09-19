@@ -21,6 +21,20 @@
 
 .card-title{
     text-shadow: none;
+    color: rgb(27,37,51);
+}
+
+.card-text{
+    color: rgb(27,37,51);
+    font-weight: bold;
+}
+
+.card-importance{
+    color: rgb(154,196,89);
+}
+
+.card-quart{
+    color: white;
 }
 
 .card.expanded {
@@ -119,13 +133,26 @@
 }
 
 .color--0{
-    background-color: lightgreen;
+    color: rgb(154,196,89);
 }
 
 .color--1{
-    background-color: lightsalmon;
+    color: orange;
 }
 
 .color--2{
-    background-color: lightcoral;
+    color: red;
+}
+
+.color--3{
+    background-color: rgb(84,149,216);
+}
+
+.badge{
+    background-color: rgb(84,149,216) !important;
+}
+
+.lisseret{
+    border-bottom: solid rgb(154,196,89) 2px;
+    margin-top: 2em;
 }

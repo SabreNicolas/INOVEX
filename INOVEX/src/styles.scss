@@ -1,7 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 body{
   //background: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url("./assets/paprec.png") fixed no-repeat bottom left 0.5em, url("./assets/Usine2_40.png") fixed no-repeat bottom right !important;
-  background-color: grey;
+  background-color: rgb(27,37,51);
+  color : white !important;
 }
 
 @import '@angular/material/prebuilt-themes/indigo-pink.css';
@@ -199,7 +200,7 @@ a, a:hover, a:visited{
 .creation{
   margin-top: 1em;
   margin-bottom: 1em;
-  color: #134592;
+  color: #9ac459;
   font-weight: bold;
 }
 
@@ -250,4 +251,14 @@ a, a:hover, a:visited{
 #actualiser_calendrier{
   position: relative !important;
   left: 45% !important;
+}
+
+.navbar{
+  background-color: rgb(84,149,216) !important;
+  font-weight: bold !important;
+}
+
+.nav-item.active>a{
+  border-bottom: 2px solid rgb(27,37,51);
+  color: rgb(27,37,51) !important;
 }
