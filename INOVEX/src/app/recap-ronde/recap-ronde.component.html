@@ -126,6 +126,10 @@
                     <input required type="text" id="nom" class="form-control" placeholder="Nom" name="nomAction" ngModel [(ngModel)]="nomAction">
                 </div>
 
+                <button class="btn" id="valider" style="background-color: rgb(27,37,51); color: white;" (click)="choixAction();">
+                    Depuis Liste Actions
+                </button>
+
                 <button class="btn btn-success" id="valider" (click)="createAction();" >
                     Valider
                 </button>
@@ -173,7 +177,7 @@
                         <th scope="col">Description</th>
                         <th scope="col">Cause</th>
                         <th scope="col">Date de Début </th>
-                        <th scope="col">Date de Fin</th>
+                        <!--<th scope="col">Date de Fin</th>-->
                         <th scope="col">Demande de travaux</th>
                         <th scope="col">Photo</th>
                     </tr>
@@ -184,9 +188,9 @@
                         <td>{{evenement.description}}</td>
                         <td>{{evenement.cause}}</td>
                         <td>{{evenement.date_heure_debut}}</td>
-                        <td>{{evenement.date_heure_fin}}</td>
+                        <!--<td>{{evenement.date_heure_fin}}</td>-->
                         <td *ngIf="evenement.demande_travaux == 0"><i style="color: red" class="fas fa-times-circle"></i></td>
-                        <td *ngIf="evenement.demande_travaux == 1"><i style="color: green" class="fas fa-check"></i></td>
+                        <td *ngIf="evenement.demande_travaux != 0"><i style="color: green" class="fas fa-check"></i> {{evenement.demande_travaux}}</td>
                         <td>
                             <a routerLink="../../{{evenement.url}}" *ngIf="evenement.url != ''">
                                 <button class="btn btn-success">
@@ -256,14 +260,14 @@
                     <div class="form-group" style="display: none;" id="groupementGMAO">
                         <label for="product">Groupement GMAO : * </label>
                         <select id="product" (change)="updateElements()" required class="form-control" ngModel [(ngModel)]="groupementGMAO" >
-                            <option value="">Choisissez un produit CAP Exploitation</option>
-                            <option *ngFor="let groupement of listGroupementGMAOTable" value="{{groupement}}">{{groupement}}</option>
+                            <option value="">Choisissez un Groupement GMAO</option>
+                            <option *ngFor="let groupement of listGroupementGMAOTable" value="{{groupement.split('---')[0]}}">{{groupement}}</option>
                         </select>
                     </div>
 
                     <div class="form-group">
-                        <label>Début date validité : *</label>
-                        <input required type="datetime-local" id="dateDebut" class="form-control" placeholder="Date de début de validité" name="dateDebut" ngModel [(ngModel)]="dateDeb">
+                        <label>Début date validité : * (non modifiable en cas de DI)</label>
+                        <input required [disabled]="demandeTravaux != 0" type="datetime-local" id="dateDebut" class="form-control" placeholder="Date de début de validité" name="dateDebut" ngModel [(ngModel)]="dateDeb">
                     </div>
                 
                     <div class="form-group">
@@ -311,7 +315,7 @@
                     <div class="form-group" style="display: none;" id="equipementGMAO" >
                         <label for="product">Equipement GMAO : * </label>
                         <select id="product" (change)="updateGroupements()" required class="form-control" ngModel [(ngModel)]="equipementGMAO" >
-                            <option value="">Choisissez un produit CAP Exploitation</option>
+                            <option value="">Choisissez un Equipement GMAO</option>
                             <option *ngFor="let equipement of listEquipementGMAOFiltre" value="{{equipement.codeequipment}}---{{equipement.description}}">{{equipement.codeequipment}}---{{equipement.description}}</option>
                         </select>
                     </div>

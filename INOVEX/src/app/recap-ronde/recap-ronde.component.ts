@@ -115,12 +115,20 @@ export class RecapRondeComponent implements OnInit {
           }
         }
         this.listEquipementGMAOFiltre = this.listEquipementGMAO;
-        for(let equipement of this.listEquipementGMAO){
-          this.listGroupementsGMAOMap.set(equipement.fkcodelocation,equipement.fkcodelocation)
-        }
-        this.listGroupementGMAOTable = Array.from(this.listGroupementsGMAOMap.keys())
 
-      })
+        //On récupère la liste des groupements avec les détails
+        this.altairService.getLocations(this.token).subscribe((response)=>{
+          for(let equipement of this.listEquipementGMAO){
+            for(let location of response.location){
+              if(equipement.fkcodelocation === location.codelocation){
+                this.listGroupementsGMAOMap.set(equipement.fkcodelocation+"---"+location.description,equipement.fkcodelocation+"---"+location.description);
+              }
+            }
+          }
+          this.listGroupementGMAOTable = Array.from(this.listGroupementsGMAOMap.keys());
+        });
+
+      });
     })
 
     this.route.queryParams.subscribe(params => {
@@ -504,6 +512,16 @@ export class RecapRondeComponent implements OnInit {
       $("#dateFin").show();
       $("#equipementGMAO").show();
       $("#groupementGMAO").show();
+      var date = new Date();
+      var yyyy = date.getFullYear();
+      var dd = String(date.getDate()).padStart(2, '0');
+      var mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
+      var hh =  date.getHours();
+      var min = date.getMinutes();
+      var day = yyyy + '-' + mm + '-' + dd + 'T' + hh + ':' + min;
+      (<HTMLInputElement>document.getElementById("dateDebut")).value = day;
+      //@ts-ignore
+      this.dateDeb = day;
     }
     else{
       $("#dateFin").hide();
@@ -577,4 +595,39 @@ export class RecapRondeComponent implements OnInit {
   changeEquipeVisible(){
     this.hideEquipe = !this.hideEquipe;
   }
+
+  //Permet de choisir une action depuis une ligne pré-défini
+  choixAction(){
+    //Liste des actions en dur
+    let tabAction = ['Appoint Pot Acide', 'Appoint Pot Soude','Arrêt UTM pour Nettoyage prestataire et Service Exploitation','Contôle Cônes Réacteurs Ligne 1','Contôle Cônes Réacteurs Ligne 2',
+      'Contôle Vannes de recirculation Ligne 1','Contôle Vannes de recirculation Ligne 2','Contrôle Canne Réacteur Ligne 1','Contrôle Canne Réacteur Ligne 2','Contrôle Delta P Réacteur/FAM Ligne 1',
+      'Contrôle Delta P Réacteur/FAM Ligne 2','Contrôle Delta P FAM Ligne 3','Contrôle Pot Acide et Pot Soude Local Déminée','Contrôle ΔP filtres à poches','Dépotage ACIDE / SOUDE','Dépotage Cuve GNR',
+      'Dépotage NH3','Dépotage Camion CHAUX Ligne 1 et Ligne 2','Dépotage Camion CHAUX Ligne 3','Dépotage Camion COKE','Dépotage Camion FIOUL','Dépotage Silo REFIOM','Estimation Fosse OM','Impression rapport RJE',
+      'Nettoyage Jetée Redler Humide','Nettoyage niveau redler humide Ligne 3','Nettoyage Pont OM N°1','Nettoyage Pont OM N°2','Nettoyage Prise de Mesure TF L1','Nettoyage Prise de Mesure TF L2','Nettoyage UTM',
+      'Nettoyage Vanne recirculation Ligne 1 Caisson 1','Nettoyage Vanne recirculation Ligne 1 Caisson 2','Nettoyage Vanne recirculation Ligne 2 Caisson 1','Nettoyage Vanne recirculation Ligne 2 Caisson 2',
+      'Permutation Filtre à Poche Entrée Déminée','Permutation Pont OM N°1','Permutation Pont OM N°2','Prélèvement Machêfer','Relevés De Minuit (RJE/Réactifs)','Vidange Bennes Arrières Extracteurs Ligne 1',
+      'Vidange Bennes Arrières Extracteurs Ligne 2','Vidange Box Sous Scalpeurs Extrateur Ligne 1','Vidange Box Sous Scalpeurs Extrateur Ligne 2','Vidange Box Sous Scalpeurs Extrateur Ligne 3','Vidange Brouettes UTM'
+    ]
+    //Construction des valeurs du menu select qui contient les actions
+    let listActions = {};
+    tabAction.forEach(action => {
+      //@ts-ignore
+      listActions[action] = action;
+    });
+
+    Swal.fire({
+      title: 'Veuillez choisir une action',
+      input: 'select',
+      inputOptions: listActions,
+      showCancelButton: true,
+      confirmButtonText: "Valider",
+      allowOutsideClick: true,
+    })
+    .then((result) => {
+      if(result.value != undefined){
+        this.nomAction = String(result.value);
+      }
+    });
+  }
+
 }

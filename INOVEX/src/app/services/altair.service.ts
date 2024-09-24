@@ -22,9 +22,26 @@ export class AltairService {
   }
 
 
-  //Récupérer la liste des "quipements"
+  //Récupérer la liste des "equipements"
   getEquipements(token:string){
     let requete = this.ip+"/rest/refdata/all/equipment/list/EQUIPMENT"
+    //enlever status rebut
+    const requestOptions = new HttpHeaders({
+      'Authorization': 'Bearer '+token,
+      'Content-Type': 'application/json'
+    });
+    
+    var headers = {
+      headers : requestOptions
+    }
+    var url = requete    
+
+    return this.http.get<any>(url,headers);
+  }
+
+  //Récupérer la liste des "location"
+  getLocations(token:string){
+    let requete = this.ip+"/rest/refdata/all/location/list/LOCATION"
     //enlever status rebut
     const requestOptions = new HttpHeaders({
       'Authorization': 'Bearer '+token,

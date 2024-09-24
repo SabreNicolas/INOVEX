@@ -105,13 +105,13 @@
                         <input id="product" class="form-control" list="datalistOptions" ngModel [(ngModel)]="groupementGMAO" (change)="updateElements()">
                         <datalist id="datalistOptions">
                             <option disabled=true value="Choisissez un groupement GMAO"></option>
-                            <option *ngFor="let groupement of listGroupementGMAOTable" value="{{groupement}}">{{groupement}}</option>
+                            <option *ngFor="let groupement of listGroupementGMAOTable" value="{{groupement.split('---')[0]}}">{{groupement}}</option>
                         </datalist>
                     </div>
 
                     <div class="form-group">
-                        <label>Début date validité : *</label>
-                        <input required type="datetime-local" id="dateDebut" class="form-control" placeholder="Date de début de validité" name="dateDebut" ngModel [(ngModel)]="dateDeb">
+                        <label>Début date validité : * (non modifiable en cas de DI)</label>
+                        <input [disabled]="demandeTravaux != 0" required type="datetime-local" id="dateDebut" class="form-control" placeholder="Date de début de validité" name="dateDebut" ngModel [(ngModel)]="dateDeb">
                     </div>
                 
                     <div class="form-group">
@@ -160,7 +160,7 @@
                         <label for="product">Equipement GMAO : * </label>
                         <input id="product" class="form-control" list="datalistOptions2" ngModel [(ngModel)]="equipementGMAO" (change)="updateGroupements()">
                         <datalist id="datalistOptions2">
-                            <option disabled=true value="Choisissez un produit GMAO"></option>
+                            <option disabled=true value="Choisissez un equipement GMAO"></option>
                             <option *ngFor="let equipement of listEquipementGMAOFiltre" value="{{equipement.codeequipment}}---{{equipement.description}}">{{equipement.codeequipment}}---{{equipement.description}}</option>
                         </datalist>
                     </div>

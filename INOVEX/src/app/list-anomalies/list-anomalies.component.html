@@ -15,10 +15,10 @@
             </thead>
             <tbody *ngFor="let anomalie of listAnomalies">
             <tr class="table-light" [ngSwitch]="anomalie.quart">
-                <td>{{anomalie.nom}}</td>
+                <td>{{anomalie.nom[0]}}</td>
                 <td>{{anomalie.commentaire}}</td>
                 <td>{{anomalie.dateHeure}}</td>
-                <td *ngSwitchCase=1 style="color: blue">Matin</td>
+                <td *ngSwitchCase=1 style="color: green">Matin</td>
                 <td *ngSwitchCase=2 style="color: orange">Après-midi</td>
                 <td *ngSwitchCase=3 style="color: blue">Nuit</td>
                 <td>
@@ -76,14 +76,14 @@
                     <div class="form-group" style="display: none;" id="groupementGMAO">
                         <label for="product">Groupement GMAO : * </label>
                         <select id="product" (change)="updateElements()" required class="form-control" ngModel [(ngModel)]="groupementGMAO" >
-                            <option value="">Choisissez un produit CAP Exploitation</option>
-                            <option *ngFor="let groupement of listGroupementGMAOTable" value="{{groupement}}">{{groupement}}</option>
+                            <option value="">Choisissez un Groupement GMAO</option>
+                            <option *ngFor="let groupement of listGroupementGMAOTable" value="{{groupement.split('---')[0]}}">{{groupement}}</option>
                         </select>
                     </div>
 
                     <div class="form-group">
-                        <label>Début date validité : *</label>
-                        <input required type="datetime-local" id="dateDebut" class="form-control" placeholder="Date de début de validité" name="dateDebut" ngModel [(ngModel)]="dateDeb">
+                        <label>Début date validité : * (non modifiable en cas de DI)</label>
+                        <input required [disabled]="demandeTravaux != 0" type="datetime-local" id="dateDebut" class="form-control" placeholder="Date de début de validité" name="dateDebut" ngModel [(ngModel)]="dateDeb">
                     </div>
                 
                     <div class="form-group">
@@ -131,7 +131,7 @@
                     <div class="form-group" style="display: none;" id="equipementGMAO" >
                         <label for="product">Equipement GMAO : * </label>
                         <select id="product" (change)="updateGroupements()" required class="form-control" ngModel [(ngModel)]="equipementGMAO" >
-                            <option value="">Choisissez un produit CAP Exploitation</option>
+                            <option value="">Choisissez un Equipement GMAO</option>
                             <option *ngFor="let equipement of listEquipementGMAOFiltre" value="{{equipement.codeequipment}}---{{equipement.description}}">{{equipement.codeequipment}}---{{equipement.description}}</option>
                         </select>
                     </div>

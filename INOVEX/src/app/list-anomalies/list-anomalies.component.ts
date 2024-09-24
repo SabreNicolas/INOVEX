@@ -101,10 +101,18 @@ export class ListAnomaliesComponent {
           }
         }
         this.listEquipementGMAOFiltre = this.listEquipementGMAO;
-        for(let equipement of this.listEquipementGMAO){
-          this.listGroupementsGMAOMap.set(equipement.fkcodelocation,equipement.fkcodelocation)
-        }
-        this.listGroupementGMAOTable = Array.from(this.listGroupementsGMAOMap.keys())
+
+        //On récupère la liste des groupements avec les détails
+        this.altairService.getLocations(this.token).subscribe((response)=>{
+          for(let equipement of this.listEquipementGMAO){
+            for(let location of response.location){
+              if(equipement.fkcodelocation === location.codelocation){
+                this.listGroupementsGMAOMap.set(equipement.fkcodelocation+"---"+location.description,equipement.fkcodelocation+"---"+location.description);
+              }
+            }
+          }
+          this.listGroupementGMAOTable = Array.from(this.listGroupementsGMAOMap.keys());
+        });
 
       })
     })
@@ -169,6 +177,16 @@ export class ListAnomaliesComponent {
       $("#dateFin").show();
       $("#equipementGMAO").show();
       $("#groupementGMAO").show();
+      var date = new Date();
+      var yyyy = date.getFullYear();
+      var dd = String(date.getDate()).padStart(2, '0');
+      var mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
+      var hh =  date.getHours();
+      var min = date.getMinutes();
+      var day = yyyy + '-' + mm + '-' + dd + 'T' + hh + ':' + min;
+      (<HTMLInputElement>document.getElementById("dateDebut")).value = day;
+      //@ts-ignore
+      this.dateDeb = day;
     }
     else{
       $("#dateFin").hide();
