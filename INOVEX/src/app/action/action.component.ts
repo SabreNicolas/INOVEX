@@ -117,7 +117,7 @@ export class ActionComponent implements OnInit {
         else{
           //@ts-ignore
           this.cahierQuartService.newAction(this.nom, dateDeb2, dateFin).subscribe((response)=>{
-            this.cahierQuartService.newCalendrierAction(response.data[0].id, response.data[0].date_heure_debut, this.quart, response.data[0].date_heure_fin).subscribe((response) => {
+            this.cahierQuartService.newCalendrierAction(response.data[0].id, response.data[0].date_heure_debut, this.quart, response.data[0].date_heure_fin, 0).subscribe((response) => {
               var dateFin = "";
               this.popupService.alertSuccessForm('Nouvelle action créée');
               this.location.back();

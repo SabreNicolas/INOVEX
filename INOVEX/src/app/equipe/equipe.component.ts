@@ -207,14 +207,14 @@ export class EquipeComponent implements OnInit {
         this.cahierQuartService.nouvelleAffectationEquipe(idUser,idEquipe,idZone,poste).subscribe((response) => {
           this.popupService.alertSuccessForm('Nouvelle équipe créée');
           this.listAjout = [];
-          this.router.navigate(['/cahierQuart/calendrier'])
+          this.router.navigate(['/cahierQuart'])
         });
       }
     }
   }
 
   //Fonction qui permet d'ajouter un utilisateur dans la table d'ajout
-  ajoutUser(user :user){
+  ajoutUser(user : user){
     this.listAjout.push(user);
 
     let indexRomove = this.listUsers.findIndex( item => item.Nom === user.Nom && item.Prenom == user.Prenom);
@@ -283,7 +283,7 @@ export class EquipeComponent implements OnInit {
     //On récupère l'quipe concernée
     this.cahierQuartService.getNomsEquipesEnregistrees().subscribe((response) =>{
       this.equipesEnregistrees = response.data;
-      console.log(this.equipesEnregistrees)
+      //console.log(this.equipesEnregistrees)
     })
 
   }
@@ -292,12 +292,12 @@ export class EquipeComponent implements OnInit {
   chargerRondiersEquipeEnregistree(){
     this.listAjout = [];
     var id = this.idEquipeEnregistree.split('-')[0];
-    console.log(this.idEquipeEnregistree)
+    //console.log(this.idEquipeEnregistree)
     if(this.idEquipeEnregistree != '-'){
       this.cahierQuartService.getOneEnregistrementEquipe(id).subscribe((response) =>{
         if(response.data[0]['idRondier'] != null){
           for(var i = 0;i<response.data.length;i++){
-            this.listAjout.push({Id : response.data[i]['idRondier'], Prenom : response.data[i]['prenomRondier'],Nom : response.data[i]['nomRondier']});
+            this.listAjout.push({Id : response.data[i]['idRondier'], Prenom : response.data[i]['prenomRondier'], Nom : response.data[i]['nomRondier'], posteUser : response.data[i]['posteUser']});
           }
         }
       })

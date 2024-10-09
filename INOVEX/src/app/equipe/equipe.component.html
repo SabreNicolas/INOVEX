@@ -24,6 +24,7 @@
                 <tr class="table-secondary">
                     <th scope="col">Nom</th>
                     <th scope="col">Prénom</th>
+                    <th scope="col">Poste</th>
                     <th></th>
                 </tr>
             </thead>
@@ -31,6 +32,7 @@
             <tr class="table-light"  >
                 <td>{{user.Nom}}</td>
                 <td>{{user.Prenom}}</td>
+                <td>{{user.posteUser}}</td>
                 <td>
                     <button type="button" class="btn btn-success" (click)="ajoutUser(user)">
                         <i class="fas fa-arrow-right"></i> 
@@ -80,10 +82,10 @@
                         <td>{{user.Nom}}</td>
                         <td>{{user.Prenom}}</td>
                         <td>
-                            <select id="{{user.Nom}}_{{user.Prenom}}_poste" class="form-select" name="poste" required ngModel [(ngModel)]="user.Poste">
+                            <select id="{{user.Nom}}_{{user.Prenom}}_poste" class="form-select" name="poste" required ngModel [(ngModel)]="user.posteUser">
                                 <option value="Rondier/Pontier">Rondier/Pontier</option>
-                                <option value="Opérateur de conduite">Opérateur de conduite</option>
-                                <option value="Chef de Quart">Intérimaire</option>
+                                <option value="Opérateur de Conduite">Opérateur de Conduite</option>
+                                <option value="Intérimaire">Intérimaire</option>
                                 <option value="Adjoint Chef de Quart">Adjoint Chef de Quart</option>
                                 <option value="Chef de Quart">Chef de Quart</option>
                             </select>

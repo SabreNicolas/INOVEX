@@ -620,9 +620,9 @@ export class cahierQuartService {
     }
 
     //Créer une nouvelle action dans le calendrier
-    newCalendrierAction(idAction:number, dateDeb:string, quart:number, dateFin:string){
+    newCalendrierAction(idAction:number, dateDeb:string, quart:number, dateFin:string, termine:number){
 
-        let requete = "https://"+this.ip+":"+this.portAPI+"/newCalendrierAction?idAction="+idAction+"&quart="+quart+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&idUsine="+this.idUsine;
+        let requete = "https://"+this.ip+":"+this.portAPI+"/newCalendrierAction?idAction="+idAction+"&quart="+quart+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&idUsine="+this.idUsine+"&termine="+termine;
 
         const requestOptions = {
           headers: new HttpHeaders(this.headerDict),
@@ -1023,6 +1023,28 @@ export class cahierQuartService {
 
     return this.http
       .put<any>(requete,null,requestOptions);
+  }
+
+
+  /** STOCKAGE DU PDF DE RECAP PRECEDENT pour un envoi par mail*/
+  //?idUsine=1
+  stockageRecapPDF(fichier: File | undefined, quart : string, date : string){
+    //utilisation de formData pour conserver le format du fichier
+    const formData = new FormData();
+    // @ts-ignore
+    formData.append('fichier', fichier, fichier.name);
+    let requete = "https://"+this.ip+":"+this.portAPI+"/stockageRecapQuart?idUsine="+this.idUsine+"&quart="+quart+"&date="+date;
+
+    const headers = new HttpHeaders();
+    // @ts-ignore
+    headers.append('Content-Type', null);
+    headers.append('Accept', 'application/json');
+
+    const requestOptions = {
+      headers: headers,
+    };
+
+    return this.http.post<any>(requete,formData,requestOptions);
   }
 
 }

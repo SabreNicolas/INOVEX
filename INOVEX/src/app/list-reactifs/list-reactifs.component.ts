@@ -172,9 +172,9 @@ export class ListReactifsComponent implements OnInit {
       else this.lectureCSV(event, ";", false, 31, 2, 16);
     }
     //Saint-Saulve
-    else if (this.typeImportTonnage.toLowerCase().includes("dpk")){
+    else if (this.typeImportTonnage.toLowerCase().includes("minebea")){
       //delimiter,header,typedechet,dateEntree,tonnage, posEntreeSortie
-      this.lectureCSV(event, ";", false, 20, 7, 19, 25);
+      this.lectureCSV(event, ";", false, 20, 7, 19, 26);
     }
     //Calce
     else if (this.typeImportTonnage.toLowerCase().includes("informatique verte")){

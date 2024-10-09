@@ -5,6 +5,7 @@ export interface user{
     login : string;
     email : string;
     loginGMAO : string;
+    posteUser : string;
     pwd : string;
     isRondier : boolean;
     isSaisie : boolean;

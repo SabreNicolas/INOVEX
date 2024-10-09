@@ -351,7 +351,7 @@ export class CalendrierComponent implements OnInit{
         //si on ajoute une action
         else {
           this.cahierQuartService.newAction(this.nomAction, dateDeb2, dateFin).subscribe((response)=>{
-            this.cahierQuartService.newCalendrierAction(response.data[0].id, response.data[0].date_heure_debut, quart, response.data[0].date_heure_fin).subscribe((response) => {
+            this.cahierQuartService.newCalendrierAction(response.data[0].id, response.data[0].date_heure_debut, quart, response.data[0].date_heure_fin, 0).subscribe((response) => {
               var dateFin = "";
             })
           })
@@ -395,7 +395,7 @@ export class CalendrierComponent implements OnInit{
           else {
             this.cahierQuartService.newAction(this.nomAction, dateDeb2, dateFin).subscribe((response)=>{
               console.log("ici");
-              this.cahierQuartService.newCalendrierAction(response.data[0].id, response.data[0].date_heure_debut, quart, response.data[0].date_heure_fin).subscribe((response) => {
+              this.cahierQuartService.newCalendrierAction(response.data[0].id, response.data[0].date_heure_debut, quart, response.data[0].date_heure_fin, 0).subscribe((response) => {
                 var dateFin = "";
               })
             })

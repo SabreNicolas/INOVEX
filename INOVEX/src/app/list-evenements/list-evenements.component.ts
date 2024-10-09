@@ -218,8 +218,8 @@ export class ListEvenementsComponent implements OnInit {
       var yyyy = date.getFullYear();
       var dd = String(date.getDate()).padStart(2, '0');
       var mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
-      var hh =  date.getHours();
-      var min = date.getMinutes();
+      var hh =  String(date.getHours()).padStart(2, '0');
+      var min = String(date.getMinutes()).padStart(2, '0');
       var day = yyyy + '-' + mm + '-' + dd + 'T' + hh + ':' + min;
       (<HTMLInputElement>document.getElementById("dateDebut")).value = day;
       //@ts-ignore

@@ -4,4 +4,5 @@ export interface consigne{
     dateHeureDebut : string;
     dateHeureFin : string;
     type : number;
+    url : string;
 }

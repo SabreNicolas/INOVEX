@@ -168,6 +168,10 @@ const routes: Routes = [
             { path : 'newLienExterne', canActivate: [AuthGuard], component: LiensExternesComponent},
             { path : 'recapRondePrecedente', canActivate: [AuthGuard], component: RecapRondePrecedenteComponent},
             { path : 'recapRondeListe', canActivate: [AuthGuard], component: RecapRondeListeComponent},
+            { path : 'arrets', canActivate: [AuthGuard], component : ArretsComponent},
+            { path : 'listArrets', canActivate: [AuthGuard], component : ListArretsComponent},
+            { path : 'listForm', canActivate: [AuthGuard], component: ListFormulairesComponent},
+            { path : 'saisieForm', canActivate: [AuthGuard], component: SaisieFormulaireComponent},
 
         ]
     },

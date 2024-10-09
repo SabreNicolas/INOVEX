@@ -15,7 +15,7 @@
                     <label>Envoyer un email : (Maintenir CTRL pour choix multiple)</label>
                     <div class="row">
                         <div class="form-group">
-                            <select multiple class="form-select" aria-label=".form-select-sm example" name="listEmail" ngModel [(ngModel)]="listEmail">
+                            <select style="height: 300px;" multiple class="form-select" aria-label=".form-select-sm example" name="listEmail" ngModel [(ngModel)]="listEmail">
                                 <option value="">AUCUN</option>
                                 <option *ngFor="let user of listUsers" value={{user.email}}>{{user.Nom}} {{user.Prenom}} - {{user.email}}</option>
                             </select>

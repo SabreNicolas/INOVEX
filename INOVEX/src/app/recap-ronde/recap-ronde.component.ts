@@ -146,6 +146,9 @@ export class RecapRondeComponent implements OnInit {
     let heure = new Date().getHours();
     this.listRondier = [];
 
+    //permet de laiiser une marge pour saisir sur le quart
+    let margeHeure = 2;
+
     //Récupération de la date de début et de la date de fin en fonction du quart 
     if(this.quart == 1){
       this.dateDebString = format(new Date(),'yyyy-MM-dd') + ' 05:00:00.000';
@@ -153,7 +156,7 @@ export class RecapRondeComponent implements OnInit {
       this.dateFinString = format(new Date(),'yyyy-MM-dd') + ' 13:00:00.000';
       this.dateFinStringToShow = format(new Date(),'dd/MM/yyyy') + ' 13:00';
       this.quartLibelle = 'MATIN';
-      if(heure >= 5 && heure < 13){
+      if(heure >= 5 && heure < 13+margeHeure){
         this.saisieAutorise = true;
       }
     }
@@ -163,12 +166,12 @@ export class RecapRondeComponent implements OnInit {
       this.dateFinString = format(new Date(),'yyyy-MM-dd') + ' 21:00:00.000';
       this.dateFinStringToShow = format(new Date(),'dd/MM/yyyy') + ' 21:00';
       this.quartLibelle = 'APRES-MIDI';
-      if(heure >= 13 && heure < 21){
+      if(heure >= 13 && heure < 21+margeHeure){
         this.saisieAutorise = true;
       }
     }
     else{
-      if(heure < 5){
+      if(heure < 5+margeHeure){
         this.dateDebString = format(addDays(new Date(), -1),'yyyy-MM-dd') + ' 21:00:00.000';
         this.dateDebStringToShow = format(addDays(new Date(), -1),'dd/MM/yyyy') + ' 21:00';
         this.dateFinString = format(new Date(),'yyyy-MM-dd') + ' 05:00:00.000';
@@ -182,7 +185,7 @@ export class RecapRondeComponent implements OnInit {
         this.dateFinStringToShow = format(addDays(new Date(), 1),'dd/MM/yyyy') + ' 05:00';
         this.quartLibelle = 'NUIT';
       }
-      if(heure >= 21 || heure < 5){
+      if(heure >= 21 || heure < 5+margeHeure){
         this.saisieAutorise = true;
       }
     }
@@ -296,8 +299,10 @@ export class RecapRondeComponent implements OnInit {
 
   //Focntion qui permet d'ajouter l'action au calendrier et à la tablea d'actions
   createAction(){
-    this.cahierQuartService.newAction(this.nomAction, this.dateDebString,this.dateFinString).subscribe((response)=>{
-      this.cahierQuartService.newCalendrierAction(response.data[0].id, response.data[0].date_heure_debut, this.quart, response.data[0].date_heure_fin).subscribe((response) => {
+    //Récupération de l'heure à l'instant T pour concaténer avec le texte de l'action
+    let now = format(new Date(),'HH:mm');
+    this.cahierQuartService.newAction(now+" "+this.nomAction, this.dateDebString,this.dateFinString).subscribe((response)=>{
+      this.cahierQuartService.newCalendrierAction(response.data[0].id, response.data[0].date_heure_debut, this.quart, response.data[0].date_heure_fin, 1).subscribe((response) => {
         //réinitialiser le champ de saisie
         this.nomAction = "";
         this.ngOnInit();
@@ -516,8 +521,8 @@ export class RecapRondeComponent implements OnInit {
       var yyyy = date.getFullYear();
       var dd = String(date.getDate()).padStart(2, '0');
       var mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
-      var hh =  date.getHours();
-      var min = date.getMinutes();
+      var hh =  String(date.getHours()).padStart(2, '0');
+      var min = String(date.getMinutes()).padStart(2, '0');
       var day = yyyy + '-' + mm + '-' + dd + 'T' + hh + ':' + min;
       (<HTMLInputElement>document.getElementById("dateDebut")).value = day;
       //@ts-ignore
@@ -602,10 +607,10 @@ export class RecapRondeComponent implements OnInit {
     let tabAction = ['Appoint Pot Acide', 'Appoint Pot Soude','Arrêt UTM pour Nettoyage prestataire et Service Exploitation','Contôle Cônes Réacteurs Ligne 1','Contôle Cônes Réacteurs Ligne 2',
       'Contôle Vannes de recirculation Ligne 1','Contôle Vannes de recirculation Ligne 2','Contrôle Canne Réacteur Ligne 1','Contrôle Canne Réacteur Ligne 2','Contrôle Delta P Réacteur/FAM Ligne 1',
       'Contrôle Delta P Réacteur/FAM Ligne 2','Contrôle Delta P FAM Ligne 3','Contrôle Pot Acide et Pot Soude Local Déminée','Contrôle ΔP filtres à poches','Dépotage ACIDE / SOUDE','Dépotage Cuve GNR',
-      'Dépotage NH3','Dépotage Camion CHAUX Ligne 1 et Ligne 2','Dépotage Camion CHAUX Ligne 3','Dépotage Camion COKE','Dépotage Camion FIOUL','Dépotage Silo REFIOM','Estimation Fosse OM','Impression rapport RJE',
+      'Dépotage NH3','Dépotage Camion CHAUX Ligne 1 et Ligne 2','Dépotage Camion CHAUX Ligne 3','Dépotage Camion COKE','Dépotage Camion FIOUL','Dépotage Silo REFIOM','Estimation Fosse OM','Impression rapport RJE','Mise en Fosse Pont OM N°1','Mise en Fosse Pont OM N°2',
       'Nettoyage Jetée Redler Humide','Nettoyage niveau redler humide Ligne 3','Nettoyage Pont OM N°1','Nettoyage Pont OM N°2','Nettoyage Prise de Mesure TF L1','Nettoyage Prise de Mesure TF L2','Nettoyage UTM',
       'Nettoyage Vanne recirculation Ligne 1 Caisson 1','Nettoyage Vanne recirculation Ligne 1 Caisson 2','Nettoyage Vanne recirculation Ligne 2 Caisson 1','Nettoyage Vanne recirculation Ligne 2 Caisson 2',
-      'Permutation Filtre à Poche Entrée Déminée','Permutation Pont OM N°1','Permutation Pont OM N°2','Prélèvement Machêfer','Relevés De Minuit (RJE/Réactifs)','Vidange Bennes Arrières Extracteurs Ligne 1',
+      'Prélèvement Machêfer','Relevés De Minuit (RJE/Réactifs)','Remplacement Filtre à Poche Entrée Déminée','Vidange Bennes Arrières Extracteurs Ligne 1',
       'Vidange Bennes Arrières Extracteurs Ligne 2','Vidange Box Sous Scalpeurs Extrateur Ligne 1','Vidange Box Sous Scalpeurs Extrateur Ligne 2','Vidange Box Sous Scalpeurs Extrateur Ligne 3','Vidange Brouettes UTM'
     ]
     //Construction des valeurs du menu select qui contient les actions

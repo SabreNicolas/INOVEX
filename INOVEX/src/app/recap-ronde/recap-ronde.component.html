@@ -39,32 +39,38 @@
 <!-- routerLink="../newEquipe" [queryParams]="{quart: quart, idEquipe: idEquipe}" -->
 
 <!-- Tableau des consignes -->
-<div class="consignes" *ngIf="consignes.length > 0">
-    <table class="table table-bordered table-secondary">
-      <thead>
-        <tr>
-          <th scope="col">Consigne</th>
-          <th scope="col">Description</th>
-          <th scope="col">Date de Fin</th>
-          <th scope="col">Fichier</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let consigne of consignes">
-          <th scope="row">{{consigne.titre}}</th>
-          <th scope="row">{{consigne.commentaire}}</th>
-          <td>{{consigne.dateHeureFin}}</td>
-          <td *ngIf="consigne.url != null" (click)="downloadFile(consigne.url)"><i class="fas fa-download" ></i></td>
-          <td *ngIf="consigne.url == null">/</td>
-        </tr>
-      </tbody>
-    </table>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card cardElem" *ngIf="consignes.length > 0">
+            <h2 class="titre">Consignes</h2>
+            <table class="table table-bordered table-secondary">
+            <thead>
+                <tr>
+                <th scope="col">Consigne</th>
+                <th scope="col">Description</th>
+                <th scope="col">Date de Fin</th>
+                <th scope="col">Fichier</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let consigne of consignes">
+                <th scope="row">{{consigne.titre}}</th>
+                <th scope="row">{{consigne.commentaire}}</th>
+                <td>{{consigne.dateHeureFin}}</td>
+                <td *ngIf="consigne.url != null" (click)="downloadFile(consigne.url)"><i class="fas fa-download" ></i></td>
+                <td *ngIf="consigne.url == null">/</td>
+                </tr>
+            </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
-<div class="row">
+<!-- ZONES ET ACTIONS -->
+<div class="row" style="display: flex; justify-content: space-evenly;">
 
     <!-- Tableau des zones -->
-    <div class="col-md-3">
+    <div class="col-md-5">
         <div class="card cardElem">
             <h2 class="titre">Zones à contrôler
                 <button [disabled]="!saisieAutorise" class="btn btn-success btnAdd" id="createZone" (click)="newZone()">
@@ -110,7 +116,7 @@
     </div>
 
     <!-- Tableau des actions -->
-    <div class="col-md-3">
+    <div class="col-md-5">
         <div class="card cardElem">
             <h2 class="titre">Actions
                 <button [disabled]="!saisieAutorise" class="btn btn-success btnAdd" id="createAction" (click)="newAction()">
@@ -135,7 +141,7 @@
                 </button>
             </div>
             <!--table des actions-->
-            <table class="table table-hover tableFixed">
+            <table class="table tableFixed">
                 <thead>
                 <tr class="table-secondary">
                     <th scope="col">Description</th>
@@ -143,7 +149,7 @@
                 </tr>
                 </thead>
                 <tbody *ngFor="let action of listAction">
-                <tr class="table-light" >
+                <tr [ngStyle]="{'background-color' : action.termine == 1 ? 'lightgreen' : 'white'}">
                     <td>{{action.nom}}</td>
                     <td>
                         <button [disabled]="!saisieAutorise" type="button" class="btn btn-outline-danger" (click)="deleteAction(action.id)">
@@ -155,9 +161,13 @@
             </table>
         </div>
     </div>
+</div>
+<br>
 
+<!-- EVENEMENTS -->
+<div class="row">
     <!-- Tableau des Evènements -->
-    <div class="col-md-6">
+    <div class="col-md-12">
         <div class="card cardElem">
             <h2 class="titre">
                 Evènements
@@ -192,9 +202,9 @@
                         <td *ngIf="evenement.demande_travaux == 0"><i style="color: red" class="fas fa-times-circle"></i></td>
                         <td *ngIf="evenement.demande_travaux != 0"><i style="color: green" class="fas fa-check"></i> {{evenement.demande_travaux}}</td>
                         <td>
-                            <a routerLink="../../{{evenement.url}}" *ngIf="evenement.url != ''">
+                            <a href="{{evenement.url}}" *ngIf="evenement.url != ''" target="_blank">
                                 <button class="btn btn-success">
-                                    <i class="fas fa-image"></i> 
+                                    <i class="fas fa-image"></i>
                                 </button>
                             </a>
                         </td>
@@ -207,6 +217,8 @@
     </div>
 </div>
 <br>
+
+<!-- ACTUS -->
 <div class="col-md-13" style="display: flex; flex-direction: column;">
     <h2 class="titre">Actualités</h2>
     <!--Liste des actus non lié à un quart-->
@@ -309,6 +321,8 @@
                             <option value="GRIFFE">Griffé/Entaillé/Piqué</option>
                             <option value="NONUTILISE">Non utilisé</option>
                             <option value="BRUIT_ANORMAL">Bruit anormal</option>
+                            <option value="PRESSION_FOUR">Pression Four</option>
+                            <option value="BOURRAGE">Bourrage</option>
                         </select>
                     </div>
                     

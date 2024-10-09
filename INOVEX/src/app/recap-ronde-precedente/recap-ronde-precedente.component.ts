@@ -448,15 +448,30 @@ export class RecapRondePrecedenteComponent {
     };
 
     //@ts-ignore
-    pdfMake.createPdf(pdfContent).download('Résumé quart du ' + quart + ' du ' + this.formatDateTime(this.dateDebString))
+    let pdfCreate = pdfMake.createPdf(pdfContent);
+    pdfCreate.download('Résumé quart du ' + quart + ' du ' + this.formatDateTime(this.dateDebString));
+
+    //On récupère le blob pour créer un file que l'on va envoyer à l'API pour le stocker avec multer
+    pdfCreate.getBlob(blob => {
+      var file = new File([blob],quart+' - '+this.userPrecedent+".pdf");
+      this.cahierQuartService.stockageRecapPDF(file,quart,this.formatDateTime(this.dateDebString)).subscribe((response)=>{
+        if (response == "Envoi mail OK"){
+          this.popupService.alertSuccessForm("Le mail a bien été envoyé !");
+        }
+        else {
+          this.popupService.alertErrorForm('Erreur envoi du mail ....');
+        }
+      });
+    });
     
-    await this.delay(1000)
+    await this.delay(1000);
     window.location.href = "https://fr-couvinove300.prod.paprec.fr:8100/cahierQuart/newEquipe?quart="+this.quart
   }
 
   delay(ms : number){
     return new Promise(resolve => setTimeout(resolve,ms))
   }
+
   formatDateTime(dateTimeString: string): string { 
 
     // Diviser la chaîne de caractères en date et heure 
@@ -470,5 +485,7 @@ export class RecapRondePrecedenteComponent {
 
     // Reformer la date et l'heure au format souhaité 
     const formattedDateTime = `${day}-${month}-${year} ${hour}:${minute}`; 
-    return formattedDateTime; }
+    return formattedDateTime; 
+  }
+
 }

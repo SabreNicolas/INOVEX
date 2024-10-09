@@ -85,8 +85,38 @@ export class ListUsersComponent implements OnInit {
 
   //changement des infos du user => loginGMAO ou email
   async changeInfos(login : string, info : string, infoValue : string){
-    //@ts-ignore
-    infoValue = prompt("Veuillez saisir le "+info+" de l'utilisateur",infoValue);
+    //Pour le poste, on met une liste de choix
+    if(info != 'posteUser'){
+      //@ts-ignore
+      infoValue = prompt("Veuillez saisir le "+info+" de l'utilisateur",infoValue);
+    }
+    else{
+      //choix des postes en dur
+      let tabPoste = ['','Adjoint Chef de Quart','Chef de Quart','Intérimaire','Opérateur de Conduite','Rondier/Pontier'];
+      
+      //Construction des valeurs du menu select qui contient les postes
+      let listPoste = {};
+      tabPoste.forEach(poste => {
+        //@ts-ignore
+        listPoste[poste] = poste;
+      });
+
+      await Swal.fire({
+        title: 'Veuillez choisir un poste',
+        input: 'select',
+        inputOptions: listPoste,
+        showCancelButton: true,
+        confirmButtonText: "Valider",
+        allowOutsideClick: true,
+      })
+      .then((result) => {
+        if(result.value != undefined){
+          infoValue = String(result.value);
+        }
+        else infoValue = '';
+      });
+    }
+    
     //@ts-ignore
     this.loginService.updateInfos(login,info,infoValue).subscribe((response)=>{
       if (response == "Mise à jour info OK"){

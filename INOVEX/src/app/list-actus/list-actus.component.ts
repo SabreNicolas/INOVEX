@@ -86,7 +86,8 @@ export class ListActusComponent implements OnInit {
 
   ouvrirDialogCreerActu(){
     this.dialogRef = this.dialog.open(this.createActuDialog,{
-      width:'40%',
+      width:'80%',
+      height:'80%',
       disableClose:true,
       autoFocus:true,
     })
@@ -99,7 +100,8 @@ export class ListActusComponent implements OnInit {
   ouvrirDialogModifActu(id : number, dupliquer : number){
     this.idActu = id
     this.dialogRef = this.dialog.open(this.createActuDialog,{
-      width:'40%',
+      width:'80%',
+      height:'80%',
       disableClose:true,
       autoFocus:true,
     })

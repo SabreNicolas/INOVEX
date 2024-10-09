@@ -393,10 +393,10 @@ export class ListEntreeComponent implements OnInit {
       }
     }
     //Saint-Saulve
-    else if (this.typeImportTonnage.toLowerCase().includes("dpk")){
+    else if (this.typeImportTonnage.toLowerCase().includes("minebea")){
       //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
       //this.lectureCSV(event, ";", false, 21, 20, 7, 19);
-      this.lectureCSV(event, ";", false, 21, 20, 7, 19, 25);
+      this.lectureCSV(event, ";", true, 21, 20, 7, 19, 26);
     }
     //Calce
     else if (this.typeImportTonnage.toLowerCase().includes("informatique verte")){

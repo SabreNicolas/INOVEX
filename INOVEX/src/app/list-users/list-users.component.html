@@ -51,6 +51,11 @@
                 <button class="btn btn btn-light edition" (click)="changeInfos(user.login,'loginGMAO', user.loginGMAO)">
                     <i class="far fa-edit"></i>
                 </button>
+                <br>
+                <span style="font-size: 12px;" class="badge bg-info">Poste : {{user.posteUser}}</span>
+                <button class="btn btn btn-light edition" (click)="changeInfos(user.login,'posteUser', user.posteUser)">
+                    <i class="far fa-edit"></i>
+                </button>
             </td>
             <td><button id="setPrice" (click)="resetPwd(user.login)" class="btn btn-primary">
                 Reset mot de passe

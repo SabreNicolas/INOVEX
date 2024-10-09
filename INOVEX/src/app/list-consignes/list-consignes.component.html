@@ -31,7 +31,7 @@
                 <td *ngSwitchCase=3><span class="badge rounded-pill bg-primary">Process</span></td>
                 <td *ngSwitchCase=4><span class="badge rounded-pill bg-dark">Autres</span></td>
                 <td *ngSwitchCase=5><span class="badge rounded-pill bg-dark">Suite à un évènement</span></td>
-                <td *ngIf="consigne.url != null" (click)="downloadFile(consigne.url)"><i class="fas fa-download" ></i></td>
+                <td *ngIf="consigne.url != null" (click)="downloadFile(consigne.url)"><i class="fas fa-download"></i></td>
                 <td *ngIf="consigne.url == null">/</td>
                 <td>
                     <button class="btn btn btn-light edition" (click)="ouvrirDialogModifConsigne(consigne.id,1)">

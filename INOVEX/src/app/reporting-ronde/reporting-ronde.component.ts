@@ -227,7 +227,7 @@ export class ReportingRondeComponent implements OnInit {
               promptVal += '<p style="background-color: red;">NON SAISIE</p>'
             }
             else {
-              promptVal += '<p>'+this.listElementsOfUsine[i].value+'</p>'
+              promptVal += '<p>'+this.listElementsOfUsine[i].value+' <span style="color: rgb(84,149,216); font-weight : bold;">'+this.listElementsOfUsine[i].unit+'</span></p>'
             }
             promptVal += '<button id="'+this.listElementsOfUsine[i].idMesure+'--'+this.listElementsOfUsine[i].value+'" class="btn btn-warning btn-sm updateValue" ><i class="fa fa-pencil-square-o" id="'+this.listElementsOfUsine[i].idMesure+'--'+this.listElementsOfUsine[i].value+'" aria-hidden="true"></i></button>'
             if(this.listElementsOfUsine[i].value != this.listElementsOfUsine[i].defaultValue && this.listElementsOfUsine[i].defaultValue != ''){
@@ -353,8 +353,8 @@ export class ReportingRondeComponent implements OnInit {
     value = value.replace(/'/g,"''");
     this.rondierService.updateMesureRondier(Id,value).subscribe((response)=>{
       if (response == "Mise à jour de la valeur OK"){
-        this.popupService.alertSuccessForm("La valeur a bien été mis à jour ! Veuillez rafraichir la page pour voir la modification");
-        //this.ngOnInit();
+        this.popupService.alertSuccessForm("La valeur a bien été mis à jour !");
+        this.ngOnInit();
       }
     });
   }
