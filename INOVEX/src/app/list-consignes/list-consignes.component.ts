@@ -72,6 +72,7 @@ export class ListConsignesComponent implements OnInit {
       if (response == "Suppression de la consigne OK"){
         this.cahierQuartService.historiqueConsigneDelete(id).subscribe((response)=>{
           this.popupService.alertSuccessForm("La consigne a bien été supprimé !");
+          this.ngOnInit();
         })
       }
       else {
@@ -151,8 +152,7 @@ export class ListConsignesComponent implements OnInit {
 
   createConsigne(form : NgForm) {
     this.desc = form.value['desc'];
-    this.desc = this.desc.replace("'", " ");
-    this.desc = this.desc.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, " ");
+    this.desc = this.desc.replace("'", "''");
 
     if(this.dateFin == undefined){
       this.dateFin = new Date("2099-01-01 00:00");

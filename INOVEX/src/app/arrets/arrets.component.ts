@@ -43,12 +43,14 @@ export class ArretsComponent implements OnInit {
   public fortuit_chaudiere : boolean = false;
   public fortuit_traitement : boolean = false;
   public fortuit_commun : boolean = false;
+  public moteur : boolean = false;
   public saisieLibre : string;
   public id : number = 0;
   public sousCommentaire : string;
   public programmeSelect : string;
   public fortuitSelect : string;
   public disponibleSelect : string;
+  public moteurSelect : string;
   public categorie : string;
 
   constructor(private arretsService : arretsService, private popupService : PopupService, private productsService : productsService, private datePipe : DatePipe, private route : ActivatedRoute, private router : Router) {
@@ -69,6 +71,7 @@ export class ArretsComponent implements OnInit {
     this.fortuitSelect="";
     this.programmeSelect="";
     this.disponibleSelect="";
+    this.moteurSelect="";
     this.categorie="";
     this.route.queryParams.subscribe(params => {
       //Si le params n'est pas précisé dans l'url on le force à TRUE
@@ -112,6 +115,7 @@ export class ArretsComponent implements OnInit {
     this.fortuitSelect="";
     this.programmeSelect="";
     this.disponibleSelect="";
+    this.moteurSelect="";
     this.categorie="";
     this.dateDebut = undefined;
     this.dateFin=undefined
@@ -162,7 +166,7 @@ export class ArretsComponent implements OnInit {
           //@ts-ignore
           this.duree = response.data[0].duree
 
-          if(this.arretName.toLocaleLowerCase().includes("fortuit") || this.arretName.toLocaleLowerCase().includes("intempestif")){
+          if((this.arretName.toLocaleLowerCase().includes("fortuit") || this.arretName.toLocaleLowerCase().includes("intempestif")) && !this.arretName.toLocaleLowerCase().includes("moteur")){
             //@ts-ignore
             this.sousCommentaire = response.data[0].description.split(" - ")[1]
             //@ts-ignore
@@ -170,13 +174,13 @@ export class ArretsComponent implements OnInit {
             //@ts-ignore
             this.saisieLibre = response.data[0].description.split(" - ")[2]
           }
-          else if(this.arretName.toLocaleLowerCase().includes("disponible")){
+          else if(this.arretName.toLocaleLowerCase().includes("disponible") && !this.arretName.toLocaleLowerCase().includes("moteur")){
             //@ts-ignore
             this.saisieLibre = response.data[0].description.split(" - ")[1]
             //@ts-ignore
             this.sousCommentaire = response.data[0].description.split(" - ")[0]
           }
-          else if(this.arretName.toLocaleLowerCase().includes("programm")){
+          else if(this.arretName.toLocaleLowerCase().includes("programm") || this.arretName.toLocaleLowerCase().includes("moteur")){
             //@ts-ignore
             this.saisieLibre = response.data[0].description.split(" - ")[1]
             //@ts-ignore
@@ -234,22 +238,27 @@ export class ArretsComponent implements OnInit {
     this.fortuit_four = false;
     this.fortuit_chaudiere = false;
     this.fortuit_traitement = false;
-    this.fortuit_commun = false;    
+    this.fortuit_commun = false; 
+    this.moteur = false;   
 
-    if(this.arretName.toLocaleLowerCase().includes("disponible")){
+    if(this.arretName.toLocaleLowerCase().includes("disponible") && !this.arretName.toLocaleLowerCase().includes("moteur")){
       this.disponible = true;
       this.disponibleSelect = this.categorie;
     }
-    else if(this.arretName.toLocaleLowerCase().includes("fortuit") || this.arretName.toLocaleLowerCase().includes("intempestif")){
+    else if((this.arretName.toLocaleLowerCase().includes("fortuit") || this.arretName.toLocaleLowerCase().includes("intempestif")) && !this.arretName.toLocaleLowerCase().includes("moteur")){
       this.fortuit = true;
       this.fortuit_four = true;
-      this.fortuitSelect=this.categorie
-      this.setSousCommentaire('fortuit')
+      this.fortuitSelect=this.categorie;
+      this.setSousCommentaire('fortuit');
 
     }
-    else if(this.arretName.toLocaleLowerCase().includes("programm")){
+    else if(this.arretName.toLocaleLowerCase().includes("programm") && !this.arretName.toLocaleLowerCase().includes("moteur")){
       this.programme = true;
-      this.programmeSelect=this.categorie
+      this.programmeSelect=this.categorie;
+    }
+    else if(this.arretName.toLocaleLowerCase().includes("moteur")){
+      this.moteur = true;
+      this.moteurSelect=this.categorie;
     }
   }
 
@@ -341,6 +350,11 @@ export class ArretsComponent implements OnInit {
       }
       else if(this.programme == true){
         this.commentaire = "Arrêt technique";
+      }
+      else if(this.moteur == true){
+        var selection = document.getElementById("moteur");
+        //@ts-ignore
+        this.commentaire = selection.options[selection.selectedIndex].text;
       }
       /*
       * FIN récupération commentaire

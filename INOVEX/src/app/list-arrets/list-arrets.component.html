@@ -64,7 +64,7 @@
                 </thead>
                 <tbody>
                     <!--Chinon et Pithiviers n'ayant pas encore migré, on affiche tout quoi qu'il arrive-->
-                    <ng-container *ngIf="idUsine == 2 || idUsine == 3">
+                    <ng-container *ngIf="idUsine == 2 || idUsine == 3 || idUsine == 20">
                         <tr class="table-light" *ngFor="let arret of listArretsDepassements">
                             <td class="fix">
                                 <a routerLink="/saisie/arrets" [queryParams]="{isArret: isArret, id :arret.Id }" > 

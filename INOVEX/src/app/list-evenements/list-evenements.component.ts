@@ -58,6 +58,10 @@ export class ListEvenementsComponent implements OnInit {
   public planifieDebutBT : string;
   public planifieFinBT : string;
 
+  public DaysAgo : Date;
+  public DaysAgoString : String;
+  public hideEvent : boolean;
+
 
   constructor(public altairService : AltairService, private rondierService : rondierService, private datePipe : DatePipe, public cahierQuartService : cahierQuartService, private dialog : MatDialog,private popupService : PopupService) {
     this.listEvenement = [];
@@ -87,12 +91,27 @@ export class ListEvenementsComponent implements OnInit {
     this.planifieFinBT = "";
     this.commentaireBT = "";
     this.responsableBT = "";
+
+    this.DaysAgo = new Date();
+    this.DaysAgoString = '';
+    this.hideEvent = true;
   }
 
   ngOnInit(): void {
+    /**Détermination de la date de il y a 7 jours */
+    this.DaysAgo.setDate(this.DaysAgo.getDate() - 7);
+    //@ts-ignore
+    this.DaysAgoString = this.datePipe.transform(this.DaysAgo,'yyyy-MM-dd HH:mm:ss');
+    /**FIN Détermination de la date de il y a 7 jours */
+
     this.cahierQuartService.getAllEvenement().subscribe((response)=>{
       // @ts-ignore
       this.listEvenement = response.data;
+      this.listEvenement.forEach(ev => {
+        //on ajoute à chaque évènement une date formaté pour comparer avec la date d'y il a 6 jours
+        ev.dateFormat = ev.date_heure_debut.substring(6,10) +'-'+ ev.date_heure_debut.substring(3,5) +'-'+ ev.date_heure_debut.substring(0,2) +' '+ ev.date_heure_debut.substring(11);
+      });
+      console.log(this.listEvenement);
     });
 
     this.titre = "";
@@ -306,7 +325,7 @@ export class ListEvenementsComponent implements OnInit {
     }
     //Il faut avoir renseigné un nom
     if(this.titre == "" ){
-      this.popupService.alertErrorForm('Veuillez renseigner le titre de l\'actualité. La saisie a été annulée.');
+      this.popupService.alertErrorForm('Veuillez renseigner le titre de l\'évènement. La saisie a été annulée.');
       return;
     }
     //Il faut que les deux dates soient cohérentes
@@ -430,7 +449,7 @@ export class ListEvenementsComponent implements OnInit {
 
       }
       else{
-        this.popupService.alertErrorForm("Aucune demande de travaux n'est associée à cette DI !!")
+        this.popupService.alertSuccessForm("Cette DI n'a pas été transformé en BT !")
       }
     })
   }
@@ -447,5 +466,9 @@ export class ListEvenementsComponent implements OnInit {
       this.BT ="";
       this.ngOnInit();
     })
+  }
+
+  changeEventVisible(){
+    this.hideEvent = !this.hideEvent;
   }
 }

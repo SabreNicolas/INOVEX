@@ -117,6 +117,8 @@ export class ListZonesComponent implements OnInit {
   //mis à jour du commentaire d'une zone
   setComment(zone : zone){
     var commentaire = prompt('Veuillez saisir un Commentaire',String(zone.commentaire));
+    //@ts-ignore
+    if (commentaire.length < 1 ) commentaire = "_";
     if (commentaire != null){
       // @ts-ignore
       this.rondierService.updateCommentaire(zone.Id,commentaire).subscribe((response)=>{
@@ -159,7 +161,7 @@ export class ListZonesComponent implements OnInit {
               this.ngOnInit();
             }
             else {
-              this.popupService.alertErrorForm('Erreur lors de Suppression ....')
+              this.popupService.alertErrorForm("Erreur lors de Suppression .... Un Badge est peut-être affecté à cette zone ! Veuillez d'abord retirer l'affectation")
             }
           });
         } 

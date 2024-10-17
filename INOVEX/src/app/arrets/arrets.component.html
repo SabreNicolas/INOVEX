@@ -67,7 +67,7 @@
                     </div>
                 </div>
 
-                <h5 *ngIf="disponible || fortuit || programme">Catégorie : </h5>
+                <h5 *ngIf="disponible || fortuit || programme || moteur">Catégorie : </h5>
                 <select *ngIf="disponible" id="disponible" class="form-select form-select-sm" aria-label=".form-select-sm example" name="disponible" ngModel [(ngModel)]="disponibleSelect">
                     <option value="Manque de déchets">Manque de déchets</option>
                     <option value="Coupure électricité (si pas de production électrique sur le site)">Coupure électricité (si pas de production électrique sur le site)</option>
@@ -85,6 +85,25 @@
 
                 <select *ngIf="programme" id="programme" class="form-select form-select-sm" aria-label=".form-select-sm example" name="programme" ngModel [(ngModel)]="programmeSelect">
                     <option value="Arrêt technique">Arrêt technique</option>
+                    <option value="Autre">Autre</option>
+                </select>
+
+                <select *ngIf="moteur" id="moteur" class="form-select form-select-sm" aria-label=".form-select-sm example" name="moteur" ngModel [(ngModel)]="moteurSelect">
+                    <option selected value="Manque biogaz">Manque biogaz</option>
+                    <option value="Alarme générale">Alarme générale</option>
+                    <option value="Bougies">Bougies</option>
+                    <option value="Contrôle rejets atmosphériques">Contrôle rejets atmosphériques</option>
+                    <option value="Contrôleur d'isolement">Contrôleur d'isolement</option>
+                    <option value="Coupure électrique">Coupure électrique</option>
+                    <option value="Défaut chaîne de sécurité">Défaut chaîne de sécurité</option>
+                    <option value="Défaut IPG">Défaut IPG</option>
+                    <option value="Défaut pénurie d'eau">Défaut pénurie d'eau</option>
+                    <option value="Dysfonctionnement générateur">Dysfonctionnement générateur</option>
+                    <option value="TEM">TEM</option>
+                    <option value="Fuite">Fuite</option>
+                    <option value="Révision et/ou vidange">Révision et/ou vidange</option>
+                    <option value="Sonde">Sonde</option>
+                    <option value="Orage">Orage</option>
                     <option value="Autre">Autre</option>
                 </select>
 

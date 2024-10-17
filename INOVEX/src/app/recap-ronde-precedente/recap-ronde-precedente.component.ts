@@ -293,10 +293,10 @@ export class RecapRondePrecedenteComponent {
         var color = 'lightcoral'
       }
       if(event.equipementGMAO != "" && event.demande_travaux != 1){
-        var text = event.date_heure_debut.split(" ")[1] + ' - ' + event.titre + ' - ' + event.equipementGMAO + ' - ' + event.demande_travaux 
+        var text = event.date_heure_debut.split(" ")[1] + ' - ' + event.titre + ' -- ' + event.description + ' - ' + event.equipementGMAO + ' - ' + event.demande_travaux 
       }
       else {
-        var text = event.date_heure_debut.split(" ")[1] + ' - ' + event.titre + ' - Pas de DI' 
+        var text = event.date_heure_debut.split(" ")[1] + ' - ' + event.titre + ' -- ' + event.description + ' - Pas de DI' 
 
       }
       tableEvents.push([
