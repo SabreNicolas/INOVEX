@@ -292,7 +292,7 @@ export class RecapRondePrecedenteComponent {
       else {
         var color = 'lightcoral'
       }
-      if(event.equipementGMAO != "" && event.demande_travaux != 1){
+      if(event.equipementGMAO != "" && event.demande_travaux != 1){//
         var text = event.date_heure_debut.split(" ")[1] + ' - ' + event.titre + ' -- ' + event.description + ' - ' + event.equipementGMAO + ' - ' + event.demande_travaux 
       }
       else {
