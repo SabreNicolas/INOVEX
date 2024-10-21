@@ -131,8 +131,8 @@ export class cahierQuartService {
     }
 
     //Ajouter les utilisateur à une équipe
-    nouvelleAffectationEquipe(idUser : number,idEquipe : number ,idZone : number ,poste : string){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/affectationEquipe?idRondier="+idUser +"&idEquipe="+ idEquipe+"&idZone=" + idZone +"&poste="+poste;
+    nouvelleAffectationEquipe(idUser : number,idEquipe : number ,idZone : number ,poste : string, heure_deb : string, heure_fin : string){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/affectationEquipe?idRondier="+idUser +"&idEquipe="+ idEquipe+"&idZone=" + idZone +"&poste="+poste+"&heure_deb="+heure_deb+"&heure_fin="+heure_fin;
     
           const requestOptions = {
               headers: new HttpHeaders(this.headerDict),
@@ -141,6 +141,19 @@ export class cahierQuartService {
           return this.http
               .put<any>(requete,null,requestOptions);
     }
+
+    //modifier les heures de quart pour les utilisateurs d'une équipe
+    updateInfosAffectationEquipe(idUser : number, idEquipe : number, typeInfo : string, valueInfo : string){
+      valueInfo = valueInfo.replace("'","''");
+      let requete = "https://"+this.ip+":"+this.portAPI+"/UpdateInfosAffectationEquipe?idRondier="+idUser +"&idEquipe="+ idEquipe+"&typeInfo="+typeInfo+"&valueInfo="+valueInfo;
+  
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+  
+        return this.http
+            .put<any>(requete,null,requestOptions);
+  }
 
     //Ajouter les utilisateur à un enregistrement équipe
     nouvelEnregistrementAffectationEquipe(idUser : number,idEquipe : number){

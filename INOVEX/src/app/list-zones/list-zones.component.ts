@@ -150,6 +150,39 @@ export class ListZonesComponent implements OnInit {
     }
   }
 
+  //mis à jour du num de four d'une zone
+  setFour(zone : zone){
+    Swal.fire({
+      title: 'Veuillez saisir un numéro de four',
+      input: 'number',
+      inputValue: zone.four,
+      inputAttributes: {
+        min: '0',
+        max: '4',
+        step: '1',
+      },
+      showCancelButton: true,
+      confirmButtonText: "Valider",
+      confirmButtonColor: "green",
+      cancelButtonText : "Annuler",
+      cancelButtonColor : 'red',
+      allowOutsideClick: true,
+    })
+    .then((result) => {
+      if(result.value != undefined){
+        this.rondierService.updateNumZone(zone.Id,result.value).subscribe((response)=>{
+          if (response == "Mise à jour du four OK"){
+            this.popupService.alertSuccessForm("Le numéro de four a été mis à jour !");
+          }
+          else {
+            this.popupService.alertErrorForm('Erreur lors de la mise à jour du numéro de four ....')
+          }
+        });
+        this.ngOnInit();
+      }
+    });
+  }
+
   deleteZone(id : number){
     
     Swal.fire({title: 'Êtes-vous sûr(e) de vouloir supprimer cette zone et tout ses éléments ?',icon: 'warning',showCancelButton: true,confirmButtonColor: '#3085d6',cancelButtonColor: '#d33',confirmButtonText: 'Oui, supprimer',cancelButtonText: 'Annuler'

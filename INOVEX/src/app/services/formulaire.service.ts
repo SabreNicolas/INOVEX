@@ -27,6 +27,7 @@ export class formulaireService {
 
     //création de formulaire
     createFormulaire(nom : string, type : string){
+        nom = encodeURIComponent(nom);
         let requete = "https://"+this.ip+":"+this.portAPI+"/formulaire?nom="+nom+"&type="+type+"&idUsine="+this.idUsine;
         //console.log(requete);
   

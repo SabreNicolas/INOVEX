@@ -49,6 +49,7 @@ export class productsService {
 
     //création du produit
     createProduct(typeId : number, idUsine : number){
+        this.nom = encodeURIComponent(this.nom);
         let requete = "https://"+this.ip+":"+this.portAPI+"/Product?Name="+this._nom+"&Code="+this._code+"&typeId="+typeId+"&Unit="+this._unit+"&idUsine="+idUsine+"&TAG="+this._tag;
         //console.log(requete);
 
@@ -321,6 +322,7 @@ export class productsService {
 
     //créer un formulaire
     createFormulaire(nom : string){
+        nom = encodeURIComponent(nom);
         let requete = "https://"+this.ip+":"+this.portAPI+"/createFormulaire?nom="+nom+"&idUsine="+this.idUsine;
         //console.log(requete);
 
@@ -334,6 +336,7 @@ export class productsService {
     
     //mettre à jour le nom d'un formulaire
     updateFormulaire(nom : string, idFormulaire : number){
+        nom = encodeURIComponent(nom);
         let requete = "https://"+this.ip+":"+this.portAPI+"/updateFormulaire?nom="+nom+"&idFormulaire="+idFormulaire;
         //console.log(requete);
 
@@ -347,6 +350,7 @@ export class productsService {
 
     //créer les produits d'un formulaire
     createFormulaireAffectation(alias : string, idFormulaire : number, idProduit : number){
+        alias = encodeURIComponent(alias);
         let requete = "https://"+this.ip+":"+this.portAPI+"/createFormulaireAffectation?alias="+alias+"&idFormulaire="+idFormulaire+"&idProduit="+idProduit;
         //console.log(requete);
 
@@ -519,6 +523,9 @@ export class productsService {
 
     //Mettre à jour le coefficient d'un produit
     updateProductName(newName : string, lastName : string){
+        newName = encodeURIComponent(newName);
+        lastName = encodeURIComponent(lastName);
+
         let requete = "https://"+this.ip+":"+this.portAPI+"/updateProductName?newName="+newName + "&lastName=" +lastName;
         // console.log(requete);
 

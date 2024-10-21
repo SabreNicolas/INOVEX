@@ -4,7 +4,7 @@
 <div id="libelleQuart">
     <h3>Quart du {{quartLibelle}} - {{dateDebStringToShow}} à {{dateFinStringToShow}}</h3>
 
-    <div *ngIf="idEquipe > 0">
+    <div *ngIf="idEquipe > 0" class="col-md-12">
         <h4 style="text-align: center;">
             Equipe Existante sur le quart : {{nomEquipe}} <button class="btn btn-light" (click)="changeEquipeVisible()"><i class="fa fa-level-down" aria-hidden="true"></i></button>
         </h4>
@@ -15,21 +15,43 @@
                 <th scope="col">Nom</th>
                 <th scope="col">Prenom</th>
                 <th scope="col">Poste</th>
+                <th scope="col">Heure Début</th>
+                <th scope="col">Heure Fin</th>
+                <th scope="col">Heure Travaux Pénible</th>
+                <th scope="col">Commentaire</th>
                 <th scope="col">Zone</th>
             </tr>
             </thead>
             <tbody *ngFor="let rondier of listRondier">
             <tr class="table-light" >
                 <td>{{rondier.Nom}}</td>
-                <td>
-                    {{rondier.Prenom}}
+                <td>{{rondier.Prenom}}</td>
+                <td>{{rondier.Poste}}</td>
+                <td class="heure">
+                    {{rondier.heure_deb}}
+                    <button class="btn btn btn-light edition" (click)="updateInfos(rondier.IdEquipe,rondier.Id,'heure_deb',rondier.heure_deb)">
+                        <i class="far fa-edit"></i>
+                    </button>
                 </td>
-                <td>
-                    {{rondier.Poste}}
+                <td class="heure">
+                    {{rondier.heure_fin}}
+                    <button class="btn btn btn-light edition" (click)="updateInfos(rondier.IdEquipe,rondier.Id,'heure_fin',rondier.heure_fin)">
+                        <i class="far fa-edit"></i>
+                    </button>
                 </td>
-                <td>
-                    {{rondier.Zone}}
+                <td class="heure">
+                    {{rondier.heure_tp}}
+                    <button class="btn btn btn-light edition" (click)="updateInfos(rondier.IdEquipe,rondier.Id,'heure_tp',rondier.heure_tp)">
+                        <i class="far fa-edit"></i>
+                    </button>
                 </td>
+                <td class="heure">
+                    {{rondier.comm_tp}}
+                    <button class="btn btn btn-light edition"  [disabled]="rondier.heure_tp == '00:00'" (click)="updateInfos(rondier.IdEquipe,rondier.Id,'comm_tp',rondier.comm_tp)">
+                        <i class="far fa-edit"></i>
+                    </button>
+                </td>
+                <td>{{rondier.Zone}}</td>
             </tr>
             </tbody>
         </table>

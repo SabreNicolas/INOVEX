@@ -18,7 +18,7 @@ export class ListGroupementsComponent implements OnInit {
 
   @ViewChild('myCreateGroupementDialog') createGroupementDialog = {} as TemplateRef<any>;
 
-  public listGroupement  :groupement[];
+  public listGroupement  : any[];
   public listZone : zone [];
   public idZone : number;
   public groupement : string;
@@ -41,7 +41,13 @@ export class ListGroupementsComponent implements OnInit {
   ngOnInit(): void {
     this.rondierService.getAllGroupements().subscribe((response) =>{
       //@ts-ignore
-      this.listGroupement =response.data;
+      this.listGroupement = response.data;
+      this.listGroupement.forEach(groupement => {
+        //On va compter le nombre d'élément de controle par groupement pour autoriser la suppression si il y en a pas
+        this.rondierService.getElementsGroupement(groupement.id).subscribe((response)=>{
+          groupement.nbElement = response;
+        });
+      });
     })
 
     //On récupère toutes les zones de l'usine
@@ -147,6 +153,13 @@ export class ListGroupementsComponent implements OnInit {
     else {
       this.popupService.alertSuccessForm('Veuillez entrer le nom du groupement ! La saisie a été annulée.');
     }
+  }
+
+  cancel() {
+    this.groupement="";
+    this.idGroupement = 0;
+    this.idZone=0;
+    this.dialog.closeAll();
   }
 
   ouvrirDialogCreerGroupement(){

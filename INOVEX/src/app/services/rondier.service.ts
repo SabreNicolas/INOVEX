@@ -167,6 +167,7 @@ export class rondierService {
 
     //création de la zone de controle
     createZone(nom : string, commentaire : string, four : number){
+        nom = encodeURIComponent(nom);
         let requete = "https://"+this.ip+":"+this.portAPI+"/zone?nom="+nom+"&commentaire="+commentaire+"&four="+four+"&idUsine="+this.idUsine;
         //console.log(requete);
 
@@ -247,7 +248,21 @@ export class rondierService {
 
     //Mise à jour du nom d'une zone de contrôle
     updateNomZone(zoneId : number, nom : string){
+        nom = encodeURIComponent(nom);
         let requete = "https://"+this.ip+":"+this.portAPI+"/zoneNom/"+zoneId+"?nom="+nom;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .put<any>(requete,null,requestOptions);
+    }
+
+    //Mise à jour du num d'un four
+    updateNumZone(zoneId : number, four : number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/zoneFour/"+zoneId+"?four="+four;
         //console.log(requete);
 
         const requestOptions = {
@@ -275,6 +290,7 @@ export class rondierService {
 
     //Création d'un groupement
     createGroupement(zoneId : number, groupement : string){
+        groupement = encodeURIComponent(groupement);
         let requete = "https://"+this.ip+":"+this.portAPI+"/groupement?zoneId="+zoneId+"&groupement="+groupement;
         //console.log(requete);
 
@@ -327,8 +343,22 @@ export class rondierService {
             .get<element>(requete,requestOptions);
     }
 
+    //Récupérer un groupement
+    getElementsGroupement(idGroupement : number){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/getElementsGroupement?idGroupement="+idGroupement;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<any>(requete,requestOptions);
+    }
+
     //Modifier un groupement
     updateGroupement(idGroupement : number, groupement : string, zoneId : number){
+        groupement = encodeURIComponent(groupement);
         let requete = "https://"+this.ip+":"+this.portAPI+"/updateGroupement?idGroupement="+idGroupement+"&groupement="+groupement+"&zoneId="+zoneId;
         //console.log(requete);
 
@@ -658,6 +688,7 @@ export class rondierService {
     //création du mode OP
     //?nom=dggd&fichier=fff&zoneId=1
     createModeOP(nom: string, fichier: File | undefined, zoneId: number){
+        nom = encodeURIComponent(nom);
         //utilisation de formData pour conserver le format du fichier
         const formData = new FormData();
         // @ts-ignore

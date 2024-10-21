@@ -28,6 +28,8 @@ export class EquipeComponent implements OnInit {
   public radioSelect : string;
   public equipesEnregistrees : any[];
   public idEquipeEnregistree : string;
+  public heure_deb : string;
+  public heure_fin : string;
 
   constructor(private cahierQuartService :cahierQuartService,private route : ActivatedRoute ,private popupService : PopupService, private router : Router) {
     this.listUsers = [];
@@ -40,6 +42,8 @@ export class EquipeComponent implements OnInit {
     this.quart = 0;
     this.radioSelect = ""
     this.idEquipeEnregistree = "0";
+    this.heure_deb = '';
+    this.heure_fin = '';
 
     //Permet de savoir si on est en mode édition ou création
     this.route.queryParams.subscribe(params => {
@@ -76,6 +80,20 @@ export class EquipeComponent implements OnInit {
    }
 
   ngOnInit(): void {
+
+    //Récupération de la date de début et de la date de fin en fonction du quart 
+    if(this.quart == 1){
+      this.heure_deb = '05:00';
+      this.heure_fin = '13:00';
+    }
+    else if(this.quart == 2){
+      this.heure_deb = '13:00';
+      this.heure_fin = '21:00';
+    }
+    else{
+      this.heure_deb = '21:00';
+      this.heure_fin = '05:00';
+    }
     
     //Si on est en mode édition
     if(this.idEquipe > 0){
@@ -204,7 +222,7 @@ export class EquipeComponent implements OnInit {
       var poste = (<HTMLInputElement>document.getElementById(recherchePoste)).value;
 
       if(idUser>0){
-        this.cahierQuartService.nouvelleAffectationEquipe(idUser,idEquipe,idZone,poste).subscribe((response) => {
+        this.cahierQuartService.nouvelleAffectationEquipe(idUser,idEquipe,idZone,poste,this.heure_deb,this.heure_fin).subscribe((response) => {
           this.popupService.alertSuccessForm('Nouvelle équipe créée');
           this.listAjout = [];
           this.router.navigate(['/cahierQuart'])

@@ -108,6 +108,11 @@ export class FormulaireComponent implements OnInit {
 
   //Fonction de création et d'édition de formulaire
   createFormulaire(){
+    if(this.nom.length === 0 || this.listAjout.length === 0){
+      this.popupService.alertErrorForm('Le nom ou les produits sont vides !!!');
+      return;
+    }
+
     this.nom = this.nom.replace(/'/g,"''");
     
     //Si on est en édition

@@ -246,10 +246,10 @@ export class RecapRondeComponent implements OnInit {
         //On récupère l'équipe concernée
         this.cahierQuartService.getOneEquipe(this.idEquipe).subscribe((response) =>{
           this.nomEquipe = response.data[0]['equipe'];
-          console.log(response.data[0]);
           if(response.data[0]['idRondier'] != null){
             for(var i = 0;i<response.data.length;i++){
-              this.listRondier.push({Id : response.data[i]['idRondier'], Prenom : response.data[i]['prenomRondier'],Nom : response.data[i]['nomRondier'], Poste : response.data[i]['poste'], Zone : response.data[i]['zone']});
+              console.log(response.data[i]);
+              this.listRondier.push({IdEquipe : response.data[i]['id'], Id : response.data[i]['idRondier'], Prenom : response.data[i]['prenomRondier'],Nom : response.data[i]['nomRondier'], Poste : response.data[i]['poste'], Zone : response.data[i]['zone'], heure_deb : response.data[i]['heure_deb'], heure_fin : response.data[i]['heure_fin'], heure_tp : response.data[i]['heure_tp'], comm_tp : response.data[i]['comm_tp']});
               if(response.data[i]['poste'] == 'Chef de Quart'){
                 this.userPrecedent = response.data[i]['prenomRondier'] + ' ' + response.data[i]['nomRondier'] ;
               }
@@ -631,6 +631,37 @@ export class RecapRondeComponent implements OnInit {
     .then((result) => {
       if(result.value != undefined){
         this.nomAction = String(result.value);
+      }
+    });
+  }
+
+  //permet de mettre à jour les heures de l'équipe
+  updateInfos(idEquipe : number, idRondier : number, typeInfo : string, valueInfo : string){
+    let type = "time";
+    if(typeInfo == "comm_tp") type = "text"
+    //@ts-ignore
+    Swal.fire({
+      title: 'Veuillez saisir une valeur',
+      input: type,
+      inputValue: valueInfo,
+      showCancelButton: true,
+      confirmButtonText: "Valider",
+      confirmButtonColor: "green",
+      cancelButtonText : "Annuler",
+      cancelButtonColor : 'red',
+      allowOutsideClick: true,
+    })
+    .then((result) => {
+      if(result.value != undefined){
+        this.cahierQuartService.updateInfosAffectationEquipe(idRondier,idEquipe,typeInfo,result.value).subscribe((response)=>{
+          if (response == "Ajout ok"){
+            this.popupService.alertSuccessForm("Infos mises à jour avec succès !");
+          }
+          else {
+            this.popupService.alertErrorForm('Erreur lors de la mise à jour des infos ....')
+          }
+        });
+        this.ngOnInit();
       }
     });
   }

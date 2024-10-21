@@ -11,8 +11,9 @@
             <thead>
             <tr class="table-secondary">
                 <th scope="col">Nom</th>
+                <th scope="col">Nombre d'éléments sur le groupement</th>
                 <th scope="col">Edition</th>
-                <!-- <th scope="col">Suppression</th> -->
+                <th scope="col">Suppression</th>
             </tr>
             </thead>
             <tbody *ngFor="let g of listGroupement; let i = index">
@@ -22,16 +23,17 @@
                 </tr>
                 <tr class="table-light">
                     <td>{{g.groupement}}</td>
+                    <td>{{g.nbElement}}</td>
                     <td>
                         <button id="setName"  class="btn btn-outline-primary" (click)="ouvrirDialogUpdateGroupement(g.id)">
                             <i class="fa fa-pencil"></i>
                         </button>
                     </td>
-                    <!-- <td>
-                        <button class="btn btn btn-danger suppression" (click)="deleteGroupement(g.id)">
+                    <td>
+                        <button *ngIf="g.nbElement === 0" class="btn btn btn-danger suppression" (click)="deleteGroupement(g.id)">
                             <i class="fas fa-trash-alt"></i>
                         </button>
-                    </td> -->
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -46,9 +48,8 @@
             <div>
 
                     <div class="form-group">
-                        <label for="choixZone">Selectionnez la {{denomination}} du groupement *</label><br>
-                        <select name="zone" id="choixZone" ngModel [(ngModel)]="idZone" class="form-control">
-                            <option value="0">-- Veuillez selectionner une {{denomination}} --</option>
+                        <label for="choixZone">{{denomination}} du groupement</label><br>
+                        <select name="zone" id="choixZone" ngModel [(ngModel)]="idZone" class="form-control" [disabled]="idGroupement > 0">
                             <option *ngFor ="let zone of listZone" value="{{zone.Id}}">{{zone.nom}}</option>
                         </select>
                     </div>
@@ -62,7 +63,7 @@
 
                     <div class="form-group">
                         <button class="btn btn-success btn-lg" (click)="createGroupement()">Valider</button>
-                        <button [mat-dialog-close]="true" class="btn btn-danger btn-lg">Annuler</button>
+                        <button class="btn btn-danger btn-lg" (click)="cancel()">Annuler</button>
                     </div>
 
             </div>
