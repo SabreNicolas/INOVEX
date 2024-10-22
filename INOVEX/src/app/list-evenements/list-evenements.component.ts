@@ -58,8 +58,7 @@ export class ListEvenementsComponent implements OnInit {
   public planifieDebutBT : string;
   public planifieFinBT : string;
 
-  public DaysAgo : Date;
-  public DaysAgoString : String;
+  public days : String[];
   public hideEvent : boolean;
 
 
@@ -92,26 +91,35 @@ export class ListEvenementsComponent implements OnInit {
     this.commentaireBT = "";
     this.responsableBT = "";
 
-    this.DaysAgo = new Date();
-    this.DaysAgoString = '';
+    this.days = [];
+
     this.hideEvent = true;
   }
 
   ngOnInit(): void {
-    /**Détermination de la date de il y a 7 jours */
-    this.DaysAgo.setDate(this.DaysAgo.getDate() - 7);
-    //@ts-ignore
-    this.DaysAgoString = this.datePipe.transform(this.DaysAgo,'yyyy-MM-dd HH:mm:ss');
+
+    /**Détermination des dates des 7 jours */
+    let today = new Date();
+    let sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6);
+    this.days = this.getDates(sevenDaysAgo,today);
+    this.days.reverse();
+    //permet d'avoir une boucle de plus pour tout afficher
+    this.days.push("");
+    //Par défaut on masque l'ensemble des tableaux
+    $(document).ready(()=>{
+      this.days.forEach(day =>{
+        //alert('#table--'+day.substring(0,2));
+        $('#table--'+day.substring(0,2)).hide();
+      });
+      //Par défaut on affiche quand même le premier élément qui correspond au jour J
+      $('#table--'+this.days[0].substring(0,2)).show();
+    });
     /**FIN Détermination de la date de il y a 7 jours */
 
     this.cahierQuartService.getAllEvenement().subscribe((response)=>{
       // @ts-ignore
       this.listEvenement = response.data;
-      this.listEvenement.forEach(ev => {
-        //on ajoute à chaque évènement une date formaté pour comparer avec la date d'y il a 6 jours
-        ev.dateFormat = ev.date_heure_debut.substring(6,10) +'-'+ ev.date_heure_debut.substring(3,5) +'-'+ ev.date_heure_debut.substring(0,2) +' '+ ev.date_heure_debut.substring(11);
-      });
-      console.log(this.listEvenement);
     });
 
     this.titre = "";
@@ -471,4 +479,24 @@ export class ListEvenementsComponent implements OnInit {
   changeEventVisible(){
     this.hideEvent = !this.hideEvent;
   }
+
+  //Permet de récupérer les dates entre 2 dates, tableau au format string dd/mm/yyyy
+  getDates(startDate : Date, stopDate : Date) {
+    let dateArray = [];
+    while (startDate <= stopDate) {
+      dateArray.push(startDate.toLocaleDateString());
+      startDate.setDate(startDate.getDate() + 1);
+    }
+    return dateArray;
+  }
+
+  //Permet d'afficher ou masquer les tableaux d'évènements
+  showTable(dateTable : String){
+    let idTable = "#table--"+dateTable;
+    if ($(idTable).is(":hidden")){
+      $(idTable).show();
+    }
+    else $(idTable).hide();
+  }
+
 }
