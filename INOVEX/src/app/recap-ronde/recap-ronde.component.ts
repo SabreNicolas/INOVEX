@@ -21,6 +21,9 @@ export class RecapRondeComponent implements OnInit {
 
   @ViewChild('myCreateEventDialog') createEventDialog = {} as TemplateRef<any>;
 
+  //TODO : on a encore un bug d'affichage => quand on appui rapidement sur hier et un quart => duplication des éléments
+  //Un délai entre 2 exécutions du même bouton est sécurisé par un coll down de 3 sec
+
   public listAction : any[];
   public listEvenement : any[];
   public listZone : any[];
@@ -144,7 +147,6 @@ export class RecapRondeComponent implements OnInit {
   ngOnInit(): void {
     //Récupération de l'heure actuelle pour vérifier si on a le droit d'ajouter des actions et autre (on ne peut plus le faire sur un quart terminé)
     let heure = new Date().getHours();
-    this.listRondier = [];
 
     //permet de laiiser une marge pour saisir sur le quart
     let margeHeure = 2;
@@ -210,7 +212,6 @@ export class RecapRondeComponent implements OnInit {
     this.cahierQuartService.getZonesCalendrierRonde(this.dateDebString, this.dateFinString).subscribe((response)=>{
       // @ts-ignore
       this.listZone = response.BadgeAndElementsOfZone;
-      console.log(this.listZone);
     });
     
     //Récupération de l'id de l'équipe pour la ronde si l'équipe est déjà crée
@@ -239,6 +240,7 @@ export class RecapRondeComponent implements OnInit {
 
     //Récupération de l'id de l'équipe pour la ronde si l'équipe est déjà crée
     this.cahierQuartService.getEquipeQuart(this.quart,format(new Date(this.dateDebString),'yyyy-MM-dd')).subscribe((response)=>{
+      this.listRondier = [];
       // @ts-ignore
       this.idEquipe = response.data[0].id;
       //Si on est en mode édition
@@ -246,10 +248,11 @@ export class RecapRondeComponent implements OnInit {
         //On récupère l'équipe concernée
         this.cahierQuartService.getOneEquipe(this.idEquipe).subscribe((response) =>{
           this.nomEquipe = response.data[0]['equipe'];
+          //TODO voir si on ne peut pas simplement affecter la variable avec un = et la reponse de l'API
           if(response.data[0]['idRondier'] != null){
             for(var i = 0;i<response.data.length;i++){
-              console.log(response.data[i]);
-              this.listRondier.push({IdEquipe : response.data[i]['id'], Id : response.data[i]['idRondier'], Prenom : response.data[i]['prenomRondier'],Nom : response.data[i]['nomRondier'], Poste : response.data[i]['poste'], Zone : response.data[i]['zone'], heure_deb : response.data[i]['heure_deb'], heure_fin : response.data[i]['heure_fin'], heure_tp : response.data[i]['heure_tp'], comm_tp : response.data[i]['comm_tp']});
+              //console.log(response.data[i]);
+              this.listRondier[i] = {IdEquipe : response.data[i]['id'], Id : response.data[i]['idRondier'], Prenom : response.data[i]['prenomRondier'],Nom : response.data[i]['nomRondier'], Poste : response.data[i]['poste'], Zone : response.data[i]['zone'], heure_deb : response.data[i]['heure_deb'], heure_fin : response.data[i]['heure_fin'], heure_tp : response.data[i]['heure_tp'], comm_tp : response.data[i]['comm_tp']};
               if(response.data[i]['poste'] == 'Chef de Quart'){
                 this.userPrecedent = response.data[i]['prenomRondier'] + ' ' + response.data[i]['nomRondier'] ;
               }

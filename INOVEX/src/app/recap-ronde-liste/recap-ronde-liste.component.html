@@ -18,6 +18,10 @@
     <tr class="table-secondary">
         <th scope="col">Nom</th>
         <th scope="col">Prenom</th>
+        <th scope="col">Heure Début</th>
+        <th scope="col">Heure Fin</th>
+        <th scope="col">Heure Travaux Pénible</th>
+        <th scope="col">Commentaire</th>
         <th scope="col">Poste</th>
     </tr>
     </thead>
@@ -26,6 +30,18 @@
         <td>{{rondier.Nom}}</td>
         <td>
             {{rondier.Prenom}}
+        </td>
+        <td class="heure">
+            {{rondier.heure_deb}}
+        </td>
+        <td class="heure">
+            {{rondier.heure_fin}}
+        </td>
+        <td class="heure">
+            {{rondier.heure_tp}}
+        </td>
+        <td class="heure">
+            {{rondier.comm_tp}}
         </td>
         <td>
             {{rondier.Poste}}

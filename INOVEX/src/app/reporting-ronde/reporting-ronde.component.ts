@@ -1,17 +1,13 @@
-import { Component, ElementRef, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, EventEmitter } from '@angular/core';
 import {rondierService} from "../services/rondier.service";
 import {ronde} from "../../models/ronde.models";
 import {NgForm} from "@angular/forms";
 import Swal from "sweetalert2";
-import {mesureRonde} from "../../models/mesureRonde.model";
 import {anomalie} from "../../models/anomalie.model";
 import {elementsOfZone} from "../../models/elementsOfZone.model";
 import {permisFeuValidation} from "../../models/permisfeu-validation.model";
-import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 import {user} from "../../models/user.model";
-import { element } from 'src/models/element.model';
 import { groupement } from 'src/models/groupement.model';
-import { zone } from 'src/models/zone.model';
 import { PopupService } from '../services/popup.service';
 declare var $ : any;
 
@@ -45,6 +41,7 @@ export class ReportingRondeComponent implements OnInit {
   public listGroupements : groupement[];
   public listeZoneUnique : Map<String,number>;
   public listElementsUniques : any;
+
   constructor(private rondierService : rondierService, private elementRef : ElementRef, private popupService : PopupService) {
     this.listRonde = [];
     this.listZone = [];
@@ -82,7 +79,6 @@ export class ReportingRondeComponent implements OnInit {
       this.isChefQuart = userLoggedParse['isChefQuart'];
     }
     this.filtreZone ="";
-    // AEROcondenseurs
   }
 
   ngOnInit(): void {
@@ -168,14 +164,14 @@ export class ReportingRondeComponent implements OnInit {
     this.rondierService.getElementsAndValuesOfDay(this.dateDeb, quart).subscribe((response)=>{
       //@ts-ignore
       this.listElementsOfUsine = response.data;
-      console.log(this.listElementsOfUsine)
       var prompt = "";
       var prompt0 = "";
       $(document).ready(() =>{
         setTimeout(() =>{
           //Affichage des éléments
-          for(var i =this.listElementsOfUsine.length-1; i>0; i--){
-            if(this.listElementsOfUsine[i].nom != this.listElementsOfUsine[i-1].nom || this.listElementsOfUsine[i].zoneId != this.listElementsOfUsine[i-1].zoneId ){
+          for(var i = this.listElementsOfUsine.length-1; i>=0; i--){
+            if(i != 0 && (this.listElementsOfUsine[i].nom != this.listElementsOfUsine[i-1].nom || this.listElementsOfUsine[i].zoneId != this.listElementsOfUsine[i-1].zoneId) || i == 0 && (this.listElementsOfUsine[i].nom != this.listElementsOfUsine[i+1].nom || this.listElementsOfUsine[i].zoneId != this.listElementsOfUsine[i+1].zoneId)){
+              console.log(this.listElementsOfUsine[i].nom);
               if(this.idUsine == 7){
                 prompt ='<tr class="table-warning '+this.listElementsOfUsine[i].zoneId+'-ZoneElements '+this.listElementsOfUsine[i].idGroupement+'-elements" style="display:none">'
                 +'<td>'+this.listElementsOfUsine[i].nom+'</td>';
@@ -212,11 +208,11 @@ export class ReportingRondeComponent implements OnInit {
           }
           if(this.listElementsOfUsine[0].idGroupement != null){
             var id = '#groupement--'+this.listElementsOfUsine[0].idGroupement
-            console.log($(id).after(prompt0))
+            //console.log($(id).after(prompt0))
           }
           else{
             var id = '#zone--'+this.listElementsOfUsine[0].zoneId
-            console.log($(id).after(prompt0))
+            //console.log($(id).after(prompt0))
           }
 
           //Remplissage des valeurs
@@ -261,7 +257,6 @@ export class ReportingRondeComponent implements OnInit {
       this.listAnomalie = response.data
       // console.log(this.listAnomalie)
     })
-
   }
 
   await(ms : number){

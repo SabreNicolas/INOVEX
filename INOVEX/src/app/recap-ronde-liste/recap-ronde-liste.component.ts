@@ -139,7 +139,7 @@ export class RecapRondeListeComponent {
           this.nomEquipe = response.data[0]['equipe'];
           if(response.data[0]['idRondier'] != null){
             for(var i = 0;i<response.data.length;i++){
-              this.listRondier.push({Id : response.data[i]['idRondier'], Prenom : response.data[i]['prenomRondier'],Nom : response.data[i]['nomRondier'], Poste : response.data[i]['poste']});
+              this.listRondier.push({Id : response.data[i]['idRondier'], Prenom : response.data[i]['prenomRondier'],Nom : response.data[i]['nomRondier'], Poste : response.data[i]['poste'], Zone : response.data[i]['zone'], heure_deb : response.data[i]['heure_deb'], heure_fin : response.data[i]['heure_fin'], heure_tp : response.data[i]['heure_tp'], comm_tp : response.data[i]['comm_tp']});
             }
           }
         })

@@ -50,12 +50,12 @@
                     <div class="col-sm-5">
                         <div class="form-group">
                             <!-- <button class="btn btn-primary" type="submit" (click)="setPeriod(f)"><img src="assets/refresh.png"></button> -->
-                            <button style="margin-left: 0.5em" class="btn btn-warning" (click)="setYesterday(f)">Hier</button>
-                            <button style="margin-left: 0.5em" class="btn btn-success" (click)="setToday(f)">Aujourd'hui</button>
-                            <button style="margin-left: 0.5em" id="quartmatin" class="btn btn-info" (click)="afficherRonde(1)"><strong>Matin</strong></button>
-                            <button style="margin-left: 0.5em" id="quartapresmidi" class="btn btn-info" (click)="afficherRonde(2)"><strong>Après-midi</strong></button>
-                            <button style="margin-left: 0.5em" id="quartnuit" class="btn btn-info" (click)="afficherRonde(3)"><strong>Nuit</strong></button>
-                            <button style="margin-left: 0.5em" id="troisQuart" class="btn btn-info" (click)="afficherRonde(0)"><strong>Toutes les rondes</strong></button>
+                            <button style="margin-left: 0.5em" class="btn btn-warning" appPreventDoubleClick [throttleTime]="3000" (throttledClick)="setYesterday(f)">Hier</button>
+                            <button style="margin-left: 0.5em" class="btn btn-success" appPreventDoubleClick [throttleTime]="3000" (throttledClick)="setToday(f)">Aujourd'hui</button>
+                            <button style="margin-left: 0.5em" id="quartmatin" class="btn btn-info" appPreventDoubleClick [throttleTime]="3000" (throttledClick)="afficherRonde(1)"><strong>Matin</strong></button>
+                            <button style="margin-left: 0.5em" id="quartapresmidi" class="btn btn-info" appPreventDoubleClick [throttleTime]="3000" (throttledClick)="afficherRonde(2)"><strong>Après-midi</strong></button>
+                            <button style="margin-left: 0.5em" id="quartnuit" class="btn btn-info" appPreventDoubleClick [throttleTime]="3000" (throttledClick)="afficherRonde(3)"><strong>Nuit</strong></button>
+                            <button style="margin-left: 0.5em" id="troisQuart" class="btn btn-info" appPreventDoubleClick [throttleTime]="3000" (throttledClick)="afficherRonde(0)"><strong>Toutes les rondes</strong></button>
                         </div>
                     </div>
                 </div>

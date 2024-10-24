@@ -108,6 +108,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatInputModule } from '@angular/material/input';
+import { PreventDoubleClickDirective } from './prevent-double-click';
 
 
 registerLocaleData(localeFr, 'fr');
@@ -196,6 +197,7 @@ class CustomDateFormatter extends CalendarNativeDateFormatter{
     LiensExternesComponent,
     RecapRondePrecedenteComponent,
     RecapRondeListeComponent,
+    PreventDoubleClickDirective
   ],
   imports: [
     BrowserModule,
