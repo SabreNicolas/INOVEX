@@ -789,9 +789,9 @@ export class cahierQuartService {
     }
 
   //Récupérer toutes les consignes entre deux dates d'une usine avec filtre sur le titre et l'importance
-  getConsignesEntreDeuxDates(dateDeb : string, dateFin : string, titre : string){
+  getConsignesRecherche(dateDeb : string, dateFin : string, titre : string){
     titre = encodeURIComponent(titre)
-    let requete = "https://"+this.ip+":"+this.portAPI+"/getConsignesEntreDeuxDates?idUsine="+this.idUsine+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&titre="+titre
+    let requete = "https://"+this.ip+":"+this.portAPI+"/getConsignesRecherche?idUsine="+this.idUsine+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&titre="+titre
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),

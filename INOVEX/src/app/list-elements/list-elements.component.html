@@ -120,7 +120,7 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <select class="select form-select form-select-sm" id="groupement" aria-label=".form-select-sm example" name="groupement" ngModel [(ngModel)]="idGroupement">
-                                        <option value="0">Aucun</option>
+                                        <option value=0>Aucun</option>
                                         <option *ngFor="let g of listGroupements" value={{g.id}}>{{g.groupement}}</option>
                                     </select>
                                 </div>
@@ -133,8 +133,8 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <select required id="ordreElem" class="select form-select form-select-sm" aria-label=".form-select-sm example" name="ordreElem" ngModel [(ngModel)]="ordreElem">
-                                        <option value=0>--DEBUT DE LA ZONE--</option>
+                                    <select required id="ordreElem" class="select form-select form-select-sm" aria-label=".form-select-sm example" name="ordreElem" ngModel [(ngModel)]="ordre">
+                                        <option value=0>DEBUT</option>
                                         <option *ngFor="let e of listElement" value={{e.ordre}}>{{e.ordre}} - {{e.nom}}</option>
                                     </select>
                                 </div>

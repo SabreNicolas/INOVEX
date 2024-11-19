@@ -10,12 +10,13 @@ export class dateService {
     }
     //récupérer les jours de la période
     getDays(start : Date, end : Date) {
-        for(var arr=[],dt=new Date(start); dt<=end; dt.setDate(dt.getDate()+1)){
+        for(var arr=[],dt=new Date(start); dt <= end; dt.setDate(dt.getDate()+1)){
           var dd = String(dt.getDate()).padStart(2, '0');
           var mm = String(dt.getMonth() + 1).padStart(2, '0'); //January is 0!
           var yyyy = dt.getFullYear();
           var day = dd + '/' + mm + '/' + yyyy;
           arr.push(day);
+          console.log(day);
         }
         return arr;
     };

@@ -103,7 +103,7 @@ export class RechercheComponent implements OnInit {
 
     //Si consigne est cochée on les récupère
     if(this.consigne){
-      this.cahierQuartService.getConsignesEntreDeuxDates(dateDebString, dateFinString, this.titre).subscribe((response) => {
+      this.cahierQuartService.getConsignesRecherche(dateDebString, dateFinString, this.titre).subscribe((response) => {
         for(const ligne of response.data){
           this.resultTableau.push(ligne)
         }

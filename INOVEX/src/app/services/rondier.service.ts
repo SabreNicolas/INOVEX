@@ -862,9 +862,22 @@ export class rondierService {
         }
     }
 
-    //liste des consignes en cours de validité
+    //liste des consignes en cours de validité à l'instant T
     listConsignes(){
         let requete = "https://"+this.ip+":"+this.portAPI+"/consignes/"+this.idUsine;
+        //console.log(requete);
+
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+
+        return this.http
+            .get<consigne[]>(requete,requestOptions);
+    }
+
+    //liste des consignes en cours de validité entre 2 dates
+    listConsignesEntreDeuxDates(dateDeb : string, dateFin : string){
+        let requete = "https://"+this.ip+":"+this.portAPI+"/consignesEntreDeuxDates/"+this.idUsine+"?dateDeb="+dateDeb+"&dateFin="+dateFin;
         //console.log(requete);
 
         const requestOptions = {
@@ -901,7 +914,7 @@ export class rondierService {
             .put<any>(requete,null,requestOptions);
     }
 
-    //création d'une consigne
+    //update d'une consigne
     //?commentaire=dggd&dateFin=fff&type=1
     updateConsigne(titre : string, desc: string, type: number, dateFin: string | null, dateDebut: string | null, id:number){
         titre = encodeURIComponent(titre);

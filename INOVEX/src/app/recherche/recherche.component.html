@@ -116,7 +116,7 @@
                 <td *ngIf="evenement">
                     <!-- Balise caché avec la valeur pour export Excel car impossible d'exporter valeurs si inputs dans table -->
                     <p style="display: none;" id="export">{{event.url}}</p>
-                    <a *ngIf="event.url != ''" routerLink="../../{{event.url}}">
+                    <a *ngIf="event.url != '' && event.typeDonnee == 'Evènement'" routerLink="../../{{event.url}}">
                         <button class="btn btn-success">
                             <i class="fas fa-image"></i> 
                         </button>

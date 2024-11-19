@@ -227,7 +227,7 @@ export class RecapRondeComponent implements OnInit {
     });
 
     //On récupére la liste des consignes en cours de validité
-    this.rondierService.listConsignes().subscribe((response) => {
+    this.rondierService.listConsignesEntreDeuxDates(this.dateDebString.substring(0,16), this.dateFinString.substring(0,16)).subscribe((response) => {
       //@ts-ignore
       this.consignes = response.data;
     });

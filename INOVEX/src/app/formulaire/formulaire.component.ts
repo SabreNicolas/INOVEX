@@ -127,7 +127,7 @@ export class FormulaireComponent implements OnInit {
             this.productsService.createFormulaireAffectation(pr.alias,this.idForm,pr.id).subscribe((response)=>{
               if(response == "Affectation OK"){
                 this.popupService.alertSuccessForm('Formulaire modifié !');
-                this.nom="";
+                //this.nom="";
                 this.productAjout="";
                 this.alias="";
               }

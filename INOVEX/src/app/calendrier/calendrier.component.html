@@ -175,6 +175,7 @@
   </mwl-calendar-month-view>
   <mwl-calendar-week-view
     *ngSwitchCase="CalendarView.Week"
+    style="color: rgb(27,37,51);"
     [viewDate]="viewDate"
     locale="fr"
     [events]="events"
@@ -186,6 +187,7 @@
   </mwl-calendar-week-view>
   <mwl-calendar-day-view
     *ngSwitchCase="CalendarView.Day"
+    style="color: rgb(27,37,51);"
     [viewDate]="viewDate"
     locale="fr"
     [events]="events"
@@ -210,8 +212,8 @@
       Du <strong>{{modalData?.dateDeb}}</strong> au <strong> {{modalData?.dateFin}} </strong>
       <br><br>
       <div *ngFor="let ronde of modalData?.ronde">
-        Zone : <strong>{{ronde.nom}}</strong> 
-        <button type="button" class="btn btn-outline-danger" (click)="deleteEvenement(ronde.id, false);close()">
+        Zone : <strong>{{ronde.nom}}</strong>
+        <button type="button" [disabled]="userLogged.hasOwnProperty('localisation') || !userLogged['isAdmin'] === true" class="btn btn-outline-danger" (click)="deleteEvenement(ronde.id, false);close()">
           <i class="fas fa-trash"></i>
         </button>
       </div>
@@ -219,7 +221,7 @@
         <button type="button" class="btn btn-outline-secondary" class="btn btn-outline-danger" (click)="deleteEvenement(modalData?.event?.id, false)">
           Supprimer l'évènement
         </button>
-        <button type="button" class="btn btn-outline-secondary" class="btn btn-danger" (click)="deleteEvenement(modalData?.event?.id, true)">
+        <button type="button" [disabled]="true" class="btn btn-outline-secondary" class="btn btn-danger" (click)="deleteEvenement(modalData?.event?.id, true)">
           <i style="color: white;" class="fa fa-exclamation-triangle" aria-hidden="true"></i>Supprimer l'occurence
         </button>
       </div>

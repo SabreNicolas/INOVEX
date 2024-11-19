@@ -130,17 +130,17 @@
                 <th *ngFor="let ronde of listRonde" style="text-align: center" scope="col">
                     <div>
                         <p *ngIf="ronde.quart == 1">Matin
-                            <button [disabled]="!isAdmin" class="btn btn-outline-danger btn-sm" (click)="deleteRonde(ronde.Id)">
+                            <button [disabled]="true" class="btn btn-outline-danger btn-sm" (click)="deleteRonde(ronde.Id)">
                                 <i class="fa fa-trash-o" aria-hidden="true"></i>
                             </button>
                         </p>
                         <p *ngIf="ronde.quart == 2">Après-Midi
-                            <button [disabled]="!isAdmin" class="btn btn-outline-danger btn-sm" (click)="deleteRonde(ronde.Id)">
+                            <button [disabled]="true" class="btn btn-outline-danger btn-sm" (click)="deleteRonde(ronde.Id)">
                                 <i class="fa fa-trash-o" aria-hidden="true"></i>
                             </button>
                         </p>
                         <p *ngIf="ronde.quart == 3">Nuit
-                            <button [disabled]="!isAdmin" class="btn btn-outline-danger btn-sm" (click)="deleteRonde(ronde.Id)">
+                            <button [disabled]="true" class="btn btn-outline-danger btn-sm" (click)="deleteRonde(ronde.Id)">
                                 <i class="fa fa-trash-o" aria-hidden="true"></i>
                             </button>
                         </p>

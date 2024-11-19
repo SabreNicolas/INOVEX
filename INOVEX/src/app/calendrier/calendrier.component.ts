@@ -11,6 +11,7 @@ import Swal from 'sweetalert2';
 import { delay } from 'rxjs/operators';
 import { PopupService } from '../services/popup.service';
 import { MatDialog } from '@angular/material/dialog';
+import { user } from 'src/models/user.model';
 declare var $ : any;
 
 @Component({
@@ -23,6 +24,7 @@ export class CalendrierComponent implements OnInit{
   @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any> | undefined;
   @ViewChild('myCreateEventDialog') createEventDialog = {} as TemplateRef<any>;
 
+  public userLogged!: user;
   public view: CalendarView = CalendarView.Week;
   public listZone : zone[];
   public listZoneSelection : number[];
@@ -86,6 +88,12 @@ export class CalendrierComponent implements OnInit{
   }
   
   ngOnInit(): void {
+    //On récupère le user dans le localStorage pour bloquer la suppresion dans le calendrier pour les super admin
+    var userLogged = localStorage.getItem('user');
+    if (typeof userLogged === "string") {
+      var userLoggedParse = JSON.parse(userLogged);
+      this.userLogged = userLoggedParse;
+    }
 
     //On cache les blocs de création
     $('#CreationRondeAction').hide();

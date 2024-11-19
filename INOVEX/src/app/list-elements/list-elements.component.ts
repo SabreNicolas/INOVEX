@@ -7,6 +7,7 @@ import { groupement } from 'src/models/groupement.model';
 import {NgForm} from "@angular/forms";
 import { MatDialog } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
+declare var $ : any;
 
 @Component({
   selector: 'app-list-elements',
@@ -24,7 +25,7 @@ export class ListElementsComponent implements OnInit {
   public nom : string;
   public zoneIdSelect : number;
   public listElement : element[];
-  public ordreElem : number;
+  public ordre : number;
   public valeurMin : number;
   public valeurMax : number;
   public typeChamp : number;
@@ -56,7 +57,7 @@ export class ListElementsComponent implements OnInit {
     this.nom = "";
     this.zoneIdSelect = 0;
     this.listElement = [];
-    this.ordreElem = 99;
+    this.ordre = 99;
     this.valeurMin = 0;
     this.valeurMax = 0;
     this.typeChamp = 2;
@@ -125,9 +126,9 @@ export class ListElementsComponent implements OnInit {
       if(this.idGroupement == null){
         this.idGroupement = 0;
       }
-      this.getElements();
+
+      this.getElements(this.element.ordre-1);
       
-      this.ordreElem = this.element.ordre-1;
       this.changeType(null);
       //Gestion du mode regulateur
       if (this.isRegulateur == 1) {
@@ -232,10 +233,14 @@ export class ListElementsComponent implements OnInit {
   }
 
   //Récupération des éléments de la zone par ordre
-  getElements(){
+  getElements(ordre : number){
     this.rondierService.listElementofZone(this.zoneIdSelect).subscribe((response)=>{
       // @ts-ignore
       this.listElement = response.data;
+      //Si on est en update de l'element => on update l'ordre
+      if(ordre != 0) {
+        this.ordre = ordre;
+      }
     });
   }
 
@@ -248,7 +253,7 @@ export class ListElementsComponent implements OnInit {
         this.idGroupement = 0;
       }
 
-      this.getElements();
+      this.getElements(0);
     });
     
   }
@@ -259,7 +264,7 @@ export class ListElementsComponent implements OnInit {
     this.checkboxCompteur = <HTMLInputElement>document.getElementsByName('compteur')[0];
     this.nom = form.value['nom'].replace(/'/g,"''");
     this.zoneIdSelect = form.value['zone'];
-    this.ordreElem = form.value['ordreElem'];
+    this.ordre = form.value['ordreElem'];
     if(form.value['unit'].length > 0){
       this.unit = form.value['unit'].replace(/'/g,"''");
     }
@@ -267,7 +272,14 @@ export class ListElementsComponent implements OnInit {
       this.defaultValue = (form.value['valeurDef'].replace(',','.').replace(/'/g,"''"));
     }
     if(this.needListValues){
+      //Pour éviter les soucis d'affichage les cases à cocher peuvent être 3 au max
       this.listValues = form.value['listValues'].replace(/'/g,"''");
+      if(this.typeChamp == 3){
+        if(this.listValues.split(" ").length > 3){
+          this.popupService.alertErrorForm("Les cases à cocher peuvent contenir 3 choix au maximum ! Merci d'utiliser un menu de sélection");
+          return;
+        }
+      }
     }
     if(this.needBornes){
       if(form.value['valeurMin'].length > 0){
@@ -300,10 +312,10 @@ export class ListElementsComponent implements OnInit {
       this.update();
     }
     else{
-        this.rondierService.updateOrdreElement(this.zoneIdSelect,this.ordreElem).subscribe((response)=>{
+        this.rondierService.updateOrdreElement(this.zoneIdSelect,this.ordre).subscribe((response)=>{
           // @ts-ignore
           if (response == "Mise à jour des ordres OK"){
-            this.rondierService.createElement(this.zoneIdSelect, this.nom, this.valeurMin, this.valeurMax, this.typeChamp, this.unit, this.defaultValue, this.isRegulateur,this.listValues,this.isCompteur, Number(this.ordreElem)+1, this.idGroupement, this.codeEquipement, this.infoSupValue).subscribe((response)=>{
+            this.rondierService.createElement(this.zoneIdSelect, this.nom, this.valeurMin, this.valeurMax, this.typeChamp, this.unit, this.defaultValue, this.isRegulateur,this.listValues,this.isCompteur, Number(this.ordre)+1, this.idGroupement, this.codeEquipement, this.infoSupValue).subscribe((response)=>{
               if (response == "Création de l'élément OK"){
                 this.idGroupement = 0 ;
                 this.codeEquipement = "";
@@ -330,11 +342,11 @@ export class ListElementsComponent implements OnInit {
   //Mise à jour de l'element
   update(){
     //Permet de ne pas mettre à jour les ordres si on ne change pas la position dans la zone
-    if(this.element.ordre != this.ordreElem + 1){
-      this.rondierService.updateOrdreElement(this.zoneIdSelect,this.ordreElem).subscribe((response)=>{
+    if(this.element.ordre != this.ordre + 1){
+      this.rondierService.updateOrdreElement(this.zoneIdSelect,this.ordre).subscribe((response)=>{
         // @ts-ignore
         if (response == "Mise à jour des ordres OK"){
-          this.updateElement(Number(this.ordreElem)+1);
+          this.updateElement(Number(this.ordre)+1);
         }
         else {
           this.popupService.alertErrorForm('Erreur lors de la création de l\'élément de contrôle ....')
@@ -365,7 +377,7 @@ export class ListElementsComponent implements OnInit {
     this.nom = "";
     this.zoneIdSelect = 0;
     this.listElement = [];
-    this.ordreElem = 1;
+    this.ordre = 1;
     this.valeurMin = 0;
     this.valeurMax = 0;
     this.typeChamp = 2;

@@ -93,7 +93,7 @@ export class ListCompteursComponent implements OnInit {
 
   async setPeriod(form: NgForm){
     //SI Pithiviers
-    if(this.idUsine == 3){
+    /*if(this.idUsine == 3){
       this.listDays = [];
       if(form.value['dateDeb'] != ''){
         var date = new Date(form.value['dateDeb']);
@@ -106,7 +106,7 @@ export class ListCompteursComponent implements OnInit {
         this.popupService.alertErrorForm('Date invalide')
       }
     }//Sinon on affiche en journalier
-    else {
+    else {*/
       this.listDays = [];
       this.dateDeb = new Date((<HTMLInputElement>document.getElementById("dateDeb")).value);
       this.dateFin = new Date((<HTMLInputElement>document.getElementById("dateFin")).value);
@@ -117,7 +117,7 @@ export class ListCompteursComponent implements OnInit {
         this.loading();
       }
       this.listDays = this.dateService.getDays(this.dateDeb, this.dateFin);
-    }
+    //}
     //On récupère les valeurs
     await this.getValues();
     this.removeloading();
@@ -188,8 +188,8 @@ export class ListCompteursComponent implements OnInit {
           i=0;
           await this.wait(500);
         }
-        //Si on est sur chinon, ou pit, on récupère les valeurs dans saisiemensuelle
-        if(this.idUsine == 2 || this.idUsine == 3){
+        //Si on est sur chinon on récupère les valeurs dans saisiemensuelle
+        if(this.idUsine == 2){
           this.productsService.getValueCompteurs(date.substr(6, 4) + '-' + date.substr(3, 2) + '-' + date.substr(0, 2),pr.Code).subscribe((response) => {
             if (response.data[0] != undefined && response.data[0].Value != 0) {
               (<HTMLInputElement>document.getElementById(pr.Code + '-' + date)).value = response.data[0].Value;
@@ -221,8 +221,8 @@ export class ListCompteursComponent implements OnInit {
         var Value2 = value.replace(" ", "");
         var valueInt: number = +Value2;
         if (valueInt > 0.0) {
-          //Si on est sur chinon ou pit, on insère les valeurs dans saisiemensuelle
-          if(this.idUsine == 2 ||this.idUsine == 3){
+          //Si on est sur chinon, on insère les valeurs dans saisiemensuelle
+          if(this.idUsine == 2){
             this.productsService.createMeasure(day.substr(6, 4) + '-' + day.substr(3, 2) + '-' + day.substr(0, 2), valueInt, cp.Code).subscribe((response) => {
               if (response == "Création du saisiemensuelle OK") {
                 this.popupService.alertSuccessForm("Les valeurs ont été insérées avec succès !");
