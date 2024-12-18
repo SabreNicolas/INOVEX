@@ -480,6 +480,7 @@ export class ListEvenementsComponent implements OnInit {
     this.hideEvent = !this.hideEvent;
   }
 
+  //TODO a externaliser dans un service
   //Permet de récupérer les dates entre 2 dates, tableau au format string dd/mm/yyyy
   getDates(startDate : Date, stopDate : Date) {
     let dateArray = [];

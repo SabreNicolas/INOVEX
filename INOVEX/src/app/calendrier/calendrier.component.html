@@ -36,8 +36,11 @@
         </select>
       </div>
       <div class="form-group" id="CreationAction" style="display: none;">
-        <label>Liste des actions :</label>
+        <label>Action :</label>
         <input type="text" id="actions" class="form-control" placeholder="Liste des actions" name="nomAction" [(ngModel)]="nomAction"/>
+        <button class="btn" id="valider" style="background-color: rgb(27,37,51); color: white;" (click)="choixAction();">
+          Depuis Liste Actions
+        </button>
       </div>
 
       <div class="form-group">

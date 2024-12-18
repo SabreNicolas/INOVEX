@@ -453,7 +453,7 @@ export class RecapRondePrecedenteComponent {
 
     //On récupère le blob pour créer un file que l'on va envoyer à l'API pour le stocker avec multer
     pdfCreate.getBlob(blob => {
-      var file = new File([blob],quart+' - '+this.userPrecedent+".pdf");
+      var file = new File([blob],"_"+this.formatDateTime(this.dateDebString)+"-"+quart+' - '+this.userPrecedent.replace("'","")+".pdf");
       this.cahierQuartService.stockageRecapPDF(file,quart,this.formatDateTime(this.dateDebString)).subscribe((response)=>{
         if (response == "Envoi mail OK"){
           this.popupService.alertSuccessForm("Le mail a bien été envoyé !");

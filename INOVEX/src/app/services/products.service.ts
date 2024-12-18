@@ -49,8 +49,9 @@ export class productsService {
 
     //création du produit
     createProduct(typeId : number, idUsine : number){
-        this.nom = encodeURIComponent(this.nom);
-        let requete = "https://"+this.ip+":"+this.portAPI+"/Product?Name="+this._nom+"&Code="+this._code+"&typeId="+typeId+"&Unit="+this._unit+"&idUsine="+idUsine+"&TAG="+this._tag;
+        //ici on passe par une variable car on a un systeme de boucle qui rencode  chaque fois la variable
+        let encodedNom = encodeURIComponent(this.nom);
+        let requete = "https://"+this.ip+":"+this.portAPI+"/Product?Name="+encodedNom+"&Code="+this._code+"&typeId="+typeId+"&Unit="+this._unit+"&idUsine="+idUsine+"&TAG="+this._tag;
         //console.log(requete);
 
         const requestOptions = {

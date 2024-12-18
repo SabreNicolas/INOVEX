@@ -158,12 +158,12 @@ export class EquipeComponent implements OnInit {
     //Boucle qui permet de vérifier que chaque utilisateur à bien un poste ou une zone de contrôle
     for(const user of this.listAjout){
       
-      var rechercheZone = user.Nom +"_"+user.Prenom+"_zone";
-      var idZone = parseInt((<HTMLInputElement>document.getElementById(rechercheZone)).value);
-      if(Number.isNaN(idZone)){
-        this.popupService.alertErrorForm('Veuillez affecter une ronde à chaque personne ! La saisie a été annulée.');
-        return
-      }
+      //var rechercheZone = user.Nom +"_"+user.Prenom+"_zone";
+      //var idZone = parseInt((<HTMLInputElement>document.getElementById(rechercheZone)).value);
+      //if(Number.isNaN(idZone)){
+        //this.popupService.alertErrorForm('Veuillez affecter une ronde à chaque personne ! La saisie a été annulée.');
+        //return
+      //}
 
       var recherchePoste = user.Nom +"_"+user.Prenom+"_poste";
       var idPoste = (<HTMLInputElement>document.getElementById(recherchePoste)).value;
@@ -216,8 +216,10 @@ export class EquipeComponent implements OnInit {
   ajoutAffectationEquipe(idEquipe : number){
     for(const user of this.listAjout){
       var idUser = user.Id;
-      var rechercheZone = user.Nom +"_"+user.Prenom+"_zone";
-      var idZone = parseInt((<HTMLInputElement>document.getElementById(rechercheZone)).value);
+      //var rechercheZone = user.Nom +"_"+user.Prenom+"_zone";
+      //var idZone = parseInt((<HTMLInputElement>document.getElementById(rechercheZone)).value);
+      //On force à 0 l'idZone car on ne gère plus l'affectation zone par utilisateur => cahier de quart le remplace
+      var idZone = 0;
       var recherchePoste = user.Nom +"_"+user.Prenom+"_poste";
       var poste = (<HTMLInputElement>document.getElementById(recherchePoste)).value;
 

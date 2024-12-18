@@ -357,6 +357,19 @@ export class RecapRondeComponent implements OnInit {
     });
   }
 
+  //mettre à jour le statut terminé d'une action une action
+  updateAction(id: any, termine : boolean) {
+    this.cahierQuartService.updateTerminerCalendrier(id,termine).subscribe((response)=>{
+      if (response == "Update action du calendrier OK"){
+        this.popupService.alertSuccessForm("Mise à jour OK !");
+        this.ngOnInit();
+      }
+      else {
+        this.popupService.alertErrorForm("Erreur lors de la mise à jour....")
+      }
+    });
+  }
+
   priseDeQuart(){
     //Demande de confirmation de création d'équipe
     Swal.fire({title: 'Avez vous pris connaissance des consignes ?',icon: 'warning',showCancelButton: true,confirmButtonColor: '#3085d6',cancelButtonColor: '#d33',confirmButtonText: 'Oui',cancelButtonText: 'Non'

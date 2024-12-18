@@ -19,7 +19,7 @@
                 <th scope="col">Heure Fin</th>
                 <th scope="col">Heure Travaux Pénible</th>
                 <th scope="col">Commentaire</th>
-                <th scope="col">Zone</th>
+                <!--<th scope="col">Zone</th>-->
             </tr>
             </thead>
             <tbody *ngFor="let rondier of listRondier">
@@ -51,7 +51,7 @@
                         <i class="far fa-edit"></i>
                     </button>
                 </td>
-                <td>{{rondier.Zone}}</td>
+                <!--<td>{{rondier.Zone}}</td>-->
             </tr>
             </tbody>
         </table>
@@ -172,7 +172,12 @@
                 </thead>
                 <tbody *ngFor="let action of listAction">
                 <tr [ngStyle]="{'background-color' : action.termine == 1 ? 'lightgreen' : 'white'}">
-                    <td>{{action.nom}}</td>
+                    <td>
+                        {{action.nom}}
+                        <button [disabled]="!saisieAutorise" [ngClass]="{ btn:true, 'btn-outline-success':action.termine == 1, 'btn-outline-danger':action.termine == 0 }" (click)="updateAction(action.id,!action.termine)">
+                            <i [ngStyle]="{'color' : action.termine == 1 ? 'green' : 'red'}" [ngClass]="{ fas:true, 'fa-check':action.termine == 1, 'fa-times-circle':action.termine == 0 }"></i>
+                        </button>
+                    </td>
                     <td>
                         <button [disabled]="!saisieAutorise" type="button" class="btn btn-outline-danger" (click)="deleteAction(action.id)">
                             <i class="fas fa-trash"></i>

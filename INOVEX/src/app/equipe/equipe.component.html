@@ -74,8 +74,8 @@
                     <th scope="col">Nom</th>
                     <th scope="col">Prénom</th>
                     <th scope="col">Poste</th>
-                    <!-- <th scope="col">Ronde</th> -->
-                    <th></th>
+                    <!-- <th scope="col">Ronde</th>
+                    <th scope="col">#</th>-->
                 </thead>
                 <tbody >
                     <tr *ngFor="let user of listAjout" class="table-light" cdkDrag>
@@ -91,10 +91,10 @@
                             </select>
                         </td>
                         <td>
-                            <select class="form-select" id="{{user.Nom}}_{{user.Prenom}}_zone" id="ronde" name="ronde" required ngModel [(ngModel)]="user.Zone">
+                            <!--<select class="form-select" id="{{user.Nom}}_{{user.Prenom}}_zone" id="ronde" name="ronde" required ngModel [(ngModel)]="user.Zone">
                                 <option value="0">Pontier</option>
                                 <option *ngFor="let zone of listZone" value="{{zone.Id}}">{{zone.nom}}</option>
-                            </select>
+                            </select>-->
                         </td>
                         <td>
                             <button type="button" class="btn btn-danger" (click)="suppUser(user)">

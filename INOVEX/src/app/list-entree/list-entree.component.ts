@@ -387,9 +387,15 @@ export class ListEntreeComponent implements OnInit {
       if(this.idUsine === 11){
         this.lectureCSV(event, ";", false, 6, 29, 14, 16, 1);
       }
+      //NSL
+      else if(this.idUsine === 1){
+        //this.lectureCSV(event, ";", true, 6, 39, 2, 24, 1);
+        //format export perso pour RDNTS
+        this.lectureCSV(event, ";", true, 6, 31, 2, 16, 1);
+        this.registre_DNDTS(event);
+      }
       else {
         this.lectureCSV(event, ";", true, 6, 31, 2, 16);
-        this.registre_DNDTS(event);
       }
     }
     //Saint-Saulve
@@ -722,6 +728,7 @@ export class ListEntreeComponent implements OnInit {
               
             }
           }
+          console.log(this.csvArray);
           //Fonction qui tranforme les dates string au format date afin de les comparer
           function compareDates(a: string, b: string){
             const dateA = new Date(a.split('/').reverse().join('/'));
@@ -797,7 +804,7 @@ export class ListEntreeComponent implements OnInit {
         });
         //Si sur ce dechet, nous n'avons pas trouvé de correspondant, count = 0, et que ce dechet est une entree, on la'jouter au tableau des dechet et clients manquants
         if(count == 0 && (csv.entrant.toLowerCase() == "e" || csv.entrant == 1 || csv.entrant.toLowerCase() == "réception" || csv.entrant.toLowerCase() == "reception" || csv.entrant.toLowerCase().includes("entree") || csv.entrant.toLowerCase() == "entrée" || csv.entrant.toLowerCase() == "entrant" || csv.entrant.toLowerCase() == "incinerables")){
-          this.clientManquants.set(dechetManquant +"-"+ clientManquant,dechetManquant +"-"+ clientManquant);
+          this.clientManquants.set(dechetManquant +"__"+ clientManquant,dechetManquant +"__"+ clientManquant);
         }
     });
     //debug
@@ -815,7 +822,7 @@ export class ListEntreeComponent implements OnInit {
     if (successInsert){
       var afficher = "";
       this.clientManquants.forEach(async (value : String, key : String) => {       
-        afficher += "Le client <strong>'" + key.split("-")[1] + "'</strong> avec le déchet : <strong>'" + key.split("-")[0] + "'</strong> n'a pas de correspondance dans CAP Exploitation <br>";
+        afficher += "Le client <strong>'" + key.split("__")[1] + "'</strong> avec le déchet : <strong>'" + key.split("__")[0] + "'</strong> n'a pas de correspondance dans CAP Exploitation <br>";
       });
 
       afficher += "<strong>Pensez à faire la correspondance dans l'administration !</strong>";

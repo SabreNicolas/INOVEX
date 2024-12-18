@@ -97,7 +97,7 @@
         <div class="col-sm-3">
             <div class="form-group">
                 <select id="type" required class="form-select form-select-sm"
-                        aria-label=".form-select-sm example" name="type">
+                        aria-label=".form-select-sm example" name="type" ngModel [(ngModel)]="type">
                         <option value="">Choisissez une zone</option>
                     <option *ngFor="let zone of listZone" value="{{zone.nom}}">{{zone.nom}}</option>
                 </select>
@@ -106,7 +106,7 @@
         <div class="col-sm-3">
             <div class="form-group">
                 <div class="form-group">
-                    <input type="text" id="name" class="form-control" placeholder="Nom de la zone" name="name" ngModel>
+                    <input type="text" id="name" class="form-control" placeholder="Nom de la zone" name="name" ngModel [(ngModel)]="name">
                 </div>
             </div>
         </div>
@@ -156,7 +156,7 @@
                     <i *ngIf="!ronde.isFinished" style="color: red" class="fa fa-times" aria-hidden="true"></i>
                 </td>
             </tr>
-            <tr class="table-info" *ngIf="idUsine != 7">
+            <tr class="table-info">
                 <td>Auteur de la ronde</td>
                 <td *ngFor="let ronde of listRonde" style="text-align: center">
                     <p aria-hidden="true">{{ronde.Nom}} {{ronde.Prenom}}</p>

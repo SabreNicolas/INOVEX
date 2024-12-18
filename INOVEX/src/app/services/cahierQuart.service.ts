@@ -696,6 +696,19 @@ export class cahierQuartService {
             .delete<any>(requete,requestOptions);
     }
 
+    //Supprimer un évènement du calendrier
+    updateTerminerCalendrier(id : number, termine : boolean){
+      let requete = "https://"+this.ip+":"+this.portAPI+"/changeTermineCalendrier?id="+id+"&termine="+termine;
+      //console.log(requete);
+
+      const requestOptions = {
+          headers: new HttpHeaders(this.headerDict),
+      };
+
+      return this.http
+          .put<any>(requete,requestOptions);
+  }
+
     //Supprimer les évenement suivants de celui choisi (pour supprimer occurence sur une action)
     deleteEvents(id : number){
       let requete = "https://"+this.ip+":"+this.portAPI+"/deleteEventsSuivant/"+id;

@@ -30,7 +30,12 @@ export class ReportingRondeComponent implements OnInit {
   public isChefQuart;
   public numbers : number[]; 
   private nbfour : number;
+  //permet de stocker dans une variable soit le filtre texte ou le filtre via selection
   public filtreZone : string;
+  //filtre texte
+  public name : string;
+  //filtre selection
+  public type : string;
   public userLogged!: user;
   public idUsine : number;
   public usine : string;
@@ -79,6 +84,8 @@ export class ReportingRondeComponent implements OnInit {
       this.isChefQuart = userLoggedParse['isChefQuart'];
     }
     this.filtreZone ="";
+    this.name = "";
+    this.type = "";
   }
 
   ngOnInit(): void {
@@ -170,8 +177,7 @@ export class ReportingRondeComponent implements OnInit {
         setTimeout(() =>{
           //Affichage des éléments
           for(var i = this.listElementsOfUsine.length-1; i>=0; i--){
-            if(i != 0 && (this.listElementsOfUsine[i].nom != this.listElementsOfUsine[i-1].nom || this.listElementsOfUsine[i].zoneId != this.listElementsOfUsine[i-1].zoneId) || i == 0 && (this.listElementsOfUsine[i].nom != this.listElementsOfUsine[i+1].nom || this.listElementsOfUsine[i].zoneId != this.listElementsOfUsine[i+1].zoneId)){
-              console.log(this.listElementsOfUsine[i].nom);
+            if(i != 0 && (this.listElementsOfUsine[i].nom != this.listElementsOfUsine[i-1].nom || this.listElementsOfUsine[i].zoneId != this.listElementsOfUsine[i-1].zoneId) || i == 0 ){
               if(this.idUsine == 7){
                 prompt ='<tr class="table-warning '+this.listElementsOfUsine[i].zoneId+'-ZoneElements '+this.listElementsOfUsine[i].idGroupement+'-elements" style="display:none">'
                 +'<td>'+this.listElementsOfUsine[i].nom+'</td>';
@@ -366,18 +372,14 @@ export class ReportingRondeComponent implements OnInit {
   }
 
   async setFilters(){
-    //@ts-ignore
-    var nameElt = document.getElementById("name").value;
     var typeElt= null;
-    if(nameElt != ''){
-      this.filtreZone= nameElt.toLowerCase();
-      //@ts-ignore
-      document.getElementById("type").value ="";
+    if(this.name != ''){
+      this.filtreZone= this.name.toLowerCase();
+      this.type = "";
     }
     else{
-      typeElt = document.getElementById("type");
-      // @ts-ignore
-      this.filtreZone = typeElt.options[typeElt.selectedIndex].value.toLowerCase();
+      this.filtreZone = this.type.toLowerCase();
+      this.name = "";
     }
     $(".table-warning").hide();
     $(".table-light").hide();
@@ -396,7 +398,8 @@ export class ReportingRondeComponent implements OnInit {
   async resetFiltre(){
     this.filtreZone="";
     //@ts-ignore
-    document.getElementById("name").value = "";
+    this.name = "";
+    this.type = "";
     this.afficherRonde(this.quart);
   }
 

@@ -43,6 +43,7 @@ export class ListAnomaliesComponent {
   public consigne : number;
   public description : string;
   public cause : string;
+  public days : String[];
 
   constructor(public altairService : AltairService, public cahierQuartService : cahierQuartService, private rondierService : rondierService,private popupService : PopupService, private datePipe : DatePipe, private dialog : MatDialog) {
     this.listAnomalies = [];
@@ -64,9 +65,29 @@ export class ListAnomaliesComponent {
     this.listEquipementGMAO = [];
     this.equipementGMAO =""
     this.cause ="";
+    this.days = [];
   }
 
   ngOnInit(): void {
+    /**Détermination des dates des 7 jours */
+    let today = new Date();
+    let sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6);
+    this.days = this.getDates(sevenDaysAgo,today);
+    this.days.reverse();
+    //permet d'avoir une boucle de plus pour tout afficher
+    this.days.push("");
+    //Par défaut on masque l'ensemble des tableaux
+    $(document).ready(()=>{
+      this.days.forEach(day =>{
+        //alert('#table--'+day.substring(0,2));
+        $('#table--'+day.substring(0,2)).hide();
+      });
+      //Par défaut on affiche quand même le premier élément qui correspond au jour J
+      $('#table--'+this.days[0].substring(0,2)).show();
+    });
+    /**FIN Détermination de la date de il y a 7 jours */
+
     this.rondierService.getAllAnomalies().subscribe((response)=>{
       // @ts-ignore
       this.listAnomalies = response.data;
@@ -335,4 +356,25 @@ export class ListAnomaliesComponent {
     element.files = dataTranfer.files
     this.fileToUpload = element.files[0];
   }
+
+  //TODO a externaliser dans un service
+  //Permet de récupérer les dates entre 2 dates, tableau au format string dd/mm/yyyy
+  getDates(startDate : Date, stopDate : Date) {
+    let dateArray = [];
+    while (startDate <= stopDate) {
+      dateArray.push(startDate.toLocaleDateString());
+      startDate.setDate(startDate.getDate() + 1);
+    }
+    return dateArray;
+  }
+
+  //Permet d'afficher ou masquer les tableaux d'évènements
+  showTable(dateTable : String){
+    let idTable = "#table--"+dateTable;
+    if ($(idTable).is(":hidden")){
+      $(idTable).show();
+    }
+    else $(idTable).hide();
+  }
+
 }

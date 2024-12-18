@@ -198,6 +198,10 @@ export class ListSortantsComponent implements OnInit {
       if(this.idUsine === 11){
         this.lectureCSV(event, ";", false, 29, 14, 16, 1);
       }
+      else if(this.idUsine === 1){
+        //this.lectureCSV(event, ";", true, 39, 2, 24, 1);
+        this.lectureCSV(event, ";", true, 31, 2, 16, 1);
+      }
       else this.lectureCSV(event, ";", true, 31, 2, 16);
     }
     //Saint-Saulve

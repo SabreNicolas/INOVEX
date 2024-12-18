@@ -1,8 +1,10 @@
 <div *ngIf="listAnomalies">
 
-    <div class="table-style">
-        <!--table des consignes-->
-        <table class="table table-hover tableFixed">
+    <div class="table-style" *ngFor="let day of days">
+        <h3 *ngIf="day.length > 0">{{day}}<button class="btn btn-light" (click)="showTable(day.substr(0,2))"><i class="fa fa-level-down" aria-hidden="true"></i></button></h3>
+        <h3 *ngIf="day.length === 0">Tout voir<button class="btn btn-light" (click)="showTable(day.substr(0,2))"><i class="fa fa-level-down" aria-hidden="true"></i></button></h3>
+        <!--table des consignes des 7 derniers jours-->
+        <table id="table--{{day.substr(0,2)}}" class="table table-hover tableFixed">
             <thead>
             <tr class="table-secondary">
                 <th scope="col">Zone</th>
@@ -14,7 +16,7 @@
             </tr>
             </thead>
             <tbody *ngFor="let anomalie of listAnomalies">
-            <tr class="table-light" [ngSwitch]="anomalie.quart">
+            <tr class="table-light" [ngSwitch]="anomalie.quart" *ngIf="anomalie.dateHeure.includes(day)">
                 <td>{{anomalie.nom[0]}}</td>
                 <td>{{anomalie.commentaire}}</td>
                 <td>{{anomalie.dateHeure}}</td>
