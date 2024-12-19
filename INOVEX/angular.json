@@ -76,7 +76,7 @@
                 }
               ]
             },
-            "local":{
+            "local": {
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -102,7 +102,7 @@
             }
           },
           "defaultConfiguration": "development",
-          "options":{
+          "options": {
             "proxyConfig": "src/proxy.conf.json"
           }
         },
@@ -129,8 +129,22 @@
             ],
             "scripts": []
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
         }
       }
     }
+  },
+  "cli": {
+    "schematicCollections": [
+      "angular-eslint"
+    ]
   }
 }
