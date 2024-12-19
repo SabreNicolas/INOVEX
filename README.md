@@ -1,32 +1,28 @@
-# INOVEX ANGULAR
+# Prérequis
 
-# Développement :
-### * Chaque site posséde sa branche (`CHI` : Chinon, `PIT` : Pithiviers, `NOY` : Noyelles)
-### * La branche `main` est la branche de base qui sera utilisé pour chaque nouveau site (création d'une branche spécifique à partir de celle ci)
-### * Pour des développements spécifique à un site :
-##### - `Si Dev mineur` => modification directement sur la `branche spécifique`
-##### - `Si fonctionnalité importante` => création d'une nouvelle branche (à partir de la `branche spécifique`) puis Pull Request vers la `branche spécifique` une fois les développements testés
-### * Pour des développements concernant l'ensemble des sites :
-##### - `Si Dev mineur` => modification directement sur la` branche main`
-##### - `Si fonctionnalité importante` => création d'une nouvelle branche (à partir de la `branche main`) puis Pull Request vers la `branche main` une fois les développements testés
+Afin d'utiliser l'application il faut installer :
+- `Node.js` : https://nodejs.org/en/download/
+- `npm` : `npm install -g npm@latest`
+- `angular/cli` : `npm install -g @angular/cli`
 
-# Prérequis --  il faut installer :
-### `Node.js` : https://nodejs.org/en/download/
-### `npm` : `npm install -g npm@latest`
-### `angular/cli` : `npm install -g @angular/cli`
-### `npm i` pour installer l'intégralité des dépendances du projet (être à l'intérieur du projet)
+# Développement local
+
+Pour développer le projet lcoalement, suivez ces étapes : 
+
+1. Clonez le répertoire à l'aide de `git clone`
+2. Installez les dépendances : `npm install`
+3. Exécutez la commande : `npm run start:local`. Vous serez connecté à l'api de développement.
+4. Si vous souhaitez utiliser l'api locale que vous développez, changez le lien de l'api dans `src/environments/environment.local.ts`
+
+# Démarrer la pré-prod sur le serveur
+
+Pour lancer le projet directement sur le serveur en pré-prod :
+
+1. Ouvrez le projet dans vs-code.
+2. Lancez l'application via un terminal : `npm start`
+3. Vérifiez le fonctionnement de la pré-prod ici : https://fr-couvinove300.prod.paprec.fr:8100/
 
 
-# Lancer l'appli :
-`ng serve --port numPort --host 0.0.0.0`
-
-# Créer un Component :
-`ng generate component nomComponent`
-
-# ATTENTION lors de la création d'un service :
-`ajouter ce service dans le tableau des providers du fichier app.module.ts`
-
----
 
 # Création du site sur IIS avec Proxy et Réécriture d'URL en Reverse Proxy
 
@@ -46,7 +42,7 @@
 ## Étape 2 : Build et ajout du code sur le serveur web
 
 1. **Build l'application Angular**
-    - Allez dans un terminal, dans le dossier de l'application entrez la commande : ````ng build --base-href /capexploitation/ --configuration production````
+    - Allez dans un terminal, dans le dossier de l'application entrez la commande : ````npm run build````
 
 2. **Ajout du code dans le serveur**
     - Une fois le build terminé, copiez le contenu du dossier ````/dist/INOVEX```` 
