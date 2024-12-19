@@ -68,7 +68,21 @@
               "vendorChunk": true,
               "extractLicenses": false,
               "sourceMap": true,
-              "namedChunks": true
+              "namedChunks": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.dev.ts"
+                }
+              ]
+            },
+            "local":{
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.local.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -82,6 +96,9 @@
             },
             "development": {
               "buildTarget": "INOVEX:build:development"
+            },
+            "local": {
+              "buildTarget": "INOVEX:build:local"
             }
           },
           "defaultConfiguration": "development",

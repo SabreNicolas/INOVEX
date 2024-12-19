@@ -2,6 +2,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Injectable} from "@angular/core";
 import { rapport } from "src/models/rapport.model";
 import { idUsineService } from "./idUsine.service";
+import { environment } from "src/environments/environment";
 
 @Injectable()
 export class rapportsService {
@@ -13,8 +14,7 @@ export class rapportsService {
         'Access-Control-Allow-Origin' : '*',
         'Authorization': 'Bearer ' + localStorage.getItem('token')
     }
-    private portAPI = 3100;
-    private ip = "fr-couvinove301.prod.paprec.fr";
+    private ip = environment.apiUrl;
     //private ip = "localhost";
     private idUsine : number | undefined;
     
@@ -26,7 +26,7 @@ export class rapportsService {
 
     //récupérer les rapports pour l'usine sur laquelle on se trouve
     getRapports() {
-        let requete = "https://"+this.ip+":"+this.portAPI+"/rapports/"+this.idUsine
+        let requete = "https://"+this.ip+"/rapports/"+this.idUsine
         //console.log(requete);
 
 
@@ -40,7 +40,7 @@ export class rapportsService {
 
         //récupérer les rapports pour l'usine sur laquelle on se trouve
         getModeOPs() {
-            let requete = "https://"+this.ip+":"+this.portAPI+"/rapports/5"
+            let requete = "https://"+this.ip+"/rapports/5"
             //console.log(requete);
     
     

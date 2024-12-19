@@ -4,6 +4,7 @@ import { dechetsCollecteurs } from "src/models/dechetsCollecteurs.model";
 import { valueHodja } from "src/models/valueHodja.model";
 import {moralEntity} from "../../models/moralEntity.model";
 import { idUsineService } from "./idUsine.service";
+import { environment } from "src/environments/environment";
 
 @Injectable()
 export class moralEntitiesService {
@@ -26,9 +27,8 @@ export class moralEntitiesService {
         'Access-Control-Allow-Origin' : '*',
         'Authorization': 'Bearer ' + localStorage.getItem('token')
     }
-    private portAPI = 3100;
     private portAPIHodja = 3101;
-    private ip = "fr-couvinove301.prod.paprec.fr";
+    private ip = environment.apiUrl;
     //private ip = "localhost";
     private idUsine : number | undefined;
 
@@ -49,7 +49,7 @@ export class moralEntitiesService {
 
     //création de client
     createMoralEntity(){
-      let requete = "https://"+this.ip+":"+this.portAPI+"/moralEntitie?Name="+this._nom+"&Address="+this._adress+"&Code="+this._code+"&UnitPrice="+this._unitPrice+"&numCAP="+this.numCAP+"&codeDechet="+this.codeDechet+"&nomClient="+this.nomClient+"&prenomClient="+this.prenomClient+"&mailClient="+this.mailClient+"&idUsine="+this.idUsine;
+      let requete = "https://"+this.ip+"/moralEntitie?Name="+this._nom+"&Address="+this._adress+"&Code="+this._code+"&UnitPrice="+this._unitPrice+"&numCAP="+this.numCAP+"&codeDechet="+this.codeDechet+"&nomClient="+this.nomClient+"&prenomClient="+this.prenomClient+"&mailClient="+this.mailClient+"&idUsine="+this.idUsine;
       //console.log(requete);
 
       const requestOptions = {
@@ -62,7 +62,7 @@ export class moralEntitiesService {
 
     //récupérer le dernier code
     getLastCode(Code : string) {
-      let requete = "https://"+this.ip+":"+this.portAPI+"/moralEntitieLastCode?Code="+Code+"&idUsine="+this.idUsine;
+      let requete = "https://"+this.ip+"/moralEntitieLastCode?Code="+Code+"&idUsine="+this.idUsine;
       //console.log(requete);
 
 
@@ -76,7 +76,7 @@ export class moralEntitiesService {
 
     //récupérer les clients avec Enabled à 1 (pour la saisie)
     getMoralEntities(Code : string) {
-      let requete = "https://"+this.ip+":"+this.portAPI+"/moralEntities?Code="+Code+"&idUsine="+this.idUsine;
+      let requete = "https://"+this.ip+"/moralEntities?Code="+Code+"&idUsine="+this.idUsine;
       //console.log(requete);
 
 
@@ -90,7 +90,7 @@ export class moralEntitiesService {
 
      //récupérer les clients avec Enabled à 1 (pour la saisie)
      getMoralEntitiesAndCorrespondance(debCode : string) {
-      let requete = "https://"+this.ip+":"+this.portAPI+"/getMoralEntitiesAndCorrespondance?idUsine=" + this.idUsine +"&Code="+debCode;
+      let requete = "https://"+this.ip+"/getMoralEntitiesAndCorrespondance?idUsine=" + this.idUsine +"&Code="+debCode;
       //console.log(requete);
 
       const requestOptions = {
@@ -105,7 +105,7 @@ export class moralEntitiesService {
     createImport_tonnage(ProducerId : number, ProductId : number, nomImport : string, productImport : string){
       nomImport = encodeURIComponent(nomImport);
       productImport = encodeURIComponent(productImport);
-      let requete = "https://"+this.ip+":"+this.portAPI+"/import_tonnage?ProducerId="+ProducerId+"&ProductId="+ProductId+"&nomImport="+nomImport+"&productImport="+productImport+"&idUsine="+this.idUsine;
+      let requete = "https://"+this.ip+"/import_tonnage?ProducerId="+ProducerId+"&ProductId="+ProductId+"&nomImport="+nomImport+"&productImport="+productImport+"&idUsine="+this.idUsine;
       // console.log(requete);
 
       const requestOptions = {
@@ -119,7 +119,7 @@ export class moralEntitiesService {
     //crée une nouvelle correspondance pour lecture csv
     createImport_tonnageSortant(ProductId : number,productImport : string){
       productImport = encodeURIComponent(productImport);
-      let requete = "https://"+this.ip+":"+this.portAPI+"/import_tonnageSortant?ProductId="+ProductId+"&productImport="+productImport+"&idUsine="+this.idUsine;
+      let requete = "https://"+this.ip+"/import_tonnageSortant?ProductId="+ProductId+"&productImport="+productImport+"&idUsine="+this.idUsine;
       // console.log(requete);
 
       const requestOptions = {
@@ -133,7 +133,7 @@ export class moralEntitiesService {
     //crée une nouvelle correspondance pour lecture csv
     createImport_tonnageReactif(ProductId : number,productImport : string){
       productImport = encodeURIComponent(productImport);
-      let requete = "https://"+this.ip+":"+this.portAPI+"/import_tonnageReactif?ProductId="+ProductId+"&productImport="+productImport+"&idUsine="+this.idUsine;
+      let requete = "https://"+this.ip+"/import_tonnageReactif?ProductId="+ProductId+"&productImport="+productImport+"&idUsine="+this.idUsine;
       // console.log(requete);
 
       const requestOptions = {
@@ -146,7 +146,7 @@ export class moralEntitiesService {
 
     //delete correspondance
     deleteCorrespondance(id : number){
-      let requete = "https://"+this.ip+":"+this.portAPI+"/deleteCorrespondance/"+id;
+      let requete = "https://"+this.ip+"/deleteCorrespondance/"+id;
       //console.log(requete);
   
       const requestOptions = {
@@ -159,7 +159,7 @@ export class moralEntitiesService {
 
     //delete correspondance
     deleteMesuresEntrantsEntreDeuxDates(dateDeb : string, dateFin: string){
-      let requete = "https://"+this.ip+":"+this.portAPI+"/deleteMesuresEntrantsEntreDeuxDates?idUsine=" + this.idUsine + "&dateDeb=" + dateDeb + "&dateFin=" + dateFin;
+      let requete = "https://"+this.ip+"/deleteMesuresEntrantsEntreDeuxDates?idUsine=" + this.idUsine + "&dateDeb=" + dateDeb + "&dateFin=" + dateFin;
       //console.log(requete);
   
       const requestOptions = {
@@ -172,7 +172,7 @@ export class moralEntitiesService {
 
         //delete correspondance
     deleteMesuresSortantsEntreDeuxDates(dateDeb : string, dateFin: string, name : string){
-      let requete = "https://"+this.ip+":"+this.portAPI+"/deleteMesuresSortantsEntreDeuxDates?idUsine=" + this.idUsine + "&dateDeb=" + dateDeb + "&dateFin=" + dateFin + "&name=" + name;
+      let requete = "https://"+this.ip+"/deleteMesuresSortantsEntreDeuxDates?idUsine=" + this.idUsine + "&dateDeb=" + dateDeb + "&dateFin=" + dateFin + "&name=" + name;
       //console.log(requete);
   
       const requestOptions = {
@@ -185,7 +185,7 @@ export class moralEntitiesService {
 
     //delete mesure ractifs entre deux dates
     deleteMesuresReactifsEntreDeuxDates(dateDeb : string, dateFin: string, name : string){
-      let requete = "https://"+this.ip+":"+this.portAPI+"/deleteMesuresReactifsEntreDeuxDates?idUsine=" + this.idUsine + "&dateDeb=" + dateDeb + "&dateFin=" + dateFin + "&name=" + name;
+      let requete = "https://"+this.ip+"/deleteMesuresReactifsEntreDeuxDates?idUsine=" + this.idUsine + "&dateDeb=" + dateDeb + "&dateFin=" + dateFin + "&name=" + name;
       //console.log(requete);
   
       const requestOptions = {
@@ -198,7 +198,7 @@ export class moralEntitiesService {
 
     //delete correspondance
     deleteCorrespondanceReactif(id : number){
-      let requete = "https://"+this.ip+":"+this.portAPI+"/deleteCorrespondanceReactif/"+id;
+      let requete = "https://"+this.ip+"/deleteCorrespondanceReactif/"+id;
       //console.log(requete);
   
       const requestOptions = {
@@ -212,7 +212,7 @@ export class moralEntitiesService {
     updateCorrespondance(ProducerId : number ,nomImport : string ,productImport : string){
       nomImport = encodeURIComponent(nomImport);
       productImport = encodeURIComponent(productImport);
-      let requete = "https://"+this.ip+":"+this.portAPI+"/updateCorrespondance?ProducerId="+ProducerId+"&nomImport="+nomImport+"&productImport="+productImport;
+      let requete = "https://"+this.ip+"/updateCorrespondance?ProducerId="+ProducerId+"&nomImport="+nomImport+"&productImport="+productImport;
       console.log(requete);
 
       const requestOptions = {
@@ -226,7 +226,7 @@ export class moralEntitiesService {
     //mettre à jour le nom dans le logiciel de pesée d'une correspondance de sortant
     updateNomImportCorrespondanceSortant(ProductId : number ,productImport : string){
       productImport = encodeURIComponent(productImport);
-      let requete = "https://"+this.ip+":"+this.portAPI+"/updateNomImportCorrespondanceSortant?ProductId="+ProductId+"&productImport="+productImport;
+      let requete = "https://"+this.ip+"/updateNomImportCorrespondanceSortant?ProductId="+ProductId+"&productImport="+productImport;
       //console.log(requete);
 
       const requestOptions = {
@@ -239,7 +239,7 @@ export class moralEntitiesService {
 
     //mettre à jour le produit cap exploitation d'une correspondance de sortant
     updateProductImportCorrespondanceSortant(idCorrespondance : number ,ProductId : number){
-      let requete = "https://"+this.ip+":"+this.portAPI+"/updateProductImportCorrespondanceSortant?ProductId="+ProductId+"&idCorrespondance="+idCorrespondance;
+      let requete = "https://"+this.ip+"/updateProductImportCorrespondanceSortant?ProductId="+ProductId+"&idCorrespondance="+idCorrespondance;
       //console.log(requete);
 
       const requestOptions = {
@@ -252,7 +252,7 @@ export class moralEntitiesService {
 
     //mettre à jour le produit cap exploitation d'une correspondance de réactif
     updateProductImportCorrespondanceReactif(idCorrespondance : number ,ProductId : number){
-      let requete = "https://"+this.ip+":"+this.portAPI+"/updateProductImportCorrespondanceReactif?ProductId="+ProductId+"&idCorrespondance="+idCorrespondance;
+      let requete = "https://"+this.ip+"/updateProductImportCorrespondanceReactif?ProductId="+ProductId+"&idCorrespondance="+idCorrespondance;
       //console.log(requete);
 
       const requestOptions = {
@@ -266,7 +266,7 @@ export class moralEntitiesService {
     //mettre à jour le nom dans le logiciel de pesée d'une correspondance de reactif
     updateNomImportCorrespondanceReactif(ProductId : number ,productImport : string){
       productImport = encodeURIComponent(productImport);
-      let requete = "https://"+this.ip+":"+this.portAPI+"/updateNomImportCorrespondanceReactif?ProductId="+ProductId+"&productImport="+productImport;
+      let requete = "https://"+this.ip+"/updateNomImportCorrespondanceReactif?ProductId="+ProductId+"&productImport="+productImport;
       //console.log(requete);
 
       const requestOptions = {
@@ -279,7 +279,7 @@ export class moralEntitiesService {
 
     //récupérer les clients
     getMoralEntitiesAll(Code : string) {
-        let requete = "https://"+this.ip+":"+this.portAPI+"/moralEntitiesAll?Code="+Code+"&idUsine="+this.idUsine;
+        let requete = "https://"+this.ip+"/moralEntitiesAll?Code="+Code+"&idUsine="+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -291,7 +291,7 @@ export class moralEntitiesService {
 
     //récupérer 1 client
     getOneMoralEntity(Id : number) {
-      let requete = "https://"+this.ip+":"+this.portAPI+"/moralEntitie/"+Id;
+      let requete = "https://"+this.ip+"/moralEntitie/"+Id;
       //console.log(requete);
 
 
@@ -305,7 +305,7 @@ export class moralEntitiesService {
 
     //récupérer 1 correspondance
     getOneCorrespondance(Id : number) {
-      let requete = "https://"+this.ip+":"+this.portAPI+"/correspondance/"+Id;
+      let requete = "https://"+this.ip+"/correspondance/"+Id;
       //console.log(requete);
 
 
@@ -320,7 +320,7 @@ export class moralEntitiesService {
 
     //récupérer les correspondances d'une usine
     getCorrespondance() {
-      let requete = "https://"+this.ip+":"+this.portAPI+"/getCorrespondance/"+this.idUsine;
+      let requete = "https://"+this.ip+"/getCorrespondance/"+this.idUsine;
       //console.log(requete);
 
 
@@ -334,7 +334,7 @@ export class moralEntitiesService {
 
     //récupérer les correspondances d'une usine
     getCorrespondanceSortants() {
-      let requete = "https://"+this.ip+":"+this.portAPI+"/getCorrespondanceSortants/"+this.idUsine;
+      let requete = "https://"+this.ip+"/getCorrespondanceSortants/"+this.idUsine;
       //console.log(requete);
 
 
@@ -348,7 +348,7 @@ export class moralEntitiesService {
 
     //récupérer les correspondances d'une usine
     getCorrespondancesReactifs() {
-      let requete = "https://"+this.ip+":"+this.portAPI+"/getCorrespondanceReactifs/"+this.idUsine;
+      let requete = "https://"+this.ip+"/getCorrespondanceReactifs/"+this.idUsine;
       //console.log(requete);
 
       const requestOptions = {
@@ -361,7 +361,7 @@ export class moralEntitiesService {
 
     //mettre à jour le code d'un client
     setCode(Code: string | null, Id: number){
-      let requete = "https://"+this.ip+":"+this.portAPI+"/moralEntitieCode/"+Id+"?Code="+Code;
+      let requete = "https://"+this.ip+"/moralEntitieCode/"+Id+"?Code="+Code;
       //console.log(requete);
 
       const requestOptions = {
@@ -374,7 +374,7 @@ export class moralEntitiesService {
 
     //mettre à jour le prix d'un client
     setPrix(prix: string, Id: number){
-      let requete = "https://"+this.ip+":"+this.portAPI+"/moralEntitieUnitPrice/"+Id+"?UnitPrice="+prix;
+      let requete = "https://"+this.ip+"/moralEntitieUnitPrice/"+Id+"?UnitPrice="+prix;
       //console.log(requete);
 
       const requestOptions = {
@@ -387,7 +387,7 @@ export class moralEntitiesService {
 
     //mettre à jour le num de CAP d'un client
     setCAP(cap: string, Id: number){
-      let requete = "https://"+this.ip+":"+this.portAPI+"/moralEntitieCAP/"+Id+"?cap="+cap;
+      let requete = "https://"+this.ip+"/moralEntitieCAP/"+Id+"?cap="+cap;
       //console.log(requete);
 
       const requestOptions = {
@@ -400,7 +400,7 @@ export class moralEntitiesService {
 
     //mettre à jour le nom d'un client
     setName(name: string, Id: number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/moralEntitieName/"+Id+"?Name="+name;
+        let requete = "https://"+this.ip+"/moralEntitieName/"+Id+"?Name="+name;
         //console.log(requete);
 
         const requestOptions = {
@@ -413,7 +413,7 @@ export class moralEntitiesService {
 
     //mettre à jour le enabled d'un client
     setEnabled(Id: number, Enabled : number){
-      let requete = "https://"+this.ip+":"+this.portAPI+"/moralEntitieEnabled/"+Id+"/"+Enabled;
+      let requete = "https://"+this.ip+"/moralEntitieEnabled/"+Id+"/"+Enabled;
       //console.log(requete);
       console.log(this.headerDict);
       const requestOptions = {
@@ -425,7 +425,7 @@ export class moralEntitiesService {
 
     //update de client
     updateMoralEntity(Id : number){
-      let requete = "https://"+this.ip+":"+this.portAPI+"/moralEntitieAll/"+Id+"?Name="+this._nom+"&Address="+this._adress+"&Code="+this._code+"&UnitPrice="+this._unitPrice+"&numCAP="+this.numCAP+"&codeDechet="+this.codeDechet+"&nomClient="+this.nomClient+"&prenomClient="+this.prenomClient+"&mailClient="+this.mailClient;
+      let requete = "https://"+this.ip+"/moralEntitieAll/"+Id+"?Name="+this._nom+"&Address="+this._adress+"&Code="+this._code+"&UnitPrice="+this._unitPrice+"&numCAP="+this.numCAP+"&codeDechet="+this.codeDechet+"&nomClient="+this.nomClient+"&prenomClient="+this.prenomClient+"&mailClient="+this.mailClient;
       //console.log(requete);
 
       const requestOptions = {
@@ -438,7 +438,7 @@ export class moralEntitiesService {
 
     //insérer une mesure
     createMeasure(EntryDate : string, Value : number, ProductId : number, ProducerId : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/Measure?EntryDate="+EntryDate+"&Value="+Value+"&ProductId="+ProductId+"&ProducerId="+ProducerId;
+        let requete = "https://"+this.ip+"/Measure?EntryDate="+EntryDate+"&Value="+Value+"&ProductId="+ProductId+"&ProducerId="+ProducerId;
         //console.log(requete);
 
         const requestOptions = {
@@ -451,7 +451,7 @@ export class moralEntitiesService {
 
     //récupérer les tonnages ou valeurs qse
     getEntry(EntryDate : string, ProductId : number, ProducerId : number) {
-        let requete = "https://"+this.ip+":"+this.portAPI+"/Entrant/"+ProductId+"/"+ProducerId+"/"+EntryDate;
+        let requete = "https://"+this.ip+"/Entrant/"+ProductId+"/"+ProducerId+"/"+EntryDate;
         //console.log(requete);
 
 
@@ -466,7 +466,7 @@ export class moralEntitiesService {
 
     //récupérer la somme des tonnages
     getTotal(EntryDate : string, dechet : string) {
-        let requete = "https://"+this.ip+":"+this.portAPI+"/TotalMeasures/"+dechet+"/"+EntryDate+"/"+this.idUsine;
+        let requete = "https://"+this.ip+"/TotalMeasures/"+dechet+"/"+EntryDate+"/"+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -480,7 +480,7 @@ export class moralEntitiesService {
     //** PARTIE Products mais est directement lié aux MR donc se trouve ici */
     //récupérer les types de déchets et collecteurs
     GetTypeDéchets() {
-      let requete = "https://"+this.ip+":"+this.portAPI+"/DechetsCollecteurs/"+this.idUsine;
+      let requete = "https://"+this.ip+"/DechetsCollecteurs/"+this.idUsine;
       //console.log(requete);
 
       const requestOptions = {
@@ -493,7 +493,7 @@ export class moralEntitiesService {
 
     //Récupération type d'import des pesées
     GetImportTonnage() {
-      let requete = "https://"+this.ip+":"+this.portAPI+"/typeImport/"+this.idUsine;
+      let requete = "https://"+this.ip+"/typeImport/"+this.idUsine;
       //console.log(requete);
 
       const requestOptions = {
@@ -542,7 +542,7 @@ export class moralEntitiesService {
 
    //insérer une mesure
   registreDNDTS(data:any){
-    let requete = "https://"+this.ip+":"+this.portAPI+"/registreDNDTS";
+    let requete = "https://"+this.ip+"/registreDNDTS";
     //console.log(requete);
 
     const requestOptions = {
@@ -557,7 +557,7 @@ export class moralEntitiesService {
      getRegistreDNDTSEntrants(dateDeb:any, dateFin:any){
       dateDeb = encodeURIComponent(dateDeb);
       dateFin = encodeURIComponent(dateFin)
-      let requete = "https://"+this.ip+":"+this.portAPI+"/getRegistreDNDTSEntrants?idUsine="+this.idUsine+"&dateDeb="+dateDeb+"&dateFin="+dateFin;
+      let requete = "https://"+this.ip+"/getRegistreDNDTSEntrants?idUsine="+this.idUsine+"&dateDeb="+dateDeb+"&dateFin="+dateFin;
       //console.log(requete);
   
       const requestOptions = {
@@ -572,7 +572,7 @@ export class moralEntitiesService {
     getRegistreDNDTSSortants(dateDeb:any, dateFin:any){
       dateDeb = encodeURIComponent(dateDeb);
       dateFin = encodeURIComponent(dateFin)
-      let requete = "https://"+this.ip+":"+this.portAPI+"/getRegistreDNDTSSortants?idUsine="+this.idUsine+"&dateDeb="+dateDeb+"&dateFin="+dateFin;
+      let requete = "https://"+this.ip+"/getRegistreDNDTSSortants?idUsine="+this.idUsine+"&dateDeb="+dateDeb+"&dateFin="+dateFin;
       //console.log(requete);
   
       const requestOptions = {

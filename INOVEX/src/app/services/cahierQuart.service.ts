@@ -6,6 +6,7 @@ import { user } from "src/models/user.model";
 import { zone } from "src/models/zone.model";
 import { idUsineService } from "./idUsine.service";
 import {DatePipe, Location} from "@angular/common";
+import { environment } from "src/environments/environment";
 
 @Injectable()
 export class cahierQuartService {
@@ -18,8 +19,7 @@ export class cahierQuartService {
         'Access-Control-Allow-Origin' : '*',
         'Authorization': 'Bearer ' + localStorage.getItem('token')
     }
-    private portAPI = 3100;
-    private ip = "fr-couvinove301.prod.paprec.fr";
+    private ip = environment.apiUrl;
     //private ip = "localhost";
     private idUsine : number | undefined;
     private idUser : number | undefined;
@@ -32,7 +32,7 @@ export class cahierQuartService {
 
     //Récupérer une localisation du site
     getOneLocalisation(){
-      let requete = "https://"+this.ip+":"+this.portAPI+"/getOneLocalisation/" + this.idUsine;
+      let requete = "https://"+this.ip+"/getOneLocalisation/" + this.idUsine;
 
       const requestOptions = {
           headers: new HttpHeaders(this.headerDict),
@@ -44,7 +44,7 @@ export class cahierQuartService {
 
     //Récupérer les anmoalies d'une ronde
     getAnomaliesOfOneRonde(date : string, quart : number){
-      let requete = "https://"+this.ip+":"+this.portAPI+"/getAnomaliesOfOneRonde?date="+date+"&quart="+quart+"&idUsine="+this.idUsine;
+      let requete = "https://"+this.ip+"/getAnomaliesOfOneRonde?date="+date+"&quart="+quart+"&idUsine="+this.idUsine;
 
       const requestOptions = {
           headers: new HttpHeaders(this.headerDict),
@@ -56,7 +56,7 @@ export class cahierQuartService {
 
     //Récupérer les rondiers sans équipe
     getOneUser(){
-      let requete = "https://"+this.ip+":"+this.portAPI+"/getOneUser/" + this.idUser;
+      let requete = "https://"+this.ip+"/getOneUser/" + this.idUser;
 
       const requestOptions = {
           headers: new HttpHeaders(this.headerDict),
@@ -68,7 +68,7 @@ export class cahierQuartService {
 
     //Récupérer les rondiers sans équipe
     getUsersRondierSansEquipe(){
-      let requete = "https://"+this.ip+":"+this.portAPI+"/usersRondierSansEquipe?idUsine=" + this.idUsine;
+      let requete = "https://"+this.ip+"/usersRondierSansEquipe?idUsine=" + this.idUsine;
 
       const requestOptions = {
           headers: new HttpHeaders(this.headerDict),
@@ -80,7 +80,7 @@ export class cahierQuartService {
 
     //Récupérer les rondiers sans équipe
     getUsersRondier(){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/UsersRondier?idUsine=" + this.idUsine;
+        let requete = "https://"+this.ip+"/UsersRondier?idUsine=" + this.idUsine;
   
         const requestOptions = {
             headers: new HttpHeaders(this.headerDict),
@@ -93,7 +93,7 @@ export class cahierQuartService {
 
     //Récupérer les zones d'une usine
     getZones(){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/zones/"+this.idUsine;
+        let requete = "https://"+this.ip+"/zones/"+this.idUsine;
 
       const requestOptions = {
           headers: new HttpHeaders(this.headerDict),
@@ -108,7 +108,7 @@ export class cahierQuartService {
     //Créer une nouvelle équipe
     nouvelleEquipe(nomEquipe :string, quart : number, date : string){
         date = encodeURIComponent(date)
-        let requete = "https://"+this.ip+":"+this.portAPI+"/equipe?nomEquipe="+nomEquipe +"&quart="+ quart +"&idChefQuart=" + this.idUser+"&date="+date;
+        let requete = "https://"+this.ip+"/equipe?nomEquipe="+nomEquipe +"&quart="+ quart +"&idChefQuart=" + this.idUser+"&date="+date;
 
       const requestOptions = {
           headers: new HttpHeaders(this.headerDict),
@@ -120,7 +120,7 @@ export class cahierQuartService {
 
     //Créer une nouvel enregistrement d'équipe
     nouvelEnregistrementEquipe(nomEquipe :string){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/enregistrementEquipe?nomEquipe="+nomEquipe;
+        let requete = "https://"+this.ip+"/enregistrementEquipe?nomEquipe="+nomEquipe;
 
       const requestOptions = {
           headers: new HttpHeaders(this.headerDict),
@@ -132,7 +132,7 @@ export class cahierQuartService {
 
     //Ajouter les utilisateur à une équipe
     nouvelleAffectationEquipe(idUser : number,idEquipe : number ,idZone : number ,poste : string, heure_deb : string, heure_fin : string){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/affectationEquipe?idRondier="+idUser +"&idEquipe="+ idEquipe+"&idZone=" + idZone +"&poste="+poste+"&heure_deb="+heure_deb+"&heure_fin="+heure_fin;
+        let requete = "https://"+this.ip+"/affectationEquipe?idRondier="+idUser +"&idEquipe="+ idEquipe+"&idZone=" + idZone +"&poste="+poste+"&heure_deb="+heure_deb+"&heure_fin="+heure_fin;
     
           const requestOptions = {
               headers: new HttpHeaders(this.headerDict),
@@ -145,7 +145,7 @@ export class cahierQuartService {
     //modifier les heures de quart pour les utilisateurs d'une équipe
     updateInfosAffectationEquipe(idUser : number, idEquipe : number, typeInfo : string, valueInfo : string){
       valueInfo = valueInfo.replace("'","''");
-      let requete = "https://"+this.ip+":"+this.portAPI+"/UpdateInfosAffectationEquipe?idRondier="+idUser +"&idEquipe="+ idEquipe+"&typeInfo="+typeInfo+"&valueInfo="+valueInfo;
+      let requete = "https://"+this.ip+"/UpdateInfosAffectationEquipe?idRondier="+idUser +"&idEquipe="+ idEquipe+"&typeInfo="+typeInfo+"&valueInfo="+valueInfo;
   
         const requestOptions = {
             headers: new HttpHeaders(this.headerDict),
@@ -157,7 +157,7 @@ export class cahierQuartService {
 
     //Ajouter les utilisateur à un enregistrement équipe
     nouvelEnregistrementAffectationEquipe(idUser : number,idEquipe : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/enregistrementAffectationEquipe?idRondier="+idUser +"&idEquipe="+ idEquipe;
+        let requete = "https://"+this.ip+"/enregistrementAffectationEquipe?idRondier="+idUser +"&idEquipe="+ idEquipe;
     
           const requestOptions = {
               headers: new HttpHeaders(this.headerDict),
@@ -169,7 +169,7 @@ export class cahierQuartService {
 
     //Récupérer les équipes d'une usine
     getEquipes(){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/equipes?&idUsine="+ this.idUsine;
+        let requete = "https://"+this.ip+"/equipes?&idUsine="+ this.idUsine;
            //console.log(requete);
     
           const requestOptions = {
@@ -182,7 +182,7 @@ export class cahierQuartService {
     
     //Récupérer les équipes enregistrées d'une usine
     getEquipesEnregistrees(){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/getEquipesEnregistrees?&idUsine="+ this.idUsine;
+        let requete = "https://"+this.ip+"/getEquipesEnregistrees?&idUsine="+ this.idUsine;
            //console.log(requete);
     
           const requestOptions = {
@@ -195,7 +195,7 @@ export class cahierQuartService {
 
     //Récupérer les noms des équipes enregistrées d'une usine
     getNomsEquipesEnregistrees(){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/getNomsEquipesEnregistrees?&idUsine="+ this.idUsine;
+        let requete = "https://"+this.ip+"/getNomsEquipesEnregistrees?&idUsine="+ this.idUsine;
            //console.log(requete);
     
           const requestOptions = {
@@ -208,7 +208,7 @@ export class cahierQuartService {
 
     //Récupérer une seule équipe
     getOneEquipe(idEquipe : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/getOneEquipe?&idUsine="+ this.idUsine + "&idEquipe=" + idEquipe;
+        let requete = "https://"+this.ip+"/getOneEquipe?&idUsine="+ this.idUsine + "&idEquipe=" + idEquipe;
         //   console.log(requete);
     
     
@@ -222,7 +222,7 @@ export class cahierQuartService {
 
     //Récupérer une seule équipe enregistrée
     getOneEnregistrementEquipe(idEquipe : any){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/getOneEnregistrementEquipe?&idUsine="+ this.idUsine + "&idEquipe=" + idEquipe;
+        let requete = "https://"+this.ip+"/getOneEnregistrementEquipe?&idUsine="+ this.idUsine + "&idEquipe=" + idEquipe;
         //   console.log(requete);
     
     
@@ -236,7 +236,7 @@ export class cahierQuartService {
 
     //Mise à jour des infos d'une équipe
     udpateEquipe(nomEquipe : string, quart : number, idEquipe : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/updateEquipe?&nomEquipe="+ nomEquipe + "&quart=" + quart + "&idEquipe="+idEquipe  +"&idChefQuart=" + this.idUser;
+        let requete = "https://"+this.ip+"/updateEquipe?&nomEquipe="+ nomEquipe + "&quart=" + quart + "&idEquipe="+idEquipe  +"&idChefQuart=" + this.idUser;
         
           const requestOptions = {
               headers: new HttpHeaders(this.headerDict),
@@ -248,7 +248,7 @@ export class cahierQuartService {
 
     //Mise à jour des infos d'une équipe enregistrée
     udpateEnregistrementEquipe(nomEquipe : string, idEquipe : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/updateEnregistrementEquipe?&nomEquipe="+ nomEquipe + "&idEquipe="+idEquipe  +"&idChefQuart=" + this.idUser;
+        let requete = "https://"+this.ip+"/updateEnregistrementEquipe?&nomEquipe="+ nomEquipe + "&idEquipe="+idEquipe  +"&idChefQuart=" + this.idUser;
         
           const requestOptions = {
               headers: new HttpHeaders(this.headerDict),
@@ -260,7 +260,7 @@ export class cahierQuartService {
 
     //Supprimer une une équipe
     deleteEquipe(idEquipe : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/deleteEquipe/"+idEquipe;
+        let requete = "https://"+this.ip+"/deleteEquipe/"+idEquipe;
         //console.log(requete);
 
         const requestOptions = {
@@ -273,7 +273,7 @@ export class cahierQuartService {
 
     //Supprimer une une équipe enregistrée
     deleteEnregistrementEquipe(idEquipe : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/deleteEnregistrementEquipe/"+idEquipe;
+        let requete = "https://"+this.ip+"/deleteEnregistrementEquipe/"+idEquipe;
         //console.log(requete);
 
         const requestOptions = {
@@ -286,7 +286,7 @@ export class cahierQuartService {
 
     //Supprimer les Rondiers d'une équipe
     deleteAffectationEquipe(idEquipe : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/deleteAffectationEquipe/"+idEquipe;
+        let requete = "https://"+this.ip+"/deleteAffectationEquipe/"+idEquipe;
         //console.log(requete);
 
         const requestOptions = {
@@ -299,7 +299,7 @@ export class cahierQuartService {
 
     //Supprimer les Rondiers d'une équipe enregistre
     deleteEnregistrementAffectationEquipe(idEquipe : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/deleteEnregistrementAffectationEquipe/"+idEquipe;
+        let requete = "https://"+this.ip+"/deleteEnregistrementAffectationEquipe/"+idEquipe;
         //console.log(requete);
 
         const requestOptions = {
@@ -318,7 +318,7 @@ export class cahierQuartService {
     newActu(titre:string, importance:number, dateDeb:string, dateFin:string, description : string, forQuart : number, maillist : string){
         titre = encodeURIComponent(titre);
         description = encodeURIComponent(description);
-        let requete = "https://"+this.ip+":"+this.portAPI+"/actu?titre="+titre+"&importance="+importance+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&idUsine="+this.idUsine+"&description="+description+"&isQuart="+forQuart+"&maillist="+maillist;
+        let requete = "https://"+this.ip+"/actu?titre="+titre+"&importance="+importance+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&idUsine="+this.idUsine+"&description="+description+"&isQuart="+forQuart+"&maillist="+maillist;
 
         const requestOptions = {
           headers: new HttpHeaders(this.headerDict),
@@ -332,7 +332,7 @@ export class cahierQuartService {
     updateActu(titre:string, importance:number, dateDeb:string, dateFin:string, idActu : number, description : string, forQuart : number){
         titre = encodeURIComponent(titre);
         description = encodeURIComponent(description);
-        let requete = "https://"+this.ip+":"+this.portAPI+"/updateActu?titre="+titre+"&importance="+importance+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&idActu="+idActu+"&description="+description+"&isQuart="+forQuart;
+        let requete = "https://"+this.ip+"/updateActu?titre="+titre+"&importance="+importance+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&idActu="+idActu+"&description="+description+"&isQuart="+forQuart;
 
         const requestOptions = {
           headers: new HttpHeaders(this.headerDict),
@@ -344,7 +344,7 @@ export class cahierQuartService {
 
     //Récupérer une actualité
     getOneActu(idActu : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/getOneActu?idActu="+idActu;
+        let requete = "https://"+this.ip+"/getOneActu?idActu="+idActu;
 
         const requestOptions = {
           headers: new HttpHeaders(this.headerDict),
@@ -356,7 +356,7 @@ export class cahierQuartService {
 
     //Récupérer toutes actualité
     getAllActu(){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/getAllActu?idUsine="+this.idUsine;
+        let requete = "https://"+this.ip+"/getAllActu?idUsine="+this.idUsine;
 
         const requestOptions = {
           headers: new HttpHeaders(this.headerDict),
@@ -368,7 +368,7 @@ export class cahierQuartService {
 
     //Récupérer toutes actualité avec la date courante entre la date de début et la date de fin
     getAllActuDateCourante(){
-      let requete = "https://"+this.ip+":"+this.portAPI+"/getAllActuDateCourante?idUsine="+this.idUsine;
+      let requete = "https://"+this.ip+"/getAllActuDateCourante?idUsine="+this.idUsine;
 
       const requestOptions = {
         headers: new HttpHeaders(this.headerDict),
@@ -380,7 +380,7 @@ export class cahierQuartService {
 
     //Récupérer toutes actualité étant lié à un quart
     getActusQuart(isQuart : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/getActusQuart?idUsine="+this.idUsine+"&isQuart="+isQuart;
+        let requete = "https://"+this.ip+"/getActusQuart?idUsine="+this.idUsine+"&isQuart="+isQuart;
 
         const requestOptions = {
           headers: new HttpHeaders(this.headerDict),
@@ -392,7 +392,7 @@ export class cahierQuartService {
 
     //Valider une actualité => permet enfaite de la lier à un quart
     validerActu(idActu : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/validerActu?idActu="+idActu;
+        let requete = "https://"+this.ip+"/validerActu?idActu="+idActu;
 
         const requestOptions = {
         headers: new HttpHeaders(this.headerDict),
@@ -404,7 +404,7 @@ export class cahierQuartService {
 
     //invalider une actualité => permet enfaite de ne pas la lier à un quart
     invaliderActu(idActu : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/invaliderActu?idActu="+idActu;
+        let requete = "https://"+this.ip+"/invaliderActu?idActu="+idActu;
 
         const requestOptions = {
         headers: new HttpHeaders(this.headerDict),
@@ -417,7 +417,7 @@ export class cahierQuartService {
   //Récupérer les actus d'une usine entre deux dates avec filtre sur le nom et l'importance
   getActusEntreDeuxDates(dateDeb : string, dateFin : string, titre : string, importance : number){
       titre = encodeURIComponent(titre)
-      let requete = "https://"+this.ip+":"+this.portAPI+"/getActusEntreDeuxDates?idUsine="+this.idUsine+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&titre="+titre+"&importance="+importance
+      let requete = "https://"+this.ip+"/getActusEntreDeuxDates?idUsine="+this.idUsine+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&titre="+titre+"&importance="+importance
 
       const requestOptions = {
         headers: new HttpHeaders(this.headerDict),
@@ -429,7 +429,7 @@ export class cahierQuartService {
 
   //Supprimer une actu
   deleteActu(id : number){
-    let requete = "https://"+this.ip+":"+this.portAPI+"/deleteActu/"+id;
+    let requete = "https://"+this.ip+"/deleteActu/"+id;
     //console.log(requete);
 
     const requestOptions = {
@@ -459,7 +459,7 @@ export class cahierQuartService {
           headers: headers,
         };
 
-        let requete = "https://"+this.ip+":"+this.portAPI+"/evenement?titre="+titre+"&importance="+importance+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&idUsine="+this.idUsine+"&groupementGMAO="+groupementGMAO+"&equipementGMAO="+equipementGMAO+"&cause="+cause+"&description="+description+"&consigne="+consigne+"&demandeTravaux="+demandeTravaux;
+        let requete = "https://"+this.ip+"/evenement?titre="+titre+"&importance="+importance+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&idUsine="+this.idUsine+"&groupementGMAO="+groupementGMAO+"&equipementGMAO="+equipementGMAO+"&cause="+cause+"&description="+description+"&consigne="+consigne+"&demandeTravaux="+demandeTravaux;
         if(fileToUpload != undefined){
             const formData = new FormData();
             formData.append('fichier', fileToUpload, fileToUpload.name);
@@ -482,7 +482,7 @@ export class cahierQuartService {
         cause = encodeURIComponent(cause);
         description = encodeURIComponent(description);
         
-        let requete = "https://"+this.ip+":"+this.portAPI+"/updateEvenement?titre="+titre+"&importance="+importance+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&idEvenement="+idEvenement+"&groupementGMAO="+groupementGMAO+"&equipementGMAO="+equipementGMAO+"&cause="+cause+"&description="+description+"&consigne="+consigne+"&demandeTravaux="+demandeTravaux;
+        let requete = "https://"+this.ip+"/updateEvenement?titre="+titre+"&importance="+importance+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&idEvenement="+idEvenement+"&groupementGMAO="+groupementGMAO+"&equipementGMAO="+equipementGMAO+"&cause="+cause+"&description="+description+"&consigne="+consigne+"&demandeTravaux="+demandeTravaux;
 
         const requestOptions = {
           headers: new HttpHeaders(this.headerDict),
@@ -495,7 +495,7 @@ export class cahierQuartService {
 
     //Récupérer un évènement
     getOneEvenement(idEvenement : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/getOneEvenement?idEvenement="+idEvenement;
+        let requete = "https://"+this.ip+"/getOneEvenement?idEvenement="+idEvenement;
 
         const requestOptions = {
           headers: new HttpHeaders(this.headerDict),
@@ -507,7 +507,7 @@ export class cahierQuartService {
 
     //Récupérer tout les évènements
     getAllEvenement(){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/getAllEvenement?idUsine="+this.idUsine;
+        let requete = "https://"+this.ip+"/getAllEvenement?idUsine="+this.idUsine;
 
         const requestOptions = {
           headers: new HttpHeaders(this.headerDict),
@@ -521,7 +521,7 @@ export class cahierQuartService {
     getEvenementsEntreDeuxDates(dateDeb : string, dateFin : string, titre : string, groupementGMAO : string, equipementGMAO : string, importance : number){
         titre = encodeURIComponent(titre)
 
-        let requete = "https://"+this.ip+":"+this.portAPI+"/getEvenementsEntreDeuxDates?idUsine="+this.idUsine+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&titre="+titre+"&groupementGMAO="+groupementGMAO+"&equipementGMAO="+equipementGMAO+"&importance="+importance;
+        let requete = "https://"+this.ip+"/getEvenementsEntreDeuxDates?idUsine="+this.idUsine+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&titre="+titre+"&groupementGMAO="+groupementGMAO+"&equipementGMAO="+equipementGMAO+"&importance="+importance;
 
         const requestOptions = {
           headers: new HttpHeaders(this.headerDict),
@@ -533,7 +533,7 @@ export class cahierQuartService {
 
     //Récupérer tout les évènements d'une ronde
     getEvenementsRonde(dateDeb : string, dateFin : string){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/getEvenementsRonde?idUsine="+this.idUsine+"&dateDeb="+dateDeb+"&dateFin="+dateFin;
+        let requete = "https://"+this.ip+"/getEvenementsRonde?idUsine="+this.idUsine+"&dateDeb="+dateDeb+"&dateFin="+dateFin;
 
         const requestOptions = {
           headers: new HttpHeaders(this.headerDict),
@@ -545,7 +545,7 @@ export class cahierQuartService {
 
     //Supprimer une évènement
     deleteEvenement(id : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/deleteEvenement/"+id;
+        let requete = "https://"+this.ip+"/deleteEvenement/"+id;
         //console.log(requete);
 
         const requestOptions = {
@@ -560,7 +560,7 @@ export class cahierQuartService {
 
     //Récupérer toutes les zones du calendrier
     getAllZonesCalendrier(){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/getAllZonesCalendrier?idUsine="+this.idUsine;
+        let requete = "https://"+this.ip+"/getAllZonesCalendrier?idUsine="+this.idUsine;
 
         const requestOptions = {
           headers: new HttpHeaders(this.headerDict),
@@ -572,7 +572,7 @@ export class cahierQuartService {
 
     //Récupérer les zones d'une ronde du calendrier
     getZonesCalendrierRonde(dateDeb : string, dateFin : string){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/getZonesCalendrierRonde?idUsine="+this.idUsine+"&dateDeb="+dateDeb+"&dateFin="+dateFin;;
+        let requete = "https://"+this.ip+"/getZonesCalendrierRonde?idUsine="+this.idUsine+"&dateDeb="+dateDeb+"&dateFin="+dateFin;;
 
         const requestOptions = {
           headers: new HttpHeaders(this.headerDict),
@@ -584,7 +584,7 @@ export class cahierQuartService {
 
     //Récupérer une équipe sur une ronde
     getEquipeRonde(quart : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/getEquipeRonde?idUsine="+this.idUsine+"&quart="+quart;
+        let requete = "https://"+this.ip+"/getEquipeRonde?idUsine="+this.idUsine+"&quart="+quart;
 
         const requestOptions = {
           headers: new HttpHeaders(this.headerDict),
@@ -597,7 +597,7 @@ export class cahierQuartService {
     //Récupérer une équipe sur un  quart
     getEquipeQuart(quart : number, date : string){
         date = encodeURIComponent(date)
-        let requete = "https://"+this.ip+":"+this.portAPI+"/getEquipeQuart?idUsine="+this.idUsine+"&quart="+quart+"&date="+date;
+        let requete = "https://"+this.ip+"/getEquipeQuart?idUsine="+this.idUsine+"&quart="+quart+"&date="+date;
 
         const requestOptions = {
           headers: new HttpHeaders(this.headerDict),
@@ -609,7 +609,7 @@ export class cahierQuartService {
 
     //Récupérer toutes les ation du calendrier
     getAllActionsCalendrier(){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/getAllActionsCalendrier?idUsine="+this.idUsine;
+        let requete = "https://"+this.ip+"/getAllActionsCalendrier?idUsine="+this.idUsine;
 
         const requestOptions = {
           headers: new HttpHeaders(this.headerDict),
@@ -622,7 +622,7 @@ export class cahierQuartService {
     //Créer une nouvelle zone dans le calendrier
     newCalendrierZone(idRonde:number, dateDeb:string, quart:number, dateFin:string){
 
-        let requete = "https://"+this.ip+":"+this.portAPI+"/newCalendrierZone?idRonde="+idRonde+"&quart="+quart+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&idUsine="+this.idUsine;
+        let requete = "https://"+this.ip+"/newCalendrierZone?idRonde="+idRonde+"&quart="+quart+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&idUsine="+this.idUsine;
 
         const requestOptions = {
           headers: new HttpHeaders(this.headerDict),
@@ -635,7 +635,7 @@ export class cahierQuartService {
     //Créer une nouvelle action dans le calendrier
     newCalendrierAction(idAction:number, dateDeb:string, quart:number, dateFin:string, termine:number){
 
-        let requete = "https://"+this.ip+":"+this.portAPI+"/newCalendrierAction?idAction="+idAction+"&quart="+quart+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&idUsine="+this.idUsine+"&termine="+termine;
+        let requete = "https://"+this.ip+"/newCalendrierAction?idAction="+idAction+"&quart="+quart+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&idUsine="+this.idUsine+"&termine="+termine;
 
         const requestOptions = {
           headers: new HttpHeaders(this.headerDict),
@@ -648,7 +648,7 @@ export class cahierQuartService {
     //Modifier une action dans le calendrier
     updateCalendrierAction(idAction:number, dateDeb:string, quart:number, dateFin:string){
 
-        let requete = "https://"+this.ip+":"+this.portAPI+"/updateCalendrierAction?idAction="+idAction+"&quart="+quart+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&idUsine="+this.idUsine;
+        let requete = "https://"+this.ip+"/updateCalendrierAction?idAction="+idAction+"&quart="+quart+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&idUsine="+this.idUsine;
 
         const requestOptions = {
           headers: new HttpHeaders(this.headerDict),
@@ -661,7 +661,7 @@ export class cahierQuartService {
     //Créer une nouvelle actualité
     newAction(nom:string, dateDeb:string, dateFin:string){
       nom = encodeURIComponent(nom);
-      let requete = "https://"+this.ip+":"+this.portAPI+"/newAction?nom="+nom+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&idUsine="+this.idUsine;
+      let requete = "https://"+this.ip+"/newAction?nom="+nom+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&idUsine="+this.idUsine;
 
       const requestOptions = {
         headers: new HttpHeaders(this.headerDict),
@@ -673,7 +673,7 @@ export class cahierQuartService {
     
     //Récupérer toutes les actus d'une ronde
     getActusRonde(dateDeb : string, dateFin : string){
-      let requete = "https://"+this.ip+":"+this.portAPI+"/getActusRonde?idUsine="+this.idUsine+"&dateDeb="+dateDeb+"&dateFin="+dateFin;
+      let requete = "https://"+this.ip+"/getActusRonde?idUsine="+this.idUsine+"&dateDeb="+dateDeb+"&dateFin="+dateFin;
 
       const requestOptions = {
         headers: new HttpHeaders(this.headerDict),
@@ -685,7 +685,7 @@ export class cahierQuartService {
 
     //Supprimer un évènement du calendrier
     deleteCalendrier(id : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/deleteCalendrier/"+id;
+        let requete = "https://"+this.ip+"/deleteCalendrier/"+id;
         //console.log(requete);
 
         const requestOptions = {
@@ -698,7 +698,7 @@ export class cahierQuartService {
 
     //Supprimer un évènement du calendrier
     updateTerminerCalendrier(id : number, termine : boolean){
-      let requete = "https://"+this.ip+":"+this.portAPI+"/changeTermineCalendrier?id="+id+"&termine="+termine;
+      let requete = "https://"+this.ip+"/changeTermineCalendrier?id="+id+"&termine="+termine;
       //console.log(requete);
 
       const requestOptions = {
@@ -711,7 +711,7 @@ export class cahierQuartService {
 
     //Supprimer les évenement suivants de celui choisi (pour supprimer occurence sur une action)
     deleteEvents(id : number){
-      let requete = "https://"+this.ip+":"+this.portAPI+"/deleteEventsSuivant/"+id;
+      let requete = "https://"+this.ip+"/deleteEventsSuivant/"+id;
 
       const requestOptions = {
         headers: new HttpHeaders(this.headerDict),
@@ -726,7 +726,7 @@ export class cahierQuartService {
 
     //Récupérer toutes les actions d'une ronde
     getActionsRonde(dateDeb : string, dateFin : string){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/getActionsRonde?idUsine="+this.idUsine+"&dateDeb="+dateDeb+"&dateFin="+dateFin;
+        let requete = "https://"+this.ip+"/getActionsRonde?idUsine="+this.idUsine+"&dateDeb="+dateDeb+"&dateFin="+dateFin;
 
         const requestOptions = {
           headers: new HttpHeaders(this.headerDict),
@@ -738,7 +738,7 @@ export class cahierQuartService {
 
     //Récupérer toutes les action
     getAllAction(){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/getAllAction?idUsine="+this.idUsine;
+        let requete = "https://"+this.ip+"/getAllAction?idUsine="+this.idUsine;
 
         const requestOptions = {
           headers: new HttpHeaders(this.headerDict),
@@ -751,7 +751,7 @@ export class cahierQuartService {
     //Récupérer toutes les action entre deux dates d'une usine avec filtre sur le titre et l'importance
     getActionsEntreDeuxDates(dateDeb : string, dateFin : string, titre : string){
         titre = encodeURIComponent(titre)
-        let requete = "https://"+this.ip+":"+this.portAPI+"/getActionsEntreDeuxDates?idUsine="+this.idUsine+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&titre="+titre
+        let requete = "https://"+this.ip+"/getActionsEntreDeuxDates?idUsine="+this.idUsine+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&titre="+titre
 
         const requestOptions = {
           headers: new HttpHeaders(this.headerDict),
@@ -763,7 +763,7 @@ export class cahierQuartService {
 
   //Récupérer une action
   getOneAction(idAction : number){
-    let requete = "https://"+this.ip+":"+this.portAPI+"/getOneAction?idAction="+idAction;
+    let requete = "https://"+this.ip+"/getOneAction?idAction="+idAction;
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
@@ -776,7 +776,7 @@ export class cahierQuartService {
   //Modifier une action
   updateAction(nom:string, dateDeb:string, dateFin:string, idAction : number){
     nom = encodeURIComponent(nom);
-    let requete = "https://"+this.ip+":"+this.portAPI+"/updateAction?nom="+nom+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&idAction="+idAction;
+    let requete = "https://"+this.ip+"/updateAction?nom="+nom+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&idAction="+idAction;
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
@@ -791,7 +791,7 @@ export class cahierQuartService {
 
   //Récupérer une consigne
  getOneConsigne(idConsigne : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/getOneConsigne?idConsigne="+idConsigne;
+        let requete = "https://"+this.ip+"/getOneConsigne?idConsigne="+idConsigne;
   
         const requestOptions = {
           headers: new HttpHeaders(this.headerDict),
@@ -804,7 +804,7 @@ export class cahierQuartService {
   //Récupérer toutes les consignes entre deux dates d'une usine avec filtre sur le titre et l'importance
   getConsignesRecherche(dateDeb : string, dateFin : string, titre : string){
     titre = encodeURIComponent(titre)
-    let requete = "https://"+this.ip+":"+this.portAPI+"/getConsignesRecherche?idUsine="+this.idUsine+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&titre="+titre
+    let requete = "https://"+this.ip+"/getConsignesRecherche?idUsine="+this.idUsine+"&dateDeb="+dateDeb+"&dateFin="+dateFin+"&titre="+titre
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
@@ -820,7 +820,7 @@ export class cahierQuartService {
   ////////////////////
 
   getOneLienExterne(idLien : number){
-    let requete = "https://"+this.ip+":"+this.portAPI+"/getOneLienExterne?idLien="+idLien
+    let requete = "https://"+this.ip+"/getOneLienExterne?idLien="+idLien
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
@@ -831,7 +831,7 @@ export class cahierQuartService {
   }
 
   getAllLiensExternes(){
-    let requete = "https://"+this.ip+":"+this.portAPI+"/getAllLiensExternes?idUsine="+this.idUsine
+    let requete = "https://"+this.ip+"/getAllLiensExternes?idUsine="+this.idUsine
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
@@ -842,7 +842,7 @@ export class cahierQuartService {
   }
 
   getActifsLiensExternes(){
-    let requete = "https://"+this.ip+":"+this.portAPI+"/getActifsLiensExternes?idUsine="+this.idUsine
+    let requete = "https://"+this.ip+"/getActifsLiensExternes?idUsine="+this.idUsine
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
@@ -855,7 +855,7 @@ export class cahierQuartService {
   updateLienExterne(nom : string, url : string, idLien : number){
     nom = encodeURIComponent(nom);
     url = encodeURIComponent(url);
-    let requete = "https://"+this.ip+":"+this.portAPI+"/updateLienExterne?nom="+nom+"&url="+url+"&idLien="+idLien;
+    let requete = "https://"+this.ip+"/updateLienExterne?nom="+nom+"&url="+url+"&idLien="+idLien;
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
@@ -866,7 +866,7 @@ export class cahierQuartService {
   }
 
   newLienExterne(nom : string, url : string){
-    let requete = "https://"+this.ip+":"+this.portAPI+"/newLienExterne?nom="+nom+"&url="+url+"&idUsine="+this.idUsine;
+    let requete = "https://"+this.ip+"/newLienExterne?nom="+nom+"&url="+url+"&idUsine="+this.idUsine;
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
@@ -878,7 +878,7 @@ export class cahierQuartService {
 
   //Activer un lien
   activerLien(idLien : number){
-    let requete = "https://"+this.ip+":"+this.portAPI+"/activerLien?idLien="+idLien;
+    let requete = "https://"+this.ip+"/activerLien?idLien="+idLien;
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
@@ -890,7 +890,7 @@ export class cahierQuartService {
 
   //Désactiver un lien
   desactiverLien(idLien : number){
-    let requete = "https://"+this.ip+":"+this.portAPI+"/desactiverLien?idLien="+idLien;
+    let requete = "https://"+this.ip+"/desactiverLien?idLien="+idLien;
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
@@ -902,7 +902,7 @@ export class cahierQuartService {
 
     //Supprimer un lien externe
     deleteLienExterne(id : number){
-      let requete = "https://"+this.ip+":"+this.portAPI+"/deleteLienExterne?idLien="+id;
+      let requete = "https://"+this.ip+"/deleteLienExterne?idLien="+id;
 
       const requestOptions = {
           headers: new HttpHeaders(this.headerDict),
@@ -922,7 +922,7 @@ export class cahierQuartService {
 
     var dateHeure : any = new Date();
     dateHeure = this.datePipe.transform(dateHeure,'yyyy-MM-dd HH:mm');
-    let requete = "https://"+this.ip+":"+this.portAPI+"/historiqueEvenementCreate?idUser="+this.idUser+"&idEvenement="+idEvenement+"&dateHeure="+dateHeure+"&idUsine="+this.idUsine;
+    let requete = "https://"+this.ip+"/historiqueEvenementCreate?idUser="+this.idUser+"&idEvenement="+idEvenement+"&dateHeure="+dateHeure+"&idUsine="+this.idUsine;
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
@@ -937,7 +937,7 @@ export class cahierQuartService {
 
     var dateHeure : any = new Date();
     dateHeure = this.datePipe.transform(dateHeure,'yyyy-MM-dd HH:mm');
-    let requete = "https://"+this.ip+":"+this.portAPI+"/historiqueEvenementUpdate?idUser="+this.idUser+"&idEvenement="+idEvenement+"&dateHeure="+dateHeure+"&idUsine="+this.idUsine;
+    let requete = "https://"+this.ip+"/historiqueEvenementUpdate?idUser="+this.idUser+"&idEvenement="+idEvenement+"&dateHeure="+dateHeure+"&idUsine="+this.idUsine;
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
@@ -952,7 +952,7 @@ export class cahierQuartService {
 
     var dateHeure : any = new Date();
     dateHeure = this.datePipe.transform(dateHeure,'yyyy-MM-dd HH:mm');
-    let requete = "https://"+this.ip+":"+this.portAPI+"/historiqueEvenementDelete?idUser="+this.idUser+"&idEvenement="+idEvenement+"&dateHeure="+dateHeure+"&idUsine="+this.idUsine;
+    let requete = "https://"+this.ip+"/historiqueEvenementDelete?idUser="+this.idUser+"&idEvenement="+idEvenement+"&dateHeure="+dateHeure+"&idUsine="+this.idUsine;
   
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
@@ -967,7 +967,7 @@ export class cahierQuartService {
 
     var dateHeure : any = new Date();
     dateHeure = this.datePipe.transform(dateHeure,'yyyy-MM-dd HH:mm');
-    let requete = "https://"+this.ip+":"+this.portAPI+"/historiquePriseQuart?idUser="+this.idUser+"&dateHeure="+dateHeure+"&idUsine="+this.idUsine;
+    let requete = "https://"+this.ip+"/historiquePriseQuart?idUser="+this.idUser+"&dateHeure="+dateHeure+"&idUsine="+this.idUsine;
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
@@ -982,7 +982,7 @@ export class cahierQuartService {
 
     var dateHeure : any = new Date();
     dateHeure = this.datePipe.transform(dateHeure,'yyyy-MM-dd HH:mm');
-    let requete = "https://"+this.ip+":"+this.portAPI+"/historiqueActuCreate?idUser="+this.idUser+"&idActu="+idActu+"&dateHeure="+dateHeure+"&idUsine="+this.idUsine;
+    let requete = "https://"+this.ip+"/historiqueActuCreate?idUser="+this.idUser+"&idActu="+idActu+"&dateHeure="+dateHeure+"&idUsine="+this.idUsine;
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
@@ -997,7 +997,7 @@ export class cahierQuartService {
 
     var dateHeure : any = new Date();
     dateHeure = this.datePipe.transform(dateHeure,'yyyy-MM-dd HH:mm');
-    let requete = "https://"+this.ip+":"+this.portAPI+"/historiqueActuUpdate?idUser="+this.idUser+"&idActu="+idActu+"&dateHeure="+dateHeure+"&idUsine="+this.idUsine;
+    let requete = "https://"+this.ip+"/historiqueActuUpdate?idUser="+this.idUser+"&idActu="+idActu+"&dateHeure="+dateHeure+"&idUsine="+this.idUsine;
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
@@ -1012,7 +1012,7 @@ export class cahierQuartService {
 
     var dateHeure : any = new Date();
     dateHeure = this.datePipe.transform(dateHeure,'yyyy-MM-dd HH:mm');
-    let requete = "https://"+this.ip+":"+this.portAPI+"/historiqueConsigneCreate?idUser="+this.idUser+"&idConsigne="+idConsigne+"&dateHeure="+dateHeure+"&idUsine="+this.idUsine;
+    let requete = "https://"+this.ip+"/historiqueConsigneCreate?idUser="+this.idUser+"&idConsigne="+idConsigne+"&dateHeure="+dateHeure+"&idUsine="+this.idUsine;
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
@@ -1027,7 +1027,7 @@ export class cahierQuartService {
 
     var dateHeure : any = new Date();
     dateHeure = this.datePipe.transform(dateHeure,'yyyy-MM-dd HH:mm');
-    let requete = "https://"+this.ip+":"+this.portAPI+"/historiqueConsigneUpdate?idUser="+this.idUser+"&idConsigne="+idConsigne+"&dateHeure="+dateHeure+"&idUsine="+this.idUsine;
+    let requete = "https://"+this.ip+"/historiqueConsigneUpdate?idUser="+this.idUser+"&idConsigne="+idConsigne+"&dateHeure="+dateHeure+"&idUsine="+this.idUsine;
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
@@ -1041,7 +1041,7 @@ export class cahierQuartService {
 
     var dateHeure : any = new Date();
     dateHeure = this.datePipe.transform(dateHeure,'yyyy-MM-dd HH:mm');
-    let requete = "https://"+this.ip+":"+this.portAPI+"/historiqueConsigneDelete?idUser="+this.idUser+"&idConsigne="+idConsigne+"&dateHeure="+dateHeure+"&idUsine="+this.idUsine;
+    let requete = "https://"+this.ip+"/historiqueConsigneDelete?idUser="+this.idUser+"&idConsigne="+idConsigne+"&dateHeure="+dateHeure+"&idUsine="+this.idUsine;
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
@@ -1059,7 +1059,7 @@ export class cahierQuartService {
     const formData = new FormData();
     // @ts-ignore
     formData.append('fichier', fichier, fichier.name);
-    let requete = "https://"+this.ip+":"+this.portAPI+"/stockageRecapQuart?idUsine="+this.idUsine+"&quart="+quart+"&date="+date;
+    let requete = "https://"+this.ip+"/stockageRecapQuart?idUsine="+this.idUsine+"&quart="+quart+"&date="+date;
 
     const headers = new HttpHeaders();
     // @ts-ignore

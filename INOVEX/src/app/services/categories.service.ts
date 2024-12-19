@@ -4,6 +4,7 @@ import { maintenance } from "src/models/maintenance.model";
 import { site } from "src/models/site.model";
 import {category} from "../../models/categories.model";
 import { idUsineService } from "./idUsine.service";
+import { environment } from "src/environments/environment";
 
 @Injectable()
 export class categoriesService {
@@ -20,8 +21,7 @@ export class categoriesService {
         'Access-Control-Allow-Origin' : '*',
         'Authorization': 'Bearer ' + localStorage.getItem('token')
     }
-    private portAPI = 3100;
-    private ip = "fr-couvinove301.prod.paprec.fr";
+    private ip = environment.apiUrl;
     //private ip = "localhost";
 
     constructor(private http: HttpClient, private idUsineService : idUsineService) {
@@ -37,7 +37,7 @@ export class categoriesService {
 
     //création de catégorie
     createCategory(){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/Category?Name="+this._nom+"&Code="+this._code+"&ParentId="+this._parentId;
+        let requete = "https://"+this.ip+"/Category?Name="+this._nom+"&Code="+this._code+"&ParentId="+this._parentId;
         //console.log(requete);
 
         const requestOptions = {
@@ -50,7 +50,7 @@ export class categoriesService {
 
     //récupérer les categories de compteurs
     getCategories() {
-        let requete = "https://"+this.ip+":"+this.portAPI+"/CategoriesCompteurs";
+        let requete = "https://"+this.ip+"/CategoriesCompteurs";
         //console.log(requete);
 
 
@@ -64,7 +64,7 @@ export class categoriesService {
 
     //récupérer les categories d'analyses
     getCategoriesAnalyses() {
-        let requete = "https://"+this.ip+":"+this.portAPI+"/CategoriesAnalyses";
+        let requete = "https://"+this.ip+"/CategoriesAnalyses";
         //console.log(requete);
 
 
@@ -78,7 +78,7 @@ export class categoriesService {
 
     //récupérer les categories de sortants
     getCategoriesSortants() {
-        let requete = "https://"+this.ip+":"+this.portAPI+"/CategoriesSortants";
+        let requete = "https://"+this.ip+"/CategoriesSortants";
         //console.log(requete);
 
 
@@ -96,7 +96,7 @@ export class categoriesService {
 
     //récupérer les différents sites
     getSites() {
-        let requete = "https://"+this.ip+":"+this.portAPI+"/sites";
+        let requete = "https://"+this.ip+"/sites";
         //console.log(requete);
 
 
@@ -114,7 +114,7 @@ export class categoriesService {
 
     //récupérer la maintenance prévue
     getMaintenance() {
-        let requete = "https://"+this.ip+":"+this.portAPI+"/Maintenance";
+        let requete = "https://"+this.ip+"/Maintenance";
         //console.log(requete);
 
         const requestOptions = {
