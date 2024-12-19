@@ -1,21 +1,21 @@
-#create{
-    position: relative;
-    left: 45%;
-    margin-bottom: 10px;
+#create {
+  position: relative;
+  left: 45%;
+  margin-bottom: 10px;
 }
-.color--0{
-    background-color: lightgreen;
-}
-
-.color--1{
-    background-color: lightsalmon;
+.color--0 {
+  background-color: lightgreen;
 }
 
-.color--2{
-    background-color: lightcoral;
+.color--1 {
+  background-color: lightsalmon;
 }
 
-#dateDebut:disabled{
-    background-color: rgb(27,37,51) !important;
-    color: white !important;
+.color--2 {
+  background-color: lightcoral;
+}
+
+#dateDebut:disabled {
+  background-color: rgb(27, 37, 51) !important;
+  color: white !important;
 }

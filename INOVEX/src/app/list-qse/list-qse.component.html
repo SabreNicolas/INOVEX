@@ -1,59 +1,111 @@
-<div style="padding-left: 0.5em;">
+<div style="padding-left: 0.5em">
+  <div
+    style="display: flex; height: 5em; align-items: center; margin-bottom: 1em"
+  >
+    <button routerLink="" class="btn btn-outline-primary btn-lg btnRetour">
+      <i class="fa fa-home"></i> Accueil
+    </button>
+    <h2 style="margin-top: 1em; margin-left: 0.5em">
+      Saisir les Objectifs QSE :
+    </h2>
+  </div>
 
-    <div style="display: flex; height: 5em; align-items: center; margin-bottom: 1em">
-        <button routerLink="" class="btn btn-outline-primary btn-lg btnRetour"><i class="fa fa-home"></i> Accueil</button>
-        <h2 style="margin-top: 1em; margin-left: 0.5em">Saisir les Objectifs QSE :</h2>
-    </div>
-
-     <!--Période-->
-    <form #f="ngForm">
-        <div class="form-group">
-            <h5><label>Mois :</label></h5>
-            <div class="row">
-                <div class="col-lg-3">
-                    <input type="month" id="dateDeb" class="form-control" placeholder="Date de début" name="dateDeb" ngModel>
-                </div>
-                <div class="col-sm-3">
-                    <div class="form-group">
-                        <button class="btn btn-primary" type="submit" (click)="setPeriod(f)"><img src="assets/refresh.png"></button>
-                        <button style="margin-left: 0.5em" class="btn btn-dark" (click)="setLastMonth(f)">Mois précédent</button>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-3">
-                    <div class="form-group">
-                        <button style="margin-left: 0.5em" class="btn btn-outline-success" (click)="setYear()">Année en cours</button>
-                        <button style="margin-left: 0.5em" class="btn btn-outline-success" (click)="setLastYear()">Année précédente</button>
-                    </div>
-                </div>
-            </div>
+  <!--Période-->
+  <form #f="ngForm">
+    <div class="form-group">
+      <h5><label>Mois :</label></h5>
+      <div class="row">
+        <div class="col-lg-3">
+          <input
+            type="month"
+            id="dateDeb"
+            class="form-control"
+            placeholder="Date de début"
+            name="dateDeb"
+            ngModel
+          />
         </div>
-    </form>
-    <!--table de saisie-->
-    <div class="table-style">
-        <table class="table table-hover tableFixed" *ngIf="listQse">
-            <thead>
-                <tr class="table-secondary">
-                    <th scope="col"><button class="btn btn-success" (click)="validation()">Valider les valeurs</button></th>
-                    <th scope="col">Unité</th>
-                    <th scope="col" *ngFor="let day of listDays">{{day}}</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="table-light" *ngFor='let qse of listQse'>
-                    <td class="fix">
-                        <strong>{{qse.Name}}</strong>
-                    </td>
-                    <td class="fix">{{qse.Unit}}</td>
-                    <td *ngFor="let day of listDays">
-                        <div class="flex">
-                            <input type="text" id="{{qse.Code}}-{{day}}" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                            <button class="btn btn-light" id="delete-{{qse.Code}}-{{day}}"  (click)="delete(qse.Id,day,qse.Code)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="col-sm-3">
+          <div class="form-group">
+            <button
+              class="btn btn-primary"
+              type="submit"
+              (click)="setPeriod(f)"
+            >
+              <img src="assets/refresh.png" />
+            </button>
+            <button
+              style="margin-left: 0.5em"
+              class="btn btn-dark"
+              (click)="setLastMonth(f)"
+            >
+              Mois précédent
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-3">
+          <div class="form-group">
+            <button
+              style="margin-left: 0.5em"
+              class="btn btn-outline-success"
+              (click)="setYear()"
+            >
+              Année en cours
+            </button>
+            <button
+              style="margin-left: 0.5em"
+              class="btn btn-outline-success"
+              (click)="setLastYear()"
+            >
+              Année précédente
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
+  </form>
+  <!--table de saisie-->
+  <div class="table-style">
+    <table class="table table-hover tableFixed" *ngIf="listQse">
+      <thead>
+        <tr class="table-secondary">
+          <th scope="col">
+            <button class="btn btn-success" (click)="validation()">
+              Valider les valeurs
+            </button>
+          </th>
+          <th scope="col">Unité</th>
+          <th scope="col" *ngFor="let day of listDays">{{ day }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="table-light" *ngFor="let qse of listQse">
+          <td class="fix">
+            <strong>{{ qse.Name }}</strong>
+          </td>
+          <td class="fix">{{ qse.Unit }}</td>
+          <td *ngFor="let day of listDays">
+            <div class="flex">
+              <input
+                type="text"
+                id="{{ qse.Code }}-{{ day }}"
+                class="form-control"
+                aria-label="Small"
+                aria-describedby="inputGroup-sizing-sm"
+              />
+              <button
+                class="btn btn-light"
+                id="delete-{{ qse.Code }}-{{ day }}"
+                (click)="delete(qse.Id, day, qse.Code)"
+              >
+                <i class="fa fa-trash-o" aria-hidden="true"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

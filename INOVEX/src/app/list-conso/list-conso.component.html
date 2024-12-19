@@ -1,54 +1,112 @@
 <div>
-        <!--Période-->
-    <div class="form-group blockFiltres">
-        <form #f="ngForm">
+  <!--Période-->
+  <div class="form-group blockFiltres">
+    <form #f="ngForm">
+      <div class="form-group">
+        <h5><label>Période :</label></h5>
+        <div class="row">
+          <div class="col-lg-3">
+            <input
+              type="date"
+              id="dateDeb"
+              class="form-control"
+              placeholder="Date de début"
+              name="dateDeb"
+              ngModel
+            />
+          </div>
+          <div class="col-lg-3">
+            <input
+              type="date"
+              id="dateFin"
+              class="form-control"
+              placeholder="Date de fin"
+              name="dateFin"
+              ngModel
+            />
+          </div>
+          <div class="col-sm-4">
             <div class="form-group">
-                <h5><label>Période :</label></h5>
-                <div class="row">
-                    <div class="col-lg-3">
-                        <input type="date" id="dateDeb" class="form-control" placeholder="Date de début" name="dateDeb"
-                               ngModel>
-                    </div>
-                    <div class="col-lg-3">
-                        <input type="date" id="dateFin" class="form-control" placeholder="Date de fin" name="dateFin"
-                               ngModel>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="form-group">
-                            <button class="btn btn-primary" type="submit" (click)="setPeriod(f)"><img src="assets/refresh.png"></button>
-                            <button style="margin-left: 0.5em" class="btn btn-warning" (click)="setYesterday(f)">Hier</button>
-                            <button style="margin-left: 0.5em" class="btn btn-info" (click)="setCurrentWeek(f)">Semaine en cours</button>
-                            <button style="margin-left: 0.5em" class="btn btn-dark" (click)="setCurrentMonth(f)">Mois en cours</button>
-                        </div>
-                    </div>
-                </div>
+              <button
+                class="btn btn-primary"
+                type="submit"
+                (click)="setPeriod(f)"
+              >
+                <img src="assets/refresh.png" />
+              </button>
+              <button
+                style="margin-left: 0.5em"
+                class="btn btn-warning"
+                (click)="setYesterday(f)"
+              >
+                Hier
+              </button>
+              <button
+                style="margin-left: 0.5em"
+                class="btn btn-info"
+                (click)="setCurrentWeek(f)"
+              >
+                Semaine en cours
+              </button>
+              <button
+                style="margin-left: 0.5em"
+                class="btn btn-dark"
+                (click)="setCurrentMonth(f)"
+              >
+                Mois en cours
+              </button>
             </div>
-        </form>
-    </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
 
-    <!--table de saisie-->
-    <div class="table-style">
-        <table class="table table-bordered table-hover tableFixed" *ngIf="listDays && listConsos">
-            <thead>
-            <tr class="table-secondary">
-                <th scope="col"><button class="btn btn-success"(click)="validation()">Valider les valeurs</button></th>
-                <th scope="col">Unité</th>
-                <th *ngFor="let day of listDays" scope="col">{{day}}</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr class="table-light" *ngFor="let con of listConsos">
-                <td class="fix"><strong>{{con.Name}}</strong></td>
-                <td class="fix"><span class="badge bg-dark">{{con.Unit}}</span></td>
-                <td *ngFor="let day of listDays">
-                    <div class="flex">
-                        <input type="text" id="{{con.Id}}-{{day}}" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                        <button class="btn btn-light" id="delete-{{con.Id}}-{{day}}" (click)="delete(con.Id,day)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-
+  <!--table de saisie-->
+  <div class="table-style">
+    <table
+      class="table table-bordered table-hover tableFixed"
+      *ngIf="listDays && listConsos"
+    >
+      <thead>
+        <tr class="table-secondary">
+          <th scope="col">
+            <button class="btn btn-success" (click)="validation()">
+              Valider les valeurs
+            </button>
+          </th>
+          <th scope="col">Unité</th>
+          <th *ngFor="let day of listDays" scope="col">{{ day }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="table-light" *ngFor="let con of listConsos">
+          <td class="fix">
+            <strong>{{ con.Name }}</strong>
+          </td>
+          <td class="fix">
+            <span class="badge bg-dark">{{ con.Unit }}</span>
+          </td>
+          <td *ngFor="let day of listDays">
+            <div class="flex">
+              <input
+                type="text"
+                id="{{ con.Id }}-{{ day }}"
+                class="form-control"
+                aria-label="Small"
+                aria-describedby="inputGroup-sizing-sm"
+              />
+              <button
+                class="btn btn-light"
+                id="delete-{{ con.Id }}-{{ day }}"
+                (click)="delete(con.Id, day)"
+              >
+                <i class="fa fa-trash-o" aria-hidden="true"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

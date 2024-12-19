@@ -1,135 +1,231 @@
-
 <ng-template let-data #myCreateActuDialog>
-    <h1 class="creation" style="text-align: center;">Création d'une actualité :</h1>
+  <h1 class="creation" style="text-align: center">
+    Création d'une actualité :
+  </h1>
 
-    <mat-dialog-content>
-        <div class="row">
-            <div>
-        
-                <div class="form-group">
-                    <label for="desc">Titre : * </label>
-                    <input required type="text" id="titre" class="form-control" placeholder="Titre" name="titre" ngModel [(ngModel)]="titre">
-                </div>
-
-                <div class="form-group" *ngIf="idActu === 0">
-                    <label>Envoyer un email : (Maintenir CTRL pour choix multiple)</label>
-                    <div class="row">
-                        <div class="form-group">
-                            <select style="height: 300px;" multiple class="form-select" aria-label=".form-select-sm example" name="listEmail" ngModel [(ngModel)]="listEmail">
-                                <option value="">AUCUN</option>
-                                <option *ngFor="let user of listUsers" value={{user.email}}>{{user.Nom}} {{user.Prenom}} - {{user.email}}</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-        
-                <div class="form-group">
-                    <label>Importance : *</label>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <select required class="form-select" aria-label=".form-select-sm example" name="importance" ngModel [(ngModel)]="importance">
-                                    <option value=0 style="background-color: rgb(81, 196, 81);">Faible</option>
-                                    <option value=1 style="background-color: rgb(245, 171, 35);">Neutre</option>
-                                    <option value=2 style="background-color: rgb(248, 75, 75);">Elevée</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="form-check" >
-                        <input class="form-check-input" type="checkbox" value="" id="forQuart" ngModel [(ngModel)]="forQuart">
-                        <label class="form-check-label" for="forQuart" id="forQuartLabel">
-                            Lié à un quart ? (oui/non)
-                        </label>
-                    </div>
-                </div>
-        
-                <div class="form-group">
-                    <label>Début date validité : *</label>
-                    <input required type="datetime-local" id="dateDebut" class="form-control" placeholder="Date de début de validité" name="dateDebut" ngModel [(ngModel)]="dateDeb">
-                </div>
-                    
-                <div class="form-group">
-                    <label>Fin date validité : *</label>
-                    <input required type="datetime-local" id="dateFin" class="form-control" placeholder="Date de validité" name="dateFin" ngModel [(ngModel)]="dateFin">
-                </div>
-        
-                <div class="form-group">
-                    <label for="desc">Description : </label>
-                    <textarea required name="description" id="description" class="form-control" cols="30" rows="5" ngModel  placeholder="Description" [(ngModel)]="description"> </textarea>
-                    <!-- <input required type="text" id="description" class="form-control" placeholder="Description" name="description" ngModel [(ngModel)]="description"> -->
-                </div>
-        
-                <p style="font-size: smaller; color: grey">* : Obligatoire</p>
-        
-                <div class="form-group">
-                    <button class="btn btn-success btn-lg" (click)="newActu()">Valider</button>
-                    <button [mat-dialog-close]="true" class="btn btn-danger btn-lg">Annuler</button>
-                </div>
-            </div>
+  <mat-dialog-content>
+    <div class="row">
+      <div>
+        <div class="form-group">
+          <label for="desc">Titre : * </label>
+          <input
+            required
+            type="text"
+            id="titre"
+            class="form-control"
+            placeholder="Titre"
+            name="titre"
+            ngModel
+            [(ngModel)]="titre"
+          />
         </div>
-    </mat-dialog-content>
+
+        <div class="form-group" *ngIf="idActu === 0">
+          <label>Envoyer un email : (Maintenir CTRL pour choix multiple)</label>
+          <div class="row">
+            <div class="form-group">
+              <select
+                style="height: 300px"
+                multiple
+                class="form-select"
+                aria-label=".form-select-sm example"
+                name="listEmail"
+                ngModel
+                [(ngModel)]="listEmail"
+              >
+                <option value="">AUCUN</option>
+                <option *ngFor="let user of listUsers" value="{{ user.email }}">
+                  {{ user.Nom }} {{ user.Prenom }} - {{ user.email }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Importance : *</label>
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <select
+                  required
+                  class="form-select"
+                  aria-label=".form-select-sm example"
+                  name="importance"
+                  ngModel
+                  [(ngModel)]="importance"
+                >
+                  <option value="0" style="background-color: rgb(81, 196, 81)">
+                    Faible
+                  </option>
+                  <option value="1" style="background-color: rgb(245, 171, 35)">
+                    Neutre
+                  </option>
+                  <option value="2" style="background-color: rgb(248, 75, 75)">
+                    Elevée
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              id="forQuart"
+              ngModel
+              [(ngModel)]="forQuart"
+            />
+            <label class="form-check-label" for="forQuart" id="forQuartLabel">
+              Lié à un quart ? (oui/non)
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Début date validité : *</label>
+          <input
+            required
+            type="datetime-local"
+            id="dateDebut"
+            class="form-control"
+            placeholder="Date de début de validité"
+            name="dateDebut"
+            ngModel
+            [(ngModel)]="dateDeb"
+          />
+        </div>
+
+        <div class="form-group">
+          <label>Fin date validité : *</label>
+          <input
+            required
+            type="datetime-local"
+            id="dateFin"
+            class="form-control"
+            placeholder="Date de validité"
+            name="dateFin"
+            ngModel
+            [(ngModel)]="dateFin"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="desc">Description : </label>
+          <textarea
+            required
+            name="description"
+            id="description"
+            class="form-control"
+            cols="30"
+            rows="5"
+            ngModel
+            placeholder="Description"
+            [(ngModel)]="description"
+          >
+          </textarea>
+          <!-- <input required type="text" id="description" class="form-control" placeholder="Description" name="description" ngModel [(ngModel)]="description"> -->
+        </div>
+
+        <p style="font-size: smaller; color: grey">* : Obligatoire</p>
+
+        <div class="form-group">
+          <button class="btn btn-success btn-lg" (click)="newActu()">
+            Valider
+          </button>
+          <button [mat-dialog-close]="true" class="btn btn-danger btn-lg">
+            Annuler
+          </button>
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
 </ng-template>
 
 <div *ngIf="listActu">
+  <a
+    (click)="ouvrirDialogCreerActu()"
+    role="button"
+    class="btn btn-primary"
+    id="create"
+  >
+    Créer une actualité
+  </a>
 
-    <a (click)="ouvrirDialogCreerActu()" role="button" class="btn btn-primary" id="create">
-        Créer une actualité
-    </a>
-    
-    <div class="table-style">
-        <!--table des actus-->
-        <table class="table tableFixed">
-            <thead>
-            <tr class="table-secondary">
-                <th scope="col">Actualité</th>
-                <th scope="col">Description</th>
-                <th scope="col">Date de Début de validité</th>
-                <th scope="col">Date de Fin de validité</th>
-                <th scope="col">Lié à un quart ?</th>
-                <th scope="col">Dupliquer</th>
-                <th scope="col">Editer</th>
-                <th scope="col">Supprimer</th>
-            </tr>
-            </thead>
-            <tbody *ngFor="let actu of listActu">
-            <tr class=" color--{{actu.importance}}">
-                <td>{{actu.titre}}</td>
-                <td>{{actu.description}}</td>
-                <td>{{actu.date_heure_debut}}</td>
-                <td>{{actu.date_heure_fin}}</td>
-                <td *ngIf="actu.isValide">
-                    <!-- terminerActu permet de basculer vers une actu lié à un quart ou non-->
-                    <button class="btn btn btn-light" (click)='terminerActu(actu.id, actu.isValide)'>
-                        <i style="color: green" class="fas fa-check"></i>
-                    </button>
-                </td>
-                <td *ngIf="!actu.isValide">
-                    <!-- terminerActu permet de basculer vers une actu lié à un quart ou non-->
-                    <button class="btn btn btn-light" (click)='terminerActu(actu.id, actu.isValide)'>
-                        <i style="color: red" class="fas fa-times-circle"></i>
-                    </button>
-                </td>
-                <td>
-                    <button class="btn btn btn-light edition" (click)="ouvrirDialogModifActu(actu.id,1)">
-                        <i class="far fa-copy"></i>
-                    </button>
-                </td>
-                <td>
-                    <button class="btn btn btn-light edition" (click)="ouvrirDialogModifActu(actu.id,0)">
-                        <i class="far fa-edit"></i>
-                    </button>
-                </td>
-                <td>
-                    <button (click)="deleteActu(actu.id)" id="deleteActu" class="btn btn-light">
-                        <i class="fa fa-trash-o" aria-hidden="true" style="color: red;"></i>
-                    </button>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+  <div class="table-style">
+    <!--table des actus-->
+    <table class="table tableFixed">
+      <thead>
+        <tr class="table-secondary">
+          <th scope="col">Actualité</th>
+          <th scope="col">Description</th>
+          <th scope="col">Date de Début de validité</th>
+          <th scope="col">Date de Fin de validité</th>
+          <th scope="col">Lié à un quart ?</th>
+          <th scope="col">Dupliquer</th>
+          <th scope="col">Editer</th>
+          <th scope="col">Supprimer</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let actu of listActu">
+        <tr class=" color--{{ actu.importance }}">
+          <td>{{ actu.titre }}</td>
+          <td>{{ actu.description }}</td>
+          <td>{{ actu.date_heure_debut }}</td>
+          <td>{{ actu.date_heure_fin }}</td>
+          <td *ngIf="actu.isValide">
+            <!-- terminerActu permet de basculer vers une actu lié à un quart ou non-->
+            <button
+              class="btn btn btn-light"
+              (click)="terminerActu(actu.id, actu.isValide)"
+            >
+              <i style="color: green" class="fas fa-check"></i>
+            </button>
+          </td>
+          <td *ngIf="!actu.isValide">
+            <!-- terminerActu permet de basculer vers une actu lié à un quart ou non-->
+            <button
+              class="btn btn btn-light"
+              (click)="terminerActu(actu.id, actu.isValide)"
+            >
+              <i style="color: red" class="fas fa-times-circle"></i>
+            </button>
+          </td>
+          <td>
+            <button
+              class="btn btn btn-light edition"
+              (click)="ouvrirDialogModifActu(actu.id, 1)"
+            >
+              <i class="far fa-copy"></i>
+            </button>
+          </td>
+          <td>
+            <button
+              class="btn btn btn-light edition"
+              (click)="ouvrirDialogModifActu(actu.id, 0)"
+            >
+              <i class="far fa-edit"></i>
+            </button>
+          </td>
+          <td>
+            <button
+              (click)="deleteActu(actu.id)"
+              id="deleteActu"
+              class="btn btn-light"
+            >
+              <i
+                class="fa fa-trash-o"
+                aria-hidden="true"
+                style="color: red"
+              ></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

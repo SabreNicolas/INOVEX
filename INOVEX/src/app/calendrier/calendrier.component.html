@@ -1,66 +1,112 @@
 <div id="spinner">
   <div><h1>Chargement en cours...</h1></div>
-  <div id="spinnerBloc">
-  </div>
+  <div id="spinnerBloc"></div>
 </div>
 
 <!-- Création d'une action / ronde pour le calendrier -->
 
 <button class="btn btn-success" id="create" (click)="ouvrirDialogCreerEvent()">
-  + 
+  +
 </button>
 <ng-template let-data #myCreateEventDialog>
-  <h1 class="creation" style="text-align: center;">Ajout d'une zone/action :</h1>
+  <h1 class="creation" style="text-align: center">Ajout d'une zone/action :</h1>
 
   <mat-dialog-content>
     <div id="divCreation">
       <div class="form-check">
-        <input class="form-check-input" type="radio" name="ronde" id="ronde" value="zone" [(ngModel)]="radioSelect" (click)="showCreationRonde()">
-        <label class="form-check-label" for="ronde">
-          Zones à contrôler
-        </label>
+        <input
+          class="form-check-input"
+          type="radio"
+          name="ronde"
+          id="ronde"
+          value="zone"
+          [(ngModel)]="radioSelect"
+          (click)="showCreationRonde()"
+        />
+        <label class="form-check-label" for="ronde"> Zones à contrôler </label>
       </div>
       <div class="form-check">
-        <input class="form-check-input" type="radio" name="ronde" id="action" value="action" [(ngModel)]="radioSelect" (click)="showCreationAction()">
-        <label class="form-check-label" for="action">
-          Actions
-        </label>
+        <input
+          class="form-check-input"
+          type="radio"
+          name="ronde"
+          id="action"
+          value="action"
+          [(ngModel)]="radioSelect"
+          (click)="showCreationAction()"
+        />
+        <label class="form-check-label" for="action"> Actions </label>
       </div>
     </div>
 
-    <div id="CreationRondeAction"  style="display: none;">
-      <div class="form-group" id="CreationRonde" style="display: none;">
+    <div id="CreationRondeAction" style="display: none">
+      <div class="form-group" id="CreationRonde" style="display: none">
         <label>Choisissez vos zones</label>
-        <select multiple class="form-select form-select-sm" aria-label=".form-select-sm example" [(ngModel)]="listZoneSelection">
-          <option *ngFor="let z of listZone" value="{{z.Id}}">{{z.nom}}</option>
+        <select
+          multiple
+          class="form-select form-select-sm"
+          aria-label=".form-select-sm example"
+          [(ngModel)]="listZoneSelection"
+        >
+          <option *ngFor="let z of listZone" value="{{ z.Id }}">
+            {{ z.nom }}
+          </option>
         </select>
       </div>
-      <div class="form-group" id="CreationAction" style="display: none;">
+      <div class="form-group" id="CreationAction" style="display: none">
         <label>Action :</label>
-        <input type="text" id="actions" class="form-control" placeholder="Liste des actions" name="nomAction" [(ngModel)]="nomAction"/>
-        <button class="btn" id="valider" style="background-color: rgb(27,37,51); color: white;" (click)="choixAction();">
+        <input
+          type="text"
+          id="actions"
+          class="form-control"
+          placeholder="Liste des actions"
+          name="nomAction"
+          [(ngModel)]="nomAction"
+        />
+        <button
+          class="btn"
+          id="valider"
+          style="background-color: rgb(27, 37, 51); color: white"
+          (click)="choixAction()"
+        >
           Depuis Liste Actions
         </button>
       </div>
 
       <div class="form-group">
         <label>Date :</label>
-        <input type="date" id="dateDeb" class="form-control" placeholder="Date de début" name="dateDeb" [(ngModel)]="dateDeb"/>
+        <input
+          type="date"
+          id="dateDeb"
+          class="form-control"
+          placeholder="Date de début"
+          name="dateDeb"
+          [(ngModel)]="dateDeb"
+        />
       </div>
 
       <div class="form-group">
         <label>Périodicité :</label>
-        <select class="form-select form-select-sm" aria-label=".form-select-sm example" [(ngModel)]="periodicite">
+        <select
+          class="form-select form-select-sm"
+          aria-label=".form-select-sm example"
+          [(ngModel)]="periodicite"
+        >
           <option value="0">Aucune</option>
           <option value="1">Quotidien</option>
           <option value="2">Hebdo</option>
           <option value="3">Mensuel</option>
         </select>
       </div>
-        
+
       <div class="form-group">
         <label>Quart :</label>
-        <select multiple class="form-select form-select-sm" aria-label=".form-select-sm example" [(ngModel)]="quart">
+        <select
+          multiple
+          class="form-select form-select-sm"
+          aria-label=".form-select-sm example"
+          [(ngModel)]="quart"
+        >
           <option value="1">Matin</option>
           <option value="2">Après-midi</option>
           <option value="3">Nuit</option>
@@ -68,26 +114,42 @@
       </div>
 
       <div class="form-group" *ngIf="periodicite != 0">
-        <p >Fin après <input type="number" name="occurences" id="occurences" value="10" [(ngModel)]="occurences"> occurences 
-        <button class="btn btn-success" id="maxOccurence" (click)="maxOccurence()">
-          Max
-        </button></p>
+        <p>
+          Fin après
+          <input
+            type="number"
+            name="occurences"
+            id="occurences"
+            value="10"
+            [(ngModel)]="occurences"
+          />
+          occurences
+          <button
+            class="btn btn-success"
+            id="maxOccurence"
+            (click)="maxOccurence()"
+          >
+            Max
+          </button>
+        </p>
       </div>
 
-      <button class="btn btn-success" id="valider" (click)="createEvenementCalendrier()">
+      <button
+        class="btn btn-success"
+        id="valider"
+        (click)="createEvenementCalendrier()"
+      >
         Valider
       </button>
     </div>
-    <button [mat-dialog-close]="true" class="btn btn-danger btn-lg">Annuler</button>
+    <button [mat-dialog-close]="true" class="btn btn-danger btn-lg">
+      Annuler
+    </button>
   </mat-dialog-content>
 </ng-template>
 
-
-
-
 <!-- Calendrier -->
 <br /><br /><br />
-
 
 <!-- <div id="actualiser_calendrier">
   <div
@@ -100,7 +162,6 @@
   
 </div> -->
 
-      
 <div class="row text-center">
   <div class="col-md-4">
     <div class="btn-group">
@@ -117,7 +178,7 @@
         class="btn btn-outline-secondary"
         mwlCalendarToday
         [(viewDate)]="viewDate"
-        style="color: white;"
+        style="color: white"
       >
         Aujourd'hui
       </div>
@@ -133,7 +194,7 @@
     </div>
   </div>
   <div class="col-md-4">
-    <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'fr' }}</h3>
+    <h3>{{ viewDate | calendarDate: view + "ViewTitle" : "fr" }}</h3>
   </div>
   <div class="col-md-4">
     <div class="btn-group">
@@ -178,7 +239,7 @@
   </mwl-calendar-month-view>
   <mwl-calendar-week-view
     *ngSwitchCase="CalendarView.Week"
-    style="color: rgb(27,37,51);"
+    style="color: rgb(27, 37, 51)"
     [viewDate]="viewDate"
     locale="fr"
     [events]="events"
@@ -190,7 +251,7 @@
   </mwl-calendar-week-view>
   <mwl-calendar-day-view
     *ngSwitchCase="CalendarView.Day"
-    style="color: rgb(27,37,51);"
+    style="color: rgb(27, 37, 51)"
     [viewDate]="viewDate"
     locale="fr"
     [events]="events"
@@ -201,42 +262,63 @@
   </mwl-calendar-day-view>
 </div>
 
-
 <!-- Module qu'on affiche lors du click sur un évènement -->
 <ng-template #modalContent let-close="close">
   <div class="modal-header">
-    <h5 class="modal-title">Evènement : <strong>{{ modalData?.nom }}</strong></h5>
+    <h5 class="modal-title">
+      Evènement : <strong>{{ modalData?.nom }}</strong>
+    </h5>
     <button type="button" class="close" (click)="close()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
     <div>
-      Du <strong>{{modalData?.dateDeb}}</strong> au <strong> {{modalData?.dateFin}} </strong>
-      <br><br>
+      Du <strong>{{ modalData?.dateDeb }}</strong> au
+      <strong> {{ modalData?.dateFin }} </strong> <br /><br />
       <div *ngFor="let ronde of modalData?.ronde">
-        Zone : <strong>{{ronde.nom}}</strong>
-        <button type="button" [disabled]="userLogged.hasOwnProperty('localisation') || !userLogged['isAdmin'] === true" class="btn btn-outline-danger" (click)="deleteEvenement(ronde.id, false);close()">
+        Zone : <strong>{{ ronde.nom }}</strong>
+        <button
+          type="button"
+          [disabled]="
+            userLogged.hasOwnProperty('localisation') ||
+            !userLogged['isAdmin'] === true
+          "
+          class="btn btn-outline-danger"
+          (click)="deleteEvenement(ronde.id, false); close()"
+        >
           <i class="fas fa-trash"></i>
         </button>
       </div>
       <div *ngIf="modalData?.isAction">
-        <button type="button" class="btn btn-outline-secondary" class="btn btn-outline-danger" (click)="deleteEvenement(modalData?.event?.id, false)">
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          class="btn btn-outline-danger"
+          (click)="deleteEvenement(modalData?.event?.id, false)"
+        >
           Supprimer l'évènement
         </button>
-        <button type="button" [disabled]="true" class="btn btn-outline-secondary" class="btn btn-danger" (click)="deleteEvenement(modalData?.event?.id, true)">
-          <i style="color: white;" class="fa fa-exclamation-triangle" aria-hidden="true"></i>Supprimer l'occurence
+        <button
+          type="button"
+          [disabled]="true"
+          class="btn btn-outline-secondary"
+          class="btn btn-danger"
+          (click)="deleteEvenement(modalData?.event?.id, true)"
+        >
+          <i
+            style="color: white"
+            class="fa fa-exclamation-triangle"
+            aria-hidden="true"
+          ></i
+          >Supprimer l'occurence
         </button>
       </div>
     </div>
   </div>
   <div class="modal-footer">
-    
-    
     <button type="button" class="btn btn-outline-secondary" (click)="close()">
       OK
     </button>
   </div>
 </ng-template>
-
-

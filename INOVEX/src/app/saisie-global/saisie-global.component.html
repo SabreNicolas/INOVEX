@@ -1,113 +1,218 @@
 <div *ngIf="isSuperAdmin" id="usine">
-    {{usine}}
+  {{ usine }}
 </div>
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <a style="margin-left: 1em;" class="navbar-brand" routerLink="">
-        <strong><i class="fa fa-home"></i> Accueil</strong>
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+  <a style="margin-left: 1em" class="navbar-brand" routerLink="">
+    <strong><i class="fa fa-home"></i> Accueil</strong>
+  </a>
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li *ngIf="isSaisie" class="nav-item dropdown" routerLinkActive="active">
+        <a
+          routerLink="listClients"
+          class="nav-link"
+          id="navbarDropdownListClients"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Liste des Clients
+        </a>
+      </li>
 
-            <li *ngIf="isSaisie" class="nav-item dropdown" routerLinkActive="active">
-                <a routerLink="listClients" class="nav-link" id="navbarDropdownListClients" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-                    Liste des Clients
-                </a>
-            </li>
+      <li *ngIf="isSaisie" class="nav-item dropdown" routerLinkActive="active">
+        <a
+          routerLink="./entree"
+          class="nav-link"
+          id="navbarDropdownEntree"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Entrants
+        </a>
+      </li>
 
-            <li *ngIf="isSaisie" class="nav-item dropdown" routerLinkActive="active">
-                <a routerLink="./entree" class="nav-link" id="navbarDropdownEntree" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-                    Entrants
-                </a>
-            </li>
+      <li *ngIf="isSaisie" class="nav-item dropdown" routerLinkActive="active">
+        <a
+          routerLink="./sortie"
+          class="nav-link"
+          id="navbarDropdownSortie"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Sortants
+        </a>
+      </li>
 
-            <li *ngIf="isSaisie" class="nav-item dropdown" routerLinkActive="active">
-                <a routerLink="./sortie" class="nav-link" id="navbarDropdownSortie" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-                    Sortants
-                </a>
-            </li>
+      <li *ngIf="isSaisie" class="nav-item dropdown" routerLinkActive="active">
+        <a
+          routerLink="reactifs"
+          class="nav-link"
+          id="navbarDropdownReactif"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Réactifs et livraisons
+        </a>
+      </li>
 
-            <li *ngIf="isSaisie" class="nav-item dropdown" routerLinkActive="active">
-                <a routerLink="reactifs" class="nav-link" id="navbarDropdownReactif" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-                    Réactifs et livraisons
-                </a>
-            </li>
+      <li *ngIf="isSaisie" class="nav-item dropdown" routerLinkActive="active">
+        <a
+          routerLink="listCompteurs"
+          class="nav-link"
+          id="navbarDropdownCompteurs"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Compteurs & Autres
+        </a>
+      </li>
 
-            <li *ngIf="isSaisie" class="nav-item dropdown" routerLinkActive="active">
-                <a routerLink="listCompteurs" class="nav-link" id="navbarDropdownCompteurs" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-                    Compteurs & Autres
-                </a>
-            </li>
-
-            <!--<li class="nav-item dropdown">
+      <!--<li class="nav-item dropdown">
                 <a routerLink="qse" class="nav-link" id="navbarDropdownQse" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     QSE
                 </a>
             </li>-->
 
-            <li *ngIf="isSaisie" class="nav-item dropdown" routerLinkActive="active">
-                <a routerLink="analyses" [queryParams]="{ pci: 'false'}" class="nav-link" id="navbarDropdownAnalyse" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-                    Analyses
-                </a>
-            </li>
+      <li *ngIf="isSaisie" class="nav-item dropdown" routerLinkActive="active">
+        <a
+          routerLink="analyses"
+          [queryParams]="{ pci: 'false' }"
+          class="nav-link"
+          id="navbarDropdownAnalyse"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Analyses
+        </a>
+      </li>
 
-            <li *ngIf="isSaisie" class="nav-item dropdown" routerLinkActive="active">
-                <a routerLink="conso" class="nav-link" id="navbarDropdownConso" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-                    Consommables
-                </a>
-            </li>
+      <li *ngIf="isSaisie" class="nav-item dropdown" routerLinkActive="active">
+        <a
+          routerLink="conso"
+          class="nav-link"
+          id="navbarDropdownConso"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Consommables
+        </a>
+      </li>
 
-            <li class="nav-item dropdown" routerLinkActive="active">
-                <a routerLink="listForm" class="nav-link" id="navbarDropdownForm" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-                    Formulaire
-                </a>
-            </li>
+      <li class="nav-item dropdown" routerLinkActive="active">
+        <a
+          routerLink="listForm"
+          class="nav-link"
+          id="navbarDropdownForm"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Formulaire
+        </a>
+      </li>
 
-            <!--<li class="nav-item dropdown">
+      <!--<li class="nav-item dropdown">
                 <a routerLink="analyses" [queryParams]="{ pci: 'true'}" class="nav-link" id="navbarDropdownPCI" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     PCI
                 </a>
             </li>-->
 
-            <li class="nav-item dropdown" routerLinkActive="active">
-                <a class="nav-link dropdown-toggle" id="navbarDropdownArrets" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Arrêts
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" routerLink="arrets" [queryParams]="{ isArret: 'true'}" >Saisie</a>
-                    <a class="dropdown-item" routerLink="listArrets" [queryParams]="{ isArret: 'true'}" >Historique</a>
-                </div>
-            </li>
+      <li class="nav-item dropdown" routerLinkActive="active">
+        <a
+          class="nav-link dropdown-toggle"
+          id="navbarDropdownArrets"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Arrêts
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a
+            class="dropdown-item"
+            routerLink="arrets"
+            [queryParams]="{ isArret: 'true' }"
+            >Saisie</a
+          >
+          <a
+            class="dropdown-item"
+            routerLink="listArrets"
+            [queryParams]="{ isArret: 'true' }"
+            >Historique</a
+          >
+        </div>
+      </li>
 
-            <li class="nav-item dropdown" routerLinkActive="active">
-                <a class="nav-link dropdown-toggle" id="navbarDropdownDep" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Dépassements 1/2H
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" routerLink="arrets" [queryParams]="{ isArret: 'false'}">Saisie</a>
-                    <a class="dropdown-item" routerLink="listArrets" [queryParams]="{ isArret: 'false'}">Historique</a>
-                </div>
-            </li>
+      <li class="nav-item dropdown" routerLinkActive="active">
+        <a
+          class="nav-link dropdown-toggle"
+          id="navbarDropdownDep"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Dépassements 1/2H
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a
+            class="dropdown-item"
+            routerLink="arrets"
+            [queryParams]="{ isArret: 'false' }"
+            >Saisie</a
+          >
+          <a
+            class="dropdown-item"
+            routerLink="listArrets"
+            [queryParams]="{ isArret: 'false' }"
+            >Historique</a
+          >
+        </div>
+      </li>
 
-            <!--<li class="nav-item dropdown">
+      <!--<li class="nav-item dropdown">
                 <a routerLink="rapports" class="nav-link" id="navbarDropdownRapports" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     RAPPORTS
                 </a>
             </li>-->
+    </ul>
 
-        </ul>
-
-        <!--<a style="color: white" routerLink="admin" target="_blank" class="nav-link" id="navbarDropdownAdministration" role="button" aria-haspopup="true" aria-expanded="false">
+    <!--<a style="color: white" routerLink="admin" target="_blank" class="nav-link" id="navbarDropdownAdministration" role="button" aria-haspopup="true" aria-expanded="false">
             Administration
         </a>-->
 
-        <img src="assets/paprec.png" style="width:10em">
-    </div>
+    <img src="assets/paprec.png" style="width: 10em" />
+  </div>
 </nav>
 
 <div style="margin-left: 0.5em; margin-top: 7%">
-    <router-outlet></router-outlet>
+  <router-outlet></router-outlet>
 </div>

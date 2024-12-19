@@ -1,34 +1,60 @@
 <h1 class="creation">Création d'une action :</h1>
 
 <div class="row">
-    <div class="col-sm-5 col-sm-offset-1">
-
-        <div class="form-group">
-            <label for="desc">Nom : * </label>
-            <input required type="text" id="nom" class="form-control" placeholder="Nom" name="nom" ngModel [(ngModel)]="nom">
-        </div>
-
-        <div class="form-group">
-
-        <div class="form-group">
-            <label>Date : *</label>
-            <input required type="date" id="dateDebut" class="form-control" placeholder="Date" name="dateDebut" ngModel [(ngModel)]="dateDeb">
-        </div>
-            
-        <div class="form-group">
-            <label>Quart: *</label>
-            <select required class="form-select" aria-label=".form-select-sm example" name="quart" ngModel [(ngModel)]="quart">
-                <option value=1>Matin</option>
-                <option value=2>Après-midi</option>
-                <option value=3>Nuit</option>
-            </select>
-        </div>
-
-        <p style="font-size: smaller; color: grey">* : Obligatoire</p>
-
-        <div class="form-group">
-            <button class="btn btn-success btn-lg" (click)="newActu()">Valider</button>
-            <button class="btn btn-danger btn-lg">Annuler</button>
-        </div>
+  <div class="col-sm-5 col-sm-offset-1">
+    <div class="form-group">
+      <label for="desc">Nom : * </label>
+      <input
+        required
+        type="text"
+        id="nom"
+        class="form-control"
+        placeholder="Nom"
+        name="nom"
+        ngModel
+        [(ngModel)]="nom"
+      />
     </div>
+
+    <div class="form-group">
+      <div class="form-group">
+        <label>Date : *</label>
+        <input
+          required
+          type="date"
+          id="dateDebut"
+          class="form-control"
+          placeholder="Date"
+          name="dateDebut"
+          ngModel
+          [(ngModel)]="dateDeb"
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Quart: *</label>
+        <select
+          required
+          class="form-select"
+          aria-label=".form-select-sm example"
+          name="quart"
+          ngModel
+          [(ngModel)]="quart"
+        >
+          <option value="1">Matin</option>
+          <option value="2">Après-midi</option>
+          <option value="3">Nuit</option>
+        </select>
+      </div>
+
+      <p style="font-size: smaller; color: grey">* : Obligatoire</p>
+
+      <div class="form-group">
+        <button class="btn btn-success btn-lg" (click)="newActu()">
+          Valider
+        </button>
+        <button class="btn btn-danger btn-lg">Annuler</button>
+      </div>
+    </div>
+  </div>
 </div>

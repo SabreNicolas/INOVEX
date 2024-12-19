@@ -1,20 +1,26 @@
 <div class="container">
-     <ng-container *ngFor="let card of listFormulaires">
-        <a *ngIf="isAdmin==1" routerLink="/admin/saisieForm" [queryParams]="{idForm: card.idFormulaire}" >
-            <div   class="card" id="{{card.idFormulaire}}">
-                    <div class="card-body">
-                        <h5 class="card-title">{{card.nom}} </h5>
-                    </div>
-            </div>
-        </a>
-        <a *ngIf="isAdmin==0" routerLink="/saisie/saisieForm" [queryParams]="{idForm: card.idFormulaire}" >
-            <div   class="card" id="{{card.idFormulaire}}">
-                    <div class="card-body">
-                        <h5 class="card-title">{{card.nom}} </h5>
-                    </div>
-            </div>
-        </a>
-    </ng-container>
+  <ng-container *ngFor="let card of listFormulaires">
+    <a
+      *ngIf="isAdmin == 1"
+      routerLink="/admin/saisieForm"
+      [queryParams]="{ idForm: card.idFormulaire }"
+    >
+      <div class="card" id="{{ card.idFormulaire }}">
+        <div class="card-body">
+          <h5 class="card-title">{{ card.nom }}</h5>
+        </div>
+      </div>
+    </a>
+    <a
+      *ngIf="isAdmin == 0"
+      routerLink="/saisie/saisieForm"
+      [queryParams]="{ idForm: card.idFormulaire }"
+    >
+      <div class="card" id="{{ card.idFormulaire }}">
+        <div class="card-body">
+          <h5 class="card-title">{{ card.nom }}</h5>
+        </div>
+      </div>
+    </a>
+  </ng-container>
 </div>
-
-

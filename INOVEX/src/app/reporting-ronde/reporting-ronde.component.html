@@ -1,243 +1,468 @@
 <div *ngIf="isSuperAdmin" id="usine">
-    {{usine}}
+  {{ usine }}
 </div>
-<button routerLink="" class="btn btn-outline-primary btn-lg btnRetour"><i class="fa fa-home"></i> Accueil</button>
-
+<button routerLink="" class="btn btn-outline-primary btn-lg btnRetour">
+  <i class="fa fa-home"></i> Accueil
+</button>
 
 <div class="table-style">
-    <h3 style="text-align: center;">Reprise de ronde
-        <a (click)="repriseDeRonde()" role="button"  class="btn btn-primary" id="create">
-            +
-        </a>
-    </h3>
-    <!--table des consignes-->
-    <table class="table tableFixed" *ngIf="listReprise.length != 0">
-        <thead>
-        <tr class="table-secondary">
-            <th scope="col">Date</th>
-            <th scope="col">Quart</th>
-            <th scope="col">Termine ?</th>
-            <th scope="col">Supprimer</th>
-        </tr>
-        </thead>
-        <tbody *ngFor="let reprise of listReprise">
-        <tr class="table-light">
-            <td>{{reprise.date}}</td>
-            <td *ngIf="reprise.quart==1">Matin</td>
-            <td *ngIf="reprise.quart==2">Après-midi</td>
-            <td *ngIf="reprise.quart==3">Nuit</td>
-            <td>{{reprise.termine}}</td>
-            <td>
-                <button (click)="deleteRepriseRonde(reprise.id)" id="reprise" class="btn btn-light">
-                    <i class="fa fa-trash-o" aria-hidden="true"></i>
-                </button>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+  <h3 style="text-align: center">
+    Reprise de ronde
+    <a
+      (click)="repriseDeRonde()"
+      role="button"
+      class="btn btn-primary"
+      id="create"
+    >
+      +
+    </a>
+  </h3>
+  <!--table des consignes-->
+  <table class="table tableFixed" *ngIf="listReprise.length != 0">
+    <thead>
+      <tr class="table-secondary">
+        <th scope="col">Date</th>
+        <th scope="col">Quart</th>
+        <th scope="col">Termine ?</th>
+        <th scope="col">Supprimer</th>
+      </tr>
+    </thead>
+    <tbody *ngFor="let reprise of listReprise">
+      <tr class="table-light">
+        <td>{{ reprise.date }}</td>
+        <td *ngIf="reprise.quart == 1">Matin</td>
+        <td *ngIf="reprise.quart == 2">Après-midi</td>
+        <td *ngIf="reprise.quart == 3">Nuit</td>
+        <td>{{ reprise.termine }}</td>
+        <td>
+          <button
+            (click)="deleteRepriseRonde(reprise.id)"
+            id="reprise"
+            class="btn btn-light"
+          >
+            <i class="fa fa-trash-o" aria-hidden="true"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 
 <div class="blocReporting">
-    <div>
-        <!--date-->
-        <form #f="ngForm">
+  <div>
+    <!--date-->
+    <form #f="ngForm">
+      <div class="form-group">
+        <h5><label>Jour et Quart:</label></h5>
+        <div class="row">
+          <div class="col-lg-5">
+            <input
+              type="date"
+              id="dateDeb"
+              class="form-control"
+              placeholder="Date de début"
+              name="dateDeb"
+              ngModel
+              (change)="setPeriod(f)"
+            />
+          </div>
+          <div class="col-sm-5">
             <div class="form-group">
-                <h5><label>Jour et Quart:</label></h5>
-                <div class="row">
-                    <div class="col-lg-5">
-                        <input type="date" id="dateDeb" class="form-control" placeholder="Date de début" name="dateDeb" ngModel (change)="setPeriod(f)">
-                    </div>
-                    <div class="col-sm-5">
-                        <div class="form-group">
-                            <!-- <button class="btn btn-primary" type="submit" (click)="setPeriod(f)"><img src="assets/refresh.png"></button> -->
-                            <button style="margin-left: 0.5em" class="btn btn-warning" appPreventDoubleClick [throttleTime]="3000" (throttledClick)="setYesterday(f)">Hier</button>
-                            <button style="margin-left: 0.5em" class="btn btn-success" appPreventDoubleClick [throttleTime]="3000" (throttledClick)="setToday(f)">Aujourd'hui</button>
-                            <button style="margin-left: 0.5em" id="quartmatin" class="btn btn-info" appPreventDoubleClick [throttleTime]="3000" (throttledClick)="afficherRonde(1)"><strong>Matin</strong></button>
-                            <button style="margin-left: 0.5em" id="quartapresmidi" class="btn btn-info" appPreventDoubleClick [throttleTime]="3000" (throttledClick)="afficherRonde(2)"><strong>Après-midi</strong></button>
-                            <button style="margin-left: 0.5em" id="quartnuit" class="btn btn-info" appPreventDoubleClick [throttleTime]="3000" (throttledClick)="afficherRonde(3)"><strong>Nuit</strong></button>
-                            <button style="margin-left: 0.5em" id="troisQuart" class="btn btn-info" appPreventDoubleClick [throttleTime]="3000" (throttledClick)="afficherRonde(0)"><strong>Toutes les rondes</strong></button>
-                        </div>
-                    </div>
-                </div>
+              <!-- <button class="btn btn-primary" type="submit" (click)="setPeriod(f)"><img src="assets/refresh.png"></button> -->
+              <button
+                style="margin-left: 0.5em"
+                class="btn btn-warning"
+                appPreventDoubleClick
+                [throttleTime]="3000"
+                (throttledClick)="setYesterday(f)"
+              >
+                Hier
+              </button>
+              <button
+                style="margin-left: 0.5em"
+                class="btn btn-success"
+                appPreventDoubleClick
+                [throttleTime]="3000"
+                (throttledClick)="setToday(f)"
+              >
+                Aujourd'hui
+              </button>
+              <button
+                style="margin-left: 0.5em"
+                id="quartmatin"
+                class="btn btn-info"
+                appPreventDoubleClick
+                [throttleTime]="3000"
+                (throttledClick)="afficherRonde(1)"
+              >
+                <strong>Matin</strong>
+              </button>
+              <button
+                style="margin-left: 0.5em"
+                id="quartapresmidi"
+                class="btn btn-info"
+                appPreventDoubleClick
+                [throttleTime]="3000"
+                (throttledClick)="afficherRonde(2)"
+              >
+                <strong>Après-midi</strong>
+              </button>
+              <button
+                style="margin-left: 0.5em"
+                id="quartnuit"
+                class="btn btn-info"
+                appPreventDoubleClick
+                [throttleTime]="3000"
+                (throttledClick)="afficherRonde(3)"
+              >
+                <strong>Nuit</strong>
+              </button>
+              <button
+                style="margin-left: 0.5em"
+                id="troisQuart"
+                class="btn btn-info"
+                appPreventDoubleClick
+                [throttleTime]="3000"
+                (throttledClick)="afficherRonde(0)"
+              >
+                <strong>Toutes les rondes</strong>
+              </button>
             </div>
-        </form>
-    </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
 
-    <h5><label *ngIf="listElementsOfZone.length != 0">Filtres :</label></h5>
-    <div class="row" *ngIf="listElementsOfZone.length != 0">
-        <div class="col-sm-3">
-            <div class="form-group">
-                <select id="type" required class="form-select form-select-sm"
-                        aria-label=".form-select-sm example" name="type">
-                        <option value="">Choisissez une zone</option>
-                    <option *ngFor="let elementsOfOneZone of listElementsOfZone" value="{{elementsOfOneZone.zone}}">{{elementsOfOneZone.zone}}</option>
-                </select>
-            </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="form-group">
-                <div class="form-group">
-                    <input type="text" id="name" class="form-control" placeholder="Nom de la zone" name="name" ngModel>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="form-group">
-                <div class="form-group">
-                    <button class="btn btn-success" (click)="afficherRonde(this.quart)" style="margin-right: 5px;">Valider</button>
-                    <button class="btn btn-danger" (click)="resetFiltre()">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
+  <h5><label *ngIf="listElementsOfZone.length != 0">Filtres :</label></h5>
+  <div class="row" *ngIf="listElementsOfZone.length != 0">
+    <div class="col-sm-3">
+      <div class="form-group">
+        <select
+          id="type"
+          required
+          class="form-select form-select-sm"
+          aria-label=".form-select-sm example"
+          name="type"
+        >
+          <option value="">Choisissez une zone</option>
+          <option
+            *ngFor="let elementsOfOneZone of listElementsOfZone"
+            value="{{ elementsOfOneZone.zone }}"
+          >
+            {{ elementsOfOneZone.zone }}
+          </option>
+        </select>
+      </div>
     </div>
-    <h5><label *ngIf="listElementsOfUsine.length != 0">Filtres :</label></h5>
-    <div class="row" *ngIf="listElementsOfUsine.length != 0">
-        <div class="col-sm-3">
-            <div class="form-group">
-                <select id="type" required class="form-select form-select-sm"
-                        aria-label=".form-select-sm example" name="type" ngModel [(ngModel)]="type">
-                        <option value="">Choisissez une zone</option>
-                    <option *ngFor="let zone of listZone" value="{{zone.nom}}">{{zone.nom}}</option>
-                </select>
-            </div>
+    <div class="col-sm-3">
+      <div class="form-group">
+        <div class="form-group">
+          <input
+            type="text"
+            id="name"
+            class="form-control"
+            placeholder="Nom de la zone"
+            name="name"
+            ngModel
+          />
         </div>
-        <div class="col-sm-3">
-            <div class="form-group">
-                <div class="form-group">
-                    <input type="text" id="name" class="form-control" placeholder="Nom de la zone" name="name" ngModel [(ngModel)]="name">
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="form-group">
-                <div class="form-group">
-                    <button class="btn btn-success" (click)="setFilters()" style="margin-right: 5px;">Valider</button>
-                    <button class="btn btn-danger" (click)="resetFiltre()">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
-    <!--table des rondes-->
-    <div id="tableDesRondes" style="display: block;" *ngIf="listRonde.length > 0" class="table-style">
-        <table class="table table-hover tableFixed table-bordered" id="tableTable">
-            <thead>
-            <tr class="table-secondary">
-                <th scope="col"><p>Element de contrôle</p></th>
-                <th *ngFor="let ronde of listRonde" style="text-align: center" scope="col">
-                    <div>
-                        <p *ngIf="ronde.quart == 1">Matin
-                            <button [disabled]="true" class="btn btn-outline-danger btn-sm" (click)="deleteRonde(ronde.Id)">
-                                <i class="fa fa-trash-o" aria-hidden="true"></i>
-                            </button>
-                        </p>
-                        <p *ngIf="ronde.quart == 2">Après-Midi
-                            <button [disabled]="true" class="btn btn-outline-danger btn-sm" (click)="deleteRonde(ronde.Id)">
-                                <i class="fa fa-trash-o" aria-hidden="true"></i>
-                            </button>
-                        </p>
-                        <p *ngIf="ronde.quart == 3">Nuit
-                            <button [disabled]="true" class="btn btn-outline-danger btn-sm" (click)="deleteRonde(ronde.Id)">
-                                <i class="fa fa-trash-o" aria-hidden="true"></i>
-                            </button>
-                        </p>
-                    </div>
-                </th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr class="table-info">
-                <td>Terminé ?</td>
-                <td *ngFor="let ronde of listRonde" style="text-align: center">
-                    <i *ngIf="ronde.isFinished" style="color: green" class="fa fa-check" aria-hidden="true"></i>
-                    <i *ngIf="!ronde.isFinished" style="color: red" class="fa fa-times" aria-hidden="true"></i>
-                </td>
-            </tr>
-            <tr class="table-info">
-                <td>Auteur de la ronde</td>
-                <td *ngFor="let ronde of listRonde" style="text-align: center">
-                    <p aria-hidden="true">{{ronde.Nom}} {{ronde.Prenom}}</p>
-                </td>
-            </tr>
-            <tr class="table-info">
-                <td>CHEF DE QUART</td>
-                <td *ngFor="let ronde of listRonde" style="text-align: center">
-                    <p aria-hidden="true">{{ronde.nomChef}} {{ronde.prenomChef}}</p>
-                </td>
-            </tr>
-            <ng-container *ngIf="idUsine !=7">
-                <tr *ngFor="let fourNumber of numbers" class="table-info fourLigneTableau">
-                    <td >Four {{fourNumber}} en Fonctionnement ?</td>
-                    <td *ngFor="let ronde of listRonde" style="text-align: center">
-                        <i *ngIf="checkFonctFour(fourNumber,ronde)" style="color: green" class="fa fa-check" aria-hidden="true"></i>
-                        <i *ngIf="!checkFonctFour(fourNumber,ronde)" style="color: red" class="fa fa-times" aria-hidden="true"></i>
-                    </td>
-                </tr>
-            </ng-container>
-            </tbody>
-            <!--Affichage des zones et de leurs éléments-->
-            <tbody >
-                <ng-container *ngFor="let zone of listZone">
-                    <tr class="table-light" id="zone--{{zone.id}}" >
-                        <td  style="color: blue; text-align: center">
-                            <strong>{{zone.nom}}</strong>
-                            <ng-container *ngIf="idUsine == 7">
-                                <button class="btn btn-outline-secondary {{zone.id}}-btnPlus" (click)="afficherZone(zone.id);" >
-                                    <i style="color:green;" class="fas fa-plus" aria-hidden="true"></i>
-                                </button>
-                                <button class="btn btn-outline-secondary hide {{zone.id}}-btnMoins" (click)="afficherZone(zone.id);" >
-                                    <i style="color:red;" class="fas fa-minus" aria-hidden="true"></i>
-                                </button>
-                            </ng-container>
-                        </td>
-                        <td *ngFor="let ronde of listRonde" style="text-align: center">
-                            <ng-container *ngFor="let anomalie of listAnomalie">
-                                <ng-container *ngIf="anomalie.rondeId == ronde.Id && anomalie.zoneId==zone.id">
-                                    <p style="color: red"><strong>{{anomalie.commentaire}}</strong></p>
-                                    <button class="btn btn-outline-secondary"  *ngIf="anomalie.photo != undefined" (click)="downloadImage(anomalie.photo)">
-                                        <i style="color:black;" class="fa fa-camera" aria-hidden="true"></i>
-                                    </button>
-                                    <button class="btn btn-outline-secondary" (click)="editAnomalie(ronde.Id,zone.id)">
-                                        <i style="color:black;" class="far fa-edit" aria-hidden="true"></i>
-                                    </button>
-                                </ng-container>
-                            </ng-container>
-                        </td>
-                    </tr>
-                        <ng-container *ngFor="let groupement of listGroupements">
-                            <ng-container *ngIf="zone.id == groupement.zoneId">
-                                <ng-container *ngIf="idUsine == 7">
-                                    <tr class="table-light {{zone.id}}-Zone" id="groupement--{{groupement.id}}" style="display:none" >
-                                        <td style="text-align: left; color: darkorange;">
-                                            <strong id="{{groupement.id}}">{{groupement.groupement}}</strong>
-                                                <button class="btn btn-outline-secondary {{groupement.id}}-btnPlus {{zone.id}}-ZonebtnPlus" (click)="afficherGroupement(groupement.id);" >
-                                                    <i style="color:green;" class="fas fa-plus" aria-hidden="true"></i>
-                                                </button>
-                                                <button class="btn btn-outline-secondary hide {{groupement.id}}-btnMoins {{zone.id}}-ZonebtnMoins" (click)="afficherGroupement(groupement.id);" >
-                                                    <i style="color:red;" class="fas fa-minus" aria-hidden="true"></i>
-                                                </button>
-                                        </td>
-                                        <td *ngFor="let ronde of listRonde">
-                                        </td>
-                                    </tr>
-                                </ng-container>
-                                <ng-container *ngIf="idUsine != 7">
-                                    <tr class="table-light {{zone.id}}-Zone" id="groupement--{{groupement.id}}" >
-                                        <td style="text-align: left; color: darkorange;">
-                                            <strong id="{{groupement.id}}">{{groupement.groupement}}</strong>
-                                        </td>
-                                        <td *ngFor="let ronde of listRonde">
-                                        </td>
-                                    </tr>
-                                </ng-container>
-                            </ng-container>
-                        </ng-container>                    
+    <div class="col-sm-3">
+      <div class="form-group">
+        <div class="form-group">
+          <button
+            class="btn btn-success"
+            (click)="afficherRonde(this.quart)"
+            style="margin-right: 5px"
+          >
+            Valider
+          </button>
+          <button class="btn btn-danger" (click)="resetFiltre()">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <h5><label *ngIf="listElementsOfUsine.length != 0">Filtres :</label></h5>
+  <div class="row" *ngIf="listElementsOfUsine.length != 0">
+    <div class="col-sm-3">
+      <div class="form-group">
+        <select
+          id="type"
+          required
+          class="form-select form-select-sm"
+          aria-label=".form-select-sm example"
+          name="type"
+          ngModel
+          [(ngModel)]="type"
+        >
+          <option value="">Choisissez une zone</option>
+          <option *ngFor="let zone of listZone" value="{{ zone.nom }}">
+            {{ zone.nom }}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="form-group">
+        <div class="form-group">
+          <input
+            type="text"
+            id="name"
+            class="form-control"
+            placeholder="Nom de la zone"
+            name="name"
+            ngModel
+            [(ngModel)]="name"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="form-group">
+        <div class="form-group">
+          <button
+            class="btn btn-success"
+            (click)="setFilters()"
+            style="margin-right: 5px"
+          >
+            Valider
+          </button>
+          <button class="btn btn-danger" (click)="resetFiltre()">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--table des rondes-->
+  <div
+    id="tableDesRondes"
+    style="display: block"
+    *ngIf="listRonde.length > 0"
+    class="table-style"
+  >
+    <table class="table table-hover tableFixed table-bordered" id="tableTable">
+      <thead>
+        <tr class="table-secondary">
+          <th scope="col"><p>Element de contrôle</p></th>
+          <th
+            *ngFor="let ronde of listRonde"
+            style="text-align: center"
+            scope="col"
+          >
+            <div>
+              <p *ngIf="ronde.quart == 1">
+                Matin
+                <button
+                  [disabled]="true"
+                  class="btn btn-outline-danger btn-sm"
+                  (click)="deleteRonde(ronde.Id)"
+                >
+                  <i class="fa fa-trash-o" aria-hidden="true"></i>
+                </button>
+              </p>
+              <p *ngIf="ronde.quart == 2">
+                Après-Midi
+                <button
+                  [disabled]="true"
+                  class="btn btn-outline-danger btn-sm"
+                  (click)="deleteRonde(ronde.Id)"
+                >
+                  <i class="fa fa-trash-o" aria-hidden="true"></i>
+                </button>
+              </p>
+              <p *ngIf="ronde.quart == 3">
+                Nuit
+                <button
+                  [disabled]="true"
+                  class="btn btn-outline-danger btn-sm"
+                  (click)="deleteRonde(ronde.Id)"
+                >
+                  <i class="fa fa-trash-o" aria-hidden="true"></i>
+                </button>
+              </p>
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="table-info">
+          <td>Terminé ?</td>
+          <td *ngFor="let ronde of listRonde" style="text-align: center">
+            <i
+              *ngIf="ronde.isFinished"
+              style="color: green"
+              class="fa fa-check"
+              aria-hidden="true"
+            ></i>
+            <i
+              *ngIf="!ronde.isFinished"
+              style="color: red"
+              class="fa fa-times"
+              aria-hidden="true"
+            ></i>
+          </td>
+        </tr>
+        <tr class="table-info">
+          <td>Auteur de la ronde</td>
+          <td *ngFor="let ronde of listRonde" style="text-align: center">
+            <p aria-hidden="true">{{ ronde.Nom }} {{ ronde.Prenom }}</p>
+          </td>
+        </tr>
+        <tr class="table-info">
+          <td>CHEF DE QUART</td>
+          <td *ngFor="let ronde of listRonde" style="text-align: center">
+            <p aria-hidden="true">{{ ronde.nomChef }} {{ ronde.prenomChef }}</p>
+          </td>
+        </tr>
+        <ng-container *ngIf="idUsine != 7">
+          <tr
+            *ngFor="let fourNumber of numbers"
+            class="table-info fourLigneTableau"
+          >
+            <td>Four {{ fourNumber }} en Fonctionnement ?</td>
+            <td *ngFor="let ronde of listRonde" style="text-align: center">
+              <i
+                *ngIf="checkFonctFour(fourNumber, ronde)"
+                style="color: green"
+                class="fa fa-check"
+                aria-hidden="true"
+              ></i>
+              <i
+                *ngIf="!checkFonctFour(fourNumber, ronde)"
+                style="color: red"
+                class="fa fa-times"
+                aria-hidden="true"
+              ></i>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+      <!--Affichage des zones et de leurs éléments-->
+      <tbody>
+        <ng-container *ngFor="let zone of listZone">
+          <tr class="table-light" id="zone--{{ zone.id }}">
+            <td style="color: blue; text-align: center">
+              <strong>{{ zone.nom }}</strong>
+              <ng-container *ngIf="idUsine == 7">
+                <button
+                  class="btn btn-outline-secondary {{ zone.id }}-btnPlus"
+                  (click)="afficherZone(zone.id)"
+                >
+                  <i
+                    style="color: green"
+                    class="fas fa-plus"
+                    aria-hidden="true"
+                  ></i>
+                </button>
+                <button
+                  class="btn btn-outline-secondary hide {{ zone.id }}-btnMoins"
+                  (click)="afficherZone(zone.id)"
+                >
+                  <i
+                    style="color: red"
+                    class="fas fa-minus"
+                    aria-hidden="true"
+                  ></i>
+                </button>
+              </ng-container>
+            </td>
+            <td *ngFor="let ronde of listRonde" style="text-align: center">
+              <ng-container *ngFor="let anomalie of listAnomalie">
+                <ng-container
+                  *ngIf="
+                    anomalie.rondeId == ronde.Id && anomalie.zoneId == zone.id
+                  "
+                >
+                  <p style="color: red">
+                    <strong>{{ anomalie.commentaire }}</strong>
+                  </p>
+                  <button
+                    class="btn btn-outline-secondary"
+                    *ngIf="anomalie.photo != undefined"
+                    (click)="downloadImage(anomalie.photo)"
+                  >
+                    <i
+                      style="color: black"
+                      class="fa fa-camera"
+                      aria-hidden="true"
+                    ></i>
+                  </button>
+                  <button
+                    class="btn btn-outline-secondary"
+                    (click)="editAnomalie(ronde.Id, zone.id)"
+                  >
+                    <i
+                      style="color: black"
+                      class="far fa-edit"
+                      aria-hidden="true"
+                    ></i>
+                  </button>
                 </ng-container>
-            </tbody>
-        </table>
-    </div>
-
+              </ng-container>
+            </td>
+          </tr>
+          <ng-container *ngFor="let groupement of listGroupements">
+            <ng-container *ngIf="zone.id == groupement.zoneId">
+              <ng-container *ngIf="idUsine == 7">
+                <tr
+                  class="table-light {{ zone.id }}-Zone"
+                  id="groupement--{{ groupement.id }}"
+                  style="display: none"
+                >
+                  <td style="text-align: left; color: darkorange">
+                    <strong id="{{ groupement.id }}">{{
+                      groupement.groupement
+                    }}</strong>
+                    <button
+                      class="btn btn-outline-secondary {{
+                        groupement.id
+                      }}-btnPlus {{ zone.id }}-ZonebtnPlus"
+                      (click)="afficherGroupement(groupement.id)"
+                    >
+                      <i
+                        style="color: green"
+                        class="fas fa-plus"
+                        aria-hidden="true"
+                      ></i>
+                    </button>
+                    <button
+                      class="btn btn-outline-secondary hide {{
+                        groupement.id
+                      }}-btnMoins {{ zone.id }}-ZonebtnMoins"
+                      (click)="afficherGroupement(groupement.id)"
+                    >
+                      <i
+                        style="color: red"
+                        class="fas fa-minus"
+                        aria-hidden="true"
+                      ></i>
+                    </button>
+                  </td>
+                  <td *ngFor="let ronde of listRonde"></td>
+                </tr>
+              </ng-container>
+              <ng-container *ngIf="idUsine != 7">
+                <tr
+                  class="table-light {{ zone.id }}-Zone"
+                  id="groupement--{{ groupement.id }}"
+                >
+                  <td style="text-align: left; color: darkorange">
+                    <strong id="{{ groupement.id }}">{{
+                      groupement.groupement
+                    }}</strong>
+                  </td>
+                  <td *ngFor="let ronde of listRonde"></td>
+                </tr>
+              </ng-container>
+            </ng-container>
+          </ng-container>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
 </div>

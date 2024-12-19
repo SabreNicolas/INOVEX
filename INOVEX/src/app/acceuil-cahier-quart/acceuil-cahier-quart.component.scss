@@ -1,162 +1,162 @@
-.container{
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    z-index: 10;
-    position: relative;
+.container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  z-index: 10;
+  position: relative;
 }
 .card {
-    width: 200px;
-    height: 200px;
-    overflow: hidden;
-    transition: transform 0.3s;
-    cursor: pointer;
+  width: 200px;
+  height: 200px;
+  overflow: hidden;
+  transition: transform 0.3s;
+  cursor: pointer;
 }
 
 .cardActu {
-    width: 400px !important;
-    height: max-content !important;
-    cursor: help !important;
+  width: 400px !important;
+  height: max-content !important;
+  cursor: help !important;
 }
 
-.card-title{
-    text-shadow: none;
-    color: rgb(27,37,51);
+.card-title {
+  text-shadow: none;
+  color: rgb(27, 37, 51);
 }
 
-.card-text{
-    color: rgb(27,37,51);
-    font-weight: bold;
+.card-text {
+  color: rgb(27, 37, 51);
+  font-weight: bold;
 }
 
-.card-importance{
-    color: rgb(154,196,89);
+.card-importance {
+  color: rgb(154, 196, 89);
 }
 
-.card-quart{
-    color: white;
+.card-quart {
+  color: white;
 }
 
 .card.expanded {
-    position: fixed;
-    top: 45%;
-    left: 50%;
-    width: 90% ;
-    height: 90%;
-    transform: translate(-50%, -50%) ;
-    z-index: 9999;
-    overflow: auto;
+  position: fixed;
+  top: 45%;
+  left: 50%;
+  width: 90%;
+  height: 90%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  overflow: auto;
 }
-.card .titreListe{
-    margin-top: 60px;
+.card .titreListe {
+  margin-top: 60px;
 }
-.card.expanded .titreListe{
-    margin-top: 0px;
+.card.expanded .titreListe {
+  margin-top: 0px;
 }
 .overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: none;
-    z-index: 9;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+  z-index: 9;
 }
 .overlay.show {
-    display: block;
+  display: block;
 }
-.hide{
-    display: none;
+.hide {
+  display: none;
 }
-.edition{
-    position: absolute;
-    top: 0;
-    right: 0;
-    display: none;
+.edition {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: none;
 }
-.card.expanded .edition{
-    display: block;
+.card.expanded .edition {
+  display: block;
 }
-.card.expanded .suppression{
-    display: block;
+.card.expanded .suppression {
+  display: block;
 }
-.suppression{
-    position: absolute;
-    top: 0;
-    right: 50px;
-    display: none;
+.suppression {
+  position: absolute;
+  top: 0;
+  right: 50px;
+  display: none;
 }
-#date{
-    position: relative;
-    width: 100%;
-    text-align: center;
+#date {
+  position: relative;
+  width: 100%;
+  text-align: center;
 }
 
 .card2 {
-    width: 200px;
-    height: 150px;
-    overflow: hidden;
-    transition: transform 0.3s;
-    cursor: pointer;
+  width: 200px;
+  height: 150px;
+  overflow: hidden;
+  transition: transform 0.3s;
+  cursor: pointer;
 }
 
 .cacard2rd.expanded {
-    position: fixed;
-    top: 45%;
-    left: 50%;
-    width: 90% ;
-    height: 90%;
-    transform: translate(-50%, -50%) ;
-    z-index: 9999;
-    overflow: auto;
+  position: fixed;
+  top: 45%;
+  left: 50%;
+  width: 90%;
+  height: 90%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  overflow: auto;
 }
-.card2 .titreListe{
-    margin-top: 60px;
+.card2 .titreListe {
+  margin-top: 60px;
 }
-.card2.expanded .titreListe{
-    margin-top: 0px;
-}
-
-.card2.expanded .edition{
-    display: block;
-}
-.card2.expanded .suppression{
-    display: block;
+.card2.expanded .titreListe {
+  margin-top: 0px;
 }
 
-#finQuart{
-    position: relative;
-    left: 45%;
-    margin-bottom: 10px;
-    width: max-content;
+.card2.expanded .edition {
+  display: block;
+}
+.card2.expanded .suppression {
+  display: block;
 }
 
-.color--0{
-    color: rgb(154,196,89);
+#finQuart {
+  position: relative;
+  left: 45%;
+  margin-bottom: 10px;
+  width: max-content;
 }
 
-.color--1{
-    color: orange;
+.color--0 {
+  color: rgb(154, 196, 89);
 }
 
-.color--2{
-    color: red;
+.color--1 {
+  color: orange;
 }
 
-.color--3{
-    background-color: rgb(84,149,216);
+.color--2 {
+  color: red;
 }
 
-.badge{
-    background-color: rgb(84,149,216) !important;
+.color--3 {
+  background-color: rgb(84, 149, 216);
 }
 
-.lisseret{
-    border-bottom: solid rgba(154,196,89,0.5) 2px;
-    margin-top: 2em;
+.badge {
+  background-color: rgb(84, 149, 216) !important;
 }
 
-img{
-    opacity: 0.5;
+.lisseret {
+  border-bottom: solid rgba(154, 196, 89, 0.5) 2px;
+  margin-top: 2em;
+}
+
+img {
+  opacity: 0.5;
 }

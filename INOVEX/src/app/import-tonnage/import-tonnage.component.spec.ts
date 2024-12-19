@@ -1,16 +1,15 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { ImportTonnageComponent } from './import-tonnage.component';
+import { ImportTonnageComponent } from "./import-tonnage.component";
 
-describe('ImportTonnageComponent', () => {
+describe("ImportTonnageComponent", () => {
   let component: ImportTonnageComponent;
   let fixture: ComponentFixture<ImportTonnageComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ImportTonnageComponent ]
-    })
-    .compileComponents();
+      declarations: [ImportTonnageComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('ImportTonnageComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

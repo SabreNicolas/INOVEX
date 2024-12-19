@@ -1,16 +1,15 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { ZoneControleComponent } from './zone-controle.component';
+import { ZoneControleComponent } from "./zone-controle.component";
 
-describe('ZoneControleComponent', () => {
+describe("ZoneControleComponent", () => {
   let component: ZoneControleComponent;
   let fixture: ComponentFixture<ZoneControleComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ZoneControleComponent ]
-    })
-    .compileComponents();
+      declarations: [ZoneControleComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('ZoneControleComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

@@ -1,45 +1,58 @@
-<a routerLink="../newEnregistrementEquipe" role="button" class="btn btn-primary" id="create">
-    Créer une équipe
+<a
+  routerLink="../newEnregistrementEquipe"
+  role="button"
+  class="btn btn-primary"
+  id="create"
+>
+  Créer une équipe
 </a>
 
 <div id="tableRondier" class="overflow-auto">
-    <table class="table table-hover tableFixed" id="listRondier">
-        <thead>
-        <tr class="table-secondary">
-            <th scope="col">Nom</th>
-            <th scope="col">Prénom</th>
-            <th scope="col">Poste</th>
-            <th>#</th>
-            <th>#</th>
-        </thead>
-        <tbody >
-        <ng-container *ngFor="let equipe of equipes">
-            <tr class="table-light" style="text-align: left; color: darkorange;">
-                <td><strong>{{equipe.equipe}}</strong></td>
-                <td></td>
-                <td></td>
-                <td>
-                    <button class="btn btn btn-danger suppression" (click)="deleteEquipe(equipe.id)"> 
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
-                </td>
-                <td>
-                    <a  routerLink="/cahierQuart/newEnregistrementEquipe" [queryParams]="{idEquipe: equipe.id}" > 
-                        <button class="btn btn btn-light edition">
-                            <i class="far fa-edit"></i>
-                        </button>
-                    </a>
-                </td>
-            </tr>
-            <tr *ngFor="let rondier of equipe.rondiers" class="table-light">
-                <td>{{rondier.Nom}}</td>
-                <td>{{rondier.Prenom}}</td>
-                <td>{{rondier.posteUser}}</td>
-                <td></td>
-                <td></td>
-            </tr>
-        </ng-container>
-                          
-        </tbody>
-    </table>
-</div>       
+  <table class="table table-hover tableFixed" id="listRondier">
+    <thead>
+      <tr class="table-secondary">
+        <th scope="col">Nom</th>
+        <th scope="col">Prénom</th>
+        <th scope="col">Poste</th>
+        <th>#</th>
+        <th>#</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let equipe of equipes">
+        <tr class="table-light" style="text-align: left; color: darkorange">
+          <td>
+            <strong>{{ equipe.equipe }}</strong>
+          </td>
+          <td></td>
+          <td></td>
+          <td>
+            <button
+              class="btn btn btn-danger suppression"
+              (click)="deleteEquipe(equipe.id)"
+            >
+              <i class="fas fa-trash-alt"></i>
+            </button>
+          </td>
+          <td>
+            <a
+              routerLink="/cahierQuart/newEnregistrementEquipe"
+              [queryParams]="{ idEquipe: equipe.id }"
+            >
+              <button class="btn btn btn-light edition">
+                <i class="far fa-edit"></i>
+              </button>
+            </a>
+          </td>
+        </tr>
+        <tr *ngFor="let rondier of equipe.rondiers" class="table-light">
+          <td>{{ rondier.Nom }}</td>
+          <td>{{ rondier.Prenom }}</td>
+          <td>{{ rondier.posteUser }}</td>
+          <td></td>
+          <td></td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</div>

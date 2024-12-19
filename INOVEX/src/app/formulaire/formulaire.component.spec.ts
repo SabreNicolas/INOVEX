@@ -1,16 +1,15 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { FormulaireComponent } from './formulaire.component';
+import { FormulaireComponent } from "./formulaire.component";
 
-describe('FormulaireComponent', () => {
+describe("FormulaireComponent", () => {
   let component: FormulaireComponent;
   let fixture: ComponentFixture<FormulaireComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FormulaireComponent ]
-    })
-    .compileComponents();
+      declarations: [FormulaireComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('FormulaireComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

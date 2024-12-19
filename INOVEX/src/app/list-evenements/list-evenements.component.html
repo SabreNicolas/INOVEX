@@ -1,215 +1,404 @@
 <div *ngIf="listEvenement">
- 
-    <a (click)="ouvrirDialogCreerEvent()" role="button" class="btn btn-primary" id="create">
-        Créer un évènement
-    </a>
-    <div class="table-style" *ngFor="let day of days">
-        <h3 *ngIf="day.length > 0">{{day}}<button class="btn btn-light" (click)="showTable(day.substr(0,2))"><i class="fa fa-level-down" aria-hidden="true"></i></button></h3>
-        <h3 *ngIf="day.length === 0">Tout voir<button class="btn btn-light" (click)="showTable(day.substr(0,2))"><i class="fa fa-level-down" aria-hidden="true"></i></button></h3>
-        <!--table des evenements des 7 derniers jours-->
-        <table id="table--{{day.substr(0,2)}}" class="table tableFixed">
-            <thead>
-            <tr class="table-secondary">
-                <th scope="col">Titre</th>
-                <th scope="col">Description</th>
-                <th scope="col">Cause</th>
-                <th scope="col">Groupement GMAO</th>
-                <th scope="col">Equipement GMAO</th>
-                <th scope="col">Date de Début de validité</th>
-                <th scope="col">Date de Fin de validité</th>
-                <th scope="col">Demande d'intervention</th>
-                <th scope="col">Création de consigne</th>
-                <th scope="col">Photo</th>
-                <th scope="col">Dupliquer</th>
-                <th scope="col">Editer</th>
-                <th scope="col">Supprimer</th>
-            </tr>
-            </thead>
-            <tbody *ngFor="let evenement of listEvenement">
-            <tr class="color--{{evenement.importance}} line" *ngIf="evenement.date_heure_debut.includes(day)">
-                <td>{{evenement.titre}}</td>
-                <td>{{evenement.description}}</td>
-                <td>{{evenement.cause}}</td>
-                <td>{{evenement.groupementGMAO}}</td>
-                <td>{{evenement.equipementGMAO}}</td>
-                <td>{{evenement.date_heure_debut}}</td>
-                <td>{{evenement.date_heure_fin}}</td>
-                <td>
-                    <a *ngIf="evenement.demande_travaux != 0 && evenement.demande_travaux != 'false' " (click)="getDI(evenement.demande_travaux)" role="button" class="btn btn-outline-secondary">
-                        {{evenement.demande_travaux}}
-                    </a>
-                    <p *ngIf="evenement.demande_travaux == 0 || evenement.demande_travaux == 'false'">Aucune</p>
-                </td>
-                <td *ngIf="evenement.consigne == 1">Crée</td>
-                <td *ngIf="evenement.consigne == 0">Aucune</td>
-                <td>
-                    <button class="btn btn-outline-secondary"  *ngIf="evenement.url != ''" (click)="downloadImage(evenement.url)">
-                        <i style="color:black;" class="fa fa-camera" aria-hidden="true"></i>
-                    </button>
-                </td>
-                <td>
-                    <button class="btn btn btn-light edition" (click)="ouvrirDialogModifEvent(evenement.id,1)">
-                        <i class="far fa-copy"></i>
-                    </button>
-                </td>
-                <td>
-                    <button class="btn btn btn-light edition" (click)="ouvrirDialogModifEvent(evenement.id,0)">
-                        <i class="far fa-edit"></i>
-                    </button>
-                </td>
-                <td>
-                    <button (click)="deleteEvenement(evenement.id)" id="deleteEvenement" class="btn btn-light">
-                        <i class="fa fa-trash-o" aria-hidden="true" style="color: red;"></i>
-                    </button>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+  <a
+    (click)="ouvrirDialogCreerEvent()"
+    role="button"
+    class="btn btn-primary"
+    id="create"
+  >
+    Créer un évènement
+  </a>
+  <div class="table-style" *ngFor="let day of days">
+    <h3 *ngIf="day.length > 0">
+      {{ day
+      }}<button class="btn btn-light" (click)="showTable(day.substr(0, 2))">
+        <i class="fa fa-level-down" aria-hidden="true"></i>
+      </button>
+    </h3>
+    <h3 *ngIf="day.length === 0">
+      Tout voir<button
+        class="btn btn-light"
+        (click)="showTable(day.substr(0, 2))"
+      >
+        <i class="fa fa-level-down" aria-hidden="true"></i>
+      </button>
+    </h3>
+    <!--table des evenements des 7 derniers jours-->
+    <table id="table--{{ day.substr(0, 2) }}" class="table tableFixed">
+      <thead>
+        <tr class="table-secondary">
+          <th scope="col">Titre</th>
+          <th scope="col">Description</th>
+          <th scope="col">Cause</th>
+          <th scope="col">Groupement GMAO</th>
+          <th scope="col">Equipement GMAO</th>
+          <th scope="col">Date de Début de validité</th>
+          <th scope="col">Date de Fin de validité</th>
+          <th scope="col">Demande d'intervention</th>
+          <th scope="col">Création de consigne</th>
+          <th scope="col">Photo</th>
+          <th scope="col">Dupliquer</th>
+          <th scope="col">Editer</th>
+          <th scope="col">Supprimer</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let evenement of listEvenement">
+        <tr
+          class="color--{{ evenement.importance }} line"
+          *ngIf="evenement.date_heure_debut.includes(day)"
+        >
+          <td>{{ evenement.titre }}</td>
+          <td>{{ evenement.description }}</td>
+          <td>{{ evenement.cause }}</td>
+          <td>{{ evenement.groupementGMAO }}</td>
+          <td>{{ evenement.equipementGMAO }}</td>
+          <td>{{ evenement.date_heure_debut }}</td>
+          <td>{{ evenement.date_heure_fin }}</td>
+          <td>
+            <a
+              *ngIf="
+                evenement.demande_travaux != 0 &&
+                evenement.demande_travaux != 'false'
+              "
+              (click)="getDI(evenement.demande_travaux)"
+              role="button"
+              class="btn btn-outline-secondary"
+            >
+              {{ evenement.demande_travaux }}
+            </a>
+            <p
+              *ngIf="
+                evenement.demande_travaux == 0 ||
+                evenement.demande_travaux == 'false'
+              "
+            >
+              Aucune
+            </p>
+          </td>
+          <td *ngIf="evenement.consigne == 1">Crée</td>
+          <td *ngIf="evenement.consigne == 0">Aucune</td>
+          <td>
+            <button
+              class="btn btn-outline-secondary"
+              *ngIf="evenement.url != ''"
+              (click)="downloadImage(evenement.url)"
+            >
+              <i
+                style="color: black"
+                class="fa fa-camera"
+                aria-hidden="true"
+              ></i>
+            </button>
+          </td>
+          <td>
+            <button
+              class="btn btn btn-light edition"
+              (click)="ouvrirDialogModifEvent(evenement.id, 1)"
+            >
+              <i class="far fa-copy"></i>
+            </button>
+          </td>
+          <td>
+            <button
+              class="btn btn btn-light edition"
+              (click)="ouvrirDialogModifEvent(evenement.id, 0)"
+            >
+              <i class="far fa-edit"></i>
+            </button>
+          </td>
+          <td>
+            <button
+              (click)="deleteEvenement(evenement.id)"
+              id="deleteEvenement"
+              class="btn btn-light"
+            >
+              <i
+                class="fa fa-trash-o"
+                aria-hidden="true"
+                style="color: red"
+              ></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
-        <!--<h3>Voir les plus anciens :<button class="btn btn-light" (click)="changeEventVisible()"><i class="fa fa-level-down" aria-hidden="true"></i></button></h3>-->
-    </div>
+    <!--<h3>Voir les plus anciens :<button class="btn btn-light" (click)="changeEventVisible()"><i class="fa fa-level-down" aria-hidden="true"></i></button></h3>-->
+  </div>
 </div>
 
-
 <ng-template let-data #myCreateEventDialog>
-    <h1 class="creation" style="text-align: center;">Création d'un évènement :</h1>
+  <h1 class="creation" style="text-align: center">Création d'un évènement :</h1>
 
-    <mat-dialog-content>
-        <div>
-            <div class="row">
-
-                <div class="form-group" id="photo">
-                    <input *ngIf="idEvenement == 0" type="file" id="fichier" class="form-control" required name="fichier" accept=".jpg,.jpeg,.png" (change)="saveFile($event)"><img *ngIf="imgSrc" [src]="imgSrc" alt="image" id="imgUpload">
-                    <p *ngIf="idEvenement == 0" style="font-size: smaller; color: grey">*Format image !</p>
-                </div>
-                <div class="col-9">
-                    <div class="form-check" >
-                        <input class="form-check-input" type="checkbox" value="" id="demandeTravaux" ngModel [(ngModel)]="demandeTravaux" (click)="clickDemandeTravaux()" >
-                        <label class="form-check-label" for="demandeTravaux" id="demandeTravauxLabel">
-                        Demande d'intervention (oui/non)
-                        </label>
-                    </div>
-                
-                    <div class="form-check" *ngIf="idEvenement==0">
-                        <input class="form-check-input" type="checkbox" value="" id="consigne" ngModel [(ngModel)]="consigne" >
-                        <label class="form-check-label" for="consigne">
-                        Consigne (oui/non)
-                        </label>
-                    </div>
-                </div>
-
-                <div class="col-md-5">
-                    <div class="form-group">
-                        <label for="desc">Titre : * </label>
-                        <input required type="text" id="titre" class="form-control" placeholder="Titre" name="titre" ngModel [(ngModel)]="titre">
-                    </div>
-            
-                    <div class="form-group" style="display: none;" id="groupementGMAO">
-                        <label for="product">Groupement GMAO : * </label>
-                        <input id="product" class="form-control" list="datalistOptions" ngModel [(ngModel)]="groupementGMAO" (change)="updateElements()">
-                        <datalist id="datalistOptions">
-                            <option disabled=true value="Choisissez un groupement GMAO"></option>
-                            <option *ngFor="let groupement of listGroupementGMAOTable" value="{{groupement.split('---')[0]}}">{{groupement}}</option>
-                        </datalist>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Début date validité : * (non modifiable en cas de DI)</label>
-                        <input [disabled]="demandeTravaux != 0" required type="datetime-local" id="dateDebut" class="form-control" placeholder="Date de début de validité" name="dateDebut" ngModel [(ngModel)]="dateDeb">
-                    </div>
-                
-                    <div class="form-group">
-                        <label for="desc">Description : </label>
-                        <textarea required name="description" id="description" class="form-control" cols="30" rows="10" ngModel  placeholder="Description" [(ngModel)]="description"> </textarea>
-                        <!-- <input required type="text" id="description" class="form-control" placeholder="Description" name="description" ngModel [(ngModel)]="description"> -->
-                    </div>
-                </div>
-                <div class="col-md-6">
-            
-                    <div class="form-group">
-                        <label for="desc">Cause : </label>
-                        <select id="cause" required class="form-control" ngModel [(ngModel)]="cause" >
-                            <option disabled value="">Choisissez une cause</option>
-                            <option value="ARRET">Arrêt</option>
-                            <option value="ECHAUF">Echauffement</option>
-                            <option value="VIBR">Vibration</option>
-                            <option value="ACCEPTABLE">Acceptable/Non défaillant</option>
-                            <option value="BLOQUE">Bloqué</option>
-                            <option value="CASSE">Cassé</option>
-                            <option value="CONNEXION">Connexion perdue ou faible</option>
-                            <option value="CORRODE">Rouillé/Corrodé</option>
-                            <option value="ENDOMMAGE">Endommagé/déchiré</option>
-                            <option value="DETERIORE">Détérioré/Déchiré</option>
-                            <option value="SALE">Sale/Huileux</option>
-                            <option value="FUITEEXT">Fuite externe</option>
-                            <option value="NIVEAU">Niveau bas</option>
-                            <option value="GROUNDED">A terre/Déformé</option>
-                            <option value="VIBRATION">Déséquilibré/Vibration</option>
-                            <option value="INCOMPLET">Incomplet</option>
-                            <option value="INOPERABLE">Inutilisable</option>
-                            <option value="FUITEINT">Fuite interne</option>
-                            <option value="MANQUANT">Manquant</option>
-                            <option value="NONCONNECTE">Non connecté</option>
-                            <option value="NONMONTE">Non monté</option>
-                            <option value="NONAJUSTE">Non ajusté</option>
-                            <option value="NONCALIBRE">Non calibré</option>
-                            <option value="SURCHAUFFE">En surchauffe/Brulé/Explosé</option>
-                            <option value="GRIFFE">Griffé/Entaillé/Piqué</option>
-                            <option value="NONUTILISE">Non utilisé</option>
-                            <option value="BRUIT_ANORMAL">Bruit anormal</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group" style="display: none;" id="equipementGMAO">
-                        <label for="product">Equipement GMAO : * </label>
-                        <input id="product" class="form-control" list="datalistOptions2" ngModel [(ngModel)]="equipementGMAO" (change)="updateGroupements()">
-                        <datalist id="datalistOptions2">
-                            <option disabled=true value="Choisissez un equipement GMAO"></option>
-                            <option *ngFor="let equipement of listEquipementGMAOFiltre" value="{{equipement.codeequipment}}---{{equipement.description}}">{{equipement.codeequipment}}---{{equipement.description}}</option>
-                        </datalist>
-                    </div>
-                    <div class="form-group">
-                        <label>Importance : *</label>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <select required class="form-select" aria-label=".form-select-sm example" name="importance" ngModel [(ngModel)]="importance">
-                                        <option value=0 style="background-color: rgb(81, 196, 81);">Faible</option>
-                                        <option value=1 style="background-color: rgb(245, 171, 35);">Neutre</option>
-                                        <option value=2 style="background-color: rgb(248, 75, 75);">Elevée</option>                                        </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                </div>
-                    
-                <div class="col-9">
-                    <div class="form-group">
-                        <button class="btn btn-success btn-lg" (click)="newEvenement()">Valider</button>
-                        <button [mat-dialog-close]="true" class="btn btn-danger btn-lg">Annuler</button>
-                    </div>
-                
-                    <p style="font-size: smaller; color: grey">* : Obligatoire</p>
-                </div>
-            </div>
+  <mat-dialog-content>
+    <div>
+      <div class="row">
+        <div class="form-group" id="photo">
+          <input
+            *ngIf="idEvenement == 0"
+            type="file"
+            id="fichier"
+            class="form-control"
+            required
+            name="fichier"
+            accept=".jpg,.jpeg,.png"
+            (change)="saveFile($event)"
+          /><img *ngIf="imgSrc" [src]="imgSrc" alt="image" id="imgUpload" />
+          <p *ngIf="idEvenement == 0" style="font-size: smaller; color: grey">
+            *Format image !
+          </p>
         </div>
-    </mat-dialog-content>
+        <div class="col-9">
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              id="demandeTravaux"
+              ngModel
+              [(ngModel)]="demandeTravaux"
+              (click)="clickDemandeTravaux()"
+            />
+            <label
+              class="form-check-label"
+              for="demandeTravaux"
+              id="demandeTravauxLabel"
+            >
+              Demande d'intervention (oui/non)
+            </label>
+          </div>
+
+          <div class="form-check" *ngIf="idEvenement == 0">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              id="consigne"
+              ngModel
+              [(ngModel)]="consigne"
+            />
+            <label class="form-check-label" for="consigne">
+              Consigne (oui/non)
+            </label>
+          </div>
+        </div>
+
+        <div class="col-md-5">
+          <div class="form-group">
+            <label for="desc">Titre : * </label>
+            <input
+              required
+              type="text"
+              id="titre"
+              class="form-control"
+              placeholder="Titre"
+              name="titre"
+              ngModel
+              [(ngModel)]="titre"
+            />
+          </div>
+
+          <div class="form-group" style="display: none" id="groupementGMAO">
+            <label for="product">Groupement GMAO : * </label>
+            <input
+              id="product"
+              class="form-control"
+              list="datalistOptions"
+              ngModel
+              [(ngModel)]="groupementGMAO"
+              (change)="updateElements()"
+            />
+            <datalist id="datalistOptions">
+              <option
+                disabled="true"
+                value="Choisissez un groupement GMAO"
+              ></option>
+              <option
+                *ngFor="let groupement of listGroupementGMAOTable"
+                value="{{ groupement.split('---')[0] }}"
+              >
+                {{ groupement }}
+              </option>
+            </datalist>
+          </div>
+
+          <div class="form-group">
+            <label>Début date validité : * (non modifiable en cas de DI)</label>
+            <input
+              [disabled]="demandeTravaux != 0"
+              required
+              type="datetime-local"
+              id="dateDebut"
+              class="form-control"
+              placeholder="Date de début de validité"
+              name="dateDebut"
+              ngModel
+              [(ngModel)]="dateDeb"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="desc">Description : </label>
+            <textarea
+              required
+              name="description"
+              id="description"
+              class="form-control"
+              cols="30"
+              rows="10"
+              ngModel
+              placeholder="Description"
+              [(ngModel)]="description"
+            >
+            </textarea>
+            <!-- <input required type="text" id="description" class="form-control" placeholder="Description" name="description" ngModel [(ngModel)]="description"> -->
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="desc">Cause : </label>
+            <select
+              id="cause"
+              required
+              class="form-control"
+              ngModel
+              [(ngModel)]="cause"
+            >
+              <option disabled value="">Choisissez une cause</option>
+              <option value="ARRET">Arrêt</option>
+              <option value="ECHAUF">Echauffement</option>
+              <option value="VIBR">Vibration</option>
+              <option value="ACCEPTABLE">Acceptable/Non défaillant</option>
+              <option value="BLOQUE">Bloqué</option>
+              <option value="CASSE">Cassé</option>
+              <option value="CONNEXION">Connexion perdue ou faible</option>
+              <option value="CORRODE">Rouillé/Corrodé</option>
+              <option value="ENDOMMAGE">Endommagé/déchiré</option>
+              <option value="DETERIORE">Détérioré/Déchiré</option>
+              <option value="SALE">Sale/Huileux</option>
+              <option value="FUITEEXT">Fuite externe</option>
+              <option value="NIVEAU">Niveau bas</option>
+              <option value="GROUNDED">A terre/Déformé</option>
+              <option value="VIBRATION">Déséquilibré/Vibration</option>
+              <option value="INCOMPLET">Incomplet</option>
+              <option value="INOPERABLE">Inutilisable</option>
+              <option value="FUITEINT">Fuite interne</option>
+              <option value="MANQUANT">Manquant</option>
+              <option value="NONCONNECTE">Non connecté</option>
+              <option value="NONMONTE">Non monté</option>
+              <option value="NONAJUSTE">Non ajusté</option>
+              <option value="NONCALIBRE">Non calibré</option>
+              <option value="SURCHAUFFE">En surchauffe/Brulé/Explosé</option>
+              <option value="GRIFFE">Griffé/Entaillé/Piqué</option>
+              <option value="NONUTILISE">Non utilisé</option>
+              <option value="BRUIT_ANORMAL">Bruit anormal</option>
+            </select>
+          </div>
+
+          <div class="form-group" style="display: none" id="equipementGMAO">
+            <label for="product">Equipement GMAO : * </label>
+            <input
+              id="product"
+              class="form-control"
+              list="datalistOptions2"
+              ngModel
+              [(ngModel)]="equipementGMAO"
+              (change)="updateGroupements()"
+            />
+            <datalist id="datalistOptions2">
+              <option
+                disabled="true"
+                value="Choisissez un equipement GMAO"
+              ></option>
+              <option
+                *ngFor="let equipement of listEquipementGMAOFiltre"
+                value="{{ equipement.codeequipment }}---{{
+                  equipement.description
+                }}"
+              >
+                {{ equipement.codeequipment }}---{{ equipement.description }}
+              </option>
+            </datalist>
+          </div>
+          <div class="form-group">
+            <label>Importance : *</label>
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <select
+                    required
+                    class="form-select"
+                    aria-label=".form-select-sm example"
+                    name="importance"
+                    ngModel
+                    [(ngModel)]="importance"
+                  >
+                    <option
+                      value="0"
+                      style="background-color: rgb(81, 196, 81)"
+                    >
+                      Faible
+                    </option>
+                    <option
+                      value="1"
+                      style="background-color: rgb(245, 171, 35)"
+                    >
+                      Neutre
+                    </option>
+                    <option
+                      value="2"
+                      style="background-color: rgb(248, 75, 75)"
+                    >
+                      Elevée
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-9">
+          <div class="form-group">
+            <button class="btn btn-success btn-lg" (click)="newEvenement()">
+              Valider
+            </button>
+            <button [mat-dialog-close]="true" class="btn btn-danger btn-lg">
+              Annuler
+            </button>
+          </div>
+
+          <p style="font-size: smaller; color: grey">* : Obligatoire</p>
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
 </ng-template>
 
-
 <ng-template let-data #myDTDialog>
-    <h1 class="creation" style="text-align: center;"> {{BT}} pour la : {{DI}}</h1>
+  <h1 class="creation" style="text-align: center">
+    {{ BT }} pour la : {{ DI }}
+  </h1>
 
-    <mat-dialog-content>
-        <div>
-            <label for="">Description :  </label><span class="badge bg-primary">{{descriptionBT}}</span><br>
-            <label for="">Planifié début :  </label><span class="badge bg-warning text-dark">{{planifieDebutBT}}</span><br>
-            <label for="">Planifié Fin :  </label><span class="badge bg-warning text-dark">{{planifieFinBT}}</span><br>
-            <label for="">Status :  </label><span class="badge bg-success">{{statusBT}}</span><br>
-            <label for="">Responsable :  </label><span class="badge bg-primary">{{responsableBT}}</span><br>
-            <label for="">Commentaire :  </label><span class="badge bg-primary">{{commentaireBT}}</span><br>
-
-        </div>
-    </mat-dialog-content>
+  <mat-dialog-content>
+    <div>
+      <label for="">Description : </label
+      ><span class="badge bg-primary">{{ descriptionBT }}</span
+      ><br />
+      <label for="">Planifié début : </label
+      ><span class="badge bg-warning text-dark">{{ planifieDebutBT }}</span
+      ><br />
+      <label for="">Planifié Fin : </label
+      ><span class="badge bg-warning text-dark">{{ planifieFinBT }}</span
+      ><br />
+      <label for="">Status : </label
+      ><span class="badge bg-success">{{ statusBT }}</span
+      ><br />
+      <label for="">Responsable : </label
+      ><span class="badge bg-primary">{{ responsableBT }}</span
+      ><br />
+      <label for="">Commentaire : </label
+      ><span class="badge bg-primary">{{ commentaireBT }}</span
+      ><br />
+    </div>
+  </mat-dialog-content>
 </ng-template>

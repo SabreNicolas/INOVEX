@@ -1,5 +1,5 @@
-export interface site{
-    id : number;
-    localisation : string;
-    codeUsine : string;
+export interface site {
+  id: number;
+  localisation: string;
+  codeUsine: string;
 }

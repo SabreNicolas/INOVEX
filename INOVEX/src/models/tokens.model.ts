@@ -1,5 +1,5 @@
-export interface token{
-    token : string;
-    affectation : string;
-    Id : number;
+export interface token {
+  token: string;
+  affectation: string;
+  Id: number;
 }

@@ -1,16 +1,15 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { ModeOperatoireComponent } from './mode-operatoire.component';
+import { ModeOperatoireComponent } from "./mode-operatoire.component";
 
-describe('ModeOperatoireComponent', () => {
+describe("ModeOperatoireComponent", () => {
   let component: ModeOperatoireComponent;
   let fixture: ComponentFixture<ModeOperatoireComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ModeOperatoireComponent ]
-    })
-    .compileComponents();
+      declarations: [ModeOperatoireComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('ModeOperatoireComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

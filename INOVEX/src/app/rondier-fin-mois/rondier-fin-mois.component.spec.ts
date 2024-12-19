@@ -1,16 +1,15 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { RondierFinMoisComponent } from './rondier-fin-mois.component';
+import { RondierFinMoisComponent } from "./rondier-fin-mois.component";
 
-describe('RondierFinMoisComponent', () => {
+describe("RondierFinMoisComponent", () => {
   let component: RondierFinMoisComponent;
   let fixture: ComponentFixture<RondierFinMoisComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ RondierFinMoisComponent ]
-    })
-    .compileComponents();
+      declarations: [RondierFinMoisComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('RondierFinMoisComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

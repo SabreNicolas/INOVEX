@@ -1,391 +1,681 @@
-<button [disabled]="idEquipe != 0 || !saisieAutorise" type="button" (click)="priseDeQuart()" class="btn btn-primary" id="create">Prise de Quart</button>
-<button [disabled]="!saisieAutorise || !(idEquipe != 0 && saisieAutorise)" type="button" (click)="finQuart()" class="btn btn-warning" id="create">FIN DE QUART</button>
+<button
+  [disabled]="idEquipe != 0 || !saisieAutorise"
+  type="button"
+  (click)="priseDeQuart()"
+  class="btn btn-primary"
+  id="create"
+>
+  Prise de Quart
+</button>
+<button
+  [disabled]="!saisieAutorise || !(idEquipe != 0 && saisieAutorise)"
+  type="button"
+  (click)="finQuart()"
+  class="btn btn-warning"
+  id="create"
+>
+  FIN DE QUART
+</button>
 
 <div id="libelleQuart">
-    <h3>Quart du {{quartLibelle}} - {{dateDebStringToShow}} à {{dateFinStringToShow}}</h3>
+  <h3>
+    Quart du {{ quartLibelle }} - {{ dateDebStringToShow }} à
+    {{ dateFinStringToShow }}
+  </h3>
 
-    <div *ngIf="idEquipe > 0" class="col-md-12">
-        <h4 style="text-align: center;">
-            Equipe Existante sur le quart : {{nomEquipe}} <button class="btn btn-light" (click)="changeEquipeVisible()"><i class="fa fa-level-down" aria-hidden="true"></i></button>
-        </h4>
-        <!--table des rondiers-->
-        <table [hidden]="hideEquipe" class="table table-hover tableFixed">
-            <thead>
-            <tr class="table-secondary">
-                <th scope="col">Nom</th>
-                <th scope="col">Prenom</th>
-                <th scope="col">Poste</th>
-                <th scope="col">Heure Début</th>
-                <th scope="col">Heure Fin</th>
-                <th scope="col">Heure Travaux Pénible</th>
-                <th scope="col">Commentaire</th>
-                <!--<th scope="col">Zone</th>-->
-            </tr>
-            </thead>
-            <tbody *ngFor="let rondier of listRondier">
-            <tr class="table-light" >
-                <td>{{rondier.Nom}}</td>
-                <td>{{rondier.Prenom}}</td>
-                <td>{{rondier.Poste}}</td>
-                <td class="heure">
-                    {{rondier.heure_deb}}
-                    <button class="btn btn btn-light edition" (click)="updateInfos(rondier.IdEquipe,rondier.Id,'heure_deb',rondier.heure_deb)">
-                        <i class="far fa-edit"></i>
-                    </button>
-                </td>
-                <td class="heure">
-                    {{rondier.heure_fin}}
-                    <button class="btn btn btn-light edition" (click)="updateInfos(rondier.IdEquipe,rondier.Id,'heure_fin',rondier.heure_fin)">
-                        <i class="far fa-edit"></i>
-                    </button>
-                </td>
-                <td class="heure">
-                    {{rondier.heure_tp}}
-                    <button class="btn btn btn-light edition" (click)="updateInfos(rondier.IdEquipe,rondier.Id,'heure_tp',rondier.heure_tp)">
-                        <i class="far fa-edit"></i>
-                    </button>
-                </td>
-                <td class="heure">
-                    {{rondier.comm_tp}}
-                    <button class="btn btn btn-light edition"  [disabled]="rondier.heure_tp == '00:00'" (click)="updateInfos(rondier.IdEquipe,rondier.Id,'comm_tp',rondier.comm_tp)">
-                        <i class="far fa-edit"></i>
-                    </button>
-                </td>
-                <!--<td>{{rondier.Zone}}</td>-->
-            </tr>
-            </tbody>
-        </table>
-    </div>
+  <div *ngIf="idEquipe > 0" class="col-md-12">
+    <h4 style="text-align: center">
+      Equipe Existante sur le quart : {{ nomEquipe }}
+      <button class="btn btn-light" (click)="changeEquipeVisible()">
+        <i class="fa fa-level-down" aria-hidden="true"></i>
+      </button>
+    </h4>
+    <!--table des rondiers-->
+    <table [hidden]="hideEquipe" class="table table-hover tableFixed">
+      <thead>
+        <tr class="table-secondary">
+          <th scope="col">Nom</th>
+          <th scope="col">Prenom</th>
+          <th scope="col">Poste</th>
+          <th scope="col">Heure Début</th>
+          <th scope="col">Heure Fin</th>
+          <th scope="col">Heure Travaux Pénible</th>
+          <th scope="col">Commentaire</th>
+          <!--<th scope="col">Zone</th>-->
+        </tr>
+      </thead>
+      <tbody *ngFor="let rondier of listRondier">
+        <tr class="table-light">
+          <td>{{ rondier.Nom }}</td>
+          <td>{{ rondier.Prenom }}</td>
+          <td>{{ rondier.Poste }}</td>
+          <td class="heure">
+            {{ rondier.heure_deb }}
+            <button
+              class="btn btn btn-light edition"
+              (click)="
+                updateInfos(
+                  rondier.IdEquipe,
+                  rondier.Id,
+                  'heure_deb',
+                  rondier.heure_deb
+                )
+              "
+            >
+              <i class="far fa-edit"></i>
+            </button>
+          </td>
+          <td class="heure">
+            {{ rondier.heure_fin }}
+            <button
+              class="btn btn btn-light edition"
+              (click)="
+                updateInfos(
+                  rondier.IdEquipe,
+                  rondier.Id,
+                  'heure_fin',
+                  rondier.heure_fin
+                )
+              "
+            >
+              <i class="far fa-edit"></i>
+            </button>
+          </td>
+          <td class="heure">
+            {{ rondier.heure_tp }}
+            <button
+              class="btn btn btn-light edition"
+              (click)="
+                updateInfos(
+                  rondier.IdEquipe,
+                  rondier.Id,
+                  'heure_tp',
+                  rondier.heure_tp
+                )
+              "
+            >
+              <i class="far fa-edit"></i>
+            </button>
+          </td>
+          <td class="heure">
+            {{ rondier.comm_tp }}
+            <button
+              class="btn btn btn-light edition"
+              [disabled]="rondier.heure_tp == '00:00'"
+              (click)="
+                updateInfos(
+                  rondier.IdEquipe,
+                  rondier.Id,
+                  'comm_tp',
+                  rondier.comm_tp
+                )
+              "
+            >
+              <i class="far fa-edit"></i>
+            </button>
+          </td>
+          <!--<td>{{rondier.Zone}}</td>-->
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <!-- routerLink="../newEquipe" [queryParams]="{quart: quart, idEquipe: idEquipe}" -->
 
 <!-- Tableau des consignes -->
 <div class="row">
-    <div class="col-md-12">
-        <div class="card cardElem" *ngIf="consignes.length > 0">
-            <h2 class="titre">Consignes</h2>
-            <table class="table table-bordered table-secondary">
-            <thead>
-                <tr>
-                <th scope="col">Consigne</th>
-                <th scope="col">Description</th>
-                <th scope="col">Date de Fin</th>
-                <th scope="col">Fichier</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let consigne of consignes">
-                <th scope="row">{{consigne.titre}}</th>
-                <th scope="row">{{consigne.commentaire}}</th>
-                <td>{{consigne.dateHeureFin}}</td>
-                <td *ngIf="consigne.url != null" (click)="downloadFile(consigne.url)"><i class="fas fa-download" ></i></td>
-                <td *ngIf="consigne.url == null">/</td>
-                </tr>
-            </tbody>
-            </table>
-        </div>
+  <div class="col-md-12">
+    <div class="card cardElem" *ngIf="consignes.length > 0">
+      <h2 class="titre">Consignes</h2>
+      <table class="table table-bordered table-secondary">
+        <thead>
+          <tr>
+            <th scope="col">Consigne</th>
+            <th scope="col">Description</th>
+            <th scope="col">Date de Fin</th>
+            <th scope="col">Fichier</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let consigne of consignes">
+            <th scope="row">{{ consigne.titre }}</th>
+            <th scope="row">{{ consigne.commentaire }}</th>
+            <td>{{ consigne.dateHeureFin }}</td>
+            <td
+              *ngIf="consigne.url != null"
+              (click)="downloadFile(consigne.url)"
+            >
+              <i class="fas fa-download"></i>
+            </td>
+            <td *ngIf="consigne.url == null">/</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+  </div>
 </div>
 
 <!-- ZONES ET ACTIONS -->
-<div class="row" style="display: flex; justify-content: space-evenly;">
-
-    <!-- Tableau des zones -->
-    <div class="col-md-5">
-        <div class="card cardElem">
-            <h2 class="titre">Zones à contrôler
-                <button [disabled]="!saisieAutorise" class="btn btn-success btnAdd" id="createZone" (click)="newZone()">
-                    + 
-                </button>
-                <button class="btn btn-danger" id="hideZone" (click)="hideZone()" style="display: none;">
-                    -
-                </button>
-                
-            </h2>
-            <div id="divCreationZone"  style="display: none;">
-                <div class="form-group" id="CreationRonde">
-                    <label>Choisissez vos zones</label>
-                    <select multiple class="form-select form-select-sm" aria-label=".form-select-sm example" [(ngModel)]="listZoneSelection">
-                    <option *ngFor="let z of listZoneOfUsine" value="{{z.Id}}">{{z.nom}}</option>
-                    </select>
-                </div>
-
-                <button class="btn btn-success" id="valider" (click)="createZone();" >
-                    Valider
-                </button>
-            </div>
-            <!--table des zones-->
-            <table class="table tableFixed">
-                <thead>
-                <tr class="table-secondary">
-                    <th scope="col">Nom</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody *ngFor="let zone of listZone">
-                <tr [ngStyle]="{'background-color' : zone.termine == 1 ? 'lightgreen' : 'lightcoral'}">
-                    <td>{{zone.zone}}</td>
-                    <td>
-                        <button [disabled]="!saisieAutorise" type="button" class="btn btn-outline-danger" (click)="deleteAction(zone.id)">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+<div class="row" style="display: flex; justify-content: space-evenly">
+  <!-- Tableau des zones -->
+  <div class="col-md-5">
+    <div class="card cardElem">
+      <h2 class="titre">
+        Zones à contrôler
+        <button
+          [disabled]="!saisieAutorise"
+          class="btn btn-success btnAdd"
+          id="createZone"
+          (click)="newZone()"
+        >
+          +
+        </button>
+        <button
+          class="btn btn-danger"
+          id="hideZone"
+          (click)="hideZone()"
+          style="display: none"
+        >
+          -
+        </button>
+      </h2>
+      <div id="divCreationZone" style="display: none">
+        <div class="form-group" id="CreationRonde">
+          <label>Choisissez vos zones</label>
+          <select
+            multiple
+            class="form-select form-select-sm"
+            aria-label=".form-select-sm example"
+            [(ngModel)]="listZoneSelection"
+          >
+            <option *ngFor="let z of listZoneOfUsine" value="{{ z.Id }}">
+              {{ z.nom }}
+            </option>
+          </select>
         </div>
+
+        <button class="btn btn-success" id="valider" (click)="createZone()">
+          Valider
+        </button>
+      </div>
+      <!--table des zones-->
+      <table class="table tableFixed">
+        <thead>
+          <tr class="table-secondary">
+            <th scope="col">Nom</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let zone of listZone">
+          <tr
+            [ngStyle]="{
+              'background-color':
+                zone.termine == 1 ? 'lightgreen' : 'lightcoral',
+            }"
+          >
+            <td>{{ zone.zone }}</td>
+            <td>
+              <button
+                [disabled]="!saisieAutorise"
+                type="button"
+                class="btn btn-outline-danger"
+                (click)="deleteAction(zone.id)"
+              >
+                <i class="fas fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+  </div>
 
-    <!-- Tableau des actions -->
-    <div class="col-md-5">
-        <div class="card cardElem">
-            <h2 class="titre">Actions
-                <button [disabled]="!saisieAutorise" class="btn btn-success btnAdd" id="createAction" (click)="newAction()">
-                    + 
-                </button>
-                <button class="btn btn-danger" id="hideAction" (click)="hideAction()" style="display: none;">
-                    -
-                </button>
-            </h2>
-            <div id="divCreationAction"  style="display: none;">
-                <div class="form-group" id="CreationRonde">
-                    <label for="desc">Nom : * </label>
-                    <input required type="text" id="nom" class="form-control" placeholder="Nom" name="nomAction" ngModel [(ngModel)]="nomAction">
-                </div>
-
-                <button class="btn" id="valider" style="background-color: rgb(27,37,51); color: white;" (click)="choixAction();">
-                    Depuis Liste Actions
-                </button>
-
-                <button class="btn btn-success" id="valider" (click)="createAction();" >
-                    Valider
-                </button>
-            </div>
-            <!--table des actions-->
-            <table class="table tableFixed">
-                <thead>
-                <tr class="table-secondary">
-                    <th scope="col">Description</th>
-                    <th scope="col"></th>
-                </tr>
-                </thead>
-                <tbody *ngFor="let action of listAction">
-                <tr [ngStyle]="{'background-color' : action.termine == 1 ? 'lightgreen' : 'white'}">
-                    <td>
-                        {{action.nom}}
-                        <button [disabled]="!saisieAutorise" [ngClass]="{ btn:true, 'btn-outline-success':action.termine == 1, 'btn-outline-danger':action.termine == 0 }" (click)="updateAction(action.id,!action.termine)">
-                            <i [ngStyle]="{'color' : action.termine == 1 ? 'green' : 'red'}" [ngClass]="{ fas:true, 'fa-check':action.termine == 1, 'fa-times-circle':action.termine == 0 }"></i>
-                        </button>
-                    </td>
-                    <td>
-                        <button [disabled]="!saisieAutorise" type="button" class="btn btn-outline-danger" (click)="deleteAction(action.id)">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+  <!-- Tableau des actions -->
+  <div class="col-md-5">
+    <div class="card cardElem">
+      <h2 class="titre">
+        Actions
+        <button
+          [disabled]="!saisieAutorise"
+          class="btn btn-success btnAdd"
+          id="createAction"
+          (click)="newAction()"
+        >
+          +
+        </button>
+        <button
+          class="btn btn-danger"
+          id="hideAction"
+          (click)="hideAction()"
+          style="display: none"
+        >
+          -
+        </button>
+      </h2>
+      <div id="divCreationAction" style="display: none">
+        <div class="form-group" id="CreationRonde">
+          <label for="desc">Nom : * </label>
+          <input
+            required
+            type="text"
+            id="nom"
+            class="form-control"
+            placeholder="Nom"
+            name="nomAction"
+            ngModel
+            [(ngModel)]="nomAction"
+          />
         </div>
+
+        <button
+          class="btn"
+          id="valider"
+          style="background-color: rgb(27, 37, 51); color: white"
+          (click)="choixAction()"
+        >
+          Depuis Liste Actions
+        </button>
+
+        <button class="btn btn-success" id="valider" (click)="createAction()">
+          Valider
+        </button>
+      </div>
+      <!--table des actions-->
+      <table class="table tableFixed">
+        <thead>
+          <tr class="table-secondary">
+            <th scope="col">Description</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let action of listAction">
+          <tr
+            [ngStyle]="{
+              'background-color': action.termine == 1 ? 'lightgreen' : 'white',
+            }"
+          >
+            <td>
+              {{ action.nom }}
+              <button
+                [disabled]="!saisieAutorise"
+                [ngClass]="{
+                  btn: true,
+                  'btn-outline-success': action.termine == 1,
+                  'btn-outline-danger': action.termine == 0,
+                }"
+                (click)="updateAction(action.id, !action.termine)"
+              >
+                <i
+                  [ngStyle]="{ color: action.termine == 1 ? 'green' : 'red' }"
+                  [ngClass]="{
+                    fas: true,
+                    'fa-check': action.termine == 1,
+                    'fa-times-circle': action.termine == 0,
+                  }"
+                ></i>
+              </button>
+            </td>
+            <td>
+              <button
+                [disabled]="!saisieAutorise"
+                type="button"
+                class="btn btn-outline-danger"
+                (click)="deleteAction(action.id)"
+              >
+                <i class="fas fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+  </div>
 </div>
-<br>
+<br />
 
 <!-- EVENEMENTS -->
 <div class="row">
-    <!-- Tableau des Evènements -->
-    <div class="col-md-12">
-        <div class="card cardElem">
-            <h2 class="titre">
-                Evènements
-                <a (click)="ouvrirDialogCreerEvent()" role="button">
-                    <button [disabled]="!saisieAutorise" class="btn btn-success btnAdd">
-                        + 
-                    </button>
+  <!-- Tableau des Evènements -->
+  <div class="col-md-12">
+    <div class="card cardElem">
+      <h2 class="titre">
+        Evènements
+        <a (click)="ouvrirDialogCreerEvent()" role="button">
+          <button [disabled]="!saisieAutorise" class="btn btn-success btnAdd">
+            +
+          </button>
+        </a>
+      </h2>
+
+      <div class="table-style">
+        <!--table des events-->
+        <table class="table tableFixed">
+          <thead>
+            <tr class="table-secondary">
+              <th scope="col">Titre</th>
+              <th scope="col">Description</th>
+              <th scope="col">Cause</th>
+              <th scope="col">Date de Début</th>
+              <!--<th scope="col">Date de Fin</th>-->
+              <th scope="col">Demande de travaux</th>
+              <th scope="col">Photo</th>
+            </tr>
+          </thead>
+          <tbody *ngFor="let evenement of listEvenement">
+            <tr class="table-light">
+              <td>{{ evenement.titre }}</td>
+              <td>{{ evenement.description }}</td>
+              <td>{{ evenement.cause }}</td>
+              <td>{{ evenement.date_heure_debut }}</td>
+              <!--<td>{{evenement.date_heure_fin}}</td>-->
+              <td *ngIf="evenement.demande_travaux == 0">
+                <i style="color: red" class="fas fa-times-circle"></i>
+              </td>
+              <td *ngIf="evenement.demande_travaux != 0">
+                <i style="color: green" class="fas fa-check"></i>
+                {{ evenement.demande_travaux }}
+              </td>
+              <td>
+                <a
+                  href="{{ evenement.url }}"
+                  *ngIf="evenement.url != ''"
+                  target="_blank"
+                >
+                  <button class="btn btn-success">
+                    <i class="fas fa-image"></i>
+                  </button>
                 </a>
-            </h2>
-            
-            <div class="table-style">
-                <!--table des events-->
-                <table class="table tableFixed">
-                    <thead>
-                    <tr class="table-secondary">
-                        <th scope="col">Titre</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">Cause</th>
-                        <th scope="col">Date de Début </th>
-                        <!--<th scope="col">Date de Fin</th>-->
-                        <th scope="col">Demande de travaux</th>
-                        <th scope="col">Photo</th>
-                    </tr>
-                    </thead>
-                    <tbody *ngFor="let evenement of listEvenement">
-                    <tr class="table-light">
-                        <td>{{evenement.titre}}</td>
-                        <td>{{evenement.description}}</td>
-                        <td>{{evenement.cause}}</td>
-                        <td>{{evenement.date_heure_debut}}</td>
-                        <!--<td>{{evenement.date_heure_fin}}</td>-->
-                        <td *ngIf="evenement.demande_travaux == 0"><i style="color: red" class="fas fa-times-circle"></i></td>
-                        <td *ngIf="evenement.demande_travaux != 0"><i style="color: green" class="fas fa-check"></i> {{evenement.demande_travaux}}</td>
-                        <td>
-                            <a href="{{evenement.url}}" *ngIf="evenement.url != ''" target="_blank">
-                                <button class="btn btn-success">
-                                    <i class="fas fa-image"></i>
-                                </button>
-                            </a>
-                        </td>
-                        
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
+  </div>
 </div>
-<br>
+<br />
 
 <!-- ACTUS -->
-<div class="col-md-13" style="display: flex; flex-direction: column;">
-    <h2 class="titre">Actualités</h2>
-    <!--Liste des actus non lié à un quart-->
-    <div style="display: flex; justify-content: space-evenly;">
-        <div class="card cardActu" *ngFor="let actu of listActu">
-            <div class="card-body">
-                <h5 class="card-title" [ngStyle]="{'color' : actu.importance == 2 ? 'red' : 'rgb(27,37,51)'}">{{actu.titre}}</h5>
-                <p class="card-text" *ngFor="let descr of splitDescription(actu.description)">{{descr}}</p>
-                <p *ngIf="actu.importance == 0" class="card-text color--{{actu.importance}}">Importance : Faible</p>
-                    <p *ngIf="actu.importance == 1" class="card-text color--{{actu.importance}}">Importance : Neutre</p>
-                    <p *ngIf="actu.importance == 2" class="card-text color--{{actu.importance}}">Importance : Elevée</p>
-            </div>
-        </div>
+<div class="col-md-13" style="display: flex; flex-direction: column">
+  <h2 class="titre">Actualités</h2>
+  <!--Liste des actus non lié à un quart-->
+  <div style="display: flex; justify-content: space-evenly">
+    <div class="card cardActu" *ngFor="let actu of listActu">
+      <div class="card-body">
+        <h5
+          class="card-title"
+          [ngStyle]="{ color: actu.importance == 2 ? 'red' : 'rgb(27,37,51)' }"
+        >
+          {{ actu.titre }}
+        </h5>
+        <p
+          class="card-text"
+          *ngFor="let descr of splitDescription(actu.description)"
+        >
+          {{ descr }}
+        </p>
+        <p
+          *ngIf="actu.importance == 0"
+          class="card-text color--{{ actu.importance }}"
+        >
+          Importance : Faible
+        </p>
+        <p
+          *ngIf="actu.importance == 1"
+          class="card-text color--{{ actu.importance }}"
+        >
+          Importance : Neutre
+        </p>
+        <p
+          *ngIf="actu.importance == 2"
+          class="card-text color--{{ actu.importance }}"
+        >
+          Importance : Elevée
+        </p>
+      </div>
     </div>
+  </div>
 </div>
 
-
 <ng-template let-data #myCreateEventDialog>
-    <h1 class="creation" style="text-align: center;">Création d'un évènement :</h1>
+  <h1 class="creation" style="text-align: center">Création d'un évènement :</h1>
 
-    <mat-dialog-content>
-        <div>
-            <div class="row">
-
-                <div class="form-group" id="photo">
-                    <input *ngIf="idEvenement == 0" type="file" id="fichier" class="form-control" required name="fichier" accept=".jpg,.jpeg,.png" (change)="saveFile($event)"><img *ngIf="imgSrc" [src]="imgSrc" alt="image" id="imgUpload">
-                    <p *ngIf="idEvenement == 0" style="font-size: smaller; color: grey">*Format image !</p>
-                </div>
-                <div class="col-9">
-                    <div class="form-check" >
-                        <input class="form-check-input" type="checkbox" value="" id="demandeTravaux" ngModel [(ngModel)]="demandeTravaux" (click)="clickDemandeTravaux()" >
-                        <label class="form-check-label" for="demandeTravaux" id="demandeTravauxLabel">
-                        Demande d'intervention (oui/non)
-                        </label>
-                    </div>
-                
-                    <div class="form-check" *ngIf="idEvenement==0">
-                        <input class="form-check-input" type="checkbox" value="" id="consigne" ngModel [(ngModel)]="consigne" >
-                        <label class="form-check-label" for="consigne">
-                        Consigne (oui/non)
-                        </label>
-                    </div>
-                </div>
-                <div class="col-md-5">
-                    <div class="form-group">
-                        <label for="desc">Titre : * </label>
-                        <input required type="text" id="titre" class="form-control" placeholder="Titre" name="titre" ngModel [(ngModel)]="titre">
-                    </div>
-            
-                    
-                    <div class="form-group" style="display: none;" id="groupementGMAO">
-                        <label for="product">Groupement GMAO : * </label>
-                        <select id="product" (change)="updateElements()" required class="form-control" ngModel [(ngModel)]="groupementGMAO" >
-                            <option value="">Choisissez un Groupement GMAO</option>
-                            <option *ngFor="let groupement of listGroupementGMAOTable" value="{{groupement.split('---')[0]}}">{{groupement}}</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Début date validité : * (non modifiable en cas de DI)</label>
-                        <input required [disabled]="demandeTravaux != 0" type="datetime-local" id="dateDebut" class="form-control" placeholder="Date de début de validité" name="dateDebut" ngModel [(ngModel)]="dateDeb">
-                    </div>
-                
-                    <div class="form-group">
-                        <label for="desc">Description : </label>
-                        <textarea required name="description" id="description" class="form-control" cols="30" rows="10" ngModel  placeholder="Description" [(ngModel)]="description"> </textarea>
-                        <!-- <input required type="text" id="description" class="form-control" placeholder="Description" name="description" ngModel [(ngModel)]="description"> -->
-                    </div>
-                </div>
-                <div class="col-md-6">
-            
-                    <div class="form-group">
-                        <label for="desc">Cause : </label>
-                        <select id="cause" required class="form-control" ngModel [(ngModel)]="cause" >
-                            <option disabled value="">Choisissez une cause</option>
-                            <option value="ARRET">Arrêt</option>
-                            <option value="ECHAUF">Echauffement</option>
-                            <option value="VIBR">Vibration</option>
-                            <option value="ACCEPTABLE">Acceptable/Non défaillant</option>
-                            <option value="BLOQUE">Bloqué</option>
-                            <option value="CASSE">Cassé</option>
-                            <option value="CONNEXION">Connexion perdue ou faible</option>
-                            <option value="CORRODE">Rouillé/Corrodé</option>
-                            <option value="ENDOMMAGE">Endommagé/déchiré</option>
-                            <option value="DETERIORE">Détérioré/Déchiré</option>
-                            <option value="SALE">Sale/Huileux</option>
-                            <option value="FUITEEXT">Fuite externe</option>
-                            <option value="NIVEAU">Niveau bas</option>
-                            <option value="GROUNDED">A terre/Déformé</option>
-                            <option value="VIBRATION">Déséquilibré/Vibration</option>
-                            <option value="INCOMPLET">Incomplet</option>
-                            <option value="INOPERABLE">Inutilisable</option>
-                            <option value="FUITEINT">Fuite interne</option>
-                            <option value="MANQUANT">Manquant</option>
-                            <option value="NONCONNECTE">Non connecté</option>
-                            <option value="NONMONTE">Non monté</option>
-                            <option value="NONAJUSTE">Non ajusté</option>
-                            <option value="NONCALIBRE">Non calibré</option>
-                            <option value="SURCHAUFFE">En surchauffe/Brulé/Explosé</option>
-                            <option value="GRIFFE">Griffé/Entaillé/Piqué</option>
-                            <option value="NONUTILISE">Non utilisé</option>
-                            <option value="BRUIT_ANORMAL">Bruit anormal</option>
-                            <option value="PRESSION_FOUR">Pression Four</option>
-                            <option value="BOURRAGE">Bourrage</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group" style="display: none;" id="equipementGMAO" >
-                        <label for="product">Equipement GMAO : * </label>
-                        <select id="product" (change)="updateGroupements()" required class="form-control" ngModel [(ngModel)]="equipementGMAO" >
-                            <option value="">Choisissez un Equipement GMAO</option>
-                            <option *ngFor="let equipement of listEquipementGMAOFiltre" value="{{equipement.codeequipment}}---{{equipement.description}}">{{equipement.codeequipment}}---{{equipement.description}}</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Importance : *</label>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <select required class="form-select" aria-label=".form-select-sm example" name="importance" ngModel [(ngModel)]="importance">
-                                        <option value=0 style="background-color: rgb(81, 196, 81);">Faible</option>
-                                        <option value=1 style="background-color: rgb(245, 171, 35);">Neutre</option>
-                                        <option value=2 style="background-color: rgb(248, 75, 75);">Elevée</option>                                        </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                </div>
-                    
-                <div class="col-9">
-                    <div class="form-group">
-                        <button class="btn btn-success btn-lg" (click)="newEvenement()">Valider</button>
-                        <button [mat-dialog-close]="true" class="btn btn-danger btn-lg">Annuler</button>
-                    </div>
-                
-                    <p style="font-size: smaller; color: grey">* : Obligatoire</p>
-                </div>
-            </div>
+  <mat-dialog-content>
+    <div>
+      <div class="row">
+        <div class="form-group" id="photo">
+          <input
+            *ngIf="idEvenement == 0"
+            type="file"
+            id="fichier"
+            class="form-control"
+            required
+            name="fichier"
+            accept=".jpg,.jpeg,.png"
+            (change)="saveFile($event)"
+          /><img *ngIf="imgSrc" [src]="imgSrc" alt="image" id="imgUpload" />
+          <p *ngIf="idEvenement == 0" style="font-size: smaller; color: grey">
+            *Format image !
+          </p>
         </div>
-    </mat-dialog-content>
+        <div class="col-9">
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              id="demandeTravaux"
+              ngModel
+              [(ngModel)]="demandeTravaux"
+              (click)="clickDemandeTravaux()"
+            />
+            <label
+              class="form-check-label"
+              for="demandeTravaux"
+              id="demandeTravauxLabel"
+            >
+              Demande d'intervention (oui/non)
+            </label>
+          </div>
+
+          <div class="form-check" *ngIf="idEvenement == 0">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              id="consigne"
+              ngModel
+              [(ngModel)]="consigne"
+            />
+            <label class="form-check-label" for="consigne">
+              Consigne (oui/non)
+            </label>
+          </div>
+        </div>
+        <div class="col-md-5">
+          <div class="form-group">
+            <label for="desc">Titre : * </label>
+            <input
+              required
+              type="text"
+              id="titre"
+              class="form-control"
+              placeholder="Titre"
+              name="titre"
+              ngModel
+              [(ngModel)]="titre"
+            />
+          </div>
+
+          <div class="form-group" style="display: none" id="groupementGMAO">
+            <label for="product">Groupement GMAO : * </label>
+            <select
+              id="product"
+              (change)="updateElements()"
+              required
+              class="form-control"
+              ngModel
+              [(ngModel)]="groupementGMAO"
+            >
+              <option value="">Choisissez un Groupement GMAO</option>
+              <option
+                *ngFor="let groupement of listGroupementGMAOTable"
+                value="{{ groupement.split('---')[0] }}"
+              >
+                {{ groupement }}
+              </option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Début date validité : * (non modifiable en cas de DI)</label>
+            <input
+              required
+              [disabled]="demandeTravaux != 0"
+              type="datetime-local"
+              id="dateDebut"
+              class="form-control"
+              placeholder="Date de début de validité"
+              name="dateDebut"
+              ngModel
+              [(ngModel)]="dateDeb"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="desc">Description : </label>
+            <textarea
+              required
+              name="description"
+              id="description"
+              class="form-control"
+              cols="30"
+              rows="10"
+              ngModel
+              placeholder="Description"
+              [(ngModel)]="description"
+            >
+            </textarea>
+            <!-- <input required type="text" id="description" class="form-control" placeholder="Description" name="description" ngModel [(ngModel)]="description"> -->
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="desc">Cause : </label>
+            <select
+              id="cause"
+              required
+              class="form-control"
+              ngModel
+              [(ngModel)]="cause"
+            >
+              <option disabled value="">Choisissez une cause</option>
+              <option value="ARRET">Arrêt</option>
+              <option value="ECHAUF">Echauffement</option>
+              <option value="VIBR">Vibration</option>
+              <option value="ACCEPTABLE">Acceptable/Non défaillant</option>
+              <option value="BLOQUE">Bloqué</option>
+              <option value="CASSE">Cassé</option>
+              <option value="CONNEXION">Connexion perdue ou faible</option>
+              <option value="CORRODE">Rouillé/Corrodé</option>
+              <option value="ENDOMMAGE">Endommagé/déchiré</option>
+              <option value="DETERIORE">Détérioré/Déchiré</option>
+              <option value="SALE">Sale/Huileux</option>
+              <option value="FUITEEXT">Fuite externe</option>
+              <option value="NIVEAU">Niveau bas</option>
+              <option value="GROUNDED">A terre/Déformé</option>
+              <option value="VIBRATION">Déséquilibré/Vibration</option>
+              <option value="INCOMPLET">Incomplet</option>
+              <option value="INOPERABLE">Inutilisable</option>
+              <option value="FUITEINT">Fuite interne</option>
+              <option value="MANQUANT">Manquant</option>
+              <option value="NONCONNECTE">Non connecté</option>
+              <option value="NONMONTE">Non monté</option>
+              <option value="NONAJUSTE">Non ajusté</option>
+              <option value="NONCALIBRE">Non calibré</option>
+              <option value="SURCHAUFFE">En surchauffe/Brulé/Explosé</option>
+              <option value="GRIFFE">Griffé/Entaillé/Piqué</option>
+              <option value="NONUTILISE">Non utilisé</option>
+              <option value="BRUIT_ANORMAL">Bruit anormal</option>
+              <option value="PRESSION_FOUR">Pression Four</option>
+              <option value="BOURRAGE">Bourrage</option>
+            </select>
+          </div>
+
+          <div class="form-group" style="display: none" id="equipementGMAO">
+            <label for="product">Equipement GMAO : * </label>
+            <select
+              id="product"
+              (change)="updateGroupements()"
+              required
+              class="form-control"
+              ngModel
+              [(ngModel)]="equipementGMAO"
+            >
+              <option value="">Choisissez un Equipement GMAO</option>
+              <option
+                *ngFor="let equipement of listEquipementGMAOFiltre"
+                value="{{ equipement.codeequipment }}---{{
+                  equipement.description
+                }}"
+              >
+                {{ equipement.codeequipment }}---{{ equipement.description }}
+              </option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Importance : *</label>
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <select
+                    required
+                    class="form-select"
+                    aria-label=".form-select-sm example"
+                    name="importance"
+                    ngModel
+                    [(ngModel)]="importance"
+                  >
+                    <option
+                      value="0"
+                      style="background-color: rgb(81, 196, 81)"
+                    >
+                      Faible
+                    </option>
+                    <option
+                      value="1"
+                      style="background-color: rgb(245, 171, 35)"
+                    >
+                      Neutre
+                    </option>
+                    <option
+                      value="2"
+                      style="background-color: rgb(248, 75, 75)"
+                    >
+                      Elevée
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-9">
+          <div class="form-group">
+            <button class="btn btn-success btn-lg" (click)="newEvenement()">
+              Valider
+            </button>
+            <button [mat-dialog-close]="true" class="btn btn-danger btn-lg">
+              Annuler
+            </button>
+          </div>
+
+          <p style="font-size: smaller; color: grey">* : Obligatoire</p>
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
 </ng-template>

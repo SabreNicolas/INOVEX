@@ -1,78 +1,146 @@
- <div *ngIf="moralEntities">
-
-     <div class="form-group blockFiltres">
-
-       <h5><label>Filtres :</label></h5>
-       <div class="row">
-         <div class="col-sm-3">
-           <div class="form-group">
-             <select id="produit" required class="form-select form-select-sm" aria-label=".form-select-sm example" name="produit" ngModel="201">
-               <option *ngFor="let type of listTypeDechets" value="{{type.split('_')[0]}}">{{type.split("_")[1]}}</option>
-             </select>
-           </div>
-         </div>
-         <div class="col-sm-3" *ngIf="listCollecteurs[0].split('_')[1] != 'undefined'">
-           <div class="form-group">
-             <select id="collecteur" required class="form-select form-select-sm" aria-label=".form-select-sm example" name="collecteur" ngModel="01">
-               <option *ngFor="let collecteur of listCollecteurs" value="{{collecteur.split('_')[0]}}">{{collecteur.split("_")[1]}}</option>
-             </select>
-           </div>
-         </div>
-         <div class="col-sm-3">
-           <div class="form-group">
-             <button class="btn btn-success" (click)="setFilters()">Valider</button>
-           </div>
-         </div>
-       </div>
-
-       <button id="changeAllPrice" style="margin-bottom: 5px; margin-right: 5px;" class="btn btn-primary btn-lg float-right" (click)="changeAllPrice()">Changer plusieurs Prix</button>
-
-     </div>
-
-      <div class="table-style">
-          <!--table des client-->
-          <table class="table table-hover tableFixed">
-            <thead>
-            <tr class="table-secondary">
-              <th scope="col">#</th>
-              <th scope="col">Nom</th>
-              <th scope="col">N° CAP</th>
-              <th scope="col">Code Déchet</th>
-              <th scope="col">Type Déchets</th>
-              <th scope="col">Prix Unitaire</th>
-              <th scope="col">#</th>
-              <th scope="col">Visibilité</th>
-              <th *ngIf="isAdmin == 1" scope="col">Edition</th>
-            </tr>
-            </thead>
-            <tbody *ngFor="let mr of moralEntities">
-            <tr class="table-light">
-              <td>
-                <div class="form-check form-switch">
-                  <input class="form-check-input" type="checkbox" id="{{mr.Id}}" (click)="addMr(mr.Id)">
-                </div>
-              </td>
-              <td><strong>{{mr.Name}}</strong></td>
-              <td>{{mr.numCAP}}</td>
-              <td>{{mr.codeDechet}}</td>
-              <td><span class="badge bg-info text-dark">{{mr.produit}} {{mr.collecteur}}</span></td>
-              <td><span class="badge rounded-pill bg-secondary">{{mr.UnitPrice}}</span></td>
-              <td><button id="setCAP" (click)="setCAP(mr)" class="btn btn-primary">
-                Changer le n° du CAP
-              </button></td>
-              <td *ngIf="mr.Enabled == 0"><button id="setDisabled" (click)="setVisibility(mr.Id,1)" class="btn btn-outline-danger">
-                <i style="color: red" class="fa fa-eye-slash"></i>
-              </button></td>
-              <td *ngIf="mr.Enabled == 1"><button id="setEnabled" (click)="setVisibility(mr.Id,0)" class="btn btn-outline-success">
-                <i style="color: green" class="fa fa-eye"></i>
-              </button></td>
-              <td *ngIf="isAdmin == 1"><a target="_blank" routerLink="/admin/clients" [queryParams]="{mr: mr.Id}" >
-                <button id="edition" class="btn btn btn-light">
-                  <i class="far fa-edit"></i>
-                </button>
-              </a></td>
-            </tr>
-            </tbody>
-          </table>
+<div *ngIf="moralEntities">
+  <div class="form-group blockFiltres">
+    <h5><label>Filtres :</label></h5>
+    <div class="row">
+      <div class="col-sm-3">
+        <div class="form-group">
+          <select
+            id="produit"
+            required
+            class="form-select form-select-sm"
+            aria-label=".form-select-sm example"
+            name="produit"
+            ngModel="201"
+          >
+            <option
+              *ngFor="let type of listTypeDechets"
+              value="{{ type.split('_')[0] }}"
+            >
+              {{ type.split("_")[1] }}
+            </option>
+          </select>
+        </div>
       </div>
- </div>
+      <div
+        class="col-sm-3"
+        *ngIf="listCollecteurs[0].split('_')[1] != 'undefined'"
+      >
+        <div class="form-group">
+          <select
+            id="collecteur"
+            required
+            class="form-select form-select-sm"
+            aria-label=".form-select-sm example"
+            name="collecteur"
+            ngModel="01"
+          >
+            <option
+              *ngFor="let collecteur of listCollecteurs"
+              value="{{ collecteur.split('_')[0] }}"
+            >
+              {{ collecteur.split("_")[1] }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-group">
+          <button class="btn btn-success" (click)="setFilters()">
+            Valider
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <button
+      id="changeAllPrice"
+      style="margin-bottom: 5px; margin-right: 5px"
+      class="btn btn-primary btn-lg float-right"
+      (click)="changeAllPrice()"
+    >
+      Changer plusieurs Prix
+    </button>
+  </div>
+
+  <div class="table-style">
+    <!--table des client-->
+    <table class="table table-hover tableFixed">
+      <thead>
+        <tr class="table-secondary">
+          <th scope="col">#</th>
+          <th scope="col">Nom</th>
+          <th scope="col">N° CAP</th>
+          <th scope="col">Code Déchet</th>
+          <th scope="col">Type Déchets</th>
+          <th scope="col">Prix Unitaire</th>
+          <th scope="col">#</th>
+          <th scope="col">Visibilité</th>
+          <th *ngIf="isAdmin == 1" scope="col">Edition</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let mr of moralEntities">
+        <tr class="table-light">
+          <td>
+            <div class="form-check form-switch">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="{{ mr.Id }}"
+                (click)="addMr(mr.Id)"
+              />
+            </div>
+          </td>
+          <td>
+            <strong>{{ mr.Name }}</strong>
+          </td>
+          <td>{{ mr.numCAP }}</td>
+          <td>{{ mr.codeDechet }}</td>
+          <td>
+            <span class="badge bg-info text-dark"
+              >{{ mr.produit }} {{ mr.collecteur }}</span
+            >
+          </td>
+          <td>
+            <span class="badge rounded-pill bg-secondary">{{
+              mr.UnitPrice
+            }}</span>
+          </td>
+          <td>
+            <button id="setCAP" (click)="setCAP(mr)" class="btn btn-primary">
+              Changer le n° du CAP
+            </button>
+          </td>
+          <td *ngIf="mr.Enabled == 0">
+            <button
+              id="setDisabled"
+              (click)="setVisibility(mr.Id, 1)"
+              class="btn btn-outline-danger"
+            >
+              <i style="color: red" class="fa fa-eye-slash"></i>
+            </button>
+          </td>
+          <td *ngIf="mr.Enabled == 1">
+            <button
+              id="setEnabled"
+              (click)="setVisibility(mr.Id, 0)"
+              class="btn btn-outline-success"
+            >
+              <i style="color: green" class="fa fa-eye"></i>
+            </button>
+          </td>
+          <td *ngIf="isAdmin == 1">
+            <a
+              target="_blank"
+              routerLink="/admin/clients"
+              [queryParams]="{ mr: mr.Id }"
+            >
+              <button id="edition" class="btn btn btn-light">
+                <i class="far fa-edit"></i>
+              </button>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

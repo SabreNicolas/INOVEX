@@ -1,217 +1,431 @@
-<a role="button" (click)="ouvrirDialogCreerElement()" class="btn btn-primary" id="create" style="color: white; font-weight: bold;">
-    Créer un élément de contrôle
+<a
+  role="button"
+  (click)="ouvrirDialogCreerElement()"
+  class="btn btn-primary"
+  id="create"
+  style="color: white; font-weight: bold"
+>
+  Créer un élément de contrôle
 </a>
 
 <div *ngIf="listElements">
-
-    <div class="form-group blockFiltres">
-
-        <h5><label>Zone de contrôle :</label></h5>
-        <div class="row">
-            <div class="col-sm-3">
-                <div class="form-group">
-                    <select class="form-select form-select-sm" aria-label=".form-select-sm example" id="zone" (change)="setFilters()">
-                        <option *ngFor="let z of listZone" value="{{z.Id}}">{{z.nom}}</option>
-                    </select>
-                </div>
-            </div>
-            <div class="col-sm-3">
-                <div class="form-group">
-                    <button class="btn btn-success" (click)="setFilters()">Valider</button>
-                </div>
-            </div>
+  <div class="form-group blockFiltres">
+    <h5><label>Zone de contrôle :</label></h5>
+    <div class="row">
+      <div class="col-sm-3">
+        <div class="form-group">
+          <select
+            class="form-select form-select-sm"
+            aria-label=".form-select-sm example"
+            id="zone"
+            (change)="setFilters()"
+          >
+            <option *ngFor="let z of listZone" value="{{ z.Id }}">
+              {{ z.nom }}
+            </option>
+          </select>
         </div>
-
+      </div>
+      <div class="col-sm-3">
+        <div class="form-group">
+          <button class="btn btn-success" (click)="setFilters()">
+            Valider
+          </button>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <div class="table-style">
-        <!--table des élements de contrôle-->
-        <table class="table table-hover tableFixed">
-            <thead>
-            <tr class="table-secondary">
-                <th scope="col">Nom</th>
-                <th scope="col">Ordre dans la zone</th>
-                <th scope="col">Type de champ</th>
-                <th scope="col">Valeurs Bornes</th>
-                <th scope="col">Valeur par défaut</th>
-                <th scope="col">Valeurs Possibles</th>
-                <th scope="col">Unité</th>
-                <th scope="col">Code GMAO</th>
-                <!--<th scope="col">Code Equipement</th>-->
-                <th scope="col">Pastille Info</th>
-                <th style="text-align: center" scope="col">Est un régulateur ?</th>
-                <th style="text-align: center" scope="col">Est un compteur ?</th>
-                <th scope="col">Edition</th>
-                <th scope="col">#</th>
-            </tr>
-            </thead>
-            <tbody *ngFor="let e of listElements; let i = index">
-            <tr *ngIf="e.idGroupement !=0 && getPreviousItem(i) != e.idGroupement" class="table-secondary">
-                <th *ngIf="e.groupement == null" colspan="13">Aucun Groupement</th>
-                <th *ngIf="e.groupement != null" scope="col" colspan="13">{{e.groupement}}</th>
-            </tr>
-            <tr class="table-light" [ngSwitch]="e.typeChamp">
-                <td>{{e.nom}}</td>
-                <td><span class="badge rounded-pill bg-secondary">{{e.ordre}}</span></td>
-                <td *ngIf="e.typeChamp==1"><span class="badge bg-primary">Curseur</span></td>
-                <td *ngIf="e.typeChamp==2"><span class="badge bg-success">Saisie Libre</span></td>
-                <td *ngIf="e.typeChamp==3"><span class="badge bg-danger">Case à cocher</span></td>
-                <td *ngIf="e.typeChamp==4"><span class="badge bg-warning text-dark">Menu de Sélection</span></td>
-                <td><span class="badge bg-success">{{e.valeurMin}}</span> - <span class="badge bg-success">{{e.valeurMax}}</span></td>
-                <td><span class="badge bg-success">{{e.defaultValue}}</span></td>
-                <td><span *ngFor="let value of e.listValues.split(' ')" class="badge bg-warning text-dark">{{value}}</span><br></td>
-                <td><span class="badge bg-dark">{{e.unit}}</span></td>
-                <td style="color: blue;">{{e.CodeEquipement}}</td>
-                <!--<td>{{e.CodeEquipement}}</td>-->
-                <td><span class="badge rounded-pill bg-info text-dark">{{e.infoSup}}</span></td>
-                <td style="text-align: center" *ngIf="e.isRegulateur"><i style="color: green" class="fa fa-check" aria-hidden="true"></i></td>
-                <td style="text-align: center" *ngIf="!e.isRegulateur"><i style="color: red" class="fa fa-times" aria-hidden="true"></i></td>
-                <td style="text-align: center" *ngIf="e.isCompteur"><i style="color: green" class="fa fa-check" aria-hidden="true"></i></td>
-                <td style="text-align: center" *ngIf="!e.isCompteur"><i style="color: red" class="fa fa-times" aria-hidden="true"></i></td>
-                <td>
-                    <button id="edition" class="btn btn btn-light" (click)="ouvrirDialogUpdateElement(e.Id)">
-                        <i class="far fa-edit"></i>
-                    </button>
-                </td>
-                <td><button (click)="deleteElement(e.Id)" id="deleteMode" class="btn btn-light">
-                    <i class="fa fa-trash-o" aria-hidden="true"></i>
-                </button></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+  <div class="table-style">
+    <!--table des élements de contrôle-->
+    <table class="table table-hover tableFixed">
+      <thead>
+        <tr class="table-secondary">
+          <th scope="col">Nom</th>
+          <th scope="col">Ordre dans la zone</th>
+          <th scope="col">Type de champ</th>
+          <th scope="col">Valeurs Bornes</th>
+          <th scope="col">Valeur par défaut</th>
+          <th scope="col">Valeurs Possibles</th>
+          <th scope="col">Unité</th>
+          <th scope="col">Code GMAO</th>
+          <!--<th scope="col">Code Equipement</th>-->
+          <th scope="col">Pastille Info</th>
+          <th style="text-align: center" scope="col">Est un régulateur ?</th>
+          <th style="text-align: center" scope="col">Est un compteur ?</th>
+          <th scope="col">Edition</th>
+          <th scope="col">#</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let e of listElements; let i = index">
+        <tr
+          *ngIf="e.idGroupement != 0 && getPreviousItem(i) != e.idGroupement"
+          class="table-secondary"
+        >
+          <th *ngIf="e.groupement == null" colspan="13">Aucun Groupement</th>
+          <th *ngIf="e.groupement != null" scope="col" colspan="13">
+            {{ e.groupement }}
+          </th>
+        </tr>
+        <tr class="table-light" [ngSwitch]="e.typeChamp">
+          <td>{{ e.nom }}</td>
+          <td>
+            <span class="badge rounded-pill bg-secondary">{{ e.ordre }}</span>
+          </td>
+          <td *ngIf="e.typeChamp == 1">
+            <span class="badge bg-primary">Curseur</span>
+          </td>
+          <td *ngIf="e.typeChamp == 2">
+            <span class="badge bg-success">Saisie Libre</span>
+          </td>
+          <td *ngIf="e.typeChamp == 3">
+            <span class="badge bg-danger">Case à cocher</span>
+          </td>
+          <td *ngIf="e.typeChamp == 4">
+            <span class="badge bg-warning text-dark">Menu de Sélection</span>
+          </td>
+          <td>
+            <span class="badge bg-success">{{ e.valeurMin }}</span> -
+            <span class="badge bg-success">{{ e.valeurMax }}</span>
+          </td>
+          <td>
+            <span class="badge bg-success">{{ e.defaultValue }}</span>
+          </td>
+          <td>
+            <span
+              *ngFor="let value of e.listValues.split(' ')"
+              class="badge bg-warning text-dark"
+              >{{ value }}</span
+            ><br />
+          </td>
+          <td>
+            <span class="badge bg-dark">{{ e.unit }}</span>
+          </td>
+          <td style="color: blue">{{ e.CodeEquipement }}</td>
+          <!--<td>{{e.CodeEquipement}}</td>-->
+          <td>
+            <span class="badge rounded-pill bg-info text-dark">{{
+              e.infoSup
+            }}</span>
+          </td>
+          <td style="text-align: center" *ngIf="e.isRegulateur">
+            <i style="color: green" class="fa fa-check" aria-hidden="true"></i>
+          </td>
+          <td style="text-align: center" *ngIf="!e.isRegulateur">
+            <i style="color: red" class="fa fa-times" aria-hidden="true"></i>
+          </td>
+          <td style="text-align: center" *ngIf="e.isCompteur">
+            <i style="color: green" class="fa fa-check" aria-hidden="true"></i>
+          </td>
+          <td style="text-align: center" *ngIf="!e.isCompteur">
+            <i style="color: red" class="fa fa-times" aria-hidden="true"></i>
+          </td>
+          <td>
+            <button
+              id="edition"
+              class="btn btn btn-light"
+              (click)="ouvrirDialogUpdateElement(e.Id)"
+            >
+              <i class="far fa-edit"></i>
+            </button>
+          </td>
+          <td>
+            <button
+              (click)="deleteElement(e.Id)"
+              id="deleteMode"
+              class="btn btn-light"
+            >
+              <i class="fa fa-trash-o" aria-hidden="true"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <ng-template let-data #myCreateElementDialog>
-    <h1 class="creation" style="text-align: center;">Création d'un élément de contrôle :</h1>
+  <h1 class="creation" style="text-align: center">
+    Création d'un élément de contrôle :
+  </h1>
 
-    <mat-dialog-content>
-        <div class="row">
-            <div>
+  <mat-dialog-content>
+    <div class="row">
+      <div>
+        <form ngNativeValidate (ngSubmit)="onSubmit(f)" #f="ngForm">
+          <div class="form-group">
+            <label for="nom">Nom : * </label>
+            <input
+              required
+              type="text"
+              id="nom"
+              class="form-control"
+              placeholder="Nom"
+              name="nom"
+              ngModel
+              [(ngModel)]="nom"
+            />
+          </div>
 
-                <form ngNativeValidate  (ngSubmit)="onSubmit(f)" #f="ngForm">
+          <div class="form-group">
+            <label for="nom">Code Equipement : </label>
+            <input
+              type="text"
+              id="codeEquipement"
+              class="form-control"
+              placeholder="Code Equipement"
+              name="codeEquipement"
+              ngModel
+              [(ngModel)]="codeEquipement"
+            />
+          </div>
 
-                    <div class="form-group">
-                        <label for="nom">Nom : * </label>
-                        <input required type="text" id="nom" class="form-control" placeholder="Nom" name="nom" ngModel [(ngModel)]="nom">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="nom">Code Equipement : </label>
-                        <input type="text" id="codeEquipement" class="form-control" placeholder="Code Equipement" name="codeEquipement" ngModel [(ngModel)]="codeEquipement">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Zone de contrôle : *</label>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <select required id="zone" class="select form-select form-select-sm" aria-label=".form-select-sm example" name="zone" ngModel [(ngModel)]="zoneIdSelect" (change)="getGroupement()">
-                                        <option *ngFor="let z of listZone" value="{{z.Id}}">{{z.nom}}</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div *ngIf="listGroupements.length != 0" class="form-group">
-                        <label>Groupement : <strong>(Veuillez choisir à quel Groupement appartient l'élément)</strong></label>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <select class="select form-select form-select-sm" id="groupement" aria-label=".form-select-sm example" name="groupement" ngModel [(ngModel)]="idGroupement">
-                                        <option value=0>Aucun</option>
-                                        <option *ngFor="let g of listGroupements" value={{g.id}}>{{g.groupement}}</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Ordre : * <strong>(Veuillez choisir après quel élément placer celui en cours de création)</strong></label>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <select required id="ordreElem" class="select form-select form-select-sm" aria-label=".form-select-sm example" name="ordreElem" ngModel [(ngModel)]="ordre">
-                                        <option value=0>DEBUT</option>
-                                        <option *ngFor="let e of listElement" value={{e.ordre}}>{{e.ordre}} - {{e.nom}}</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Type de champ : *</label>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <select required class="form-select form-select-sm" aria-label=".form-select-sm example" name="champ" (ngModelChange)="changeType(f)" ngModel="2" [(ngModel)]="typeChamp">
-                                        <option value="1">Curseur</option>
-                                        <option selected value="2">Saisie libre</option>
-                                        <option value="3">Case à cocher</option>
-                                        <option value="4">Menu de sélection</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="valeurDef">Valeur par défaut : </label>
-                        <input id="valeurDef" class="form-control" placeholder="Valeur par défaut" name="valeurDef" ngModel [(ngModel)]="defaultValue">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="unit">Unité : </label>
-                        <input id="unit" class="form-control" placeholder="Unité" name="unit" ngModel [(ngModel)]="unit">
-                    </div>
-
-                    <div *ngIf="needBornes" class="form-group">
-                        <label for="valeurMin">Valeur minimale : </label>
-                        <input type="number" step=".01" id="valeurMin" class="form-control" placeholder="Valeur minimale" name="valeurMin" ngModel [(ngModel)]="valeurMin">
-                    </div>
-
-                    <div *ngIf="needBornes" class="form-group">
-                        <label for="valeurMax">Valeur maximale : </label>
-                        <input type="number" step=".01" id="valeurMax" class="form-control" placeholder="Valeur maximale" name="valeurMax" ngModel [(ngModel)]="valeurMax">
-                    </div>
-
-                    <div *ngIf="needListValues" class="form-group">
-                        <label for="listValues">Liste des valeurs possibles : * (Merci de séparer les valeurs par un <strong>espace</strong>)</label>
-                        <input required id="listValues" class="form-control" placeholder="Valeurs possibles" name="listValues" ngModel [(ngModel)]="listValues">
-                    </div>
-
-                    <div class="form-group form-check form-switch">
-                        <input class="form-check-input" type="checkbox" name="infoSup" id="infoSup" [(ngModel)]="infoSup">
-                        <label class="form-check-label" for="infoSup">Information Supplémentaire à afficher dans une pastille (Max : 100 lettres)</label>
-                        <input *ngIf="infoSup" id="infoSupValue" class="form-control" maxlength="50" placeholder="Information Supplémentaire" name="infoSupValue" ngModel [(ngModel)]="infoSupValue">
-                    </div>
-
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="regulateur" name="regulateur" ngModel>
-                        <label class="form-check-label" for="regulateur">
-                            Est un régulateur
-                        </label>
-                    </div>
-
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="compteur" name="compteur" ngModel>
-                        <label class="form-check-label" for="regulateur">
-                            Est un compteur
-                        </label>
-                    </div>
-
-                    <p style="font-size: smaller; color: grey">* : Obligatoire</p>
-
-                    <div class="form-group">
-                        <button class="btn btn-success btn-lg" type="submit">Valider</button>
-                        <button [mat-dialog-close]="true" class="btn btn-danger btn-lg" (click)="resetFields()">Annuler</button>
-                    </div>
-
-                </form>
+          <div class="form-group">
+            <label>Zone de contrôle : *</label>
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <select
+                    required
+                    id="zone"
+                    class="select form-select form-select-sm"
+                    aria-label=".form-select-sm example"
+                    name="zone"
+                    ngModel
+                    [(ngModel)]="zoneIdSelect"
+                    (change)="getGroupement()"
+                  >
+                    <option *ngFor="let z of listZone" value="{{ z.Id }}">
+                      {{ z.nom }}
+                    </option>
+                  </select>
+                </div>
+              </div>
             </div>
-        </div>
-    </mat-dialog-content>
+          </div>
+
+          <div *ngIf="listGroupements.length != 0" class="form-group">
+            <label
+              >Groupement :
+              <strong
+                >(Veuillez choisir à quel Groupement appartient
+                l'élément)</strong
+              ></label
+            >
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <select
+                    class="select form-select form-select-sm"
+                    id="groupement"
+                    aria-label=".form-select-sm example"
+                    name="groupement"
+                    ngModel
+                    [(ngModel)]="idGroupement"
+                  >
+                    <option value="0">Aucun</option>
+                    <option
+                      *ngFor="let g of listGroupements"
+                      value="{{ g.id }}"
+                    >
+                      {{ g.groupement }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label
+              >Ordre : *
+              <strong
+                >(Veuillez choisir après quel élément placer celui en cours de
+                création)</strong
+              ></label
+            >
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <select
+                    required
+                    id="ordreElem"
+                    class="select form-select form-select-sm"
+                    aria-label=".form-select-sm example"
+                    name="ordreElem"
+                    ngModel
+                    [(ngModel)]="ordre"
+                  >
+                    <option value="0">DEBUT</option>
+                    <option *ngFor="let e of listElement" value="{{ e.ordre }}">
+                      {{ e.ordre }} - {{ e.nom }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Type de champ : *</label>
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <select
+                    required
+                    class="form-select form-select-sm"
+                    aria-label=".form-select-sm example"
+                    name="champ"
+                    (ngModelChange)="changeType(f)"
+                    ngModel="2"
+                    [(ngModel)]="typeChamp"
+                  >
+                    <option value="1">Curseur</option>
+                    <option selected value="2">Saisie libre</option>
+                    <option value="3">Case à cocher</option>
+                    <option value="4">Menu de sélection</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="valeurDef">Valeur par défaut : </label>
+            <input
+              id="valeurDef"
+              class="form-control"
+              placeholder="Valeur par défaut"
+              name="valeurDef"
+              ngModel
+              [(ngModel)]="defaultValue"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="unit">Unité : </label>
+            <input
+              id="unit"
+              class="form-control"
+              placeholder="Unité"
+              name="unit"
+              ngModel
+              [(ngModel)]="unit"
+            />
+          </div>
+
+          <div *ngIf="needBornes" class="form-group">
+            <label for="valeurMin">Valeur minimale : </label>
+            <input
+              type="number"
+              step=".01"
+              id="valeurMin"
+              class="form-control"
+              placeholder="Valeur minimale"
+              name="valeurMin"
+              ngModel
+              [(ngModel)]="valeurMin"
+            />
+          </div>
+
+          <div *ngIf="needBornes" class="form-group">
+            <label for="valeurMax">Valeur maximale : </label>
+            <input
+              type="number"
+              step=".01"
+              id="valeurMax"
+              class="form-control"
+              placeholder="Valeur maximale"
+              name="valeurMax"
+              ngModel
+              [(ngModel)]="valeurMax"
+            />
+          </div>
+
+          <div *ngIf="needListValues" class="form-group">
+            <label for="listValues"
+              >Liste des valeurs possibles : * (Merci de séparer les valeurs par
+              un <strong>espace</strong>)</label
+            >
+            <input
+              required
+              id="listValues"
+              class="form-control"
+              placeholder="Valeurs possibles"
+              name="listValues"
+              ngModel
+              [(ngModel)]="listValues"
+            />
+          </div>
+
+          <div class="form-group form-check form-switch">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              name="infoSup"
+              id="infoSup"
+              [(ngModel)]="infoSup"
+            />
+            <label class="form-check-label" for="infoSup"
+              >Information Supplémentaire à afficher dans une pastille (Max :
+              100 lettres)</label
+            >
+            <input
+              *ngIf="infoSup"
+              id="infoSupValue"
+              class="form-control"
+              maxlength="50"
+              placeholder="Information Supplémentaire"
+              name="infoSupValue"
+              ngModel
+              [(ngModel)]="infoSupValue"
+            />
+          </div>
+
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              id="regulateur"
+              name="regulateur"
+              ngModel
+            />
+            <label class="form-check-label" for="regulateur">
+              Est un régulateur
+            </label>
+          </div>
+
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              id="compteur"
+              name="compteur"
+              ngModel
+            />
+            <label class="form-check-label" for="regulateur">
+              Est un compteur
+            </label>
+          </div>
+
+          <p style="font-size: smaller; color: grey">* : Obligatoire</p>
+
+          <div class="form-group">
+            <button class="btn btn-success btn-lg" type="submit">
+              Valider
+            </button>
+            <button
+              [mat-dialog-close]="true"
+              class="btn btn-danger btn-lg"
+              (click)="resetFields()"
+            >
+              Annuler
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </mat-dialog-content>
 </ng-template>

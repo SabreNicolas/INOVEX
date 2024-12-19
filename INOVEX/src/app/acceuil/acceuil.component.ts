@@ -1,42 +1,44 @@
-import { Component, OnInit } from '@angular/core';
-import {Router} from "@angular/router";
-import { maintenance } from 'src/models/maintenance.model';
-import { site } from 'src/models/site.model';
-import Swal from 'sweetalert2';
-import {user} from "../../models/user.model";
-import { categoriesService } from '../services/categories.service';
-import { rapportsService } from '../services/rapports.service';
-
+import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
+import { maintenance } from "src/models/maintenance.model";
+import { site } from "src/models/site.model";
+import Swal from "sweetalert2";
+import { user } from "../../models/user.model";
+import { categoriesService } from "../services/categories.service";
+import { rapportsService } from "../services/rapports.service";
 
 @Component({
-  selector: 'app-acceuil',
-  templateUrl: './acceuil.component.html',
-  styleUrls: ['./acceuil.component.scss']
+  selector: "app-acceuil",
+  templateUrl: "./acceuil.component.html",
+  styleUrls: ["./acceuil.component.scss"],
 })
 export class AcceuilComponent implements OnInit {
-
   public userLogged!: user;
-  public nom : string;
-  public prenom : string;
-  public MD5pwd : string;
-  public login : string;
-  public isRondier : boolean; //0 ou 1
-  public isSaisie : boolean;//0 ou 1
-  public isQSE : boolean;//0 ou 1
-  public isRapport : boolean;//0 ou 1
-  public isAdmin : boolean;//0 ou 1
-  public isChefQuart : boolean;//0 ou 1
-  public idUsine : number;
-  public localisation : string;
-  public sites : site[];
-  public maintenance : maintenance | undefined;
-  public modeOPs : string[];
+  public nom: string;
+  public prenom: string;
+  public MD5pwd: string;
+  public login: string;
+  public isRondier: boolean; //0 ou 1
+  public isSaisie: boolean; //0 ou 1
+  public isQSE: boolean; //0 ou 1
+  public isRapport: boolean; //0 ou 1
+  public isAdmin: boolean; //0 ou 1
+  public isChefQuart: boolean; //0 ou 1
+  public idUsine: number;
+  public localisation: string;
+  public sites: site[];
+  public maintenance: maintenance | undefined;
+  public modeOPs: string[];
 
-  constructor(private router : Router, private categoriesService : categoriesService,private rapportsService : rapportsService) {
-    this.nom = '';
-    this.prenom = '';
-    this.MD5pwd ='';
-    this.login = '';
+  constructor(
+    private router: Router,
+    private categoriesService: categoriesService,
+    private rapportsService: rapportsService,
+  ) {
+    this.nom = "";
+    this.prenom = "";
+    this.MD5pwd = "";
+    this.login = "";
     this.isRondier = false;
     this.isSaisie = false;
     this.isQSE = false;
@@ -44,21 +46,21 @@ export class AcceuilComponent implements OnInit {
     this.isAdmin = false;
     this.isChefQuart = false;
     this.idUsine = 0;
-    this.localisation='';
+    this.localisation = "";
     this.sites = [];
     this.modeOPs = [];
   }
 
   ngOnInit(): void {
-    window.parent.document.title = 'CAP Exploitation';
-    var userLogged = localStorage.getItem('user');
+    window.parent.document.title = "CAP Exploitation";
+    var userLogged = localStorage.getItem("user");
     if (typeof userLogged === "string") {
       var userLoggedParse = JSON.parse(userLogged);
       this.userLogged = userLoggedParse;
 
       //Récupération de l'idUsine
       // @ts-ignore
-      this.idUsine = this.userLogged['idUsine'];
+      this.idUsine = this.userLogged["idUsine"];
 
       //SI utilisateur GLOBAL alors choix du site à administrer/se connecter
       //Id 5 correspond à "GLOBAL"/SuperAdmin
@@ -66,123 +68,120 @@ export class AcceuilComponent implements OnInit {
         this.choixSite();
       }
       //Sinon on récupère la localisation si elle est renseigné
-      else{
-        if(this.userLogged.hasOwnProperty('localisation')){
+      else {
+        if (this.userLogged.hasOwnProperty("localisation")) {
           //@ts-ignore
-          this.localisation = this.userLogged['localisation'];
+          this.localisation = this.userLogged["localisation"];
         }
       }
-      
+
       // @ts-ignore
-      this.nom = this.userLogged['Nom'];
+      this.nom = this.userLogged["Nom"];
       // @ts-ignore
-      this.prenom = this.userLogged['Prenom'];
+      this.prenom = this.userLogged["Prenom"];
       // @ts-ignore
-      this.MD5pwd = this.userLogged['pwd'];
+      this.MD5pwd = this.userLogged["pwd"];
       // @ts-ignore
-      this.login = this.userLogged['login'];
+      this.login = this.userLogged["login"];
       // @ts-ignore
-      this.isRondier = this.userLogged['isRondier'];
+      this.isRondier = this.userLogged["isRondier"];
       // @ts-ignore
-      this.isQSE = this.userLogged['isQSE'];
+      this.isQSE = this.userLogged["isQSE"];
       // @ts-ignore
-      this.isRapport = this.userLogged['isRapport'];
+      this.isRapport = this.userLogged["isRapport"];
       // @ts-ignore
-      this.isSaisie = this.userLogged['isSaisie'];
+      this.isSaisie = this.userLogged["isSaisie"];
       // @ts-ignore
-      this.isAdmin = this.userLogged['isAdmin'];
-      this.isChefQuart = this.userLogged['isChefQuart'];
+      this.isAdmin = this.userLogged["isAdmin"];
+      this.isChefQuart = this.userLogged["isChefQuart"];
     }
 
     //On vérifie si une maintenance est prévue
     this.getMaintenance();
   }
 
-  getMaintenance(){
-    this.categoriesService.getMaintenance().subscribe((response)=>{
+  getMaintenance() {
+    this.categoriesService.getMaintenance().subscribe((response) => {
       this.maintenance = response;
     });
   }
 
-  navigate(route : string){
+  navigate(route: string) {
     let newRelativeUrl = this.router.createUrlTree([route]);
-    let baseUrl = window.location.href.replace(this.router.url, '');
+    let baseUrl = window.location.href.replace(this.router.url, "");
 
-    window.open(baseUrl + newRelativeUrl, '_blank');
+    window.open(baseUrl + newRelativeUrl, "_blank");
   }
 
-  logout(){
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
-    this.router.navigate(['/']);
+  logout() {
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    this.router.navigate(["/"]);
   }
 
-  choixModeOPs(){
+  choixModeOPs() {
     //Récupération des sites
-    this.rapportsService.getModeOPs().subscribe((response)=>{
+    this.rapportsService.getModeOPs().subscribe((response) => {
       // @ts-ignore
       this.modeOPs = response.data;
       //Construction des valeurs du menu select qui contient les sites
       let listModesOPs = {};
-      for(let i=0; i<this.modeOPs.length;i++){
+      for (let i = 0; i < this.modeOPs.length; i++) {
         //@ts-ignore
-        listModesOPs[this.modeOPs[i]['url']] = this.modeOPs[i]['nom']
+        listModesOPs[this.modeOPs[i]["url"]] = this.modeOPs[i]["nom"];
       }
 
       Swal.fire({
-        title: 'Veuillez choisir un mode opératoire',
-        input: 'select',
+        title: "Veuillez choisir un mode opératoire",
+        input: "select",
         inputOptions: listModesOPs,
         showCancelButton: false,
         confirmButtonText: "Télécharger",
         allowOutsideClick: true,
-      })
-      .then((result) => {
-        if(result.value != undefined){
+      }).then((result) => {
+        if (result.value != undefined) {
           window.open(result.value);
         }
       });
     });
   }
 
-  choixSite(){
+  choixSite() {
     //Récupération des sites
-    this.categoriesService.getSites().subscribe((response)=>{
+    this.categoriesService.getSites().subscribe((response) => {
       // @ts-ignore
       this.sites = response.data;
       //Construction des valeurs du menu select qui contient les sites
       let listSites = {};
-      this.sites.forEach(site =>{
-        let id = String(site.id)+"_"+site.localisation;
+      this.sites.forEach((site) => {
+        let id = String(site.id) + "_" + site.localisation;
         //@ts-ignore
         listSites[id] = site.localisation;
       });
 
       Swal.fire({
-        title: 'Veuillez Choisir un site',
-        input: 'select',
+        title: "Veuillez Choisir un site",
+        input: "select",
         inputOptions: listSites,
         showCancelButton: false,
         confirmButtonText: "Valider",
         allowOutsideClick: false,
-      })
-      .then((result) => {
+      }).then((result) => {
         let usine_localisation = result.value.split("_");
         //Premier élément du tableau est l'idUsine
         //@ts-ignore
-        this.userLogged['idUsine'] = Number(usine_localisation[0]);
+        this.userLogged["idUsine"] = Number(usine_localisation[0]);
         //@ts-ignore
-        this.idUsine = this.userLogged['idUsine'];
+        this.idUsine = this.userLogged["idUsine"];
         //2e élément du tableau est la localisation géographiques
         //@ts-ignore
         this.localisation = usine_localisation[1];
         //@ts-ignore
-        this.userLogged['localisation'] = this.localisation;
+        this.userLogged["localisation"] = this.localisation;
         //ON met à jour le user dans le localstorage
-        localStorage.setItem('user',JSON.stringify(this.userLogged));
-        window.location.reload()
+        localStorage.setItem("user", JSON.stringify(this.userLogged));
+        window.location.reload();
       });
     });
   }
-
 }

@@ -1,16 +1,15 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { ListModeOperatoireComponent } from './list-mode-operatoire.component';
+import { ListModeOperatoireComponent } from "./list-mode-operatoire.component";
 
-describe('ListModeOperatoireComponent', () => {
+describe("ListModeOperatoireComponent", () => {
   let component: ListModeOperatoireComponent;
   let fixture: ComponentFixture<ListModeOperatoireComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ListModeOperatoireComponent ]
-    })
-    .compileComponents();
+      declarations: [ListModeOperatoireComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('ListModeOperatoireComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });
