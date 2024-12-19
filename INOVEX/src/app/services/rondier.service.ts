@@ -14,6 +14,7 @@ import {anomalie} from "../../models/anomalie.model";
 import {elementsOfZone} from "../../models/elementsOfZone.model";
 import {permisFeuValidation} from "../../models/permisfeu-validation.model";
 import { idUsineService } from "./idUsine.service";
+import { environment } from "src/environments/environment";
 
 @Injectable()
 export class rondierService {
@@ -26,8 +27,7 @@ export class rondierService {
         'Access-Control-Allow-Origin': '*',
         'Authorization': 'Bearer ' + localStorage.getItem('token')
     }
-    private portAPI = 3100;
-    private ip = "fr-couvinove301.prod.paprec.fr";
+    private ip = environment.apiUrl;
     //private ip = "localhost";
     private idUsine : number | undefined;
     private idUser : number;
@@ -44,7 +44,7 @@ export class rondierService {
 
     //création du badge
     createBadge(uid : string){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/Badge?uid="+uid+"&idUsine="+this.idUsine;
+        let requete = "https://"+this.ip+"/Badge?uid="+uid+"&idUsine="+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -57,7 +57,7 @@ export class rondierService {
 
     //récupération du dernier Id inséré
     lastIdBadge(){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/BadgeLastId";
+        let requete = "https://"+this.ip+"/BadgeLastId";
         //console.log(requete);
 
         const requestOptions = {
@@ -70,7 +70,7 @@ export class rondierService {
 
     //liste des badges non affectés
     listBadgeNonAffect(){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/BadgesLibre/"+this.idUsine;
+        let requete = "https://"+this.ip+"/BadgesLibre/"+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -83,7 +83,7 @@ export class rondierService {
 
     //liste des badges affectés à une zone
     listBadgeZone(){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/BadgesZone/"+this.idUsine;
+        let requete = "https://"+this.ip+"/BadgesZone/"+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -96,7 +96,7 @@ export class rondierService {
 
     //liste des badges affectés à un user
     listBadgeUser(){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/BadgesUser/"+this.idUsine;
+        let requete = "https://"+this.ip+"/BadgesUser/"+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -109,7 +109,7 @@ export class rondierService {
 
     //Mis à jour de l'état d'activation du badge
     updateEnabled(id : number, enabled : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/BadgeEnabled/"+id+"/"+enabled;
+        let requete = "https://"+this.ip+"/BadgeEnabled/"+id+"/"+enabled;
         //console.log(requete);
 
         const requestOptions = {
@@ -122,7 +122,7 @@ export class rondierService {
 
     //Update affectation
     updateAffect(id : number, idAffect : number, typeAffect : string){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/BadgeAffectation/"+id+"/"+typeAffect+"/"+idAffect;
+        let requete = "https://"+this.ip+"/BadgeAffectation/"+id+"/"+typeAffect+"/"+idAffect;
         //console.log(requete);
 
         const requestOptions = {
@@ -135,7 +135,7 @@ export class rondierService {
 
     //Update affectation => rendre le badge libre
     updateAffectLibre(id : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/BadgeDeleteAffectation/"+id;
+        let requete = "https://"+this.ip+"/BadgeDeleteAffectation/"+id;
         //console.log(requete);
 
         const requestOptions = {
@@ -147,7 +147,7 @@ export class rondierService {
     }
 
     deleteBadge(id : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/deleteBadge/"+id;
+        let requete = "https://"+this.ip+"/deleteBadge/"+id;
         //console.log(requete);
 
         const requestOptions = {
@@ -168,7 +168,7 @@ export class rondierService {
     //création de la zone de controle
     createZone(nom : string, commentaire : string, four : number){
         nom = encodeURIComponent(nom);
-        let requete = "https://"+this.ip+":"+this.portAPI+"/zone?nom="+nom+"&commentaire="+commentaire+"&four="+four+"&idUsine="+this.idUsine;
+        let requete = "https://"+this.ip+"/zone?nom="+nom+"&commentaire="+commentaire+"&four="+four+"&idUsine="+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -181,7 +181,7 @@ export class rondierService {
 
     //liste des zones de controle
     listZone(){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/zones/"+this.idUsine;
+        let requete = "https://"+this.ip+"/zones/"+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -196,7 +196,7 @@ export class rondierService {
     listZoneAndAnomalieOfDay(date : string | undefined, quart:number){
         if(date != undefined)
             date = encodeURIComponent(date);
-        let requete = "https://"+this.ip+":"+this.portAPI+"/getZonesAndAnomaliesOfDay/"+this.idUsine+"/"+date+'?quart='+quart;
+        let requete = "https://"+this.ip+"/getZonesAndAnomaliesOfDay/"+this.idUsine+"/"+date+'?quart='+quart;
         //console.log(requete);
 
         const requestOptions = {
@@ -209,7 +209,7 @@ export class rondierService {
 
     //liste des zones de controle
     listZonesRonde(rondeId : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/zoneRonde/"+rondeId;
+        let requete = "https://"+this.ip+"/zoneRonde/"+rondeId;
         //console.log(requete);
 
         const requestOptions = {
@@ -222,7 +222,7 @@ export class rondierService {
 
     //liste des zones de controle libres
     listZoneLibre(){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/ZonesLibre/"+this.idUsine;
+        let requete = "https://"+this.ip+"/ZonesLibre/"+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -235,7 +235,7 @@ export class rondierService {
 
     //Mise à jour du commentaire d'une zone de contrôle
     updateCommentaire(zoneId : number, commentaire : string){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/zoneCommentaire/"+zoneId+"/"+commentaire;
+        let requete = "https://"+this.ip+"/zoneCommentaire/"+zoneId+"/"+commentaire;
         //console.log(requete);
 
         const requestOptions = {
@@ -249,7 +249,7 @@ export class rondierService {
     //Mise à jour du nom d'une zone de contrôle
     updateNomZone(zoneId : number, nom : string){
         nom = encodeURIComponent(nom);
-        let requete = "https://"+this.ip+":"+this.portAPI+"/zoneNom/"+zoneId+"?nom="+nom;
+        let requete = "https://"+this.ip+"/zoneNom/"+zoneId+"?nom="+nom;
         //console.log(requete);
 
         const requestOptions = {
@@ -262,7 +262,7 @@ export class rondierService {
 
     //Mise à jour du num d'un four
     updateNumZone(zoneId : number, four : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/zoneFour/"+zoneId+"?four="+four;
+        let requete = "https://"+this.ip+"/zoneFour/"+zoneId+"?four="+four;
         //console.log(requete);
 
         const requestOptions = {
@@ -274,7 +274,7 @@ export class rondierService {
     }
 
     deleteZone(id : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/deleteZone?Id="+id;
+        let requete = "https://"+this.ip+"/deleteZone?Id="+id;
         //console.log(requete);
 
         const requestOptions = {
@@ -291,7 +291,7 @@ export class rondierService {
     //Création d'un groupement
     createGroupement(zoneId : number, groupement : string){
         groupement = encodeURIComponent(groupement);
-        let requete = "https://"+this.ip+":"+this.portAPI+"/groupement?zoneId="+zoneId+"&groupement="+groupement;
+        let requete = "https://"+this.ip+"/groupement?zoneId="+zoneId+"&groupement="+groupement;
         //console.log(requete);
 
         const requestOptions = {
@@ -307,7 +307,7 @@ export class rondierService {
         if(date!=undefined){
             date = encodeURIComponent(date)
         }
-        let requete = "https://"+this.ip+":"+this.portAPI+"/getGroupementsOfOneDay/"+this.idUsine+"/"+date+"?quart="+quart;
+        let requete = "https://"+this.ip+"/getGroupementsOfOneDay/"+this.idUsine+"/"+date+"?quart="+quart;
         //console.log(requete);
 
         const requestOptions = {
@@ -319,7 +319,7 @@ export class rondierService {
     }
     
     getAllGroupements(){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/getAllGroupements?idUsine="+this.idUsine;
+        let requete = "https://"+this.ip+"/getAllGroupements?idUsine="+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -332,7 +332,7 @@ export class rondierService {
 
     //Récupérer un groupement
     getOneGroupement(idGroupement : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/getOneGroupement?idGroupement="+idGroupement;
+        let requete = "https://"+this.ip+"/getOneGroupement?idGroupement="+idGroupement;
         //console.log(requete);
 
         const requestOptions = {
@@ -345,7 +345,7 @@ export class rondierService {
 
     //Récupérer un groupement
     getElementsGroupement(idGroupement : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/getElementsGroupement?idGroupement="+idGroupement;
+        let requete = "https://"+this.ip+"/getElementsGroupement?idGroupement="+idGroupement;
         //console.log(requete);
 
         const requestOptions = {
@@ -359,7 +359,7 @@ export class rondierService {
     //Modifier un groupement
     updateGroupement(idGroupement : number, groupement : string, zoneId : number){
         groupement = encodeURIComponent(groupement);
-        let requete = "https://"+this.ip+":"+this.portAPI+"/updateGroupement?idGroupement="+idGroupement+"&groupement="+groupement+"&zoneId="+zoneId;
+        let requete = "https://"+this.ip+"/updateGroupement?idGroupement="+idGroupement+"&groupement="+groupement+"&zoneId="+zoneId;
         //console.log(requete);
 
         const requestOptions = {
@@ -371,7 +371,7 @@ export class rondierService {
     }
 
     deleteGroupement(idGroupement : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/deleteGroupement?idGroupement="+idGroupement;
+        let requete = "https://"+this.ip+"/deleteGroupement?idGroupement="+idGroupement;
         //console.log(requete);
 
         const requestOptions = {
@@ -392,7 +392,7 @@ export class rondierService {
     createElement(zoneId : number, nom : string, valeurMin : number, valeurMax : number, typeChamp : number, unit : string, defaultValue : number, isRegulateur : number, listValues : string, isCompteur : number, ordre : number, idGroupement : number, codeEquipement : string, infoSupValue : string){
         nom = encodeURIComponent(nom);
         infoSupValue = encodeURIComponent(infoSupValue);
-        let requete = "https://"+this.ip+":"+this.portAPI+"/element?zoneId="+zoneId+"&nom="+nom+"&valeurMin="+valeurMin+"&valeurMax="+valeurMax+"&typeChamp="+typeChamp+"&unit="+unit+"&defaultValue="+defaultValue+"&isRegulateur="+isRegulateur+"&listValues="+listValues+"&isCompteur="+isCompteur+"&ordre="+ordre +"&idGroupement="+idGroupement+"&codeEquipement="+codeEquipement+"&infoSup="+infoSupValue;
+        let requete = "https://"+this.ip+"/element?zoneId="+zoneId+"&nom="+nom+"&valeurMin="+valeurMin+"&valeurMax="+valeurMax+"&typeChamp="+typeChamp+"&unit="+unit+"&defaultValue="+defaultValue+"&isRegulateur="+isRegulateur+"&listValues="+listValues+"&isCompteur="+isCompteur+"&ordre="+ordre +"&idGroupement="+idGroupement+"&codeEquipement="+codeEquipement+"&infoSup="+infoSupValue;
         console.log(requete);
 
         const requestOptions = {
@@ -408,7 +408,7 @@ export class rondierService {
     updateElement(Id : number, zoneId : number, nom : string, valeurMin : number, valeurMax : number, typeChamp : number, unit : string, defaultValue : number, isRegulateur : number, listValues : string, isCompteur : number, ordre : number, idGroupement : number, codeEquipement : string, infoSupValue : string){
         nom = encodeURIComponent(nom);
         infoSupValue = encodeURIComponent(infoSupValue);
-        let requete = "https://"+this.ip+":"+this.portAPI+"/updateElement/"+Id+"?zoneId="+zoneId+"&nom="+nom+"&valeurMin="+valeurMin+"&valeurMax="+valeurMax+"&typeChamp="+typeChamp+"&unit="+unit+"&defaultValue="+defaultValue+"&isRegulateur="+isRegulateur+"&listValues="+listValues+"&isCompteur="+isCompteur+"&ordre="+ordre+"&idGroupement="+idGroupement+"&codeEquipement="+codeEquipement+"&infoSup="+infoSupValue;
+        let requete = "https://"+this.ip+"/updateElement/"+Id+"?zoneId="+zoneId+"&nom="+nom+"&valeurMin="+valeurMin+"&valeurMax="+valeurMax+"&typeChamp="+typeChamp+"&unit="+unit+"&defaultValue="+defaultValue+"&isRegulateur="+isRegulateur+"&listValues="+listValues+"&isCompteur="+isCompteur+"&ordre="+ordre+"&idGroupement="+idGroupement+"&codeEquipement="+codeEquipement+"&infoSup="+infoSupValue;
         //console.log(requete);
 
         const requestOptions = {
@@ -421,7 +421,7 @@ export class rondierService {
 
     getElementsOfUsine(){
         
-        let requete = "https://"+this.ip+":"+this.portAPI+"/elementsControleOfUsine/"+this.idUsine;
+        let requete = "https://"+this.ip+"/elementsControleOfUsine/"+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -435,7 +435,7 @@ export class rondierService {
     getElementsAndValuesOfDay(date : string | undefined, quart:number){
         if(date != undefined)
             date = encodeURIComponent(date)
-        let requete = "https://"+this.ip+":"+this.portAPI+"/getElementsAndValuesOfDay/"+this.idUsine+"/"+date+"?quart="+quart;
+        let requete = "https://"+this.ip+"/getElementsAndValuesOfDay/"+this.idUsine+"/"+date+"?quart="+quart;
         console.log(requete);
 
         const requestOptions = {
@@ -449,7 +449,7 @@ export class rondierService {
     getAnomaliesOfOneDay(date : string | undefined,quart:number){
         if(date != undefined)
             date = encodeURIComponent(date)
-        let requete = "https://"+this.ip+":"+this.portAPI+"/getAnomaliesOfOneDay/"+this.idUsine+"/"+date+"?quart="+quart;
+        let requete = "https://"+this.ip+"/getAnomaliesOfOneDay/"+this.idUsine+"/"+date+"?quart="+quart;
         //console.log(requete);
 
         const requestOptions = {
@@ -461,7 +461,7 @@ export class rondierService {
     }
 
     changeTypeRecupSetRondier(Id : number, elementRondier: number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/productElementRondier?id="+Id+"&idElementRondier=" +elementRondier;
+        let requete = "https://"+this.ip+"/productElementRondier?id="+Id+"&idElementRondier=" +elementRondier;
         //console.log(requete);
 
         const requestOptions = {
@@ -476,7 +476,7 @@ export class rondierService {
     //update de l'ordre des éléments ayant un ordre suppérieur à x pour une zone
     //?zoneId=1&ordre=2
     updateOrdreElement(zoneId : number, ordre : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/updateOrdreElement/?zoneId="+zoneId+"&maxOrdre="+ordre;
+        let requete = "https://"+this.ip+"/updateOrdreElement/?zoneId="+zoneId+"&maxOrdre="+ordre;
         //console.log(requete);
 
         const requestOptions = {
@@ -489,7 +489,7 @@ export class rondierService {
 
     //delete 1 élément de controle
     deleteElement(Id : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/deleteElement?id="+Id;
+        let requete = "https://"+this.ip+"/deleteElement?id="+Id;
         //console.log(requete);
 
         const requestOptions = {
@@ -502,7 +502,7 @@ export class rondierService {
 
     //Récupérer 1 élément
     getOneElement(Id : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/element/"+Id;
+        let requete = "https://"+this.ip+"/element/"+Id;
         //console.log(requete);
 
         const requestOptions = {
@@ -516,7 +516,7 @@ export class rondierService {
 
     //liste des elements de controle d'une zone de controle
     listElementofZone(zoneId : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/elementsOfZone/"+zoneId;
+        let requete = "https://"+this.ip+"/elementsOfZone/"+zoneId;
         //console.log(requete);
 
         const requestOptions = {
@@ -528,7 +528,7 @@ export class rondierService {
     }
     //Récupérer les groupements d'une zone
     getGroupements(zoneId : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/getGroupements?zoneId="+zoneId;
+        let requete = "https://"+this.ip+"/getGroupements?zoneId="+zoneId;
         //console.log(requete);
 
         const requestOptions = {
@@ -540,7 +540,7 @@ export class rondierService {
     }
     //liste des elements de controle de type compteur
     listElementCompteur(){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/elementsCompteur/"+this.idUsine;
+        let requete = "https://"+this.ip+"/elementsCompteur/"+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -555,7 +555,7 @@ export class rondierService {
     listZonesAndElements(){
 
         if(this.idUsine != 7){
-            let requete = "https://"+this.ip+":"+this.portAPI+"/BadgeAndElementsOfZone/"+this.idUsine;
+            let requete = "https://"+this.ip+"/BadgeAndElementsOfZone/"+this.idUsine;
             //console.log(requete);
     
             const requestOptions = {
@@ -566,7 +566,7 @@ export class rondierService {
                 .get<elementsOfZone[]>(requete,requestOptions);
         }
         else {
-            let requete = "https://"+this.ip+":"+this.portAPI+"/elementsOfUsine/"+this.idUsine;
+            let requete = "https://"+this.ip+"/elementsOfUsine/"+this.idUsine;
             //console.log(requete);
 
             const requestOptions = {
@@ -580,7 +580,7 @@ export class rondierService {
     }
 
     listZonesAndElementsWithValues(rondeId : number){
-            let requete = "https://"+this.ip+":"+this.portAPI+"/BadgeAndElementsOfZoneWithValues/"+this.idUsine+"/"+rondeId;
+            let requete = "https://"+this.ip+"/BadgeAndElementsOfZoneWithValues/"+this.idUsine+"/"+rondeId;
             //console.log(requete);
     
             const requestOptions = {
@@ -602,7 +602,7 @@ export class rondierService {
      */
     //Update value element de controle sur une ronde
     updateMesureRondier(id: number, value: string | null){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/updateMesureRonde?id="+id+"&value="+value;
+        let requete = "https://"+this.ip+"/updateMesureRonde?id="+id+"&value="+value;
         //console.log(requete);
 
         const requestOptions = {
@@ -616,7 +616,7 @@ export class rondierService {
     //Récupérer la valeur pour un élément de contrôle et une date (quart de nuit => dernier de la journée)
     //?id=111&date=dhdhdh
     valueElementDay(id: number, date: string){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/valueElementDay?id="+id+"&date="+date;
+        let requete = "https://"+this.ip+"/valueElementDay?id="+id+"&date="+date;
         //console.log(requete);
 
         const requestOptions = {
@@ -639,7 +639,7 @@ export class rondierService {
     //création du permis de feu
     //?dateHeureDeb=dggd&dateHeureFin=fff&badgeId=1?numero=ehgeheh
     createPermisFeu(dateHeureDeb: string | null, dateHeureFin: string | null, badgeId: number, zone : string, isPermisFeu : number, numero : string){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/PermisFeu?dateHeureDeb="+dateHeureDeb+"&dateHeureFin="+dateHeureFin+"&badgeId="+badgeId+"&zone="+zone+"&isPermisFeu="+isPermisFeu+"&numero="+numero;
+        let requete = "https://"+this.ip+"/PermisFeu?dateHeureDeb="+dateHeureDeb+"&dateHeureFin="+dateHeureFin+"&badgeId="+badgeId+"&zone="+zone+"&isPermisFeu="+isPermisFeu+"&numero="+numero;
         //console.log(requete);
 
         const requestOptions = {
@@ -652,7 +652,7 @@ export class rondierService {
 
     //liste des permis de feu en cours
     listPermisFeu(){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/PermisFeu/"+this.idUsine;
+        let requete = "https://"+this.ip+"/PermisFeu/"+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -666,7 +666,7 @@ export class rondierService {
     //liste des validation de permis de feu
     //?dateHeure=xshhshx
     listPermisFeuValidation(dateHeure: String | undefined){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/PermisFeuVerification?dateHeure="+dateHeure+"&idUsine="+this.idUsine;
+        let requete = "https://"+this.ip+"/PermisFeuVerification?dateHeure="+dateHeure+"&idUsine="+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -693,7 +693,7 @@ export class rondierService {
         const formData = new FormData();
         // @ts-ignore
         formData.append('fichier', fichier, fichier.name);
-        let requete = "https://"+this.ip+":"+this.portAPI+"/modeOP?nom="+nom+"&zoneId="+zoneId;
+        let requete = "https://"+this.ip+"/modeOP?nom="+nom+"&zoneId="+zoneId;
         //console.log(fichier);
 
         const headers = new HttpHeaders();
@@ -711,7 +711,7 @@ export class rondierService {
 
     //liste des modeOP
     listModeOP(){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/modeOPs/"+this.idUsine;
+        let requete = "https://"+this.ip+"/modeOPs/"+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -724,7 +724,7 @@ export class rondierService {
 
     //delete modeOP
     deleteModeOP(id : number, nom : string){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/modeOP/"+id+"?nom="+nom;
+        let requete = "https://"+this.ip+"/modeOP/"+id+"?nom="+nom;
         //console.log(requete);
 
         const requestOptions = {
@@ -747,7 +747,7 @@ export class rondierService {
 
     //liste des rondes pour une date donnée
     listRonde(date : any, quart:number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/Rondes?date="+date+"&idUsine="+this.idUsine+"&quart="+quart;
+        let requete = "https://"+this.ip+"/Rondes?date="+date+"&idUsine="+this.idUsine+"&quart="+quart;
         //console.log(requete);
 
         const requestOptions = {
@@ -760,7 +760,7 @@ export class rondierService {
 
     //Affichage d'une ronde pour une date et un quart donnée
     affichageRonde(date: string, quart: number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/RondesQuart?date="+date+"&idUsine="+this.idUsine+"&quart="+quart;
+        let requete = "https://"+this.ip+"/RondesQuart?date="+date+"&idUsine="+this.idUsine+"&quart="+quart;
         //console.log(requete);
 
         const requestOptions = {
@@ -773,7 +773,7 @@ export class rondierService {
 
     //Reporting d'une ronde
     reportingRonde(idRonde : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/reportingRonde/"+idRonde;
+        let requete = "https://"+this.ip+"/reportingRonde/"+idRonde;
         //console.log(requete);
 
         const requestOptions = {
@@ -786,7 +786,7 @@ export class rondierService {
 
     //Cloture de la ronde
     closeRonde(id : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/closeRondeEnCours?id="+id+"&four1=1&four2=1";
+        let requete = "https://"+this.ip+"/closeRondeEnCours?id="+id+"&four1=1&four2=1";
         //console.log(requete);
 
         const requestOptions = {
@@ -799,7 +799,7 @@ export class rondierService {
 
     //delete ronde
     deleteRonde(id : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/deleteRonde?id="+id;
+        let requete = "https://"+this.ip+"/deleteRonde?id="+id;
         //console.log(requete);
 
         const requestOptions = {
@@ -818,7 +818,7 @@ export class rondierService {
 
     //liste des users sans badge
     listUserLibre(){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/UsersLibre/"+this.idUsine;
+        let requete = "https://"+this.ip+"/UsersLibre/"+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -838,7 +838,7 @@ export class rondierService {
         titre = encodeURIComponent(titre);
         desc = encodeURIComponent(desc);
 
-        let requete = "https://"+this.ip+":"+this.portAPI+"/consigne?commentaire="+desc+"&dateFin="+dateFin+"&dateDebut=" + dateDebut + "&type="+type+"&idUsine="+this.idUsine+"&titre="+titre;
+        let requete = "https://"+this.ip+"/consigne?commentaire="+desc+"&dateFin="+dateFin+"&dateDebut=" + dateDebut + "&type="+type+"&idUsine="+this.idUsine+"&titre="+titre;
         //console.log(requete);
 
         const headers = new HttpHeaders();
@@ -864,7 +864,7 @@ export class rondierService {
 
     //liste des consignes en cours de validité à l'instant T
     listConsignes(){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/consignes/"+this.idUsine;
+        let requete = "https://"+this.ip+"/consignes/"+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -877,7 +877,7 @@ export class rondierService {
 
     //liste des consignes en cours de validité entre 2 dates
     listConsignesEntreDeuxDates(dateDeb : string, dateFin : string){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/consignesEntreDeuxDates/"+this.idUsine+"?dateDeb="+dateDeb+"&dateFin="+dateFin;
+        let requete = "https://"+this.ip+"/consignesEntreDeuxDates/"+this.idUsine+"?dateDeb="+dateDeb+"&dateFin="+dateFin;
         //console.log(requete);
 
         const requestOptions = {
@@ -890,7 +890,7 @@ export class rondierService {
 
     //liste des consignes 
     listAllConsignes(){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/allConsignes/"+this.idUsine;
+        let requete = "https://"+this.ip+"/allConsignes/"+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -903,7 +903,7 @@ export class rondierService {
 
     //delete consigne
     deleteConsigne(id : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/consigne/"+id;
+        let requete = "https://"+this.ip+"/consigne/"+id;
         //console.log(requete);
 
         const requestOptions = {
@@ -919,7 +919,7 @@ export class rondierService {
     updateConsigne(titre : string, desc: string, type: number, dateFin: string | null, dateDebut: string | null, id:number){
         titre = encodeURIComponent(titre);
         desc = encodeURIComponent(desc);
-        let requete = "https://"+this.ip+":"+this.portAPI+"/updateConsigne?commentaire="+desc+"&dateFin="+dateFin+"&dateDebut=" + dateDebut + "&type="+type+"&id="+id + "&titre="+titre;
+        let requete = "https://"+this.ip+"/updateConsigne?commentaire="+desc+"&dateFin="+dateFin+"&dateDebut=" + dateDebut + "&type="+type+"&id="+id + "&titre="+titre;
         //console.log(requete);
 
         const requestOptions = {
@@ -941,7 +941,7 @@ export class rondierService {
 
     //liste des anomalies sur une ronde
     listAnomalies(id : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/anomalies/"+id;
+        let requete = "https://"+this.ip+"/anomalies/"+id;
         //console.log(requete);
 
         const requestOptions = {
@@ -954,7 +954,7 @@ export class rondierService {
 
     //liste des anomalies sur une usine
     getAllAnomalies(){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/getAllAnomalies?idUsine="+this.idUsine;
+        let requete = "https://"+this.ip+"/getAllAnomalies?idUsine="+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -967,7 +967,7 @@ export class rondierService {
 
     //liste d'une anomalie'
     getOneAnomalie(idAnomalie : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/getOneAnomalie?idAnomalie="+idAnomalie;
+        let requete = "https://"+this.ip+"/getOneAnomalie?idAnomalie="+idAnomalie;
         //console.log(requete);
 
         const requestOptions = {
@@ -980,7 +980,7 @@ export class rondierService {
      
 
     updateAnomalie(rondeId : number,zoneId : number, commentaire : string){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/updateAnomalie?rondeId="+rondeId+"&zoneId="+zoneId +"&commentaire=" + commentaire;
+        let requete = "https://"+this.ip+"/updateAnomalie?rondeId="+rondeId+"&zoneId="+zoneId +"&commentaire=" + commentaire;
         //console.log(requete);
 
         const requestOptions = {
@@ -992,7 +992,7 @@ export class rondierService {
     }
 
     updateAnomalieSetEvenement(idAnomalie : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/updateAnomalieSetEvenement?idAnomalie="+idAnomalie;
+        let requete = "https://"+this.ip+"/updateAnomalieSetEvenement?idAnomalie="+idAnomalie;
         //console.log(requete);
 
         const requestOptions = {
@@ -1005,7 +1005,7 @@ export class rondierService {
     }
 
     createAnomalie(rondeId : number, commentaire : string, zoneId : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/createAnomalie?rondeId="+rondeId + "&zoneId=" + zoneId +"&commentaire=" + commentaire;
+        let requete = "https://"+this.ip+"/createAnomalie?rondeId="+rondeId + "&zoneId=" + zoneId +"&commentaire=" + commentaire;
         //console.log(requete);
 
         const requestOptions = {
@@ -1025,7 +1025,7 @@ export class rondierService {
 
     //Nombre de four dans l'usine
     nbLigne(){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/nbLigne/"+this.idUsine;
+        let requete = "https://"+this.ip+"/nbLigne/"+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -1038,7 +1038,7 @@ export class rondierService {
 
     //Nombre de GTA dans l'usine
     nbGTA(){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/nbGTA/"+this.idUsine;
+        let requete = "https://"+this.ip+"/nbGTA/"+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -1051,7 +1051,7 @@ export class rondierService {
 
     //Nombre de RCU dans l'usine
     nbRCU(){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/nbRCU/"+this.idUsine;
+        let requete = "https://"+this.ip+"/nbRCU/"+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -1067,7 +1067,7 @@ export class rondierService {
      */
 
     createRepriseDeRonde(date : Date, quart : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/createRepriseDeRonde?date="+date + "&quart=" + quart +"&idUsine=" + this.idUsine;
+        let requete = "https://"+this.ip+"/createRepriseDeRonde?date="+date + "&quart=" + quart +"&idUsine=" + this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -1080,7 +1080,7 @@ export class rondierService {
 
     //Nombre de RCU dans l'usine
     getReprisesRonde(){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/getReprisesRonde/"+this.idUsine;
+        let requete = "https://"+this.ip+"/getReprisesRonde/"+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -1092,7 +1092,7 @@ export class rondierService {
     }
 
     deleteRepriseRonde(id : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/deleteRepriseRonde?id="+id;
+        let requete = "https://"+this.ip+"/deleteRepriseRonde?id="+id;
         //console.log(requete);
 
         const requestOptions = {

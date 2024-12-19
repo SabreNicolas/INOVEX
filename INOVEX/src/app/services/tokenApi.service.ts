@@ -1,5 +1,6 @@
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Injectable} from "@angular/core";
+import { environment } from "src/environments/environment";
 
 @Injectable()
 export class tokenApiService {
@@ -10,8 +11,7 @@ export class tokenApiService {
         'Access-Control-Allow-Origin' : '*',
         'Authorization': 'Bearer ' + localStorage.getItem('token')
     }
-    private portAPI = 3100;
-    private ip = "fr-couvinove301.prod.paprec.fr";
+    private ip = environment.apiUrl;
     //private ip = "localhost";
 
     constructor(private http: HttpClient) {
@@ -24,7 +24,7 @@ export class tokenApiService {
     }
     //Génération de token d'accès pour swagger
     generateAcessToken(saisie : string){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/accesToken?affectation=" + saisie;
+        let requete = "https://"+this.ip+"/accesToken?affectation=" + saisie;
         
 
         const requestOptions = {
@@ -36,7 +36,7 @@ export class tokenApiService {
     }
     //Fonction permettant de récupérer tout les token actifs de l'api
     getAllTokens(){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/allAccesTokens";
+        let requete = "https://"+this.ip+"/allAccesTokens";
         //console.log(requete);
 
         const requestOptions = {
@@ -48,7 +48,7 @@ export class tokenApiService {
     }
     //Fonction permettant de désactiver un token
     desactivateToken(id: number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/desactivateToken?id="+id;
+        let requete = "https://"+this.ip+"/desactivateToken?id="+id;
 
         const requestOptions = {
             headers: new HttpHeaders(this.headerDict),
@@ -59,7 +59,7 @@ export class tokenApiService {
     }
     //Fonction permettant de modifier l'affectation d'un token
     updateToken(id : number, saisie : string){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/updateToken?affectation=" + saisie + "&id=" + id;
+        let requete = "https://"+this.ip+"/updateToken?affectation=" + saisie + "&id=" + id;
         //console.log(requete);
 
         const requestOptions = {

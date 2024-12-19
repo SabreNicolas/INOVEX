@@ -2,6 +2,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Injectable} from "@angular/core";
 import { idUsineService } from "./idUsine.service";
 import { formulaire } from "src/models/formulaire.model";
+import { environment } from "src/environments/environment";
 
 @Injectable()
 export class formulaireService {
@@ -13,8 +14,7 @@ export class formulaireService {
         'Access-Control-Allow-Origin' : '*',
         'Authorization': 'Bearer ' + localStorage.getItem('token')
     }
-    private portAPI = 3100;
-    private ip = "fr-couvinove301.prod.paprec.fr";
+    private ip = environment.apiUrl;
     //private ip = "localhost";
     private idUsine : number | undefined;
 
@@ -28,7 +28,7 @@ export class formulaireService {
     //création de formulaire
     createFormulaire(nom : string, type : string){
         nom = encodeURIComponent(nom);
-        let requete = "https://"+this.ip+":"+this.portAPI+"/formulaire?nom="+nom+"&type="+type+"&idUsine="+this.idUsine;
+        let requete = "https://"+this.ip+"/formulaire?nom="+nom+"&type="+type+"&idUsine="+this.idUsine;
         //console.log(requete);
   
         const requestOptions = {
@@ -41,7 +41,7 @@ export class formulaireService {
 
     //récupérer les formulaires d'un site
     getFormulaire() {
-        let requete = "https://"+this.ip+":"+this.portAPI+"/formulaires?idUsine="+this.idUsine;
+        let requete = "https://"+this.ip+"/formulaires?idUsine="+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {

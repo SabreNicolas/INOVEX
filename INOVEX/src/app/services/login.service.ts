@@ -2,6 +2,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Injectable} from "@angular/core";
 import {user} from "../../models/user.model";
 import { idUsineService } from "./idUsine.service";
+import { environment } from "src/environments/environment";
 
 @Injectable()
 export class loginService {
@@ -13,8 +14,7 @@ export class loginService {
         'Access-Control-Allow-Origin' : '*',
         'Authorization': 'Bearer ' + localStorage.getItem('token')
     }
-    private portAPI = 3100;
-    private ip = "fr-couvinove301.prod.paprec.fr";
+    private ip = environment.apiUrl;
     //private ip = "localhost";
     private idUsine : number | undefined;
 
@@ -26,7 +26,7 @@ export class loginService {
 
     //création d'utilisateur
     createUser(nom : string, prenom : string, login : string, pwd : string, isRondier : number, isSaisie : number, isQSE : number, isRapport : number, isChefQuart : number, isAdmin : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/User?nom="+nom+"&prenom="+prenom+"&login="+login+"&pwd="+pwd+"&isRondier="+isRondier+"&isSaisie="+isSaisie+"&isQSE="+isQSE+"&isRapport="+isRapport+"&isChefQuart="+isChefQuart+"&isAdmin="+isAdmin+"&idUsine="+this.idUsine;
+        let requete = "https://"+this.ip+"/User?nom="+nom+"&prenom="+prenom+"&login="+login+"&pwd="+pwd+"&isRondier="+isRondier+"&isSaisie="+isSaisie+"&isQSE="+isQSE+"&isRapport="+isRapport+"&isChefQuart="+isChefQuart+"&isAdmin="+isAdmin+"&idUsine="+this.idUsine;
         console.log(requete);
         
         const requestOptions = {
@@ -39,7 +39,7 @@ export class loginService {
 
     //récupérer la list des utilisateurs
     getAllUsers(loginLike : string) {
-        let requete = "https://"+this.ip+":"+this.portAPI+"/Users?login="+loginLike+"&idUsine="+this.idUsine;
+        let requete = "https://"+this.ip+"/Users?login="+loginLike+"&idUsine="+this.idUsine;
         const requestOptions = {
             headers: new HttpHeaders(this.headerDict),
         };
@@ -49,7 +49,7 @@ export class loginService {
 
     //récupérer la list des utilisateurs ayant un email
     getUsersEmail() {
-        let requete = "https://"+this.ip+":"+this.portAPI+"/UsersEmail?idUsine="+this.idUsine;
+        let requete = "https://"+this.ip+"/UsersEmail?idUsine="+this.idUsine;
         const requestOptions = {
             headers: new HttpHeaders(this.headerDict),
         };
@@ -59,7 +59,7 @@ export class loginService {
 
     //récupérer le login pour voir si il est déjà utilisé
     getLogin(login : string) {
-        let requete = "https://"+this.ip+":"+this.portAPI+"/User/"+login;
+        let requete = "https://"+this.ip+"/User/"+login;
         //console.log(requete);
 
 
@@ -73,7 +73,7 @@ export class loginService {
 
     //récupérer l'utilisateur qui se connecte
     getUserLoged(login : string, pwd : string) {
-        let requete = "https://"+this.ip+":"+this.portAPI+"/User/"+login+"/"+pwd;
+        let requete = "https://"+this.ip+"/User/"+login+"/"+pwd;
         //console.log(requete);
 
 
@@ -87,7 +87,7 @@ export class loginService {
 
     //Mise à jour mot de pase utilisateur
     updatePwd(login : string, pwd : string){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/User/"+login+"/"+pwd;
+        let requete = "https://"+this.ip+"/User/"+login+"/"+pwd;
         //console.log(requete);
 
         const requestOptions = {
@@ -100,7 +100,7 @@ export class loginService {
 
     //Mise à jour des droits rondier ou saisie ou qse ou rapports ou chef de quart ou admin
     updateDroit(login : string, droit : number, choix : string){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/"+choix+"/"+login+"/"+droit;
+        let requete = "https://"+this.ip+"/"+choix+"/"+login+"/"+droit;
         //console.log(requete);
 
         const requestOptions = {
@@ -112,7 +112,7 @@ export class loginService {
 
     //Mise à jour des infos => email ou loginGMAO
     updateInfos(login : string, info : string, infoValue : string){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/UserInfos/"+login+"/"+info+"?infoValue="+infoValue;
+        let requete = "https://"+this.ip+"/UserInfos/"+login+"/"+info+"?infoValue="+infoValue;
         //console.log(requete);
 
         const requestOptions = {
@@ -124,7 +124,7 @@ export class loginService {
 
     //delete user
     deleteUser(id : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/user/"+id;
+        let requete = "https://"+this.ip+"/user/"+id;
         //console.log(requete);
 
         const requestOptions = {

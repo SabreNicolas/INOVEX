@@ -5,6 +5,7 @@ import {sumArret} from "../../models/sumArret.model";
 import {depassement} from "../../models/depassement.model";
 import {sumDepassement} from "../../models/sumDepassement.model";
 import { idUsineService } from "./idUsine.service";
+import { environment } from "src/environments/environment";
 
 @Injectable()
 export class arretsService {
@@ -16,8 +17,7 @@ export class arretsService {
         'Access-Control-Allow-Origin' : '*',
         'Authorization': 'Bearer ' + localStorage.getItem('token')
     }
-    private portAPI = 3100;
-    private ip = "fr-couvinove301.prod.paprec.fr";
+    private ip = environment.apiUrl;
     //private ip = "localhost";
     private idUsine : number | undefined;
 
@@ -34,7 +34,7 @@ export class arretsService {
 
     //insérer un dépassement
     createDepassement(dateDebut : string, dateFin : string, duree : number, idUser : number, dateSaisie : string, description : string, productId : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/Depassement?dateDebut="+dateDebut+"&dateFin="+dateFin+"&duree="+duree+"&user="+idUser+"&dateSaisie="+dateSaisie+"&description="+description+"&productId="+productId;
+        let requete = "https://"+this.ip+"/Depassement?dateDebut="+dateDebut+"&dateFin="+dateFin+"&duree="+duree+"&user="+idUser+"&dateSaisie="+dateSaisie+"&description="+description+"&productId="+productId;
         //console.log(requete);
 
         const requestOptions = {
@@ -47,7 +47,7 @@ export class arretsService {
 
     //récupérer l'historique des arrêts pour un mois
     getDepassements(dateDebut : string, dateFin : string){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/Depassements/"+dateDebut+"/"+dateFin+"/"+this.idUsine;
+        let requete = "https://"+this.ip+"/Depassements/"+dateDebut+"/"+dateFin+"/"+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -60,7 +60,7 @@ export class arretsService {
 
     //récupérer un dépassement
     getOneDepassement(id:number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/getOneDepassement/"+id;
+        let requete = "https://"+this.ip+"/getOneDepassement/"+id;
         //console.log(requete);
 
         const requestOptions = {
@@ -73,7 +73,7 @@ export class arretsService {
 
     //récupérer un arrêt
     getOneArret(id:number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/getOneArret/"+id;
+        let requete = "https://"+this.ip+"/getOneArret/"+id;
         //console.log(requete);
 
         const requestOptions = {
@@ -86,7 +86,7 @@ export class arretsService {
 
     //récupérer la somme des dépassements pour un mois
     getDepassementsSum(dateDebut : string, dateFin : string){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/DepassementsSum/"+dateDebut+"/"+dateFin+"/"+this.idUsine;
+        let requete = "https://"+this.ip+"/DepassementsSum/"+dateDebut+"/"+dateFin+"/"+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -99,7 +99,7 @@ export class arretsService {
 
     //récupérer la somme des dépassements pour un mois et pour four 1
     getDepassementsSumFour(dateDebut : string, dateFin : string, numFour : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/DepassementsSumFour/"+dateDebut+"/"+dateFin+"/"+this.idUsine+"/"+numFour;
+        let requete = "https://"+this.ip+"/DepassementsSumFour/"+dateDebut+"/"+dateFin+"/"+this.idUsine+"/"+numFour;
         //console.log(requete);
 
         const requestOptions = {
@@ -112,7 +112,7 @@ export class arretsService {
 
     //delete dépassements
     deleteDepassement(id : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/DeleteDepassement/"+id;
+        let requete = "https://"+this.ip+"/DeleteDepassement/"+id;
         //console.log(requete);
 
         const requestOptions = {
@@ -129,7 +129,7 @@ export class arretsService {
 
     //insérer un arrêt
     createArret(dateDebut : string, dateFin : string, duree : number, idUser : number, dateSaisie : string, description : string, productId : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/Arrets?dateDebut="+dateDebut+"&dateFin="+dateFin+"&duree="+duree+"&user="+idUser+"&dateSaisie="+dateSaisie+"&description="+description+"&productId="+productId;
+        let requete = "https://"+this.ip+"/Arrets?dateDebut="+dateDebut+"&dateFin="+dateFin+"&duree="+duree+"&user="+idUser+"&dateSaisie="+dateSaisie+"&description="+description+"&productId="+productId;
         //console.log(requete);
 
         const requestOptions = {
@@ -142,7 +142,7 @@ export class arretsService {
 
     //modifier un arrêt
     updateArret(id : number, dateDebut : string, dateFin : string, duree : number, idUser : number, dateSaisie : string, description : string, productId : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/updateArret/"+id+"?dateDebut="+dateDebut+"&dateFin="+dateFin+"&duree="+duree+"&user="+idUser+"&dateSaisie="+dateSaisie+"&description="+description+"&productId="+productId;
+        let requete = "https://"+this.ip+"/updateArret/"+id+"?dateDebut="+dateDebut+"&dateFin="+dateFin+"&duree="+duree+"&user="+idUser+"&dateSaisie="+dateSaisie+"&description="+description+"&productId="+productId;
         //console.log(requete);
 
         const requestOptions = {
@@ -155,7 +155,7 @@ export class arretsService {
 
     //modifier un dépassement
     updateDepassement(id : number, dateDebut : string, dateFin : string, duree : number, idUser : number, dateSaisie : string, description : string, productId : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/updateDepassement/"+id+"?dateDebut="+dateDebut+"&dateFin="+dateFin+"&duree="+duree+"&user="+idUser+"&dateSaisie="+dateSaisie+"&description="+description+"&productId="+productId;
+        let requete = "https://"+this.ip+"/updateDepassement/"+id+"?dateDebut="+dateDebut+"&dateFin="+dateFin+"&duree="+duree+"&user="+idUser+"&dateSaisie="+dateSaisie+"&description="+description+"&productId="+productId;
         //console.log(requete);
 
         const requestOptions = {
@@ -168,7 +168,7 @@ export class arretsService {
 
     //récupérer l'historique des arrêts pour un mois
     getArrets(dateDebut : string, dateFin : string){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/Arrets/"+dateDebut+"/"+dateFin+"/"+this.idUsine;
+        let requete = "https://"+this.ip+"/Arrets/"+dateDebut+"/"+dateFin+"/"+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -181,7 +181,7 @@ export class arretsService {
 
     //récupérer la somme des arrêts par type pour un mois
     getArretsType(dateDebut : string, dateFin : string){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/ArretsSumGroup/"+dateDebut+"/"+dateFin+"/"+this.idUsine;
+        let requete = "https://"+this.ip+"/ArretsSumGroup/"+dateDebut+"/"+dateFin+"/"+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -194,7 +194,7 @@ export class arretsService {
 
     //récupérer la somme des arrêts pour un mois
     getArretsSum(dateDebut : string, dateFin : string){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/ArretsSum/"+dateDebut+"/"+dateFin+"/"+this.idUsine;
+        let requete = "https://"+this.ip+"/ArretsSum/"+dateDebut+"/"+dateFin+"/"+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
@@ -207,7 +207,7 @@ export class arretsService {
 
     //récupérer la somme des arrêts pour un mois et pour 1 four
     getArretsSumFour(dateDebut : string, dateFin : string, numFour : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/ArretsSumFour/"+dateDebut+"/"+dateFin+"/"+this.idUsine+"/"+numFour;
+        let requete = "https://"+this.ip+"/ArretsSumFour/"+dateDebut+"/"+dateFin+"/"+this.idUsine+"/"+numFour;
         //console.log(requete);
 
         const requestOptions = {
@@ -220,7 +220,7 @@ export class arretsService {
 
     //delete arret
     deleteArret(id : number){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/DeleteArret/"+id;
+        let requete = "https://"+this.ip+"/DeleteArret/"+id;
         //console.log(requete);
 
         const requestOptions = {
@@ -233,7 +233,7 @@ export class arretsService {
 
     //envoi d'un mail pour alerter
     sendEmail(dateDeb : string, heureDeb : string, duree : number, typeArret : string, commentaire : string){
-        let requete = "https://"+this.ip+":"+this.portAPI+"/sendmail/"+dateDeb+"/"+heureDeb+"/"+duree+"/"+typeArret+"/"+commentaire+"/"+this.idUsine;
+        let requete = "https://"+this.ip+"/sendmail/"+dateDeb+"/"+heureDeb+"/"+duree+"/"+typeArret+"/"+commentaire+"/"+this.idUsine;
         //console.log(requete);
 
         const requestOptions = {
