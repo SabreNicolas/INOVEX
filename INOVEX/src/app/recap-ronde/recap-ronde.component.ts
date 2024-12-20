@@ -467,15 +467,42 @@ export class RecapRondeComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         this.cahierQuartService.historiquePriseQuart().subscribe((response) => {
-          window.location.href =
-            "https://fr-couvinove300.prod.paprec.fr:8100/cahierQuart/recapRondePrecedente?quart=" +
-            this.quart +
-            "&idEquipe=" +
-            this.idEquipe;
+          // window.location.href =
+          //   "https://fr-couvinove300.prod.paprec.fr:8100/cahierQuart/recapRondePrecedente?quart=" +
+          //   this.quart +
+          //   "&idEquipe=" +
+          //   this.idEquipe;
+          this.router.navigate(["/cahierQuart/recapRondePrecedente"], {
+            queryParams: { quart: this.quart, idEquipe: this.idEquipe },
+          });
         });
       } else {
         // Pop-up d'annulation de la suppression
         this.popupService.alertSuccessForm("La prise de quart a été annulée.");
+      }
+    });
+  }
+
+  editEquipe() {
+    //Demande de confirmation de modification d'équipe
+    Swal.fire({
+      title: "Voulez-vous modifier l'équipe ?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Oui",
+      cancelButtonText: "Non",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.cahierQuartService.historiquePriseQuart().subscribe((response) => {
+          this.router.navigate(["/cahierQuart/newEquipe"], {
+            queryParams: { idEquipe: this.idEquipe },
+          });
+        });
+      } else {
+        // Pop-up d'annulation de la modification
+        this.popupService.alertSuccessForm("La modification a été annulée.");
       }
     });
   }

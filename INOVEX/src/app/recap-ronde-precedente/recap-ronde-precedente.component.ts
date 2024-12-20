@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { cahierQuartService } from "../services/cahierQuart.service";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { addDays, format, subDays } from "date-fns";
 import { rondierService } from "../services/rondier.service";
 import { zone } from "src/models/zone.model";
@@ -46,6 +46,7 @@ export class RecapRondePrecedenteComponent implements OnInit {
     private popupService: PopupService,
     private route: ActivatedRoute,
     private rondierService: rondierService,
+    private router: Router,
   ) {
     this.listAction = [];
     this.listConsigne = [];
@@ -621,9 +622,12 @@ export class RecapRondePrecedenteComponent implements OnInit {
     });
 
     await this.delay(1000);
-    window.location.href =
-      "https://fr-couvinove300.prod.paprec.fr:8100/cahierQuart/newEquipe?quart=" +
-      this.quart;
+    // window.location.href =
+    //   "https://fr-couvinove300.prod.paprec.fr:8100/cahierQuart/newEquipe?quart=" +
+    //   this.quart;
+    this.router.navigate(["/cahierQuart/newEquipe"], {
+      queryParams: { quart: this.quart },
+    });
   }
 
   delay(ms: number) {

@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { cahierQuartService } from "../services/cahierQuart.service";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { addDays, format, subDays } from "date-fns";
 import { rondierService } from "../services/rondier.service";
 import { zone } from "src/models/zone.model";
@@ -33,6 +33,7 @@ export class RecapRondeListeComponent implements OnInit {
     private popupService: PopupService,
     private route: ActivatedRoute,
     private rondierService: rondierService,
+    private router: Router,
   ) {
     this.listAction = [];
     this.listConsigne = [];
@@ -189,9 +190,12 @@ export class RecapRondeListeComponent implements OnInit {
       cancelButtonText: "Non",
     }).then((result) => {
       if (result.isConfirmed) {
-        window.location.href =
-          "https://fr-couvinove300.prod.paprec.fr:8100/cahierQuart/recapRonde?quart=" +
-          this.quart;
+        // window.location.href =
+        //   "https://fr-couvinove300.prod.paprec.fr:8100/cahierQuart/recapRonde?quart=" +
+        //   this.quart;
+        this.router.navigate(["/cahierQuart/recapRonde"], {
+          queryParams: { quart: this.quart },
+        });
       } else {
         // Pop-up d'annulation de la suppression
         this.popupService.alertErrorForm("La prise de quart a été annulée.");

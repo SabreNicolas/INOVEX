@@ -128,7 +128,7 @@ export class EquipeComponent implements OnInit {
                 Id: response.data[i]["idRondier"],
                 Prenom: response.data[i]["prenomRondier"],
                 Nom: response.data[i]["nomRondier"],
-                Poste: response.data[i]["poste"],
+                posteUser: response.data[i]["poste"],
                 Zone: zoneId,
               });
             }

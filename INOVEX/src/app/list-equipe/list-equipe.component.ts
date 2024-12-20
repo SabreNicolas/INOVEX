@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import { consigne } from "src/models/consigne.model";
 import { rondierService } from "../services/rondier.service";
 import { PopupService } from "../services/popup.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-list-equipe",
@@ -20,6 +21,7 @@ export class ListEquipeComponent implements OnInit {
     public cahierQuartService: cahierQuartService,
     public rondierService: rondierService,
     private popupService: PopupService,
+    private router: Router,
   ) {
     this.equipes = [];
     this.consignes = [];
@@ -51,9 +53,12 @@ export class ListEquipeComponent implements OnInit {
   //Fonction qui permet d'agrandir une card contenant les informations sur une équipe
   toggleCardSize(equipe: equipe) {
     if (equipe.rondiers.length == 0) {
-      document.location.href =
-        "https://fr-couvinove300.prod.paprec.fr:8100/cahierQuart/newEquipe?idEquipe=" +
-        equipe.id;
+      // document.location.href =
+      //   "https://fr-couvinove300.prod.paprec.fr:8100/cahierQuart/newEquipe?idEquipe=" +
+      //   equipe.id;
+      this.router.navigate(["/cahierQuart/newEquipe"], {
+        queryParams: { idEquipe: equipe.id },
+      });
     } else {
       //@ts-ignore
       document
