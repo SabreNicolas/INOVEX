@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: "capexploitation.paprec.com/capexploitation",
+  apiUrl: "preprod-capexploitation.paprec.com/capexploitation",
 };
