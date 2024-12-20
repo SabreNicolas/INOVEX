@@ -123,7 +123,7 @@ export class ListZonesComponent implements OnInit {
 
   //mis à jour du commentaire d'une zone
   setComment(zone: zone) {
-    var commentaire = prompt(
+    let commentaire = prompt(
       "Veuillez saisir un Commentaire",
       String(zone.commentaire),
     );
@@ -150,7 +150,7 @@ export class ListZonesComponent implements OnInit {
 
   //mis à jour du nom d'une zone
   setName(zone: zone) {
-    var nom = prompt("Veuillez saisir un Nom", String(zone.nom));
+    const nom = prompt("Veuillez saisir un Nom", String(zone.nom));
     if (nom != null) {
       // @ts-ignore
       this.rondierService.updateNomZone(zone.Id, nom).subscribe((response) => {

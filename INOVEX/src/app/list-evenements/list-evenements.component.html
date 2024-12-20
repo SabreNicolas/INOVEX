@@ -57,7 +57,7 @@
             <a
               *ngIf="
                 evenement.demande_travaux != 0 &&
-                evenement.demande_travaux != 'false'
+                evenement.demande_travaux !== 'false'
               "
               (click)="getDI(evenement.demande_travaux)"
               role="button"
@@ -68,7 +68,7 @@
             <p
               *ngIf="
                 evenement.demande_travaux == 0 ||
-                evenement.demande_travaux == 'false'
+                evenement.demande_travaux === 'false'
               "
             >
               Aucune
@@ -79,7 +79,7 @@
           <td>
             <button
               class="btn btn-outline-secondary"
-              *ngIf="evenement.url != ''"
+              *ngIf="evenement.url !== ''"
               (click)="downloadImage(evenement.url)"
             >
               <i

@@ -28,10 +28,10 @@
           <td>{{ consigne.titre }}</td>
           <td>{{ consigne.commentaire }}</td>
           <td>{{ consigne.dateHeureDebut }}</td>
-          <td *ngIf="consigne.dateHeureFin != '01/01/2099 00:00:00'">
+          <td *ngIf="consigne.dateHeureFin !== '01/01/2099 00:00:00'">
             {{ consigne.dateHeureFin }}
           </td>
-          <td *ngIf="consigne.dateHeureFin == '01/01/2099 00:00:00'">Jamais</td>
+          <td *ngIf="consigne.dateHeureFin === '01/01/2099 00:00:00'">Jamais</td>
           <td *ngSwitchCase="1">
             <span class="badge rounded-pill bg-primary">Jour</span>
           </td>

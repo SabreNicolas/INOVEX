@@ -7,7 +7,7 @@ import { DatePipe } from "@angular/common";
 import { ActivatedRoute, Router } from "@angular/router";
 import { user } from "../../models/user.model";
 import { PopupService } from "../services/popup.service";
-declare var $: any;
+declare let $: any;
 @Component({
   selector: "app-arrets",
   templateUrl: "./arrets.component.html",
@@ -32,18 +32,18 @@ export class ArretsComponent implements OnInit {
   public dateSaisie: Date;
   public stringDateSaisie: string;
   public commentaire: string;
-  public isTotal: boolean = false;
-  public isArret: boolean = false; // 'true' si on saisie des arrêts et 'false' si dépassements
-  public disponible: boolean = false;
-  public programme: boolean = false;
-  public fortuit: boolean = false;
-  public fortuit_four: boolean = false;
-  public fortuit_chaudiere: boolean = false;
-  public fortuit_traitement: boolean = false;
-  public fortuit_commun: boolean = false;
-  public moteur: boolean = false;
+  public isTotal = false;
+  public isArret = false; // 'true' si on saisie des arrêts et 'false' si dépassements
+  public disponible = false;
+  public programme = false;
+  public fortuit = false;
+  public fortuit_four = false;
+  public fortuit_chaudiere = false;
+  public fortuit_traitement = false;
+  public fortuit_commun = false;
+  public moteur = false;
   public saisieLibre: string;
-  public id: number = 0;
+  public id = 0;
   public sousCommentaire: string;
   public programmeSelect: string;
   public fortuitSelect: string;
@@ -98,9 +98,9 @@ export class ArretsComponent implements OnInit {
 
   ngOnInit(): void {
     //Réupération de l'Id du user connecté
-    var userLogged = localStorage.getItem("user");
+    const userLogged = localStorage.getItem("user");
     if (typeof userLogged === "string") {
-      var userLoggedParse = JSON.parse(userLogged);
+      const userLoggedParse = JSON.parse(userLogged);
       this.userLogged = userLoggedParse;
       // @ts-ignore
       this.IdUser = this.userLogged["Id"];
@@ -132,7 +132,7 @@ export class ArretsComponent implements OnInit {
         this.arretsService.getOneDepassement(this.id).subscribe((response) => {
           //@ts-ignore
           this.arretId = response.data[0].productId;
-          var dateFinString =
+          const dateFinString =
             //@ts-ignore
             response.data[0].dateFin.split("/")[1] +
             "/" +
@@ -144,7 +144,7 @@ export class ArretsComponent implements OnInit {
             " " +
             //@ts-ignore
             response.data[0].heureFin;
-          var dateDebString =
+          const dateDebString =
             //@ts-ignore
             response.data[0].dateDebut.split("/")[1] +
             "/" +
@@ -183,7 +183,7 @@ export class ArretsComponent implements OnInit {
           this.arretId = response.data[0].productId;
           //@ts-ignore
           this.arretName = response.data[0].Name;
-          var dateFinString =
+          const dateFinString =
           //@ts-ignore
             response.data[0].dateFin.split("/")[1] +
             "/" +
@@ -195,7 +195,7 @@ export class ArretsComponent implements OnInit {
             " " +
             //@ts-ignore
             response.data[0].heureFin;
-          var dateDebString =
+          const dateDebString =
             //@ts-ignore
             response.data[0].dateDebut.split("/")[1] +
             "/" +
@@ -279,7 +279,7 @@ export class ArretsComponent implements OnInit {
 
   //on stocke le type d'arrêt/dépassement sélectionné
   setFilters(edition: boolean) {
-    var type = document.getElementById("type");
+    const type = document.getElementById("type");
 
     //Si on est pas en mode édition, on récupère le nom de l'arret à l'aide du select
     if (edition == false) {
@@ -339,7 +339,7 @@ export class ArretsComponent implements OnInit {
     this.fortuit_commun = false;
     this.categorie = this.fortuitSelect;
     //On récupère la référence du select dont l'id est passé en paramètre
-    var selection = document.getElementById("fortuit");
+    const selection = document.getElementById("fortuit");
 
     //On regarde quelle est la valeur sélectionnée et on met sa valeur à true pour afficher le sous-menu
     //@ts-ignore
@@ -648,7 +648,7 @@ export class ArretsComponent implements OnInit {
   }
 
   updateDuree(form: NgForm) {
-    var duree = form.value["duree"];
+    const duree = form.value["duree"];
     this.duree = duree;
   }
 

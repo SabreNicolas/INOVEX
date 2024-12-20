@@ -196,7 +196,7 @@
             <!-- Balise caché avec la valeur pour export Excel car impossible d'exporter valeurs si inputs dans table -->
             <p style="display: none" id="export">{{ event.url }}</p>
             <a
-              *ngIf="event.url != '' && event.typeDonnee == 'Evènement'"
+              *ngIf="event.url !== '' && event.typeDonnee === 'Evènement'"
               routerLink="../../{{ event.url }}"
             >
               <button class="btn btn-success">
@@ -204,7 +204,7 @@
               </button>
             </a>
           </td>
-          <td *ngIf="event.typeDonnee == 'Evènement'">
+          <td *ngIf="event.typeDonnee === 'Evènement'">
             <a
               routerLink="/cahierQuart/newEvenement"
               target="_blank"
@@ -215,7 +215,7 @@
               </button>
             </a>
           </td>
-          <td *ngIf="event.typeDonnee == 'Consigne'">
+          <td *ngIf="event.typeDonnee === 'Consigne'">
             <a
               routerLink="/cahierQuart/newConsigne"
               target="_blank"
@@ -226,7 +226,7 @@
               </button>
             </a>
           </td>
-          <td *ngIf="event.typeDonnee == 'Actualité'">
+          <td *ngIf="event.typeDonnee === 'Actualité'">
             <a
               routerLink="/cahierQuart/newActu"
               target="_blank"
@@ -237,7 +237,7 @@
               </button>
             </a>
           </td>
-          <td *ngIf="event.typeDonnee == 'Action'">
+          <td *ngIf="event.typeDonnee === 'Action'">
             <a
               routerLink="/cahierQuart/newAction"
               target="_blank"

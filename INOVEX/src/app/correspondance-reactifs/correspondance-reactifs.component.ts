@@ -52,10 +52,10 @@ export class CorrespondanceReactifsComponent implements OnInit {
   }
 
   editionProductImport(idCorrespondance: number) {
-    var idCorrespondanceString = idCorrespondance + "";
-    var typeElt = document.getElementById(idCorrespondanceString);
+    const idCorrespondanceString = idCorrespondance + "";
+    const typeElt = document.getElementById(idCorrespondanceString);
     // @ts-ignore
-    var productId = typeElt.options[typeElt.selectedIndex].value;
+    const productId = typeElt.options[typeElt.selectedIndex].value;
     if (productId != "") {
       this.moralEntitiesService
         .updateProductImportCorrespondanceReactif(idCorrespondance, productId)

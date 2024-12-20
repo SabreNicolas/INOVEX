@@ -58,9 +58,9 @@ export class SaisieFormulaireComponent implements OnInit {
       });
 
     //Récupération de l'utilisateur pour vérifier si il est admin => permettre suppression ronde si admin
-    var userLogged = localStorage.getItem("user");
+    const userLogged = localStorage.getItem("user");
     if (typeof userLogged === "string") {
-      var userLoggedParse = JSON.parse(userLogged);
+      const userLoggedParse = JSON.parse(userLogged);
       // @ts-ignore
       this.isAdmin = userLoggedParse["isAdmin"];
     }
@@ -70,10 +70,10 @@ export class SaisieFormulaireComponent implements OnInit {
   setPeriod(form: NgForm) {
     this.listDays = [];
     this.dateDeb = new Date(
-      (<HTMLInputElement>document.getElementById("dateDeb")).value,
+      (document.getElementById("dateDeb") as HTMLInputElement).value,
     );
     this.dateFin = new Date(
-      (<HTMLInputElement>document.getElementById("dateFin")).value,
+      (document.getElementById("dateFin") as HTMLInputElement).value,
     );
     if (this.dateFin < this.dateDeb) {
       this.dateService.mauvaiseEntreeDate(form);
@@ -122,17 +122,11 @@ export class SaisieFormulaireComponent implements OnInit {
           )
           .subscribe((response) => {
             if (response.data[0] != undefined && response.data[0].Value != 0) {
-              (<HTMLInputElement>(
-                document.getElementById(pr.idProduct + "-" + date)
-              )).value = response.data[0].Value;
+              (document.getElementById(pr.idProduct + "-" + date) as HTMLInputElement).value = response.data[0].Value;
               //On compléte également la balise p caché pour l'export Excel
-              (<HTMLInputElement>(
-                document.getElementById(pr.idProduct + "-" + date + "-hide")
-              )).innerHTML = response.data[0].Value;
+              (document.getElementById(pr.idProduct + "-" + date + "-hide") as HTMLInputElement).innerHTML = response.data[0].Value;
             } else
-              (<HTMLInputElement>(
-                document.getElementById(pr.idProduct + "-" + date)
-              )).value = "";
+              (document.getElementById(pr.idProduct + "-" + date) as HTMLInputElement).value = "";
           });
       });
     });
@@ -142,11 +136,9 @@ export class SaisieFormulaireComponent implements OnInit {
   validation() {
     this.listDays.forEach((date) => {
       this.listProducts.forEach((pr) => {
-        var value = (<HTMLInputElement>(
-          document.getElementById(pr.idProduct + "-" + date)
-        )).value.replace(",", ".");
-        var Value2 = value.replace(" ", "");
-        var valueInt: number = +Value2;
+        const value = (document.getElementById(pr.idProduct + "-" + date) as HTMLInputElement).value.replace(",", ".");
+        const Value2 = value.replace(" ", "");
+        const valueInt: number = +Value2;
         if (valueInt > 0.0) {
           this.moralEntitiesService
             .createMeasure(
@@ -187,7 +179,7 @@ export class SaisieFormulaireComponent implements OnInit {
       .subscribe((response) => {
         if (response == "Création du Measures OK") {
           this.popupService.alertSuccessForm("La valeur a bien été supprimé !");
-          (<HTMLInputElement>document.getElementById(Id + "-" + date)).value =
+          (document.getElementById(Id + "-" + date) as HTMLInputElement).value =
             "";
         } else {
           this.popupService.alertErrorForm(
@@ -233,7 +225,7 @@ export class SaisieFormulaireComponent implements OnInit {
   //Export de la table dans fichier EXCEL
   exportExcel() {
     /* table id is passed over here */
-    let element = document.getElementById("tableSaisie");
+    const element = document.getElementById("tableSaisie");
     const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element, {
       raw: false,
       dateNF: "mm/dd/yyyy",

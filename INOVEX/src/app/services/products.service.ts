@@ -37,7 +37,7 @@ export class productsService {
 
   //récupérer le dernier code
   getLastCode(Code: string, idUsine: number) {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/productLastCode?Code=" +
@@ -56,8 +56,8 @@ export class productsService {
   //création du produit
   createProduct(typeId: number, idUsine: number) {
     //ici on passe par une variable car on a un systeme de boucle qui rencode  chaque fois la variable
-    let encodedNom = encodeURIComponent(this.nom);
-    let requete =
+    const encodedNom = encodeURIComponent(this.nom);
+    const requete =
       "https://" +
       this.ip +
       "/Product?Name=" +
@@ -83,7 +83,7 @@ export class productsService {
 
   //récupérer les compteurs
   getCompteurs(Code: string, name: string) {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/Compteurs?Code=" +
@@ -103,7 +103,7 @@ export class productsService {
 
   //récupérer les qse
   getQse() {
-    let requete = "https://" + this.ip + "/qse?idUsine=" + this.idUsine;
+    const requete = "https://" + this.ip + "/qse?idUsine=" + this.idUsine;
     // console.log(requete);
 
     const requestOptions = {
@@ -115,7 +115,7 @@ export class productsService {
 
   //récupérer les compteurs pour les arrêts
   getCompteursArrets(Code: string) {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/CompteursArrets?Code=" +
@@ -133,7 +133,7 @@ export class productsService {
 
   //récupérer les valeurs de compteur
   getValueCompteurs(Date: string, Code: string) {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/Compteurs/" +
@@ -153,7 +153,7 @@ export class productsService {
 
   //insérer une valeur de compteur
   createMeasure(Date: string, Value: number, Code: string) {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/SaisieMensuelle?Date=" +
@@ -175,7 +175,7 @@ export class productsService {
 
   //récupérer les analyses
   getAnalyses(Code: string) {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/Analyses?Code=" +
@@ -193,7 +193,7 @@ export class productsService {
 
   //récupérer les dépassements 1/2 heures
   getDep() {
-    let requete = "https://" + this.ip + "/AnalysesDep/" + this.idUsine;
+    const requete = "https://" + this.ip + "/AnalysesDep/" + this.idUsine;
     //console.log(requete);
 
     const requestOptions = {
@@ -205,7 +205,7 @@ export class productsService {
 
   //récupérer les sortants
   getSortants(Code: string) {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/Sortants?Code=" +
@@ -223,7 +223,7 @@ export class productsService {
 
   //récupérer les livraison de réactifs
   getReactifs() {
-    let requete = "https://" + this.ip + "/reactifs?idUsine=" + this.idUsine;
+    const requete = "https://" + this.ip + "/reactifs?idUsine=" + this.idUsine;
     //console.log(requete);
 
     const requestOptions = {
@@ -235,7 +235,7 @@ export class productsService {
 
   //récupérer les sortants
   getSortantsAndCorrespondance(Code: string) {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/getSortantsAndCorrespondance?Code=" +
@@ -253,7 +253,7 @@ export class productsService {
 
   //récupérer les sortants
   getReactifsAndCorrespondance() {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/getReactifsAndCorrespondance?idUsine=" +
@@ -269,7 +269,7 @@ export class productsService {
 
   //récupérer les consommables & autres
   getConsos() {
-    let requete = "https://" + this.ip + "/Consos/" + this.idUsine;
+    const requete = "https://" + this.ip + "/Consos/" + this.idUsine;
     //console.log(requete);
 
     const requestOptions = {
@@ -281,7 +281,7 @@ export class productsService {
 
   //récupérer les produits pour le PCI
   getPCI() {
-    let requete = "https://" + this.ip + "/pci/" + this.idUsine;
+    const requete = "https://" + this.ip + "/pci/" + this.idUsine;
     //console.log(requete);
 
     const requestOptions = {
@@ -293,7 +293,7 @@ export class productsService {
 
   //récupérer les containers
   getProductEntrant() {
-    let requete = "https://" + this.ip + "/productsEntrants/" + this.idUsine;
+    const requete = "https://" + this.ip + "/productsEntrants/" + this.idUsine;
     //console.log(requete);
 
     const requestOptions = {
@@ -305,7 +305,7 @@ export class productsService {
 
   //récupérer les valeurs d'analyses, de sortants, de consommables
   getValueProducts(Date: string, Id: number) {
-    let requete = "https://" + this.ip + "/ValuesProducts/" + Id + "/" + Date;
+    const requete = "https://" + this.ip + "/ValuesProducts/" + Id + "/" + Date;
     //console.log(requete);
 
     const requestOptions = {
@@ -317,7 +317,7 @@ export class productsService {
 
   //récupérer les produits par catégories => pour admin uniquement
   getAllProductsByType(typeId: number, name: string) {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/Products/" +
@@ -337,7 +337,7 @@ export class productsService {
 
   //récupérer un produit
   getOneProduct(id: number) {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/getOneProduct/" +
@@ -355,7 +355,7 @@ export class productsService {
 
   //récupérer les produits d'une usine
   getAllProducts() {
-    let requete = "https://" + this.ip + "/AllProducts?idUsine=" + this.idUsine;
+    const requete = "https://" + this.ip + "/AllProducts?idUsine=" + this.idUsine;
     //console.log(requete);
 
     const requestOptions = {
@@ -367,7 +367,7 @@ export class productsService {
 
   //récupérer les produits par catégories => pour admin uniquement
   getAllProductsAndElementRondier(typeId: number, name: string) {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/ProductsAndElementRondier/" +
@@ -388,7 +388,7 @@ export class productsService {
   //créer un formulaire
   createFormulaire(nom: string) {
     nom = encodeURIComponent(nom);
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/createFormulaire?nom=" +
@@ -407,7 +407,7 @@ export class productsService {
   //mettre à jour le nom d'un formulaire
   updateFormulaire(nom: string, idFormulaire: number) {
     nom = encodeURIComponent(nom);
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/updateFormulaire?nom=" +
@@ -430,7 +430,7 @@ export class productsService {
     idProduit: number,
   ) {
     alias = encodeURIComponent(alias);
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/createFormulaireAffectation?alias=" +
@@ -450,7 +450,7 @@ export class productsService {
 
   //récupérer les formulaires d'une usine
   getFormulaires() {
-    let requete =
+    const requete =
       "https://" + this.ip + "/getFormulaires?idUsine=" + this.idUsine;
     //console.log(requete);
 
@@ -463,7 +463,7 @@ export class productsService {
 
   //récupérer un formulaire d'une usine
   getOneFormulaire(idFormulaire: number) {
-    let requete =
+    const requete =
       "https://" + this.ip + "/getOneFormulaire?idFormulaire=" + idFormulaire;
     //console.log(requete);
 
@@ -476,7 +476,7 @@ export class productsService {
 
   //Récupérer les produits d'un formulaire
   getProductsFormulaire(idFormulaire: number) {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/getProduitsFormulaire?idFormulaire=" +
@@ -492,7 +492,7 @@ export class productsService {
 
   //Supprimer les produits d'un formulaire
   deleteProductFormulaire(idFormulaire: number) {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/deleteProduitFormulaire?idFormulaire=" +
@@ -508,7 +508,7 @@ export class productsService {
 
   //Supprimer un formulaire
   deleteFormulaire(idFormulaire: number) {
-    let requete =
+    const requete =
       "https://" + this.ip + "/deleteFormulaire?idFormulaire=" + idFormulaire;
     //console.log(requete);
 
@@ -521,7 +521,7 @@ export class productsService {
 
   //mettre à jour le enabled d'un produit
   setEnabled(Id: number, enabled: number) {
-    let requete =
+    const requete =
       "https://" + this.ip + "/productEnabled/" + Id + "/" + enabled;
     //console.log(requete);
 
@@ -534,7 +534,7 @@ export class productsService {
 
   //mettre à jour l'unité d'un produit
   setUnit(unit: string, Id: number) {
-    let requete = "https://" + this.ip + "/productUnit/" + Id + "?Unit=" + unit;
+    const requete = "https://" + this.ip + "/productUnit/" + Id + "?Unit=" + unit;
     //console.log(requete);
 
     const requestOptions = {
@@ -546,7 +546,7 @@ export class productsService {
 
   //mettre à jour le type d'un produit
   setType(type: number, Id: number) {
-    let requete = "https://" + this.ip + "/productType/" + Id + "/" + type;
+    const requete = "https://" + this.ip + "/productType/" + Id + "/" + type;
     //console.log(requete);
 
     const requestOptions = {
@@ -557,7 +557,7 @@ export class productsService {
   }
 
   updateTypeRecup(id: number, typeRecupEMonitoring: string) {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/updateRecupEMonitoring?id=" +
@@ -578,7 +578,7 @@ export class productsService {
 
   //récupération produits sans TAG
   getProductsWithoutTAG() {
-    let requete = "https://" + this.ip + "/ProductWithoutTag/" + this.idUsine;
+    const requete = "https://" + this.ip + "/ProductWithoutTag/" + this.idUsine;
     //console.log(requete);
 
     const requestOptions = {
@@ -591,7 +591,7 @@ export class productsService {
   //mettre à jour le TAG ou le code GMAO d'un produit
   //?TAG=SJSJJS ou ?CodeEquipement=xxxx
   setElement(Code: string, productId: number, type: string) {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/product" +
@@ -612,8 +612,8 @@ export class productsService {
   }
 
   //Mettre à jour le coefficient d'un produit
-  updateCoeff(coeff: String, id: number) {
-    let requete =
+  updateCoeff(coeff: string, id: number) {
+    const requete =
       "https://" + this.ip + "/productUpdateCoeff/" + id + "?coeff=" + coeff;
     // console.log(requete);
 
@@ -629,7 +629,7 @@ export class productsService {
     newName = encodeURIComponent(newName);
     lastName = encodeURIComponent(lastName);
 
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/updateProductName?newName=" +

@@ -4,9 +4,9 @@ import { Injectable } from "@angular/core";
 @Injectable()
 export class idUsineService {
   getIdUsine() {
-    var userLogged = localStorage.getItem("user");
+    const userLogged = localStorage.getItem("user");
     if (typeof userLogged === "string") {
-      var userLoggedParse = JSON.parse(userLogged);
+      const userLoggedParse = JSON.parse(userLogged);
 
       //Récupération de l'idUsine
       // @ts-ignore
@@ -15,9 +15,9 @@ export class idUsineService {
   }
 
   getIdUser() {
-    var userLogged = localStorage.getItem("user");
+    const userLogged = localStorage.getItem("user");
     if (typeof userLogged === "string") {
-      var userLoggedParse = JSON.parse(userLogged);
+      const userLoggedParse = JSON.parse(userLogged);
 
       //Récupération de l'user
       // @ts-ignore

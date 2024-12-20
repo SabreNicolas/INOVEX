@@ -43,7 +43,7 @@ export class arretsService {
     description: string,
     productId: number,
   ) {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/Depassement?dateDebut=" +
@@ -71,7 +71,7 @@ export class arretsService {
 
   //récupérer l'historique des arrêts pour un mois
   getDepassements(dateDebut: string, dateFin: string) {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/Depassements/" +
@@ -91,7 +91,7 @@ export class arretsService {
 
   //récupérer un dépassement
   getOneDepassement(id: number) {
-    let requete = "https://" + this.ip + "/getOneDepassement/" + id;
+    const requete = "https://" + this.ip + "/getOneDepassement/" + id;
     //console.log(requete);
 
     const requestOptions = {
@@ -103,7 +103,7 @@ export class arretsService {
 
   //récupérer un arrêt
   getOneArret(id: number) {
-    let requete = "https://" + this.ip + "/getOneArret/" + id;
+    const requete = "https://" + this.ip + "/getOneArret/" + id;
     //console.log(requete);
 
     const requestOptions = {
@@ -115,7 +115,7 @@ export class arretsService {
 
   //récupérer la somme des dépassements pour un mois
   getDepassementsSum(dateDebut: string, dateFin: string) {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/DepassementsSum/" +
@@ -135,7 +135,7 @@ export class arretsService {
 
   //récupérer la somme des dépassements pour un mois et pour four 1
   getDepassementsSumFour(dateDebut: string, dateFin: string, numFour: number) {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/DepassementsSumFour/" +
@@ -157,7 +157,7 @@ export class arretsService {
 
   //delete dépassements
   deleteDepassement(id: number) {
-    let requete = "https://" + this.ip + "/DeleteDepassement/" + id;
+    const requete = "https://" + this.ip + "/DeleteDepassement/" + id;
     //console.log(requete);
 
     const requestOptions = {
@@ -181,7 +181,7 @@ export class arretsService {
     description: string,
     productId: number,
   ) {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/Arrets?dateDebut=" +
@@ -218,7 +218,7 @@ export class arretsService {
     description: string,
     productId: number,
   ) {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/updateArret/" +
@@ -257,7 +257,7 @@ export class arretsService {
     description: string,
     productId: number,
   ) {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/updateDepassement/" +
@@ -287,7 +287,7 @@ export class arretsService {
 
   //récupérer l'historique des arrêts pour un mois
   getArrets(dateDebut: string, dateFin: string) {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/Arrets/" +
@@ -307,7 +307,7 @@ export class arretsService {
 
   //récupérer la somme des arrêts par type pour un mois
   getArretsType(dateDebut: string, dateFin: string) {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/ArretsSumGroup/" +
@@ -327,7 +327,7 @@ export class arretsService {
 
   //récupérer la somme des arrêts pour un mois
   getArretsSum(dateDebut: string, dateFin: string) {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/ArretsSum/" +
@@ -347,7 +347,7 @@ export class arretsService {
 
   //récupérer la somme des arrêts pour un mois et pour 1 four
   getArretsSumFour(dateDebut: string, dateFin: string, numFour: number) {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/ArretsSumFour/" +
@@ -369,7 +369,7 @@ export class arretsService {
 
   //delete arret
   deleteArret(id: number) {
-    let requete = "https://" + this.ip + "/DeleteArret/" + id;
+    const requete = "https://" + this.ip + "/DeleteArret/" + id;
     //console.log(requete);
 
     const requestOptions = {
@@ -387,7 +387,7 @@ export class arretsService {
     typeArret: string,
     commentaire: string,
   ) {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/sendmail/" +

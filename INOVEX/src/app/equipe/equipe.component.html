@@ -180,7 +180,7 @@
     </div>
     <p style="font-size: smaller; color: grey" id="legende">* : Obligatoire</p>
     <button
-      *ngIf="radioSelect == 'new' || radioSelect == ''"
+      *ngIf="radioSelect === 'new' || radioSelect === ''"
       id="creer"
       type="submit"
       class="btn btn-success"
@@ -189,7 +189,7 @@
       Soumettre
     </button>
     <button
-      *ngIf="radioSelect == 'enregistree'"
+      *ngIf="radioSelect === 'enregistree'"
       id="creer"
       type="submit"
       class="btn btn-success"

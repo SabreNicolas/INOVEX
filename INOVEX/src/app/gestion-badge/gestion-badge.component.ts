@@ -12,8 +12,8 @@ import { PopupService } from "../services/popup.service";
 })
 export class GestionBadgeComponent implements OnInit {
   public listAffect: any[];
-  public isUser: boolean = false; //true si on affecte un user, false si on affecte une zone de contrôle
-  public badgeId: number = 0;
+  public isUser = false; //true si on affecte un user, false si on affecte une zone de contrôle
+  public badgeId = 0;
   public labelSelect: string;
 
   constructor(
@@ -53,7 +53,7 @@ export class GestionBadgeComponent implements OnInit {
 
   //Affectation du badge
   onSubmit(form: NgForm) {
-    var typeAffect: string;
+    let typeAffect: string;
     if (this.isUser) {
       typeAffect = "userId";
     } else typeAffect = "zoneId";

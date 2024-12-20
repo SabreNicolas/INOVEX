@@ -10,7 +10,7 @@ import { PopupService } from "../services/popup.service";
   templateUrl: "./liens-externes.component.html",
   styleUrls: ["./liens-externes.component.scss"],
 })
-export class LiensExternesComponent {
+export class LiensExternesComponent implements OnInit {
   public nom: string;
   public url: string;
   public idLien: number;

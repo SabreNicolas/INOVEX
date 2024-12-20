@@ -6,14 +6,14 @@ import { rondierService } from "../services/rondier.service";
 import { zone } from "src/models/zone.model";
 import Swal from "sweetalert2";
 import { PopupService } from "../services/popup.service";
-declare var $: any;
+declare let $: any;
 
 @Component({
   selector: "app-recap-ronde-liste",
   templateUrl: "./recap-ronde-liste.component.html",
   styleUrls: ["./recap-ronde-liste.component.scss"],
 })
-export class RecapRondeListeComponent {
+export class RecapRondeListeComponent implements OnInit {
   public listAction: any[];
   public listEvenement: any[];
   public listZone: any[];
@@ -154,7 +154,7 @@ export class RecapRondeListeComponent {
             .subscribe((response) => {
               this.nomEquipe = response.data[0]["equipe"];
               if (response.data[0]["idRondier"] != null) {
-                for (var i = 0; i < response.data.length; i++) {
+                for (let i = 0; i < response.data.length; i++) {
                   this.listRondier.push({
                     Id: response.data[i]["idRondier"],
                     Prenom: response.data[i]["prenomRondier"],

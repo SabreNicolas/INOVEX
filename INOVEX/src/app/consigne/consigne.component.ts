@@ -174,7 +174,7 @@ export class ConsigneComponent implements OnInit {
   saveFile(event: Event) {
     //Récupération du fichier dans l'input
     // @ts-ignore
-    this.fileToUpload = (<HTMLInputElement>event.target).files[0];
+    this.fileToUpload = (event.target as HTMLInputElement).files[0];
     // @ts-ignore
     //console.log((<HTMLInputElement>event.target).files[0]);
 

@@ -52,7 +52,7 @@ export class EnregistrementEquipeComponent implements OnInit {
           this.name = response.data[0]["equipe"];
 
           if (response.data[0]["idRondier"] != null) {
-            for (var i = 0; i < response.data.length; i++) {
+            for (let i = 0; i < response.data.length; i++) {
               this.listAjout.push({
                 Id: response.data[i]["idRondier"],
                 Prenom: response.data[i]["prenomRondier"],
@@ -119,11 +119,11 @@ export class EnregistrementEquipeComponent implements OnInit {
               .nouvelEnregistrementEquipe(nomEquipe)
               .subscribe((response) => {
                 //On vide les input pour une nouvelle création
-                (<HTMLInputElement>document.getElementById("nomEquipe")).value =
+                (document.getElementById("nomEquipe") as HTMLInputElement).value =
                   "";
 
                 //On ajoute les rondier dans l'équipe
-                var idEquipe = response["data"][0]["Id"];
+                const idEquipe = response["data"][0]["Id"];
                 this.ajoutAffectationEquipe(idEquipe);
               });
           }
@@ -138,7 +138,7 @@ export class EnregistrementEquipeComponent implements OnInit {
   //Fonction qui permet d'ajouter les rondiers un par un à une équipe
   ajoutAffectationEquipe(idEquipe: number) {
     for (const user of this.listAjout) {
-      var idUser = user.Id;
+      const idUser = user.Id;
 
       if (idUser > 0) {
         this.cahierQuartService
@@ -155,7 +155,7 @@ export class EnregistrementEquipeComponent implements OnInit {
   ajoutUser(user: user) {
     this.listAjout.push(user);
 
-    let indexRomove = this.listUsers.findIndex(
+    const indexRomove = this.listUsers.findIndex(
       (item) => item.Nom === user.Nom && item.Prenom == user.Prenom,
     );
 
@@ -168,7 +168,7 @@ export class EnregistrementEquipeComponent implements OnInit {
   suppUser(user: user) {
     this.listUsers.unshift(user);
 
-    let indexRomove = this.listAjout.findIndex(
+    const indexRomove = this.listAjout.findIndex(
       (item) => item.Nom === user.Nom && item.Prenom == user.Prenom,
     );
 
@@ -182,7 +182,7 @@ export class EnregistrementEquipeComponent implements OnInit {
     this.cahierQuartService
       .udpateEnregistrementEquipe(this.name, this.idEquipe)
       .subscribe((response) => {
-        var idEquipe = this.idEquipe;
+        const idEquipe = this.idEquipe;
         this.updateAffectationEquipe(idEquipe);
       });
   }

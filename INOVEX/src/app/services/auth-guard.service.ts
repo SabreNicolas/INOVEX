@@ -22,9 +22,9 @@ export class AuthGuard {
     //Si user logged on fait les tests de droits
     if (localStorage.getItem("user") != undefined) {
       //on récupére le user co
-      var userLogged = localStorage.getItem("user");
+      const userLogged = localStorage.getItem("user");
       if (typeof userLogged === "string") {
-        var userLoggedParse = JSON.parse(userLogged);
+        const userLoggedParse = JSON.parse(userLogged);
         //test pour admin
         if (this.location.path() === "/admin") {
           if (userLoggedParse["isAdmin"] === true) {

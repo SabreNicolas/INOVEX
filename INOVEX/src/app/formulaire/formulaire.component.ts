@@ -54,12 +54,12 @@ export class FormulaireComponent implements OnInit {
             .subscribe((response) => {
               //On ajoute les produits du formulaire dans listAjout pour l'edition
               //@ts-ignore
-              for (let pr of response.data) {
+              for (const pr of response.data) {
                 this.productsService
                   .getOneProduct(pr.idProduct)
                   .subscribe((response) => {
                     this.alias = pr.alias;
-                    var ajout = {
+                    const ajout = {
                       //@ts-ignore
                       Name: response.data[0].Name,
                       //@ts-ignore
@@ -89,9 +89,9 @@ export class FormulaireComponent implements OnInit {
     ) {
       //On a une data list donc la value n'est pas l'id du produit
       //On parcours la liste des produits CAP pour trouver l'id de celui-ci
-      var idAjout = 0;
-      var verif = 0;
-      for (let pr of this.listProducts) {
+      let idAjout = 0;
+      let verif = 0;
+      for (const pr of this.listProducts) {
         if (pr.Name == this.productAjout) {
           idAjout = pr.Id;
           verif++;
@@ -103,7 +103,7 @@ export class FormulaireComponent implements OnInit {
           this.alias = this.productAjout;
         }
         //on ajoute le produit dans listAjout
-        var ajout = { Name: this.productAjout, id: idAjout, alias: this.alias };
+        const ajout = { Name: this.productAjout, id: idAjout, alias: this.alias };
         this.listAjout.push(ajout);
         this.alias = "";
         this.productAjout = "";
@@ -114,7 +114,7 @@ export class FormulaireComponent implements OnInit {
 
   //Fonction qui permet de supprimer un product de la table d'ajout
   suppProduct(id: number, Name: string, alias: string) {
-    let indexRomove = this.listAjout.findIndex(
+    const indexRomove = this.listAjout.findIndex(
       (item) => item.id === id && item.Name == Name && item.alias == alias,
     );
     if (indexRomove != -1) {
@@ -142,7 +142,7 @@ export class FormulaireComponent implements OnInit {
             .deleteProductFormulaire(this.idForm)
             .subscribe((response) => {
               //On ajoute les nouveaux produits
-              for (let pr of this.listAjout) {
+              for (const pr of this.listAjout) {
                 pr.alias = pr.alias.replace(/'/g, "''");
                 this.productsService
                   .createFormulaireAffectation(pr.alias, this.idForm, pr.id)
@@ -164,8 +164,8 @@ export class FormulaireComponent implements OnInit {
     else {
       //On créé le formulaire puis on ajoute ses produits
       this.productsService.createFormulaire(this.nom).subscribe((response) => {
-        var idForm = response["data"][0]["idFormulaire"];
-        for (let pr of this.listAjout) {
+        const idForm = response["data"][0]["idFormulaire"];
+        for (const pr of this.listAjout) {
           pr.alias = pr.alias.replace(/'/g, "''");
           this.productsService
             .createFormulaireAffectation(pr.alias, idForm, pr.id)

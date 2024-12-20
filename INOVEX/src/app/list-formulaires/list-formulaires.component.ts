@@ -31,9 +31,9 @@ export class ListFormulairesComponent implements OnInit {
     });
 
     //Récupération de l'utilisateur pour vérifier si il est admin => permettre suppression ronde si admin
-    var userLogged = localStorage.getItem("user");
+    const userLogged = localStorage.getItem("user");
     if (typeof userLogged === "string") {
-      var userLoggedParse = JSON.parse(userLogged);
+      const userLoggedParse = JSON.parse(userLogged);
       // @ts-ignore
       this.isAdmin = userLoggedParse["isAdmin"];
     }

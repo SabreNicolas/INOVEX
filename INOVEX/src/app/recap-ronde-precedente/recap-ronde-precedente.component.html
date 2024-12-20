@@ -115,10 +115,10 @@
         <td>{{ consigne.titre }}</td>
         <td>{{ consigne.commentaire }}</td>
         <td>{{ consigne.dateHeureDebut }}</td>
-        <td *ngIf="consigne.dateHeureFin != '01/01/2099 00:00:00'">
+        <td *ngIf="consigne.dateHeureFin !== '01/01/2099 00:00:00'">
           {{ consigne.dateHeureFin }}
         </td>
-        <td *ngIf="consigne.dateHeureFin == '01/01/2099 00:00:00'">Jamais</td>
+        <td *ngIf="consigne.dateHeureFin === '01/01/2099 00:00:00'">Jamais</td>
         <td *ngSwitchCase="1" style="color: blue">Jour</td>
         <td *ngSwitchCase="2" style="color: orange">Sécurité</td>
         <td *ngSwitchCase="3" style="color: blue">Process</td>

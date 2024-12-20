@@ -42,10 +42,10 @@ export class RondierFinMoisComponent implements OnInit {
 
   setPeriod(form: NgForm) {
     this.listDays = [];
-    var date = new Date(form.value["dateDeb"]);
-    var mm = String(date.getMonth() + 1).padStart(2, "0"); //January is 0!
-    var yyyy = date.getFullYear();
-    var dd = String(new Date(yyyy, date.getMonth() + 1, 0).getDate()).padStart(
+    const date = new Date(form.value["dateDeb"]);
+    const mm = String(date.getMonth() + 1).padStart(2, "0"); //January is 0!
+    const yyyy = date.getFullYear();
+    const dd = String(new Date(yyyy, date.getMonth() + 1, 0).getDate()).padStart(
       2,
       "0",
     );
@@ -55,9 +55,9 @@ export class RondierFinMoisComponent implements OnInit {
 
   //changer les dates pour saisir le mois précédent
   setLastMonth(form: NgForm) {
-    var date = new Date();
-    var mm: String;
-    var yyyy: number;
+    const date = new Date();
+    let mm: string;
+    let yyyy: number;
     if (date.getMonth() === 0) {
       mm = "12";
       yyyy = date.getFullYear() - 1;
@@ -66,8 +66,8 @@ export class RondierFinMoisComponent implements OnInit {
       yyyy = date.getFullYear();
     }
 
-    var Lastday = yyyy + "-" + mm;
-    (<HTMLInputElement>document.getElementById("dateDeb")).value = Lastday;
+    const Lastday = yyyy + "-" + mm;
+    (document.getElementById("dateDeb") as HTMLInputElement).value = Lastday;
     form.value["dateDeb"] = Lastday;
     this.setPeriod(form);
   }
@@ -80,13 +80,9 @@ export class RondierFinMoisComponent implements OnInit {
           .valueElementDay(cp.Id, day)
           .subscribe((response) => {
             if (response.data[0] != undefined && response.data[0].value != 0) {
-              (<HTMLInputElement>(
-                document.getElementById(cp.Id + "-" + day)
-              )).value = response.data[0].value;
+              (document.getElementById(cp.Id + "-" + day) as HTMLInputElement).value = response.data[0].value;
             } else
-              (<HTMLInputElement>(
-                document.getElementById(cp.Id + "-" + day)
-              )).value = "";
+              (document.getElementById(cp.Id + "-" + day) as HTMLInputElement).value = "";
           });
       });
     });
@@ -99,10 +95,8 @@ export class RondierFinMoisComponent implements OnInit {
         this.listCompteurs.forEach((compteur) => {
           //On insère dans la table saisieMenseulle de INOVEX uniquement si les noms correspondent
           if (cp.nom.toLowerCase() === compteur.Name.toLowerCase()) {
-            var value = (<HTMLInputElement>(
-              document.getElementById(cp.Id + "-" + day)
-            )).value.replace(",", ".");
-            var valueInt: number = +value;
+            const value = (document.getElementById(cp.Id + "-" + day) as HTMLInputElement).value.replace(",", ".");
+            const valueInt: number = +value;
             if (valueInt > 0.0) {
               this.productsService
                 .createMeasure(

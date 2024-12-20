@@ -9,7 +9,7 @@ import { permisFeuValidation } from "../../models/permisfeu-validation.model";
 import { user } from "../../models/user.model";
 import { groupement } from "src/models/groupement.model";
 import { PopupService } from "../services/popup.service";
-declare var $: any;
+declare let $: any;
 
 @Component({
   selector: "app-reporting-ronde",
@@ -43,7 +43,7 @@ export class ReportingRondeComponent implements OnInit {
   public quart: number;
   public listElementsOfUsine: any[];
   public listGroupements: groupement[];
-  public listeZoneUnique: Map<String, number>;
+  public listeZoneUnique: Map<string, number>;
   public listElementsUniques: any;
 
   constructor(
@@ -60,12 +60,12 @@ export class ReportingRondeComponent implements OnInit {
     this.idUsine = 0;
     this.dateRechercher = "";
     this.quart = 0;
-    var dt = new Date();
+    const dt = new Date();
     dt.setDate(dt.getDate());
-    var dd = String(dt.getDate()).padStart(2, "0");
-    var mm = String(dt.getMonth() + 1).padStart(2, "0"); //January is 0!
-    var yyyy = dt.getFullYear();
-    var day = dd + "/" + mm + "/" + yyyy;
+    const dd = String(dt.getDate()).padStart(2, "0");
+    const mm = String(dt.getMonth() + 1).padStart(2, "0"); //January is 0!
+    const yyyy = dt.getFullYear();
+    const day = dd + "/" + mm + "/" + yyyy;
     this.dateDeb = day;
     //fin gestion date défaut
     this.listAnomalie = [];
@@ -79,9 +79,9 @@ export class ReportingRondeComponent implements OnInit {
     this.numbers = [];
     this.nbfour = 0;
     //Récupération de l'utilisateur pour vérifier si il est admin => permettre suppression ronde si admin
-    var userLogged = localStorage.getItem("user");
+    const userLogged = localStorage.getItem("user");
     if (typeof userLogged === "string") {
-      var userLoggedParse = JSON.parse(userLogged);
+      const userLoggedParse = JSON.parse(userLogged);
       // @ts-ignore
       this.isAdmin = userLoggedParse["isAdmin"];
       this.isChefQuart = userLoggedParse["isChefQuart"];
@@ -94,9 +94,9 @@ export class ReportingRondeComponent implements OnInit {
   ngOnInit(): void {
     window.parent.document.title = "CAP Exploitation - Ronde";
 
-    var userLogged = localStorage.getItem("user");
+    const userLogged = localStorage.getItem("user");
     if (typeof userLogged === "string") {
-      var userLoggedParse = JSON.parse(userLogged);
+      const userLoggedParse = JSON.parse(userLogged);
       this.userLogged = userLoggedParse;
       //Récupération de l'idUsine
       // @ts-ignore
@@ -178,8 +178,8 @@ export class ReportingRondeComponent implements OnInit {
       .subscribe((response) => {
         //@ts-ignore
         this.listElementsOfUsine = response.data;
-        var prompt = "";
-        var prompt0 = "";
+        let prompt = "";
+        let prompt0 = "";
         $(document).ready(() => {
           setTimeout(() => {
             //Affichage des éléments
@@ -282,7 +282,7 @@ export class ReportingRondeComponent implements OnInit {
                 this.listElementsOfUsine[i].idRonde +
                 "--" +
                 this.listElementsOfUsine[i].Id;
-              var promptVal = "";
+              let promptVal = "";
               if (this.listElementsOfUsine[i].value == "/") {
                 promptVal += '<p style="background-color: red;">NON SAISIE</p>';
               } else {
@@ -332,8 +332,8 @@ export class ReportingRondeComponent implements OnInit {
               $(id)
                 .append(promptVal)
                 .on("click", ".updateValue", (event: any) => {
-                  var id = event.target.id.split("--")[0];
-                  var value = event.target.id.split("--")[1];
+                  const id = event.target.id.split("--")[0];
+                  const value = event.target.id.split("--")[1];
                   this.updateValueElement(id, value);
                 });
             }
@@ -367,12 +367,12 @@ export class ReportingRondeComponent implements OnInit {
 
   //Quand on change de date, on affiche le quart correspondant au quart en cour à la date donnée.
   setPeriod(form: NgForm) {
-    var dt = new Date(form.value["dateDeb"]);
+    const dt = new Date(form.value["dateDeb"]);
     dt.setDate(dt.getDate());
-    var dd = String(dt.getDate()).padStart(2, "0");
-    var mm = String(dt.getMonth() + 1).padStart(2, "0"); //January is 0!
-    var yyyy = dt.getFullYear();
-    var day = dd + "/" + mm + "/" + yyyy;
+    const dd = String(dt.getDate()).padStart(2, "0");
+    const mm = String(dt.getMonth() + 1).padStart(2, "0"); //January is 0!
+    const yyyy = dt.getFullYear();
+    const day = dd + "/" + mm + "/" + yyyy;
     this.dateDeb = day;
     // (<HTMLDivElement>document.getElementById("tableDesRondes")).style.display = "block";
     this.ngOnInit();
@@ -380,10 +380,10 @@ export class ReportingRondeComponent implements OnInit {
 
   //changer les dates pour saisir hier
   setYesterday(form: NgForm) {
-    var date = new Date();
-    var yyyy = date.getFullYear();
-    var dd = String(date.getDate() - 1).padStart(2, "0");
-    var mm = String(date.getMonth() + 1).padStart(2, "0"); //January is 0!
+    const date = new Date();
+    const yyyy = date.getFullYear();
+    let dd = String(date.getDate() - 1).padStart(2, "0");
+    let mm = String(date.getMonth() + 1).padStart(2, "0"); //January is 0!
     if (dd === "00") {
       dd = String(new Date(yyyy, date.getMonth(), 0).getDate()).padStart(
         2,
@@ -391,20 +391,20 @@ export class ReportingRondeComponent implements OnInit {
       );
       mm = String(date.getMonth()).padStart(2, "0");
     }
-    var day = yyyy + "-" + mm + "-" + dd;
-    (<HTMLInputElement>document.getElementById("dateDeb")).value = day;
+    const day = yyyy + "-" + mm + "-" + dd;
+    (document.getElementById("dateDeb") as HTMLInputElement).value = day;
     form.value["dateDeb"] = day;
     this.setPeriod(form);
   }
 
   //changer les dates pour saisir aujourd'hui
   setToday(form: NgForm) {
-    var date = new Date();
-    var yyyy = date.getFullYear();
-    var dd = String(date.getDate()).padStart(2, "0");
-    var mm = String(date.getMonth() + 1).padStart(2, "0"); //January is 0!
-    var day = yyyy + "-" + mm + "-" + dd;
-    (<HTMLInputElement>document.getElementById("dateDeb")).value = day;
+    const date = new Date();
+    const yyyy = date.getFullYear();
+    const dd = String(date.getDate()).padStart(2, "0");
+    const mm = String(date.getMonth() + 1).padStart(2, "0"); //January is 0!
+    const day = yyyy + "-" + mm + "-" + dd;
+    (document.getElementById("dateDeb") as HTMLInputElement).value = day;
     form.value["dateDeb"] = day;
     this.setPeriod(form);
   }
@@ -446,7 +446,7 @@ export class ReportingRondeComponent implements OnInit {
   }
 
   updateValueElement(Id: number, Val: string) {
-    var value = prompt("Veuillez saisir une valeur", Val);
+    let value = prompt("Veuillez saisir une valeur", Val);
     if (value == null) {
       return; //break out of the function early
     }
@@ -465,13 +465,13 @@ export class ReportingRondeComponent implements OnInit {
 
   //permet de vérifier si le four est en route
   checkFonctFour(fourNum: number, ronde: ronde) {
-    let fonctFour = "fonctFour" + fourNum;
+    const fonctFour = "fonctFour" + fourNum;
     //@ts-ignore
     return ronde[fonctFour];
   }
 
   async setFilters() {
-    var typeElt = null;
+    const typeElt = null;
     if (this.name != "") {
       this.filtreZone = this.name.toLowerCase();
       this.type = "";
@@ -504,9 +504,9 @@ export class ReportingRondeComponent implements OnInit {
   }
 
   editAnomalie(rondeId: number, zoneId: number) {
-    var nvCommentaire;
+    let nvCommentaire;
     //@ts-ignore
-    var commentaire = document.getElementById(
+    const commentaire = document.getElementById(
       rondeId + "--" + zoneId,
     ).innerHTML;
     if (commentaire == "") {

@@ -27,10 +27,10 @@ export class ListReactifsComponent implements OnInit {
   public listDays: string[];
   public typeImportTonnage: string;
   public csvArray: importCSV[];
-  public stockageImport: Map<String, number>;
+  public stockageImport: Map<string, number>;
   public correspondance: any[];
   public dates: string[];
-  public dechetsManquants: Map<String, String>;
+  public dechetsManquants: Map<string, string>;
 
   constructor(
     private idUsineService: idUsineService,
@@ -73,10 +73,10 @@ export class ListReactifsComponent implements OnInit {
   setPeriod(form: NgForm) {
     this.listDays = [];
     this.dateDeb = new Date(
-      (<HTMLInputElement>document.getElementById("dateDeb")).value,
+      (document.getElementById("dateDeb") as HTMLInputElement).value,
     );
     this.dateFin = new Date(
-      (<HTMLInputElement>document.getElementById("dateFin")).value,
+      (document.getElementById("dateFin") as HTMLInputElement).value,
     );
     if (this.dateFin < this.dateDeb) {
       this.dateService.mauvaiseEntreeDate(form);
@@ -100,13 +100,9 @@ export class ListReactifsComponent implements OnInit {
           )
           .subscribe((response) => {
             if (response.data[0] != undefined && response.data[0].Value != 0) {
-              (<HTMLInputElement>(
-                document.getElementById(pr.Id + "-" + date)
-              )).value = response.data[0].Value;
+              (document.getElementById(pr.Id + "-" + date) as HTMLInputElement).value = response.data[0].Value;
             } else
-              (<HTMLInputElement>(
-                document.getElementById(pr.Id + "-" + date)
-              )).value = "";
+              (document.getElementById(pr.Id + "-" + date) as HTMLInputElement).value = "";
           });
       });
     });
@@ -116,11 +112,9 @@ export class ListReactifsComponent implements OnInit {
   validation() {
     this.listDays.forEach((date) => {
       this.listProducts.forEach((pr) => {
-        var value = (<HTMLInputElement>(
-          document.getElementById(pr.Id + "-" + date)
-        )).value.replace(",", ".");
-        var Value2 = value.replace(" ", "");
-        var valueInt: number = +Value2;
+        const value = (document.getElementById(pr.Id + "-" + date) as HTMLInputElement).value.replace(",", ".");
+        const Value2 = value.replace(" ", "");
+        const valueInt: number = +Value2;
         if (valueInt > 0.0) {
           this.mrService
             .createMeasure(
@@ -182,7 +176,7 @@ export class ListReactifsComponent implements OnInit {
       .subscribe((response) => {
         if (response == "Création du Measures OK") {
           this.popupService.alertSuccessForm("La valeur a bien été supprimé !");
-          (<HTMLInputElement>document.getElementById(Id + "-" + date)).value =
+          (document.getElementById(Id + "-" + date) as HTMLInputElement).value =
             "";
         } else {
           this.popupService.alertErrorForm(
@@ -227,7 +221,7 @@ export class ListReactifsComponent implements OnInit {
       this.typeImportTonnage.toLowerCase().includes("informatique verte")
     ) {
       //@ts-ignore
-      var file = event.target.files[0].name;
+      let file = event.target.files[0].name;
       file = file.toLowerCase();
       if (file.includes("dasri")) {
         //delimiter,header,typedechet,dateEntree,tonnage, posEntreeSortie
@@ -320,11 +314,11 @@ export class ListReactifsComponent implements OnInit {
   ) {
     this.loading();
     //@ts-ignore
-    var files = event.target.files; // FileList object
-    var file = files[0];
-    var reader = new FileReader();
+    const files = event.target.files; // FileList object
+    const file = files[0];
+    const reader = new FileReader();
 
-    var debut = 0;
+    let debut = 0;
 
     //Si on a une ligne header, on commence l'acquisition à 1.
     if (header == true) {
@@ -333,7 +327,7 @@ export class ListReactifsComponent implements OnInit {
 
     reader.readAsText(file);
     reader.onload = (event: any) => {
-      var csv = event.target.result; // Content of CSV file
+      const csv = event.target.result; // Content of CSV file
       //options à ajouter => pas d'entête, delimiter ;
       this.Papa.parse(csv, {
         skipEmptyLines: true,
@@ -373,7 +367,7 @@ export class ListReactifsComponent implements OnInit {
                 );
               }
 
-              let importCSV = {
+              const importCSV = {
                 client: "Aucun",
                 typeDechet: results.data[i][posTypeDechet],
                 dateEntree: results.data[i][posDateEntree].substring(0, 10),
@@ -456,10 +450,10 @@ export class ListReactifsComponent implements OnInit {
   insertTonnageCSV() {
     let successInsert = true;
     this.stockageImport.clear();
-    var count = 0;
+    let count = 0;
 
     this.csvArray.forEach((csv) => {
-      var dechetManquant = csv.typeDechet;
+      const dechetManquant = csv.typeDechet;
       count = 0;
 
       this.correspondance.forEach((correspondance) => {
@@ -481,14 +475,14 @@ export class ListReactifsComponent implements OnInit {
         ) {
           //Si il y a correspondance on fait traitement
           if (correspondance.productImport == csv.typeDechet) {
-            let formatDate =
+            const formatDate =
               csv.dateEntree.split("/")[2] +
               "-" +
               csv.dateEntree.split("/")[1] +
               "-" +
               csv.dateEntree.split("/")[0];
             if (formatDate != "undefined-undefined-") {
-              let keyHash = formatDate + "_" + correspondance.ProductId;
+              const keyHash = formatDate + "_" + correspondance.ProductId;
               //si il y a deja une valeur dans la hashMap pour ce client et ce jour, on incrémente la valeur
               let value, valueRound;
               count = count + 1;
@@ -526,7 +520,7 @@ export class ListReactifsComponent implements OnInit {
     });
 
     //on parcours la hashmap pour insertion en BDD
-    this.stockageImport.forEach(async (value: number, key: String) => {
+    this.stockageImport.forEach(async (value: number, key: string) => {
       this.mrService
         .createMeasure(key.split("_")[0], value, parseInt(key.split("_")[1]), 0)
         .subscribe((response) => {
@@ -537,9 +531,9 @@ export class ListReactifsComponent implements OnInit {
     });
 
     if (successInsert == true) {
-      var afficher = "";
+      let afficher = "";
 
-      this.dechetsManquants.forEach(async (value: String, key: String) => {
+      this.dechetsManquants.forEach(async (value: string, key: string) => {
         afficher +=
           "Le déchet : <strong>'" +
           key +

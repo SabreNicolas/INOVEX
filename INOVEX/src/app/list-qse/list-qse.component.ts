@@ -35,10 +35,10 @@ export class ListQseComponent implements OnInit {
   // permet d'actualiser la date choisi
   setPeriod(form: NgForm) {
     this.listDays = [];
-    var date = new Date(form.value["dateDeb"]);
-    var mm = String(date.getMonth() + 1).padStart(2, "0"); //January is 0!
-    var yyyy = date.getFullYear();
-    var dd = String(new Date(yyyy, date.getMonth() + 1, 0).getDate()).padStart(
+    const date = new Date(form.value["dateDeb"]);
+    const mm = String(date.getMonth() + 1).padStart(2, "0"); //January is 0!
+    const yyyy = date.getFullYear();
+    const dd = String(new Date(yyyy, date.getMonth() + 1, 0).getDate()).padStart(
       2,
       "0",
     );
@@ -48,12 +48,12 @@ export class ListQseComponent implements OnInit {
 
   //changer les dates pour saisir le mois précédent
   setLastMonth(form: NgForm) {
-    var date = new Date();
-    var mm = String(date.getMonth()).padStart(2, "0"); //January is 0!
-    var yyyy = date.getFullYear();
+    const date = new Date();
+    const mm = String(date.getMonth()).padStart(2, "0"); //January is 0!
+    const yyyy = date.getFullYear();
 
-    var Lastday = yyyy + "-" + mm;
-    (<HTMLInputElement>document.getElementById("dateDeb")).value = Lastday;
+    const Lastday = yyyy + "-" + mm;
+    (document.getElementById("dateDeb") as HTMLInputElement).value = Lastday;
     form.value["dateDeb"] = Lastday;
     this.setPeriod(form);
   }
@@ -61,10 +61,10 @@ export class ListQseComponent implements OnInit {
   //afficher le dernier jour de chaque mois de l'année en cours
   setYear() {
     this.listDays = [];
-    var date = new Date();
-    var yyyy = date.getFullYear();
+    const date = new Date();
+    const yyyy = date.getFullYear();
     for (let i = 1; i < 13; i++) {
-      var dd = String(new Date(yyyy, i, 0).getDate()).padStart(2, "0");
+      const dd = String(new Date(yyyy, i, 0).getDate()).padStart(2, "0");
       if (i < 10) {
         this.listDays.push(dd + "/" + 0 + i + "/" + yyyy);
       } else this.listDays.push(dd + "/" + i + "/" + yyyy);
@@ -75,10 +75,10 @@ export class ListQseComponent implements OnInit {
   //afficher le dernier jour de chaque mois de l'année en cours
   setLastYear() {
     this.listDays = [];
-    var date = new Date();
-    var yyyy = date.getFullYear() - 1;
+    const date = new Date();
+    const yyyy = date.getFullYear() - 1;
     for (let i = 1; i < 13; i++) {
-      var dd = String(new Date(yyyy, i, 0).getDate()).padStart(2, "0");
+      const dd = String(new Date(yyyy, i, 0).getDate()).padStart(2, "0");
       if (i < 10) {
         this.listDays.push(dd + "/" + 0 + i + "/" + yyyy);
       } else this.listDays.push(dd + "/" + i + "/" + yyyy);
@@ -98,13 +98,9 @@ export class ListQseComponent implements OnInit {
           )
           .subscribe((response) => {
             if (response.data[0] != undefined && response.data[0].Value != 0) {
-              (<HTMLInputElement>(
-                document.getElementById(cp.Code + "-" + day)
-              )).value = response.data[0].Value;
+              (document.getElementById(cp.Code + "-" + day) as HTMLInputElement).value = response.data[0].Value;
             } else
-              (<HTMLInputElement>(
-                document.getElementById(cp.Code + "-" + day)
-              )).value = "";
+              (document.getElementById(cp.Code + "-" + day) as HTMLInputElement).value = "";
           });
       });
     });
@@ -114,11 +110,9 @@ export class ListQseComponent implements OnInit {
   validation() {
     this.listQse.forEach((cp) => {
       this.listDays.forEach((day) => {
-        let value = (<HTMLInputElement>(
-          document.getElementById(cp.Code + "-" + day)
-        )).value.replace(",", ".");
-        var Value2 = value.replace(" ", "");
-        var valueInt: number = +Value2;
+        const value = (document.getElementById(cp.Code + "-" + day) as HTMLInputElement).value.replace(",", ".");
+        const Value2 = value.replace(" ", "");
+        const valueInt: number = +Value2;
         if (valueInt > 0.0) {
           this.moralEntitiesService
             .createMeasure(
@@ -159,7 +153,7 @@ export class ListQseComponent implements OnInit {
       .subscribe((response) => {
         if (response == "Création du Measures OK") {
           this.popupService.alertSuccessForm("La valeur a bien été supprimé !");
-          (<HTMLInputElement>document.getElementById(Code + "-" + date)).value =
+          (document.getElementById(Code + "-" + date) as HTMLInputElement).value =
             "";
         } else {
           this.popupService.alertErrorForm(

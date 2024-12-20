@@ -35,9 +35,9 @@ export class AdminComponent implements OnInit {
   ngOnInit(): void {
     this.getProducts();
     this.getElements();
-    var userLogged = localStorage.getItem("user");
+    const userLogged = localStorage.getItem("user");
     if (typeof userLogged === "string") {
-      var userLoggedParse = JSON.parse(userLogged);
+      const userLoggedParse = JSON.parse(userLogged);
       //Si une localisation est stocké dans le localstorage, c'est que c'est un superAdmin et qu'il a choisi le site au début
       if (userLoggedParse.hasOwnProperty("localisation")) {
         this.isSuperAdmin = true;
@@ -47,10 +47,10 @@ export class AdminComponent implements OnInit {
 
   setFilters() {
     /* Début prise en compte des filtres*/
-    var typeElt = document.getElementById("type");
+    const typeElt = document.getElementById("type");
     // @ts-ignore
-    var typeSel = typeElt.options[typeElt.selectedIndex].value;
-    var name = (<HTMLInputElement>document.getElementById("name")).value;
+    const typeSel = typeElt.options[typeElt.selectedIndex].value;
+    const name = (document.getElementById("name") as HTMLInputElement).value;
     this.typeId = typeSel;
     this.name = name.replace(/'/g, "''");
     /*Fin de prise en commpte des filtres */
@@ -94,7 +94,7 @@ export class AdminComponent implements OnInit {
 
   //mise à jour de l'unité
   setUnit(PR: product) {
-    var unit = prompt("Veuillez saisir une unité", String(PR.Unit));
+    const unit = prompt("Veuillez saisir une unité", String(PR.Unit));
     if (unit == null) {
       return; //break out of the function early
     }
@@ -113,7 +113,7 @@ export class AdminComponent implements OnInit {
 
   //mise à jour du type
   setType(PR: product) {
-    var type = prompt(
+    const type = prompt(
       "2 pour Consommable, 3 pour Niveau, 4 pour Compteur, 5 pour Sortie, 6 pour Analyse",
       String(PR.typeId),
     );
@@ -143,7 +143,7 @@ export class AdminComponent implements OnInit {
   }
 
   changeAllType() {
-    var type = prompt(
+    const type = prompt(
       "2 pour Consommable, 3 pour Niveau, 4 pour Compteur, 5 pour Sortie, 6 pour Analyse",
       "0",
     );
@@ -151,7 +151,7 @@ export class AdminComponent implements OnInit {
     if (type < 1) {
       return; //break out of the function early
     }
-    for (var i = 0; i < this.listId.length; i++) {
+    for (let i = 0; i < this.listId.length; i++) {
       this.productsService
         //@ts-ignore
         .setType(type, this.listId[i])
@@ -227,13 +227,13 @@ export class AdminComponent implements OnInit {
 
   //fonction qui permet de choisir l'élement rondier correspondant au produit pour la récupération automatique
   setElementRondier(pr: product) {
-    let listElementsRondier = {};
+    const listElementsRondier = {};
     //Un peu particulier ici mais si la clef de l'objet n'est pas une chaine, l'ordre alphabétique n'est pas respecté car classement selon la clef
     //d'ou le 0_rondier
     //@ts-ignore
     listElementsRondier["0_rondier"] = "Aucun";
     this.listElements.forEach((element) => {
-      let id = String(element.Id) + "_rondier";
+      const id = String(element.Id) + "_rondier";
       //@ts-ignore
       listElementsRondier[id] = element.nomZone + " - " + element.nom;
     });
@@ -248,7 +248,7 @@ export class AdminComponent implements OnInit {
     }).then((result) => {
       if (result.value != undefined) {
         //On récupérer l'id de l'élément rondier que l'on a stocké dans la clef de la liste
-        let idElementRondier = Number(result.value.split("_")[0]);
+        const idElementRondier = Number(result.value.split("_")[0]);
         this.rondierService
           .changeTypeRecupSetRondier(pr.Id, idElementRondier)
           .subscribe((response) => {
@@ -263,7 +263,7 @@ export class AdminComponent implements OnInit {
 
   //Mettre à jour le coefficient d'un produit
   updateCoeff(pr: product) {
-    var saisie = prompt(
+    let saisie = prompt(
       "Veuillez saisir un coefficient pour ce produit",
       String(pr.Coefficient),
     );
@@ -283,7 +283,7 @@ export class AdminComponent implements OnInit {
   }
 
   editionNomProduit(Name: string) {
-    var saisie = prompt(
+    let saisie = prompt(
       "Veuillez saisir un nouveau nom pour ce produit pour ce produit",
       String(Name),
     );

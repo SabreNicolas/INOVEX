@@ -1,4 +1,4 @@
-import { Component, TemplateRef, ViewChild } from "@angular/core";
+import { Component, TemplateRef, ViewChild, OnInit } from "@angular/core";
 import { anomalie } from "src/models/anomalie.model";
 import { rondierService } from "../services/rondier.service";
 import { PopupService } from "../services/popup.service";
@@ -7,14 +7,14 @@ import { DatePipe } from "@angular/common";
 import Swal from "sweetalert2";
 import { AltairService } from "../services/altair.service";
 import { cahierQuartService } from "../services/cahierQuart.service";
-declare var $: any;
+declare let $: any;
 
 @Component({
   selector: "app-list-anomalies",
   templateUrl: "./list-anomalies.component.html",
   styleUrls: ["./list-anomalies.component.scss"],
 })
-export class ListAnomaliesComponent {
+export class ListAnomaliesComponent implements OnInit {
   @ViewChild("myCreateEventDialog") createEventDialog = {} as TemplateRef<any>;
 
   public listAnomalies: any[];
@@ -32,7 +32,7 @@ export class ListAnomaliesComponent {
   public idAnomalie: number;
   public groupementGMAO: string;
   public equipementGMAO: string;
-  public listGroupementsGMAOMap: Map<String, String>;
+  public listGroupementsGMAOMap: Map<string, string>;
   public listGroupementGMAOTable: any[];
   public listEquipementGMAO: any[];
   public listEquipementGMAOFiltre: any[];
@@ -42,7 +42,7 @@ export class ListAnomaliesComponent {
   public consigne: number;
   public description: string;
   public cause: string;
-  public days: String[];
+  public days: string[];
 
   constructor(
     public altairService: AltairService,
@@ -76,8 +76,8 @@ export class ListAnomaliesComponent {
 
   ngOnInit(): void {
     /**Détermination des dates des 7 jours */
-    let today = new Date();
-    let sevenDaysAgo = new Date();
+    const today = new Date();
+    const sevenDaysAgo = new Date();
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6);
     this.days = this.getDates(sevenDaysAgo, today);
     this.days.reverse();
@@ -122,7 +122,7 @@ export class ListAnomaliesComponent {
       this.token = response.token;
 
       this.altairService.getEquipements(this.token).subscribe((response) => {
-        for (let equipment of response.equipment) {
+        for (const equipment of response.equipment) {
           if (equipment.status != "REBUT") {
             this.listEquipementGMAO.push(equipment);
           }
@@ -131,8 +131,8 @@ export class ListAnomaliesComponent {
 
         //On récupère la liste des groupements avec les détails
         this.altairService.getLocations(this.token).subscribe((response) => {
-          for (let equipement of this.listEquipementGMAO) {
-            for (let location of response.location) {
+          for (const equipement of this.listEquipementGMAO) {
+            for (const location of response.location) {
               if (equipement.fkcodelocation === location.codelocation) {
                 this.listGroupementsGMAOMap.set(
                   equipement.fkcodelocation + "---" + location.description,
@@ -167,7 +167,7 @@ export class ListAnomaliesComponent {
       //@ts-ignore
       this.imgSrc = response.data[0]["photo"];
 
-      var input = document.getElementById("fichier") as HTMLInputElement;
+      const input = document.getElementById("fichier") as HTMLInputElement;
       console.log(this.imgSrc);
       if (
         this.imgSrc != "NULL" &&
@@ -191,7 +191,7 @@ export class ListAnomaliesComponent {
   saveFile(event: Event) {
     //Récupération du fichier dans l'input
     // @ts-ignore
-    this.fileToUpload = (<HTMLInputElement>event.target).files[0];
+    this.fileToUpload = (event.target as HTMLInputElement).files[0];
     // @ts-ignore
     //console.log((<HTMLInputElement>event.target).files[0]);
 
@@ -211,14 +211,14 @@ export class ListAnomaliesComponent {
       $("#dateFin").show();
       $("#equipementGMAO").show();
       $("#groupementGMAO").show();
-      var date = new Date();
-      var yyyy = date.getFullYear();
-      var dd = String(date.getDate()).padStart(2, "0");
-      var mm = String(date.getMonth() + 1).padStart(2, "0"); //January is 0!
-      var hh = String(date.getHours()).padStart(2, "0");
-      var min = String(date.getMinutes()).padStart(2, "0");
-      var day = yyyy + "-" + mm + "-" + dd + "T" + hh + ":" + min;
-      (<HTMLInputElement>document.getElementById("dateDebut")).value = day;
+      const date = new Date();
+      const yyyy = date.getFullYear();
+      const dd = String(date.getDate()).padStart(2, "0");
+      const mm = String(date.getMonth() + 1).padStart(2, "0"); //January is 0!
+      const hh = String(date.getHours()).padStart(2, "0");
+      const min = String(date.getMinutes()).padStart(2, "0");
+      const day = yyyy + "-" + mm + "-" + dd + "T" + hh + ":" + min;
+      (document.getElementById("dateDebut") as HTMLInputElement).value = day;
       //@ts-ignore
       this.dateDeb = day;
     } else {
@@ -234,7 +234,7 @@ export class ListAnomaliesComponent {
     if (this.groupementGMAO == "") {
       this.listEquipementGMAOFiltre = this.listEquipementGMAO;
     } else {
-      for (let equipement of this.listEquipementGMAO) {
+      for (const equipement of this.listEquipementGMAO) {
         if (equipement.fkcodelocation == this.groupementGMAO) {
           this.listEquipementGMAOFiltre.push(equipement);
         }
@@ -243,7 +243,7 @@ export class ListAnomaliesComponent {
   }
 
   updateGroupements() {
-    for (let equipement of this.listEquipementGMAO) {
+    for (const equipement of this.listEquipementGMAO) {
       if (equipement.codeequipment == this.equipementGMAO.split("---")[0]) {
         this.groupementGMAO = equipement.fkcodelocation;
       }
@@ -445,7 +445,7 @@ export class ListAnomaliesComponent {
   //TODO a externaliser dans un service
   //Permet de récupérer les dates entre 2 dates, tableau au format string dd/mm/yyyy
   getDates(startDate: Date, stopDate: Date) {
-    let dateArray = [];
+    const dateArray = [];
     while (startDate <= stopDate) {
       dateArray.push(startDate.toLocaleDateString());
       startDate.setDate(startDate.getDate() + 1);
@@ -454,8 +454,8 @@ export class ListAnomaliesComponent {
   }
 
   //Permet d'afficher ou masquer les tableaux d'évènements
-  showTable(dateTable: String) {
-    let idTable = "#table--" + dateTable;
+  showTable(dateTable: string) {
+    const idTable = "#table--" + dateTable;
     if ($(idTable).is(":hidden")) {
       $(idTable).show();
     } else $(idTable).hide();

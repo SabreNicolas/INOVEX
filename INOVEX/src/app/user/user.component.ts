@@ -50,29 +50,29 @@ export class UserComponent implements OnInit {
     this.login = form.value["identifiant"].replace(/'/g, "''");
 
     //GESTION DES DROITS
-    var rondier = document.getElementsByName("rondier");
-    var saisie = document.getElementsByName("saisie");
-    var qse = document.getElementsByName("qse");
-    var rapport = document.getElementsByName("rapports");
-    var admin = document.getElementsByName("admin");
-    var chefQuart = document.getElementsByName("chefQuart");
+    const rondier = document.getElementsByName("rondier");
+    const saisie = document.getElementsByName("saisie");
+    const qse = document.getElementsByName("qse");
+    const rapport = document.getElementsByName("rapports");
+    const admin = document.getElementsByName("admin");
+    const chefQuart = document.getElementsByName("chefQuart");
 
-    if ((<HTMLInputElement>rondier[0]).checked) {
+    if ((rondier[0] as HTMLInputElement).checked) {
       this.isRondier = 1;
     } else this.isRondier = 0;
-    if ((<HTMLInputElement>saisie[0]).checked) {
+    if ((saisie[0] as HTMLInputElement).checked) {
       this.isSaisie = 1;
     } else this.isSaisie = 0;
-    if ((<HTMLInputElement>qse[0]).checked) {
+    if ((qse[0] as HTMLInputElement).checked) {
       this.isQSE = 1;
     } else this.isQSE = 0;
-    if ((<HTMLInputElement>rapport[0]).checked) {
+    if ((rapport[0] as HTMLInputElement).checked) {
       this.isRapport = 1;
     } else this.isRapport = 0;
-    if ((<HTMLInputElement>chefQuart[0]).checked) {
+    if ((chefQuart[0] as HTMLInputElement).checked) {
       this.isChefQuart = 1;
     } else this.isChefQuart = 0;
-    if ((<HTMLInputElement>admin[0]).checked) {
+    if ((admin[0] as HTMLInputElement).checked) {
       this.isAdmin = 1;
     } else this.isAdmin = 0;
 
@@ -113,7 +113,7 @@ export class UserComponent implements OnInit {
   }
 
   verifLogin(form: NgForm) {
-    var login = form.value["identifiant"].replace(/'/g, "''");
+    const login = form.value["identifiant"].replace(/'/g, "''");
     this.loginService.getLogin(login).subscribe((response) => {
       // @ts-ignore
       if (response.data.length > 0) {

@@ -12,9 +12,9 @@ export class cahierQuart implements OnInit {
 
   constructor() {
     this.idUsine = 0;
-    var userLogged = localStorage.getItem("user");
+    const userLogged = localStorage.getItem("user");
     if (typeof userLogged === "string") {
-      var userLoggedParse = JSON.parse(userLogged);
+      const userLoggedParse = JSON.parse(userLogged);
       this.userLogged = userLoggedParse;
       // @ts-ignore
       this.idUsine = this.userLogged["idUsine"];

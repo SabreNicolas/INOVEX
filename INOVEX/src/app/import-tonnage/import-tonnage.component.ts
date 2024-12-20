@@ -86,11 +86,11 @@ export class ImportTonnageComponent implements OnInit {
 
   setFilters() {
     /* Début prise en compte des filtres*/
-    var produitElt = document.getElementById("produit");
+    const produitElt = document.getElementById("produit");
     // @ts-ignore
-    var produitSel = produitElt.options[produitElt.selectedIndex].value;
-    var collecteurElt = document.getElementById("collecteur");
-    var collecteurSel =
+    const produitSel = produitElt.options[produitElt.selectedIndex].value;
+    const collecteurElt = document.getElementById("collecteur");
+    const collecteurSel =
       //@ts-ignore
       collecteurElt.options[collecteurElt.selectedIndex].value;
     this.debCode = produitSel + collecteurSel;
@@ -114,8 +114,8 @@ export class ImportTonnageComponent implements OnInit {
     type: string,
   ) {
     //On récupère la correspondance pour voir si elle est déjà existante
-    var verifNomImport = nomImport;
-    var verifProductImport = productImport;
+    const verifNomImport = nomImport;
+    const verifProductImport = productImport;
     //On demande à l'utilisateur de siaire soit le nom soit le produit
     if (type == "nom") {
       if (nomImport == null) {

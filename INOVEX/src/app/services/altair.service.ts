@@ -25,49 +25,49 @@ export class AltairService {
 
   //Récupérer la liste des "equipements"
   getEquipements(token: string) {
-    let requete = this.ip + "/rest/refdata/all/equipment/list/EQUIPMENT";
+    const requete = this.ip + "/rest/refdata/all/equipment/list/EQUIPMENT";
     //enlever status rebut
     const requestOptions = new HttpHeaders({
       Authorization: "Bearer " + token,
       "Content-Type": "application/json",
     });
 
-    var headers = {
+    const headers = {
       headers: requestOptions,
     };
-    var url = requete;
+    const url = requete;
 
     return this.http.get<any>(url, headers);
   }
 
   //Récupérer la liste des "location"
   getLocations(token: string) {
-    let requete = this.ip + "/rest/refdata/all/location/list/LOCATION";
+    const requete = this.ip + "/rest/refdata/all/location/list/LOCATION";
     //enlever status rebut
     const requestOptions = new HttpHeaders({
       Authorization: "Bearer " + token,
       "Content-Type": "application/json",
     });
 
-    var headers = {
+    const headers = {
       headers: requestOptions,
     };
-    var url = requete;
+    const url = requete;
 
     return this.http.get<any>(url, headers);
   }
 
   //Se connecter
   login() {
-    let requete = this.ip + "/rest/system/login";
+    const requete = this.ip + "/rest/system/login";
 
     const requestOptions = new HttpHeaders(this.headerDict);
 
-    var headers = {
+    const headers = {
       headers: requestOptions,
     };
-    var url = requete;
-    var site = "";
+    const url = requete;
+    let site = "";
     switch (this.idUsine) {
       case 1:
         site = "NOYELLES";
@@ -147,7 +147,7 @@ export class AltairService {
         site = "CALCE";
         break;
     }
-    var payload =
+    const payload =
       '{\r\n  "username":"capexploitation",\r\n  "password":"capexploitation",\r\n  "site":"' +
       site +
       '",\r\n  "passwordprehashed": false\r\n\r\n}';
@@ -169,9 +169,9 @@ export class AltairService {
     let userGMAO = "capexploitation";
 
     //On récupère le login GMAO de l'ustilisateur
-    var userLogged = localStorage.getItem("user");
+    const userLogged = localStorage.getItem("user");
     if (typeof userLogged === "string") {
-      var userLoggedParse = JSON.parse(userLogged);
+      const userLoggedParse = JSON.parse(userLogged);
 
       //Récupération de lu login GMAO
       if (userLoggedParse["loginGMAO"] != "") {
@@ -181,7 +181,7 @@ export class AltairService {
     }
     /**FIN RECUP USER GMAO */
 
-    let requete = this.ip + "/rest/work/all/workrequest/create/WORKREQUEST";
+    const requete = this.ip + "/rest/work/all/workrequest/create/WORKREQUEST";
     console.log(userGMAO);
 
     const requestOptions = new HttpHeaders({
@@ -190,18 +190,18 @@ export class AltairService {
       accept: "application/json",
     });
 
-    var headers = {
+    const headers = {
       headers: requestOptions,
     };
 
-    var url = requete;
+    const url = requete;
 
     if (priority == 0) {
       var prio = "BASSE";
     } else if (priority == 1) {
       var prio = "MOYENNE";
     } else var prio = "HAUTE";
-    var payload =
+    const payload =
       '{\r\n  "description": "' +
       description +
       '",\r\n  "fkcodelocation": "' +
@@ -223,52 +223,52 @@ export class AltairService {
 
   //Récupérer les maintenances
   getMaintenance(token: string) {
-    let requete = this.ip + "/rest/work/all/workorder/list/WORKORDER";
+    const requete = this.ip + "/rest/work/all/workorder/list/WORKORDER";
 
     const requestOptions = new HttpHeaders({
       Authorization: "Bearer " + token,
       "Content-Type": "application/json",
     });
 
-    var headers = {
+    const headers = {
       headers: requestOptions,
     };
 
-    var url = requete;
+    const url = requete;
 
     return this.http.get<any>(url, headers);
   }
 
   //Récupérer une DI
   getOneDI(token: string, id: string) {
-    let requete = this.ip + "/rest/work/all/workrequest/show/workrequest/" + id;
+    const requete = this.ip + "/rest/work/all/workrequest/show/workrequest/" + id;
     //enlever status rebut
     const requestOptions = new HttpHeaders({
       Authorization: "Bearer " + token,
       "Content-Type": "application/json",
     });
 
-    var headers = {
+    const headers = {
       headers: requestOptions,
     };
-    var url = requete;
+    const url = requete;
 
     return this.http.get<any>(url, headers);
   }
 
   //Récupérer un BT
   getOneDT(token: string, id: string) {
-    let requete = this.ip + "/rest/work/all/workorder/show/workorder/" + id;
+    const requete = this.ip + "/rest/work/all/workorder/show/workorder/" + id;
     //enlever status rebut
     const requestOptions = new HttpHeaders({
       Authorization: "Bearer " + token,
       "Content-Type": "application/json",
     });
 
-    var headers = {
+    const headers = {
       headers: requestOptions,
     };
-    var url = requete;
+    const url = requete;
 
     return this.http.get<any>(url, headers);
   }

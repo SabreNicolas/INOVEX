@@ -133,7 +133,7 @@ export class RechercheComponent implements OnInit {
   //Export de la table dans fichier EXCEL
   exportExcel() {
     /* table id is passed over here */
-    let element = document.getElementById("tableResultats");
+    const element = document.getElementById("tableResultats");
     console.log(element);
     const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element, {
       raw: false,

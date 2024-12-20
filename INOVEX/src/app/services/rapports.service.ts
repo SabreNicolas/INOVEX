@@ -28,7 +28,7 @@ export class rapportsService {
 
   //récupérer les rapports pour l'usine sur laquelle on se trouve
   getRapports() {
-    let requete = "https://" + this.ip + "/rapports/" + this.idUsine;
+    const requete = "https://" + this.ip + "/rapports/" + this.idUsine;
     //console.log(requete);
 
     const requestOptions = {
@@ -40,7 +40,7 @@ export class rapportsService {
 
   //récupérer les rapports pour l'usine sur laquelle on se trouve
   getModeOPs() {
-    let requete = "https://" + this.ip + "/rapports/5";
+    const requete = "https://" + this.ip + "/rapports/5";
     //console.log(requete);
 
     const requestOptions = {

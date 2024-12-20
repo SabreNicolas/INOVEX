@@ -43,13 +43,13 @@ export class ListEntreeComponent implements OnInit {
   public csvRegistre: any[];
 
   //stockage données ADEMI à envoyer
-  public stockageImport: Map<String, number>;
+  public stockageImport: Map<string, number>;
   //**HODJA
   public valuesHodja: valueHodja[];
   //stockage données HODJA à envoyer
-  public stockageHodja: Map<String, number>;
+  public stockageHodja: Map<string, number>;
   public dates: string[];
-  public clientManquants: Map<String, String>;
+  public clientManquants: Map<string, string>;
 
   constructor(
     private idUsineService: idUsineService,
@@ -124,7 +124,7 @@ export class ListEntreeComponent implements OnInit {
       // @ts-ignore
       this.productsEntrants = response.data;
       //console.log(this.productsEntrants);
-      for (let product of this.productsEntrants) {
+      for (const product of this.productsEntrants) {
         this.getValuesProduct(product.Id);
       }
     });
@@ -150,9 +150,9 @@ export class ListEntreeComponent implements OnInit {
   }
   setFilters() {
     /* Début prise en compte des filtres*/
-    var produitElt = document.getElementById("produit");
+    const produitElt = document.getElementById("produit");
     // @ts-ignore
-    var produitSel = produitElt.options[produitElt.selectedIndex].value;
+    const produitSel = produitElt.options[produitElt.selectedIndex].value;
     //var collecteurElt = document.getElementById("collecteur");
     // @ts-ignore
     //var collecteurSel = collecteurElt.options[collecteurElt.selectedIndex].value;
@@ -165,10 +165,10 @@ export class ListEntreeComponent implements OnInit {
   async setPeriod(form: NgForm) {
     this.listDays = [];
     this.dateDeb = new Date(
-      (<HTMLInputElement>document.getElementById("dateDeb")).value,
+      (document.getElementById("dateDeb") as HTMLInputElement).value,
     );
     this.dateFin = new Date(
-      (<HTMLInputElement>document.getElementById("dateFin")).value,
+      (document.getElementById("dateFin") as HTMLInputElement).value,
     );
     if (this.dateFin < this.dateDeb) {
       this.dateService.mauvaiseEntreeDate(form);
@@ -180,7 +180,7 @@ export class ListEntreeComponent implements OnInit {
     await this.getValues();
     this.removeloading();
 
-    for (let product of this.productsEntrants) {
+    for (const product of this.productsEntrants) {
       this.getValuesProduct(product.Id);
     }
   }
@@ -189,11 +189,9 @@ export class ListEntreeComponent implements OnInit {
   validation() {
     this.listDays.forEach((date) =>
       this.moralEntities.forEach((mr) => {
-        var value = (<HTMLInputElement>(
-          document.getElementById(mr.Id + "-" + mr.productId + "-" + date)
-        )).value.replace(",", ".");
-        var Value2 = value.replace(" ", "");
-        var valueInt: number = +Value2;
+        const value = (document.getElementById(mr.Id + "-" + mr.productId + "-" + date) as HTMLInputElement).value.replace(",", ".");
+        const Value2 = value.replace(" ", "");
+        const valueInt: number = +Value2;
         if (valueInt > 0.0) {
           this.moralEntitiesService
             .createMeasure(
@@ -253,18 +251,12 @@ export class ListEntreeComponent implements OnInit {
           .subscribe((response) => {
             //i++;
             if (response.data[0] != undefined && response.data[0].Value != 0) {
-              (<HTMLInputElement>(
-                document.getElementById(mr.Id + "-" + mr.productId + "-" + date)
-              )).value = response.data[0].Value;
-              (<HTMLInputElement>(
-                document.getElementById(
+              (document.getElementById(mr.Id + "-" + mr.productId + "-" + date) as HTMLInputElement).value = response.data[0].Value;
+              (document.getElementById(
                   "export-" + mr.Id + "-" + mr.productId + "-" + date,
-                )
-              )).innerHTML = response.data[0].Value;
+                ) as HTMLInputElement).innerHTML = response.data[0].Value;
             } else {
-              (<HTMLInputElement>(
-                document.getElementById(mr.Id + "-" + mr.productId + "-" + date)
-              )).value = "";
+              (document.getElementById(mr.Id + "-" + mr.productId + "-" + date) as HTMLInputElement).value = "";
             }
           });
       }
@@ -282,10 +274,10 @@ export class ListEntreeComponent implements OnInit {
         )
         .subscribe((response) => {
           if (response.data[0] != undefined && response.data[0].Total != 0) {
-            (<HTMLInputElement>document.getElementById(date)).innerHTML =
+            (document.getElementById(date) as HTMLInputElement).innerHTML =
               response.data[0].Total;
           } else
-            (<HTMLInputElement>document.getElementById(date)).innerHTML = "0";
+            (document.getElementById(date) as HTMLInputElement).innerHTML = "0";
         });
     });
   }
@@ -302,9 +294,7 @@ export class ListEntreeComponent implements OnInit {
       .subscribe((response) => {
         if (response == "Création du Measures OK") {
           this.popupService.alertSuccessForm("La valeur a bien été supprimé !");
-          (<HTMLInputElement>(
-            document.getElementById(Id + "-" + productId + "-" + date)
-          )).value = "";
+          (document.getElementById(Id + "-" + productId + "-" + date) as HTMLInputElement).value = "";
         } else {
           this.popupService.alertErrorForm(
             "Erreur lors de la suppression de la valeur ....",
@@ -329,14 +319,10 @@ export class ListEntreeComponent implements OnInit {
         .subscribe((response) => {
           if (response.data[0] != undefined && response.data[0].Value != 0) {
             // @ts-ignore
-            (<HTMLInputElement>(
-              document.getElementById(idProduct + "-" + date)
-            )).value = response.data[0].Value;
+            (document.getElementById(idProduct + "-" + date) as HTMLInputElement).value = response.data[0].Value;
           } else {
             // @ts-ignore
-            (<HTMLInputElement>(
-              document.getElementById(idProduct + "-" + date)
-            )).value = "";
+            (document.getElementById(idProduct + "-" + date) as HTMLInputElement).value = "";
           }
         });
     });
@@ -347,11 +333,9 @@ export class ListEntreeComponent implements OnInit {
     this.listDays.forEach((date) => {
       // @ts-ignore
       this.productsEntrants.forEach((product) => {
-        var value = (<HTMLInputElement>(
-          document.getElementById(product.Id + "-" + date)
-        )).value;
-        var Value2 = value.replace(" ", "");
-        var valueInt: number = +Value2;
+        const value = (document.getElementById(product.Id + "-" + date) as HTMLInputElement).value;
+        const Value2 = value.replace(" ", "");
+        const valueInt: number = +Value2;
         if (valueInt > 0.0) {
           // @ts-ignore
           this.moralEntitiesService
@@ -393,7 +377,7 @@ export class ListEntreeComponent implements OnInit {
       .subscribe((response) => {
         if (response == "Création du Measures OK") {
           this.popupService.alertSuccessForm("La valeur a bien été supprimé !");
-          (<HTMLInputElement>document.getElementById(Id + "-" + date)).value =
+          (document.getElementById(Id + "-" + date) as HTMLInputElement).value =
             "";
         } else {
           this.popupService.alertSuccessForm(
@@ -449,7 +433,7 @@ export class ListEntreeComponent implements OnInit {
   //Export de la table dans fichier EXCEL
   exportExcel() {
     /* table id is passed over here */
-    let element = document.getElementById("listEntree");
+    const element = document.getElementById("listEntree");
     console.log(element);
     const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element, {
       raw: false,
@@ -502,7 +486,7 @@ export class ListEntreeComponent implements OnInit {
       this.typeImportTonnage.toLowerCase().includes("informatique verte")
     ) {
       //@ts-ignore
-      var file = event.target.files[0].name;
+      let file = event.target.files[0].name;
       file = file.toLowerCase();
       if (file.includes("dasri")) {
         //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
@@ -587,20 +571,20 @@ export class ListEntreeComponent implements OnInit {
   //Export de la table dans fichier EXCEL
   exportRegistreDNDTSExcel() {
     if (
-      (<HTMLInputElement>document.getElementById("dateDeb")).value != "" &&
-      (<HTMLInputElement>document.getElementById("dateFin")).value != ""
+      (document.getElementById("dateDeb") as HTMLInputElement).value != "" &&
+      (document.getElementById("dateFin") as HTMLInputElement).value != ""
     ) {
       this.dateDeb = new Date(
-        (<HTMLInputElement>document.getElementById("dateDeb")).value,
+        (document.getElementById("dateDeb") as HTMLInputElement).value,
       );
       this.dateFin = new Date(
-        (<HTMLInputElement>document.getElementById("dateFin")).value,
+        (document.getElementById("dateFin") as HTMLInputElement).value,
       );
 
-      var dateDebString = this.datePipe.transform(this.dateDeb, "yyyy-MM-dd");
-      var dateFinString = this.datePipe.transform(this.dateFin, "yyyy-MM-dd");
+      const dateDebString = this.datePipe.transform(this.dateDeb, "yyyy-MM-dd");
+      const dateFinString = this.datePipe.transform(this.dateFin, "yyyy-MM-dd");
 
-      var nomFichier =
+      const nomFichier =
         "dnd-entrant du " +
         this.datePipe.transform(this.dateDeb, "dd-MM-yyyy") +
         " au " +
@@ -609,7 +593,7 @@ export class ListEntreeComponent implements OnInit {
         .getRegistreDNDTSEntrants(dateDebString, dateFinString)
         .subscribe((response) => {
           /* table id is passed over here */
-          let element = response.data;
+          const element = response.data;
           if (response.data.length > 1) {
             const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(element);
 
@@ -633,14 +617,14 @@ export class ListEntreeComponent implements OnInit {
   registre_DNDTS(event: Event) {
     this.loading();
     //@ts-ignore
-    var files = event.target.files; // FileList object
-    var file = files[0];
-    var reader = new FileReader();
-    var debut = 1;
+    const files = event.target.files; // FileList object
+    const file = files[0];
+    const reader = new FileReader();
+    const debut = 1;
 
     reader.readAsText(file);
     reader.onload = (event: any) => {
-      var csv = event.target.result; // Content of CSV file
+      const csv = event.target.result; // Content of CSV file
 
       //options à ajouter => pas d'entête, delimiter ;
       this.Papa.parse(csv, {
@@ -656,7 +640,7 @@ export class ListEntreeComponent implements OnInit {
             ) {
               //Création de l'objet qui contient l'ensemble des infos nécessaires
               console.log(results.data[i]);
-              let importCSV = {
+              const importCSV = {
                 numDePesee: results.data[i][0].replace(/'/g, "''"),
                 type: results.data[i][1].replace(/'/g, "''"),
                 date1: results.data[i][2].replace(/'/g, "''"),
@@ -780,10 +764,10 @@ export class ListEntreeComponent implements OnInit {
   ) {
     this.loading();
     //@ts-ignore
-    var files = event.target.files; // FileList object
-    var file = files[0];
-    var reader = new FileReader();
-    var debut = 0;
+    const files = event.target.files; // FileList object
+    const file = files[0];
+    const reader = new FileReader();
+    let debut = 0;
 
     //Si on a une ligne header, on commence l'acquisition à 1.
     if (header == true) {
@@ -792,7 +776,7 @@ export class ListEntreeComponent implements OnInit {
 
     reader.readAsText(file);
     reader.onload = (event: any) => {
-      var csv = event.target.result; // Content of CSV file
+      const csv = event.target.result; // Content of CSV file
 
       //options à ajouter => pas d'entête, delimiter ;
       this.Papa.parse(csv, {
@@ -849,7 +833,7 @@ export class ListEntreeComponent implements OnInit {
                 results.data[i][posDateEntree] != undefined &&
                 results.data[i][posTonnage] != undefined
               ) {
-                let importCSV = {
+                const importCSV = {
                   client: results.data[i][posClient],
                   typeDechet: typeDechet,
                   dateEntree: results.data[i][posDateEntree].substring(0, 10),
@@ -901,12 +885,12 @@ export class ListEntreeComponent implements OnInit {
     let successInsert = true;
     this.debCode = "20";
     this.stockageImport.clear();
-    var count = 0;
+    let count = 0;
     //console.log(this.csvArray);
 
     this.csvArray.forEach((csv) => {
-      var clientManquant = csv.client;
-      var dechetManquant = csv.typeDechet;
+      const clientManquant = csv.client;
+      const dechetManquant = csv.typeDechet;
       count = 0;
       this.correspondance.forEach((correspondance) => {
         csv.client = csv.client.toLowerCase().replace(/\s/g, "");
@@ -935,14 +919,14 @@ export class ListEntreeComponent implements OnInit {
             correspondance.productImport ==
               csv.typeDechet /*|| (mr.produit == "dib/dea" && mr.produit.includes(csv.typeDechet)))*/
           ) {
-            let formatDate =
+            const formatDate =
               csv.dateEntree.split("/")[2] +
               "-" +
               csv.dateEntree.split("/")[1] +
               "-" +
               csv.dateEntree.split("/")[0];
             if (!formatDate.includes("undefined")) {
-              let keyHash =
+              const keyHash =
                 formatDate +
                 "_" +
                 correspondance.ProductId +
@@ -989,7 +973,7 @@ export class ListEntreeComponent implements OnInit {
     //debug
     // console.log(this.stockageImport);
     //on parcours la hashmap pour insertion en BDD
-    this.stockageImport.forEach(async (value: number, key: String) => {
+    this.stockageImport.forEach(async (value: number, key: string) => {
       await this.moralEntitiesService
         .createMeasure(
           key.split("_")[0],
@@ -1006,8 +990,8 @@ export class ListEntreeComponent implements OnInit {
 
     //Si l'inserstion s'est bien passée, on affiche la liste des correspondances manquantes
     if (successInsert) {
-      var afficher = "";
-      this.clientManquants.forEach(async (value: String, key: String) => {
+      let afficher = "";
+      this.clientManquants.forEach(async (value: string, key: string) => {
         afficher +=
           "Le client <strong>'" +
           key.split("__")[1] +
@@ -1043,9 +1027,9 @@ export class ListEntreeComponent implements OnInit {
     let dateDebFormat = new Date(),
       dateFinFormat = new Date();
     let listDate = [];
-    var count = 0;
-    let clientManquants: any[] = [];
-    let dechetsManquants: string[] = [];
+    let count = 0;
+    const clientManquants: any[] = [];
+    const dechetsManquants: string[] = [];
 
     dateDebFormat = new Date(form.value["dateDeb"]);
     dateFinFormat = new Date(form.value["dateFin"]);
@@ -1063,8 +1047,8 @@ export class ListEntreeComponent implements OnInit {
           //ON boucle sur les valeurs HODJA
           for await (const valueHodja of this.valuesHodja) {
             count = 0;
-            var clientManquant = valueHodja.client;
-            var dechetManquant = valueHodja.typeDechet;
+            const clientManquant = valueHodja.client;
+            const dechetManquant = valueHodja.typeDechet;
             //ET les clients INOVEX
             for (const correspondance of this.correspondance) {
               valueHodja.client = valueHodja.client
@@ -1085,8 +1069,8 @@ export class ListEntreeComponent implements OnInit {
                 correspondance.nomImport == valueHodja.client &&
                 correspondance.productImport == valueHodja.typeDechet
               ) {
-                let formatDate = valueHodja.entryDate.split("T")[0];
-                let keyHash =
+                const formatDate = valueHodja.entryDate.split("T")[0];
+                const keyHash =
                   formatDate +
                   "_" +
                   correspondance.ProductId +
@@ -1125,7 +1109,7 @@ export class ListEntreeComponent implements OnInit {
           }
 
           //On parcours la HashMap pour insérer en BDD
-          this.stockageHodja.forEach(async (value: number, key: String) => {
+          this.stockageHodja.forEach(async (value: number, key: string) => {
             await this.moralEntitiesService
               .createMeasure(
                 key.split("_")[0],
@@ -1141,7 +1125,7 @@ export class ListEntreeComponent implements OnInit {
           });
 
           if (successInsert == true) {
-            var afficher = "";
+            let afficher = "";
 
             for (let i = 0; i < clientManquants.length; i++) {
               afficher +=

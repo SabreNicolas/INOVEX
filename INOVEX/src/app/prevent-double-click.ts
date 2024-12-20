@@ -5,7 +5,7 @@ import {
   Input,
   Renderer2,
   ElementRef,
-  Output,
+  Output, OnInit,
 } from "@angular/core";
 import { Subject, Subscription } from "rxjs";
 import { throttleTime } from "rxjs/operators";
@@ -13,7 +13,7 @@ import { throttleTime } from "rxjs/operators";
 @Directive({
   selector: "[appPreventDoubleClick]",
 })
-export class PreventDoubleClickDirective {
+export class PreventDoubleClickDirective implements OnInit {
   @Input()
   throttleTime = 3000;
 

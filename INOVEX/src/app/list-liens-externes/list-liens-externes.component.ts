@@ -1,4 +1,4 @@
-import { Component, TemplateRef, ViewChild } from "@angular/core";
+import { Component, TemplateRef, ViewChild, OnInit } from "@angular/core";
 import { cahierQuartService } from "../services/cahierQuart.service";
 import Swal from "sweetalert2";
 import { PopupService } from "../services/popup.service";
@@ -9,7 +9,7 @@ import { MatDialog } from "@angular/material/dialog";
   templateUrl: "./list-liens-externes.component.html",
   styleUrls: ["./list-liens-externes.component.scss"],
 })
-export class ListLiensExternesComponent {
+export class ListLiensExternesComponent implements OnInit {
   @ViewChild("myCreateLienDialog") createLienDialog = {} as TemplateRef<any>;
 
   public listLien: any[];

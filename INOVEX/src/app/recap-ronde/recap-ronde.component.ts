@@ -10,7 +10,7 @@ import { AltairService } from "../services/altair.service";
 import { DatePipe } from "@angular/common";
 import { MatDialog } from "@angular/material/dialog";
 import { Actualite } from "src/models/actualite.model";
-declare var $: any;
+declare let $: any;
 
 @Component({
   selector: "app-recap-ronde",
@@ -49,7 +49,7 @@ export class RecapRondeComponent implements OnInit {
 
   public groupementGMAO: string;
   public equipementGMAO: string;
-  public listGroupementsGMAOMap: Map<String, String>;
+  public listGroupementsGMAOMap: Map<string, string>;
   public listGroupementGMAOTable: any[];
   public listEquipementGMAO: any[];
   public listEquipementGMAOFiltre: any[];
@@ -120,7 +120,7 @@ export class RecapRondeComponent implements OnInit {
       this.token = response.token;
 
       this.altairService.getEquipements(this.token).subscribe((response) => {
-        for (let equipment of response.equipment) {
+        for (const equipment of response.equipment) {
           if (equipment.status != "REBUT") {
             this.listEquipementGMAO.push(equipment);
           }
@@ -129,8 +129,8 @@ export class RecapRondeComponent implements OnInit {
 
         //On récupère la liste des groupements avec les détails
         this.altairService.getLocations(this.token).subscribe((response) => {
-          for (let equipement of this.listEquipementGMAO) {
-            for (let location of response.location) {
+          for (const equipement of this.listEquipementGMAO) {
+            for (const location of response.location) {
               if (equipement.fkcodelocation === location.codelocation) {
                 this.listGroupementsGMAOMap.set(
                   equipement.fkcodelocation + "---" + location.description,
@@ -157,10 +157,10 @@ export class RecapRondeComponent implements OnInit {
 
   ngOnInit(): void {
     //Récupération de l'heure actuelle pour vérifier si on a le droit d'ajouter des actions et autre (on ne peut plus le faire sur un quart terminé)
-    let heure = new Date().getHours();
+    const heure = new Date().getHours();
 
     //permet de laiiser une marge pour saisir sur le quart
-    let margeHeure = 2;
+    const margeHeure = 2;
 
     //Récupération de la date de début et de la date de fin en fonction du quart
     if (this.quart == 1) {
@@ -280,7 +280,7 @@ export class RecapRondeComponent implements OnInit {
               this.nomEquipe = response.data[0]["equipe"];
               //TODO voir si on ne peut pas simplement affecter la variable avec un = et la reponse de l'API
               if (response.data[0]["idRondier"] != null) {
-                for (var i = 0; i < response.data.length; i++) {
+                for (let i = 0; i < response.data.length; i++) {
                   //console.log(response.data[i]);
                   this.listRondier[i] = {
                     IdEquipe: response.data[i]["id"],
@@ -354,7 +354,7 @@ export class RecapRondeComponent implements OnInit {
   //Focntion qui permet d'ajouter l'action au calendrier et à la tablea d'actions
   createAction() {
     //Récupération de l'heure à l'instant T pour concaténer avec le texte de l'action
-    let now = format(new Date(), "HH:mm");
+    const now = format(new Date(), "HH:mm");
     this.cahierQuartService
       .newAction(
         now + " " + this.nomAction,
@@ -693,7 +693,7 @@ export class RecapRondeComponent implements OnInit {
   saveFile(event: Event) {
     //Récupération du fichier dans l'input
     // @ts-ignore
-    this.fileToUpload = (<HTMLInputElement>event.target).files[0];
+    this.fileToUpload = (event.target as HTMLInputElement).files[0];
     // @ts-ignore
     //console.log((<HTMLInputElement>event.target).files[0]);
 
@@ -713,14 +713,14 @@ export class RecapRondeComponent implements OnInit {
       $("#dateFin").show();
       $("#equipementGMAO").show();
       $("#groupementGMAO").show();
-      var date = new Date();
-      var yyyy = date.getFullYear();
-      var dd = String(date.getDate()).padStart(2, "0");
-      var mm = String(date.getMonth() + 1).padStart(2, "0"); //January is 0!
-      var hh = String(date.getHours()).padStart(2, "0");
-      var min = String(date.getMinutes()).padStart(2, "0");
-      var day = yyyy + "-" + mm + "-" + dd + "T" + hh + ":" + min;
-      (<HTMLInputElement>document.getElementById("dateDebut")).value = day;
+      const date = new Date();
+      const yyyy = date.getFullYear();
+      const dd = String(date.getDate()).padStart(2, "0");
+      const mm = String(date.getMonth() + 1).padStart(2, "0"); //January is 0!
+      const hh = String(date.getHours()).padStart(2, "0");
+      const min = String(date.getMinutes()).padStart(2, "0");
+      const day = yyyy + "-" + mm + "-" + dd + "T" + hh + ":" + min;
+      (document.getElementById("dateDebut") as HTMLInputElement).value = day;
       //@ts-ignore
       this.dateDeb = day;
     } else {
@@ -765,7 +765,7 @@ export class RecapRondeComponent implements OnInit {
     if (this.groupementGMAO == "") {
       this.listEquipementGMAOFiltre = this.listEquipementGMAO;
     } else {
-      for (let equipement of this.listEquipementGMAO) {
+      for (const equipement of this.listEquipementGMAO) {
         if (equipement.fkcodelocation == this.groupementGMAO) {
           this.listEquipementGMAOFiltre.push(equipement);
         }
@@ -774,7 +774,7 @@ export class RecapRondeComponent implements OnInit {
   }
 
   updateGroupements() {
-    for (let equipement of this.listEquipementGMAO) {
+    for (const equipement of this.listEquipementGMAO) {
       if (equipement.codeequipment == this.equipementGMAO.split("---")[0]) {
         this.groupementGMAO = equipement.fkcodelocation;
       }
@@ -798,7 +798,7 @@ export class RecapRondeComponent implements OnInit {
   //Permet de choisir une action depuis une ligne pré-défini
   choixAction() {
     //Liste des actions en dur
-    let tabAction = [
+    const tabAction = [
       "Appoint Pot Acide",
       "Appoint Pot Soude",
       "Arrêt UTM pour Nettoyage prestataire et Service Exploitation",
@@ -847,7 +847,7 @@ export class RecapRondeComponent implements OnInit {
       "Vidange Brouettes UTM",
     ];
     //Construction des valeurs du menu select qui contient les actions
-    let listActions = {};
+    const listActions = {};
     tabAction.forEach((action) => {
       //@ts-ignore
       listActions[action] = action;

@@ -29,7 +29,7 @@ export class formulaireService {
   //création de formulaire
   createFormulaire(nom: string, type: string) {
     nom = encodeURIComponent(nom);
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/formulaire?nom=" +
@@ -49,7 +49,7 @@ export class formulaireService {
 
   //récupérer les formulaires d'un site
   getFormulaire() {
-    let requete = "https://" + this.ip + "/formulaires?idUsine=" + this.idUsine;
+    const requete = "https://" + this.ip + "/formulaires?idUsine=" + this.idUsine;
     //console.log(requete);
 
     const requestOptions = {

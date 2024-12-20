@@ -56,32 +56,23 @@ export class ListEquipeComponent implements OnInit {
         equipe.id;
     } else {
       //@ts-ignore
-      <HTMLElement>(
-        //@ts-ignore
-        document.getElementById(equipe.id + "_overlay").classList.add("show")
-      );
-      var exp = document.getElementById(String(equipe.id));
+      document.getElementById(equipe.id + "_overlay").classList.add("show") as HTMLElement;
+      const exp = document.getElementById(String(equipe.id));
       if (exp != null) exp.classList.add("expanded");
       //@ts-ignore
-      <HTMLElement>(
-        //@ts-ignore
-        document
+      document
           .getElementById(equipe.id + "_chefQuart")
-          .classList.remove("hide")
-      );
+          .classList.remove("hide") as HTMLElement;
     }
   }
 
   //Fonction qui permet de fermer une card
   closeCard(equipe: equipe) {
-    var chef = document.getElementById(equipe.id + "_chefQuart");
+    const chef = document.getElementById(equipe.id + "_chefQuart");
     if (chef != null) chef.classList.add("hide");
     //@ts-ignore
-    <HTMLElement>(
-      //@ts-ignore
-      document.getElementById(equipe.id).classList.remove("expanded")
-    );
-    var over = document.getElementById(equipe.id + "_overlay");
+    document.getElementById(equipe.id).classList.remove("expanded") as HTMLElement;
+    const over = document.getElementById(equipe.id + "_overlay");
     if (over != null) over.classList.remove("show");
   }
 

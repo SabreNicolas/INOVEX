@@ -142,7 +142,7 @@
           </button>
           <p
             *ngIf="
-              pr.idElementRondier == null && pr.TAG != '' && pr.TAG != null
+              pr.idElementRondier == null && pr.TAG != '' && pr.TAG !== null
             "
           >
             La récupération se fait via le TAG

@@ -79,12 +79,8 @@ export class ElementControleComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.checkboxRegulateur = <HTMLInputElement>(
-      document.getElementsByName("regulateur")[0]
-    );
-    this.checkboxCompteur = <HTMLInputElement>(
-      document.getElementsByName("compteur")[0]
-    );
+    this.checkboxRegulateur = document.getElementsByName("regulateur")[0] as HTMLInputElement;
+    this.checkboxCompteur = document.getElementsByName("compteur")[0] as HTMLInputElement;
     this.rondierService.listZone().subscribe((response) => {
       // @ts-ignore
       this.listZone = response.data;
@@ -124,8 +120,8 @@ export class ElementControleComponent implements OnInit {
               this.checkboxCompteur.checked = true;
             }
             //Gestion de la zone
-            let selectZone = <HTMLSelectElement>document.getElementById("zone");
-            for (var i = 0; i < selectZone.options.length; i++) {
+            const selectZone = document.getElementById("zone") as HTMLSelectElement;
+            for (let i = 0; i < selectZone.options.length; i++) {
               if (
                 "'" + this.zoneId[0].toString() + "'" ===
                 selectZone.options[i].value.split(": ")[1]
@@ -356,9 +352,9 @@ export class ElementControleComponent implements OnInit {
     this.zoneId = [];
     form.value["zone"] = null;
     //form.reset();
-    var four = document.getElementsByName("four");
-    var regulateur = document.getElementsByName("regulateur");
-    (<HTMLInputElement>four[0]).checked = false;
-    (<HTMLInputElement>regulateur[0]).checked = false;
+    const four = document.getElementsByName("four");
+    const regulateur = document.getElementsByName("regulateur");
+    (four[0] as HTMLInputElement).checked = false;
+    (regulateur[0] as HTMLInputElement).checked = false;
   }
 }

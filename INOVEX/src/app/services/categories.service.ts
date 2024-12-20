@@ -38,7 +38,7 @@ export class categoriesService {
 
   //création de catégorie
   createCategory() {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/Category?Name=" +
@@ -58,7 +58,7 @@ export class categoriesService {
 
   //récupérer les categories de compteurs
   getCategories() {
-    let requete = "https://" + this.ip + "/CategoriesCompteurs";
+    const requete = "https://" + this.ip + "/CategoriesCompteurs";
     //console.log(requete);
 
     const requestOptions = {
@@ -70,7 +70,7 @@ export class categoriesService {
 
   //récupérer les categories d'analyses
   getCategoriesAnalyses() {
-    let requete = "https://" + this.ip + "/CategoriesAnalyses";
+    const requete = "https://" + this.ip + "/CategoriesAnalyses";
     //console.log(requete);
 
     const requestOptions = {
@@ -82,7 +82,7 @@ export class categoriesService {
 
   //récupérer les categories de sortants
   getCategoriesSortants() {
-    let requete = "https://" + this.ip + "/CategoriesSortants";
+    const requete = "https://" + this.ip + "/CategoriesSortants";
     //console.log(requete);
 
     const requestOptions = {
@@ -98,7 +98,7 @@ export class categoriesService {
 
   //récupérer les différents sites
   getSites() {
-    let requete = "https://" + this.ip + "/sites";
+    const requete = "https://" + this.ip + "/sites";
     //console.log(requete);
 
     const requestOptions = {
@@ -114,7 +114,7 @@ export class categoriesService {
 
   //récupérer la maintenance prévue
   getMaintenance() {
-    let requete = "https://" + this.ip + "/Maintenance";
+    const requete = "https://" + this.ip + "/Maintenance";
     //console.log(requete);
 
     const requestOptions = {

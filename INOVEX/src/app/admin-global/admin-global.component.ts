@@ -40,9 +40,9 @@ export class AdminGlobalComponent implements OnInit {
     //La création de produit est uniquement possible par les superAdmin
     //dans le but d'avoir un référentiel produit unique
     //La création d'un produit, le cré pour l'ensemble des sites
-    var userLogged = localStorage.getItem("user");
+    const userLogged = localStorage.getItem("user");
     if (typeof userLogged === "string") {
-      var userLoggedParse = JSON.parse(userLogged);
+      const userLoggedParse = JSON.parse(userLogged);
       //Si une localisation est stocké dans le localstorage, c'est que c'est un superAdmin et qu'il a choisi le site au début
       if (userLoggedParse.hasOwnProperty("localisation")) {
         this.isSuperAdmin = true;
@@ -89,7 +89,7 @@ export class AdminGlobalComponent implements OnInit {
       { text: "Nuit", margin: [0, 0, 0, 0], fontSize: 8, fillColor: "#dddddd" },
     ];
 
-    var data = [
+    const data = [
       { text: "Auteur de la ronde" },
       { text: "Chef de quart" },
       { text: "Four 1 en fonctionnement ?" },
@@ -111,10 +111,10 @@ export class AdminGlobalComponent implements OnInit {
     });
 
     this.rondierService.listZonesAndElements().subscribe(async (response) => {
-      var dataToAdd: any[] = [];
+      let dataToAdd: any[] = [];
       //@ts-ignore
       this.listZones = response.BadgeAndElementsOfZone;
-      for await (let zone of this.listZones) {
+      for await (const zone of this.listZones) {
         dataToAdd.push({
           text: zone.zone,
           style: "tableHeader",
@@ -191,7 +191,7 @@ export class AdminGlobalComponent implements OnInit {
           tableBody.push(dataToAdd);
           dataToAdd = [];
         }
-        for (var i = 1; i < zone.elements.length; i++) {
+        for (let i = 1; i < zone.elements.length; i++) {
           //Si le groupement est différent du groupement de l'élément précédent, on affiche le groupement
           if (zone.elements[i].groupement != zone.elements[i - 1].groupement) {
             dataToAdd.push({
@@ -258,7 +258,7 @@ export class AdminGlobalComponent implements OnInit {
       }
       //@ts-ignore
       tableBody.unshift(tableHeader);
-      var pdfContent = {
+      const pdfContent = {
         content: [
           {
             text: "Ronde du : ",

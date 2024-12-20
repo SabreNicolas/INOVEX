@@ -37,7 +37,7 @@ import { delay } from "rxjs/operators";
 import { PopupService } from "../services/popup.service";
 import { MatDialog } from "@angular/material/dialog";
 import { user } from "src/models/user.model";
-declare var $: any;
+declare let $: any;
 
 @Component({
   selector: "app-calendrier",
@@ -66,12 +66,12 @@ export class CalendrierComponent implements OnInit {
         isAction: boolean | undefined;
       }
     | undefined;
-  public refresh: Subject<any> = new Subject();
+  public refresh = new Subject<any>();
   public events: CalendarEvent[];
   public colors: any;
   public weekStartsOn: number = DAYS_OF_WEEK.MONDAY;
   public weekendDays: number[] = [DAYS_OF_WEEK.FRIDAY, DAYS_OF_WEEK.SATURDAY];
-  public activeDayIsOpen: boolean = true;
+  public activeDayIsOpen = true;
   public dateDeb!: any;
   public periodicite: number;
   public quart: number[];
@@ -122,9 +122,9 @@ export class CalendrierComponent implements OnInit {
 
   ngOnInit(): void {
     //On récupère le user dans le localStorage pour bloquer la suppresion dans le calendrier pour les super admin
-    var userLogged = localStorage.getItem("user");
+    const userLogged = localStorage.getItem("user");
     if (typeof userLogged === "string") {
-      var userLoggedParse = JSON.parse(userLogged);
+      const userLoggedParse = JSON.parse(userLogged);
       this.userLogged = userLoggedParse;
     }
 
@@ -145,11 +145,11 @@ export class CalendrierComponent implements OnInit {
     //On récupère les zones du calendrier
     this.cahierQuartService.getAllZonesCalendrier().subscribe((response) => {
       //On parcours les zones pour les ajouter une par une dans le tableau d'évènement
-      var tabRondes: any[] = [];
+      let tabRondes: any[] = [];
       tabRondes.push(response.data[0]);
-      for (var i = 1; i < response.data.length; i++) {
-        var event = response.data[i];
-        var eventP = response.data[i - 1];
+      for (let i = 1; i < response.data.length; i++) {
+        const event = response.data[i];
+        const eventP = response.data[i - 1];
         if (eventP.date_heure_debut.split("T")[1] == "05:00:00.000Z") {
           var color = "#71C1F9";
           var texte = "Quart du matin";
@@ -281,9 +281,9 @@ export class CalendrierComponent implements OnInit {
 
   //fonction permettant d'afficher un évènement quand on clique dessus
   handleEvent(action: string, event: CalendarEvent): void {
-    var dateDeb = format(event.start, "dd/MM/yyyy hh:mm:ss");
+    const dateDeb = format(event.start, "dd/MM/yyyy hh:mm:ss");
     //@ts-ignore
-    var dateFin = format(event.end, "dd/MM/yyyy hh:mm:ss");
+    const dateFin = format(event.end, "dd/MM/yyyy hh:mm:ss");
     this.modalData = {
       nom: event.title,
       event: event,
@@ -414,7 +414,7 @@ export class CalendrierComponent implements OnInit {
             this.cahierQuartService
               .newCalendrierZone(zone, dateDeb2, quart, dateFin)
               .subscribe((response) => {
-                var dateFin = "";
+                const dateFin = "";
               });
           }
         }
@@ -432,13 +432,13 @@ export class CalendrierComponent implements OnInit {
                   0,
                 )
                 .subscribe((response) => {
-                  var dateFin = "";
+                  const dateFin = "";
                 });
             });
         }
       } else {
         //Si on a une periodicite, on boucle pour ajouter autant de fois que d'occurences demandées
-        for (var i = 0; i < this.occurences; i++) {
+        for (let i = 0; i < this.occurences; i++) {
           await this.pause(1);
           console.log("ici");
           //Si on est en quotidient
@@ -481,7 +481,7 @@ export class CalendrierComponent implements OnInit {
               this.cahierQuartService
                 .newCalendrierZone(zone, dateDeb2, quart, dateFin)
                 .subscribe((response) => {
-                  var dateFin = "";
+                  const dateFin = "";
                 });
             }
           }
@@ -500,7 +500,7 @@ export class CalendrierComponent implements OnInit {
                     0,
                   )
                   .subscribe((response) => {
-                    var dateFin = "";
+                    const dateFin = "";
                   });
               });
           }
@@ -557,7 +557,7 @@ export class CalendrierComponent implements OnInit {
   //Permet de choisir une action depuis une ligne pré-défini
   choixAction() {
     //Liste des actions en dur
-    let tabAction = [
+    const tabAction = [
       "Appoint Pot Acide",
       "Appoint Pot Soude",
       "Arrêt UTM pour Nettoyage prestataire et Service Exploitation",
@@ -606,7 +606,7 @@ export class CalendrierComponent implements OnInit {
       "Vidange Brouettes UTM",
     ];
     //Construction des valeurs du menu select qui contient les actions
-    let listActions = {};
+    const listActions = {};
     tabAction.forEach((action) => {
       //@ts-ignore
       listActions[action] = action;

@@ -39,7 +39,7 @@ export class loginService {
     isChefQuart: number,
     isAdmin: number,
   ) {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/User?nom=" +
@@ -75,7 +75,7 @@ export class loginService {
 
   //récupérer la list des utilisateurs
   getAllUsers(loginLike: string) {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/Users?login=" +
@@ -90,7 +90,7 @@ export class loginService {
 
   //récupérer la list des utilisateurs ayant un email
   getUsersEmail() {
-    let requete = "https://" + this.ip + "/UsersEmail?idUsine=" + this.idUsine;
+    const requete = "https://" + this.ip + "/UsersEmail?idUsine=" + this.idUsine;
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
     };
@@ -99,7 +99,7 @@ export class loginService {
 
   //récupérer le login pour voir si il est déjà utilisé
   getLogin(login: string) {
-    let requete = "https://" + this.ip + "/User/" + login;
+    const requete = "https://" + this.ip + "/User/" + login;
     //console.log(requete);
 
     const requestOptions = {
@@ -111,7 +111,7 @@ export class loginService {
 
   //récupérer l'utilisateur qui se connecte
   getUserLoged(login: string, pwd: string) {
-    let requete = "https://" + this.ip + "/User/" + login + "/" + pwd;
+    const requete = "https://" + this.ip + "/User/" + login + "/" + pwd;
     //console.log(requete);
 
     const requestOptions = {
@@ -123,7 +123,7 @@ export class loginService {
 
   //Mise à jour mot de pase utilisateur
   updatePwd(login: string, pwd: string) {
-    let requete = "https://" + this.ip + "/User/" + login + "/" + pwd;
+    const requete = "https://" + this.ip + "/User/" + login + "/" + pwd;
     //console.log(requete);
 
     const requestOptions = {
@@ -135,7 +135,7 @@ export class loginService {
 
   //Mise à jour des droits rondier ou saisie ou qse ou rapports ou chef de quart ou admin
   updateDroit(login: string, droit: number, choix: string) {
-    let requete =
+    const requete =
       "https://" + this.ip + "/" + choix + "/" + login + "/" + droit;
     //console.log(requete);
 
@@ -147,7 +147,7 @@ export class loginService {
 
   //Mise à jour des infos => email ou loginGMAO
   updateInfos(login: string, info: string, infoValue: string) {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/UserInfos/" +
@@ -166,7 +166,7 @@ export class loginService {
 
   //delete user
   deleteUser(id: number) {
-    let requete = "https://" + this.ip + "/user/" + id;
+    const requete = "https://" + this.ip + "/user/" + id;
     //console.log(requete);
 
     const requestOptions = {

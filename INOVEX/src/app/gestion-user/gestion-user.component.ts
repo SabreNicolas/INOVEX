@@ -22,9 +22,9 @@ export class GestionUserComponent implements OnInit {
   public pwd2: string;
   public oldPwd: string;
 
-  hideOld: boolean = true;
-  hide1: boolean = true;
-  hide2: boolean = true;
+  hideOld = true;
+  hide1 = true;
+  hide2 = true;
 
   constructor(
     private loginService: loginService,
@@ -40,9 +40,9 @@ export class GestionUserComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    var userLogged = localStorage.getItem("user");
+    const userLogged = localStorage.getItem("user");
     if (typeof userLogged === "string") {
-      var userLoggedParse = JSON.parse(userLogged);
+      const userLoggedParse = JSON.parse(userLogged);
       this.userLogged = userLoggedParse;
       // @ts-ignore
       this.storedLogin = this.userLogged["login"];
@@ -52,8 +52,8 @@ export class GestionUserComponent implements OnInit {
   }
 
   onSubmit(form: NgForm) {
-    var pwd = form.value["pwd1"];
-    var MD5pwd = Md5.hashStr(pwd);
+    const pwd = form.value["pwd1"];
+    const MD5pwd = Md5.hashStr(pwd);
     this.storedLogin = this.storedLogin.replace("'", "''");
     this.loginService
       .updatePwd(this.storedLogin, MD5pwd)

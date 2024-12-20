@@ -9,9 +9,9 @@ export class PopupService {
    * @param color Couleur du fond de l'alerte (green par défaut)
    */
   alertSuccessForm(
-    title: string = "La requête a bien été effectué",
-    timer: number = 5000,
-    color: string = "green",
+    title = "La requête a bien été effectué",
+    timer = 5000,
+    color = "green",
   ) {
     // Création
     const notifError = Swal.mixin({
@@ -42,9 +42,9 @@ export class PopupService {
    * @param title La réponse qui sera affiché
    */
   public alertErrorForm(
-    title: string = "Veuillez bien remplir le formulaire !",
-    timer: number = 5000,
-    color: string = "red",
+    title = "Veuillez bien remplir le formulaire !",
+    timer = 5000,
+    color = "red",
   ) {
     // Création
     const notifError = Swal.mixin({

@@ -10,8 +10,8 @@ import { Router } from "@angular/router";
   styleUrls: ["./login.component.scss"],
 })
 export class LoginComponent implements OnInit {
-  hide: boolean = true;
-  loginKO: boolean = false;
+  hide = true;
+  loginKO = false;
   public pwd: string;
   public MD5pwd: string;
   public login: string;

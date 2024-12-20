@@ -54,9 +54,9 @@ export class CorrespondanceSortantsComponent implements OnInit {
   }
 
   setFilters() {
-    var codeCat = document.getElementById("categorie");
+    const codeCat = document.getElementById("categorie");
     // @ts-ignore
-    var codeCatSel = codeCat.options[codeCat.selectedIndex].value;
+    const codeCatSel = codeCat.options[codeCat.selectedIndex].value;
     this.debCode = codeCatSel;
     /*Fin de prise en commpte des filtres */
     this.ngOnInit();
@@ -70,10 +70,10 @@ export class CorrespondanceSortantsComponent implements OnInit {
   }
 
   editionProductImport(idCorrespondance: number) {
-    var idCorrespondanceString = idCorrespondance + "";
-    var typeElt = document.getElementById(idCorrespondanceString);
+    const idCorrespondanceString = idCorrespondance + "";
+    const typeElt = document.getElementById(idCorrespondanceString);
     // @ts-ignore
-    var productId = typeElt.options[typeElt.selectedIndex].value;
+    const productId = typeElt.options[typeElt.selectedIndex].value;
     if (productId != "") {
       this.moralEntitiesService
         .updateProductImportCorrespondanceSortant(idCorrespondance, productId)

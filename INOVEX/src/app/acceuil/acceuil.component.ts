@@ -53,9 +53,9 @@ export class AcceuilComponent implements OnInit {
 
   ngOnInit(): void {
     window.parent.document.title = "CAP Exploitation";
-    var userLogged = localStorage.getItem("user");
+    const userLogged = localStorage.getItem("user");
     if (typeof userLogged === "string") {
-      var userLoggedParse = JSON.parse(userLogged);
+      const userLoggedParse = JSON.parse(userLogged);
       this.userLogged = userLoggedParse;
 
       //Récupération de l'idUsine
@@ -107,8 +107,8 @@ export class AcceuilComponent implements OnInit {
   }
 
   navigate(route: string) {
-    let newRelativeUrl = this.router.createUrlTree([route]);
-    let baseUrl = window.location.href.replace(this.router.url, "");
+    const newRelativeUrl = this.router.createUrlTree([route]);
+    const baseUrl = window.location.href.replace(this.router.url, "");
 
     window.open(baseUrl + newRelativeUrl, "_blank");
   }
@@ -125,7 +125,7 @@ export class AcceuilComponent implements OnInit {
       // @ts-ignore
       this.modeOPs = response.data;
       //Construction des valeurs du menu select qui contient les sites
-      let listModesOPs = {};
+      const listModesOPs = {};
       for (let i = 0; i < this.modeOPs.length; i++) {
         //@ts-ignore
         listModesOPs[this.modeOPs[i]["url"]] = this.modeOPs[i]["nom"];
@@ -152,9 +152,9 @@ export class AcceuilComponent implements OnInit {
       // @ts-ignore
       this.sites = response.data;
       //Construction des valeurs du menu select qui contient les sites
-      let listSites = {};
+      const listSites = {};
       this.sites.forEach((site) => {
-        let id = String(site.id) + "_" + site.localisation;
+        const id = String(site.id) + "_" + site.localisation;
         //@ts-ignore
         listSites[id] = site.localisation;
       });
@@ -167,7 +167,7 @@ export class AcceuilComponent implements OnInit {
         confirmButtonText: "Valider",
         allowOutsideClick: false,
       }).then((result) => {
-        let usine_localisation = result.value.split("_");
+        const usine_localisation = result.value.split("_");
         //Premier élément du tableau est l'idUsine
         //@ts-ignore
         this.userLogged["idUsine"] = Number(usine_localisation[0]);

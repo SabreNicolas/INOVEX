@@ -9,7 +9,7 @@ import autoTable from "jspdf-autotable";
 import html2canvas from "html2canvas";
 import * as pdfMake from "pdfmake/build/pdfMake";
 import * as pdfFonts from "pdfMake/build/vfs_fonts";
-declare var $: any;
+declare let $: any;
 import jsPDF from "jspdf";
 import { PopupService } from "../services/popup.service";
 import { anomalie } from "src/models/anomalie.model";
@@ -22,7 +22,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
   templateUrl: "./recap-ronde-precedente.component.html",
   styleUrls: ["./recap-ronde-precedente.component.scss"],
 })
-export class RecapRondePrecedenteComponent {
+export class RecapRondePrecedenteComponent implements OnInit {
   public listAction: any[];
   public listEvenement: any[];
   public listZone: any[];
@@ -150,7 +150,7 @@ export class RecapRondePrecedenteComponent {
             .subscribe((response) => {
               this.nomEquipe = response.data[0]["equipe"];
               if (response.data[0]["idRondier"] != null) {
-                for (var i = 0; i < response.data.length; i++) {
+                for (let i = 0; i < response.data.length; i++) {
                   this.listRondier.push({
                     Id: response.data[i]["idRondier"],
                     Prenom: response.data[i]["prenomRondier"],
@@ -179,7 +179,7 @@ export class RecapRondePrecedenteComponent {
       this.localisation = response.data[0].localisation;
     });
 
-    var dateFr =
+    const dateFr =
       this.dateDebString.split(" ")[0].split("-")[2] +
       "/" +
       this.dateDebString.split(" ")[0].split("-")[1] +
@@ -231,12 +231,12 @@ export class RecapRondePrecedenteComponent {
 
   // Fonction pour redimensionner l'image tout en conservant les proportions
   resizeBase64Img(base64: string, maxWidth: number, maxHeight: number) {
-    var img = new Image();
+    const img = new Image();
     img.src = base64;
-    var width = img.width;
-    var height = img.height;
+    let width = img.width;
+    let height = img.height;
     if (width > maxWidth || height > maxHeight) {
-      var ratio = Math.min(maxWidth / width, maxHeight / height);
+      const ratio = Math.min(maxWidth / width, maxHeight / height);
       width = width * ratio;
       height = height * ratio;
     } else {
@@ -247,7 +247,7 @@ export class RecapRondePrecedenteComponent {
   }
 
   async createPDF() {
-    var quart = "";
+    let quart = "";
     if (this.quartPrecedent == 1) {
       quart = "Matin";
     } else if (this.quartPrecedent == 2) {
@@ -255,7 +255,7 @@ export class RecapRondePrecedenteComponent {
     } else {
       quart = "Nuit";
     }
-    var data = [{ text: "Rondier" }, { text: "Poste" }];
+    const data = [{ text: "Rondier" }, { text: "Poste" }];
 
     const tableBody: any[] = [
       [
@@ -274,7 +274,7 @@ export class RecapRondePrecedenteComponent {
       ],
     ];
 
-    for (let rondier of this.listRondier) {
+    for (const rondier of this.listRondier) {
       tableBody.push([
         {
           text: rondier.Poste,
@@ -302,7 +302,7 @@ export class RecapRondePrecedenteComponent {
       ],
     ];
 
-    for (let consigne of this.listConsigne) {
+    for (const consigne of this.listConsigne) {
       tableConsgines.push([
         {
           text: consigne.titre + " - " + consigne.commentaire,
@@ -325,8 +325,8 @@ export class RecapRondePrecedenteComponent {
       ],
     ];
 
-    for (let anomalie of this.listAnomalies) {
-      var base64 = await this.toBase64ImageUrl(anomalie.photo);
+    for (const anomalie of this.listAnomalies) {
+      const base64 = await this.toBase64ImageUrl(anomalie.photo);
 
       const { width, height } = this.resizeBase64Img(base64, 500, 500);
       tableAnomalies.push([
@@ -351,7 +351,7 @@ export class RecapRondePrecedenteComponent {
       ],
     ];
 
-    for (let action of this.listAction) {
+    for (const action of this.listAction) {
       if (action.termine == 0) {
         var color = "lightcoral";
       } else {
@@ -379,7 +379,7 @@ export class RecapRondePrecedenteComponent {
       ],
     ];
 
-    for (let event of this.listEvenement) {
+    for (const event of this.listEvenement) {
       if (event.importance == 0) {
         var color = "lightgreen";
       } else if (event.importance == 1) {
@@ -429,7 +429,7 @@ export class RecapRondePrecedenteComponent {
       ],
     ];
 
-    for (let zone of this.listZone) {
+    for (const zone of this.listZone) {
       if (zone.termine == 0) {
         var color = "lightcoral";
       } else {
@@ -492,7 +492,7 @@ export class RecapRondePrecedenteComponent {
       ],
     ];
 
-    var pdfContent = {
+    const pdfContent = {
       pageOrientation: "landscape",
       content: [
         {
@@ -589,7 +589,7 @@ export class RecapRondePrecedenteComponent {
     };
 
     //@ts-ignore
-    let pdfCreate = pdfMake.createPdf(pdfContent);
+    const pdfCreate = pdfMake.createPdf(pdfContent);
     pdfCreate.download(
       "Résumé quart du " +
         quart +
@@ -599,7 +599,7 @@ export class RecapRondePrecedenteComponent {
 
     //On récupère le blob pour créer un file que l'on va envoyer à l'API pour le stocker avec multer
     pdfCreate.getBlob((blob) => {
-      var file = new File(
+      const file = new File(
         [blob],
         "_" +
           this.formatDateTime(this.dateDebString) +

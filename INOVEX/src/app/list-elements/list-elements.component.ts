@@ -7,7 +7,7 @@ import { groupement } from "src/models/groupement.model";
 import { NgForm } from "@angular/forms";
 import { MatDialog } from "@angular/material/dialog";
 import Swal from "sweetalert2";
-declare var $: any;
+declare let $: any;
 
 @Component({
   selector: "app-list-elements",
@@ -133,16 +133,12 @@ export class ListElementsComponent implements OnInit {
       this.changeType(null);
       //Gestion du mode regulateur
       if (this.isRegulateur == 1) {
-        this.checkboxRegulateur = <HTMLInputElement>(
-          document.getElementsByName("regulateur")[0]
-        );
+        this.checkboxRegulateur = document.getElementsByName("regulateur")[0] as HTMLInputElement;
         this.checkboxRegulateur.checked = true;
       }
       //Gestion du type compteur
       if (this.isCompteur == 1) {
-        this.checkboxCompteur = <HTMLInputElement>(
-          document.getElementsByName("compteur")[0]
-        );
+        this.checkboxCompteur = document.getElementsByName("compteur")[0] as HTMLInputElement;
         this.checkboxCompteur.checked = true;
       }
       //Gestion de la pastille info sup
@@ -165,9 +161,9 @@ export class ListElementsComponent implements OnInit {
 
   setFilters() {
     /* Début prise en compte des filtres*/
-    var zoneElt = document.getElementById("zone");
+    const zoneElt = document.getElementById("zone");
     // @ts-ignore
-    var zoneSel = zoneElt.options[zoneElt.selectedIndex].value;
+    const zoneSel = zoneElt.options[zoneElt.selectedIndex].value;
     // @ts-ignore
     this.zoneId = zoneSel;
     /*Fin de prise en commpte des filtres */
@@ -267,12 +263,8 @@ export class ListElementsComponent implements OnInit {
 
   //Création éléments contrôle
   onSubmit(form: NgForm) {
-    this.checkboxRegulateur = <HTMLInputElement>(
-      document.getElementsByName("regulateur")[0]
-    );
-    this.checkboxCompteur = <HTMLInputElement>(
-      document.getElementsByName("compteur")[0]
-    );
+    this.checkboxRegulateur = document.getElementsByName("regulateur")[0] as HTMLInputElement;
+    this.checkboxCompteur = document.getElementsByName("compteur")[0] as HTMLInputElement;
     this.nom = form.value["nom"].replace(/'/g, "''");
     this.zoneIdSelect = form.value["zone"];
     this.ordre = form.value["ordreElem"];

@@ -17,7 +17,7 @@ export class PermisFeuComponent implements OnInit {
   public dateHeureFin: string;
   public dateHeureFinFormatBDD: string | null;
   public badgeId: number;
-  public isPermisFeu: number = 0;
+  public isPermisFeu = 0;
   public zone: string;
   public numero: string;
 

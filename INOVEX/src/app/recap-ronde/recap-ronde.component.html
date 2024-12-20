@@ -101,7 +101,7 @@
             {{ rondier.comm_tp }}
             <button
               class="btn btn btn-light edition"
-              [disabled]="rondier.heure_tp == '00:00'"
+              [disabled]="rondier.heure_tp === '00:00'"
               (click)="
                 updateInfos(
                   rondier.IdEquipe,
@@ -379,7 +379,7 @@
               <td>
                 <a
                   href="{{ evenement.url }}"
-                  *ngIf="evenement.url != ''"
+                  *ngIf="evenement.url !== ''"
                   target="_blank"
                 >
                   <button class="btn btn-success">

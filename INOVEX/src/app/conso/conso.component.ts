@@ -54,7 +54,7 @@ export class ConsoComponent implements OnInit {
         .getLastCode(this.Code, site.id)
         .subscribe((response) => {
           if (response.data.length > 0) {
-            var CodeCast: number = +response.data[0].Code;
+            const CodeCast: number = +response.data[0].Code;
             lastCodeUsine = CodeCast + 1;
           } else {
             lastCodeUsine = Number(this.Code + "0001");

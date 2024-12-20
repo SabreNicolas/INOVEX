@@ -65,16 +65,16 @@ export class ListCompteursComponent implements OnInit {
   }
 
   setFilters() {
-    var codeCat = document.getElementById("categorie");
+    const codeCat = document.getElementById("categorie");
     //@ts-ignore
-    var verif = codeCat.options[codeCat.selectedIndex];
+    const verif = codeCat.options[codeCat.selectedIndex];
     if (verif != undefined) {
       // @ts-ignore
       var codeCatSel = codeCat.options[codeCat.selectedIndex].value;
     } else var codeCatSel = "";
 
     this.Code = codeCatSel;
-    var name = (<HTMLInputElement>document.getElementById("name")).value;
+    const name = (document.getElementById("name") as HTMLInputElement).value;
     this.name = name.replace(/'/g, "''");
     /*Fin de prise en commpte des filtres */
     this.ngOnInit();
@@ -116,10 +116,10 @@ export class ListCompteursComponent implements OnInit {
     else {*/
     this.listDays = [];
     this.dateDeb = new Date(
-      (<HTMLInputElement>document.getElementById("dateDeb")).value,
+      (document.getElementById("dateDeb") as HTMLInputElement).value,
     );
     this.dateFin = new Date(
-      (<HTMLInputElement>document.getElementById("dateFin")).value,
+      (document.getElementById("dateFin") as HTMLInputElement).value,
     );
     if (this.dateFin < this.dateDeb) {
       this.dateService.mauvaiseEntreeDate(form);
@@ -218,16 +218,10 @@ export class ListCompteursComponent implements OnInit {
                 response.data[0] != undefined &&
                 response.data[0].Value != 0
               ) {
-                (<HTMLInputElement>(
-                  document.getElementById(pr.Code + "-" + date)
-                )).value = response.data[0].Value;
-                (<HTMLInputElement>(
-                  document.getElementById("export-" + pr.Code + "-" + date)
-                )).innerHTML = response.data[0].Value;
+                (document.getElementById(pr.Code + "-" + date) as HTMLInputElement).value = response.data[0].Value;
+                (document.getElementById("export-" + pr.Code + "-" + date) as HTMLInputElement).innerHTML = response.data[0].Value;
               } else
-                (<HTMLInputElement>(
-                  document.getElementById(pr.Code + "-" + date)
-                )).value = "";
+                (document.getElementById(pr.Code + "-" + date) as HTMLInputElement).value = "";
             });
         }
         //sinon on récupère les valeurs dans maasure new
@@ -246,16 +240,10 @@ export class ListCompteursComponent implements OnInit {
                 response.data[0] != undefined &&
                 response.data[0].Value != 0
               ) {
-                (<HTMLInputElement>(
-                  document.getElementById(pr.Code + "-" + date)
-                )).value = response.data[0].Value;
-                (<HTMLInputElement>(
-                  document.getElementById("export-" + pr.Code + "-" + date)
-                )).innerHTML = response.data[0].Value;
+                (document.getElementById(pr.Code + "-" + date) as HTMLInputElement).value = response.data[0].Value;
+                (document.getElementById("export-" + pr.Code + "-" + date) as HTMLInputElement).innerHTML = response.data[0].Value;
               } else
-                (<HTMLInputElement>(
-                  document.getElementById(pr.Code + "-" + date)
-                )).value = "";
+                (document.getElementById(pr.Code + "-" + date) as HTMLInputElement).value = "";
             });
         }
       }
@@ -266,11 +254,9 @@ export class ListCompteursComponent implements OnInit {
   validation() {
     this.listCompteurs.forEach((cp) => {
       this.listDays.forEach((day) => {
-        var value = (<HTMLInputElement>(
-          document.getElementById(cp.Code + "-" + day)
-        )).value.replace(",", ".");
-        var Value2 = value.replace(" ", "");
-        var valueInt: number = +Value2;
+        const value = (document.getElementById(cp.Code + "-" + day) as HTMLInputElement).value.replace(",", ".");
+        const Value2 = value.replace(" ", "");
+        const valueInt: number = +Value2;
         if (valueInt > 0.0) {
           //Si on est sur chinon, on insère les valeurs dans saisiemensuelle
           if (this.idUsine == 2) {
@@ -339,7 +325,7 @@ export class ListCompteursComponent implements OnInit {
       .subscribe((response) => {
         if (response == "Création du Measures OK") {
           this.popupService.alertSuccessForm("La valeur a bien été supprimé !");
-          (<HTMLInputElement>document.getElementById(Code + "-" + date)).value =
+          (document.getElementById(Code + "-" + date) as HTMLInputElement).value =
             "";
         } else {
           this.popupService.alertErrorForm(
@@ -361,7 +347,7 @@ export class ListCompteursComponent implements OnInit {
       .subscribe((response) => {
         if (response == "Création du saisiemensuelle OK") {
           this.popupService.alertSuccessForm("La valeur a bien été supprimé !");
-          (<HTMLInputElement>document.getElementById(Code + "-" + date)).value =
+          (document.getElementById(Code + "-" + date) as HTMLInputElement).value =
             "";
         } else {
           this.popupService.alertErrorForm(
@@ -374,7 +360,7 @@ export class ListCompteursComponent implements OnInit {
   //Export de la table dans fichier EXCEL
   exportExcel() {
     /* table id is passed over here */
-    let element = document.getElementById("listCompteurs");
+    const element = document.getElementById("listCompteurs");
     const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element, {
       raw: false,
       dateNF: "mm/dd/yyyy",

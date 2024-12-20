@@ -13,7 +13,7 @@ import { Router } from "@angular/router";
 
 import { format } from "date-fns";
 import { PopupService } from "../services/popup.service";
-declare var $: any;
+declare let $: any;
 @Component({
   selector: "app-equipe",
   templateUrl: "./equipe.component.html",
@@ -120,7 +120,7 @@ export class EquipeComponent implements OnInit {
 
           let zoneId;
           if (response.data[0]["idRondier"] != null) {
-            for (var i = 0; i < response.data.length; i++) {
+            for (let i = 0; i < response.data.length; i++) {
               if (response.data[i]["idZone"] > 0) {
                 zoneId = response.data[i]["idZone"];
               } else zoneId = 0;
@@ -179,8 +179,8 @@ export class EquipeComponent implements OnInit {
       //return
       //}
 
-      var recherchePoste = user.Nom + "_" + user.Prenom + "_poste";
-      var idPoste = (<HTMLInputElement>document.getElementById(recherchePoste))
+      const recherchePoste = user.Nom + "_" + user.Prenom + "_poste";
+      const idPoste = (document.getElementById(recherchePoste) as HTMLInputElement)
         .value;
       if (idPoste == "") {
         this.popupService.alertErrorForm(
@@ -226,11 +226,11 @@ export class EquipeComponent implements OnInit {
               )
               .subscribe((response) => {
                 //On vide les input pour une nouvelle création
-                (<HTMLInputElement>document.getElementById("nomEquipe")).value =
+                (document.getElementById("nomEquipe") as HTMLInputElement).value =
                   "";
 
                 //On ajoute les rondier dans l'équipe
-                var idEquipe = response["data"][0]["Id"];
+                const idEquipe = response["data"][0]["Id"];
                 this.ajoutAffectationEquipe(idEquipe);
               });
           }
@@ -245,13 +245,13 @@ export class EquipeComponent implements OnInit {
   //Fonction qui permet d'ajouter les rondiers un par un à une équipe
   ajoutAffectationEquipe(idEquipe: number) {
     for (const user of this.listAjout) {
-      var idUser = user.Id;
+      const idUser = user.Id;
       //var rechercheZone = user.Nom +"_"+user.Prenom+"_zone";
       //var idZone = parseInt((<HTMLInputElement>document.getElementById(rechercheZone)).value);
       //On force à 0 l'idZone car on ne gère plus l'affectation zone par utilisateur => cahier de quart le remplace
-      var idZone = 0;
-      var recherchePoste = user.Nom + "_" + user.Prenom + "_poste";
-      var poste = (<HTMLInputElement>document.getElementById(recherchePoste))
+      const idZone = 0;
+      const recherchePoste = user.Nom + "_" + user.Prenom + "_poste";
+      const poste = (document.getElementById(recherchePoste) as HTMLInputElement)
         .value;
 
       if (idUser > 0) {
@@ -277,7 +277,7 @@ export class EquipeComponent implements OnInit {
   ajoutUser(user: user) {
     this.listAjout.push(user);
 
-    let indexRomove = this.listUsers.findIndex(
+    const indexRomove = this.listUsers.findIndex(
       (item) => item.Nom === user.Nom && item.Prenom == user.Prenom,
     );
 
@@ -290,7 +290,7 @@ export class EquipeComponent implements OnInit {
   suppUser(user: user) {
     this.listUsers.unshift(user);
 
-    let indexRomove = this.listAjout.findIndex(
+    const indexRomove = this.listAjout.findIndex(
       (item) => item.Nom === user.Nom && item.Prenom == user.Prenom,
     );
 
@@ -304,7 +304,7 @@ export class EquipeComponent implements OnInit {
     this.cahierQuartService
       .udpateEquipe(this.name, quartNombre, this.idEquipe)
       .subscribe((response) => {
-        var idEquipe = this.idEquipe;
+        const idEquipe = this.idEquipe;
         this.updateAffectationEquipe(idEquipe);
       });
   }
@@ -364,14 +364,14 @@ export class EquipeComponent implements OnInit {
   //Fonction qui permet de charger une équipe lors de sa sélection
   chargerRondiersEquipeEnregistree() {
     this.listAjout = [];
-    var id = this.idEquipeEnregistree.split("-")[0];
+    const id = this.idEquipeEnregistree.split("-")[0];
     //console.log(this.idEquipeEnregistree)
     if (this.idEquipeEnregistree != "-") {
       this.cahierQuartService
         .getOneEnregistrementEquipe(id)
         .subscribe((response) => {
           if (response.data[0]["idRondier"] != null) {
-            for (var i = 0; i < response.data.length; i++) {
+            for (let i = 0; i < response.data.length; i++) {
               this.listAjout.push({
                 Id: response.data[i]["idRondier"],
                 Prenom: response.data[i]["prenomRondier"],

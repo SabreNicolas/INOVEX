@@ -35,9 +35,9 @@ export class ListMoralEntitiesComponent implements OnInit {
 
   ngOnInit(): void {
     //Verification droit admin du user pour disabled ou non le btn d'edition des clients
-    var userLogged = localStorage.getItem("user");
+    const userLogged = localStorage.getItem("user");
     if (typeof userLogged === "string") {
-      var userLoggedParse = JSON.parse(userLogged);
+      const userLoggedParse = JSON.parse(userLogged);
       this.userLogged = userLoggedParse;
       // @ts-ignore
       this.isAdmin = this.userLogged["isAdmin"];
@@ -94,10 +94,10 @@ export class ListMoralEntitiesComponent implements OnInit {
 
   setFilters() {
     /* Début prise en compte des filtres*/
-    var produitElt = document.getElementById("produit");
+    const produitElt = document.getElementById("produit");
     // @ts-ignore
-    var produitSel = produitElt.options[produitElt.selectedIndex].value;
-    var collecteurElt = document.getElementById("collecteur");
+    const produitSel = produitElt.options[produitElt.selectedIndex].value;
+    const collecteurElt = document.getElementById("collecteur");
     if (collecteurElt != null) {
       var collecteurSel =
         //@ts-ignore
@@ -131,7 +131,7 @@ export class ListMoralEntitiesComponent implements OnInit {
 
   //mise à jour du prix d'un client
   setPrice(MR: moralEntity) {
-    var prix = prompt("Veuillez saisir un Prix", String(MR.UnitPrice));
+    const prix = prompt("Veuillez saisir un Prix", String(MR.UnitPrice));
     if (prix != null) {
       // @ts-ignore
       this.moralEntitiesService
@@ -151,7 +151,7 @@ export class ListMoralEntitiesComponent implements OnInit {
 
   //mise à jour du num de CAP d'un client
   setCAP(MR: moralEntity) {
-    var cap = prompt("Veuillez saisir un n° du CAP", String(MR.numCAP));
+    const cap = prompt("Veuillez saisir un n° du CAP", String(MR.numCAP));
     if (cap === null) {
       return; //break out of the function early
     }
@@ -172,7 +172,7 @@ export class ListMoralEntitiesComponent implements OnInit {
 
   //mise à jour du nom d'un client
   setName(MR: moralEntity) {
-    var name = prompt("Veuillez saisir un Nom", String(MR.Name));
+    const name = prompt("Veuillez saisir un Nom", String(MR.Name));
     if (name == null) {
       return; //break out of the function early
     }
@@ -226,8 +226,8 @@ export class ListMoralEntitiesComponent implements OnInit {
   }
 
   changeAllPrice() {
-    var prix = prompt("Veuillez saisir un Prix", "0");
-    for (var i = 0; i < this.listId.length; i++) {
+    const prix = prompt("Veuillez saisir un Prix", "0");
+    for (let i = 0; i < this.listId.length; i++) {
       this.moralEntitiesService
         //@ts-ignore
         .setPrix(prix.replace(",", "."), this.listId[i])

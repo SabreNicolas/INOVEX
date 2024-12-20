@@ -31,9 +31,9 @@ export class ListRapportsComponent implements OnInit {
       this.listRapports = response.data;
     });
 
-    var userLogged = localStorage.getItem("user");
+    const userLogged = localStorage.getItem("user");
     if (typeof userLogged === "string") {
-      var userLoggedParse = JSON.parse(userLogged);
+      const userLoggedParse = JSON.parse(userLogged);
       this.userLogged = userLoggedParse;
       //Récupération de l'idUsine
       // @ts-ignore

@@ -34,7 +34,7 @@ export class cahierQuartService {
 
   //Récupérer une localisation du site
   getOneLocalisation() {
-    let requete = "https://" + this.ip + "/getOneLocalisation/" + this.idUsine;
+    const requete = "https://" + this.ip + "/getOneLocalisation/" + this.idUsine;
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
@@ -45,7 +45,7 @@ export class cahierQuartService {
 
   //Récupérer les anmoalies d'une ronde
   getAnomaliesOfOneRonde(date: string, quart: number) {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/getAnomaliesOfOneRonde?date=" +
@@ -64,7 +64,7 @@ export class cahierQuartService {
 
   //Récupérer les rondiers sans équipe
   getOneUser() {
-    let requete = "https://" + this.ip + "/getOneUser/" + this.idUser;
+    const requete = "https://" + this.ip + "/getOneUser/" + this.idUser;
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
@@ -75,7 +75,7 @@ export class cahierQuartService {
 
   //Récupérer les rondiers sans équipe
   getUsersRondierSansEquipe() {
-    let requete =
+    const requete =
       "https://" + this.ip + "/usersRondierSansEquipe?idUsine=" + this.idUsine;
 
     const requestOptions = {
@@ -87,7 +87,7 @@ export class cahierQuartService {
 
   //Récupérer les rondiers sans équipe
   getUsersRondier() {
-    let requete =
+    const requete =
       "https://" + this.ip + "/UsersRondier?idUsine=" + this.idUsine;
 
     const requestOptions = {
@@ -99,7 +99,7 @@ export class cahierQuartService {
 
   //Récupérer les zones d'une usine
   getZones() {
-    let requete = "https://" + this.ip + "/zones/" + this.idUsine;
+    const requete = "https://" + this.ip + "/zones/" + this.idUsine;
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
@@ -113,7 +113,7 @@ export class cahierQuartService {
   //Créer une nouvelle équipe
   nouvelleEquipe(nomEquipe: string, quart: number, date: string) {
     date = encodeURIComponent(date);
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/equipe?nomEquipe=" +
@@ -134,7 +134,7 @@ export class cahierQuartService {
 
   //Créer une nouvel enregistrement d'équipe
   nouvelEnregistrementEquipe(nomEquipe: string) {
-    let requete =
+    const requete =
       "https://" + this.ip + "/enregistrementEquipe?nomEquipe=" + nomEquipe;
 
     const requestOptions = {
@@ -153,7 +153,7 @@ export class cahierQuartService {
     heure_deb: string,
     heure_fin: string,
   ) {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/affectationEquipe?idRondier=" +
@@ -184,7 +184,7 @@ export class cahierQuartService {
     valueInfo: string,
   ) {
     valueInfo = valueInfo.replace("'", "''");
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/UpdateInfosAffectationEquipe?idRondier=" +
@@ -205,7 +205,7 @@ export class cahierQuartService {
 
   //Ajouter les utilisateur à un enregistrement équipe
   nouvelEnregistrementAffectationEquipe(idUser: number, idEquipe: number) {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/enregistrementAffectationEquipe?idRondier=" +
@@ -222,7 +222,7 @@ export class cahierQuartService {
 
   //Récupérer les équipes d'une usine
   getEquipes() {
-    let requete = "https://" + this.ip + "/equipes?&idUsine=" + this.idUsine;
+    const requete = "https://" + this.ip + "/equipes?&idUsine=" + this.idUsine;
     //console.log(requete);
 
     const requestOptions = {
@@ -234,7 +234,7 @@ export class cahierQuartService {
 
   //Récupérer les équipes enregistrées d'une usine
   getEquipesEnregistrees() {
-    let requete =
+    const requete =
       "https://" + this.ip + "/getEquipesEnregistrees?&idUsine=" + this.idUsine;
     //console.log(requete);
 
@@ -247,7 +247,7 @@ export class cahierQuartService {
 
   //Récupérer les noms des équipes enregistrées d'une usine
   getNomsEquipesEnregistrees() {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/getNomsEquipesEnregistrees?&idUsine=" +
@@ -263,7 +263,7 @@ export class cahierQuartService {
 
   //Récupérer une seule équipe
   getOneEquipe(idEquipe: number) {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/getOneEquipe?&idUsine=" +
@@ -281,7 +281,7 @@ export class cahierQuartService {
 
   //Récupérer une seule équipe enregistrée
   getOneEnregistrementEquipe(idEquipe: any) {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/getOneEnregistrementEquipe?&idUsine=" +
@@ -299,7 +299,7 @@ export class cahierQuartService {
 
   //Mise à jour des infos d'une équipe
   udpateEquipe(nomEquipe: string, quart: number, idEquipe: number) {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/updateEquipe?&nomEquipe=" +
@@ -320,7 +320,7 @@ export class cahierQuartService {
 
   //Mise à jour des infos d'une équipe enregistrée
   udpateEnregistrementEquipe(nomEquipe: string, idEquipe: number) {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/updateEnregistrementEquipe?&nomEquipe=" +
@@ -339,7 +339,7 @@ export class cahierQuartService {
 
   //Supprimer une une équipe
   deleteEquipe(idEquipe: number) {
-    let requete = "https://" + this.ip + "/deleteEquipe/" + idEquipe;
+    const requete = "https://" + this.ip + "/deleteEquipe/" + idEquipe;
     //console.log(requete);
 
     const requestOptions = {
@@ -351,7 +351,7 @@ export class cahierQuartService {
 
   //Supprimer une une équipe enregistrée
   deleteEnregistrementEquipe(idEquipe: number) {
-    let requete =
+    const requete =
       "https://" + this.ip + "/deleteEnregistrementEquipe/" + idEquipe;
     //console.log(requete);
 
@@ -364,7 +364,7 @@ export class cahierQuartService {
 
   //Supprimer les Rondiers d'une équipe
   deleteAffectationEquipe(idEquipe: number) {
-    let requete = "https://" + this.ip + "/deleteAffectationEquipe/" + idEquipe;
+    const requete = "https://" + this.ip + "/deleteAffectationEquipe/" + idEquipe;
     //console.log(requete);
 
     const requestOptions = {
@@ -376,7 +376,7 @@ export class cahierQuartService {
 
   //Supprimer les Rondiers d'une équipe enregistre
   deleteEnregistrementAffectationEquipe(idEquipe: number) {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/deleteEnregistrementAffectationEquipe/" +
@@ -404,7 +404,7 @@ export class cahierQuartService {
   ) {
     titre = encodeURIComponent(titre);
     description = encodeURIComponent(description);
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/actu?titre=" +
@@ -443,7 +443,7 @@ export class cahierQuartService {
   ) {
     titre = encodeURIComponent(titre);
     description = encodeURIComponent(description);
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/updateActu?titre=" +
@@ -470,7 +470,7 @@ export class cahierQuartService {
 
   //Récupérer une actualité
   getOneActu(idActu: number) {
-    let requete = "https://" + this.ip + "/getOneActu?idActu=" + idActu;
+    const requete = "https://" + this.ip + "/getOneActu?idActu=" + idActu;
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
@@ -481,7 +481,7 @@ export class cahierQuartService {
 
   //Récupérer toutes actualité
   getAllActu() {
-    let requete = "https://" + this.ip + "/getAllActu?idUsine=" + this.idUsine;
+    const requete = "https://" + this.ip + "/getAllActu?idUsine=" + this.idUsine;
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
@@ -492,7 +492,7 @@ export class cahierQuartService {
 
   //Récupérer toutes actualité avec la date courante entre la date de début et la date de fin
   getAllActuDateCourante() {
-    let requete =
+    const requete =
       "https://" + this.ip + "/getAllActuDateCourante?idUsine=" + this.idUsine;
 
     const requestOptions = {
@@ -504,7 +504,7 @@ export class cahierQuartService {
 
   //Récupérer toutes actualité étant lié à un quart
   getActusQuart(isQuart: number) {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/getActusQuart?idUsine=" +
@@ -521,7 +521,7 @@ export class cahierQuartService {
 
   //Valider une actualité => permet enfaite de la lier à un quart
   validerActu(idActu: number) {
-    let requete = "https://" + this.ip + "/validerActu?idActu=" + idActu;
+    const requete = "https://" + this.ip + "/validerActu?idActu=" + idActu;
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
@@ -532,7 +532,7 @@ export class cahierQuartService {
 
   //invalider une actualité => permet enfaite de ne pas la lier à un quart
   invaliderActu(idActu: number) {
-    let requete = "https://" + this.ip + "/invaliderActu?idActu=" + idActu;
+    const requete = "https://" + this.ip + "/invaliderActu?idActu=" + idActu;
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
@@ -549,7 +549,7 @@ export class cahierQuartService {
     importance: number,
   ) {
     titre = encodeURIComponent(titre);
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/getActusEntreDeuxDates?idUsine=" +
@@ -572,7 +572,7 @@ export class cahierQuartService {
 
   //Supprimer une actu
   deleteActu(id: number) {
-    let requete = "https://" + this.ip + "/deleteActu/" + id;
+    const requete = "https://" + this.ip + "/deleteActu/" + id;
     //console.log(requete);
 
     const requestOptions = {
@@ -613,7 +613,7 @@ export class cahierQuartService {
       headers: headers,
     };
 
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/evenement?titre=" +
@@ -668,7 +668,7 @@ export class cahierQuartService {
     cause = encodeURIComponent(cause);
     description = encodeURIComponent(description);
 
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/updateEvenement?titre=" +
@@ -703,7 +703,7 @@ export class cahierQuartService {
 
   //Récupérer un évènement
   getOneEvenement(idEvenement: number) {
-    let requete =
+    const requete =
       "https://" + this.ip + "/getOneEvenement?idEvenement=" + idEvenement;
 
     const requestOptions = {
@@ -715,7 +715,7 @@ export class cahierQuartService {
 
   //Récupérer tout les évènements
   getAllEvenement() {
-    let requete =
+    const requete =
       "https://" + this.ip + "/getAllEvenement?idUsine=" + this.idUsine;
 
     const requestOptions = {
@@ -736,7 +736,7 @@ export class cahierQuartService {
   ) {
     titre = encodeURIComponent(titre);
 
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/getEvenementsEntreDeuxDates?idUsine=" +
@@ -763,7 +763,7 @@ export class cahierQuartService {
 
   //Récupérer tout les évènements d'une ronde
   getEvenementsRonde(dateDeb: string, dateFin: string) {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/getEvenementsRonde?idUsine=" +
@@ -782,7 +782,7 @@ export class cahierQuartService {
 
   //Supprimer une évènement
   deleteEvenement(id: number) {
-    let requete = "https://" + this.ip + "/deleteEvenement/" + id;
+    const requete = "https://" + this.ip + "/deleteEvenement/" + id;
     //console.log(requete);
 
     const requestOptions = {
@@ -796,7 +796,7 @@ export class cahierQuartService {
 
   //Récupérer toutes les zones du calendrier
   getAllZonesCalendrier() {
-    let requete =
+    const requete =
       "https://" + this.ip + "/getAllZonesCalendrier?idUsine=" + this.idUsine;
 
     const requestOptions = {
@@ -808,7 +808,7 @@ export class cahierQuartService {
 
   //Récupérer les zones d'une ronde du calendrier
   getZonesCalendrierRonde(dateDeb: string, dateFin: string) {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/getZonesCalendrierRonde?idUsine=" +
@@ -827,7 +827,7 @@ export class cahierQuartService {
 
   //Récupérer une équipe sur une ronde
   getEquipeRonde(quart: number) {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/getEquipeRonde?idUsine=" +
@@ -845,7 +845,7 @@ export class cahierQuartService {
   //Récupérer une équipe sur un  quart
   getEquipeQuart(quart: number, date: string) {
     date = encodeURIComponent(date);
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/getEquipeQuart?idUsine=" +
@@ -864,7 +864,7 @@ export class cahierQuartService {
 
   //Récupérer toutes les ation du calendrier
   getAllActionsCalendrier() {
-    let requete =
+    const requete =
       "https://" + this.ip + "/getAllActionsCalendrier?idUsine=" + this.idUsine;
 
     const requestOptions = {
@@ -881,7 +881,7 @@ export class cahierQuartService {
     quart: number,
     dateFin: string,
   ) {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/newCalendrierZone?idRonde=" +
@@ -910,7 +910,7 @@ export class cahierQuartService {
     dateFin: string,
     termine: number,
   ) {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/newCalendrierAction?idAction=" +
@@ -940,7 +940,7 @@ export class cahierQuartService {
     quart: number,
     dateFin: string,
   ) {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/updateCalendrierAction?idAction=" +
@@ -964,7 +964,7 @@ export class cahierQuartService {
   //Créer une nouvelle actualité
   newAction(nom: string, dateDeb: string, dateFin: string) {
     nom = encodeURIComponent(nom);
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/newAction?nom=" +
@@ -985,7 +985,7 @@ export class cahierQuartService {
 
   //Récupérer toutes les actus d'une ronde
   getActusRonde(dateDeb: string, dateFin: string) {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/getActusRonde?idUsine=" +
@@ -1004,7 +1004,7 @@ export class cahierQuartService {
 
   //Supprimer un évènement du calendrier
   deleteCalendrier(id: number) {
-    let requete = "https://" + this.ip + "/deleteCalendrier/" + id;
+    const requete = "https://" + this.ip + "/deleteCalendrier/" + id;
     //console.log(requete);
 
     const requestOptions = {
@@ -1016,7 +1016,7 @@ export class cahierQuartService {
 
   //Supprimer un évènement du calendrier
   updateTerminerCalendrier(id: number, termine: boolean) {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/changeTermineCalendrier?id=" +
@@ -1034,7 +1034,7 @@ export class cahierQuartService {
 
   //Supprimer les évenement suivants de celui choisi (pour supprimer occurence sur une action)
   deleteEvents(id: number) {
-    let requete = "https://" + this.ip + "/deleteEventsSuivant/" + id;
+    const requete = "https://" + this.ip + "/deleteEventsSuivant/" + id;
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
@@ -1047,7 +1047,7 @@ export class cahierQuartService {
 
   //Récupérer toutes les actions d'une ronde
   getActionsRonde(dateDeb: string, dateFin: string) {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/getActionsRonde?idUsine=" +
@@ -1066,7 +1066,7 @@ export class cahierQuartService {
 
   //Récupérer toutes les action
   getAllAction() {
-    let requete =
+    const requete =
       "https://" + this.ip + "/getAllAction?idUsine=" + this.idUsine;
 
     const requestOptions = {
@@ -1079,7 +1079,7 @@ export class cahierQuartService {
   //Récupérer toutes les action entre deux dates d'une usine avec filtre sur le titre et l'importance
   getActionsEntreDeuxDates(dateDeb: string, dateFin: string, titre: string) {
     titre = encodeURIComponent(titre);
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/getActionsEntreDeuxDates?idUsine=" +
@@ -1100,7 +1100,7 @@ export class cahierQuartService {
 
   //Récupérer une action
   getOneAction(idAction: number) {
-    let requete = "https://" + this.ip + "/getOneAction?idAction=" + idAction;
+    const requete = "https://" + this.ip + "/getOneAction?idAction=" + idAction;
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
@@ -1117,7 +1117,7 @@ export class cahierQuartService {
     idAction: number,
   ) {
     nom = encodeURIComponent(nom);
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/updateAction?nom=" +
@@ -1140,7 +1140,7 @@ export class cahierQuartService {
 
   //Récupérer une consigne
   getOneConsigne(idConsigne: number) {
-    let requete =
+    const requete =
       "https://" + this.ip + "/getOneConsigne?idConsigne=" + idConsigne;
 
     const requestOptions = {
@@ -1153,7 +1153,7 @@ export class cahierQuartService {
   //Récupérer toutes les consignes entre deux dates d'une usine avec filtre sur le titre et l'importance
   getConsignesRecherche(dateDeb: string, dateFin: string, titre: string) {
     titre = encodeURIComponent(titre);
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/getConsignesRecherche?idUsine=" +
@@ -1177,7 +1177,7 @@ export class cahierQuartService {
   ////////////////////
 
   getOneLienExterne(idLien: number) {
-    let requete = "https://" + this.ip + "/getOneLienExterne?idLien=" + idLien;
+    const requete = "https://" + this.ip + "/getOneLienExterne?idLien=" + idLien;
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
@@ -1187,7 +1187,7 @@ export class cahierQuartService {
   }
 
   getAllLiensExternes() {
-    let requete =
+    const requete =
       "https://" + this.ip + "/getAllLiensExternes?idUsine=" + this.idUsine;
 
     const requestOptions = {
@@ -1198,7 +1198,7 @@ export class cahierQuartService {
   }
 
   getActifsLiensExternes() {
-    let requete =
+    const requete =
       "https://" + this.ip + "/getActifsLiensExternes?idUsine=" + this.idUsine;
 
     const requestOptions = {
@@ -1211,7 +1211,7 @@ export class cahierQuartService {
   updateLienExterne(nom: string, url: string, idLien: number) {
     nom = encodeURIComponent(nom);
     url = encodeURIComponent(url);
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/updateLienExterne?nom=" +
@@ -1229,7 +1229,7 @@ export class cahierQuartService {
   }
 
   newLienExterne(nom: string, url: string) {
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/newLienExterne?nom=" +
@@ -1248,7 +1248,7 @@ export class cahierQuartService {
 
   //Activer un lien
   activerLien(idLien: number) {
-    let requete = "https://" + this.ip + "/activerLien?idLien=" + idLien;
+    const requete = "https://" + this.ip + "/activerLien?idLien=" + idLien;
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
@@ -1259,7 +1259,7 @@ export class cahierQuartService {
 
   //Désactiver un lien
   desactiverLien(idLien: number) {
-    let requete = "https://" + this.ip + "/desactiverLien?idLien=" + idLien;
+    const requete = "https://" + this.ip + "/desactiverLien?idLien=" + idLien;
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
@@ -1270,7 +1270,7 @@ export class cahierQuartService {
 
   //Supprimer un lien externe
   deleteLienExterne(id: number) {
-    let requete = "https://" + this.ip + "/deleteLienExterne?idLien=" + id;
+    const requete = "https://" + this.ip + "/deleteLienExterne?idLien=" + id;
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
@@ -1285,9 +1285,9 @@ export class cahierQuartService {
 
   //Créer un nouvel historique d'évènement
   historiqueEvenementCreate(idEvenement: number) {
-    var dateHeure: any = new Date();
+    let dateHeure: any = new Date();
     dateHeure = this.datePipe.transform(dateHeure, "yyyy-MM-dd HH:mm");
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/historiqueEvenementCreate?idUser=" +
@@ -1308,9 +1308,9 @@ export class cahierQuartService {
 
   //Créer un nouvel historique d'évènement
   historiqueEvenementUpdate(idEvenement: number) {
-    var dateHeure: any = new Date();
+    let dateHeure: any = new Date();
     dateHeure = this.datePipe.transform(dateHeure, "yyyy-MM-dd HH:mm");
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/historiqueEvenementUpdate?idUser=" +
@@ -1331,9 +1331,9 @@ export class cahierQuartService {
 
   //Créer un nouvel historique d'évènement
   historiqueEvenementDelete(idEvenement: number) {
-    var dateHeure: any = new Date();
+    let dateHeure: any = new Date();
     dateHeure = this.datePipe.transform(dateHeure, "yyyy-MM-dd HH:mm");
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/historiqueEvenementDelete?idUser=" +
@@ -1354,9 +1354,9 @@ export class cahierQuartService {
 
   //Créer un nouvel historique de prise de quart
   historiquePriseQuart() {
-    var dateHeure: any = new Date();
+    let dateHeure: any = new Date();
     dateHeure = this.datePipe.transform(dateHeure, "yyyy-MM-dd HH:mm");
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/historiquePriseQuart?idUser=" +
@@ -1375,9 +1375,9 @@ export class cahierQuartService {
 
   //Créer un nouvel historique d'actu
   historiqueActuCreate(idActu: number) {
-    var dateHeure: any = new Date();
+    let dateHeure: any = new Date();
     dateHeure = this.datePipe.transform(dateHeure, "yyyy-MM-dd HH:mm");
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/historiqueActuCreate?idUser=" +
@@ -1398,9 +1398,9 @@ export class cahierQuartService {
 
   //Créer un nouvel historique d'actu
   historiqueActuUpdate(idActu: number) {
-    var dateHeure: any = new Date();
+    let dateHeure: any = new Date();
     dateHeure = this.datePipe.transform(dateHeure, "yyyy-MM-dd HH:mm");
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/historiqueActuUpdate?idUser=" +
@@ -1421,9 +1421,9 @@ export class cahierQuartService {
 
   //Créer un nouvel historique de consigne
   historiqueConsigneCreate(idConsigne: number) {
-    var dateHeure: any = new Date();
+    let dateHeure: any = new Date();
     dateHeure = this.datePipe.transform(dateHeure, "yyyy-MM-dd HH:mm");
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/historiqueConsigneCreate?idUser=" +
@@ -1444,9 +1444,9 @@ export class cahierQuartService {
 
   //Créer un nouvel historique de consgine
   historiqueConsigneUpdate(idConsigne: number) {
-    var dateHeure: any = new Date();
+    let dateHeure: any = new Date();
     dateHeure = this.datePipe.transform(dateHeure, "yyyy-MM-dd HH:mm");
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/historiqueConsigneUpdate?idUser=" +
@@ -1466,9 +1466,9 @@ export class cahierQuartService {
   }
   //Créer un nouvel historique de consgine
   historiqueConsigneDelete(idConsigne: number) {
-    var dateHeure: any = new Date();
+    let dateHeure: any = new Date();
     dateHeure = this.datePipe.transform(dateHeure, "yyyy-MM-dd HH:mm");
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/historiqueConsigneDelete?idUser=" +
@@ -1494,7 +1494,7 @@ export class cahierQuartService {
     const formData = new FormData();
     // @ts-ignore
     formData.append("fichier", fichier, fichier.name);
-    let requete =
+    const requete =
       "https://" +
       this.ip +
       "/stockageRecapQuart?idUsine=" +

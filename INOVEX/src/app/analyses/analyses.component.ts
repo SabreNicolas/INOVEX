@@ -19,7 +19,7 @@ export class AnalysesComponent implements OnInit {
   public listAnalyses: product[];
   public Code: string;
   public listDays: string[];
-  public isPCI: boolean = false; // 'true' si on saisie des pci et 'false' si analyses
+  public isPCI = false; // 'true' si on saisie des pci et 'false' si analyses
 
   constructor(
     private productsService: productsService,
@@ -70,9 +70,9 @@ export class AnalysesComponent implements OnInit {
   }
 
   setFilters() {
-    var codeCat = document.getElementById("categorie");
+    const codeCat = document.getElementById("categorie");
     // @ts-ignore
-    var codeCatSel = codeCat.options[codeCat.selectedIndex].value;
+    const codeCatSel = codeCat.options[codeCat.selectedIndex].value;
     this.Code = codeCatSel;
     /*Fin de prise en commpte des filtres */
     this.getAnalyses();
@@ -81,10 +81,10 @@ export class AnalysesComponent implements OnInit {
   setPeriod(form: NgForm) {
     this.listDays = [];
     if (form.value["dateDeb"] != "") {
-      var date = new Date(form.value["dateDeb"]);
-      var mm = String(date.getMonth() + 1).padStart(2, "0"); //January is 0!
-      var yyyy = date.getFullYear();
-      var dd = String(
+      const date = new Date(form.value["dateDeb"]);
+      const mm = String(date.getMonth() + 1).padStart(2, "0"); //January is 0!
+      const yyyy = date.getFullYear();
+      const dd = String(
         new Date(yyyy, date.getMonth() + 1, 0).getDate(),
       ).padStart(2, "0");
       this.listDays.push(dd + "/" + mm + "/" + yyyy);
@@ -122,13 +122,9 @@ export class AnalysesComponent implements OnInit {
           )
           .subscribe((response) => {
             if (response.data[0] != undefined && response.data[0].Value != 0) {
-              (<HTMLInputElement>(
-                document.getElementById(an.Id + "-" + day)
-              )).value = response.data[0].Value;
+              (document.getElementById(an.Id + "-" + day) as HTMLInputElement).value = response.data[0].Value;
             } else
-              (<HTMLInputElement>(
-                document.getElementById(an.Id + "-" + day)
-              )).value = "";
+              (document.getElementById(an.Id + "-" + day) as HTMLInputElement).value = "";
           });
       });
     });
@@ -138,10 +134,8 @@ export class AnalysesComponent implements OnInit {
   validation() {
     this.listAnalyses.forEach((an) => {
       this.listDays.forEach((day) => {
-        var value = (<HTMLInputElement>(
-          document.getElementById(an.Id + "-" + day)
-        )).value.replace(",", ".");
-        var valueInt: number = +value;
+        const value = (document.getElementById(an.Id + "-" + day) as HTMLInputElement).value.replace(",", ".");
+        const valueInt: number = +value;
         if (valueInt > 0.0) {
           this.mrService
             .createMeasure(
@@ -182,7 +176,7 @@ export class AnalysesComponent implements OnInit {
       .subscribe((response) => {
         if (response == "Création du Measures OK") {
           this.popupService.alertSuccessForm("La valeur a bien été supprimé !");
-          (<HTMLInputElement>document.getElementById(Id + "-" + date)).value =
+          (document.getElementById(Id + "-" + date) as HTMLInputElement).value =
             "";
         } else {
           this.popupService.alertErrorForm(

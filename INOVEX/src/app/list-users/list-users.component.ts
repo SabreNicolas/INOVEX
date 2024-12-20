@@ -31,7 +31,7 @@ export class ListUsersComponent implements OnInit {
 
   setFilters() {
     /* Début prise en compte des filtres*/
-    var login = (<HTMLInputElement>document.getElementById("login")).value;
+    const login = (document.getElementById("login") as HTMLInputElement).value;
     this.loginLike = login.replace(/'/g, "''");
     /*Fin de prise en commpte des filtres */
     this.ngOnInit();
@@ -106,7 +106,7 @@ export class ListUsersComponent implements OnInit {
       );
     } else {
       //choix des postes en dur
-      let tabPoste = [
+      const tabPoste = [
         "",
         "Adjoint Chef de Quart",
         "Chef de Quart",
@@ -116,7 +116,7 @@ export class ListUsersComponent implements OnInit {
       ];
 
       //Construction des valeurs du menu select qui contient les postes
-      let listPoste = {};
+      const listPoste = {};
       tabPoste.forEach((poste) => {
         //@ts-ignore
         listPoste[poste] = poste;

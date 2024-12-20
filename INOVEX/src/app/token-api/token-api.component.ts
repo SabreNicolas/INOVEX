@@ -38,8 +38,8 @@ export class TokenApiComponent implements OnInit {
       cancelButtonText: "Annuler",
     }).then((result) => {
       if (result.isConfirmed) {
-        var text = result.value;
-        var text2;
+        const text = result.value;
+        let text2;
         //Si le texte entré par l'utilisateur est vide on affiche une erreur
         if (text == "") {
           this.popupService.alertErrorForm(
@@ -115,7 +115,7 @@ export class TokenApiComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         const text = result.value;
-        var text2;
+        let text2;
         //Si le texte entré par l'utilisateur est vide on affiche une erreur
         if (text == "") {
           this.popupService.alertErrorForm("La saisie a été annulée.");

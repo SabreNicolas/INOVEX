@@ -4,7 +4,7 @@ import { DatePipe, Location } from "@angular/common";
 import Swal from "sweetalert2";
 import { ActivatedRoute } from "@angular/router";
 import { consigne } from "src/models/consigne.model";
-declare var $: any;
+declare let $: any;
 import { rondierService } from "../services/rondier.service";
 import { AltairService } from "../services/altair.service";
 import { PopupService } from "../services/popup.service";
@@ -23,7 +23,7 @@ export class EvenementComponent implements OnInit {
   public idAnomalie: number;
   public groupementGMAO: string;
   public equipementGMAO: string;
-  public listGroupementsGMAOMap: Map<String, String>;
+  public listGroupementsGMAOMap: Map<string, string>;
   public listGroupementGMAOTable: any[];
   public listEquipementGMAO: any[];
   public listEquipementGMAOFiltre: any[];
@@ -137,13 +137,13 @@ export class EvenementComponent implements OnInit {
       this.token = response.token;
 
       this.altairService.getEquipements(this.token).subscribe((response) => {
-        for (let equipment of response.equipment) {
+        for (const equipment of response.equipment) {
           if (equipment.status != "REBUT") {
             this.listEquipementGMAO.push(equipment);
           }
         }
         this.listEquipementGMAOFiltre = this.listEquipementGMAO;
-        for (let equipement of this.listEquipementGMAO) {
+        for (const equipement of this.listEquipementGMAO) {
           this.listGroupementsGMAOMap.set(
             equipement.fkcodelocation,
             equipement.fkcodelocation,
@@ -162,7 +162,7 @@ export class EvenementComponent implements OnInit {
     if (this.groupementGMAO == "") {
       this.listEquipementGMAOFiltre = this.listEquipementGMAO;
     } else {
-      for (let equipement of this.listEquipementGMAO) {
+      for (const equipement of this.listEquipementGMAO) {
         if (equipement.fkcodelocation == this.groupementGMAO) {
           this.listEquipementGMAOFiltre.push(equipement);
         }
@@ -171,7 +171,7 @@ export class EvenementComponent implements OnInit {
   }
 
   updateGroupements() {
-    for (let equipement of this.listEquipementGMAO) {
+    for (const equipement of this.listEquipementGMAO) {
       if (equipement.codeequipment == this.equipementGMAO.split("---")[0]) {
         this.groupementGMAO = equipement.fkcodelocation;
       }
@@ -391,7 +391,7 @@ export class EvenementComponent implements OnInit {
   saveFile(event: Event) {
     //Récupération du fichier dans l'input
     // @ts-ignore
-    this.fileToUpload = (<HTMLInputElement>event.target).files[0];
+    this.fileToUpload = (event.target as HTMLInputElement).files[0];
     // @ts-ignore
     //console.log((<HTMLInputElement>event.target).files[0]);
 

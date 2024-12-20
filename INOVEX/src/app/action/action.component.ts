@@ -66,7 +66,7 @@ export class ActionComponent implements OnInit {
   newActu() {
     //Il faut avoir renseigné une date de début
     if (this.dateDeb != undefined) {
-      var dateDebString = this.datePipe.transform(
+      const dateDebString = this.datePipe.transform(
         this.dateDeb,
         "yyyy-MM-dd HH:mm",
       );
@@ -121,7 +121,7 @@ export class ActionComponent implements OnInit {
             " " +
             heureFin;
         }
-        var dateDeb2 = this.dateDeb + " " + heureDeb;
+        const dateDeb2 = this.dateDeb + " " + heureDeb;
 
         //Si on est en mode édition
         if (this.idAction != 0) {
@@ -136,7 +136,7 @@ export class ActionComponent implements OnInit {
                   dateFin,
                 )
                 .subscribe((response) => {
-                  var dateFin = "";
+                  const dateFin = "";
                   this.popupService.alertSuccessForm("Action modifiée");
                   this.location.back();
                 });
@@ -157,7 +157,7 @@ export class ActionComponent implements OnInit {
                   0,
                 )
                 .subscribe((response) => {
-                  var dateFin = "";
+                  const dateFin = "";
                   this.popupService.alertSuccessForm("Nouvelle action créée");
                   this.location.back();
                 });

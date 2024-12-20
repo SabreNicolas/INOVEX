@@ -19,7 +19,7 @@ export class ListArretsComponent implements OnInit {
   public stringDateFin: string;
   public dateDeb: Date | undefined;
   public dateFin: Date | undefined;
-  public isArret: boolean = false; // 'true' si on saisie des arrêts et 'false' si dépassements
+  public isArret = false; // 'true' si on saisie des arrêts et 'false' si dépassements
   public nbfour: number;
   public numbers: number[];
   public nbGTA: number;
@@ -157,23 +157,23 @@ export class ListArretsComponent implements OnInit {
         this.popupService.alertErrorForm("Période non valide !");
       } else {
         this.dateDeb = new Date(
-          (<HTMLInputElement>document.getElementById("dateDeb")).value,
+          (document.getElementById("dateDeb") as HTMLInputElement).value,
         );
         this.dateFin = new Date(
-          (<HTMLInputElement>document.getElementById("dateFin")).value,
+          (document.getElementById("dateFin") as HTMLInputElement).value,
         );
         if (this.dateFin < this.dateDeb) {
           this.popupService.alertErrorForm(
             "La date de Fin est inférieure à la date de Départ !",
           );
         } else {
-          var mmF = String(this.dateDeb.getMonth() + 1).padStart(2, "0"); //January is 0!
-          var yyyyF = this.dateDeb.getFullYear();
-          var ddF = String(this.dateDeb.getDate()).padStart(2, "0");
+          const mmF = String(this.dateDeb.getMonth() + 1).padStart(2, "0"); //January is 0!
+          const yyyyF = this.dateDeb.getFullYear();
+          const ddF = String(this.dateDeb.getDate()).padStart(2, "0");
           this.stringDateDebut = yyyyF + "-" + mmF + "-" + ddF;
-          var mmL = String(this.dateFin.getMonth() + 1).padStart(2, "0"); //January is 0!
-          var yyyyL = this.dateFin.getFullYear();
-          var ddL = String(this.dateFin.getDate()).padStart(2, "0");
+          const mmL = String(this.dateFin.getMonth() + 1).padStart(2, "0"); //January is 0!
+          const yyyyL = this.dateFin.getFullYear();
+          const ddL = String(this.dateFin.getDate()).padStart(2, "0");
           this.stringDateFin = yyyyL + "-" + mmL + "-" + ddL;
           this.ngOnInit();
         }
@@ -189,9 +189,9 @@ export class ListArretsComponent implements OnInit {
 
   //changer les dates pour afficher le mois en dernier
   setLastMonth(form: NgForm) {
-    var date = new Date();
-    var mm: String;
-    var yyyy: number;
+    const date = new Date();
+    let mm: string;
+    let yyyy: number;
     if (date.getMonth() === 0) {
       mm = "12";
       yyyy = date.getFullYear() - 1;
@@ -199,15 +199,15 @@ export class ListArretsComponent implements OnInit {
       mm = String(date.getMonth()).padStart(2, "0"); //January is 0!
       yyyy = date.getFullYear();
     }
-    var dd = String(new Date(yyyy, date.getMonth(), 0).getDate()).padStart(
+    const dd = String(new Date(yyyy, date.getMonth(), 0).getDate()).padStart(
       2,
       "0",
     );
 
-    var Fisrtday = yyyy + "-" + mm + "-" + "01";
-    var Lastday = yyyy + "-" + mm + "-" + dd;
-    (<HTMLInputElement>document.getElementById("dateDeb")).value = Fisrtday;
-    (<HTMLInputElement>document.getElementById("dateFin")).value = Lastday;
+    const Fisrtday = yyyy + "-" + mm + "-" + "01";
+    const Lastday = yyyy + "-" + mm + "-" + dd;
+    (document.getElementById("dateDeb") as HTMLInputElement).value = Fisrtday;
+    (document.getElementById("dateFin") as HTMLInputElement).value = Lastday;
     form.value["dateDeb"] = Fisrtday;
     form.value["dateFin"] = Lastday;
     this.setPeriod(form);

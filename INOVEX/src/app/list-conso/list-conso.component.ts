@@ -38,10 +38,10 @@ export class ListConsoComponent implements OnInit {
   setPeriod(form: NgForm) {
     this.listDays = [];
     this.dateDeb = new Date(
-      (<HTMLInputElement>document.getElementById("dateDeb")).value,
+      (document.getElementById("dateDeb") as HTMLInputElement).value,
     );
     this.dateFin = new Date(
-      (<HTMLInputElement>document.getElementById("dateFin")).value,
+      (document.getElementById("dateFin") as HTMLInputElement).value,
     );
     if (this.dateFin < this.dateDeb) {
       this.dateService.mauvaiseEntreeDate(form);
@@ -54,11 +54,9 @@ export class ListConsoComponent implements OnInit {
   validation() {
     this.listDays.forEach((day) => {
       this.listConsos.forEach((con) => {
-        var value = (<HTMLInputElement>(
-          document.getElementById(con.Id + "-" + day)
-        )).value.replace(",", ".");
-        var Value2 = value.replace(" ", "");
-        var valueInt: number = +Value2;
+        const value = (document.getElementById(con.Id + "-" + day) as HTMLInputElement).value.replace(",", ".");
+        const Value2 = value.replace(" ", "");
+        const valueInt: number = +Value2;
         if (valueInt > 0.0) {
           this.mrService
             .createMeasure(
@@ -98,13 +96,9 @@ export class ListConsoComponent implements OnInit {
           )
           .subscribe((response) => {
             if (response.data[0] != undefined && response.data[0].Value != 0) {
-              (<HTMLInputElement>(
-                document.getElementById(con.Id + "-" + day)
-              )).value = response.data[0].Value;
+              (document.getElementById(con.Id + "-" + day) as HTMLInputElement).value = response.data[0].Value;
             } else
-              (<HTMLInputElement>(
-                document.getElementById(con.Id + "-" + day)
-              )).value = "";
+              (document.getElementById(con.Id + "-" + day) as HTMLInputElement).value = "";
           });
       });
     });
@@ -140,7 +134,7 @@ export class ListConsoComponent implements OnInit {
       .subscribe((response) => {
         if (response == "Création du Measures OK") {
           this.popupService.alertSuccessForm("La valeur a bien été supprimé !");
-          (<HTMLInputElement>document.getElementById(Id + "-" + date)).value =
+          (document.getElementById(Id + "-" + date) as HTMLInputElement).value =
             "";
         } else {
           this.popupService.alertErrorForm(
