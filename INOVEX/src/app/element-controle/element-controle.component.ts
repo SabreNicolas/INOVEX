@@ -79,8 +79,12 @@ export class ElementControleComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.checkboxRegulateur = document.getElementsByName("regulateur")[0] as HTMLInputElement;
-    this.checkboxCompteur = document.getElementsByName("compteur")[0] as HTMLInputElement;
+    this.checkboxRegulateur = document.getElementsByName(
+      "regulateur",
+    )[0] as HTMLInputElement;
+    this.checkboxCompteur = document.getElementsByName(
+      "compteur",
+    )[0] as HTMLInputElement;
     this.rondierService.listZone().subscribe((response) => {
       // @ts-ignore
       this.listZone = response.data;
@@ -120,7 +124,9 @@ export class ElementControleComponent implements OnInit {
               this.checkboxCompteur.checked = true;
             }
             //Gestion de la zone
-            const selectZone = document.getElementById("zone") as HTMLSelectElement;
+            const selectZone = document.getElementById(
+              "zone",
+            ) as HTMLSelectElement;
             for (let i = 0; i < selectZone.options.length; i++) {
               if (
                 "'" + this.zoneId[0].toString() + "'" ===

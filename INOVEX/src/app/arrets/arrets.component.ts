@@ -84,9 +84,9 @@ export class ArretsComponent implements OnInit {
         this.isArret = true;
         this.getProductsArrets("30302");
       } else {
-      /**
-       * Dépassements 1/2 heures
-       */
+        /**
+         * Dépassements 1/2 heures
+         */
         this.isArret = false;
         this.getProductsDep("60104");
       }
@@ -184,7 +184,7 @@ export class ArretsComponent implements OnInit {
           //@ts-ignore
           this.arretName = response.data[0].Name;
           const dateFinString =
-          //@ts-ignore
+            //@ts-ignore
             response.data[0].dateFin.split("/")[1] +
             "/" +
             //@ts-ignore
@@ -370,8 +370,7 @@ export class ArretsComponent implements OnInit {
         this.popupService.alertErrorForm(
           "La date/heure de Fin est inférieure à la date/heure de Départ !",
         );
-      }
-      else
+      } else
         this.duree =
           //@ts-ignore
           (new Date(this.dateFin) - new Date(this.dateDebut)) / 1000 / 3600; //conversion de millisecondes vers heures
@@ -506,9 +505,9 @@ export class ArretsComponent implements OnInit {
             }
           });
       } else {
-      /**
-       * Dépassements 1/2 heures
-       */
+        /**
+         * Dépassements 1/2 heures
+         */
         this.arretsService
           .createDepassement(
             this.stringDateDebut,
@@ -595,9 +594,9 @@ export class ArretsComponent implements OnInit {
             }
           });
       } else {
-      /**
-       * Dépassements 1/2 heures
-       */
+        /**
+         * Dépassements 1/2 heures
+         */
         this.arretsService
           .updateDepassement(
             this.id,

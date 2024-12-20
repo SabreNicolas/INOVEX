@@ -5,7 +5,8 @@ import {
   Input,
   Renderer2,
   ElementRef,
-  Output, OnInit,
+  Output,
+  OnInit,
 } from "@angular/core";
 import { Subject, Subscription } from "rxjs";
 import { throttleTime } from "rxjs/operators";

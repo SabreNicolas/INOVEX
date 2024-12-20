@@ -124,8 +124,7 @@ export class ImportTonnageComponent implements OnInit {
           "Veuillez saisir le nom de l'apporteur dans le logiciel de pesée",
           "",
         );
-      }
-      else
+      } else
         //@ts-ignore
         nomImport = prompt(
           "Veuillez saisir le nom de l'apporteur dans le logiciel de pesée",
@@ -139,8 +138,7 @@ export class ImportTonnageComponent implements OnInit {
           "Veuillez saisir le nom du produit dans le logiciel de pesée",
           "",
         );
-      }
-      else
+      } else
         //@ts-ignore
         productImport = prompt(
           "Veuillez saisir le nom du produit dans le logiciel de pesée",

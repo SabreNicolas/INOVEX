@@ -106,7 +106,8 @@ export class rondierService {
 
   //Mis à jour de l'état d'activation du badge
   updateEnabled(id: number, enabled: number) {
-    const requete = "https://" + this.ip + "/BadgeEnabled/" + id + "/" + enabled;
+    const requete =
+      "https://" + this.ip + "/BadgeEnabled/" + id + "/" + enabled;
     //console.log(requete);
 
     const requestOptions = {

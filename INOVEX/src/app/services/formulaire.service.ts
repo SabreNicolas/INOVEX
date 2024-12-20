@@ -49,7 +49,8 @@ export class formulaireService {
 
   //récupérer les formulaires d'un site
   getFormulaire() {
-    const requete = "https://" + this.ip + "/formulaires?idUsine=" + this.idUsine;
+    const requete =
+      "https://" + this.ip + "/formulaires?idUsine=" + this.idUsine;
     //console.log(requete);
 
     const requestOptions = {

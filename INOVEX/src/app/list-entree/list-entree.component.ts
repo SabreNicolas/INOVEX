@@ -189,7 +189,11 @@ export class ListEntreeComponent implements OnInit {
   validation() {
     this.listDays.forEach((date) =>
       this.moralEntities.forEach((mr) => {
-        const value = (document.getElementById(mr.Id + "-" + mr.productId + "-" + date) as HTMLInputElement).value.replace(",", ".");
+        const value = (
+          document.getElementById(
+            mr.Id + "-" + mr.productId + "-" + date,
+          ) as HTMLInputElement
+        ).value.replace(",", ".");
         const Value2 = value.replace(" ", "");
         const valueInt: number = +Value2;
         if (valueInt > 0.0) {
@@ -251,12 +255,22 @@ export class ListEntreeComponent implements OnInit {
           .subscribe((response) => {
             //i++;
             if (response.data[0] != undefined && response.data[0].Value != 0) {
-              (document.getElementById(mr.Id + "-" + mr.productId + "-" + date) as HTMLInputElement).value = response.data[0].Value;
-              (document.getElementById(
+              (
+                document.getElementById(
+                  mr.Id + "-" + mr.productId + "-" + date,
+                ) as HTMLInputElement
+              ).value = response.data[0].Value;
+              (
+                document.getElementById(
                   "export-" + mr.Id + "-" + mr.productId + "-" + date,
-                ) as HTMLInputElement).innerHTML = response.data[0].Value;
+                ) as HTMLInputElement
+              ).innerHTML = response.data[0].Value;
             } else {
-              (document.getElementById(mr.Id + "-" + mr.productId + "-" + date) as HTMLInputElement).value = "";
+              (
+                document.getElementById(
+                  mr.Id + "-" + mr.productId + "-" + date,
+                ) as HTMLInputElement
+              ).value = "";
             }
           });
       }
@@ -294,7 +308,11 @@ export class ListEntreeComponent implements OnInit {
       .subscribe((response) => {
         if (response == "Création du Measures OK") {
           this.popupService.alertSuccessForm("La valeur a bien été supprimé !");
-          (document.getElementById(Id + "-" + productId + "-" + date) as HTMLInputElement).value = "";
+          (
+            document.getElementById(
+              Id + "-" + productId + "-" + date,
+            ) as HTMLInputElement
+          ).value = "";
         } else {
           this.popupService.alertErrorForm(
             "Erreur lors de la suppression de la valeur ....",
@@ -319,10 +337,18 @@ export class ListEntreeComponent implements OnInit {
         .subscribe((response) => {
           if (response.data[0] != undefined && response.data[0].Value != 0) {
             // @ts-ignore
-            (document.getElementById(idProduct + "-" + date) as HTMLInputElement).value = response.data[0].Value;
+            (
+              document.getElementById(
+                idProduct + "-" + date,
+              ) as HTMLInputElement
+            ).value = response.data[0].Value;
           } else {
             // @ts-ignore
-            (document.getElementById(idProduct + "-" + date) as HTMLInputElement).value = "";
+            (
+              document.getElementById(
+                idProduct + "-" + date,
+              ) as HTMLInputElement
+            ).value = "";
           }
         });
     });
@@ -333,7 +359,9 @@ export class ListEntreeComponent implements OnInit {
     this.listDays.forEach((date) => {
       // @ts-ignore
       this.productsEntrants.forEach((product) => {
-        const value = (document.getElementById(product.Id + "-" + date) as HTMLInputElement).value;
+        const value = (
+          document.getElementById(product.Id + "-" + date) as HTMLInputElement
+        ).value;
         const Value2 = value.replace(" ", "");
         const valueInt: number = +Value2;
         if (valueInt > 0.0) {

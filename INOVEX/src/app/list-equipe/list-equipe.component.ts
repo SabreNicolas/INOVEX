@@ -56,13 +56,15 @@ export class ListEquipeComponent implements OnInit {
         equipe.id;
     } else {
       //@ts-ignore
-      document.getElementById(equipe.id + "_overlay").classList.add("show") as HTMLElement;
+      document
+        .getElementById(equipe.id + "_overlay")
+        .classList.add("show") as HTMLElement;
       const exp = document.getElementById(String(equipe.id));
       if (exp != null) exp.classList.add("expanded");
       //@ts-ignore
       document
-          .getElementById(equipe.id + "_chefQuart")
-          .classList.remove("hide") as HTMLElement;
+        .getElementById(equipe.id + "_chefQuart")
+        .classList.remove("hide") as HTMLElement;
     }
   }
 
@@ -71,7 +73,10 @@ export class ListEquipeComponent implements OnInit {
     const chef = document.getElementById(equipe.id + "_chefQuart");
     if (chef != null) chef.classList.add("hide");
     //@ts-ignore
-    document.getElementById(equipe.id).classList.remove("expanded") as HTMLElement;
+    document
+      //@ts-ignore
+      .getElementById(equipe.id)
+      .classList.remove("expanded") as HTMLElement;
     const over = document.getElementById(equipe.id + "_overlay");
     if (over != null) over.classList.remove("show");
   }

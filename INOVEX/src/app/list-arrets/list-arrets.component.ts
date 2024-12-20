@@ -118,10 +118,9 @@ export class ListArretsComponent implements OnInit {
             });
         });
     } else {
-
-    /**
-     * Dépassements 1/2 heures
-     */
+      /**
+       * Dépassements 1/2 heures
+       */
       this.sumArretsDepassements = [];
       this.arretsService
         .getDepassements(this.stringDateDebut, this.stringDateFin)
@@ -229,10 +228,9 @@ export class ListArretsComponent implements OnInit {
         }
       });
     } else {
-
-    /**
-     * Dépassements 1/2 heures
-     */
+      /**
+       * Dépassements 1/2 heures
+       */
       this.arretsService.deleteDepassement(id).subscribe((response) => {
         if (response == "Suppression du DEP OK") {
           this.popupService.alertSuccessForm(

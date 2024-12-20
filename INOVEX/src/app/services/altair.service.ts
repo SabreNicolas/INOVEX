@@ -241,7 +241,8 @@ export class AltairService {
 
   //Récupérer une DI
   getOneDI(token: string, id: string) {
-    const requete = this.ip + "/rest/work/all/workrequest/show/workrequest/" + id;
+    const requete =
+      this.ip + "/rest/work/all/workrequest/show/workrequest/" + id;
     //enlever status rebut
     const requestOptions = new HttpHeaders({
       Authorization: "Bearer " + token,

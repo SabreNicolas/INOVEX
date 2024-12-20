@@ -34,7 +34,8 @@ export class cahierQuartService {
 
   //Récupérer une localisation du site
   getOneLocalisation() {
-    const requete = "https://" + this.ip + "/getOneLocalisation/" + this.idUsine;
+    const requete =
+      "https://" + this.ip + "/getOneLocalisation/" + this.idUsine;
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
@@ -364,7 +365,8 @@ export class cahierQuartService {
 
   //Supprimer les Rondiers d'une équipe
   deleteAffectationEquipe(idEquipe: number) {
-    const requete = "https://" + this.ip + "/deleteAffectationEquipe/" + idEquipe;
+    const requete =
+      "https://" + this.ip + "/deleteAffectationEquipe/" + idEquipe;
     //console.log(requete);
 
     const requestOptions = {
@@ -481,7 +483,8 @@ export class cahierQuartService {
 
   //Récupérer toutes actualité
   getAllActu() {
-    const requete = "https://" + this.ip + "/getAllActu?idUsine=" + this.idUsine;
+    const requete =
+      "https://" + this.ip + "/getAllActu?idUsine=" + this.idUsine;
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
@@ -1177,7 +1180,8 @@ export class cahierQuartService {
   ////////////////////
 
   getOneLienExterne(idLien: number) {
-    const requete = "https://" + this.ip + "/getOneLienExterne?idLien=" + idLien;
+    const requete =
+      "https://" + this.ip + "/getOneLienExterne?idLien=" + idLien;
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),

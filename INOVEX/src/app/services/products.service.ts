@@ -355,7 +355,8 @@ export class productsService {
 
   //récupérer les produits d'une usine
   getAllProducts() {
-    const requete = "https://" + this.ip + "/AllProducts?idUsine=" + this.idUsine;
+    const requete =
+      "https://" + this.ip + "/AllProducts?idUsine=" + this.idUsine;
     //console.log(requete);
 
     const requestOptions = {
@@ -534,7 +535,8 @@ export class productsService {
 
   //mettre à jour l'unité d'un produit
   setUnit(unit: string, Id: number) {
-    const requete = "https://" + this.ip + "/productUnit/" + Id + "?Unit=" + unit;
+    const requete =
+      "https://" + this.ip + "/productUnit/" + Id + "?Unit=" + unit;
     //console.log(requete);
 
     const requestOptions = {

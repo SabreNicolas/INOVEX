@@ -38,10 +38,9 @@ export class ListQseComponent implements OnInit {
     const date = new Date(form.value["dateDeb"]);
     const mm = String(date.getMonth() + 1).padStart(2, "0"); //January is 0!
     const yyyy = date.getFullYear();
-    const dd = String(new Date(yyyy, date.getMonth() + 1, 0).getDate()).padStart(
-      2,
-      "0",
-    );
+    const dd = String(
+      new Date(yyyy, date.getMonth() + 1, 0).getDate(),
+    ).padStart(2, "0");
     this.listDays.push(dd + "/" + mm + "/" + yyyy);
     this.getValues();
   }
@@ -98,9 +97,13 @@ export class ListQseComponent implements OnInit {
           )
           .subscribe((response) => {
             if (response.data[0] != undefined && response.data[0].Value != 0) {
-              (document.getElementById(cp.Code + "-" + day) as HTMLInputElement).value = response.data[0].Value;
+              (
+                document.getElementById(cp.Code + "-" + day) as HTMLInputElement
+              ).value = response.data[0].Value;
             } else
-              (document.getElementById(cp.Code + "-" + day) as HTMLInputElement).value = "";
+              (
+                document.getElementById(cp.Code + "-" + day) as HTMLInputElement
+              ).value = "";
           });
       });
     });
@@ -110,7 +113,9 @@ export class ListQseComponent implements OnInit {
   validation() {
     this.listQse.forEach((cp) => {
       this.listDays.forEach((day) => {
-        const value = (document.getElementById(cp.Code + "-" + day) as HTMLInputElement).value.replace(",", ".");
+        const value = (
+          document.getElementById(cp.Code + "-" + day) as HTMLInputElement
+        ).value.replace(",", ".");
         const Value2 = value.replace(" ", "");
         const valueInt: number = +Value2;
         if (valueInt > 0.0) {
@@ -153,8 +158,9 @@ export class ListQseComponent implements OnInit {
       .subscribe((response) => {
         if (response == "Création du Measures OK") {
           this.popupService.alertSuccessForm("La valeur a bien été supprimé !");
-          (document.getElementById(Code + "-" + date) as HTMLInputElement).value =
-            "";
+          (
+            document.getElementById(Code + "-" + date) as HTMLInputElement
+          ).value = "";
         } else {
           this.popupService.alertErrorForm(
             "Erreur lors de la suppression de la valeur ....",

@@ -100,9 +100,13 @@ export class ListReactifsComponent implements OnInit {
           )
           .subscribe((response) => {
             if (response.data[0] != undefined && response.data[0].Value != 0) {
-              (document.getElementById(pr.Id + "-" + date) as HTMLInputElement).value = response.data[0].Value;
+              (
+                document.getElementById(pr.Id + "-" + date) as HTMLInputElement
+              ).value = response.data[0].Value;
             } else
-              (document.getElementById(pr.Id + "-" + date) as HTMLInputElement).value = "";
+              (
+                document.getElementById(pr.Id + "-" + date) as HTMLInputElement
+              ).value = "";
           });
       });
     });
@@ -112,7 +116,9 @@ export class ListReactifsComponent implements OnInit {
   validation() {
     this.listDays.forEach((date) => {
       this.listProducts.forEach((pr) => {
-        const value = (document.getElementById(pr.Id + "-" + date) as HTMLInputElement).value.replace(",", ".");
+        const value = (
+          document.getElementById(pr.Id + "-" + date) as HTMLInputElement
+        ).value.replace(",", ".");
         const Value2 = value.replace(" ", "");
         const valueInt: number = +Value2;
         if (valueInt > 0.0) {

@@ -90,7 +90,8 @@ export class loginService {
 
   //récupérer la list des utilisateurs ayant un email
   getUsersEmail() {
-    const requete = "https://" + this.ip + "/UsersEmail?idUsine=" + this.idUsine;
+    const requete =
+      "https://" + this.ip + "/UsersEmail?idUsine=" + this.idUsine;
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
     };

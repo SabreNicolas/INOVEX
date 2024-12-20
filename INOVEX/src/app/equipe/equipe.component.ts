@@ -180,8 +180,9 @@ export class EquipeComponent implements OnInit {
       //}
 
       const recherchePoste = user.Nom + "_" + user.Prenom + "_poste";
-      const idPoste = (document.getElementById(recherchePoste) as HTMLInputElement)
-        .value;
+      const idPoste = (
+        document.getElementById(recherchePoste) as HTMLInputElement
+      ).value;
       if (idPoste == "") {
         this.popupService.alertErrorForm(
           "Veuillez affecter un poste à chaque personne ! La saisie a été annulée.",
@@ -226,8 +227,9 @@ export class EquipeComponent implements OnInit {
               )
               .subscribe((response) => {
                 //On vide les input pour une nouvelle création
-                (document.getElementById("nomEquipe") as HTMLInputElement).value =
-                  "";
+                (
+                  document.getElementById("nomEquipe") as HTMLInputElement
+                ).value = "";
 
                 //On ajoute les rondier dans l'équipe
                 const idEquipe = response["data"][0]["Id"];
@@ -251,8 +253,9 @@ export class EquipeComponent implements OnInit {
       //On force à 0 l'idZone car on ne gère plus l'affectation zone par utilisateur => cahier de quart le remplace
       const idZone = 0;
       const recherchePoste = user.Nom + "_" + user.Prenom + "_poste";
-      const poste = (document.getElementById(recherchePoste) as HTMLInputElement)
-        .value;
+      const poste = (
+        document.getElementById(recherchePoste) as HTMLInputElement
+      ).value;
 
       if (idUser > 0) {
         this.cahierQuartService

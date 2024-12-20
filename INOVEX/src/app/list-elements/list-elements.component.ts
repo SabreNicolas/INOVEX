@@ -133,12 +133,16 @@ export class ListElementsComponent implements OnInit {
       this.changeType(null);
       //Gestion du mode regulateur
       if (this.isRegulateur == 1) {
-        this.checkboxRegulateur = document.getElementsByName("regulateur")[0] as HTMLInputElement;
+        this.checkboxRegulateur = document.getElementsByName(
+          "regulateur",
+        )[0] as HTMLInputElement;
         this.checkboxRegulateur.checked = true;
       }
       //Gestion du type compteur
       if (this.isCompteur == 1) {
-        this.checkboxCompteur = document.getElementsByName("compteur")[0] as HTMLInputElement;
+        this.checkboxCompteur = document.getElementsByName(
+          "compteur",
+        )[0] as HTMLInputElement;
         this.checkboxCompteur.checked = true;
       }
       //Gestion de la pastille info sup
@@ -263,8 +267,12 @@ export class ListElementsComponent implements OnInit {
 
   //Création éléments contrôle
   onSubmit(form: NgForm) {
-    this.checkboxRegulateur = document.getElementsByName("regulateur")[0] as HTMLInputElement;
-    this.checkboxCompteur = document.getElementsByName("compteur")[0] as HTMLInputElement;
+    this.checkboxRegulateur = document.getElementsByName(
+      "regulateur",
+    )[0] as HTMLInputElement;
+    this.checkboxCompteur = document.getElementsByName(
+      "compteur",
+    )[0] as HTMLInputElement;
     this.nom = form.value["nom"].replace(/'/g, "''");
     this.zoneIdSelect = form.value["zone"];
     this.ordre = form.value["ordreElem"];

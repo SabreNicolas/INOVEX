@@ -122,9 +122,13 @@ export class AnalysesComponent implements OnInit {
           )
           .subscribe((response) => {
             if (response.data[0] != undefined && response.data[0].Value != 0) {
-              (document.getElementById(an.Id + "-" + day) as HTMLInputElement).value = response.data[0].Value;
+              (
+                document.getElementById(an.Id + "-" + day) as HTMLInputElement
+              ).value = response.data[0].Value;
             } else
-              (document.getElementById(an.Id + "-" + day) as HTMLInputElement).value = "";
+              (
+                document.getElementById(an.Id + "-" + day) as HTMLInputElement
+              ).value = "";
           });
       });
     });
@@ -134,7 +138,9 @@ export class AnalysesComponent implements OnInit {
   validation() {
     this.listAnalyses.forEach((an) => {
       this.listDays.forEach((day) => {
-        const value = (document.getElementById(an.Id + "-" + day) as HTMLInputElement).value.replace(",", ".");
+        const value = (
+          document.getElementById(an.Id + "-" + day) as HTMLInputElement
+        ).value.replace(",", ".");
         const valueInt: number = +value;
         if (valueInt > 0.0) {
           this.mrService

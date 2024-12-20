@@ -669,7 +669,8 @@ export class moralEntitiesService {
   //** PARTIE Products mais est directement lié aux MR donc se trouve ici */
   //récupérer les types de déchets et collecteurs
   GetTypeDéchets() {
-    const requete = "https://" + this.ip + "/DechetsCollecteurs/" + this.idUsine;
+    const requete =
+      "https://" + this.ip + "/DechetsCollecteurs/" + this.idUsine;
     //console.log(requete);
 
     const requestOptions = {

@@ -103,7 +103,11 @@ export class FormulaireComponent implements OnInit {
           this.alias = this.productAjout;
         }
         //on ajoute le produit dans listAjout
-        const ajout = { Name: this.productAjout, id: idAjout, alias: this.alias };
+        const ajout = {
+          Name: this.productAjout,
+          id: idAjout,
+          alias: this.alias,
+        };
         this.listAjout.push(ajout);
         this.alias = "";
         this.productAjout = "";

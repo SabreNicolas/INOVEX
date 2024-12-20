@@ -45,10 +45,9 @@ export class RondierFinMoisComponent implements OnInit {
     const date = new Date(form.value["dateDeb"]);
     const mm = String(date.getMonth() + 1).padStart(2, "0"); //January is 0!
     const yyyy = date.getFullYear();
-    const dd = String(new Date(yyyy, date.getMonth() + 1, 0).getDate()).padStart(
-      2,
-      "0",
-    );
+    const dd = String(
+      new Date(yyyy, date.getMonth() + 1, 0).getDate(),
+    ).padStart(2, "0");
     this.listDays.push(dd + "/" + mm + "/" + yyyy);
     this.getValues();
   }
@@ -80,9 +79,13 @@ export class RondierFinMoisComponent implements OnInit {
           .valueElementDay(cp.Id, day)
           .subscribe((response) => {
             if (response.data[0] != undefined && response.data[0].value != 0) {
-              (document.getElementById(cp.Id + "-" + day) as HTMLInputElement).value = response.data[0].value;
+              (
+                document.getElementById(cp.Id + "-" + day) as HTMLInputElement
+              ).value = response.data[0].value;
             } else
-              (document.getElementById(cp.Id + "-" + day) as HTMLInputElement).value = "";
+              (
+                document.getElementById(cp.Id + "-" + day) as HTMLInputElement
+              ).value = "";
           });
       });
     });
@@ -95,7 +98,9 @@ export class RondierFinMoisComponent implements OnInit {
         this.listCompteurs.forEach((compteur) => {
           //On insère dans la table saisieMenseulle de INOVEX uniquement si les noms correspondent
           if (cp.nom.toLowerCase() === compteur.Name.toLowerCase()) {
-            const value = (document.getElementById(cp.Id + "-" + day) as HTMLInputElement).value.replace(",", ".");
+            const value = (
+              document.getElementById(cp.Id + "-" + day) as HTMLInputElement
+            ).value.replace(",", ".");
             const valueInt: number = +value;
             if (valueInt > 0.0) {
               this.productsService

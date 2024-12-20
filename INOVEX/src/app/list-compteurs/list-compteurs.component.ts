@@ -218,10 +218,22 @@ export class ListCompteursComponent implements OnInit {
                 response.data[0] != undefined &&
                 response.data[0].Value != 0
               ) {
-                (document.getElementById(pr.Code + "-" + date) as HTMLInputElement).value = response.data[0].Value;
-                (document.getElementById("export-" + pr.Code + "-" + date) as HTMLInputElement).innerHTML = response.data[0].Value;
+                (
+                  document.getElementById(
+                    pr.Code + "-" + date,
+                  ) as HTMLInputElement
+                ).value = response.data[0].Value;
+                (
+                  document.getElementById(
+                    "export-" + pr.Code + "-" + date,
+                  ) as HTMLInputElement
+                ).innerHTML = response.data[0].Value;
               } else
-                (document.getElementById(pr.Code + "-" + date) as HTMLInputElement).value = "";
+                (
+                  document.getElementById(
+                    pr.Code + "-" + date,
+                  ) as HTMLInputElement
+                ).value = "";
             });
         }
         //sinon on récupère les valeurs dans maasure new
@@ -240,10 +252,22 @@ export class ListCompteursComponent implements OnInit {
                 response.data[0] != undefined &&
                 response.data[0].Value != 0
               ) {
-                (document.getElementById(pr.Code + "-" + date) as HTMLInputElement).value = response.data[0].Value;
-                (document.getElementById("export-" + pr.Code + "-" + date) as HTMLInputElement).innerHTML = response.data[0].Value;
+                (
+                  document.getElementById(
+                    pr.Code + "-" + date,
+                  ) as HTMLInputElement
+                ).value = response.data[0].Value;
+                (
+                  document.getElementById(
+                    "export-" + pr.Code + "-" + date,
+                  ) as HTMLInputElement
+                ).innerHTML = response.data[0].Value;
               } else
-                (document.getElementById(pr.Code + "-" + date) as HTMLInputElement).value = "";
+                (
+                  document.getElementById(
+                    pr.Code + "-" + date,
+                  ) as HTMLInputElement
+                ).value = "";
             });
         }
       }
@@ -254,7 +278,9 @@ export class ListCompteursComponent implements OnInit {
   validation() {
     this.listCompteurs.forEach((cp) => {
       this.listDays.forEach((day) => {
-        const value = (document.getElementById(cp.Code + "-" + day) as HTMLInputElement).value.replace(",", ".");
+        const value = (
+          document.getElementById(cp.Code + "-" + day) as HTMLInputElement
+        ).value.replace(",", ".");
         const Value2 = value.replace(" ", "");
         const valueInt: number = +Value2;
         if (valueInt > 0.0) {
@@ -325,8 +351,9 @@ export class ListCompteursComponent implements OnInit {
       .subscribe((response) => {
         if (response == "Création du Measures OK") {
           this.popupService.alertSuccessForm("La valeur a bien été supprimé !");
-          (document.getElementById(Code + "-" + date) as HTMLInputElement).value =
-            "";
+          (
+            document.getElementById(Code + "-" + date) as HTMLInputElement
+          ).value = "";
         } else {
           this.popupService.alertErrorForm(
             "Erreur lors de la suppression de la valeur ....",
@@ -347,8 +374,9 @@ export class ListCompteursComponent implements OnInit {
       .subscribe((response) => {
         if (response == "Création du saisiemensuelle OK") {
           this.popupService.alertSuccessForm("La valeur a bien été supprimé !");
-          (document.getElementById(Code + "-" + date) as HTMLInputElement).value =
-            "";
+          (
+            document.getElementById(Code + "-" + date) as HTMLInputElement
+          ).value = "";
         } else {
           this.popupService.alertErrorForm(
             "Erreur lors de la suppression de la valeur ....",

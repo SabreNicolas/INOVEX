@@ -119,8 +119,9 @@ export class EnregistrementEquipeComponent implements OnInit {
               .nouvelEnregistrementEquipe(nomEquipe)
               .subscribe((response) => {
                 //On vide les input pour une nouvelle création
-                (document.getElementById("nomEquipe") as HTMLInputElement).value =
-                  "";
+                (
+                  document.getElementById("nomEquipe") as HTMLInputElement
+                ).value = "";
 
                 //On ajoute les rondier dans l'équipe
                 const idEquipe = response["data"][0]["Id"];

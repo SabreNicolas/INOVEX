@@ -80,7 +80,7 @@ export class dateService {
       mm = String(date.getMonth()).padStart(2, "0");
     }
     const day = yyyy + "-" + mm + "-" + dd;
-    console.log((document.getElementById("dateDeb") as HTMLInputElement));
+    console.log(document.getElementById("dateDeb") as HTMLInputElement);
     //@ts-ignore
     document.getElementById("dateDeb").value = day;
     (document.getElementById("dateFin") as HTMLInputElement).value = day;
@@ -124,10 +124,9 @@ export class dateService {
     const date = new Date();
     const mm = String(date.getMonth() + 1).padStart(2, "0"); //January is 0!
     const yyyy = date.getFullYear();
-    const dd = String(new Date(yyyy, date.getMonth() + 1, 0).getDate()).padStart(
-      2,
-      "0",
-    );
+    const dd = String(
+      new Date(yyyy, date.getMonth() + 1, 0).getDate(),
+    ).padStart(2, "0");
 
     const Fisrtday = yyyy + "-" + mm + "-" + "01";
     const Lastday = yyyy + "-" + mm + "-" + dd;

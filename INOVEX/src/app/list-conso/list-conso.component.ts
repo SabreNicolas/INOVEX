@@ -54,7 +54,9 @@ export class ListConsoComponent implements OnInit {
   validation() {
     this.listDays.forEach((day) => {
       this.listConsos.forEach((con) => {
-        const value = (document.getElementById(con.Id + "-" + day) as HTMLInputElement).value.replace(",", ".");
+        const value = (
+          document.getElementById(con.Id + "-" + day) as HTMLInputElement
+        ).value.replace(",", ".");
         const Value2 = value.replace(" ", "");
         const valueInt: number = +Value2;
         if (valueInt > 0.0) {
@@ -96,9 +98,13 @@ export class ListConsoComponent implements OnInit {
           )
           .subscribe((response) => {
             if (response.data[0] != undefined && response.data[0].Value != 0) {
-              (document.getElementById(con.Id + "-" + day) as HTMLInputElement).value = response.data[0].Value;
+              (
+                document.getElementById(con.Id + "-" + day) as HTMLInputElement
+              ).value = response.data[0].Value;
             } else
-              (document.getElementById(con.Id + "-" + day) as HTMLInputElement).value = "";
+              (
+                document.getElementById(con.Id + "-" + day) as HTMLInputElement
+              ).value = "";
           });
       });
     });
