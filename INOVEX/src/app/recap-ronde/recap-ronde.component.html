@@ -363,6 +363,9 @@
               <!--<th scope="col">Date de Fin</th>-->
               <th scope="col">Demande de travaux</th>
               <th scope="col">Photo</th>
+              <th scope="col">Dupliquer</th>
+              <th scope="col">Editer</th>
+              <th scope="col">Supprimer</th>
             </tr>
           </thead>
           <tbody *ngFor="let evenement of listEvenement">
@@ -389,6 +392,35 @@
                     <i class="fas fa-image"></i>
                   </button>
                 </a>
+              </td>
+              <td>
+                <button
+                  class="btn btn btn-light edition"
+                  (click)="ouvrirDialogModifEvent(evenement.id, 1)"
+                >
+                  <i class="far fa-copy"></i>
+                </button>
+              </td>
+              <td>
+                <button
+                  class="btn btn btn-light edition"
+                  (click)="ouvrirDialogModifEvent(evenement.id, 0)"
+                >
+                  <i class="far fa-edit"></i>
+                </button>
+              </td>
+              <td>
+                <button
+                  (click)="deleteEvenement(evenement.id)"
+                  id="deleteEvenement"
+                  class="btn btn-light"
+                >
+                  <i
+                    class="fa fa-trash-o"
+                    aria-hidden="true"
+                    style="color: red"
+                  ></i>
+                </button>
               </td>
             </tr>
           </tbody>

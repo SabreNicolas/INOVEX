@@ -938,4 +938,85 @@ export class RecapRondeComponent implements OnInit {
       }
     });
   }
+
+  ouvrirDialogModifEvent(id: number, dupliquer: number) {
+    this.idEvenement = id;
+    this.dialogRef = this.dialog.open(this.createEventDialog, {
+      width: "40%",
+      disableClose: true,
+      autoFocus: true,
+    });
+
+    this.cahierQuartService
+      .getOneEvenement(this.idEvenement)
+      .subscribe((response) => {
+        this.titre = response.data[0]["titre"];
+        this.importance = response.data[0]["importance"];
+        this.dateDeb = response.data[0]["date_heure_debut"]
+          .replace(" ", "T")
+          .replace("Z", "");
+        this.dateFin = response.data[0]["date_heure_fin"]
+          .replace(" ", "T")
+          .replace("Z", "");
+        this.groupementGMAO = response.data[0]["groupementGMAO"];
+        this.equipementGMAO = response.data[0]["equipementGMAO"];
+        this.demandeTravaux = response.data[0]["demande_travaux"];
+        this.description = response.data[0]["description"];
+        this.consigne = response.data[0]["consigne"];
+        this.cause = response.data[0]["cause"];
+        this.imgSrc = response.data[0]["url"];
+
+        if (dupliquer == 1) {
+          this.idEvenement = 0;
+          $("#equipementGMAO").show();
+          $("#groupementGMAO").show();
+
+          this.groupementGMAO = "";
+          this.equipementGMAO = "";
+        } else {
+          $("#demandeTravaux").hide();
+          $("#demandeTravauxLabel").hide();
+        }
+      });
+
+    this.dialog.afterAllClosed.subscribe((response) => {
+      this.idEvenement = 0;
+      this.ngOnInit();
+    });
+  }
+
+  //suppression d'un évènement
+  deleteEvenement(id: number) {
+    Swal.fire({
+      title: "Etes vous sûr de vouloir supprimer cet évènement ?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Oui, supprimer",
+      cancelButtonText: "Annuler",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.cahierQuartService.deleteEvenement(id).subscribe((response) => {
+          if (response == "Suppression de l'evenement OK") {
+            this.cahierQuartService
+              .historiqueEvenementDelete(id)
+              .subscribe((response) => {
+                this.popupService.alertSuccessForm(
+                  "L'evenement a bien été supprimé !",
+                );
+              });
+          } else {
+            this.popupService.alertErrorForm(
+              "Erreur lors de la suppression de l'evenement....",
+            );
+          }
+        });
+        this.ngOnInit();
+      } else {
+        // Pop-up d'annulation de la suppression
+        this.popupService.alertErrorForm("La suppression a été annulée.");
+      }
+    });
+  }
 }
