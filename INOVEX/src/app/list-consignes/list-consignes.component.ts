@@ -32,6 +32,7 @@ export class ListConsignesComponent implements OnInit {
   public type: number;
   public dateDebut: Date | undefined;
   public dateFin: Date | undefined;
+  public days: string[];
 
   constructor(
     private rondierService: rondierService,
@@ -51,9 +52,20 @@ export class ListConsignesComponent implements OnInit {
     this.stringDateFin = "";
     this.stringDateDebut = "";
     this.idConsigne = 0;
+    this.days = [];
+
   }
 
   ngOnInit(): void {
+    /**Détermination des dates des 7 jours */
+    const today = new Date();
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6);
+    this.days = this.getDates(sevenDaysAgo, today);
+    this.days.reverse();
+    //permet d'avoir une boucle de plus pour tout afficher
+    this.days.push("");
+
     this.fileToUpload = undefined;
     this.imgSrc = undefined;
     this.rondierService.listAllConsignes().subscribe((response) => {
@@ -261,5 +273,14 @@ export class ListConsignesComponent implements OnInit {
     form.controls["dateFin"].reset();
     // form.controls['type'].reset();
     form.controls["dateDebut"].reset();
+  }
+
+  getDates(startDate: Date, stopDate: Date) {
+    const dateArray = [];
+    while (startDate <= stopDate) {
+      dateArray.push(startDate.toLocaleDateString());
+      startDate.setDate(startDate.getDate() + 1);
+    }
+    return dateArray;
   }
 }

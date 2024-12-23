@@ -7,123 +7,113 @@
   >
     Créer un évènement
   </a>
-  <div class="table-style" *ngFor="let day of days">
-    <h3 *ngIf="day.length > 0">
-      {{ day
-      }}<button class="btn btn-light" (click)="showTable(day.substr(0, 2))">
-        <i class="fa fa-level-down" aria-hidden="true"></i>
-      </button>
-    </h3>
-    <h3 *ngIf="day.length === 0">
-      Tout voir<button
-        class="btn btn-light"
-        (click)="showTable(day.substr(0, 2))"
-      >
-        <i class="fa fa-level-down" aria-hidden="true"></i>
-      </button>
-    </h3>
-    <!--table des evenements des 7 derniers jours-->
-    <table id="table--{{ day.substr(0, 2) }}" class="table tableFixed">
-      <thead>
-        <tr class="table-secondary">
-          <th scope="col">Titre</th>
-          <th scope="col">Description</th>
-          <th scope="col">Cause</th>
-          <th scope="col">Groupement GMAO</th>
-          <th scope="col">Equipement GMAO</th>
-          <th scope="col">Date de Début de validité</th>
-          <th scope="col">Date de Fin de validité</th>
-          <th scope="col">Demande d'intervention</th>
-          <th scope="col">Création de consigne</th>
-          <th scope="col">Photo</th>
-          <th scope="col">Dupliquer</th>
-          <th scope="col">Editer</th>
-          <th scope="col">Supprimer</th>
-        </tr>
-      </thead>
-      <tbody *ngFor="let evenement of listEvenement">
-        <tr
-          class="color--{{ evenement.importance }} line"
-          *ngIf="evenement.date_heure_debut.includes(day)"
-        >
-          <td>{{ evenement.titre }}</td>
-          <td>{{ evenement.description }}</td>
-          <td>{{ evenement.cause }}</td>
-          <td>{{ evenement.groupementGMAO }}</td>
-          <td>{{ evenement.equipementGMAO }}</td>
-          <td>{{ evenement.date_heure_debut }}</td>
-          <td>{{ evenement.date_heure_fin }}</td>
-          <td>
-            <a
-              *ngIf="
-                evenement.demande_travaux != 0 &&
-                evenement.demande_travaux !== 'false'
-              "
-              (click)="getDI(evenement.demande_travaux)"
-              role="button"
-              class="btn btn-outline-secondary"
+  <mat-accordion class="example-headers-align" multi>
+    <mat-expansion-panel *ngFor="let day of days let i = index" [expanded]="i === 0">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ day == '' ? 'Tout voir' : day}}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <table class="table tableFixed">
+          <thead>
+            <tr class="table-secondary">
+              <th scope="col">Titre</th>
+              <th scope="col">Description</th>
+              <th scope="col">Cause</th>
+              <th scope="col">Groupement GMAO</th>
+              <th scope="col">Equipement GMAO</th>
+              <th scope="col">Date de Début de validité</th>
+              <th scope="col">Date de Fin de validité</th>
+              <th scope="col">Demande d'intervention</th>
+              <th scope="col">Création de consigne</th>
+              <th scope="col">Photo</th>
+              <th scope="col">Dupliquer</th>
+              <th scope="col">Editer</th>
+              <th scope="col">Supprimer</th>
+            </tr>
+          </thead>
+          <tbody *ngFor="let evenement of listEvenement">
+            <tr
+              class="color--{{ evenement.importance }} line"
+              *ngIf="evenement.date_heure_debut.includes(day)"
             >
-              {{ evenement.demande_travaux }}
-            </a>
-            <p
-              *ngIf="
-                evenement.demande_travaux == 0 ||
-                evenement.demande_travaux === 'false'
-              "
-            >
-              Aucune
-            </p>
-          </td>
-          <td *ngIf="evenement.consigne == 1">Crée</td>
-          <td *ngIf="evenement.consigne == 0">Aucune</td>
-          <td>
-            <button
-              class="btn btn-outline-secondary"
-              *ngIf="evenement.url !== ''"
-              (click)="downloadImage(evenement.url)"
-            >
-              <i
-                style="color: black"
-                class="fa fa-camera"
-                aria-hidden="true"
-              ></i>
-            </button>
-          </td>
-          <td>
-            <button
-              class="btn btn btn-light edition"
-              (click)="ouvrirDialogModifEvent(evenement.id, 1)"
-            >
-              <i class="far fa-copy"></i>
-            </button>
-          </td>
-          <td>
-            <button
-              class="btn btn btn-light edition"
-              (click)="ouvrirDialogModifEvent(evenement.id, 0)"
-            >
-              <i class="far fa-edit"></i>
-            </button>
-          </td>
-          <td>
-            <button
-              (click)="deleteEvenement(evenement.id)"
-              id="deleteEvenement"
-              class="btn btn-light"
-            >
-              <i
-                class="fa fa-trash-o"
-                aria-hidden="true"
-                style="color: red"
-              ></i>
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <!--<h3>Voir les plus anciens :<button class="btn btn-light" (click)="changeEventVisible()"><i class="fa fa-level-down" aria-hidden="true"></i></button></h3>-->
-  </div>
+              <td>{{ evenement.titre }}</td>
+              <td>{{ evenement.description }}</td>
+              <td>{{ evenement.cause }}</td>
+              <td>{{ evenement.groupementGMAO }}</td>
+              <td>{{ evenement.equipementGMAO }}</td>
+              <td>{{ evenement.date_heure_debut }}</td>
+              <td>{{ evenement.date_heure_fin }}</td>
+              <td>
+                <a
+                  *ngIf="
+                    evenement.demande_travaux != 0 &&
+                    evenement.demande_travaux !== 'false'
+                  "
+                  (click)="getDI(evenement.demande_travaux)"
+                  role="button"
+                  class="btn btn-outline-secondary"
+                >
+                  {{ evenement.demande_travaux }}
+                </a>
+                <p
+                  *ngIf="
+                    evenement.demande_travaux == 0 ||
+                    evenement.demande_travaux === 'false'
+                  "
+                >
+                  Aucune
+                </p>
+              </td>
+              <td *ngIf="evenement.consigne == 1">Crée</td>
+              <td *ngIf="evenement.consigne == 0">Aucune</td>
+              <td>
+                <button
+                  class="btn btn-outline-secondary"
+                  *ngIf="evenement.url !== ''"
+                  (click)="downloadImage(evenement.url)"
+                >
+                  <i
+                    style="color: black"
+                    class="fa fa-camera"
+                    aria-hidden="true"
+                  ></i>
+                </button>
+              </td>
+              <td>
+                <button
+                  class="btn btn btn-light edition"
+                  (click)="ouvrirDialogModifEvent(evenement.id, 1)"
+                >
+                  <i class="far fa-copy"></i>
+                </button>
+              </td>
+              <td>
+                <button
+                  class="btn btn btn-light edition"
+                  (click)="ouvrirDialogModifEvent(evenement.id, 0)"
+                >
+                  <i class="far fa-edit"></i>
+                </button>
+              </td>
+              <td>
+                <button
+                  (click)="deleteEvenement(evenement.id)"
+                  id="deleteEvenement"
+                  class="btn btn-light"
+                >
+                  <i
+                    class="fa fa-trash-o"
+                    aria-hidden="true"
+                    style="color: red"
+                  ></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </mat-expansion-panel>
+  </mat-accordion>
 </div>
 
 <ng-template let-data #myCreateEventDialog>

@@ -115,6 +115,7 @@ import { MatSelectModule } from "@angular/material/select";
 import { MatDividerModule } from "@angular/material/divider";
 import { MatInputModule } from "@angular/material/input";
 import { PreventDoubleClickDirective } from "./prevent-double-click";
+import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
 
 registerLocaleData(localeFr, "fr");
 class CustomDateFormatter extends CalendarNativeDateFormatter {
@@ -223,6 +224,8 @@ class CustomDateFormatter extends CalendarNativeDateFormatter {
     MatButtonModule,
     CommonModule,
     MatDialogModule,
+    MatExpansionModule,
+    MatAccordion,
     MatFormFieldModule,
     FormsModule,
     ReactiveFormsModule,

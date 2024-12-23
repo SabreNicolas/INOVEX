@@ -7,83 +7,89 @@
   >
     Créer une consigne
   </a>
-  <div class="table-style">
-    <!--table des consignes-->
-    <table class="table table-hover tableFixed">
-      <thead>
-        <tr class="table-secondary">
-          <th scope="col">Consigne</th>
-          <th scope="col">Description</th>
-          <th scope="col">Date de Début de validité</th>
-          <th scope="col">Date de Fin de validité</th>
-          <th scope="col">Type</th>
-          <th scope="col">Fichier</th>
-          <th scope="col">Dupliquer</th>
-          <th scope="col">Edition</th>
-          <th scope="col">#</th>
-        </tr>
-      </thead>
-      <tbody *ngFor="let consigne of listConsignes">
-        <tr class="table-light" [ngSwitch]="consigne.type">
-          <td>{{ consigne.titre }}</td>
-          <td>{{ consigne.commentaire }}</td>
-          <td>{{ consigne.dateHeureDebut }}</td>
-          <td *ngIf="consigne.dateHeureFin !== '01/01/2099 00:00:00'">
-            {{ consigne.dateHeureFin }}
-          </td>
-          <td *ngIf="consigne.dateHeureFin === '01/01/2099 00:00:00'">
-            Jamais
-          </td>
-          <td *ngSwitchCase="1">
-            <span class="badge rounded-pill bg-primary">Jour</span>
-          </td>
-          <td *ngSwitchCase="2">
-            <span class="badge rounded-pill bg-warning text-dark"
-              >Sécurité</span
-            >
-          </td>
-          <td *ngSwitchCase="3">
-            <span class="badge rounded-pill bg-primary">Process</span>
-          </td>
-          <td *ngSwitchCase="4">
-            <span class="badge rounded-pill bg-dark">Autres</span>
-          </td>
-          <td *ngSwitchCase="5">
-            <span class="badge rounded-pill bg-dark">Suite à un évènement</span>
-          </td>
-          <td *ngIf="consigne.url != null" (click)="downloadFile(consigne.url)">
-            <i class="fas fa-download"></i>
-          </td>
-          <td *ngIf="consigne.url == null">/</td>
-          <td>
-            <button
-              class="btn btn btn-light edition"
-              (click)="ouvrirDialogModifConsigne(consigne.id, 1)"
-            >
-              <i class="far fa-copy"></i>
-            </button>
-          </td>
-          <td>
-            <button
-              class="btn btn btn-light edition"
-              (click)="ouvrirDialogModifConsigne(consigne.id, 0)"
-            >
-              <i class="far fa-edit"></i>
-            </button>
-          </td>
-          <td>
-            <button
-              (click)="deleteConsigne(consigne.id)"
-              id="deleteConsigne"
-              class="btn btn-light"
-            >
-              <i class="fa fa-trash-o" aria-hidden="true"></i>
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  <mat-accordion class="example-headers-align" multi>
+    <mat-expansion-panel *ngFor="let day of days let i = index" [expanded]="i === 0">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ day == '' ? 'Tout voir' : day}}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+          <table class="table table-hover tableFixed">
+            <thead>
+              <tr class="table-secondary">
+                <th scope="col">Consigne</th>
+                <th scope="col">Description</th>
+                <th scope="col">Date de Début de validité</th>
+                <th scope="col">Date de Fin de validité</th>
+                <th scope="col">Type</th>
+                <th scope="col">Fichier</th>
+                <th scope="col">Dupliquer</th>
+                <th scope="col">Edition</th>
+                <th scope="col">#</th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let consigne of listConsignes">
+              <tr class="table-light" [ngSwitch]="consigne.type" *ngIf="consigne.dateHeureDebut.includes(day)" >
+                <td>{{ consigne.titre }}</td>
+                <td>{{ consigne.commentaire }}</td>
+                <td>{{ consigne.dateHeureDebut }}</td>
+                <td *ngIf="consigne.dateHeureFin !== '01/01/2099 00:00:00'">
+                  {{ consigne.dateHeureFin }}
+                </td>
+                <td *ngIf="consigne.dateHeureFin === '01/01/2099 00:00:00'">
+                  Jamais
+                </td>
+                <td *ngSwitchCase="1">
+                  <span class="badge rounded-pill bg-primary">Jour</span>
+                </td>
+                <td *ngSwitchCase="2">
+                  <span class="badge rounded-pill bg-warning text-dark"
+                    >Sécurité</span
+                  >
+                </td>
+                <td *ngSwitchCase="3">
+                  <span class="badge rounded-pill bg-primary">Process</span>
+                </td>
+                <td *ngSwitchCase="4">
+                  <span class="badge rounded-pill bg-dark">Autres</span>
+                </td>
+                <td *ngSwitchCase="5">
+                  <span class="badge rounded-pill bg-dark">Suite à un évènement</span>
+                </td>
+                <td *ngIf="consigne.url != null" (click)="downloadFile(consigne.url)">
+                  <i class="fas fa-download"></i>
+                </td>
+                <td *ngIf="consigne.url == null">/</td>
+                <td>
+                  <button
+                    class="btn btn btn-light edition"
+                    (click)="ouvrirDialogModifConsigne(consigne.id, 1)"
+                  >
+                    <i class="far fa-copy"></i>
+                  </button>
+                </td>
+                <td>
+                  <button
+                    class="btn btn btn-light edition"
+                    (click)="ouvrirDialogModifConsigne(consigne.id, 0)"
+                  >
+                    <i class="far fa-edit"></i>
+                  </button>
+                </td>
+                <td>
+                  <button
+                    (click)="deleteConsigne(consigne.id)"
+                    id="deleteConsigne"
+                    class="btn btn-light"
+                  >
+                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+      </mat-expansion-panel>
+  </mat-accordion>
 </div>
 
 <ng-template let-data #myCreateConsigneDialog>

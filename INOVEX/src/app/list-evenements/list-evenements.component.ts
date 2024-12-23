@@ -11,6 +11,7 @@ import Swal from "sweetalert2";
 import { AltairService } from "../services/altair.service";
 import { format, parseISO } from "date-fns";
 import { toZonedTime } from "date-fns-tz";
+
 declare let $: any;
 
 @Component({
@@ -110,16 +111,6 @@ export class ListEvenementsComponent implements OnInit {
     this.days.reverse();
     //permet d'avoir une boucle de plus pour tout afficher
     this.days.push("");
-    //Par défaut on masque l'ensemble des tableaux
-    $(document).ready(() => {
-      this.days.forEach((day) => {
-        //alert('#table--'+day.substring(0,2));
-        $("#table--" + day.substring(0, 2)).hide();
-      });
-      //Par défaut on affiche quand même le premier élément qui correspond au jour J
-      $("#table--" + this.days[0].substring(0, 2)).show();
-    });
-    /**FIN Détermination de la date de il y a 7 jours */
 
     this.cahierQuartService.getAllEvenement().subscribe((response) => {
       // @ts-ignore
