@@ -53,7 +53,6 @@ export class ListConsignesComponent implements OnInit {
     this.stringDateDebut = "";
     this.idConsigne = 0;
     this.days = [];
-
   }
 
   ngOnInit(): void {
