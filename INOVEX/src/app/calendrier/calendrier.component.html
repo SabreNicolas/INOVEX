@@ -15,6 +15,7 @@
     <div class="dialog">
       <h2 class="dialog-title">Répétition</h2>
       <div class="dialog-content">
+        <!-- Form dateDeb -->
         <div class="form-group d-flex align-items-center">
           <label for="start-date" class="label mr-2">Début</label>
           <input
@@ -24,9 +25,15 @@
             placeholder="Date de début"
             name="dateDeb"
             [(ngModel)]="dateDeb"
+            (ngModelChange)="getJourOccurrenceMois($event)"
           />
         </div>
 
+        <p *ngIf="dateDeb == undefined" style="color: red">
+          Veuillez saisir une date de début !
+        </p>
+
+        <!-- Form répéter chaque -->
         <div class="form-group d-flex align-items-center">
           <label for="repeat" class="label mr-2">Répéter chaque</label>
           <input
@@ -35,57 +42,139 @@
             class="input small-input w-25 form-control mr-2"
             value="1"
             [(ngModel)]="repeterChaque"
+            *ngIf="periodeReccurence !== 'mois'"
           />
-          <select (ngModelChange)="periodeReccurenceChange($event)" class="input small-input w-50 form-control" [(ngModel)]="periodeReccurence">
+          <select
+            (ngModelChange)="periodeReccurenceChange($event)"
+            class="input small-input w-50 form-control"
+            [(ngModel)]="periodeReccurence"
+          >
             <option value="semaine">Semaine</option>
             <option value="jour">Jour</option>
             <option value="mois">Mois</option>
           </select>
         </div>
-        
-        <div *ngIf="!(repeterChaque >= 2 && periodeReccurence == 'jour')" class="d-flex justify-content-between align-items-center">
-          <button 
-            *ngFor="let jour of jours" 
-            (click)="ajoutListeJours(jour)" 
+
+        <!-- Form selection de jours -->
+        <div
+          *ngIf="
+            !(repeterChaque >= 2 && periodeReccurence === 'jour') &&
+            periodeReccurence !== 'mois'
+          "
+          class="d-flex justify-content-between align-items-center"
+        >
+          <button
+            *ngFor="let jour of jours"
+            (click)="ajoutListeJours(jour)"
             [class.active]="listeJours.includes(jour)"
-            class="btn btn-light rounded-circle day-btn">
-            {{ jour[0].toUpperCase() }} <!-- Première lettre en majuscule -->
+            class="btn btn-light rounded-circle day-btn"
+          >
+            {{ jour[0].toUpperCase() }}
           </button>
         </div>
 
+        <!-- Form bouttons radio en cas de mois -->
+        <div
+          class="container"
+          *ngIf="periodeReccurence === 'mois' && dateDeb != undefined"
+        >
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              [(ngModel)]="radioMois"
+              default
+              type="radio"
+              name="options"
+              id="option1"
+              value="occurenceMois"
+            />
+            <label class="form-check-label" for="option1"
+              >{{ occurenceMois }}{{ occurenceMois == 1 ? "er" : "ème" }}
+              {{ jourMois }} du mois</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              [(ngModel)]="radioMois"
+              type="radio"
+              name="options"
+              id="option2"
+              value="dateMois"
+            />
+            <label class="form-check-label" for="option2"
+              >Le {{ numeroJour }}</label
+            >
+          </div>
+        </div>
+
+        <!-- Phrase et dateFin -->
         <div class="d-flex align-items-center my-2">
-          <p class="note mb-0 me-2" *ngIf="!(repeterChaque >= 2 && periodeReccurence == 'jour')">
-            A lieu {{ listeJours.length === jours.length ? 'tous les jours' : 'chaque ' + listeJours.join(', ') }} jusqu'au
+          <p
+            class="note mb-0 me-2"
+            *ngIf="
+              !(repeterChaque >= 2 && periodeReccurence === 'jour') &&
+              periodeReccurence !== 'mois'
+            "
+          >
+            A lieu
+            {{
+              listeJours.length === jours.length
+                ? "tous les jours"
+                : "chaque " + listeJours.join(", ")
+            }}
+            {{
+              repeterChaque > 1
+                ? "toutes les " + repeterChaque + " " + periodeReccurence
+                : ""
+            }}
+            jusqu'au
           </p>
-          <p class="note mb-0 me-2" *ngIf="(repeterChaque >= 2 && periodeReccurence == 'jour')">
+          <p
+            class="note mb-0 me-2"
+            *ngIf="repeterChaque >= 2 && periodeReccurence === 'jour'"
+          >
             A lieu tous les {{ repeterChaque }} jours jusqu'au
           </p>
-          <input type="date" class="form-control w-50" [(ngModel)]="dateFin" />
+          <p class="note mb-0 me-2" *ngIf="periodeReccurence === 'mois'">
+            A lieu jusqu'au
+          </p>
+          <input
+            type="date"
+            class="form-control w-50"
+            [(ngModel)]="dateFin"
+            [attr.min]="dateDeb"
+          />
         </div>
-        
       </div>
+
+      <!-- Boutons -->
       <div class="dialog-actions d-flex justify-content-between">
-        <button 
-          [disabled]="listeJours.length == 0 || dateFin == undefined || dateDeb == undefined || repeterChaque <= 0" 
-          (click)="saveRepetition()" 
+        <button
+          [disabled]="
+            (listeJours.length == 0 && periodeReccurence !== 'mois') ||
+            dateFin == undefined ||
+            dateDeb == undefined ||
+            repeterChaque <= 0
+          "
+          (click)="saveRepetition()"
           class="btn btn-success btn-lg mx-2"
-          [mat-dialog-close]="true" >
+          [mat-dialog-close]="true"
+        >
           Enregistrer
         </button>
-        <button 
-          [mat-dialog-close]="true" 
-          class="btn btn-danger btn-lg mx-2">
+        <button [mat-dialog-close]="true" class="btn btn-danger btn-lg mx-2">
           Abandonner
         </button>
-        <button 
-          [mat-dialog-close]="true" 
-          class="btn btn-danger btn-lg mx-2" 
+        <button
+          [mat-dialog-close]="true"
+          class="btn btn-danger btn-lg mx-2"
           [disabled]="!setRepetition"
-          (click)="deleteRepetition()">
+          (click)="deleteRepetition()"
+        >
           Supprimer
         </button>
       </div>
-         
     </div>
   </mat-dialog-content>
 </ng-template>
@@ -135,7 +224,11 @@
           </option>
         </select>
       </div>
-      <div class="form-group d-flex align-items-center" id="CreationAction" style="display: none">
+      <div
+        class="form-group d-flex align-items-center"
+        id="CreationAction"
+        style="display: none"
+      >
         <label>Action :</label>
         <input
           type="text"
@@ -171,24 +264,38 @@
           style="background-color: rgb(27, 37, 51); color: white"
           (click)="ouvrirDialogReccurence()"
         >
-          Rendre Periodique
+          {{
+            setRepetition == false
+              ? "Rendre Periodique"
+              : "Modifier la periodicité"
+          }}
         </button>
       </div>
-      
-
-      <!-- <div class="form-group">
-        <label>Périodicité :</label>
-        <select
-          class="form-select form-select-sm"
-          aria-label=".form-select-sm example"
-          [(ngModel)]="periodicite"
+      <div *ngIf="setRepetition == true">
+        <p
+          class="note mb-0 me-2"
+          *ngIf="!(repeterChaque >= 2 && periodeReccurence === 'jour')"
         >
-          <option value="0">Aucune</option>
-          <option value="1">Quotidien</option>
-          <option value="2">Hebdo</option>
-          <option value="3">Mensuel</option>
-        </select>
-      </div> -->
+          A lieu
+          {{
+            listeJours.length === jours.length
+              ? "tous les jours"
+              : "chaque " + listeJours.join(", ")
+          }}
+          {{
+            repeterChaque > 1
+              ? "toutes les " + repeterChaque + " " + periodeReccurence
+              : ""
+          }}
+          jusqu'au {{ dateFin }}
+        </p>
+        <p
+          class="note mb-0 me-2"
+          *ngIf="repeterChaque >= 2 && periodeReccurence === 'jour'"
+        >
+          A lieu tous les {{ repeterChaque }} jours jusqu'au {{ dateFin }}
+        </p>
+      </div>
 
       <div class="form-group">
         <label>Quart :</label>
@@ -228,7 +335,7 @@
       <button
         class="btn btn-success"
         id="valider"
-        (click)="createEvenementCalendrierV2()"
+        (click)="createEvenementCalendrier()"
       >
         Valider
       </button>

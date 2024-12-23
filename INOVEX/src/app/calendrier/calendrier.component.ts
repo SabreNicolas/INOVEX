@@ -49,7 +49,8 @@ export class CalendrierComponent implements OnInit {
     | TemplateRef<any>
     | undefined;
   @ViewChild("myCreateEventDialog") createEventDialog = {} as TemplateRef<any>;
-  @ViewChild("myReccurenceDialog") createReccurenceDialog = {} as TemplateRef<any>;
+  @ViewChild("myReccurenceDialog") createReccurenceDialog =
+    {} as TemplateRef<any>;
 
   public userLogged!: user;
   public view: CalendarView = CalendarView.Week;
@@ -83,11 +84,15 @@ export class CalendrierComponent implements OnInit {
 
   //Périodicité
   public listeJours: string[];
-  public jours : string[];
-  public periodeReccurence : string;
-  public dateFin! : any;
-  public repeterChaque : number;
-  public setRepetition : boolean;
+  public jours: string[];
+  public periodeReccurence: string;
+  public dateFin!: any;
+  public repeterChaque: number;
+  public setRepetition: boolean;
+  public occurenceMois: number;
+  public jourMois: string;
+  public numeroJour: number;
+  public radioMois: string;
 
   constructor(
     private modal: NgbModal,
@@ -97,12 +102,23 @@ export class CalendrierComponent implements OnInit {
     public cahierQuartService: cahierQuartService,
     private datePipe: DatePipe,
   ) {
-
     this.listeJours = [];
-    this.jours = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche'];
-    this.periodeReccurence = 'semaine';
+    this.jours = [
+      "lundi",
+      "mardi",
+      "mercredi",
+      "jeudi",
+      "vendredi",
+      "samedi",
+      "dimanche",
+    ];
+    this.periodeReccurence = "semaine";
     this.repeterChaque = 1;
     this.setRepetition = false;
+    this.occurenceMois = 0;
+    this.jourMois = "";
+    this.numeroJour = 0;
+    this.radioMois = "occurenceMois";
 
     this.events = [];
     this.nomAction = "";
@@ -308,7 +324,6 @@ export class CalendrierComponent implements OnInit {
       ronde: event.ronde,
       isAction: event.isAction,
     };
-    //console.log(this.modalData)
     this.modal.open(this.modalContent, { size: "lg" });
   }
 
@@ -392,137 +407,6 @@ export class CalendrierComponent implements OnInit {
     $("#CreationRonde").show();
     $("#CreationAction").hide();
     $("#hideCreation").show();
-  }
-
-  //Fonction permettant de créer un évènement dans le calendrier
-  async createEvenementCalendrier() {
-    this.loading();
-    //On parcours la liste des quarts choisis
-    for (const quart of this.quart) {
-      //On récupère l'heure de fin en fonction du quart
-      if (quart == 1) {
-        var heureDeb = "05:00:00";
-        var heureFin = "13:00:00";
-      } else if (quart == 2) {
-        var heureDeb = "13:00:00";
-        var heureFin = "21:00:00";
-      } else {
-        var heureDeb = "21:00:00";
-        var heureFin = "05:00:00";
-      }
-
-      //Si on a pas de periodicité, l'ajout ne se fait qu'une fois
-      if (this.periodicite == 0) {
-        //Si on est dans le quart 3, le jour de fin est le jour suivant
-        if (quart != 3) {
-          var dateFin = this.dateDeb + " " + heureFin;
-        } else {
-          var dateFin =
-            format(addDays(parseISO(this.dateDeb), 1), "yyyy-MM-dd") +
-            " " +
-            heureFin;
-        }
-        var dateDeb2 = this.dateDeb + " " + heureDeb;
-        //Si on ajoute une zone
-        if (this.radioSelect == "zone") {
-          //On parcours la liste des zones pour toutes les ajouter
-          for (const zone of this.listZoneSelection) {
-            this.cahierQuartService
-              .newCalendrierZone(zone, dateDeb2, quart, dateFin)
-              .subscribe((response) => {
-                const dateFin = "";
-              });
-          }
-        }
-        //si on ajoute une action
-        else {
-          this.cahierQuartService
-            .newAction(this.nomAction, dateDeb2, dateFin)
-            .subscribe((response) => {
-              this.cahierQuartService
-                .newCalendrierAction(
-                  response.data[0].id,
-                  response.data[0].date_heure_debut,
-                  quart,
-                  response.data[0].date_heure_fin,
-                  0,
-                )
-                .subscribe((response) => {
-                  const dateFin = "";
-                });
-            });
-        }
-      } else {
-        //Si on a une periodicite, on boucle pour ajouter autant de fois que d'occurences demandées
-        for (let i = 0; i < this.occurences; i++) {
-          await this.pause(1);
-          //Si on est en quotidient
-          if (this.periodicite == 1) {
-            var dateDeb2 =
-              format(addDays(parseISO(this.dateDeb), i), "yyyy-MM-dd") +
-              " " +
-              heureDeb;
-          }
-          //Si on est en hebdo
-          else if (this.periodicite == 2) {
-            var dateDeb2 =
-              format(addWeeks(parseISO(this.dateDeb), i), "yyyy-MM-dd") +
-              " " +
-              heureDeb;
-          }
-          //Si on est en mensuel
-          else {
-            var dateDeb2 =
-              format(addMonths(parseISO(this.dateDeb), i), "yyyy-MM-dd") +
-              " " +
-              heureDeb;
-          }
-          //Si on est dans le quart 3, le jour de fin est le jour suivant
-          if (quart != 3) {
-            var dateFin = dateDeb2.split(" ")[0] + " " + heureFin;
-          } else {
-            var dateFin =
-              format(
-                addDays(parseISO(dateDeb2.split(" ")[0]), 1),
-                "yyyy-MM-dd",
-              ) +
-              " " +
-              heureFin;
-          }
-          //Si on ajoute une zone
-          if (this.radioSelect == "zone") {
-            //On parcours la liste des zones pour toutes les ajouter
-            for (const zone of this.listZoneSelection) {
-              this.cahierQuartService
-                .newCalendrierZone(zone, dateDeb2, quart, dateFin)
-                .subscribe((response) => {
-                  const dateFin = "";
-                });
-            }
-          }
-          //Si on ajoute une action
-          else {
-            this.cahierQuartService
-              .newAction(this.nomAction, dateDeb2, dateFin)
-              .subscribe((response) => {
-                this.cahierQuartService
-                  .newCalendrierAction(
-                    response.data[0].id,
-                    response.data[0].date_heure_debut,
-                    quart,
-                    response.data[0].date_heure_fin,
-                    0,
-                  )
-                  .subscribe((response) => {
-                    const dateFin = "";
-                  });
-              });
-          }
-        }
-      }
-    }
-    this.removeloading();
-    this.dialog.closeAll();
   }
 
   pause(millisecondes: number) {
@@ -651,48 +535,46 @@ export class CalendrierComponent implements OnInit {
     });
   }
 
-  ajoutListeJours(jour : string){
+  ajoutListeJours(jour: string) {
     if (this.listeJours.includes(jour)) {
       // Supprime le jour de la liste
-      this.listeJours = this.listeJours.filter(j => j !== jour);
+      this.listeJours = this.listeJours.filter((j) => j !== jour);
     } else {
       // Ajoute le jour à la liste
       this.listeJours.push(jour);
     }
 
-    if(this.listeJours.length == 7){
-      this.periodeReccurence = 'jour'
-    }
-    else{
-      this.periodeReccurence = 'semaine'
+    if (this.listeJours.length == 7) {
+      this.periodeReccurence = "jour";
+    } else {
+      this.periodeReccurence = "semaine";
     }
   }
 
-  periodeReccurenceChange(nvPeriode : string){
+  periodeReccurenceChange(nvPeriode: string) {
     this.periodeReccurence = nvPeriode;
-    if(this.periodeReccurence == 'jour'){
+    if (this.periodeReccurence == "jour") {
       this.listeJours = [];
-      for(let jour of this.jours){
+      for (const jour of this.jours) {
         this.listeJours.push(jour);
       }
     }
   }
 
-  saveRepetition(){
-    this.setRepetition = true
-    console.log(this.setRepetition);
+  saveRepetition() {
+    this.setRepetition = true;
   }
 
-  deleteRepetition(){
-    this.setRepetition = false
+  deleteRepetition() {
+    this.setRepetition = false;
     this.periodeReccurence = "semaine";
     this.listeJours = [];
     this.dateFin = undefined;
-    this.repeterChaque = 1;  
+    this.repeterChaque = 1;
   }
 
-    //Fonction permettant de créer un évènement dans le calendrier
-  async createEvenementCalendrierV2() {
+  //Fonction permettant de créer un évènement dans le calendrier
+  async createEvenementCalendrier() {
     this.loading();
     //On parcours la liste des quarts choisis
     for (const quart of this.quart) {
@@ -719,7 +601,7 @@ export class CalendrierComponent implements OnInit {
             " " +
             heureFin;
         }
-        var dateHeureDeb = this.dateDeb + " " + heureDeb;
+        const dateHeureDeb = this.dateDeb + " " + heureDeb;
         //Si on ajoute une zone
         if (this.radioSelect == "zone") {
           //On parcours la liste des zones pour toutes les ajouter
@@ -750,16 +632,19 @@ export class CalendrierComponent implements OnInit {
             });
         }
       } else {
-        var dates = await this.genererDatesAjout(this.dateDeb, this.dateFin, this.repeterChaque, this.periodeReccurence, this.listeJours);
+        const dates = await this.genererDatesAjout(
+          this.dateDeb,
+          this.dateFin,
+          this.repeterChaque,
+          this.periodeReccurence,
+          this.listeJours,
+        );
         //Si on a une periodicite, on boucle pour ajouter autant de fois que d'occurences demandées
-        for (let date of dates) {
+        for (const date of dates) {
           await this.pause(1);
           //Si on est en quotidient
-          let dateHeureDeb = 
-              format(date, "yyyy-MM-dd") +
-              " " +
-              heureDeb;
-          
+          const dateHeureDeb = format(date, "yyyy-MM-dd") + " " + heureDeb;
+
           //Si on est dans le quart 3, le jour de fin est le jour suivant
           if (quart != 3) {
             var dateFin = dateHeureDeb.split(" ")[0] + " " + heureFin;
@@ -785,7 +670,6 @@ export class CalendrierComponent implements OnInit {
           }
           //Si on ajoute une action
           else {
-            console.log(dateHeureDeb, '\n', dateFin)
             this.cahierQuartService
               .newAction(this.nomAction, dateHeureDeb, dateFin)
               .subscribe((response) => {
@@ -809,40 +693,139 @@ export class CalendrierComponent implements OnInit {
     this.dialog.closeAll();
   }
 
+  //Fonction qui permet de générer la liste des dates sur lesquelles ajouter l'action ou la zone
   async genererDatesAjout(
-      dateDeb: Date,
-      dateFin: Date,
-      repeterChaque: number,
-      periodeReccurence: string,
-      listeJours: string[]
-    ): Promise<Date[]> {
-      const dates: Date [] = [];
-      let currentDate = new Date(dateDeb);
-      const endDate = new Date(dateFin)
-      const jours = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
-      console.log(this.repeterChaque)
-      if(periodeReccurence == 'jour'){
-        while (currentDate.getTime() < endDate.getTime()) {
-          dates.push(currentDate);
-          currentDate = addDays(currentDate,repeterChaque);
-        }
+    dateDeb: Date,
+    dateFin: Date,
+    repeterChaque: number,
+    periodeReccurence: string,
+    listeJours: string[],
+  ): Promise<Date[]> {
+    const dates: Date[] = [];
+    let currentDate = new Date(dateDeb);
+    const dateDebut = currentDate;
+    const endDate = new Date(dateFin);
+    const jours = [
+      "dimanche",
+      "lundi",
+      "mardi",
+      "mercredi",
+      "jeudi",
+      "vendredi",
+      "samedi",
+    ];
+
+    //Si on est en jour, on parcours tous les jours jusqu'à la date de fin et on les ajoute dans le tableau
+    if (periodeReccurence == "jour") {
+      while (currentDate.getTime() < endDate.getTime()) {
         dates.push(currentDate);
+        currentDate = addDays(currentDate, repeterChaque);
       }
-
-      if(periodeReccurence == 'semaine'){
-        while (currentDate.getTime() !== endDate.getTime()) {
-          if(listeJours.includes(jours[currentDate.getDay()])){
-            dates.push(currentDate);
-          }
-          currentDate = addDays(currentDate,1);
-        }
-        if(listeJours.includes(jours[currentDate.getDay()])){
-          dates.push(currentDate);
-        }
-      }
-
-      return dates;
+      dates.push(currentDate);
     }
-  
-  
+
+    //Si on est en semaine
+    if (periodeReccurence === "semaine") {
+      //On parcout tous les jours
+      while (currentDate.getTime() <= endDate.getTime()) {
+        //On récupère le numéro de la semaine de la date
+        const currentWeekNumber = Math.floor(
+          (currentDate.getTime() - dateDebut.getTime()) /
+            (7 * 24 * 60 * 60 * 1000),
+        );
+        //On regarde sur le numéro de la semaine correspond à la répéter chaque
+        //Utile quand on veut répéter un event toutes les 2 semaines par exemple
+        if (currentWeekNumber % repeterChaque === 0) {
+          //On regarde si le jour de la date est dans les jours souhaités et on ajoute
+          if (listeJours.includes(jours[currentDate.getDay()])) {
+            dates.push(new Date(currentDate));
+          }
+        }
+        currentDate = addDays(currentDate, 1);
+      }
+    }
+
+    //Si on est en mois
+    if (periodeReccurence === "mois") {
+      if (this.radioMois == "occurenceMois") {
+        //On parcout tous les jours
+        while (currentDate.getTime() <= endDate.getTime()) {
+          const occurrence = this.occurenceMois;
+          const dayString = this.jourMois;
+
+          // Convertir le jour en string en un index (0: dimanche, 1: lundi, ...)
+          const targetDayIndex = jours.indexOf(dayString.toLowerCase());
+
+          // Aller au début du mois
+          const firstDayOfMonth = new Date(
+            currentDate.getFullYear(),
+            currentDate.getMonth(),
+            1,
+          );
+
+          let occurrenceCount = 0;
+          let day = new Date(firstDayOfMonth);
+
+          // Parcourir tous les jours du mois
+          while (day.getMonth() === firstDayOfMonth.getMonth()) {
+            if (day.getDay() === targetDayIndex) {
+              occurrenceCount++;
+              if (occurrenceCount === occurrence) {
+                dates.push(new Date(day));
+                break;
+              }
+            }
+            day = addDays(day, 1);
+          }
+
+          // Passer au mois suivant
+          currentDate = new Date(
+            firstDayOfMonth.getFullYear(),
+            firstDayOfMonth.getMonth() + 1,
+            1,
+          );
+        }
+      } else {
+        //On parcout tous les jours
+        while (currentDate.getTime() <= endDate.getTime()) {
+          if (currentDate.getDate() == this.numeroJour) {
+            dates.push(new Date(currentDate));
+          }
+          currentDate = addDays(currentDate, 1);
+        }
+      }
+    }
+
+    return dates;
+  }
+
+  //Récupérer l'occurence d'une date dans le mois
+  //ex: 2eme lundi du mois
+  getJourOccurrenceMois(date: Date) {
+    date = new Date(date);
+    const daysOfWeek = [
+      "dimanche",
+      "lundi",
+      "mardi",
+      "mercredi",
+      "jeudi",
+      "vendredi",
+      "samedi",
+    ];
+    const dayIndex = date.getDay(); // Jour de la semaine (0 = dimanche, ..., 6 = samedi)
+    this.jourMois = daysOfWeek[dayIndex];
+    this.numeroJour = date.getDate();
+
+    // Trouver le premier jour du mois
+    const firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+
+    // Calculer l'occurrence du jour dans le mois
+    this.occurenceMois = 0;
+    for (let day = 1; day <= date.getDate(); day++) {
+      const currentDate = new Date(date.getFullYear(), date.getMonth(), day);
+      if (currentDate.getDay() === dayIndex) {
+        this.occurenceMois++;
+      }
+    }
+  }
 }
