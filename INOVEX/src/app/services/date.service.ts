@@ -7,7 +7,8 @@ export class dateService {
   constructor(private popupService: PopupService) {}
   //récupérer les jours de la période
   getDays(start: Date, end: Date) {
-    let arr = [], dt = new Date(start);
+    let arr = [],
+      dt = new Date(start);
     for (
       arr = [], dt = new Date(start);
       dt <= end;

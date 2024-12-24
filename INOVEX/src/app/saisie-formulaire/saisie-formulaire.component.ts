@@ -218,15 +218,13 @@ export class SaisieFormulaireComponent implements OnInit {
         this.productsService
           .deleteProductFormulaire(this.idForm)
           .subscribe(() => {
-            this.productsService
-              .deleteFormulaire(this.idForm)
-              .subscribe(() => {
-                this.idForm = 0;
-                this.popupService.alertSuccessForm(
-                  "Le formulaire a bien été supprimé !",
-                );
-                this.ngOnInit();
-              });
+            this.productsService.deleteFormulaire(this.idForm).subscribe(() => {
+              this.idForm = 0;
+              this.popupService.alertSuccessForm(
+                "Le formulaire a bien été supprimé !",
+              );
+              this.ngOnInit();
+            });
           });
       } else {
         // Pop-up d'annulation de la suppression

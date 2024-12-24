@@ -1,6 +1,4 @@
-import {
-  Router,
-} from "@angular/router";
+import { Router } from "@angular/router";
 import { Observable } from "rxjs";
 import { Injectable } from "@angular/core";
 import { Location } from "@angular/common";
@@ -12,9 +10,8 @@ export class AuthGuard {
     private location: Location,
   ) {}
 
-  canActivate(
-    //@ts-expect-error data
-  ): Observable<boolean> | Promise<boolean> | boolean {
+  canActivate() //@ts-expect-error data
+  : Observable<boolean> | Promise<boolean> | boolean {
     //Si user logged on fait les tests de droits
     if (localStorage.getItem("user") != undefined) {
       //on récupére le user co
