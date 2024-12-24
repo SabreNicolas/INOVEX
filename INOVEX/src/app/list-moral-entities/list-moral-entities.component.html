@@ -23,7 +23,10 @@
       </div>
       <div
         class="col-sm-3"
-        *ngIf="listCollecteurs.length != 0 && listCollecteurs[0].split('_')[1] !== 'undefined'"
+        *ngIf="
+          listCollecteurs.length != 0 &&
+          listCollecteurs[0].split('_')[1] !== 'undefined'
+        "
       >
         <div class="form-group">
           <select

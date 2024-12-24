@@ -45,7 +45,7 @@ export class RechercheComponent implements OnInit {
     this.resultTableau = [];
 
     //Il faut choisir une date de début
-    if (this.dateDeb != undefined && this.dateDeb != '') {
+    if (this.dateDeb != undefined && this.dateDeb != "") {
       var dateDebString = format(parseISO(this.dateDeb), "yyyy-MM-dd HH:mm");
     } else {
       this.popupService.alertErrorForm(
@@ -55,7 +55,7 @@ export class RechercheComponent implements OnInit {
     }
 
     //Il faut choisir une dat de fin
-    if (this.dateFin != undefined && this.dateFin != '') {
+    if (this.dateFin != undefined && this.dateFin != "") {
       var dateFinString = format(parseISO(this.dateFin), "yyyy-MM-dd HH:mm");
     } else {
       this.popupService.alertErrorForm(
