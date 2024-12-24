@@ -249,7 +249,7 @@ export class ListActusComponent implements OnInit {
               stringEmail,
             )
             .subscribe((response) => {
-              console.log(response);
+              // console.log(response);
               if (response != undefined) {
                 this.idActu = response["data"][0]["Id"];
                 this.cahierQuartService

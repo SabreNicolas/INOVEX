@@ -158,7 +158,7 @@ export class ActuComponent implements OnInit {
               this.description,
             )
             .subscribe((response) => {
-              console.log(response);
+              // console.log(response);
               if (response != undefined) {
                 this.idActu = response["data"][0]["Id"];
                 this.cahierQuartService

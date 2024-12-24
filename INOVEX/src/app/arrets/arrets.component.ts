@@ -178,7 +178,7 @@ export class ArretsComponent implements OnInit {
       //Si on est en mode arrets
       else {
         this.arretsService.getOneArret(this.id).subscribe(async (response) => {
-          console.log(response);
+          // console.log(response);
           //@ts-ignore
           this.arretId = response.data[0].productId;
           //@ts-ignore
@@ -668,8 +668,8 @@ export class ArretsComponent implements OnInit {
         new Date(new Date(this.dateDebut).getTime() + 30 * 60000),
         "yyyy-MM-ddTHH:mm:ss",
       );
-      console.log(this.dateDebut);
-      console.log(this.dateFin);
+      // console.log(this.dateDebut);
+      // console.log(this.dateFin);
       this.setDuree(form);
     }
   }

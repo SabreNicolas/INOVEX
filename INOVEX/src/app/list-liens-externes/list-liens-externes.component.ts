@@ -126,7 +126,7 @@ export class ListLiensExternesComponent implements OnInit {
           this.cahierQuartService
             .newLienExterne(this.nom, this.url)
             .subscribe((response) => {
-              console.log(response);
+              // console.log(response);
               if (response == "Création du lien OK !") {
                 this.popupService.alertSuccessForm("Nouveau lien créé");
                 this.ngOnInit();
@@ -153,7 +153,7 @@ export class ListLiensExternesComponent implements OnInit {
     this.cahierQuartService
       .getOneLienExterne(this.idLien)
       .subscribe((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         this.nom = response.data[0]["nom"];
         this.url = response.data[0]["url"];
       });

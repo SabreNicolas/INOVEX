@@ -45,7 +45,7 @@ export class RechercheComponent implements OnInit {
     this.resultTableau = [];
 
     //Il faut choisir une date de début
-    if (this.dateDeb != undefined) {
+    if (this.dateDeb != undefined && this.dateDeb != '') {
       var dateDebString = format(parseISO(this.dateDeb), "yyyy-MM-dd HH:mm");
     } else {
       this.popupService.alertErrorForm(
@@ -55,7 +55,7 @@ export class RechercheComponent implements OnInit {
     }
 
     //Il faut choisir une dat de fin
-    if (this.dateFin != undefined) {
+    if (this.dateFin != undefined && this.dateFin != '') {
       var dateFinString = format(parseISO(this.dateFin), "yyyy-MM-dd HH:mm");
     } else {
       this.popupService.alertErrorForm(
@@ -113,7 +113,7 @@ export class RechercheComponent implements OnInit {
         .subscribe((response) => {
           for (const ligne of response.data) {
             this.resultTableau.push(ligne);
-            console.log(ligne);
+            // console.log(ligne);
           }
         });
     }
@@ -134,7 +134,7 @@ export class RechercheComponent implements OnInit {
   exportExcel() {
     /* table id is passed over here */
     const element = document.getElementById("tableResultats");
-    console.log(element);
+    // console.log(element);
     const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element, {
       raw: false,
       dateNF: "mm/dd/yyyy HH:mm:ss",

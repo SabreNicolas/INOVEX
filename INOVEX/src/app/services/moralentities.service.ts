@@ -322,7 +322,7 @@ export class moralEntitiesService {
       nomImport +
       "&productImport=" +
       productImport;
-    console.log(requete);
+    // console.log(requete);
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
@@ -558,7 +558,7 @@ export class moralEntitiesService {
     const requete =
       "https://" + this.ip + "/moralEntitieEnabled/" + Id + "/" + Enabled;
     //console.log(requete);
-    console.log(this.headerDict);
+    // console.log(this.headerDict);
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
     };
@@ -708,7 +708,7 @@ export class moralEntitiesService {
       "&dateFin=" +
       dateFin +
       "&sortant=0";
-    console.log(requete);
+    // console.log(requete);
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
@@ -729,7 +729,7 @@ export class moralEntitiesService {
       "&dateFin=" +
       dateFin +
       "&sortant=1";
-    console.log(requete);
+    // console.log(requete);
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),

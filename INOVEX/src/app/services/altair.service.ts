@@ -182,7 +182,7 @@ export class AltairService {
     /**FIN RECUP USER GMAO */
 
     const requete = this.ip + "/rest/work/all/workrequest/create/WORKREQUEST";
-    console.log(userGMAO);
+    // console.log(userGMAO);
 
     const requestOptions = new HttpHeaders({
       Authorization: "Bearer " + token,

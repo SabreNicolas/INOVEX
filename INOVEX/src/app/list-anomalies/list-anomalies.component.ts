@@ -161,21 +161,21 @@ export class ListAnomaliesComponent implements OnInit {
     });
     this.idAnomalie = id;
     this.rondierService.getOneAnomalie(id).subscribe((response) => {
-      console.log(response);
+      // console.log(response);
       //@ts-ignore
       this.description = response.data[0]["commentaire"];
       //@ts-ignore
       this.imgSrc = response.data[0]["photo"];
 
       const input = document.getElementById("fichier") as HTMLInputElement;
-      console.log(this.imgSrc);
+      // console.log(this.imgSrc);
       if (
         this.imgSrc != "NULL" &&
         this.imgSrc != null &&
         this.imgSrc != undefined &&
         this.imgSrc != ""
       ) {
-        console.log("ici");
+        // console.log("ici");
         this.addImgaeToInput(this.imgSrc, input);
       }
     });
@@ -293,7 +293,7 @@ export class ListAnomaliesComponent implements OnInit {
     }
 
     if (this.demandeTravaux != 0) {
-      console.log(this.equipementGMAO);
+      // console.log(this.equipementGMAO);
       if (this.equipementGMAO == "") {
         this.popupService.alertErrorForm(
           "Veuillez choisir un équipement pour la DI",

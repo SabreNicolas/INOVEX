@@ -23,7 +23,7 @@ export class ListEnregistrementEquipeComponent implements OnInit {
     //On récupère la liste des équipes
     this.cahierQuartService.getEquipesEnregistrees().subscribe((response) => {
       this.equipes = response.tabEnregistrementEquipes;
-      console.log(this.equipes);
+      // console.log(this.equipes);
     });
   }
 

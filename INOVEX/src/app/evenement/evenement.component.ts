@@ -126,7 +126,7 @@ export class EvenementComponent implements OnInit {
       this.rondierService
         .getOneAnomalie(this.idAnomalie)
         .subscribe((response) => {
-          console.log(response);
+          // console.log(response);
           //@ts-ignore
           this.description = response.data[0]["commentaire"];
           //@ts-ignore
@@ -330,7 +330,7 @@ export class EvenementComponent implements OnInit {
                       );
                       this.idEvenement = response["data"][0]["Id"];
 
-                      console.log(response);
+                      // console.log(response);
                       this.cahierQuartService
                         .historiqueEvenementCreate(this.idEvenement)
                         .subscribe((response) => {
@@ -411,7 +411,7 @@ export class EvenementComponent implements OnInit {
   }
 
   clickDemandeTravaux() {
-    console.log(this.demandeTravaux);
+    // console.log(this.demandeTravaux);
     if ($("input#demandeTravaux").is(":checked")) {
       $("#dateFin").show();
       $("#equipementGMAO").show();

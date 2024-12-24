@@ -35,7 +35,7 @@ export class CorrespondanceReactifsComponent implements OnInit {
       .subscribe((response) => {
         // @ts-ignore
         this.listReactifsAvecCorrespondance = response.data;
-        console.log(this.listReactifsAvecCorrespondance);
+        // console.log(this.listReactifsAvecCorrespondance);
       });
 
     this.productsService.getReactifs().subscribe((response) => {

@@ -541,7 +541,7 @@ export class ReportingRondeComponent implements OnInit {
   }
 
   afficherZone(zone: number) {
-    console.log($("." + String(zone) + "-Zone"));
+    // console.log($("." + String(zone) + "-Zone"));
     $("." + String(zone) + "-Zone").toggle(1000);
     $("." + String(zone) + "-ZoneElements").hide(1000);
     $("." + String(zone) + "-ZonebtnPlus").show(1000);
@@ -573,8 +573,8 @@ export class ReportingRondeComponent implements OnInit {
       },
     }).then((result) => {
       if (result.isConfirmed) {
-        console.log(`Date choisie: ${result.value.date}`);
-        console.log(`Option choisie: ${result.value.option}`);
+        // console.log(`Date choisie: ${result.value.date}`);
+        // console.log(`Option choisie: ${result.value.option}`);
         this.rondierService
           .createRepriseDeRonde(result.value.date, result.value.option)
           .subscribe((response) => {

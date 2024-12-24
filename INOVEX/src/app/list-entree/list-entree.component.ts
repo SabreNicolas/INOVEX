@@ -462,7 +462,7 @@ export class ListEntreeComponent implements OnInit {
   exportExcel() {
     /* table id is passed over here */
     const element = document.getElementById("listEntree");
-    console.log(element);
+    // console.log(element);
     const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element, {
       raw: false,
       dateNF: "mm/dd/yyyy",
@@ -667,7 +667,7 @@ export class ListEntreeComponent implements OnInit {
               results.data[i][0] != "Somme"
             ) {
               //Création de l'objet qui contient l'ensemble des infos nécessaires
-              console.log(results.data[i]);
+              // console.log(results.data[i]);
               const importCSV = {
                 numDePesee: results.data[i][0].replace(/'/g, "''"),
                 type: results.data[i][1].replace(/'/g, "''"),
@@ -764,7 +764,7 @@ export class ListEntreeComponent implements OnInit {
               this.csvRegistre.push(importCSV);
             }
           }
-          console.log(this.csvRegistre);
+          // console.log(this.csvRegistre);
           this.removeloading();
           this.moralEntitiesService
             .registreDNDTS(this.csvRegistre)
@@ -875,7 +875,7 @@ export class ListEntreeComponent implements OnInit {
               }
             }
           }
-          console.log(this.csvArray);
+          // console.log(this.csvArray);
           //Fonction qui tranforme les dates string au format date afin de les comparer
           function compareDates(a: string, b: string) {
             const dateA = new Date(a.split("/").reverse().join("/"));

@@ -267,7 +267,7 @@ export class AdminComponent implements OnInit {
       "Veuillez saisir un coefficient pour ce produit",
       String(pr.Coefficient),
     );
-    console.log(saisie);
+    // console.log(saisie);
     if (saisie == null) return;
     saisie = saisie.replace(/'/g, "''");
     this.productsService.updateCoeff(saisie, pr.Id).subscribe((response) => {

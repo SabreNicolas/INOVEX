@@ -271,7 +271,7 @@ export class cahierQuartService {
       this.idUsine +
       "&idEquipe=" +
       idEquipe;
-    //   console.log(requete);
+    //console.log(requete);
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
@@ -289,7 +289,7 @@ export class cahierQuartService {
       this.idUsine +
       "&idEquipe=" +
       idEquipe;
-    //   console.log(requete);
+    //console.log(requete);
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),

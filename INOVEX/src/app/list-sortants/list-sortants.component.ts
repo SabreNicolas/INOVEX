@@ -620,8 +620,8 @@ export class ListSortantsComponent implements OnInit {
         this.datePipe.transform(this.dateDeb, "dd-MM-yyyy") +
         " au " +
         this.datePipe.transform(this.dateFin, "dd-MM-yyyy");
-      console.log(nomFichier);
-      console.log(dateDebString);
+      // console.log(nomFichier);
+      // console.log(dateDebString);
       this.moralEntitiesService
         .getRegistreDNDTSSortants(dateDebString, dateFinString)
         .subscribe((response) => {

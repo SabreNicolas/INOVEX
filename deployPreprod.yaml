@@ -1,0 +1,25 @@
+name: Deploy to Pre-prod
+
+on:
+  push:
+    branches:
+      - preprod  # Branche de pré-production
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: SSH into server and deploy
+        uses: appleboy/ssh-action@v0.1.5
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd E:\INOVEX\INOVEX\INOVEX
+            git pull 
+            npm install

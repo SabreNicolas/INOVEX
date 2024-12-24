@@ -67,7 +67,7 @@ export class RecapRondeListeComponent implements OnInit {
     } else if (heure > 13 && heure < 21) {
       this.quart = 2;
     } else this.quart = 3;
-    console.log(this.quart);
+    // console.log(this.quart);
 
     //Récupération de la date de début et de la date de fin en fonction du quart
     if (this.quart == 1) {
@@ -92,8 +92,8 @@ export class RecapRondeListeComponent implements OnInit {
     this.idEquipe = 0;
     this.nomEquipe = "";
     this.listRondier = [];
-    console.log(this.dateDebString);
-    console.log(this.dateFinString);
+    // console.log(this.dateDebString);
+    // console.log(this.dateFinString);
 
     //Récupération des action pour la ronde précédente
     this.cahierQuartService
@@ -204,7 +204,7 @@ export class RecapRondeListeComponent implements OnInit {
   }
 
   setFilters() {
-    console.log(this.dateDebForm);
+    // console.log(this.dateDebForm);
     this.date = new Date(this.dateDebForm);
     //Récupération de la date de début et de la date de fin en fonction du quart
     if (this.quart == 1) {

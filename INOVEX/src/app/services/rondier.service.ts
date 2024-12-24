@@ -471,7 +471,7 @@ export class rondierService {
       codeEquipement +
       "&infoSup=" +
       infoSupValue;
-    console.log(requete);
+    // console.log(requete);
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
@@ -566,7 +566,7 @@ export class rondierService {
       date +
       "?quart=" +
       quart;
-    console.log(requete);
+    // console.log(requete);
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),

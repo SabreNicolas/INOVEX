@@ -66,7 +66,7 @@ export class AdminGlobalComponent implements OnInit {
   }
 
   pdfMake() {
-    console.log("pdfMake start");
+    // console.log("pdfMake start");
     const tableHeader = [
       {
         text: "Element de contrôle",

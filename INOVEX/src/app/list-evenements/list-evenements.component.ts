@@ -363,7 +363,7 @@ export class ListEvenementsComponent implements OnInit {
     }
 
     if (this.demandeTravaux != 0 && this.idEvenement == 0) {
-      console.log(this.equipementGMAO);
+      // console.log(this.equipementGMAO);
       if (this.equipementGMAO == "") {
         this.popupService.alertErrorForm(
           "Veuillez choisir un équipement pour la DI",
@@ -458,7 +458,7 @@ export class ListEvenementsComponent implements OnInit {
                 this.description,
               )
               .subscribe((response) => {
-                console.log(response);
+                // console.log(response);
                 this.cahierQuartService
                   .newEvenement(
                     this.titre,

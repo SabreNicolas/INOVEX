@@ -554,7 +554,7 @@ export class RecapRondeComponent implements OnInit {
     }
 
     if (this.demandeTravaux != 0) {
-      console.log(this.equipementGMAO);
+      // console.log(this.equipementGMAO);
       if (this.equipementGMAO == "") {
         this.popupService.alertErrorForm(
           "Veuillez choisir un équipement pour la DI",

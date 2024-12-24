@@ -22,6 +22,31 @@ Pour lancer le projet directement sur le serveur en pré-prod :
 2. Lancez l'application via un terminal : `npm start`
 3. Vérifiez le fonctionnement de la pré-prod ici : https://fr-couvinove300.prod.paprec.fr:8100/
 
+# ATTENTION
+
+- Si des erreurs consoles sont présentent lors du lancement de l'application, cela est du au fait que nous avons modifié une librairie. Veuillez suivre les étapes suivantes :
+   1. Ouvrez le fichier `INOVEX\INOVEX\node_modules\calendar-utils\calendar-utils.d.ts`
+   2. Modifiez l'interface *CalandarEvents* :
+   ```typescript
+      export interface CalendarEvent<MetaType = any> {
+         id?: string | number;
+         start: Date;
+         end?: Date;
+         title: string;
+         color?: EventColor;
+         actions?: EventAction[];
+         allDay?: boolean;
+         cssClass?: string;
+         resizable?: {
+            beforeStart?: boolean;
+            afterEnd?: boolean;
+         };
+         draggable?: boolean;
+         meta?: MetaType;
+         ronde?: any[];
+         isAction?: boolean;
+      }
+   ```
 
 
 # Création du site sur IIS avec Proxy et Réécriture d'URL en Reverse Proxy
@@ -120,3 +145,29 @@ Pour ce projet, nous avons besoin de créer un reverse proxy afin de communiquer
 4. **Valider et tester la configuration** :
    - Enregistrez les modifications.
    - Rendez-vous sur la plage d'accueil du cahier de quart et inspectez la page. Si aucune erreur de login sur altair n'est présente, le proxy est bien configuré.
+
+## Étape 6 : Modifier la page d'accueil du server web
+
+1. **Modifier le fichier iisstart.html**
+   - Ouvrez le fichier ````C:\inetpub\wwwroot\iisstart.htm````
+   - Ajoutez-y ce code : 
+   ```html
+      <!DOCTYPE html>
+      <html lang="fr">
+      <head>
+         <meta charset="UTF-8">
+         <meta http-equiv="refresh" content="0; url=https://fr-couvinove300.prod.paprec.fr/capexploitation/">
+         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+         <title>Redirection</title>
+      </head>
+      <body>
+         <p>Si vous n'êtes pas redirigé automatiquement, cliquez <a href="https://fr-couvinove300.prod.paprec.fr/capexploitation/">ici</a>.</p>
+      </body>
+      </html>
+   ```
+   - Enregistrez le fichier
+
+2. **Modifier le fichier par défaut du serveur**
+   - Rendez vous à la base de votre serveur web.
+   - Cliquez sur l'icône `Document par défaut`.
+   - Faites monter `iisstart.htm` en première position et sauvegardez.
