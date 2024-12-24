@@ -208,7 +208,6 @@ export class RecapRondeComponent implements OnInit {
     this.cahierQuartService
       .getActionsRonde(this.dateDebString, this.dateFinString)
       .subscribe((response) => {
-        // @ts-ignore
         this.listAction = response.data;
         // mettre en place un décodage pour ne plus avoir espace en format %20
         for (let i = 0; i < this.listAction.length; i++) {
@@ -220,7 +219,6 @@ export class RecapRondeComponent implements OnInit {
     this.cahierQuartService
       .getEvenementsRonde(this.dateDebString, this.dateFinString)
       .subscribe((response) => {
-        // @ts-ignore
         this.listEvenement = response.data;
       });
 
@@ -228,19 +226,18 @@ export class RecapRondeComponent implements OnInit {
     this.cahierQuartService
       .getZonesCalendrierRonde(this.dateDebString, this.dateFinString)
       .subscribe((response) => {
-        // @ts-ignore
         this.listZone = response.BadgeAndElementsOfZone;
       });
 
     //Récupération de l'id de l'équipe pour la ronde si l'équipe est déjà crée
     // this.cahierQuartService.getEquipeQuart(this.quart,format(new Date(),'yyyy-MM-dd')).subscribe((response)=>{
-    //   // @ts-ignore
+    //   // @ts-expect-error data
     //   this.idEquipe = response.data[0].id;
     // });
 
     //Récupération des zones de l'usine pour l'ajout d'une zone
     this.rondierService.listZone().subscribe((response) => {
-      // @ts-ignore
+      // @ts-expect-error data
       this.listZoneOfUsine = response.data;
     });
 
@@ -251,13 +248,12 @@ export class RecapRondeComponent implements OnInit {
         this.dateFinString.substring(0, 16),
       )
       .subscribe((response) => {
-        //@ts-ignore
+        //@ts-expect-error data
         this.consignes = response.data;
       });
 
     //On récupère la liste des actus actives sur le quart
     this.cahierQuartService.getActusQuart(1).subscribe((response) => {
-      // @ts-ignore
       this.listActu = response.data;
     });
 
@@ -269,7 +265,6 @@ export class RecapRondeComponent implements OnInit {
       )
       .subscribe((response) => {
         this.listRondier = [];
-        // @ts-ignore
         this.idEquipe = response.data[0].id;
         //Si on est en mode édition
         if (this.idEquipe > 0) {
@@ -331,7 +326,7 @@ export class RecapRondeComponent implements OnInit {
           this.quart,
           this.dateFinString,
         )
-        .subscribe((response) => {
+        .subscribe(() => {
           this.ngOnInit();
         });
     }
@@ -370,7 +365,7 @@ export class RecapRondeComponent implements OnInit {
             response.data[0].date_heure_fin,
             1,
           )
-          .subscribe((response) => {
+          .subscribe(() => {
             //réinitialiser le champ de saisie
             this.nomAction = "";
             this.ngOnInit();
@@ -466,7 +461,7 @@ export class RecapRondeComponent implements OnInit {
       cancelButtonText: "Non",
     }).then((result) => {
       if (result.isConfirmed) {
-        this.cahierQuartService.historiquePriseQuart().subscribe((response) => {
+        this.cahierQuartService.historiquePriseQuart().subscribe(() => {
           // window.location.href =
           //   "https://fr-couvinove300.prod.paprec.fr:8100/cahierQuart/recapRondePrecedente?quart=" +
           //   this.quart +
@@ -495,7 +490,7 @@ export class RecapRondeComponent implements OnInit {
       cancelButtonText: "Non",
     }).then((result) => {
       if (result.isConfirmed) {
-        this.cahierQuartService.historiquePriseQuart().subscribe((response) => {
+        this.cahierQuartService.historiquePriseQuart().subscribe(() => {
           this.router.navigate(["/cahierQuart/newEquipe"], {
             queryParams: { idEquipe: this.idEquipe },
           });
@@ -575,7 +570,7 @@ export class RecapRondeComponent implements OnInit {
             dateDebString,
             this.fileToUpload,
           )
-          .subscribe((response) => {});
+          .subscribe(() => {});
       } else {
         this.rondierService
           .createConsigne(
@@ -586,7 +581,7 @@ export class RecapRondeComponent implements OnInit {
             dateDebString,
             null,
           )
-          .subscribe((response) => {});
+          .subscribe(() => {});
       }
     } else this.consigne = 0;
     //Choix de la phrase à afficher en fonction du mode
@@ -610,7 +605,7 @@ export class RecapRondeComponent implements OnInit {
             .updateEvenement(
               this.titre,
               this.importance,
-              //@ts-ignore
+              //@ts-expect-error data
               dateDebString,
               dateFinString,
               this.groupementGMAO,
@@ -625,7 +620,7 @@ export class RecapRondeComponent implements OnInit {
               if (response != undefined) {
                 this.cahierQuartService
                   .historiqueEvenementUpdate(this.idEvenement)
-                  .subscribe((response) => {
+                  .subscribe(() => {
                     this.popupService.alertSuccessForm("Evènement modifiée !");
                     this.ngOnInit();
                     this.dialog.closeAll();
@@ -651,7 +646,7 @@ export class RecapRondeComponent implements OnInit {
                 this.cahierQuartService
                   .newEvenement(
                     this.titre,
-                    //@ts-ignore
+                    //@ts-expect-error data
                     this.fileToUpload,
                     this.importance,
                     dateDebString,
@@ -671,7 +666,7 @@ export class RecapRondeComponent implements OnInit {
                       this.idEvenement = response["data"][0]["Id"];
                       this.cahierQuartService
                         .historiqueEvenementCreate(this.idEvenement)
-                        .subscribe((response) => {
+                        .subscribe(() => {
                           this.ngOnInit();
                           this.dialog.closeAll();
                         });
@@ -682,7 +677,7 @@ export class RecapRondeComponent implements OnInit {
             this.cahierQuartService
               .newEvenement(
                 this.titre,
-                //@ts-ignore
+                //@ts-expect-error data
                 this.fileToUpload,
                 this.importance,
                 dateDebString,
@@ -700,7 +695,7 @@ export class RecapRondeComponent implements OnInit {
                   this.idEvenement = response["data"][0]["Id"];
                   this.cahierQuartService
                     .historiqueEvenementCreate(this.idEvenement)
-                    .subscribe((response) => {
+                    .subscribe(() => {
                       this.ngOnInit();
                       this.dialog.closeAll();
                     });
@@ -719,18 +714,17 @@ export class RecapRondeComponent implements OnInit {
   //Stockage du fichier chaque fois qu'un fichier est upload
   saveFile(event: Event) {
     //Récupération du fichier dans l'input
-    // @ts-ignore
+    // @ts-expect-error data
     this.fileToUpload = (event.target as HTMLInputElement).files[0];
-    // @ts-ignore
     //console.log((<HTMLInputElement>event.target).files[0]);
 
-    // @ts-ignore
+    // @ts-expect-error data
     if (event.target.value) {
-      // @ts-ignore
+      // @ts-expect-error data
       const file = event.target.files[0];
       this.fileToUpload = file;
       const reader = new FileReader();
-      reader.onload = (e) => (this.imgSrc = reader.result);
+      reader.onload = () => (this.imgSrc = reader.result);
       reader.readAsDataURL(file);
     } else this.popupService.alertErrorForm("Aucun fichier choisi....");
   }
@@ -748,7 +742,7 @@ export class RecapRondeComponent implements OnInit {
       const min = String(date.getMinutes()).padStart(2, "0");
       const day = yyyy + "-" + mm + "-" + dd + "T" + hh + ":" + min;
       (document.getElementById("dateDebut") as HTMLInputElement).value = day;
-      //@ts-ignore
+      //@ts-expect-error data
       this.dateDeb = day;
     } else {
       $("#dateFin").hide();
@@ -763,7 +757,7 @@ export class RecapRondeComponent implements OnInit {
       disableClose: true,
       autoFocus: true,
     });
-    this.dialog.afterAllClosed.subscribe((response) => {
+    this.dialog.afterAllClosed.subscribe(() => {
       this.idEvenement = 0;
       this.ngOnInit();
       this.dateDebString = "";
@@ -876,7 +870,7 @@ export class RecapRondeComponent implements OnInit {
     //Construction des valeurs du menu select qui contient les actions
     const listActions = {};
     tabAction.forEach((action) => {
-      //@ts-ignore
+      //@ts-expect-error data
       listActions[action] = action;
     });
 
@@ -903,7 +897,7 @@ export class RecapRondeComponent implements OnInit {
   ) {
     let type = "time";
     if (typeInfo == "comm_tp") type = "text";
-    //@ts-ignore
+    //@ts-expect-error data
     Swal.fire({
       title: "Veuillez saisir une valeur",
       input: type,
@@ -979,7 +973,7 @@ export class RecapRondeComponent implements OnInit {
         }
       });
 
-    this.dialog.afterAllClosed.subscribe((response) => {
+    this.dialog.afterAllClosed.subscribe(() => {
       this.idEvenement = 0;
       this.ngOnInit();
     });
@@ -1001,7 +995,7 @@ export class RecapRondeComponent implements OnInit {
           if (response == "Suppression de l'evenement OK") {
             this.cahierQuartService
               .historiqueEvenementDelete(id)
-              .subscribe((response) => {
+              .subscribe(() => {
                 this.popupService.alertSuccessForm(
                   "L'evenement a bien été supprimé !",
                 );

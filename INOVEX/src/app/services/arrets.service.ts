@@ -25,7 +25,6 @@ export class arretsService {
     private idUsineService: idUsineService,
   ) {
     this.httpClient = http;
-    //@ts-ignore
     this.idUsine = this.idUsineService.getIdUsine();
   }
 

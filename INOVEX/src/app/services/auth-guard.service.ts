@@ -1,7 +1,5 @@
 import {
-  ActivatedRouteSnapshot,
   Router,
-  RouterStateSnapshot,
 } from "@angular/router";
 import { Observable } from "rxjs";
 import { Injectable } from "@angular/core";
@@ -15,9 +13,7 @@ export class AuthGuard {
   ) {}
 
   canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot,
-    //@ts-ignore
+    //@ts-expect-error data
   ): Observable<boolean> | Promise<boolean> | boolean {
     //Si user logged on fait les tests de droits
     if (localStorage.getItem("user") != undefined) {

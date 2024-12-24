@@ -27,7 +27,7 @@ export class NewAnalyseComponent implements OnInit {
 
   ngOnInit(): void {
     this.categoriesService.getCategoriesAnalyses().subscribe((response) => {
-      // @ts-ignore
+      // @ts-expect-error data
       this.listCategories = response.data;
     });
   }

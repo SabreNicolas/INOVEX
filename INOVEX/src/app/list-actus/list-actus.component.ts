@@ -58,12 +58,11 @@ export class ListActusComponent implements OnInit {
 
   ngOnInit(): void {
     this.cahierQuartService.getAllActuDateCourante().subscribe((response) => {
-      // @ts-ignore
       this.listActu = response.data;
     });
 
     this.loginService.getUsersEmail().subscribe((response) => {
-      // @ts-ignore
+      // @ts-expect-error data
       this.listUsers = response.data;
     });
 
@@ -209,7 +208,7 @@ export class ListActusComponent implements OnInit {
             .updateActu(
               this.titre,
               this.importance,
-              //@ts-ignore
+              //@ts-expect-error data
               dateDebString,
               dateFinString,
               this.idActu,
@@ -241,7 +240,7 @@ export class ListActusComponent implements OnInit {
             .newActu(
               this.titre,
               this.importance,
-              //@ts-ignore
+              //@ts-expect-error data
               dateDebString,
               dateFinString,
               this.description,

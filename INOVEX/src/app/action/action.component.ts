@@ -116,7 +116,7 @@ export class ActionComponent implements OnInit {
           var dateFin = this.dateDeb + " " + heureFin;
         } else {
           var dateFin =
-            //@ts-ignore
+            //@ts-expect-error data
             format(addDays(parseISO(this.dateDeb), 1), "yyyy-MM-dd") +
             " " +
             heureFin;
@@ -144,7 +144,6 @@ export class ActionComponent implements OnInit {
         }
         //Sinon on créé l'actu
         else {
-          //@ts-ignore
           this.cahierQuartService
             .newAction(this.nom, dateDeb2, dateFin)
             .subscribe((response) => {

@@ -127,7 +127,7 @@ export class ActuComponent implements OnInit {
         //Si on est en mode édition d'une actu on va dans la fonction update
         if (this.idActu != 0) {
           this.cahierQuartService
-            //@ts-ignore
+            //@ts-expect-error data
             .updateActu(
               this.titre,
               this.importance,
@@ -149,7 +149,7 @@ export class ActuComponent implements OnInit {
         //Sinon on créé l'actu
         else {
           this.cahierQuartService
-            //@ts-ignore
+            //@ts-expect-error data
             .newActu(
               this.titre,
               this.importance,

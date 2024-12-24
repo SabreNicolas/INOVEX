@@ -38,17 +38,17 @@ export class ListBadgesComponent implements OnInit {
 
   ngOnInit(): void {
     this.rondierService.listBadgeNonAffect().subscribe((response) => {
-      // @ts-ignore
+      // @ts-expect-error data
       this.listBadgeLibre = response.data;
       this.rondierService.listBadgeUser().subscribe((response) => {
-        // @ts-ignore
+        // @ts-expect-error data
         this.listBadgeUser = response.data;
         this.rondierService.listBadgeZone().subscribe((response) => {
-          // @ts-ignore
+          // @ts-expect-error data
           this.listBadgeZone = response.data;
 
           this.rondierService.listPermisFeu().subscribe((response) => {
-            // @ts-ignore
+            // @ts-expect-error data
             this.listPermisFeu = response.data;
           });
         });
@@ -127,7 +127,7 @@ export class ListBadgesComponent implements OnInit {
         this.rondierService.lastIdBadge().subscribe((response) => {
           this.popupService.alertSuccessForm(
             "Badge créé avec succés, il porte le numéro : " +
-              //@ts-ignore
+              //@ts-expect-error data
               response.data[0].Id,
             10000,
           );

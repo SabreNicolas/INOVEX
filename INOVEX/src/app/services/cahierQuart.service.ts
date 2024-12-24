@@ -1,11 +1,9 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { maintenance } from "src/models/maintenance.model";
-import { site } from "src/models/site.model";
 import { user } from "src/models/user.model";
 import { zone } from "src/models/zone.model";
 import { idUsineService } from "./idUsine.service";
-import { DatePipe, Location } from "@angular/common";
+import { DatePipe } from "@angular/common";
 import { environment } from "src/environments/environment";
 
 @Injectable()
@@ -609,7 +607,7 @@ export class cahierQuartService {
     //utilisation de formData pour conserver le format du fichier
 
     const headers = new HttpHeaders();
-    // @ts-ignore
+    // @ts-expect-error data
     headers.append("Content-Type", null);
     headers.append("Accept", "application/json");
     const requestOptions = {
@@ -1496,7 +1494,7 @@ export class cahierQuartService {
   stockageRecapPDF(fichier: File | undefined, quart: string, date: string) {
     //utilisation de formData pour conserver le format du fichier
     const formData = new FormData();
-    // @ts-ignore
+    // @ts-expect-error data
     formData.append("fichier", fichier, fichier.name);
     const requete =
       "https://" +
@@ -1509,7 +1507,7 @@ export class cahierQuartService {
       date;
 
     const headers = new HttpHeaders();
-    // @ts-ignore
+    // @ts-expect-error data
     headers.append("Content-Type", null);
     headers.append("Accept", "application/json");
 

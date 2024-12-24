@@ -26,7 +26,7 @@ export class ListFormulairesComponent implements OnInit {
   ngOnInit(): void {
     //On récupère la liste des formulaires
     this.productsService.getFormulaires().subscribe((response) => {
-      // @ts-ignore
+      // @ts-expect-error data
       this.listFormulaires = response.data;
     });
 
@@ -34,7 +34,6 @@ export class ListFormulairesComponent implements OnInit {
     const userLogged = localStorage.getItem("user");
     if (typeof userLogged === "string") {
       const userLoggedParse = JSON.parse(userLogged);
-      // @ts-ignore
       this.isAdmin = userLoggedParse["isAdmin"];
     }
   }

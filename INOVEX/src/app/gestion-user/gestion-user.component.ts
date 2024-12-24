@@ -44,9 +44,9 @@ export class GestionUserComponent implements OnInit {
     if (typeof userLogged === "string") {
       const userLoggedParse = JSON.parse(userLogged);
       this.userLogged = userLoggedParse;
-      // @ts-ignore
+      // @ts-expect-error data
       this.storedLogin = this.userLogged["login"];
-      // @ts-ignore
+      // @ts-expect-error data
       this.storedPwdMD5 = this.userLogged["pwd"];
     }
   }
@@ -95,7 +95,6 @@ export class GestionUserComponent implements OnInit {
 
   checkOldPwd(form: NgForm) {
     this.oldPwd = form.value["pwdOld"];
-    // @ts-ignore
     if (Md5.hashStr(this.oldPwd) == this.storedPwdMD5) {
       this.badOldPwd = false;
     } else this.badOldPwd = true;
@@ -104,7 +103,6 @@ export class GestionUserComponent implements OnInit {
   checkMatchPwd(form: NgForm) {
     this.pwd1 = form.value["pwd1"];
     this.pwd2 = form.value["pwd2"];
-    // @ts-ignore
     if (this.pwd1 == this.pwd2) {
       this.pwdNotMatch = false;
     } else this.pwdNotMatch = true;

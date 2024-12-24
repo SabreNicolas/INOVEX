@@ -27,7 +27,7 @@ export class ListRapportsComponent implements OnInit {
 
     //récupération des rapports
     this.rapportsService.getRapports().subscribe((response) => {
-      // @ts-ignore
+      // @ts-expect-error data
       this.listRapports = response.data;
     });
 
@@ -36,10 +36,10 @@ export class ListRapportsComponent implements OnInit {
       const userLoggedParse = JSON.parse(userLogged);
       this.userLogged = userLoggedParse;
       //Récupération de l'idUsine
-      // @ts-ignore
+      // @ts-expect-error data
       this.idUsine = this.userLogged["idUsine"];
       if (this.userLogged.hasOwnProperty("localisation")) {
-        //@ts-ignore
+        //@ts-expect-error data
         this.usine = this.userLogged["localisation"];
         this.isSuperAdmin = true;
       }

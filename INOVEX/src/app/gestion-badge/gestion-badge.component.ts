@@ -40,12 +40,12 @@ export class GestionBadgeComponent implements OnInit {
   ngOnInit(): void {
     if (this.isUser) {
       this.rondierService.listUserLibre().subscribe((response) => {
-        // @ts-ignore
+        // @ts-expect-error data
         this.listAffect = response.data;
       });
     } else {
       this.rondierService.listZoneLibre().subscribe((response) => {
-        // @ts-ignore
+        // @ts-expect-error data
         this.listAffect = response.data;
       });
     }

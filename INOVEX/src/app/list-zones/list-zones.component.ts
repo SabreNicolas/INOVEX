@@ -46,13 +46,13 @@ export class ListZonesComponent implements OnInit {
 
   ngOnInit(): void {
     this.rondierService.listZone().subscribe((response) => {
-      // @ts-ignore
+      // @ts-expect-error data
       this.listZone = response.data;
     });
 
     //Récupération du nombre de four du site
     this.rondierService.nbLigne().subscribe((response) => {
-      //@ts-ignore
+      //@ts-expect-error data
       this.nbfour = response.data[0].nbLigne;
       this.numbers = Array(this.nbfour)
         .fill(1)
@@ -127,10 +127,9 @@ export class ListZonesComponent implements OnInit {
       "Veuillez saisir un Commentaire",
       String(zone.commentaire),
     );
-    //@ts-ignore
+    //@ts-expect-error data
     if (commentaire.length < 1) commentaire = "_";
     if (commentaire != null) {
-      // @ts-ignore
       this.rondierService
         .updateCommentaire(zone.Id, commentaire)
         .subscribe((response) => {
@@ -152,7 +151,6 @@ export class ListZonesComponent implements OnInit {
   setName(zone: zone) {
     const nom = prompt("Veuillez saisir un Nom", String(zone.nom));
     if (nom != null) {
-      // @ts-ignore
       this.rondierService.updateNomZone(zone.Id, nom).subscribe((response) => {
         if (response == "Mise à jour du nom OK") {
           this.popupService.alertSuccessForm("Le Nom a été mis à jour !");

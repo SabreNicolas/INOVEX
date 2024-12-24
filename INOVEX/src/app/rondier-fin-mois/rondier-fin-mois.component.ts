@@ -29,11 +29,11 @@ export class RondierFinMoisComponent implements OnInit {
   ngOnInit(): void {
     //Récupération compteurs Rondier
     this.rondierService.listElementCompteur().subscribe((response) => {
-      // @ts-ignore
+      // @ts-expect-error data
       this.listCompteursRondier = response.data;
       //Récupération compteurs INOVEX
       this.productsService.getCompteurs("", "").subscribe((response) => {
-        // @ts-ignore
+        // @ts-expect-error data
         this.listCompteurs = response.data;
         this.getValues();
       });

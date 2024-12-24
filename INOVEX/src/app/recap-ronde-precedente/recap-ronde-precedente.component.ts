@@ -14,7 +14,7 @@ import jsPDF from "jspdf";
 import { PopupService } from "../services/popup.service";
 import { anomalie } from "src/models/anomalie.model";
 
-//@ts-ignore
+//@ts-expect-error data
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -100,7 +100,6 @@ export class RecapRondePrecedenteComponent implements OnInit {
     this.cahierQuartService
       .getActionsRonde(this.dateDebString, this.dateFinString)
       .subscribe((response) => {
-        // @ts-ignore
         this.listAction = response.data;
       });
 
@@ -108,7 +107,6 @@ export class RecapRondePrecedenteComponent implements OnInit {
     this.cahierQuartService
       .getEvenementsRonde(this.dateDebString, this.dateFinString)
       .subscribe((response) => {
-        // @ts-ignore
         this.listEvenement = response.data;
       });
 
@@ -116,7 +114,6 @@ export class RecapRondePrecedenteComponent implements OnInit {
     this.cahierQuartService
       .getActusRonde(this.dateDebString, this.dateFinString)
       .subscribe((response) => {
-        // @ts-ignore
         this.listActu = response.data;
       });
 
@@ -124,13 +121,12 @@ export class RecapRondePrecedenteComponent implements OnInit {
     this.cahierQuartService
       .getZonesCalendrierRonde(this.dateDebString, this.dateFinString)
       .subscribe((response) => {
-        // @ts-ignore
         this.listZone = response.BadgeAndElementsOfZone;
       });
 
     //On récupére la liste des consignes de la ronde précédente
     this.rondierService.listConsignes().subscribe((response) => {
-      //@ts-ignore
+      //@ts-expect-error data
       this.listConsigne = response.data;
     });
 
@@ -141,7 +137,6 @@ export class RecapRondePrecedenteComponent implements OnInit {
         format(new Date(this.dateDebString), "yyyy-MM-dd"),
       )
       .subscribe((response) => {
-        // @ts-ignore
         this.idEquipe = response.data[0].id;
         //Si on est en mode édition
         if (this.idEquipe > 0) {
@@ -171,12 +166,12 @@ export class RecapRondePrecedenteComponent implements OnInit {
       });
 
     this.cahierQuartService.getOneUser().subscribe((response) => {
-      //@ts-ignore
+      //@ts-expect-error data
       this.user = response.data[0].Prenom + " " + response.data[0].Nom;
     });
 
     this.cahierQuartService.getOneLocalisation().subscribe((response) => {
-      //@ts-ignore
+      //@ts-expect-error data
       this.localisation = response.data[0].localisation;
     });
 
@@ -189,7 +184,7 @@ export class RecapRondePrecedenteComponent implements OnInit {
     this.cahierQuartService
       .getAnomaliesOfOneRonde(dateFr, this.quartPrecedent)
       .subscribe((response) => {
-        //@ts-ignore
+        //@ts-expect-error data
         this.listAnomalies = response.data;
       });
   }
@@ -589,7 +584,7 @@ export class RecapRondePrecedenteComponent implements OnInit {
       ],
     };
 
-    //@ts-ignore
+    //@ts-expect-error data
     const pdfCreate = pdfMake.createPdf(pdfContent);
     pdfCreate.download(
       "Résumé quart du " +

@@ -48,7 +48,7 @@ export class AdminComponent implements OnInit {
   setFilters() {
     /* Début prise en compte des filtres*/
     const typeElt = document.getElementById("type");
-    // @ts-ignore
+    // @ts-expect-error data
     const typeSel = typeElt.options[typeElt.selectedIndex].value;
     const name = (document.getElementById("name") as HTMLInputElement).value;
     this.typeId = typeSel;
@@ -61,7 +61,7 @@ export class AdminComponent implements OnInit {
     this.productsService
       .getAllProductsAndElementRondier(this.typeId, this.name)
       .subscribe((response) => {
-        // @ts-ignore
+        // @ts-expect-error data
         this.listProducts = response.data;
       });
   }
@@ -69,7 +69,7 @@ export class AdminComponent implements OnInit {
   getElements() {
     //Requête pour récupérer tout les éléments rondiers d'une usine qui sont en type valeur
     this.rondierService.getElementsOfUsine().subscribe((response) => {
-      // @ts-ignore
+      // @ts-expect-error data
       this.listElements = response.data;
       //console.log(this.listElements)
     });
@@ -98,7 +98,6 @@ export class AdminComponent implements OnInit {
     if (unit == null) {
       return; //break out of the function early
     }
-    // @ts-ignore
     this.productsService.setUnit(unit, PR.Id).subscribe((response) => {
       if (response == "Mise à jour de l'unité OK") {
         this.popupService.alertSuccessForm("L'unité a été mise à jour !");
@@ -117,11 +116,11 @@ export class AdminComponent implements OnInit {
       "2 pour Consommable, 3 pour Niveau, 4 pour Compteur, 5 pour Sortie, 6 pour Analyse",
       String(PR.typeId),
     );
-    // @ts-ignore
+    // @ts-expect-error data
     if (type < 1) {
       return; //break out of the function early
     }
-    // @ts-ignore
+    // @ts-expect-error data
     this.productsService.setType(type, PR.Id).subscribe((response) => {
       if (response == "Changement de catégorie du produit OK") {
         this.popupService.alertSuccessForm("Le type a été changé !");
@@ -136,7 +135,7 @@ export class AdminComponent implements OnInit {
 
   //permet de stocker les Id des products pour lesquelles il faut changer le type
   addPr(Id: number) {
-    // @ts-ignore
+    // @ts-expect-error data
     if (document.getElementById("" + Id).checked == true) {
       this.listId.push(Id);
     } else this.listId.splice(this.listId.indexOf(Id), 1);
@@ -147,13 +146,13 @@ export class AdminComponent implements OnInit {
       "2 pour Consommable, 3 pour Niveau, 4 pour Compteur, 5 pour Sortie, 6 pour Analyse",
       "0",
     );
-    // @ts-ignore
+    // @ts-expect-error data
     if (type < 1) {
       return; //break out of the function early
     }
     for (let i = 0; i < this.listId.length; i++) {
       this.productsService
-        //@ts-ignore
+        //@ts-expect-error data
         .setType(type, this.listId[i])
         .subscribe((response) => {
           if (response == "Changement de catégorie du produit OK") {
@@ -230,11 +229,11 @@ export class AdminComponent implements OnInit {
     const listElementsRondier = {};
     //Un peu particulier ici mais si la clef de l'objet n'est pas une chaine, l'ordre alphabétique n'est pas respecté car classement selon la clef
     //d'ou le 0_rondier
-    //@ts-ignore
+    //@ts-expect-error data
     listElementsRondier["0_rondier"] = "Aucun";
     this.listElements.forEach((element) => {
       const id = String(element.Id) + "_rondier";
-      //@ts-ignore
+      //@ts-expect-error data
       listElementsRondier[id] = element.nomZone + " - " + element.nom;
     });
     Swal.fire({

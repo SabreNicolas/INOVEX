@@ -33,13 +33,13 @@ export class CorrespondanceReactifsComponent implements OnInit {
     this.productsService
       .getReactifsAndCorrespondance()
       .subscribe((response) => {
-        // @ts-ignore
+        // @ts-expect-error data
         this.listReactifsAvecCorrespondance = response.data;
         // console.log(this.listReactifsAvecCorrespondance);
       });
 
     this.productsService.getReactifs().subscribe((response) => {
-      // @ts-ignore
+      // @ts-expect-error data
       this.listReactifs = response.data;
     });
   }
@@ -54,7 +54,7 @@ export class CorrespondanceReactifsComponent implements OnInit {
   editionProductImport(idCorrespondance: number) {
     const idCorrespondanceString = idCorrespondance + "";
     const typeElt = document.getElementById(idCorrespondanceString);
-    // @ts-ignore
+    // @ts-expect-error data
     const productId = typeElt.options[typeElt.selectedIndex].value;
     if (productId != "") {
       this.moralEntitiesService
@@ -69,7 +69,7 @@ export class CorrespondanceReactifsComponent implements OnInit {
   //Mise à jour du nom de l'import ou du produit
   editionNomImport(productId: number, productImport: string) {
     //On récupère la correspondance pour voir si elle est déjà existante
-    //@ts-ignore
+    //@ts-expect-error data
     productImport = prompt(
       "Veuillez saisir le nom du produit dans le logiciel de pesée",
       productImport,
@@ -81,7 +81,6 @@ export class CorrespondanceReactifsComponent implements OnInit {
       productImport = "_";
     }
     // Si on a une correspondance, on met à jour celle ci
-    // @ts-ignore
     this.moralEntitiesService
       .updateNomImportCorrespondanceReactif(productId, productImport)
       .subscribe((response) => {

@@ -29,7 +29,7 @@ export class BadgeComponent implements OnInit {
         this.rondierService.lastIdBadge().subscribe((response) => {
           this.popupService.alertSuccessForm(
             "Badge créé avec succés, il porte le numéro : " +
-              //@ts-ignore
+              //@ts-expect-error data
               response.data[0].Id,
             10000,
           );

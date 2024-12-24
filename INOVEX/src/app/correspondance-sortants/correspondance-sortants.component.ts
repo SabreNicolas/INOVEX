@@ -40,22 +40,22 @@ export class CorrespondanceSortantsComponent implements OnInit {
     this.productsService
       .getSortantsAndCorrespondance(this.debCode)
       .subscribe((response) => {
-        // @ts-ignore
+        // @ts-expect-error data
         this.listSortantsAvecCorrespondance = response.data;
       });
     this.categoriesService.getCategoriesSortants().subscribe((response) => {
-      // @ts-ignore
+      // @ts-expect-error data
       this.listCategories = response.data;
     });
     this.productsService.getSortants(this.debCode).subscribe((response) => {
-      // @ts-ignore
+      // @ts-expect-error data
       this.listSortants = response.data;
     });
   }
 
   setFilters() {
     const codeCat = document.getElementById("categorie");
-    // @ts-ignore
+    // @ts-expect-error data
     const codeCatSel = codeCat.options[codeCat.selectedIndex].value;
     this.debCode = codeCatSel;
     /*Fin de prise en commpte des filtres */
@@ -72,7 +72,7 @@ export class CorrespondanceSortantsComponent implements OnInit {
   editionProductImport(idCorrespondance: number) {
     const idCorrespondanceString = idCorrespondance + "";
     const typeElt = document.getElementById(idCorrespondanceString);
-    // @ts-ignore
+    // @ts-expect-error data
     const productId = typeElt.options[typeElt.selectedIndex].value;
     if (productId != "") {
       this.moralEntitiesService
@@ -87,7 +87,7 @@ export class CorrespondanceSortantsComponent implements OnInit {
   //Mise à jour du nom de l'import ou du produit
   editionNomImport(productId: number, productImport: string) {
     //On récupère la correspondance pour voir si elle est déjà existante
-    //@ts-ignore
+    //@ts-expect-error data
     productImport = prompt(
       "Veuillez saisir le nom du produit dans le logiciel de pesée",
       productImport,
@@ -99,7 +99,6 @@ export class CorrespondanceSortantsComponent implements OnInit {
       productImport = "_";
     }
     // Si on a une correspondance, on met à jour celle ci
-    // @ts-ignore
     this.moralEntitiesService
       .updateNomImportCorrespondanceSortant(productId, productImport)
       .subscribe((response) => {

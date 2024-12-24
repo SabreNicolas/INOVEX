@@ -39,19 +39,19 @@ export class ListMoralEntitiesComponent implements OnInit {
     if (typeof userLogged === "string") {
       const userLoggedParse = JSON.parse(userLogged);
       this.userLogged = userLoggedParse;
-      // @ts-ignore
+      // @ts-expect-error data
       this.isAdmin = this.userLogged["isAdmin"];
     }
 
     this.moralEntitiesService
       .getMoralEntitiesAll(this.debCode)
       .subscribe((response) => {
-        // @ts-ignore
+        // @ts-expect-error data
         this.moralEntities = response.data;
         // console.log(response)
         //Récupération des types de déchets et des collecteurs
         this.moralEntitiesService.GetTypeDéchets().subscribe((response) => {
-          //@ts-ignore
+          //@ts-expect-error data
           this.listTypeDechetsCollecteurs = response.data;
 
           //On boucle maintenant sur ce tableau pour scindé en déchets / collecteurs avec les codes associés
@@ -95,12 +95,12 @@ export class ListMoralEntitiesComponent implements OnInit {
   setFilters() {
     /* Début prise en compte des filtres*/
     const produitElt = document.getElementById("produit");
-    // @ts-ignore
+    // @ts-expect-error data
     const produitSel = produitElt.options[produitElt.selectedIndex].value;
     const collecteurElt = document.getElementById("collecteur");
     if (collecteurElt != null) {
       var collecteurSel =
-        //@ts-ignore
+        //@ts-expect-error data
         collecteurElt.options[collecteurElt.selectedIndex].value;
     }
     //Gestion du cas ou il n'y a pas de collecteur
@@ -133,7 +133,6 @@ export class ListMoralEntitiesComponent implements OnInit {
   setPrice(MR: moralEntity) {
     const prix = prompt("Veuillez saisir un Prix", String(MR.UnitPrice));
     if (prix != null) {
-      // @ts-ignore
       this.moralEntitiesService
         .setPrix(prix.replace(",", "."), MR.Id)
         .subscribe((response) => {
@@ -155,7 +154,6 @@ export class ListMoralEntitiesComponent implements OnInit {
     if (cap === null) {
       return; //break out of the function early
     }
-    // @ts-ignore
     this.moralEntitiesService.setCAP(cap, MR.Id).subscribe((response) => {
       if (response == "Mise à jour du CAP OK") {
         this.popupService.alertSuccessForm(
@@ -176,7 +174,6 @@ export class ListMoralEntitiesComponent implements OnInit {
     if (name == null) {
       return; //break out of the function early
     }
-    // @ts-ignore
     this.moralEntitiesService.setName(name, MR.Id).subscribe((response) => {
       if (response == "Changement de nom du client OK") {
         this.popupService.alertSuccessForm("Le Nom a été mis à jour !");
@@ -217,7 +214,7 @@ export class ListMoralEntitiesComponent implements OnInit {
 
   //permet de stocker les Id des moralEntities pour lesquelles il faut changer le prix
   addMr(Id: number) {
-    // @ts-ignore
+    // @ts-expect-error data
     if (document.getElementById("" + Id).checked == true) {
       this.listId.push(Id);
     } else this.listId.splice(this.listId.indexOf(Id), 1);
@@ -229,7 +226,7 @@ export class ListMoralEntitiesComponent implements OnInit {
     const prix = prompt("Veuillez saisir un Prix", "0");
     for (let i = 0; i < this.listId.length; i++) {
       this.moralEntitiesService
-        //@ts-ignore
+        //@ts-expect-error data
         .setPrix(prix.replace(",", "."), this.listId[i])
         .subscribe((response) => {
           if (response == "Mise à jour du prix unitaire OK") {

@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { dechetsCollecteurs } from "src/models/dechetsCollecteurs.model";
 import { valueHodja } from "src/models/valueHodja.model";
@@ -45,7 +45,6 @@ export class moralEntitiesService {
     this._nomClient = "";
     this._prenomClient = "";
     this._mailClient = "";
-    //@ts-ignore
     this.idUsine = this.idUsineService.getIdUsine();
   }
 

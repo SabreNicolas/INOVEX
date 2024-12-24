@@ -46,23 +46,23 @@ export class FormulaireComponent implements OnInit {
       this.productsService
         .getOneFormulaire(this.idForm)
         .subscribe((response) => {
-          //@ts-ignore
+          //@ts-expect-error data
           this.nom = response.data[0].nom;
 
           this.productsService
             .getProductsFormulaire(this.idForm)
             .subscribe((response) => {
               //On ajoute les produits du formulaire dans listAjout pour l'edition
-              //@ts-ignore
+              //@ts-expect-error data
               for (const pr of response.data) {
                 this.productsService
                   .getOneProduct(pr.idProduct)
                   .subscribe((response) => {
                     this.alias = pr.alias;
                     const ajout = {
-                      //@ts-ignore
+                      //@ts-expect-error data
                       Name: response.data[0].Name,
-                      //@ts-ignore
+                      //@ts-expect-error data
                       id: response.data[0].id,
                       alias: this.alias,
                     };
@@ -76,7 +76,7 @@ export class FormulaireComponent implements OnInit {
     }
     //On récupère les produits CAP Exploitation
     this.productsService.getAllProducts().subscribe((response) => {
-      // @ts-ignore
+      // @ts-expect-error data
       this.listProducts = response.data;
     });
   }

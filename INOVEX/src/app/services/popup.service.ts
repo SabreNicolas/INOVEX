@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import Swal, { SweetAlertIcon, SweetAlertPosition } from "sweetalert2";
+import Swal from "sweetalert2";
 
 @Injectable()
 export class PopupService {

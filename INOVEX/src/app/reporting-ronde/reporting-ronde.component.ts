@@ -82,7 +82,6 @@ export class ReportingRondeComponent implements OnInit {
     const userLogged = localStorage.getItem("user");
     if (typeof userLogged === "string") {
       const userLoggedParse = JSON.parse(userLogged);
-      // @ts-ignore
       this.isAdmin = userLoggedParse["isAdmin"];
       this.isChefQuart = userLoggedParse["isChefQuart"];
     }
@@ -99,10 +98,10 @@ export class ReportingRondeComponent implements OnInit {
       const userLoggedParse = JSON.parse(userLogged);
       this.userLogged = userLoggedParse;
       //Récupération de l'idUsine
-      // @ts-ignore
+      // @ts-expect-error data
       this.idUsine = this.userLogged["idUsine"];
       if (this.userLogged.hasOwnProperty("localisation")) {
-        //@ts-ignore
+        //@ts-expect-error data
         this.usine = this.userLogged["localisation"];
         this.isSuperAdmin = true;
       }
@@ -138,7 +137,7 @@ export class ReportingRondeComponent implements OnInit {
     this.rondierService
       .listZoneAndAnomalieOfDay(this.dateDeb, quart)
       .subscribe((response) => {
-        //@ts-ignore
+        //@ts-expect-error data
         this.listZone = response.listZones;
         for (const ronde of this.listZone) {
           for (const zone of ronde["listZones"]) {
@@ -152,12 +151,12 @@ export class ReportingRondeComponent implements OnInit {
       });
 
     this.rondierService.getReprisesRonde().subscribe((response) => {
-      //@ts-ignore
+      //@ts-expect-error data
       this.listReprise = response.data;
     });
     //Récupération du nombre de four du site
     this.rondierService.nbLigne().subscribe((response) => {
-      //@ts-ignore
+      //@ts-expect-error data
       this.nbfour = response.data[0].nbLigne;
       this.numbers = Array(this.nbfour)
         .fill(1)
@@ -168,7 +167,7 @@ export class ReportingRondeComponent implements OnInit {
       this.rondierService
         .affichageRonde(this.dateDeb, quart)
         .subscribe((response) => {
-          //@ts-ignore
+          //@ts-expect-error data
           this.listRonde = response.data;
           // console.log(this.listRonde)
         });
@@ -176,7 +175,7 @@ export class ReportingRondeComponent implements OnInit {
     this.rondierService
       .getElementsAndValuesOfDay(this.dateDeb, quart)
       .subscribe((response) => {
-        //@ts-ignore
+        //@ts-expect-error data
         this.listElementsOfUsine = response.data;
         let prompt = "";
         let prompt0 = "";
@@ -345,7 +344,7 @@ export class ReportingRondeComponent implements OnInit {
     this.rondierService
       .getGroupementsOfOneDay(this.dateDeb, quart)
       .subscribe((response) => {
-        //@ts-ignore
+        //@ts-expect-error data
         this.listGroupements = response.data;
         // console.log(this.listGroupements)
       });
@@ -353,7 +352,7 @@ export class ReportingRondeComponent implements OnInit {
     this.rondierService
       .getAnomaliesOfOneDay(this.dateDeb, quart)
       .subscribe((response) => {
-        //@ts-ignore
+        //@ts-expect-error data
         this.listAnomalie = response.data;
         // console.log(this.listAnomalie)
       });
@@ -466,12 +465,11 @@ export class ReportingRondeComponent implements OnInit {
   //permet de vérifier si le four est en route
   checkFonctFour(fourNum: number, ronde: ronde) {
     const fonctFour = "fonctFour" + fourNum;
-    //@ts-ignore
+    //@ts-expect-error data
     return ronde[fonctFour];
   }
 
   async setFilters() {
-    const typeElt = null;
     if (this.name != "") {
       this.filtreZone = this.name.toLowerCase();
       this.type = "";
@@ -497,7 +495,7 @@ export class ReportingRondeComponent implements OnInit {
 
   async resetFiltre() {
     this.filtreZone = "";
-    //@ts-ignore
+
     this.name = "";
     this.type = "";
     this.afficherRonde(this.quart);
@@ -505,7 +503,7 @@ export class ReportingRondeComponent implements OnInit {
 
   editAnomalie(rondeId: number, zoneId: number) {
     let nvCommentaire;
-    //@ts-ignore
+    //@ts-expect-error data
     const commentaire = document.getElementById(
       rondeId + "--" + zoneId,
     ).innerHTML;
@@ -515,7 +513,7 @@ export class ReportingRondeComponent implements OnInit {
         nvCommentaire = nvCommentaire.replace(/'/g, "''");
         this.rondierService
           .createAnomalie(rondeId, nvCommentaire, zoneId)
-          .subscribe((response) => {
+          .subscribe(() => {
             this.popupService.alertSuccessForm("Commentaire modifié");
             this.ngOnInit();
           });
@@ -526,7 +524,7 @@ export class ReportingRondeComponent implements OnInit {
         nvCommentaire = nvCommentaire.replace(/'/g, "''");
         this.rondierService
           .updateAnomalie(rondeId, zoneId, nvCommentaire)
-          .subscribe((response) => {
+          .subscribe(() => {
             this.popupService.alertSuccessForm("Commentaire modifié");
             this.ngOnInit();
           });
@@ -562,9 +560,9 @@ export class ReportingRondeComponent implements OnInit {
       </select> `,
       focusConfirm: false,
       preConfirm: () => {
-        //@ts-ignore
+        //@ts-expect-error data
         const date = Swal.getPopup().querySelector("#date-input").value;
-        //@ts-ignore
+        //@ts-expect-error data
         const option = Swal.getPopup().querySelector("#option-select").value;
         if (!date || !option) {
           Swal.showValidationMessage(`Veuillez remplir les deux champs`);
@@ -577,7 +575,7 @@ export class ReportingRondeComponent implements OnInit {
         // console.log(`Option choisie: ${result.value.option}`);
         this.rondierService
           .createRepriseDeRonde(result.value.date, result.value.option)
-          .subscribe((response) => {
+          .subscribe(() => {
             this.ngOnInit();
           });
       }

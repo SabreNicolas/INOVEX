@@ -29,7 +29,7 @@ export class ListConsoComponent implements OnInit {
 
   ngOnInit(): void {
     this.productsService.getConsos().subscribe((response) => {
-      // @ts-ignore
+      // @ts-expect-error data
       this.listConsos = response.data;
       this.getValues();
     });

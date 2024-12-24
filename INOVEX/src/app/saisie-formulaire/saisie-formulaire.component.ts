@@ -53,7 +53,7 @@ export class SaisieFormulaireComponent implements OnInit {
     this.productsService
       .getProductsFormulaire(this.idForm)
       .subscribe((response) => {
-        // @ts-ignore
+        // @ts-expect-error data
         this.listProducts = response.data;
       });
 
@@ -61,7 +61,6 @@ export class SaisieFormulaireComponent implements OnInit {
     const userLogged = localStorage.getItem("user");
     if (typeof userLogged === "string") {
       const userLoggedParse = JSON.parse(userLogged);
-      // @ts-ignore
       this.isAdmin = userLoggedParse["isAdmin"];
     }
   }
@@ -218,10 +217,10 @@ export class SaisieFormulaireComponent implements OnInit {
         //On supprime les produits du formulaire puis le formulaire
         this.productsService
           .deleteProductFormulaire(this.idForm)
-          .subscribe((response) => {
+          .subscribe(() => {
             this.productsService
               .deleteFormulaire(this.idForm)
-              .subscribe((response) => {
+              .subscribe(() => {
                 this.idForm = 0;
                 this.popupService.alertSuccessForm(
                   "Le formulaire a bien été supprimé !",

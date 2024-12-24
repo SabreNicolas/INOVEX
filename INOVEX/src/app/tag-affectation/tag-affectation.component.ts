@@ -24,7 +24,7 @@ export class TagAffectationComponent implements OnInit {
 
   ngOnInit(): void {
     this.productsService.getProductsWithoutTAG().subscribe((response) => {
-      // @ts-ignore
+      // @ts-expect-error data data
       this.listProducts = response.data;
     });
   }

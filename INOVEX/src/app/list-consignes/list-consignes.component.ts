@@ -68,7 +68,7 @@ export class ListConsignesComponent implements OnInit {
     this.fileToUpload = undefined;
     this.imgSrc = undefined;
     this.rondierService.listAllConsignes().subscribe((response) => {
-      // @ts-ignore
+      // @ts-expect-error data
       this.listConsignes = response.data;
     });
     this.idConsigne = 0;
@@ -123,14 +123,13 @@ export class ListConsignesComponent implements OnInit {
 
   saveFile(event: Event) {
     //Récupération du fichier dans l'input
-    // @ts-ignore
+    // @ts-expect-error data
     this.fileToUpload = (event.target as HTMLInputElement).files[0];
-    // @ts-ignore
     //console.log((<HTMLInputElement>event.target).files[0]);
 
-    // @ts-ignore
+    // @ts-expect-error data
     if (event.target.value) {
-      // @ts-ignore
+      // @ts-expect-error data
       const file = event.target.files[0];
       this.fileToUpload = file;
       const reader = new FileReader();
@@ -241,7 +240,7 @@ export class ListConsignesComponent implements OnInit {
             this.type,
             this.stringDateFin,
             this.stringDateDebut,
-            //@ts-ignore
+            //@ts-expect-error data
             this.fileToUpload,
           )
           .subscribe((response) => {

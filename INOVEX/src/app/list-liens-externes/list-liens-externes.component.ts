@@ -31,7 +31,6 @@ export class ListLiensExternesComponent implements OnInit {
 
   ngOnInit(): void {
     this.cahierQuartService.getAllLiensExternes().subscribe((response) => {
-      // @ts-ignore
       this.listLien = response.data;
     });
 

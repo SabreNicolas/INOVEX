@@ -45,7 +45,7 @@ export class ListEquipeComponent implements OnInit {
 
     //On récupére la liste des consignes en cours de validité
     this.rondierService.listConsignes().subscribe((response) => {
-      //@ts-ignore
+      //@ts-expect-error data
       this.consignes = response.data;
     });
   }
@@ -60,13 +60,13 @@ export class ListEquipeComponent implements OnInit {
         queryParams: { idEquipe: equipe.id },
       });
     } else {
-      //@ts-ignore
+      //@ts-expect-error data
       document
         .getElementById(equipe.id + "_overlay")
         .classList.add("show") as HTMLElement;
       const exp = document.getElementById(String(equipe.id));
       if (exp != null) exp.classList.add("expanded");
-      //@ts-ignore
+      //@ts-expect-error data
       document
         .getElementById(equipe.id + "_chefQuart")
         .classList.remove("hide") as HTMLElement;
@@ -77,9 +77,9 @@ export class ListEquipeComponent implements OnInit {
   closeCard(equipe: equipe) {
     const chef = document.getElementById(equipe.id + "_chefQuart");
     if (chef != null) chef.classList.add("hide");
-    //@ts-ignore
+    //@ts-expect-error data
     document
-      //@ts-ignore
+      //@ts-expect-error data
       .getElementById(equipe.id)
       .classList.remove("expanded") as HTMLElement;
     const over = document.getElementById(equipe.id + "_overlay");

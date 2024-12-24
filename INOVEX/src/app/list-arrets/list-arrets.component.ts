@@ -58,7 +58,7 @@ export class ListArretsComponent implements OnInit {
   ngOnInit(): void {
     //Récupération du nombre de four du site
     this.rondierService.nbLigne().subscribe((response) => {
-      //@ts-ignore
+      //@ts-expect-error data
       this.nbfour = response.data[0].nbLigne;
       this.numbers = Array(this.nbfour)
         .fill(1)
@@ -67,13 +67,13 @@ export class ListArretsComponent implements OnInit {
 
     //Récupération du nombre de GTA du site
     this.rondierService.nbGTA().subscribe((response) => {
-      //@ts-ignore
+      //@ts-expect-error data
       this.nbGTA = response.data[0].nbGTA;
     });
 
     //Récupération du nombre de RCU du site
     this.rondierService.nbRCU().subscribe((response) => {
-      //@ts-ignore
+      //@ts-expect-error data
       this.nbRCU = response.data[0].nbReseauChaleur;
     });
 
@@ -88,14 +88,14 @@ export class ListArretsComponent implements OnInit {
       this.arretsService
         .getArrets(this.stringDateDebut, this.stringDateFin)
         .subscribe((response) => {
-          // @ts-ignore
+          // @ts-expect-error data
           this.listArretsDepassements = response.data;
         });
 
       this.arretsService
         .getArretsType(this.stringDateDebut, this.stringDateFin)
         .subscribe((response) => {
-          // @ts-ignore
+          // @ts-expect-error data
           this.sumArretsDepassements = response.data;
           //On boucle sur les four et on récupére la somme des arrêts pour chaque
           for (let i = 0; i < this.numbers.length; i++) {
@@ -106,14 +106,14 @@ export class ListArretsComponent implements OnInit {
                 this.numbers[i],
               )
               .subscribe((response) => {
-                // @ts-ignore
+                // @ts-expect-error data
                 this.sumArretsDepassements.push(response.data[0]);
               });
           }
           this.arretsService
             .getArretsSum(this.stringDateDebut, this.stringDateFin)
             .subscribe((response) => {
-              // @ts-ignore
+              // @ts-expect-error data
               this.sumArretsDepassements.push(response.data[0]);
             });
         });
@@ -125,7 +125,7 @@ export class ListArretsComponent implements OnInit {
       this.arretsService
         .getDepassements(this.stringDateDebut, this.stringDateFin)
         .subscribe((response) => {
-          // @ts-ignore
+          // @ts-expect-error data
           this.listArretsDepassements = response.data;
         });
 
@@ -137,7 +137,7 @@ export class ListArretsComponent implements OnInit {
             this.numbers[i],
           )
           .subscribe((response) => {
-            // @ts-ignore
+            // @ts-expect-error data
             this.sumArretsDepassements.push(response.data[0]);
           });
       }

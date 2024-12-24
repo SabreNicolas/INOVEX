@@ -16,7 +16,7 @@ export class cahierQuart implements OnInit {
     if (typeof userLogged === "string") {
       const userLoggedParse = JSON.parse(userLogged);
       this.userLogged = userLoggedParse;
-      // @ts-ignore
+      // @ts-expect-error data
       this.idUsine = this.userLogged["idUsine"];
     }
   }

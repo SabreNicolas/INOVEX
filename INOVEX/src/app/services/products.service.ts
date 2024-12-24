@@ -31,7 +31,6 @@ export class productsService {
     this._code = "";
     this._unit = "";
     this._tag = "";
-    //@ts-ignore
     this.idUsine = this.idUsineService.getIdUsine();
   }
 

@@ -29,11 +29,11 @@ export class ElementControleComponent implements OnInit {
   public needListValues: boolean;
   public needBornes: boolean;
   public elementId: number;
-  // @ts-ignore
+  // @ts-expect-error data
   public element: element;
-  // @ts-ignore
+  // @ts-expect-error data
   public checkboxRegulateur: HTMLInputElement;
-  // @ts-ignore
+  // @ts-expect-error data
   public checkboxCompteur: HTMLInputElement;
   public listGroupements: groupement[];
   public idGroupement: number;
@@ -86,14 +86,14 @@ export class ElementControleComponent implements OnInit {
       "compteur",
     )[0] as HTMLInputElement;
     this.rondierService.listZone().subscribe((response) => {
-      // @ts-ignore
+      // @ts-expect-error data
       this.listZone = response.data;
       //Récupération des données de l'élément si update
       if (this.elementId > 0) {
         this.rondierService
           .getOneElement(this.elementId)
           .subscribe((response) => {
-            // @ts-ignore
+            // @ts-expect-error data
             this.element = response.data[0];
             this.nom = this.element.nom;
             this.zoneId[0] = this.element.zoneId;
@@ -107,7 +107,6 @@ export class ElementControleComponent implements OnInit {
             this.isCompteur = this.element.isCompteur;
             this.listValues = this.element.listValues;
             this.codeEquipement = this.element.CodeEquipement;
-            //@ts-ignore
             this.idGroupement = this.element.idGroupement;
             if (this.idGroupement == null) {
               this.idGroupement = 0;
@@ -150,7 +149,7 @@ export class ElementControleComponent implements OnInit {
     if (form != null) {
       this.typeChamp = form.value["champ"];
     }
-    // @ts-ignore
+    // @ts-expect-error data
     //si menu de sélection ou case à cocher on affiche le champ de list valeurs possibles
     if (this.typeChamp === "3" || this.typeChamp === "4") {
       this.needListValues = true;
@@ -159,7 +158,7 @@ export class ElementControleComponent implements OnInit {
       this.listValues = "";
     }
 
-    // @ts-ignore
+    // @ts-expect-error data
     //si cursur on affiche les valeurs min et max
     if (this.typeChamp === "1") {
       this.needBornes = true;
@@ -175,7 +174,7 @@ export class ElementControleComponent implements OnInit {
     this.rondierService
       .listElementofZone(this.zoneId[0])
       .subscribe((response) => {
-        // @ts-ignore
+        // @ts-expect-error data
         this.listElement = response.data;
       });
   }
@@ -186,7 +185,7 @@ export class ElementControleComponent implements OnInit {
       this.rondierService
         .getGroupements(this.zoneId[0])
         .subscribe((response) => {
-          // @ts-ignore
+          // @ts-expect-error data
           this.listGroupements = response.data;
           if (this.listGroupements.length < 1) {
             this.idGroupement = 0;
@@ -252,7 +251,6 @@ export class ElementControleComponent implements OnInit {
         this.rondierService
           .updateOrdreElement(zoneId, this.ordreElem)
           .subscribe((response) => {
-            // @ts-ignore
             if (response == "Mise à jour des ordres OK") {
               this.rondierService
                 .createElement(
@@ -305,7 +303,6 @@ export class ElementControleComponent implements OnInit {
       this.rondierService
         .updateOrdreElement(this.zoneId[0], this.ordreElem)
         .subscribe((response) => {
-          // @ts-ignore
           if (response == "Mise à jour des ordres OK") {
             this.updateElement(Number(this.ordreElem) + 1);
           } else {

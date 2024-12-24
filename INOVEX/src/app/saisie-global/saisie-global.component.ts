@@ -28,11 +28,11 @@ export class SaisieGlobalComponent implements OnInit {
       const userLoggedParse = JSON.parse(userLogged);
       this.userLogged = userLoggedParse;
       //Récupération de l'idUsine
-      // @ts-ignore
+      // @ts-expect-error data
       this.idUsine = this.userLogged["idUsine"];
       this.isSaisie = this.userLogged["isSaisie"];
       if (this.userLogged.hasOwnProperty("localisation")) {
-        //@ts-ignore
+        //@ts-expect-error data
         this.usine = this.userLogged["localisation"];
         this.isSuperAdmin = true;
       }

@@ -39,7 +39,6 @@ export class TokenApiComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         const text = result.value;
-        let text2;
         //Si le texte entré par l'utilisateur est vide on affiche une erreur
         if (text == "") {
           this.popupService.alertErrorForm(
@@ -47,7 +46,7 @@ export class TokenApiComponent implements OnInit {
           );
           return;
         }
-        text2 = text.replace(/'/g, "''");
+        const text2 = text.replace(/'/g, "''");
         //Sinon on envoie la requête api permettant de générer un nouveau token
         this.tokenApiService.generateAcessToken(text2).subscribe((response) => {
           this.token = "Bearer " + response;
@@ -68,7 +67,6 @@ export class TokenApiComponent implements OnInit {
   //Fonction permettant de récupérer tout les token actifs de l'api
   getTokens() {
     this.tokenApiService.getAllTokens().subscribe((response) => {
-      // @ts-ignore
       this.listTokens = response.data;
     });
   }
@@ -88,7 +86,7 @@ export class TokenApiComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         //Appel api pour désactiver le token
-        this.tokenApiService.desactivateToken(id).subscribe((response) => {
+        this.tokenApiService.desactivateToken(id).subscribe(() => {
           //Récupération des tokens pour avoir le tableau mis à jour
           this.getTokens();
         });
@@ -115,13 +113,12 @@ export class TokenApiComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         const text = result.value;
-        let text2;
         //Si le texte entré par l'utilisateur est vide on affiche une erreur
         if (text == "") {
           this.popupService.alertErrorForm("La saisie a été annulée.");
           return;
         }
-        text2 = text.replace(/'/g, "''");
+        const text2 = text.replace(/'/g, "''");
         //Sinon on envoie la requête api permettant de modifier l'affectation du token
         this.tokenApiService.updateToken(id, text2).subscribe((response) => {
           this.token = "Bearer " + response;

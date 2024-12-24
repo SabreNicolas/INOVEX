@@ -72,19 +72,19 @@ export class ListSortantsComponent implements OnInit {
     this.idUsine = this.idUsineService.getIdUsine();
 
     this.categoriesService.getCategoriesSortants().subscribe((response) => {
-      // @ts-ignore
+      // @ts-expect-error data
       this.listCategories = response.data;
     });
 
     this.mrService.GetImportTonnage().subscribe((response) => {
-      //@ts-ignore
+      //@ts-expect-error data
       this.typeImportTonnage = response.data[0].typeImport;
     });
 
     this.getCorrespondance();
 
     this.productsService.getSortants(this.debCode).subscribe((response) => {
-      // @ts-ignore
+      // @ts-expect-error data
       this.listProducts = response.data;
       this.getValues();
     });
@@ -92,7 +92,7 @@ export class ListSortantsComponent implements OnInit {
 
   setFilters() {
     const codeCat = document.getElementById("categorie");
-    // @ts-ignore
+    // @ts-expect-error data
     const codeCatSel = codeCat.options[codeCat.selectedIndex].value;
     this.debCode = codeCatSel;
     /*Fin de prise en commpte des filtres */
@@ -255,7 +255,7 @@ export class ListSortantsComponent implements OnInit {
     else if (
       this.typeImportTonnage.toLowerCase().includes("informatique verte")
     ) {
-      //@ts-ignore
+      //@ts-expect-error data
       let file = event.target.files[0].name;
       file = file.toLowerCase();
       if (file.includes("dasri")) {
@@ -348,7 +348,7 @@ export class ListSortantsComponent implements OnInit {
     posEntreeSortie?: number,
   ) {
     this.loading();
-    //@ts-ignore
+    //@ts-expect-error data
     const files = event.target.files; // FileList object
     const file = files[0];
     const reader = new FileReader();
@@ -457,26 +457,26 @@ export class ListSortantsComponent implements OnInit {
   getCorrespondance() {
     this.mrService.getCorrespondanceSortants().subscribe((response) => {
       // console.log(response)
-      // @ts-ignore
+      // @ts-expect-error data
       this.correspondance = response.data;
     });
   }
 
   loading() {
     var element = document.getElementById("spinner");
-    // @ts-ignore
+    // @ts-expect-error data
     element.classList.add("loader");
     var element = document.getElementById("spinnerBloc");
-    // @ts-ignore
+    // @ts-expect-error data
     element.classList.add("loaderBloc");
   }
 
   removeloading() {
     var element = document.getElementById("spinner");
-    // @ts-ignore
+    // @ts-expect-error data
     element.classList.remove("loader");
     var element = document.getElementById("spinnerBloc");
-    // @ts-ignore
+    // @ts-expect-error data
     element.classList.remove("loaderBloc");
   }
 
@@ -521,13 +521,12 @@ export class ListSortantsComponent implements OnInit {
               let value, valueRound;
               count = count + 1;
               if (this.stockageImport.has(keyHash)) {
-                //@ts-ignore
+                //@ts-expect-error data
                 value = this.stockageImport.get(keyHash) + csv.tonnage;
                 valueRound = parseFloat(value.toFixed(3));
                 this.stockageImport.set(keyHash, valueRound);
               } else
                 //Sinon on insére dans la hashMap
-                //@ts-ignore
                 this.stockageImport.set(
                   keyHash,
                   parseFloat(csv.tonnage.toFixed(3)),
@@ -692,7 +691,7 @@ export class ListSortantsComponent implements OnInit {
                 //si il y a deja une valeur dans la hashMap pour ce client et ce jour, on incrémente la valeur
                 if (this.stockageHodja.has(keyHash)) {
                   value =
-                    //@ts-ignore
+                    //@ts-expect-error data
                     this.stockageHodja.get(keyHash) +
                     (valueHodja.TK_Poids_brut - valueHodja.TK_Poids_tare) /
                       1000;
@@ -700,7 +699,6 @@ export class ListSortantsComponent implements OnInit {
                   this.stockageHodja.set(keyHash, valueRound);
                 } else
                   //Sinon on insére dans la hashMap
-                  //@ts-ignore
                   this.stockageHodja.set(
                     keyHash,
                     parseFloat(

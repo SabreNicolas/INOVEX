@@ -18,7 +18,7 @@
     </a>
   </h3>
   <!--table des consignes-->
-  <table class="table tableFixed" *ngIf="listReprise.length != 0">
+  <table class="table tableFixed" *ngIf="listReprise.length !== 0">
     <thead>
       <tr class="table-secondary">
         <th scope="col">Date</th>
@@ -30,9 +30,9 @@
     <tbody *ngFor="let reprise of listReprise">
       <tr class="table-light">
         <td>{{ reprise.date }}</td>
-        <td *ngIf="reprise.quart == 1">Matin</td>
-        <td *ngIf="reprise.quart == 2">Après-midi</td>
-        <td *ngIf="reprise.quart == 3">Nuit</td>
+        <td *ngIf="reprise.quart === 1">Matin</td>
+        <td *ngIf="reprise.quart === 2">Après-midi</td>
+        <td *ngIf="reprise.quart === 3">Nuit</td>
         <td>{{ reprise.termine }}</td>
         <td>
           <button
@@ -134,8 +134,8 @@
     </form>
   </div>
 
-  <h5><label *ngIf="listElementsOfZone.length != 0">Filtres :</label></h5>
-  <div class="row" *ngIf="listElementsOfZone.length != 0">
+  <h5><label *ngIf="listElementsOfZone.length !== 0">Filtres :</label></h5>
+  <div class="row" *ngIf="listElementsOfZone.length !== 0">
     <div class="col-sm-3">
       <div class="form-group">
         <select
@@ -186,8 +186,8 @@
       </div>
     </div>
   </div>
-  <h5><label *ngIf="listElementsOfUsine.length != 0">Filtres :</label></h5>
-  <div class="row" *ngIf="listElementsOfUsine.length != 0">
+  <h5><label *ngIf="listElementsOfUsine.length !== 0">Filtres :</label></h5>
+  <div class="row" *ngIf="listElementsOfUsine.length !== 0">
     <div class="col-sm-3">
       <div class="form-group">
         <select
@@ -255,7 +255,7 @@
             scope="col"
           >
             <div>
-              <p *ngIf="ronde.quart == 1">
+              <p *ngIf="ronde.quart === 1">
                 Matin
                 <button
                   [disabled]="true"
@@ -265,7 +265,7 @@
                   <i class="fa fa-trash-o" aria-hidden="true"></i>
                 </button>
               </p>
-              <p *ngIf="ronde.quart == 2">
+              <p *ngIf="ronde.quart === 2">
                 Après-Midi
                 <button
                   [disabled]="true"
@@ -275,7 +275,7 @@
                   <i class="fa fa-trash-o" aria-hidden="true"></i>
                 </button>
               </p>
-              <p *ngIf="ronde.quart == 3">
+              <p *ngIf="ronde.quart === 3">
                 Nuit
                 <button
                   [disabled]="true"
@@ -319,7 +319,7 @@
             <p aria-hidden="true">{{ ronde.nomChef }} {{ ronde.prenomChef }}</p>
           </td>
         </tr>
-        <ng-container *ngIf="idUsine != 7">
+        <ng-container *ngIf="idUsine !== 7">
           <tr
             *ngFor="let fourNumber of numbers"
             class="table-info fourLigneTableau"
@@ -348,7 +348,7 @@
           <tr class="table-light" id="zone--{{ zone.id }}">
             <td style="color: blue; text-align: center">
               <strong>{{ zone.nom }}</strong>
-              <ng-container *ngIf="idUsine == 7">
+              <ng-container *ngIf="idUsine === 7">
                 <button
                   class="btn btn-outline-secondary {{ zone.id }}-btnPlus"
                   (click)="afficherZone(zone.id)"
@@ -375,7 +375,7 @@
               <ng-container *ngFor="let anomalie of listAnomalie">
                 <ng-container
                   *ngIf="
-                    anomalie.rondeId == ronde.Id && anomalie.zoneId == zone.id
+                    anomalie.rondeId === ronde.Id && anomalie.zoneId === zone.id
                   "
                 >
                   <p style="color: red">
@@ -383,7 +383,7 @@
                   </p>
                   <button
                     class="btn btn-outline-secondary"
-                    *ngIf="anomalie.photo != undefined"
+                    *ngIf="anomalie.photo !== undefined"
                     (click)="downloadImage(anomalie.photo)"
                   >
                     <i
@@ -407,8 +407,8 @@
             </td>
           </tr>
           <ng-container *ngFor="let groupement of listGroupements">
-            <ng-container *ngIf="zone.id == groupement.zoneId">
-              <ng-container *ngIf="idUsine == 7">
+            <ng-container *ngIf="zone.id === groupement.zoneId">
+              <ng-container *ngIf="idUsine === 7">
                 <tr
                   class="table-light {{ zone.id }}-Zone"
                   id="groupement--{{ groupement.id }}"
@@ -446,7 +446,7 @@
                   <td *ngFor="let ronde of listRonde"></td>
                 </tr>
               </ng-container>
-              <ng-container *ngIf="idUsine != 7">
+              <ng-container *ngIf="idUsine !== 7">
                 <tr
                   class="table-light {{ zone.id }}-Zone"
                   id="groupement--{{ groupement.id }}"

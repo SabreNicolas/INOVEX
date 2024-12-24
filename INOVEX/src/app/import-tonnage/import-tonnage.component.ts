@@ -39,11 +39,11 @@ export class ImportTonnageComponent implements OnInit {
     this.moralEntitiesService
       .getMoralEntitiesAndCorrespondance(this.debCode)
       .subscribe((response) => {
-        // @ts-ignore
+        // @ts-expect-error data
         this.moralEntities = response.data;
         //Récupération des types de déchets et des collecteurs
         this.moralEntitiesService.GetTypeDéchets().subscribe((response) => {
-          //@ts-ignore
+          //@ts-expect-error data
           this.listTypeDechetsCollecteurs = response.data;
 
           //On boucle maintenant sur ce tableau pour scindé en déchets / collecteurs avec les codes associés
@@ -87,11 +87,11 @@ export class ImportTonnageComponent implements OnInit {
   setFilters() {
     /* Début prise en compte des filtres*/
     const produitElt = document.getElementById("produit");
-    // @ts-ignore
+    // @ts-expect-error data
     const produitSel = produitElt.options[produitElt.selectedIndex].value;
     const collecteurElt = document.getElementById("collecteur");
     const collecteurSel =
-      //@ts-ignore
+      //@ts-expect-error data
       collecteurElt.options[collecteurElt.selectedIndex].value;
     this.debCode = produitSel + collecteurSel;
     /*Fin de prise en commpte des filtres */
@@ -119,13 +119,13 @@ export class ImportTonnageComponent implements OnInit {
     //On demande à l'utilisateur de siaire soit le nom soit le produit
     if (type == "nom") {
       if (nomImport == null) {
-        //@ts-ignore
+        //@ts-expect-error data
         nomImport = prompt(
           "Veuillez saisir le nom de l'apporteur dans le logiciel de pesée",
           "",
         );
       } else
-        //@ts-ignore
+        //@ts-expect-error data
         nomImport = prompt(
           "Veuillez saisir le nom de l'apporteur dans le logiciel de pesée",
           nomImport,
@@ -133,13 +133,13 @@ export class ImportTonnageComponent implements OnInit {
       if (productImport == null) productImport = "_";
     } else {
       if (productImport == null) {
-        //@ts-ignore
+        //@ts-expect-error data
         productImport = prompt(
           "Veuillez saisir le nom du produit dans le logiciel de pesée",
           "",
         );
       } else
-        //@ts-ignore
+        //@ts-expect-error data
         productImport = prompt(
           "Veuillez saisir le nom du produit dans le logiciel de pesée",
           productImport,
@@ -156,7 +156,6 @@ export class ImportTonnageComponent implements OnInit {
       nomImport = "_";
     }
     //Si on a une correspondance, on met à jour celle ci
-    //@ts-ignore
     if (verifNomImport != null || verifProductImport != null) {
       this.moralEntitiesService
         .updateCorrespondance(ProducerId, nomImport, productImport)

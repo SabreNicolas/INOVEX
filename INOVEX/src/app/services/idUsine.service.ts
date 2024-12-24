@@ -1,4 +1,3 @@
-import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 
 @Injectable()
@@ -9,7 +8,6 @@ export class idUsineService {
       const userLoggedParse = JSON.parse(userLogged);
 
       //Récupération de l'idUsine
-      // @ts-ignore
       return userLoggedParse["idUsine"];
     }
   }
@@ -20,7 +18,6 @@ export class idUsineService {
       const userLoggedParse = JSON.parse(userLogged);
 
       //Récupération de l'user
-      // @ts-ignore
       return userLoggedParse["Id"];
     }
   }

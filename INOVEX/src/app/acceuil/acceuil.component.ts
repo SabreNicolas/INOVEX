@@ -59,7 +59,7 @@ export class AcceuilComponent implements OnInit {
       this.userLogged = userLoggedParse;
 
       //Récupération de l'idUsine
-      // @ts-ignore
+      // @ts-expect-error data
       this.idUsine = this.userLogged["idUsine"];
 
       //SI utilisateur GLOBAL alors choix du site à administrer/se connecter
@@ -70,28 +70,19 @@ export class AcceuilComponent implements OnInit {
       //Sinon on récupère la localisation si elle est renseigné
       else {
         if (this.userLogged.hasOwnProperty("localisation")) {
-          //@ts-ignore
+          //@ts-expect-error data
           this.localisation = this.userLogged["localisation"];
         }
       }
 
-      // @ts-ignore
       this.nom = this.userLogged["Nom"];
-      // @ts-ignore
       this.prenom = this.userLogged["Prenom"];
-      // @ts-ignore
       this.MD5pwd = this.userLogged["pwd"];
-      // @ts-ignore
       this.login = this.userLogged["login"];
-      // @ts-ignore
       this.isRondier = this.userLogged["isRondier"];
-      // @ts-ignore
       this.isQSE = this.userLogged["isQSE"];
-      // @ts-ignore
       this.isRapport = this.userLogged["isRapport"];
-      // @ts-ignore
       this.isSaisie = this.userLogged["isSaisie"];
-      // @ts-ignore
       this.isAdmin = this.userLogged["isAdmin"];
       this.isChefQuart = this.userLogged["isChefQuart"];
     }
@@ -122,12 +113,12 @@ export class AcceuilComponent implements OnInit {
   choixModeOPs() {
     //Récupération des sites
     this.rapportsService.getModeOPs().subscribe((response) => {
-      // @ts-ignore
+      // @ts-expect-error data
       this.modeOPs = response.data;
       //Construction des valeurs du menu select qui contient les sites
       const listModesOPs = {};
       for (let i = 0; i < this.modeOPs.length; i++) {
-        //@ts-ignore
+        //@ts-expect-error data
         listModesOPs[this.modeOPs[i]["url"]] = this.modeOPs[i]["nom"];
       }
 
@@ -149,13 +140,12 @@ export class AcceuilComponent implements OnInit {
   choixSite() {
     //Récupération des sites
     this.categoriesService.getSites().subscribe((response) => {
-      // @ts-ignore
+      // @ts-expect-error data
       this.sites = response.data;
       //Construction des valeurs du menu select qui contient les sites
-      const listSites = {};
+      const listSites: any[any] = [];
       this.sites.forEach((site) => {
         const id = String(site.id) + "_" + site.localisation;
-        //@ts-ignore
         listSites[id] = site.localisation;
       });
 
@@ -169,14 +159,13 @@ export class AcceuilComponent implements OnInit {
       }).then((result) => {
         const usine_localisation = result.value.split("_");
         //Premier élément du tableau est l'idUsine
-        //@ts-ignore
+        //@ts-expect-error data
         this.userLogged["idUsine"] = Number(usine_localisation[0]);
-        //@ts-ignore
+        //@ts-expect-error data
         this.idUsine = this.userLogged["idUsine"];
         //2e élément du tableau est la localisation géographiques
-        //@ts-ignore
         this.localisation = usine_localisation[1];
-        //@ts-ignore
+        //@ts-expect-error data
         this.userLogged["localisation"] = this.localisation;
         //ON met à jour le user dans le localstorage
         localStorage.setItem("user", JSON.stringify(this.userLogged));

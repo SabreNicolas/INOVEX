@@ -27,7 +27,7 @@ export class SortantsComponent implements OnInit {
 
   ngOnInit(): void {
     this.categoriesService.getCategoriesSortants().subscribe((response) => {
-      // @ts-ignore
+      // @ts-expect-error data data
       this.listCategories = response.data;
     });
   }

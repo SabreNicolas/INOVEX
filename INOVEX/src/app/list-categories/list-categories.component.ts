@@ -16,7 +16,7 @@ export class ListCategoriesComponent implements OnInit {
 
   ngOnInit(): void {
     this.categoriesService.getCategories().subscribe((response) => {
-      // @ts-ignore
+      // @ts-expect-error data
       this.listCategories = response.data;
     });
   }

@@ -140,13 +140,13 @@ export class EquipeComponent implements OnInit {
     this.cahierQuartService
       .getUsersRondierSansEquipe()
       .subscribe((response) => {
-        // @ts-ignore
+        // @ts-expect-error data
         this.listUsers = response.data;
         // this.list2.push()
 
         //On récupère les zones disponibles dans cette usine
         this.cahierQuartService.getZones().subscribe((response) => {
-          //@ts-ignore
+          //@ts-expect-error data
           this.listZone = response.data;
         });
       });
@@ -328,7 +328,7 @@ export class EquipeComponent implements OnInit {
     this.cahierQuartService
       .getUsersRondierSansEquipe()
       .subscribe((response) => {
-        // @ts-ignore
+        // @ts-expect-error data
         this.listUsers = response.data;
       });
     this.listAjout = [];
@@ -346,7 +346,7 @@ export class EquipeComponent implements OnInit {
     this.cahierQuartService
       .getUsersRondierSansEquipe()
       .subscribe((response) => {
-        // @ts-ignore
+        // @ts-expect-error data
         this.listUsers = response.data;
       });
     this.listAjout = [];

@@ -102,7 +102,7 @@ export class ArretsComponent implements OnInit {
     if (typeof userLogged === "string") {
       const userLoggedParse = JSON.parse(userLogged);
       this.userLogged = userLoggedParse;
-      // @ts-ignore
+      // @ts-expect-error data
       this.IdUser = this.userLogged["Id"];
     }
     this.arretId = 0;
@@ -130,48 +130,48 @@ export class ArretsComponent implements OnInit {
       if (this.isArret == false) {
         //On récupères les infos sur le dépassement en question
         this.arretsService.getOneDepassement(this.id).subscribe((response) => {
-          //@ts-ignore
+          //@ts-expect-error data
           this.arretId = response.data[0].productId;
           const dateFinString =
-            //@ts-ignore
+            //@ts-expect-error data
             response.data[0].dateFin.split("/")[1] +
             "/" +
-            //@ts-ignore
+            //@ts-expect-error data
             response.data[0].dateFin.split("/")[0] +
             "/" +
-            //@ts-ignore
+            //@ts-expect-error data
             response.data[0].dateFin.split("/")[2] +
             " " +
-            //@ts-ignore
+            //@ts-expect-error data
             response.data[0].heureFin;
           const dateDebString =
-            //@ts-ignore
+            //@ts-expect-error data
             response.data[0].dateDebut.split("/")[1] +
             "/" +
-            //@ts-ignore
+            //@ts-expect-error data
             response.data[0].dateDebut.split("/")[0] +
             "/" +
-            //@ts-ignore
+            //@ts-expect-error data
             response.data[0].dateDebut.split("/")[2] +
             " " +
-            //@ts-ignore
+            //@ts-expect-error data
             response.data[0].heureDebut;
 
-          //@ts-ignore
+          //@ts-expect-error data
           this.dateFin = this.datePipe.transform(
             new Date(dateFinString),
             "yyyy-MM-dd HH:mm:ss",
           );
-          //@ts-ignore
+          //@ts-expect-error data
           this.dateDebut = this.datePipe.transform(
             new Date(dateDebString),
             "yyyy-MM-dd HH:mm:ss",
           );
 
-          //@ts-ignore
+          //@ts-expect-error data
           this.duree = response.data[0].duree;
 
-          //@ts-ignore
+          //@ts-expect-error data
           this.saisieLibre = response.data[0].description;
         });
       }
@@ -179,47 +179,47 @@ export class ArretsComponent implements OnInit {
       else {
         this.arretsService.getOneArret(this.id).subscribe(async (response) => {
           // console.log(response);
-          //@ts-ignore
+          //@ts-expect-error data
           this.arretId = response.data[0].productId;
-          //@ts-ignore
+          //@ts-expect-error data
           this.arretName = response.data[0].Name;
           const dateFinString =
-            //@ts-ignore
+            //@ts-expect-error data
             response.data[0].dateFin.split("/")[1] +
             "/" +
-            //@ts-ignore
+            //@ts-expect-error data
             response.data[0].dateFin.split("/")[0] +
             "/" +
-            //@ts-ignore
+            //@ts-expect-error data
             response.data[0].dateFin.split("/")[2] +
             " " +
-            //@ts-ignore
+            //@ts-expect-error data
             response.data[0].heureFin;
           const dateDebString =
-            //@ts-ignore
+            //@ts-expect-error data
             response.data[0].dateDebut.split("/")[1] +
             "/" +
-            //@ts-ignore
+            //@ts-expect-error data
             response.data[0].dateDebut.split("/")[0] +
             "/" +
-            //@ts-ignore
+            //@ts-expect-error data
             response.data[0].dateDebut.split("/")[2] +
             " " +
-            //@ts-ignore
+            //@ts-expect-error data
             response.data[0].heureDebut;
 
-          //@ts-ignore
+          //@ts-expect-error data
           this.dateFin = this.datePipe.transform(
             new Date(dateFinString),
             "yyyy-MM-dd HH:mm:ss",
           );
-          //@ts-ignore
+          //@ts-expect-error data
           this.dateDebut = this.datePipe.transform(
             new Date(dateDebString),
             "yyyy-MM-dd HH:mm:ss",
           );
 
-          //@ts-ignore
+          //@ts-expect-error data
           this.duree = response.data[0].duree;
 
           if (
@@ -227,35 +227,35 @@ export class ArretsComponent implements OnInit {
               this.arretName.toLocaleLowerCase().includes("intempestif")) &&
             !this.arretName.toLocaleLowerCase().includes("moteur")
           ) {
-            //@ts-ignore
+            //@ts-expect-error data
             this.sousCommentaire = response.data[0].description.split(" - ")[1];
-            //@ts-ignore
+            //@ts-expect-error data
             this.categorie = response.data[0].description.split(" - ")[0];
-            //@ts-ignore
+            //@ts-expect-error data
             this.saisieLibre = response.data[0].description.split(" - ")[2];
           } else if (
             this.arretName.toLocaleLowerCase().includes("disponible") &&
             !this.arretName.toLocaleLowerCase().includes("moteur")
           ) {
-            //@ts-ignore
+            //@ts-expect-error data
             this.saisieLibre = response.data[0].description.split(" - ")[1];
-            //@ts-ignore
+            //@ts-expect-error data
             this.sousCommentaire = response.data[0].description.split(" - ")[0];
           } else if (
             this.arretName.toLocaleLowerCase().includes("programm") ||
             this.arretName.toLocaleLowerCase().includes("moteur")
           ) {
-            //@ts-ignore
+            //@ts-expect-error data
             this.saisieLibre = response.data[0].description.split(" - ")[1];
-            //@ts-ignore
+            //@ts-expect-error data
             this.sousCommentaire = response.data[0].description.split(" - ")[0];
           } else {
-            //@ts-ignore
+            //@ts-expect-error data
             this.saisieLibre = response.data[0].description.split(" - ")[0];
           }
-          //@ts-ignore
+          //@ts-expect-error data
           this.sousCommentaire = response.data[0].description.split(" - ")[1];
-          //@ts-ignore
+          //@ts-expect-error data
           this.categorie = response.data[0].description.split(" - ")[0];
           await this.setFilters(true);
         });
@@ -265,14 +265,14 @@ export class ArretsComponent implements OnInit {
 
   getProductsArrets(Code: string) {
     this.productsService.getCompteursArrets(Code).subscribe((response) => {
-      // @ts-ignore
+      // @ts-expect-error data
       this.listArrets = response.data;
     });
   }
 
   getProductsDep(Code: string) {
     this.productsService.getDep().subscribe((response) => {
-      // @ts-ignore
+      // @ts-expect-error data
       this.listArrets = response.data;
     });
   }
@@ -283,7 +283,7 @@ export class ArretsComponent implements OnInit {
 
     //Si on est pas en mode édition, on récupère le nom de l'arret à l'aide du select
     if (edition == false) {
-      // @ts-ignore
+      // @ts-expect-error data
       this.arretName = type.options[type.selectedIndex].text;
     }
     /*Fin de prise en commpte des filtres */
@@ -342,20 +342,13 @@ export class ArretsComponent implements OnInit {
     const selection = document.getElementById("fortuit");
 
     //On regarde quelle est la valeur sélectionnée et on met sa valeur à true pour afficher le sous-menu
-    //@ts-ignore
     if (this.categorie == "Four") {
       this.fortuit_four = true;
-    }
-    //@ts-ignore
-    else if (this.categorie == "Chaudière") {
+    } else if (this.categorie == "Chaudière") {
       this.fortuit_chaudiere = true;
-    }
-    //@ts-ignore
-    else if (this.categorie == "Traitement des fumées") {
+    } else if (this.categorie == "Traitement des fumées") {
       this.fortuit_traitement = true;
-    }
-    //@ts-ignore
-    else if (this.categorie == "Communs auxiliaires") {
+    } else if (this.categorie == "Communs auxiliaires") {
       this.fortuit_commun = true;
     }
   }
@@ -372,7 +365,7 @@ export class ArretsComponent implements OnInit {
         );
       } else
         this.duree =
-          //@ts-ignore
+          //@ts-expect-error data
           (new Date(this.dateFin) - new Date(this.dateDebut)) / 1000 / 3600; //conversion de millisecondes vers heures
     }
   }
@@ -386,11 +379,11 @@ export class ArretsComponent implements OnInit {
        * */
       if (this.disponible == true) {
         var selection = document.getElementById("disponible");
-        //@ts-ignore
+        //@ts-expect-error data
         this.commentaire = selection.options[selection.selectedIndex].text;
       } else if (this.fortuit == true) {
         var selection = document.getElementById("fortuit");
-        //@ts-ignore
+        //@ts-expect-error data
         this.commentaire = selection.options[selection.selectedIndex].value;
         if (this.commentaire != "Autre") {
           if (this.fortuit_chaudiere == true) {
@@ -398,28 +391,28 @@ export class ArretsComponent implements OnInit {
             this.commentaire =
               this.commentaire +
               " - " +
-              //@ts-ignore
+              //@ts-expect-error data
               selection2.options[selection2.selectedIndex].value;
           } else if (this.fortuit_commun == true) {
             var selection2 = document.getElementById("fortuit_commun");
             this.commentaire =
               this.commentaire +
               " - " +
-              //@ts-ignore
+              //@ts-expect-error data
               selection2.options[selection2.selectedIndex].value;
           } else if (this.fortuit_four == true) {
             var selection2 = document.getElementById("fortuit_four");
             this.commentaire =
               this.commentaire +
               " - " +
-              //@ts-ignore
+              //@ts-expect-error data
               selection2.options[selection2.selectedIndex].value;
           } else {
             var selection2 = document.getElementById("fortuit_traitement");
             this.commentaire =
               this.commentaire +
               " - " +
-              //@ts-ignore
+              //@ts-expect-error data
               selection2.options[selection2.selectedIndex].value;
           }
         }
@@ -427,7 +420,7 @@ export class ArretsComponent implements OnInit {
         this.commentaire = "Arrêt technique";
       } else if (this.moteur == true) {
         var selection = document.getElementById("moteur");
-        //@ts-ignore
+        //@ts-expect-error data
         this.commentaire = selection.options[selection.selectedIndex].text;
       }
       /*
@@ -629,17 +622,17 @@ export class ArretsComponent implements OnInit {
   }
 
   transformDateFormat() {
-    // @ts-ignore
+    // @ts-expect-error data
     this.stringDateDebut = this.datePipe.transform(
       this.dateDebut,
       "yyyy-MM-dd HH:mm",
     );
-    // @ts-ignore
+    // @ts-expect-error data
     this.stringDateFin = this.datePipe.transform(
       this.dateFin,
       "yyyy-MM-dd HH:mm",
     );
-    // @ts-ignore
+    // @ts-expect-error data
     this.stringDateSaisie = this.datePipe.transform(
       this.dateSaisie,
       "yyyy-MM-dd HH:mm",
@@ -653,7 +646,7 @@ export class ArretsComponent implements OnInit {
 
   set10min(form: NgForm) {
     if (this.dateDebut != undefined) {
-      //@ts-ignore
+      //@ts-expect-error data
       this.dateFin = this.datePipe.transform(
         new Date(new Date(this.dateDebut).getTime() + 10 * 60000),
         "yyyy-MM-ddTHH:mm:ss",
@@ -663,7 +656,7 @@ export class ArretsComponent implements OnInit {
   }
   set30min(form: NgForm) {
     if (this.dateDebut != undefined) {
-      //@ts-ignore
+      //@ts-expect-error data
       this.dateFin = this.datePipe.transform(
         new Date(new Date(this.dateDebut).getTime() + 30 * 60000),
         "yyyy-MM-ddTHH:mm:ss",

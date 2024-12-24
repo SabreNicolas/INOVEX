@@ -16,11 +16,6 @@ export class tokenApiService {
 
   constructor(private http: HttpClient) {
     this.httpClient = http;
-    //Récupération du user dans localStorage
-    const userLogged = localStorage.getItem("user");
-    if (typeof userLogged === "string") {
-      const userLoggedParse = JSON.parse(userLogged);
-    }
   }
   //Génération de token d'accès pour swagger
   generateAcessToken(saisie: string) {

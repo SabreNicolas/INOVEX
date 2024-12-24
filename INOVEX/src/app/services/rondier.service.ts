@@ -849,14 +849,14 @@ export class rondierService {
     nom = encodeURIComponent(nom);
     //utilisation de formData pour conserver le format du fichier
     const formData = new FormData();
-    // @ts-ignore
+    // @ts-expect-error data data
     formData.append("fichier", fichier, fichier.name);
     const requete =
       "https://" + this.ip + "/modeOP?nom=" + nom + "&zoneId=" + zoneId;
     //console.log(fichier);
 
     const headers = new HttpHeaders();
-    // @ts-ignore
+    // @ts-expect-error data
     headers.append("Content-Type", null);
     headers.append("Accept", "application/json");
 
@@ -1026,7 +1026,7 @@ export class rondierService {
     //console.log(requete);
 
     const headers = new HttpHeaders();
-    // @ts-ignore
+    // @ts-expect-error data
     headers.append("Content-Type", null);
     headers.append("Accept", "application/json");
     const requestOptions = {

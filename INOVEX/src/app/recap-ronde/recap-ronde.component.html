@@ -1,5 +1,5 @@
 <button
-  [disabled]="idEquipe != 0 || !saisieAutorise"
+  [disabled]="idEquipe !== 0 || !saisieAutorise"
   type="button"
   (click)="priseDeQuart()"
   class="btn btn-primary"
@@ -8,7 +8,7 @@
   Prise de Quart
 </button>
 <button
-  [disabled]="!saisieAutorise || !(idEquipe != 0 && saisieAutorise)"
+  [disabled]="!saisieAutorise || !(idEquipe !== 0 && saisieAutorise)"
   type="button"
   (click)="finQuart()"
   class="btn btn-warning"
@@ -146,12 +146,12 @@
             <th scope="row">{{ consigne.commentaire }}</th>
             <td>{{ consigne.dateHeureFin }}</td>
             <td
-              *ngIf="consigne.url != null"
+              *ngIf="consigne.url !== null"
               (click)="downloadFile(consigne.url)"
             >
               <i class="fas fa-download"></i>
             </td>
-            <td *ngIf="consigne.url == null">/</td>
+            <td *ngIf="consigne.url === null">/</td>
           </tr>
         </tbody>
       </table>
@@ -214,7 +214,7 @@
           <tr
             [ngStyle]="{
               'background-color':
-                zone.termine == 1 ? 'lightgreen' : 'lightcoral',
+                zone.termine === 1 ? 'lightgreen' : 'lightcoral',
             }"
           >
             <td>{{ zone.zone }}</td>
@@ -295,7 +295,7 @@
         <tbody *ngFor="let action of listAction">
           <tr
             [ngStyle]="{
-              'background-color': action.termine == 1 ? 'lightgreen' : 'white',
+              'background-color': action.termine === 1 ? 'lightgreen' : 'white',
             }"
           >
             <td>
@@ -304,17 +304,17 @@
                 [disabled]="!saisieAutorise"
                 [ngClass]="{
                   btn: true,
-                  'btn-outline-success': action.termine == 1,
-                  'btn-outline-danger': action.termine == 0,
+                  'btn-outline-success': action.termine === 1,
+                  'btn-outline-danger': action.termine === 0,
                 }"
                 (click)="updateAction(action.id, !action.termine)"
               >
                 <i
-                  [ngStyle]="{ color: action.termine == 1 ? 'green' : 'red' }"
+                  [ngStyle]="{ color: action.termine === 1 ? 'green' : 'red' }"
                   [ngClass]="{
                     fas: true,
-                    'fa-check': action.termine == 1,
-                    'fa-times-circle': action.termine == 0,
+                    'fa-check': action.termine === 1,
+                    'fa-times-circle': action.termine === 0,
                   }"
                 ></i>
               </button>
@@ -375,10 +375,10 @@
               <td>{{ evenement.cause }}</td>
               <td>{{ evenement.date_heure_debut }}</td>
               <!--<td>{{evenement.date_heure_fin}}</td>-->
-              <td *ngIf="evenement.demande_travaux == 0">
+              <td *ngIf="evenement.demande_travaux === 0">
                 <i style="color: red" class="fas fa-times-circle"></i>
               </td>
-              <td *ngIf="evenement.demande_travaux != 0">
+              <td *ngIf="evenement.demande_travaux !== 0">
                 <i style="color: green" class="fas fa-check"></i>
                 {{ evenement.demande_travaux }}
               </td>
@@ -440,7 +440,7 @@
       <div class="card-body">
         <h5
           class="card-title"
-          [ngStyle]="{ color: actu.importance == 2 ? 'red' : 'rgb(27,37,51)' }"
+          [ngStyle]="{ color: actu.importance === 2 ? 'red' : 'rgb(27,37,51)' }"
         >
           {{ actu.titre }}
         </h5>
@@ -451,19 +451,19 @@
           {{ descr }}
         </p>
         <p
-          *ngIf="actu.importance == 0"
+          *ngIf="actu.importance === 0"
           class="card-text color--{{ actu.importance }}"
         >
           Importance : Faible
         </p>
         <p
-          *ngIf="actu.importance == 1"
+          *ngIf="actu.importance === 1"
           class="card-text color--{{ actu.importance }}"
         >
           Importance : Neutre
         </p>
         <p
-          *ngIf="actu.importance == 2"
+          *ngIf="actu.importance === 2"
           class="card-text color--{{ actu.importance }}"
         >
           Importance : Elevée
@@ -481,7 +481,7 @@
       <div class="row">
         <div class="form-group" id="photo">
           <input
-            *ngIf="idEvenement == 0"
+            *ngIf="idEvenement === 0"
             type="file"
             id="fichier"
             class="form-control"
@@ -490,7 +490,7 @@
             accept=".jpg,.jpeg,.png"
             (change)="saveFile($event)"
           /><img *ngIf="imgSrc" [src]="imgSrc" alt="image" id="imgUpload" />
-          <p *ngIf="idEvenement == 0" style="font-size: smaller; color: grey">
+          <p *ngIf="idEvenement === 0" style="font-size: smaller; color: grey">
             *Format image !
           </p>
         </div>
@@ -514,7 +514,7 @@
             </label>
           </div>
 
-          <div class="form-check" *ngIf="idEvenement == 0">
+          <div class="form-check" *ngIf="idEvenement === 0">
             <input
               class="form-check-input"
               type="checkbox"
@@ -567,7 +567,7 @@
             <label>Début date validité : * (non modifiable en cas de DI)</label>
             <input
               required
-              [disabled]="demandeTravaux != 0"
+              [disabled]="demandeTravaux !== 0"
               type="datetime-local"
               id="dateDebut"
               class="form-control"

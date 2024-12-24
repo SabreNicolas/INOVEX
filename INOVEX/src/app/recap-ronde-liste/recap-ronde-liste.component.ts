@@ -99,7 +99,6 @@ export class RecapRondeListeComponent implements OnInit {
     this.cahierQuartService
       .getActionsRonde(this.dateDebString, this.dateFinString)
       .subscribe((response) => {
-        // @ts-ignore
         this.listAction = response.data;
       });
 
@@ -107,7 +106,6 @@ export class RecapRondeListeComponent implements OnInit {
     this.cahierQuartService
       .getEvenementsRonde(this.dateDebString, this.dateFinString)
       .subscribe((response) => {
-        // @ts-ignore
         this.listEvenement = response.data;
       });
 
@@ -115,7 +113,6 @@ export class RecapRondeListeComponent implements OnInit {
     this.cahierQuartService
       .getActusRonde(this.dateDebString, this.dateFinString)
       .subscribe((response) => {
-        // @ts-ignore
         this.listActu = response.data;
       });
 
@@ -123,7 +120,6 @@ export class RecapRondeListeComponent implements OnInit {
     this.cahierQuartService
       .getZonesCalendrierRonde(this.dateDebString, this.dateFinString)
       .subscribe((response) => {
-        // @ts-ignore
         this.listZone = response.BadgeAndElementsOfZone;
       });
 
@@ -134,7 +130,7 @@ export class RecapRondeListeComponent implements OnInit {
         this.dateFinString.substring(0, 16),
       )
       .subscribe((response) => {
-        //@ts-ignore
+        //@ts-expect-error data
         this.listConsigne = response.data;
       });
 
@@ -145,7 +141,6 @@ export class RecapRondeListeComponent implements OnInit {
         format(new Date(this.dateDebString), "yyyy-MM-dd"),
       )
       .subscribe((response) => {
-        // @ts-ignore
         this.idEquipe = response.data[0].id;
         //Si on est en mode édition
         if (this.idEquipe > 0) {

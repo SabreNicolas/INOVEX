@@ -87,13 +87,13 @@ export class ListEntreeComponent implements OnInit {
     this.productsEntrants = [];
     //Récupération type Import pour les tonnages
     this.moralEntitiesService.GetImportTonnage().subscribe((response) => {
-      //@ts-ignore
+      //@ts-expect-error data
       this.typeImportTonnage = response.data[0].typeImport;
     });
     this.getCorrespondance();
     //Récupération des types de déchets et des collecteurs
     this.moralEntitiesService.GetTypeDéchets().subscribe((response) => {
-      //@ts-ignore
+      //@ts-expect-error data
       this.listTypeDechetsCollecteurs = response.data;
 
       //On boucle maintenant sur ce tableau pour scindé en déchets / collecteurs avec les codes associés
@@ -121,7 +121,7 @@ export class ListEntreeComponent implements OnInit {
 
     //Récupération du produit container DASRI
     this.productsService.getProductEntrant().subscribe((response) => {
-      // @ts-ignore
+      // @ts-expect-error data
       this.productsEntrants = response.data;
       //console.log(this.productsEntrants);
       for (const product of this.productsEntrants) {
@@ -134,7 +134,7 @@ export class ListEntreeComponent implements OnInit {
     this.moralEntitiesService
       .getMoralEntities(this.debCode)
       .subscribe((response) => {
-        // @ts-ignore
+        // @ts-expect-error data
         this.moralEntities = response.data;
         // console.log(this.moralEntities);
         this.getValues();
@@ -143,7 +143,7 @@ export class ListEntreeComponent implements OnInit {
   getCorrespondance() {
     this.moralEntitiesService.getCorrespondance().subscribe((response) => {
       // console.log(response)
-      // @ts-ignore
+      // @ts-expect-error data
       this.correspondance = response.data;
       // console.log(this.correspondance);
     });
@@ -151,10 +151,9 @@ export class ListEntreeComponent implements OnInit {
   setFilters() {
     /* Début prise en compte des filtres*/
     const produitElt = document.getElementById("produit");
-    // @ts-ignore
+    // @ts-expect-error data
     const produitSel = produitElt.options[produitElt.selectedIndex].value;
     //var collecteurElt = document.getElementById("collecteur");
-    // @ts-ignore
     //var collecteurSel = collecteurElt.options[collecteurElt.selectedIndex].value;
     this.debCode = produitSel;
     // console.log(this.debCode)
@@ -328,7 +327,6 @@ export class ListEntreeComponent implements OnInit {
   //récupérer les valeurs en BDD pour Products Entrants
   getValuesProduct(idProduct: number) {
     this.listDays.forEach((date) => {
-      // @ts-ignore
       this.productsService
         .getValueProducts(
           date.substr(6, 4) + "-" + date.substr(3, 2) + "-" + date.substr(0, 2),
@@ -336,14 +334,12 @@ export class ListEntreeComponent implements OnInit {
         )
         .subscribe((response) => {
           if (response.data[0] != undefined && response.data[0].Value != 0) {
-            // @ts-ignore
             (
               document.getElementById(
                 idProduct + "-" + date,
               ) as HTMLInputElement
             ).value = response.data[0].Value;
           } else {
-            // @ts-ignore
             (
               document.getElementById(
                 idProduct + "-" + date,
@@ -357,7 +353,6 @@ export class ListEntreeComponent implements OnInit {
   //valider la saisie des Products Entrants
   validationProducts() {
     this.listDays.forEach((date) => {
-      // @ts-ignore
       this.productsEntrants.forEach((product) => {
         const value = (
           document.getElementById(product.Id + "-" + date) as HTMLInputElement
@@ -365,7 +360,6 @@ export class ListEntreeComponent implements OnInit {
         const Value2 = value.replace(" ", "");
         const valueInt: number = +Value2;
         if (valueInt > 0.0) {
-          // @ts-ignore
           this.moralEntitiesService
             .createMeasure(
               date.substr(6, 4) +
@@ -421,18 +415,18 @@ export class ListEntreeComponent implements OnInit {
 
   loading() {
     var element = document.getElementById("spinner");
-    // @ts-ignore
+    // @ts-expect-error data
     element.classList.add("loader");
     var element = document.getElementById("spinnerBloc");
-    // @ts-ignore
+    // @ts-expect-error data
     element.classList.add("loaderBloc");
   }
   removeloading() {
     var element = document.getElementById("spinner");
-    // @ts-ignore
+    // @ts-expect-error data
     element.classList.remove("loader");
     var element = document.getElementById("spinnerBloc");
-    // @ts-ignore
+    // @ts-expect-error data
     element.classList.remove("loaderBloc");
   }
 
@@ -513,7 +507,7 @@ export class ListEntreeComponent implements OnInit {
     else if (
       this.typeImportTonnage.toLowerCase().includes("informatique verte")
     ) {
-      //@ts-ignore
+      //@ts-expect-error data
       let file = event.target.files[0].name;
       file = file.toLowerCase();
       if (file.includes("dasri")) {
@@ -644,7 +638,7 @@ export class ListEntreeComponent implements OnInit {
 
   registre_DNDTS(event: Event) {
     this.loading();
-    //@ts-ignore
+    //@ts-expect-error data
     const files = event.target.files; // FileList object
     const file = files[0];
     const reader = new FileReader();
@@ -791,7 +785,7 @@ export class ListEntreeComponent implements OnInit {
     posEntreeSortie?: number,
   ) {
     this.loading();
-    //@ts-ignore
+    //@ts-expect-error data
     const files = event.target.files; // FileList object
     const file = files[0];
     const reader = new FileReader();
@@ -965,13 +959,12 @@ export class ListEntreeComponent implements OnInit {
 
               //si il y a deja une valeur dans la hashMap pour ce client et ce jour, on incrémente la valeur
               if (this.stockageImport.has(keyHash)) {
-                //@ts-ignore
+                //@ts-expect-error data
                 value = this.stockageImport.get(keyHash) + csv.tonnage;
                 valueRound = parseFloat(value.toFixed(3));
                 this.stockageImport.set(keyHash, valueRound);
               } else
                 //Sinon on insére dans la hashMap
-                //@ts-ignore
                 this.stockageImport.set(
                   keyHash,
                   parseFloat(csv.tonnage.toFixed(3)),
@@ -1110,7 +1103,7 @@ export class ListEntreeComponent implements OnInit {
                 //si il y a deja une valeur dans la hashMap pour ce client et ce jour, on incrémente la valeur
                 if (this.stockageHodja.has(keyHash)) {
                   value =
-                    //@ts-ignore
+                    //@ts-expect-error data
                     this.stockageHodja.get(keyHash) +
                     (valueHodja.TK_Poids_brut - valueHodja.TK_Poids_tare) /
                       1000;
@@ -1118,7 +1111,6 @@ export class ListEntreeComponent implements OnInit {
                   this.stockageHodja.set(keyHash, valueRound);
                 } else
                   //Sinon on insére dans la hashMap
-                  //@ts-ignore
                   this.stockageHodja.set(
                     keyHash,
                     parseFloat(

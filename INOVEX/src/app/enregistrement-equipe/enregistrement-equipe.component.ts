@@ -65,7 +65,7 @@ export class EnregistrementEquipeComponent implements OnInit {
 
     //On récupère la liste des utilisateurs rondiers
     this.cahierQuartService.getUsersRondier().subscribe((response) => {
-      // @ts-ignore
+      // @ts-expect-error data
       this.listUsers = response.data;
       // this.list2.push()
     });

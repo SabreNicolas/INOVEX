@@ -57,14 +57,14 @@ export class ListReactifsComponent implements OnInit {
     this.idUsine = this.idUsineService.getIdUsine();
 
     this.mrService.GetImportTonnage().subscribe((response) => {
-      //@ts-ignore
+      //@ts-expect-error data
       this.typeImportTonnage = response.data[0].typeImport;
     });
 
     this.getCorrespondance();
 
     this.productsService.getReactifs().subscribe((response) => {
-      // @ts-ignore
+      // @ts-expect-error data
       this.listProducts = response.data;
       this.getValues();
     });
@@ -226,7 +226,7 @@ export class ListReactifsComponent implements OnInit {
     else if (
       this.typeImportTonnage.toLowerCase().includes("informatique verte")
     ) {
-      //@ts-ignore
+      //@ts-expect-error data
       let file = event.target.files[0].name;
       file = file.toLowerCase();
       if (file.includes("dasri")) {
@@ -319,7 +319,7 @@ export class ListReactifsComponent implements OnInit {
     posEntreeSortie?: number,
   ) {
     this.loading();
-    //@ts-ignore
+    //@ts-expect-error data
     const files = event.target.files; // FileList object
     const file = files[0];
     const reader = new FileReader();
@@ -429,26 +429,26 @@ export class ListReactifsComponent implements OnInit {
   getCorrespondance() {
     this.mrService.getCorrespondancesReactifs().subscribe((response) => {
       // console.log(response)
-      // @ts-ignore
+      // @ts-expect-error data
       this.correspondance = response.data;
     });
   }
 
   loading() {
     var element = document.getElementById("spinner");
-    // @ts-ignore
+    // @ts-expect-error data
     element.classList.add("loader");
     var element = document.getElementById("spinnerBloc");
-    // @ts-ignore
+    // @ts-expect-error data
     element.classList.add("loaderBloc");
   }
 
   removeloading() {
     var element = document.getElementById("spinner");
-    // @ts-ignore
+    // @ts-expect-error data
     element.classList.remove("loader");
     var element = document.getElementById("spinnerBloc");
-    // @ts-ignore
+    // @ts-expect-error data
     element.classList.remove("loaderBloc");
   }
 
@@ -493,13 +493,12 @@ export class ListReactifsComponent implements OnInit {
               let value, valueRound;
               count = count + 1;
               if (this.stockageImport.has(keyHash)) {
-                //@ts-ignore
+                //@ts-expect-error data
                 value = this.stockageImport.get(keyHash) + csv.tonnage;
                 valueRound = parseFloat(value.toFixed(3));
                 this.stockageImport.set(keyHash, valueRound);
               } else
                 //Sinon on insére dans la hashMap
-                //@ts-ignore
                 this.stockageImport.set(
                   keyHash,
                   parseFloat(csv.tonnage.toFixed(3)),

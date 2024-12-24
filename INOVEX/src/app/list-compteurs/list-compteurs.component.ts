@@ -44,14 +44,14 @@ export class ListCompteursComponent implements OnInit {
 
   ngOnInit(): void {
     this.categoriesService.getCategories().subscribe((response) => {
-      // @ts-ignore
+      // @ts-expect-error data
       this.listCategories = response.data;
     });
 
     this.productsService
       .getCompteurs(this.Code, this.name)
       .subscribe((response) => {
-        // @ts-ignore
+        // @ts-expect-error data
         this.listCompteurs = response.data;
         this.getValues();
       });
@@ -66,10 +66,10 @@ export class ListCompteursComponent implements OnInit {
 
   setFilters() {
     const codeCat = document.getElementById("categorie");
-    //@ts-ignore
+    //@ts-expect-error data
     const verif = codeCat.options[codeCat.selectedIndex];
     if (verif != undefined) {
-      // @ts-ignore
+      // @ts-expect-error data
       var codeCatSel = codeCat.options[codeCat.selectedIndex].value;
     } else var codeCatSel = "";
 
@@ -82,19 +82,19 @@ export class ListCompteursComponent implements OnInit {
 
   loading() {
     var element = document.getElementById("spinner");
-    // @ts-ignore
+    // @ts-expect-error data
     element.classList.add("loader");
     var element = document.getElementById("spinnerBloc");
-    // @ts-ignore
+    // @ts-expect-error data
     element.classList.add("loaderBloc");
   }
 
   removeloading() {
     var element = document.getElementById("spinner");
-    // @ts-ignore
+    // @ts-expect-error data
     element.classList.remove("loader");
     var element = document.getElementById("spinnerBloc");
-    // @ts-ignore
+    // @ts-expect-error data
     element.classList.remove("loaderBloc");
   }
 

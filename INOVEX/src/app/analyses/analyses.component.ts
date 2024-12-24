@@ -50,12 +50,12 @@ export class AnalysesComponent implements OnInit {
 
   getAnalyses() {
     this.categoriesService.getCategoriesAnalyses().subscribe((response) => {
-      // @ts-ignore
+      // @ts-expect-error data
       this.listCategories = response.data;
     });
 
     this.productsService.getAnalyses(this.Code).subscribe((response) => {
-      // @ts-ignore
+      // @ts-expect-error data
       this.listAnalyses = response.data;
       this.getValues();
     });
@@ -63,7 +63,7 @@ export class AnalysesComponent implements OnInit {
 
   getPCI() {
     this.productsService.getPCI().subscribe((response) => {
-      // @ts-ignore
+      // @ts-expect-error data
       this.listAnalyses = response.data;
       this.getValues();
     });
@@ -71,7 +71,7 @@ export class AnalysesComponent implements OnInit {
 
   setFilters() {
     const codeCat = document.getElementById("categorie");
-    // @ts-ignore
+    // @ts-expect-error data
     const codeCatSel = codeCat.options[codeCat.selectedIndex].value;
     this.Code = codeCatSel;
     /*Fin de prise en commpte des filtres */

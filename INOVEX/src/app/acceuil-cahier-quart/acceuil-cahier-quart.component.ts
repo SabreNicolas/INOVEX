@@ -26,11 +26,9 @@ export class AcceuilCahierQuartComponent implements OnInit {
   }
   ngOnInit(): void {
     this.cahierQuartService.getActusQuart(0).subscribe((response) => {
-      // @ts-ignore
       this.listActu = response.data;
     });
     this.cahierQuartService.getActifsLiensExternes().subscribe((response) => {
-      // @ts-ignore
       this.listLien = response.data;
     });
 

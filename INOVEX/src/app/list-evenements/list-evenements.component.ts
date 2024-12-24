@@ -113,7 +113,6 @@ export class ListEvenementsComponent implements OnInit {
     this.days.push("");
 
     this.cahierQuartService.getAllEvenement().subscribe((response) => {
-      // @ts-ignore
       this.listEvenement = response.data;
     });
 
@@ -224,14 +223,13 @@ export class ListEvenementsComponent implements OnInit {
   //Stockage du fichier chaque fois qu'un fichier est upload
   saveFile(event: Event) {
     //Récupération du fichier dans l'input
-    // @ts-ignore
+    // @ts-expect-error data
     this.fileToUpload = (event.target as HTMLInputElement).files[0];
-    // @ts-ignore
     //console.log((<HTMLInputElement>event.target).files[0]);
 
-    // @ts-ignore
+    // @ts-expect-error data
     if (event.target.value) {
-      // @ts-ignore
+      // @ts-expect-error data
       const file = event.target.files[0];
       this.fileToUpload = file;
       const reader = new FileReader();
@@ -253,7 +251,7 @@ export class ListEvenementsComponent implements OnInit {
       const min = String(date.getMinutes()).padStart(2, "0");
       const day = yyyy + "-" + mm + "-" + dd + "T" + hh + ":" + min;
       (document.getElementById("dateDebut") as HTMLInputElement).value = day;
-      //@ts-ignore
+      //@ts-expect-error data
       this.dateDeb = day;
     } else {
       $("#dateFin").hide();
@@ -420,7 +418,7 @@ export class ListEvenementsComponent implements OnInit {
             .updateEvenement(
               this.titre,
               this.importance,
-              //@ts-ignore
+              //@ts-expect-error data
               dateDebString,
               dateFinString,
               this.groupementGMAO,
@@ -462,7 +460,7 @@ export class ListEvenementsComponent implements OnInit {
                 this.cahierQuartService
                   .newEvenement(
                     this.titre,
-                    //@ts-ignore
+                    //@ts-expect-error data
                     this.fileToUpload,
                     this.importance,
                     dateDebString,
@@ -493,7 +491,7 @@ export class ListEvenementsComponent implements OnInit {
             this.cahierQuartService
               .newEvenement(
                 this.titre,
-                //@ts-ignore
+                //@ts-expect-error data
                 this.fileToUpload,
                 this.importance,
                 dateDebString,

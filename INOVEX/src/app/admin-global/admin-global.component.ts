@@ -5,7 +5,7 @@ import * as pdfMake from "pdfmake/build/pdfMake";
 import * as pdfFonts from "pdfMake/build/vfs_fonts";
 import { rondierService } from "../services/rondier.service";
 
-//@ts-ignore
+//@ts-expect-error data
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -48,15 +48,15 @@ export class AdminGlobalComponent implements OnInit {
         this.isSuperAdmin = true;
       }
       this.userLogged = userLoggedParse;
-      // @ts-ignore
+      // @ts-expect-error data
       this.idUsine = this.userLogged["idUsine"];
-      // @ts-ignore
+      // @ts-expect-error data
       this.usine = this.userLogged["localisation"];
     }
 
     //stockage de l'ensemble des sites dans le le service categories pour la création de produit pour l'ensemble des sites
     this.categoriesService.getSites().subscribe((response) => {
-      //@ts-ignore
+      //@ts-expect-error data
       this.categoriesService.sites = response.data;
     });
   }
@@ -112,7 +112,7 @@ export class AdminGlobalComponent implements OnInit {
 
     this.rondierService.listZonesAndElements().subscribe(async (response) => {
       let dataToAdd: any[] = [];
-      //@ts-ignore
+      //@ts-expect-error data
       this.listZones = response.BadgeAndElementsOfZone;
       for await (const zone of this.listZones) {
         dataToAdd.push({
@@ -256,7 +256,7 @@ export class AdminGlobalComponent implements OnInit {
           dataToAdd = [];
         }
       }
-      //@ts-ignore
+      //@ts-expect-error data
       tableBody.unshift(tableHeader);
       const pdfContent = {
         content: [
@@ -275,7 +275,7 @@ export class AdminGlobalComponent implements OnInit {
           },
         ],
       };
-      //@ts-ignore
+      //@ts-expect-error data
       pdfMake.createPdf(pdfContent).download("repriseRonde.pdf");
     });
   }

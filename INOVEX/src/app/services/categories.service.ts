@@ -32,7 +32,7 @@ export class categoriesService {
     this._code = "";
     this._parentId = 0;
     this.sites = [];
-    //@ts-ignore
+    //@ts-expect-error data
     this.idUsine = this.idUsineService.getIdUsine();
   }
 

@@ -38,7 +38,7 @@ export class ZoneControleComponent implements OnInit {
   ngOnInit(): void {
     //Récupération du nombre de four du site
     this.rondierService.nbLigne().subscribe((response) => {
-      //@ts-ignore
+      //@ts-expect-error data data
       this.nbfour = response.data[0].nbLigne;
       this.numbers = Array(this.nbfour)
         .fill(1)

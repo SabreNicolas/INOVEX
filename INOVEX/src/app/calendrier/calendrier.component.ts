@@ -243,7 +243,6 @@ export class CalendrierComponent implements OnInit {
           var color = this.colors.yellow;
         }
         this.events.push({
-          //@ts-ignore"
           start: new Date(
             event.date_heure_debut.split("-")[0],
             event.date_heure_debut.split("-")[1] - 1,
@@ -252,7 +251,6 @@ export class CalendrierComponent implements OnInit {
             0,
             0,
           ),
-          //@ts-ignore
           end: new Date(
             event.date_heure_fin.split("-")[0],
             event.date_heure_fin.split("-")[1] - 1,
@@ -273,7 +271,7 @@ export class CalendrierComponent implements OnInit {
 
     //On récupère la liste des zones d'une usine pour la création d'évènement du calendrier
     this.rondierService.listZone().subscribe((response) => {
-      // @ts-ignore
+      // @ts-expect-error data
       this.listZone = response.data;
     });
   }
@@ -314,7 +312,7 @@ export class CalendrierComponent implements OnInit {
   //fonction permettant d'afficher un évènement quand on clique dessus
   handleEvent(action: string, event: CalendarEvent): void {
     const dateDeb = format(event.start, "dd/MM/yyyy hh:mm:ss");
-    //@ts-ignore
+    //@ts-expect-error data
     const dateFin = format(event.end, "dd/MM/yyyy hh:mm:ss");
     this.modalData = {
       nom: event.title,
@@ -434,10 +432,10 @@ export class CalendrierComponent implements OnInit {
 
   removeloading() {
     var element = document.getElementById("spinner");
-    // @ts-ignore
+    // @ts-expect-error data
     element.classList.remove("loader");
     var element = document.getElementById("spinnerBloc");
-    // @ts-ignore
+    // @ts-expect-error data
     element.classList.remove("loaderBloc");
   }
 
@@ -517,7 +515,7 @@ export class CalendrierComponent implements OnInit {
     //Construction des valeurs du menu select qui contient les actions
     const listActions = {};
     tabAction.forEach((action) => {
-      //@ts-ignore
+      //@ts-expect-error data
       listActions[action] = action;
     });
 

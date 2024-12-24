@@ -7,8 +7,9 @@ export class dateService {
   constructor(private popupService: PopupService) {}
   //récupérer les jours de la période
   getDays(start: Date, end: Date) {
+    let arr = [], dt = new Date(start);
     for (
-      var arr = [], dt = new Date(start);
+      arr = [], dt = new Date(start);
       dt <= end;
       dt.setDate(dt.getDate() + 1)
     ) {
@@ -81,7 +82,7 @@ export class dateService {
     }
     const day = yyyy + "-" + mm + "-" + dd;
     // console.log(document.getElementById("dateDeb") as HTMLInputElement);
-    //@ts-ignore
+    //@ts-expect-error data
     document.getElementById("dateDeb").value = day;
     (document.getElementById("dateFin") as HTMLInputElement).value = day;
     form.value["dateDeb"] = day;

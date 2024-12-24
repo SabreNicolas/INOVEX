@@ -26,7 +26,7 @@ export class ModeOperatoireComponent implements OnInit {
 
   ngOnInit(): void {
     this.rondierService.listZone().subscribe((response) => {
-      // @ts-ignore
+      // @ts-expect-error data
       this.listZone = response.data;
     });
   }
@@ -58,14 +58,13 @@ export class ModeOperatoireComponent implements OnInit {
   //Stockage du fichier chaque fois qu'un fichier est upload
   saveFile(event: Event) {
     //Récupération du fichier dans l'input
-    // @ts-ignore
+    // @ts-expect-error data
     this.fileToUpload = (event.target as HTMLInputElement).files[0];
-    // @ts-ignore
     //console.log((<HTMLInputElement>event.target).files[0]);
 
-    // @ts-ignore
+    // @ts-expect-error data
     if (event.target.value) {
-      // @ts-ignore
+      // @ts-expect-error data
       const file = event.target.files[0];
       this.fileToUpload = file;
     } else this.popupService.alertErrorForm("Aucun fichier choisi....");

@@ -24,7 +24,7 @@ export class ListUsersComponent implements OnInit {
 
   ngOnInit(): void {
     this.loginService.getAllUsers(this.loginLike).subscribe((response) => {
-      // @ts-ignore
+      // @ts-expect-error data
       this.listUsers = response.data;
     });
   }
@@ -99,7 +99,7 @@ export class ListUsersComponent implements OnInit {
   async changeInfos(login: string, info: string, infoValue: string) {
     //Pour le poste, on met une liste de choix
     if (info != "posteUser") {
-      //@ts-ignore
+      //@ts-expect-error data
       infoValue = prompt(
         "Veuillez saisir le " + info + " de l'utilisateur",
         infoValue,
@@ -118,7 +118,7 @@ export class ListUsersComponent implements OnInit {
       //Construction des valeurs du menu select qui contient les postes
       const listPoste = {};
       tabPoste.forEach((poste) => {
-        //@ts-ignore
+        //@ts-expect-error data
         listPoste[poste] = poste;
       });
 
@@ -136,7 +136,6 @@ export class ListUsersComponent implements OnInit {
       });
     }
 
-    //@ts-ignore
     this.loginService
       .updateInfos(login, info, infoValue)
       .subscribe((response) => {

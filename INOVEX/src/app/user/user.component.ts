@@ -41,7 +41,20 @@ export class UserComponent implements OnInit {
     this.loginUsed = false;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.nom = "";
+    this.prenom = "";
+    this.pwd = "temporaire";
+    this.MD5pwd = Md5.hashStr(this.pwd);
+    this.login = "";
+    this.isRondier = 0;
+    this.isSaisie = 0;
+    this.isQSE = 0;
+    this.isRapport = 0;
+    this.isAdmin = 0;
+    this.isChefQuart = 0;
+    this.loginUsed = false;
+  }
 
   //création de l'utilisateur
   onSubmit(form: NgForm) {
@@ -115,7 +128,7 @@ export class UserComponent implements OnInit {
   verifLogin(form: NgForm) {
     const login = form.value["identifiant"].replace(/'/g, "''");
     this.loginService.getLogin(login).subscribe((response) => {
-      // @ts-ignore
+      // @ts-expect-error data data
       if (response.data.length > 0) {
         this.loginUsed = true;
       } else {

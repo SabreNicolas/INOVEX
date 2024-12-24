@@ -44,7 +44,7 @@ export class ListGroupementsComponent implements OnInit {
 
   ngOnInit(): void {
     this.rondierService.getAllGroupements().subscribe((response) => {
-      //@ts-ignore
+      //@ts-expect-error data
       this.listGroupement = response.data;
       this.listGroupement.forEach((groupement) => {
         //On va compter le nombre d'élément de controle par groupement pour autoriser la suppression si il y en a pas
@@ -58,7 +58,7 @@ export class ListGroupementsComponent implements OnInit {
 
     //On récupère toutes les zones de l'usine
     this.rondierService.listZone().subscribe((response) => {
-      // @ts-ignore
+      // @ts-expect-error data
       this.listZone = response.data;
     });
 
@@ -216,9 +216,9 @@ export class ListGroupementsComponent implements OnInit {
       autoFocus: true,
     });
     this.rondierService.getOneGroupement(id).subscribe((response) => {
-      // @ts-ignore
+      // @ts-expect-error data
       this.groupement = response.data[0]["groupement"];
-      // @ts-ignore
+      // @ts-expect-error data
       this.idZone = response.data[0]["zoneId"];
     });
     this.dialog.afterAllClosed.subscribe((response) => {

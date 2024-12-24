@@ -117,7 +117,7 @@ export class EvenementComponent implements OnInit {
           }
         });
     } else {
-      //@ts-ignore
+      //@ts-expect-error data
       this.dateDeb = this.datePipe.transform(new Date(), "yyyy-MM-ddTHH:mm");
       this.dateFin = this.dateDeb;
     }
@@ -127,9 +127,9 @@ export class EvenementComponent implements OnInit {
         .getOneAnomalie(this.idAnomalie)
         .subscribe((response) => {
           // console.log(response);
-          //@ts-ignore
+          //@ts-expect-error data
           this.description = response.data[0]["commentaire"];
-          //@ts-ignore
+          //@ts-expect-error data
           this.imgSrc = response.data[0]["photo"];
         });
     }
@@ -271,7 +271,7 @@ export class EvenementComponent implements OnInit {
             .updateEvenement(
               this.titre,
               this.importance,
-              //@ts-ignore
+              //@ts-expect-error data
               dateDebString,
               dateFinString,
               this.groupementGMAO,
@@ -311,7 +311,7 @@ export class EvenementComponent implements OnInit {
                 this.cahierQuartService
                   .newEvenement(
                     this.titre,
-                    //@ts-ignore
+                    //@ts-expect-error data
                     this.fileToUpload,
                     this.importance,
                     dateDebString,
@@ -349,7 +349,7 @@ export class EvenementComponent implements OnInit {
           this.cahierQuartService
             .newEvenement(
               this.titre,
-              //@ts-ignore
+              //@ts-expect-error data
               this.fileToUpload,
               this.importance,
               dateDebString,
@@ -390,14 +390,13 @@ export class EvenementComponent implements OnInit {
   //Stockage du fichier chaque fois qu'un fichier est upload
   saveFile(event: Event) {
     //Récupération du fichier dans l'input
-    // @ts-ignore
+    // @ts-expect-error data
     this.fileToUpload = (event.target as HTMLInputElement).files[0];
-    // @ts-ignore
     //console.log((<HTMLInputElement>event.target).files[0]);
 
-    // @ts-ignore
+    // @ts-expect-error data
     if (event.target.value) {
-      // @ts-ignore
+      // @ts-expect-error data
       const file = event.target.files[0];
       this.fileToUpload = file;
       const reader = new FileReader();

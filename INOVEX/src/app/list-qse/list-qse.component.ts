@@ -27,7 +27,7 @@ export class ListQseComponent implements OnInit {
   ngOnInit(): void {
     window.parent.document.title = "CAP Exploitation - QSE";
     this.productsService.getQse().subscribe((response) => {
-      // @ts-ignore
+      // @ts-expect-error data
       this.listQse = response.data;
     });
   }

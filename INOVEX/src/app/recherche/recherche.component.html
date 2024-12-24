@@ -184,9 +184,9 @@
         <tr class="color--{{ event.importance }} line">
           <td>{{ event.typeDonnee }}</td>
           <td>{{ event.nom }}</td>
-          <td *ngIf="evenement == true">{{ event.groupementGMAO }}</td>
-          <td *ngIf="evenement == true">{{ event.equipementGMAO }}</td>
-          <td *ngIf="evenement == true">{{ event.cause }}</td>
+          <td *ngIf="evenement === true">{{ event.groupementGMAO }}</td>
+          <td *ngIf="evenement === true">{{ event.equipementGMAO }}</td>
+          <td *ngIf="evenement === true">{{ event.cause }}</td>
           <td>{{ event.date_heure_debut }}</td>
           <td>{{ event.date_heure_fin }}</td>
           <td *ngIf="evenement">{{ event.demande_travaux }}</td>

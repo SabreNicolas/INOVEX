@@ -14,7 +14,7 @@ import { PopupService } from "../services/popup.service";
 export class MoralEntitiesComponent implements OnInit {
   private code: string;
   public mrId: number;
-  // @ts-ignore
+  // @ts-expect-error data
   public MR: moralEntity;
   public produit: string;
   public collecteur: string;
@@ -66,7 +66,7 @@ export class MoralEntitiesComponent implements OnInit {
       this.moralEntitiesService
         .getOneMoralEntity(this.mrId)
         .subscribe((response) => {
-          // @ts-ignore
+          // @ts-expect-error data
           this.MR = response.data[0];
           this.name = this.MR.Name;
           this.address = this.MR.Address;
@@ -86,7 +86,7 @@ export class MoralEntitiesComponent implements OnInit {
 
     //Récupération des types de déchets et des collecteurs
     this.moralEntitiesService.GetTypeDéchets().subscribe((response) => {
-      //@ts-ignore
+      //@ts-expect-error data
       this.listTypeDechetsCollecteurs = response.data;
 
       //On boucle maintenant sur ce tableau pour scindé en déchets / collecteurs avec les codes associés

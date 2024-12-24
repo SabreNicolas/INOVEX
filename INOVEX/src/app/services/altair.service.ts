@@ -19,7 +19,6 @@ export class AltairService {
     private http: HttpClient,
     private idUsineService: idUsineService,
   ) {
-    //@ts-ignore
     this.idUsine = this.idUsineService.getIdUsine();
   }
 
@@ -195,12 +194,14 @@ export class AltairService {
     };
 
     const url = requete;
-
+    let prio;
     if (priority == 0) {
-      var prio = "BASSE";
+      prio = "BASSE";
     } else if (priority == 1) {
-      var prio = "MOYENNE";
-    } else var prio = "HAUTE";
+      prio = "MOYENNE";
+    } else {
+      prio = "HAUTE";
+    }
     const payload =
       '{\r\n  "description": "' +
       description +

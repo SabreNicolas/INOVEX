@@ -41,13 +41,13 @@ export class LoginComponent implements OnInit {
     this.loginService
       .getUserLoged(this.login, this.MD5pwd)
       .subscribe((response) => {
-        // @ts-ignore
+        // @ts-expect-error data
         if (response.data.length > 0) {
           this.loginKO = false;
-          // @ts-ignore
+          // @ts-expect-error data
           localStorage.setItem("user", JSON.stringify(response.data[0]));
           //stockage du token dans le localStorage
-          // @ts-ignore
+          // @ts-expect-error data
           localStorage.setItem("token", response.token);
           this.router.navigate(["/accueil"]);
         } else {

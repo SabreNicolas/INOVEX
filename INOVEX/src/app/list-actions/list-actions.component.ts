@@ -38,7 +38,6 @@ export class ListActionsComponent implements OnInit {
 
   ngOnInit(): void {
     this.cahierQuartService.getAllAction().subscribe((response) => {
-      // @ts-ignore
       this.listAction = response.data;
     });
   }

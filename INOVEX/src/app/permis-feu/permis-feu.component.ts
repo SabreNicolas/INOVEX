@@ -45,7 +45,7 @@ export class PermisFeuComponent implements OnInit {
 
   ngOnInit(): void {
     this.rondierService.listBadgeNonAffect().subscribe((response) => {
-      // @ts-ignore
+      // @ts-expect-error data
       this.listBadge = response.data;
     });
   }
@@ -91,7 +91,7 @@ export class PermisFeuComponent implements OnInit {
     );
     //SI permis de feu on calcule la date de fin = date de début + 24h
     if (this.isPermisFeu) {
-      //@ts-ignore
+      //@ts-expect-error data
       const date = new Date(this.dateHeureDeb);
       const dateFuture = new Date(date.getTime() + 24 * 60 * 60 * 1000);
 
@@ -104,7 +104,7 @@ export class PermisFeuComponent implements OnInit {
       this.dateHeureFin = `${jour}/${mois}/${annee} ${heures}:${minutes}`;
 
       this.dateHeureFinFormatBDD = this.datePipe.transform(
-        // @ts-ignore
+        // @ts-expect-error data
         new Date(annee, mois - 1, jour, heures, minutes),
         "yyyy-MM-dd HH:mm",
       ); //Janvier est 0

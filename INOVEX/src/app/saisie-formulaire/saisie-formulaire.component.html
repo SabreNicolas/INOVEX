@@ -1,13 +1,13 @@
-<div id="OneFormulaire" *ngIf="idForm != 0">
+<div id="OneFormulaire" *ngIf="idForm !== 0">
   <a
-    *ngIf="isAdmin == 1"
+    *ngIf="isAdmin === 1"
     routerLink="/admin/newForm"
     [queryParams]="{ idForm: idForm }"
   >
     <button class="btn btn btn-light edition">Modifier le formulaire</button>
   </a>
   <button
-    *ngIf="isAdmin == 1"
+    *ngIf="isAdmin === 1"
     class="btn btn btn-danger suppression"
     (click)="deleteFormulaire()"
   >
@@ -46,7 +46,7 @@
               type="submit"
               (click)="setPeriod(f)"
             >
-              <img src="assets/refresh.png" />
+              <img src="assets/refresh.png" alt="refresh" />
             </button>
             <button
               style="margin-left: 0.5em"

@@ -95,7 +95,7 @@ export class ListAnomaliesComponent implements OnInit {
     /**FIN Détermination de la date de il y a 7 jours */
 
     this.rondierService.getAllAnomalies().subscribe((response) => {
-      // @ts-ignore
+      // @ts-expect-error data
       this.listAnomalies = response.data;
     });
 
@@ -162,9 +162,9 @@ export class ListAnomaliesComponent implements OnInit {
     this.idAnomalie = id;
     this.rondierService.getOneAnomalie(id).subscribe((response) => {
       // console.log(response);
-      //@ts-ignore
+      //@ts-expect-error data
       this.description = response.data[0]["commentaire"];
-      //@ts-ignore
+      //@ts-expect-error data
       this.imgSrc = response.data[0]["photo"];
 
       const input = document.getElementById("fichier") as HTMLInputElement;
@@ -190,14 +190,13 @@ export class ListAnomaliesComponent implements OnInit {
   //Stockage du fichier chaque fois qu'un fichier est upload
   saveFile(event: Event) {
     //Récupération du fichier dans l'input
-    // @ts-ignore
+    // @ts-expect-error data
     this.fileToUpload = (event.target as HTMLInputElement).files[0];
-    // @ts-ignore
     //console.log((<HTMLInputElement>event.target).files[0]);
 
-    // @ts-ignore
+    // @ts-expect-error data
     if (event.target.value) {
-      // @ts-ignore
+      // @ts-expect-error data
       const file = event.target.files[0];
       this.fileToUpload = file;
       const reader = new FileReader();
@@ -219,7 +218,7 @@ export class ListAnomaliesComponent implements OnInit {
       const min = String(date.getMinutes()).padStart(2, "0");
       const day = yyyy + "-" + mm + "-" + dd + "T" + hh + ":" + min;
       (document.getElementById("dateDebut") as HTMLInputElement).value = day;
-      //@ts-ignore
+      //@ts-expect-error data
       this.dateDeb = day;
     } else {
       $("#dateFin").hide();
@@ -359,7 +358,7 @@ export class ListAnomaliesComponent implements OnInit {
               this.cahierQuartService
                 .newEvenement(
                   this.titre,
-                  //@ts-ignore
+                  //@ts-expect-error data
                   this.fileToUpload,
                   this.importance,
                   dateDebString,
@@ -393,7 +392,7 @@ export class ListAnomaliesComponent implements OnInit {
           this.cahierQuartService
             .newEvenement(
               this.titre,
-              //@ts-ignore
+              //@ts-expect-error data
               this.fileToUpload,
               this.importance,
               dateDebString,
