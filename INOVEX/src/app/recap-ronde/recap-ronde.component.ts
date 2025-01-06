@@ -24,6 +24,7 @@ export class RecapRondeComponent implements OnInit {
   //Un délai entre 2 exécutions du même bouton est sécurisé par un coll down de 3 sec
 
   public listAction: any[];
+  public listActionsEnregistrees: any[];
   public listEvenement: any[];
   public listZone: any[];
   public listZoneOfUsine: zone[];
@@ -78,6 +79,7 @@ export class RecapRondeComponent implements OnInit {
     private router: Router,
   ) {
     this.listAction = [];
+    this.listActionsEnregistrees = [];
     this.listZoneOfUsine = [];
     this.listZoneSelection = [];
     this.listZone = [];
@@ -229,6 +231,10 @@ export class RecapRondeComponent implements OnInit {
         this.listZone = response.BadgeAndElementsOfZone;
       });
 
+    this.cahierQuartService.getActionsEnregistrement().subscribe((response) => {
+      //@ts-expect-error data
+      this.listActionsEnregistrees = response.data;
+    });
     //Récupération de l'id de l'équipe pour la ronde si l'équipe est déjà crée
     // this.cahierQuartService.getEquipeQuart(this.quart,format(new Date(),'yyyy-MM-dd')).subscribe((response)=>{
     //   // @ts-expect-error data
@@ -818,66 +824,17 @@ export class RecapRondeComponent implements OnInit {
 
   //Permet de choisir une action depuis une ligne pré-défini
   choixAction() {
-    //Liste des actions en dur
-    const tabAction = [
-      "Appoint Pot Acide",
-      "Appoint Pot Soude",
-      "Arrêt UTM pour Nettoyage prestataire et Service Exploitation",
-      "Contôle Cônes Réacteurs Ligne 1",
-      "Contôle Cônes Réacteurs Ligne 2",
-      "Contôle Vannes de recirculation Ligne 1",
-      "Contôle Vannes de recirculation Ligne 2",
-      "Contrôle Canne Réacteur Ligne 1",
-      "Contrôle Canne Réacteur Ligne 2",
-      "Contrôle Delta P Réacteur/FAM Ligne 1",
-      "Contrôle Delta P Réacteur/FAM Ligne 2",
-      "Contrôle Delta P FAM Ligne 3",
-      "Contrôle Pot Acide et Pot Soude Local Déminée",
-      "Contrôle ΔP filtres à poches",
-      "Dépotage ACIDE / SOUDE",
-      "Dépotage Cuve GNR",
-      "Dépotage NH3",
-      "Dépotage Camion CHAUX Ligne 1 et Ligne 2",
-      "Dépotage Camion CHAUX Ligne 3",
-      "Dépotage Camion COKE",
-      "Dépotage Camion FIOUL",
-      "Dépotage Silo REFIOM",
-      "Estimation Fosse OM",
-      "Impression rapport RJE",
-      "Mise en Fosse Pont OM N°1",
-      "Mise en Fosse Pont OM N°2",
-      "Nettoyage Jetée Redler Humide",
-      "Nettoyage niveau redler humide Ligne 3",
-      "Nettoyage Pont OM N°1",
-      "Nettoyage Pont OM N°2",
-      "Nettoyage Prise de Mesure TF L1",
-      "Nettoyage Prise de Mesure TF L2",
-      "Nettoyage UTM",
-      "Nettoyage Vanne recirculation Ligne 1 Caisson 1",
-      "Nettoyage Vanne recirculation Ligne 1 Caisson 2",
-      "Nettoyage Vanne recirculation Ligne 2 Caisson 1",
-      "Nettoyage Vanne recirculation Ligne 2 Caisson 2",
-      "Prélèvement Machêfer",
-      "Relevés De Minuit (RJE/Réactifs)",
-      "Remplacement Filtre à Poche Entrée Déminée",
-      "Vidange Bennes Arrières Extracteurs Ligne 1",
-      "Vidange Bennes Arrières Extracteurs Ligne 2",
-      "Vidange Box Sous Scalpeurs Extrateur Ligne 1",
-      "Vidange Box Sous Scalpeurs Extrateur Ligne 2",
-      "Vidange Box Sous Scalpeurs Extrateur Ligne 3",
-      "Vidange Brouettes UTM",
-    ];
-    //Construction des valeurs du menu select qui contient les actions
-    const listActions = {};
-    tabAction.forEach((action) => {
+    const listActionsEnregistrees = {};
+    for (let i = 0; i < this.listActionsEnregistrees.length; i++) {
       //@ts-expect-error data
-      listActions[action] = action;
-    });
+      listActionsEnregistrees[this.listActionsEnregistrees[i]["nom"]] =
+        this.listActionsEnregistrees[i]["nom"];
+    }
 
     Swal.fire({
       title: "Veuillez choisir une action",
       input: "select",
-      inputOptions: listActions,
+      inputOptions: listActionsEnregistrees,
       showCancelButton: true,
       confirmButtonText: "Valider",
       allowOutsideClick: true,

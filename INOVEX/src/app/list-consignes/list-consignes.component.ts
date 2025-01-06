@@ -32,7 +32,7 @@ export class ListConsignesComponent implements OnInit {
   public type: number;
   public dateDebut: Date | undefined;
   public dateFin: Date | undefined;
-  public days: string[];
+  public categories: string[];
 
   constructor(
     private rondierService: rondierService,
@@ -52,19 +52,10 @@ export class ListConsignesComponent implements OnInit {
     this.stringDateFin = "";
     this.stringDateDebut = "";
     this.idConsigne = 0;
-    this.days = [];
+    this.categories = ["Actives", "Archivées"];
   }
 
   ngOnInit(): void {
-    /**Détermination des dates des 7 jours */
-    const today = new Date();
-    const sevenDaysAgo = new Date();
-    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6);
-    this.days = this.getDates(sevenDaysAgo, today);
-    this.days.reverse();
-    //permet d'avoir une boucle de plus pour tout afficher
-    this.days.push("");
-
     this.fileToUpload = undefined;
     this.imgSrc = undefined;
     this.rondierService.listAllConsignes().subscribe((response) => {
@@ -280,5 +271,22 @@ export class ListConsignesComponent implements OnInit {
       startDate.setDate(startDate.getDate() + 1);
     }
     return dateArray;
+  }
+
+  isDateInRange(dateDebut: string, dateFin: string): boolean {
+    const now = new Date();
+    const startDate = this.parseCustomDate(dateDebut);
+    const endDate = this.parseCustomDate(dateFin);
+
+    return now >= startDate && now <= endDate;
+  }
+
+  parseCustomDate(dateStr: string): Date {
+    // Exemple pour le format "DD/MM/YYYY HH:mm:ss"
+    const [datePart, timePart] = dateStr.split(" ");
+    const [day, month, year] = datePart.split("/").map(Number);
+    const [hours, minutes, seconds] = timePart.split(":").map(Number);
+
+    return new Date(year, month - 1, day, hours, minutes, seconds);
   }
 }

@@ -1517,4 +1517,61 @@ export class cahierQuartService {
 
     return this.http.post<any>(requete, formData, requestOptions);
   }
+
+  //Enregistrement action
+  createActionEnregistrement(nom: string) {
+    const requete =
+      "https://" +
+      this.ip +
+      "/createActionEnregistrement/" +
+      this.idUsine +
+      "?nom=" +
+      nom;
+
+    const requestOptions = {
+      headers: new HttpHeaders(this.headerDict),
+    };
+
+    return this.http.put<any>(requete, null, requestOptions);
+  }
+
+  //Créer un nouvel historique de consgine
+  updateActionEnregistrement(idAction: number, nom: string) {
+    const requete =
+      "https://" +
+      this.ip +
+      "/updateActionEnregistrement/" +
+      idAction +
+      "?nom=" +
+      nom;
+
+    const requestOptions = {
+      headers: new HttpHeaders(this.headerDict),
+    };
+
+    return this.http.put<any>(requete, null, requestOptions);
+  }
+  //Créer un nouvel historique de consgine
+  deletaActionEnregistrement(idAction: number) {
+    const requete =
+      "https://" + this.ip + "/deleteActionEnregistrement/" + idAction;
+
+    const requestOptions = {
+      headers: new HttpHeaders(this.headerDict),
+    };
+
+    return this.http.delete<any>(requete, requestOptions);
+  }
+
+  //Récupérer une localisation du site
+  getActionsEnregistrement() {
+    const requete =
+      "https://" + this.ip + "/getActionsEnregistrement/" + this.idUsine;
+
+    const requestOptions = {
+      headers: new HttpHeaders(this.headerDict),
+    };
+
+    return this.http.get<any[]>(requete, requestOptions);
+  }
 }

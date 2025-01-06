@@ -9,12 +9,12 @@
   </a>
   <mat-accordion class="example-headers-align" multi>
     <mat-expansion-panel
-      *ngFor="let day of days; let i = index"
+      *ngFor="let cat of categories; let i = index"
       [expanded]="i === 0"
     >
       <mat-expansion-panel-header>
         <mat-panel-title>
-          {{ day === "" ? "Tout voir" : day }}
+          {{ cat }}
         </mat-panel-title>
       </mat-expansion-panel-header>
       <table class="table table-hover tableFixed">
@@ -35,7 +35,12 @@
           <tr
             class="table-light"
             [ngSwitch]="consigne.type"
-            *ngIf="consigne.dateHeureDebut.includes(day)"
+            *ngIf="
+              (isDateInRange(consigne.dateHeureDebut, consigne.dateHeureFin) &&
+                cat === 'Actives') ||
+              (!isDateInRange(consigne.dateHeureDebut, consigne.dateHeureFin) &&
+                cat === 'Archivées')
+            "
           >
             <td>{{ consigne.titre }}</td>
             <td>{{ consigne.commentaire }}</td>

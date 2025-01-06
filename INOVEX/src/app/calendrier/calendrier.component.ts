@@ -81,7 +81,7 @@ export class CalendrierComponent implements OnInit {
   public nomAction: string;
   public radioSelect: string;
   public dialogRef = {};
-
+  public tabAction: any[];
   //Périodicité
   public listeJours: string[];
   public jours: string[];
@@ -103,6 +103,7 @@ export class CalendrierComponent implements OnInit {
     private datePipe: DatePipe,
   ) {
     this.listeJours = [];
+    this.tabAction = [];
     this.jours = [
       "lundi",
       "mardi",
@@ -159,6 +160,11 @@ export class CalendrierComponent implements OnInit {
       const userLoggedParse = JSON.parse(userLogged);
       this.userLogged = userLoggedParse;
     }
+
+    this.cahierQuartService.getActionsEnregistrement().subscribe((response) => {
+      //@ts-expect-error data
+      this.tabAction = response.data;
+    });
 
     //On cache les blocs de création
     $("#CreationRondeAction").hide();
@@ -463,66 +469,17 @@ export class CalendrierComponent implements OnInit {
 
   //Permet de choisir une action depuis une ligne pré-défini
   choixAction() {
-    //Liste des actions en dur
-    const tabAction = [
-      "Appoint Pot Acide",
-      "Appoint Pot Soude",
-      "Arrêt UTM pour Nettoyage prestataire et Service Exploitation",
-      "Contôle Cônes Réacteurs Ligne 1",
-      "Contôle Cônes Réacteurs Ligne 2",
-      "Contôle Vannes de recirculation Ligne 1",
-      "Contôle Vannes de recirculation Ligne 2",
-      "Contrôle Canne Réacteur Ligne 1",
-      "Contrôle Canne Réacteur Ligne 2",
-      "Contrôle Delta P Réacteur/FAM Ligne 1",
-      "Contrôle Delta P Réacteur/FAM Ligne 2",
-      "Contrôle Delta P FAM Ligne 3",
-      "Contrôle Pot Acide et Pot Soude Local Déminée",
-      "Contrôle ΔP filtres à poches",
-      "Dépotage ACIDE / SOUDE",
-      "Dépotage Cuve GNR",
-      "Dépotage NH3",
-      "Dépotage Camion CHAUX Ligne 1 et Ligne 2",
-      "Dépotage Camion CHAUX Ligne 3",
-      "Dépotage Camion COKE",
-      "Dépotage Camion FIOUL",
-      "Dépotage Silo REFIOM",
-      "Estimation Fosse OM",
-      "Impression rapport RJE",
-      "Mise en Fosse Pont OM N°1",
-      "Mise en Fosse Pont OM N°2",
-      "Nettoyage Jetée Redler Humide",
-      "Nettoyage niveau redler humide Ligne 3",
-      "Nettoyage Pont OM N°1",
-      "Nettoyage Pont OM N°2",
-      "Nettoyage Prise de Mesure TF L1",
-      "Nettoyage Prise de Mesure TF L2",
-      "Nettoyage UTM",
-      "Nettoyage Vanne recirculation Ligne 1 Caisson 1",
-      "Nettoyage Vanne recirculation Ligne 1 Caisson 2",
-      "Nettoyage Vanne recirculation Ligne 2 Caisson 1",
-      "Nettoyage Vanne recirculation Ligne 2 Caisson 2",
-      "Prélèvement Machêfer",
-      "Relevés De Minuit (RJE/Réactifs)",
-      "Remplacement Filtre à Poche Entrée Déminée",
-      "Vidange Bennes Arrières Extracteurs Ligne 1",
-      "Vidange Bennes Arrières Extracteurs Ligne 2",
-      "Vidange Box Sous Scalpeurs Extrateur Ligne 1",
-      "Vidange Box Sous Scalpeurs Extrateur Ligne 2",
-      "Vidange Box Sous Scalpeurs Extrateur Ligne 3",
-      "Vidange Brouettes UTM",
-    ];
-    //Construction des valeurs du menu select qui contient les actions
-    const listActions = {};
-    tabAction.forEach((action) => {
+    const listActionsEnregistrees = {};
+    for (let i = 0; i < this.tabAction.length; i++) {
       //@ts-expect-error data
-      listActions[action] = action;
-    });
+      listActionsEnregistrees[this.tabAction[i]["nom"]] =
+        this.tabAction[i]["nom"];
+    }
 
     Swal.fire({
       title: "Veuillez choisir une action",
       input: "select",
-      inputOptions: listActions,
+      inputOptions: listActionsEnregistrees,
       showCancelButton: true,
       confirmButtonText: "Valider",
       allowOutsideClick: true,
