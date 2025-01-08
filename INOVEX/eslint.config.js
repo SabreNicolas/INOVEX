@@ -38,6 +38,6 @@ module.exports = tseslint.config(
       ...angular.configs.templateRecommended,
       ...angular.configs.templateAccessibility,
     ],
-    rules: {},
+    ignores: ["**/admin.component.html"], // Exclusion du fichier spécifique
   },
 );

@@ -24,6 +24,10 @@ Pour lancer le projet directement sur le serveur en pré-prod :
 
 # ATTENTION
 
+- Avant chaque push sur le répertoire en ligne, veuillez réaliser les deux commande suivantes afin de formatter le code :
+   - `npm run format:fix`
+   - `npm run lint:fix`
+
 - Si des erreurs consoles sont présentent lors du lancement de l'application, cela est du au fait que nous avons modifié une librairie. Veuillez suivre les étapes suivantes :
    1. Ouvrez le fichier `INOVEX\INOVEX\node_modules\calendar-utils\calendar-utils.d.ts`
    2. Modifiez l'interface *CalandarEvents* :
