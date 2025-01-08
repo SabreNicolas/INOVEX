@@ -340,7 +340,12 @@ export class CalendrierComponent implements OnInit {
 
   //Fonction permettant de supprimer un évènement
   //TODO erreur sur Calce fait planté api ici
-  deleteEvenement(id: any, deleteOccurence: boolean) {
+  deleteEvenement(
+    id: any,
+    deleteOccurence: boolean,
+    isAction: boolean,
+    title?: string,
+  ) {
     Swal.fire({
       title: "Etes vous sûr de vouloir supprimer cet évènement ?",
       icon: "warning",
@@ -353,19 +358,51 @@ export class CalendrierComponent implements OnInit {
       if (result.isConfirmed) {
         //SI on veut supprimer l'occurence (fonctionne uniquement sur les actions)
         if (deleteOccurence) {
-          //On supprime les actions de l'occurence
-          this.cahierQuartService.deleteEvents(id).subscribe((response) => {
-            if (response == "Suppression de l'occurence du calendrier OK") {
-              this.popupService.alertSuccessForm(
-                "L'occurence a bien été supprimé !",
-              );
-              //this.ngOnInit();
-            } else {
-              this.popupService.alertErrorForm(
-                "Erreur lors de la suppression de l'occurence....",
-              );
-            }
-          });
+          if (isAction) {
+            //On supprime les actions de l'occurence
+            this.cahierQuartService
+              .getOneEvenementCalendrier(id)
+              .subscribe((response) => {
+                const idAction = response.data[0].idAction;
+                this.cahierQuartService
+                  .deleteActionCalendrier(idAction)
+                  .subscribe((response) => {
+                    if (
+                      response == "Suppression des actions du calendrier OK"
+                    ) {
+                      this.popupService.alertSuccessForm(
+                        "L'occurence a bien été supprimé !",
+                      );
+                      this.ngOnInit();
+                    } else {
+                      this.popupService.alertErrorForm(
+                        "Erreur lors de la suppression de l'occurence....",
+                      );
+                    }
+                  });
+              });
+          } else {
+            this.cahierQuartService
+              .getOneEvenementCalendrier(id)
+              .subscribe((response) => {
+                const idZone = response.data[0].idZone;
+                const quart = response.data[0].quart;
+                this.cahierQuartService
+                  .deleteZoneCalendrier(idZone, quart)
+                  .subscribe((response) => {
+                    if (response == "Suppression des zones du calendrier OK") {
+                      this.popupService.alertSuccessForm(
+                        "L'occurence a bien été supprimé !",
+                      );
+                      this.ngOnInit();
+                    } else {
+                      this.popupService.alertErrorForm(
+                        "Erreur lors de la suppression de l'occurence....",
+                      );
+                    }
+                  });
+              });
+          }
         } else {
           this.cahierQuartService.deleteCalendrier(id).subscribe((response) => {
             if (response == "Suppression de l'evenement du calendrier OK") {
@@ -401,7 +438,7 @@ export class CalendrierComponent implements OnInit {
   showCreationAction() {
     $("#CreationRondeAction").show();
     $("#CreationRonde").hide();
-    $("#CreationAction").show();
+    $("#CreationAction").css("display", "flex").show();
     $("#hideCreation").show();
   }
 
@@ -531,6 +568,15 @@ export class CalendrierComponent implements OnInit {
   //Fonction permettant de créer un évènement dans le calendrier
   async createEvenementCalendrier() {
     this.loading();
+    if (
+      (this.nomAction == "" && this.listZoneSelection.length == 0) ||
+      this.quart.length == 0 ||
+      this.dateDeb == undefined ||
+      this.dateDeb == ""
+    ) {
+      this.popupService.alertErrorForm("Veuillez remplir tout les champs !");
+      return;
+    }
     //On parcours la liste des quarts choisis
     for (const quart of this.quart) {
       //On récupère l'heure de fin en fonction du quart
@@ -594,6 +640,32 @@ export class CalendrierComponent implements OnInit {
           this.periodeReccurence,
           this.listeJours,
         );
+        let nbOccurrence = 0;
+        let idAction = 0;
+        if (this.radioSelect !== "zone") {
+          nbOccurrence = dates.length * this.quart.length;
+          try {
+            const response = await this.cahierQuartService
+              .newAction(this.nomAction, this.dateDeb, this.dateFin)
+              .toPromise(); // Assurez-vous que `newAction` retourne une Observable
+            idAction = response.data[0].id;
+          } catch (error) {
+            console.error("Erreur lors de l'appel à newAction:", error);
+          }
+        } else {
+          nbOccurrence =
+            this.listZoneSelection.length * dates.length * this.quart.length;
+        }
+
+        if (nbOccurrence > 1200) {
+          Swal.fire({
+            title: "Attention",
+            text: "Vous avez sélectionné trop d'occurrences ou de zones. Veuillez réduire votre sélection.",
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+          return;
+        }
         //Si on a une periodicite, on boucle pour ajouter autant de fois que d'occurences demandées
         for (const date of dates) {
           await this.pause(1);
@@ -626,19 +698,9 @@ export class CalendrierComponent implements OnInit {
           //Si on ajoute une action
           else {
             this.cahierQuartService
-              .newAction(this.nomAction, dateHeureDeb, dateFin)
+              .newCalendrierAction(idAction, dateHeureDeb, quart, dateFin, 0)
               .subscribe((response) => {
-                this.cahierQuartService
-                  .newCalendrierAction(
-                    response.data[0].id,
-                    response.data[0].date_heure_debut,
-                    quart,
-                    response.data[0].date_heure_fin,
-                    0,
-                  )
-                  .subscribe((response) => {
-                    const dateFin = "";
-                  });
+                const dateFin = "";
               });
           }
         }
@@ -782,5 +844,14 @@ export class CalendrierComponent implements OnInit {
         this.occurenceMois++;
       }
     }
+  }
+
+  isDateValide(dateDeb: string | Date | undefined): boolean {
+    if (!dateDeb) {
+      return true; // Désactive par défaut si la date n'existe pas
+    }
+    const currentDate = new Date();
+    const eventDate = new Date(dateDeb);
+    return currentDate > eventDate;
   }
 }

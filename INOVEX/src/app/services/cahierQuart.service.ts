@@ -714,6 +714,18 @@ export class cahierQuartService {
     return this.http.get<any>(requete, requestOptions);
   }
 
+  //Récupérer un évènement
+  getOneEvenementCalendrier(idEvenement: number) {
+    const requete =
+      "https://" + this.ip + "/getOneEvenementCalendrier/" + idEvenement;
+
+    const requestOptions = {
+      headers: new HttpHeaders(this.headerDict),
+    };
+
+    return this.http.get<any>(requete, requestOptions);
+  }
+
   //Récupérer tout les évènements
   getAllEvenement() {
     const requete =
@@ -1003,9 +1015,40 @@ export class cahierQuartService {
     return this.http.get<any>(requete, requestOptions);
   }
 
-  //Supprimer un évènement du calendrier
+  //Supprimer un évènement du calendrier par son id
   deleteCalendrier(id: number) {
     const requete = "https://" + this.ip + "/deleteCalendrier/" + id;
+    //console.log(requete);
+
+    const requestOptions = {
+      headers: new HttpHeaders(this.headerDict),
+    };
+
+    return this.http.delete<any>(requete, requestOptions);
+  }
+
+  //Supprimer les action avec le même id du calendrier
+  deleteActionCalendrier(idAction: number) {
+    const requete =
+      "https://" + this.ip + "/deleteActionCalendrier/" + idAction;
+    //console.log(requete);
+
+    const requestOptions = {
+      headers: new HttpHeaders(this.headerDict),
+    };
+
+    return this.http.delete<any>(requete, requestOptions);
+  }
+
+  //Supprimer ules zones avec le même id sur le même quart du calendrier
+  deleteZoneCalendrier(idZone: number, quart: number) {
+    const requete =
+      "https://" +
+      this.ip +
+      "/deleteZoneCalendrier/" +
+      idZone +
+      "?quart=" +
+      quart;
     //console.log(requete);
 
     const requestOptions = {

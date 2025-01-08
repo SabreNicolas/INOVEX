@@ -378,7 +378,7 @@ export class ListReactifsComponent implements OnInit {
                 typeDechet: results.data[i][posTypeDechet],
                 dateEntree: results.data[i][posDateEntree].substring(0, 10),
                 tonnage: Math.abs(
-                  +results.data[i][posTonnage]
+                  results.data[i][posTonnage]
                     .replace(/[^0-9,.]/g, "")
                     .replace(",", ".") / divisionKgToTonnes,
                 ),
@@ -459,11 +459,11 @@ export class ListReactifsComponent implements OnInit {
     let count = 0;
 
     this.csvArray.forEach((csv) => {
+      csv.typeDechet = csv.typeDechet.toLowerCase().replace(/\s/g, "");
       const dechetManquant = csv.typeDechet;
       count = 0;
 
       this.correspondance.forEach((correspondance) => {
-        csv.typeDechet = csv.typeDechet.toLowerCase().replace(/\s/g, "");
         correspondance.productImport = correspondance.productImport
           .toLowerCase()
           .replace(/\s/g, "");

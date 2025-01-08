@@ -225,9 +225,9 @@
         </select>
       </div>
       <div
-        class="form-group d-flex align-items-center"
+        class="form-group align-items-center"
         id="CreationAction"
-        style="display: none"
+        style="display: none !important"
       >
         <label>Action :</label>
         <input
@@ -264,6 +264,7 @@
           style="background-color: rgb(27, 37, 51); color: white"
           (click)="ouvrirDialogReccurence()"
         >
+          <i class="fas fa-redo-alt"></i>
           {{
             setRepetition == false
               ? "Rendre Periodique"
@@ -478,14 +479,38 @@
         Zone : <strong>{{ ronde.nom }}</strong>
         <button
           type="button"
-          [disabled]="
-            userLogged.hasOwnProperty('localisation') ||
-            !userLogged['isAdmin'] === true
-          "
+          [disabled]="!userLogged['isAdmin'] === true"
           class="btn btn-outline-danger"
-          (click)="deleteEvenement(ronde.id, false); close()"
+          (click)="
+            deleteEvenement(ronde.id, false, modalData!.isAction!); close()
+          "
         >
           <i class="fas fa-trash"></i>
+        </button>
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          class="btn btn-danger"
+          (click)="
+            deleteEvenement(
+              ronde.id,
+              true,
+              modalData!.isAction!,
+              modalData!.event.title!
+            );
+            close()
+          "
+          [disabled]="
+            !userLogged['isAdmin'] === true ||
+            isDateValide(modalData?.event?.end)
+          "
+        >
+          <i
+            style="color: white"
+            class="fa fa-exclamation-triangle"
+            aria-hidden="true"
+          ></i>
+          Supprimer l'occurence
         </button>
       </div>
       <div *ngIf="modalData?.isAction">
@@ -493,23 +518,33 @@
           type="button"
           class="btn btn-outline-secondary"
           class="btn btn-outline-danger"
-          (click)="deleteEvenement(modalData?.event?.id, false)"
+          [disabled]="!userLogged['isAdmin'] === true"
+          (click)="
+            deleteEvenement(modalData?.event?.id, false, modalData!.isAction!);
+            close()
+          "
         >
           Supprimer l'évènement
         </button>
         <button
           type="button"
-          [disabled]="true"
           class="btn btn-outline-secondary"
           class="btn btn-danger"
-          (click)="deleteEvenement(modalData?.event?.id, true)"
+          (click)="
+            deleteEvenement(modalData?.event?.id, true, modalData!.isAction!);
+            close()
+          "
+          [disabled]="
+            !userLogged['isAdmin'] === true ||
+            isDateValide(modalData?.event?.end)
+          "
         >
           <i
             style="color: white"
             class="fa fa-exclamation-triangle"
             aria-hidden="true"
-          ></i
-          >Supprimer l'occurence
+          ></i>
+          Supprimer l'occurence
         </button>
       </div>
     </div>

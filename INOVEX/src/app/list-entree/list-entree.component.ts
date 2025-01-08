@@ -860,7 +860,7 @@ export class ListEntreeComponent implements OnInit {
                   typeDechet: typeDechet,
                   dateEntree: results.data[i][posDateEntree].substring(0, 10),
                   tonnage:
-                    +results.data[i][posTonnage]
+                    results.data[i][posTonnage]
                       .replace(/[^0-9,.]/g, "")
                       .replace(",", ".") / divisionKgToTonnes,
                   entrant: EntreeSortie,
@@ -911,12 +911,12 @@ export class ListEntreeComponent implements OnInit {
     //console.log(this.csvArray);
 
     this.csvArray.forEach((csv) => {
+      csv.client = csv.client.toLowerCase().replace(/\s/g, "");
+      csv.typeDechet = csv.typeDechet.toLowerCase().replace(/\s/g, "");
       const clientManquant = csv.client;
       const dechetManquant = csv.typeDechet;
       count = 0;
       this.correspondance.forEach((correspondance) => {
-        csv.client = csv.client.toLowerCase().replace(/\s/g, "");
-        csv.typeDechet = csv.typeDechet.toLowerCase().replace(/\s/g, "");
         correspondance.nomImport = correspondance.nomImport
           .toLowerCase()
           .replace(/\s/g, "");
