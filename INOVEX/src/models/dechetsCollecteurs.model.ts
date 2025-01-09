@@ -1,4 +1,4 @@
-export interface dechetsCollecteurs{
-    Name : string;
-    Code : string;
+export interface dechetsCollecteurs {
+  Name: string;
+  Code: string;
 }

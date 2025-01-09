@@ -1,6 +1,6 @@
-export interface rapport{
-    Id : number;
-    nom : string;
-    url : string;
-    idUsine : string;
+export interface rapport {
+  Id: number;
+  nom: string;
+  url: string;
+  idUsine: string;
 }

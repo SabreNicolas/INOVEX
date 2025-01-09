@@ -1,63 +1,311 @@
 <div id="spinner">
   <div><h1>Chargement en cours...</h1></div>
-  <div id="spinnerBloc">
-  </div>
+  <div id="spinnerBloc"></div>
 </div>
 
 <!-- Création d'une action / ronde pour le calendrier -->
 
 <button class="btn btn-success" id="create" (click)="ouvrirDialogCreerEvent()">
-  + 
+  +
 </button>
+
+<!-- Pop up de récurrence -->
+<ng-template #myReccurenceDialog>
+  <mat-dialog-content>
+    <div class="dialog">
+      <h2 class="dialog-title">Répétition</h2>
+      <div class="dialog-content">
+        <!-- Form dateDeb -->
+        <div class="form-group d-flex align-items-center">
+          <label for="start-date" class="label mr-2">Début</label>
+          <input
+            type="date"
+            id="dateDeb"
+            class="form-control w-50"
+            placeholder="Date de début"
+            name="dateDeb"
+            [(ngModel)]="dateDeb"
+            (ngModelChange)="getJourOccurrenceMois($event)"
+          />
+        </div>
+
+        <p *ngIf="dateDeb == undefined" style="color: red">
+          Veuillez saisir une date de début !
+        </p>
+
+        <!-- Form répéter chaque -->
+        <div class="form-group d-flex align-items-center">
+          <label for="repeat" class="label mr-2">Répéter chaque</label>
+          <input
+            id="repeat"
+            type="number"
+            class="input small-input w-25 form-control mr-2"
+            value="1"
+            [(ngModel)]="repeterChaque"
+            *ngIf="periodeReccurence !== 'mois'"
+          />
+          <select
+            (ngModelChange)="periodeReccurenceChange($event)"
+            class="input small-input w-50 form-control"
+            [(ngModel)]="periodeReccurence"
+          >
+            <option value="semaine">Semaine</option>
+            <option value="jour">Jour</option>
+            <option value="mois">Mois</option>
+          </select>
+        </div>
+
+        <!-- Form selection de jours -->
+        <div
+          *ngIf="
+            !(repeterChaque >= 2 && periodeReccurence === 'jour') &&
+            periodeReccurence !== 'mois'
+          "
+          class="d-flex justify-content-between align-items-center"
+        >
+          <button
+            *ngFor="let jour of jours"
+            (click)="ajoutListeJours(jour)"
+            [class.active]="listeJours.includes(jour)"
+            class="btn btn-light rounded-circle day-btn"
+          >
+            {{ jour[0].toUpperCase() }}
+          </button>
+        </div>
+
+        <!-- Form bouttons radio en cas de mois -->
+        <div
+          class="container"
+          *ngIf="periodeReccurence === 'mois' && dateDeb != undefined"
+        >
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              [(ngModel)]="radioMois"
+              default
+              type="radio"
+              name="options"
+              id="option1"
+              value="occurenceMois"
+            />
+            <label class="form-check-label" for="option1"
+              >{{ occurenceMois }}{{ occurenceMois == 1 ? "er" : "ème" }}
+              {{ jourMois }} du mois</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              [(ngModel)]="radioMois"
+              type="radio"
+              name="options"
+              id="option2"
+              value="dateMois"
+            />
+            <label class="form-check-label" for="option2"
+              >Le {{ numeroJour }}</label
+            >
+          </div>
+        </div>
+
+        <!-- Phrase et dateFin -->
+        <div class="d-flex align-items-center my-2">
+          <p
+            class="note mb-0 me-2"
+            *ngIf="
+              !(repeterChaque >= 2 && periodeReccurence === 'jour') &&
+              periodeReccurence !== 'mois'
+            "
+          >
+            A lieu
+            {{
+              listeJours.length === jours.length
+                ? "tous les jours"
+                : "chaque " + listeJours.join(", ")
+            }}
+            {{
+              repeterChaque > 1
+                ? "toutes les " + repeterChaque + " " + periodeReccurence
+                : ""
+            }}
+            jusqu'au
+          </p>
+          <p
+            class="note mb-0 me-2"
+            *ngIf="repeterChaque >= 2 && periodeReccurence === 'jour'"
+          >
+            A lieu tous les {{ repeterChaque }} jours jusqu'au
+          </p>
+          <p class="note mb-0 me-2" *ngIf="periodeReccurence === 'mois'">
+            A lieu jusqu'au
+          </p>
+          <input
+            type="date"
+            class="form-control w-50"
+            [(ngModel)]="dateFin"
+            [attr.min]="dateDeb"
+          />
+        </div>
+      </div>
+
+      <!-- Boutons -->
+      <div class="dialog-actions d-flex justify-content-between">
+        <button
+          [disabled]="
+            (listeJours.length == 0 && periodeReccurence !== 'mois') ||
+            dateFin == undefined ||
+            dateDeb == undefined ||
+            repeterChaque <= 0
+          "
+          (click)="saveRepetition()"
+          class="btn btn-success btn-lg mx-2"
+          [mat-dialog-close]="true"
+        >
+          Enregistrer
+        </button>
+        <button [mat-dialog-close]="true" class="btn btn-danger btn-lg mx-2">
+          Abandonner
+        </button>
+        <button
+          [mat-dialog-close]="true"
+          class="btn btn-danger btn-lg mx-2"
+          [disabled]="!setRepetition"
+          (click)="deleteRepetition()"
+        >
+          Supprimer
+        </button>
+      </div>
+    </div>
+  </mat-dialog-content>
+</ng-template>
+
 <ng-template let-data #myCreateEventDialog>
-  <h1 class="creation" style="text-align: center;">Ajout d'une zone/action :</h1>
+  <h1 class="creation" style="text-align: center">Ajout d'une zone/action :</h1>
 
   <mat-dialog-content>
     <div id="divCreation">
       <div class="form-check">
-        <input class="form-check-input" type="radio" name="ronde" id="ronde" value="zone" [(ngModel)]="radioSelect" (click)="showCreationRonde()">
-        <label class="form-check-label" for="ronde">
-          Zones à contrôler
-        </label>
+        <input
+          class="form-check-input"
+          type="radio"
+          name="ronde"
+          id="ronde"
+          value="zone"
+          [(ngModel)]="radioSelect"
+          (click)="showCreationRonde()"
+        />
+        <label class="form-check-label" for="ronde"> Zones à contrôler </label>
       </div>
       <div class="form-check">
-        <input class="form-check-input" type="radio" name="ronde" id="action" value="action" [(ngModel)]="radioSelect" (click)="showCreationAction()">
-        <label class="form-check-label" for="action">
-          Actions
-        </label>
+        <input
+          class="form-check-input"
+          type="radio"
+          name="ronde"
+          id="action"
+          value="action"
+          [(ngModel)]="radioSelect"
+          (click)="showCreationAction()"
+        />
+        <label class="form-check-label" for="action"> Actions </label>
       </div>
     </div>
 
-    <div id="CreationRondeAction"  style="display: none;">
-      <div class="form-group" id="CreationRonde" style="display: none;">
+    <div id="CreationRondeAction" style="display: none">
+      <div class="form-group" id="CreationRonde" style="display: none">
         <label>Choisissez vos zones</label>
-        <select multiple class="form-select form-select-sm" aria-label=".form-select-sm example" [(ngModel)]="listZoneSelection">
-          <option *ngFor="let z of listZone" value="{{z.Id}}">{{z.nom}}</option>
+        <select
+          multiple
+          class="form-select form-select-sm"
+          aria-label=".form-select-sm example"
+          [(ngModel)]="listZoneSelection"
+        >
+          <option *ngFor="let z of listZone" value="{{ z.Id }}">
+            {{ z.nom }}
+          </option>
         </select>
       </div>
-      <div class="form-group" id="CreationAction" style="display: none;">
-        <label>Liste des actions :</label>
-        <input type="text" id="actions" class="form-control" placeholder="Liste des actions" name="nomAction" [(ngModel)]="nomAction"/>
+      <div
+        class="form-group align-items-center"
+        id="CreationAction"
+        style="display: none !important"
+      >
+        <label>Action :</label>
+        <input
+          type="text"
+          id="actions"
+          class="form-control w-50 mr-2"
+          placeholder="Liste des actions"
+          name="nomAction"
+          [(ngModel)]="nomAction"
+        />
+        <button
+          class="btn"
+          id="valider"
+          style="background-color: rgb(27, 37, 51); color: white"
+          (click)="choixAction()"
+        >
+          Depuis Liste Actions
+        </button>
       </div>
 
-      <div class="form-group">
-        <label>Date :</label>
-        <input type="date" id="dateDeb" class="form-control" placeholder="Date de début" name="dateDeb" [(ngModel)]="dateDeb"/>
+      <div class="d-flex align-items-center">
+        <label for="dateDeb" class="mr-2">Date :</label>
+        <input
+          type="date"
+          id="dateDeb"
+          class="form-control w-50 mr-2"
+          placeholder="Date de début"
+          name="dateDeb"
+          [(ngModel)]="dateDeb"
+        />
+        <button
+          class="btn"
+          id="periodique"
+          style="background-color: rgb(27, 37, 51); color: white"
+          (click)="ouvrirDialogReccurence()"
+        >
+          <i class="fas fa-redo-alt"></i>
+          {{
+            setRepetition == false
+              ? "Rendre Periodique"
+              : "Modifier la periodicité"
+          }}
+        </button>
+      </div>
+      <div *ngIf="setRepetition == true">
+        <p
+          class="note mb-0 me-2"
+          *ngIf="!(repeterChaque >= 2 && periodeReccurence === 'jour')"
+        >
+          A lieu
+          {{
+            listeJours.length === jours.length
+              ? "tous les jours"
+              : "chaque " + listeJours.join(", ")
+          }}
+          {{
+            repeterChaque > 1
+              ? "toutes les " + repeterChaque + " " + periodeReccurence
+              : ""
+          }}
+          jusqu'au {{ dateFin }}
+        </p>
+        <p
+          class="note mb-0 me-2"
+          *ngIf="repeterChaque >= 2 && periodeReccurence === 'jour'"
+        >
+          A lieu tous les {{ repeterChaque }} jours jusqu'au {{ dateFin }}
+        </p>
       </div>
 
-      <div class="form-group">
-        <label>Périodicité :</label>
-        <select class="form-select form-select-sm" aria-label=".form-select-sm example" [(ngModel)]="periodicite">
-          <option value="0">Aucune</option>
-          <option value="1">Quotidien</option>
-          <option value="2">Hebdo</option>
-          <option value="3">Mensuel</option>
-        </select>
-      </div>
-        
       <div class="form-group">
         <label>Quart :</label>
-        <select multiple class="form-select form-select-sm" aria-label=".form-select-sm example" [(ngModel)]="quart">
+        <select
+          multiple
+          class="form-select form-select-sm"
+          aria-label=".form-select-sm example"
+          [(ngModel)]="quart"
+        >
           <option value="1">Matin</option>
           <option value="2">Après-midi</option>
           <option value="3">Nuit</option>
@@ -65,26 +313,42 @@
       </div>
 
       <div class="form-group" *ngIf="periodicite != 0">
-        <p >Fin après <input type="number" name="occurences" id="occurences" value="10" [(ngModel)]="occurences"> occurences 
-        <button class="btn btn-success" id="maxOccurence" (click)="maxOccurence()">
-          Max
-        </button></p>
+        <p>
+          Fin après
+          <input
+            type="number"
+            name="occurences"
+            id="occurences"
+            value="10"
+            [(ngModel)]="occurences"
+          />
+          occurences
+          <button
+            class="btn btn-success"
+            id="maxOccurence"
+            (click)="maxOccurence()"
+          >
+            Max
+          </button>
+        </p>
       </div>
 
-      <button class="btn btn-success" id="valider" (click)="createEvenementCalendrier()">
+      <button
+        class="btn btn-success"
+        id="valider"
+        (click)="createEvenementCalendrier()"
+      >
         Valider
       </button>
     </div>
-    <button [mat-dialog-close]="true" class="btn btn-danger btn-lg">Annuler</button>
+    <button [mat-dialog-close]="true" class="btn btn-danger btn-lg">
+      Annuler
+    </button>
   </mat-dialog-content>
 </ng-template>
 
-
-
-
 <!-- Calendrier -->
 <br /><br /><br />
-
 
 <!-- <div id="actualiser_calendrier">
   <div
@@ -97,7 +361,6 @@
   
 </div> -->
 
-      
 <div class="row text-center">
   <div class="col-md-4">
     <div class="btn-group">
@@ -114,6 +377,7 @@
         class="btn btn-outline-secondary"
         mwlCalendarToday
         [(viewDate)]="viewDate"
+        style="color: white"
       >
         Aujourd'hui
       </div>
@@ -129,7 +393,7 @@
     </div>
   </div>
   <div class="col-md-4">
-    <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'fr' }}</h3>
+    <h3>{{ viewDate | calendarDate: view + "ViewTitle" : "fr" }}</h3>
   </div>
   <div class="col-md-4">
     <div class="btn-group">
@@ -174,6 +438,7 @@
   </mwl-calendar-month-view>
   <mwl-calendar-week-view
     *ngSwitchCase="CalendarView.Week"
+    style="color: rgb(27, 37, 51)"
     [viewDate]="viewDate"
     locale="fr"
     [events]="events"
@@ -185,6 +450,7 @@
   </mwl-calendar-week-view>
   <mwl-calendar-day-view
     *ngSwitchCase="CalendarView.Day"
+    style="color: rgb(27, 37, 51)"
     [viewDate]="viewDate"
     locale="fr"
     [events]="events"
@@ -195,39 +461,97 @@
   </mwl-calendar-day-view>
 </div>
 
-
-<!-- Module qu'on affiche lors du cliqck sur un évènement -->
+<!-- Module qu'on affiche lors du click sur un évènement -->
 <ng-template #modalContent let-close="close">
   <div class="modal-header">
-    <h5 class="modal-title">Evènement : <strong>{{ modalData?.nom }}</strong></h5>
+    <h5 class="modal-title">
+      Evènement : <strong>{{ modalData?.nom }}</strong>
+    </h5>
     <button type="button" class="close" (click)="close()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
     <div>
-      Du <strong>{{modalData?.dateDeb}}</strong> au <strong> {{modalData?.dateFin}} </strong>
-      <br><br>
+      Du <strong>{{ modalData?.dateDeb }}</strong> au
+      <strong> {{ modalData?.dateFin }} </strong> <br /><br />
       <div *ngFor="let ronde of modalData?.ronde">
-        Zone : <strong>{{ronde.nom}}</strong> 
-        <button type="button" class="btn btn-outline-danger" (click)="deleteEvenement(ronde.id);close()">
+        Zone : <strong>{{ ronde.nom }}</strong>
+        <button
+          type="button"
+          [disabled]="!userLogged['isAdmin'] === true"
+          class="btn btn-outline-danger"
+          (click)="
+            deleteEvenement(ronde.id, false, modalData!.isAction!); close()
+          "
+        >
           <i class="fas fa-trash"></i>
+        </button>
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          class="btn btn-danger"
+          (click)="
+            deleteEvenement(
+              ronde.id,
+              true,
+              modalData!.isAction!,
+              modalData!.event.title!
+            );
+            close()
+          "
+          [disabled]="
+            !userLogged['isAdmin'] === true ||
+            isDateValide(modalData?.event?.end)
+          "
+        >
+          <i
+            style="color: white"
+            class="fa fa-exclamation-triangle"
+            aria-hidden="true"
+          ></i>
+          Supprimer l'occurence
         </button>
       </div>
       <div *ngIf="modalData?.isAction">
-        <button type="button" class="btn btn-outline-secondary" (click)="deleteEvenement(modalData?.event?.id)">
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          class="btn btn-outline-danger"
+          [disabled]="!userLogged['isAdmin'] === true"
+          (click)="
+            deleteEvenement(modalData?.event?.id, false, modalData!.isAction!);
+            close()
+          "
+        >
           Supprimer l'évènement
+        </button>
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          class="btn btn-danger"
+          (click)="
+            deleteEvenement(modalData?.event?.id, true, modalData!.isAction!);
+            close()
+          "
+          [disabled]="
+            !userLogged['isAdmin'] === true ||
+            isDateValide(modalData?.event?.end)
+          "
+        >
+          <i
+            style="color: white"
+            class="fa fa-exclamation-triangle"
+            aria-hidden="true"
+          ></i>
+          Supprimer l'occurence
         </button>
       </div>
     </div>
   </div>
   <div class="modal-footer">
-    
-    
     <button type="button" class="btn btn-outline-secondary" (click)="close()">
       OK
     </button>
   </div>
 </ng-template>
-
-

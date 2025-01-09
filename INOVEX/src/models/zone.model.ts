@@ -1,6 +1,6 @@
-export interface zone{
-    Id : number;
-    nom : string;
-    commentaire : string;
-    four :number;
+export interface zone {
+  Id: number;
+  nom: string;
+  commentaire: string;
+  four: number;
 }

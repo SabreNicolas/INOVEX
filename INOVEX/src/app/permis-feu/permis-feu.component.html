@@ -1,53 +1,99 @@
 <h1 *ngIf="isPermisFeu" class="creation">Création d'un permis de feu :</h1>
-<h1 *ngIf="!isPermisFeu" class="creation">Création d'une zone de consignation :</h1>
+<h1 *ngIf="!isPermisFeu" class="creation">
+  Création d'une zone de consignation :
+</h1>
 
 <div class="row">
-    <div class="col-sm-5 col-sm-offset-1">
-
-        <form ngNativeValidate  (ngSubmit)="onSubmit(f)" #f="ngForm">
-
+  <div class="col-sm-5 col-sm-offset-1">
+    <form ngNativeValidate (ngSubmit)="onSubmit(f)" #f="ngForm">
+      <div class="form-group">
+        <label>Badge : *</label>
+        <div class="row">
+          <div class="col-sm-6">
             <div class="form-group">
-                <label>Badge : *</label>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <select required class="form-select form-select-sm" aria-label=".form-select-sm example" name="badge" ngModel>
-                                <option *ngFor="let b of listBadge" value="{{b.Id}}">{{b.Id}}</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
+              <select
+                required
+                class="form-select form-select-sm"
+                aria-label=".form-select-sm example"
+                name="badge"
+                ngModel
+              >
+                <option *ngFor="let b of listBadge" value="{{ b.Id }}">
+                  {{ b.Id }}
+                </option>
+              </select>
             </div>
+          </div>
+        </div>
+      </div>
 
-            <div *ngIf="isPermisFeu" class="form-group">
-                <label for="zone">Numéro de Permis de feu :</label>
-                <input required type="text" id="num" class="form-control" placeholder="Numéro" name="num" ngModel>
-            </div>
+      <div *ngIf="isPermisFeu" class="form-group">
+        <label for="zone">Numéro de Permis de feu :</label>
+        <input
+          required
+          type="text"
+          id="num"
+          class="form-control"
+          placeholder="Numéro"
+          name="num"
+          ngModel
+        />
+      </div>
 
-            <div class="form-group">
-                <label for="zone">Préciser la zone : *</label>
-                <input required type="text" id="zone" class="form-control" placeholder="Zone" name="zone" ngModel>
-            </div>
+      <div class="form-group">
+        <label for="zone">Préciser la zone : *</label>
+        <input
+          required
+          type="text"
+          id="zone"
+          class="form-control"
+          placeholder="Zone"
+          name="zone"
+          ngModel
+        />
+      </div>
 
-            <div class="form-group">
-                <label for="dateHeureDeb">Début : *</label>
-                <p *ngIf="isPermisFeu" style="font-size: smaller; color: grey">Valable 24 heures</p>
-                <input required type="datetime-local" id="dateHeureDeb" class="form-control" name="dateHeureDeb" (ngModelChange)="generateDateHeureFin(f)" ngModel>
-            </div>
+      <div class="form-group">
+        <label for="dateHeureDeb">Début : *</label>
+        <p *ngIf="isPermisFeu" style="font-size: smaller; color: grey">
+          Valable 24 heures
+        </p>
+        <input
+          required
+          type="datetime-local"
+          id="dateHeureDeb"
+          class="form-control"
+          name="dateHeureDeb"
+          (ngModelChange)="generateDateHeureFin(f)"
+          ngModel
+        />
+      </div>
 
-            <div class="form-group" *ngIf="dateHeureFin.length > 0 || !isPermisFeu">
-                <label>Fin : *</label>
-                <p *ngIf="isPermisFeu">{{dateHeureFin}}</p>
-                <input *ngIf="!isPermisFeu" required type="datetime-local" id="dateHeureFin" class="form-control" name="dateHeureFin" ngModel>
-            </div>
+      <div class="form-group" *ngIf="dateHeureFin.length > 0 || !isPermisFeu">
+        <label>Fin : *</label>
+        <p *ngIf="isPermisFeu">{{ dateHeureFin }}</p>
+        <input
+          *ngIf="!isPermisFeu"
+          required
+          type="datetime-local"
+          id="dateHeureFin"
+          class="form-control"
+          name="dateHeureFin"
+          ngModel
+        />
+      </div>
 
-            <p style="font-size: smaller; color: grey">* : Obligatoire</p>
+      <p style="font-size: smaller; color: grey">* : Obligatoire</p>
 
-            <div class="form-group">
-                <button class="btn btn-success btn-lg" type="submit">Valider</button>
-                <button class="btn btn-danger btn-lg" onclick="window.location.replace('/admin/badges')">Annuler</button>
-            </div>
-
-        </form>
-    </div>
+      <div class="form-group">
+        <button class="btn btn-success btn-lg" type="submit">Valider</button>
+        <button
+          class="btn btn-danger btn-lg"
+          onclick="window.location.replace('/admin/badges')"
+        >
+          Annuler
+        </button>
+      </div>
+    </form>
+  </div>
 </div>

@@ -1,128 +1,218 @@
 <div>
-
-    <!--Filtres de recherche-->
-    <div class="form-group">
-        <h5><label>Filtres :</label></h5>
-        <div class="row">
-            <div class="col-sm-3">
-                <div class="form-group">
-                    <select id="type" required class="form-select form-select-sm"
-                            aria-label=".form-select-sm example" name="type" ngModel="4">
-                        <option value="_">Tout</option>
-                        <option value="1">Entrants</option>
-                        <option value="2">Consommables et Autres</option>
-                        <option selected value="4">Compteurs/QSE</option>
-                        <option value="5">Sortants</option>
-                        <option value="6">Analyses</option>
-                    </select>
-                </div>
-            </div>
-            <div class="col-sm-3">
-                <div class="form-group">
-                    <div class="form-group">
-                        <input type="text" id="name" class="form-control" placeholder="Nom du produit" name="name" ngModel>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-3">
-                <div class="form-group">
-                    <div class="form-group">
-                        <button class="btn btn-success" (click)="setFilters()">Valider</button>
-                    </div>
-                </div>
-            </div>
+  <!--Filtres de recherche-->
+  <div class="form-group">
+    <h5><label>Filtres :</label></h5>
+    <div class="row">
+      <div class="col-sm-3">
+        <div class="form-group">
+          <select
+            id="type"
+            required
+            class="form-select form-select-sm"
+            aria-label=".form-select-sm example"
+            name="type"
+            ngModel="4"
+          >
+            <option value="_">Tout</option>
+            <option value="1">Entrants</option>
+            <option value="2">Consommables et Autres</option>
+            <option selected value="4">Compteurs/QSE</option>
+            <option value="5">Sortants</option>
+            <option value="6">Analyses</option>
+          </select>
         </div>
-
-        <!--<button id="changeAllType" class="btn btn-primary btn-lg float-right" (click)="changeAllType()">Changer plusieurs Type</button>-->
-
+      </div>
+      <div class="col-sm-3">
+        <div class="form-group">
+          <div class="form-group">
+            <input
+              type="text"
+              id="name"
+              class="form-control"
+              placeholder="Nom du produit"
+              name="name"
+              ngModel
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-group">
+          <div class="form-group">
+            <button class="btn btn-success" (click)="setFilters()">
+              Valider
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!--table des produits-->
-    <table class="table table-hover tableFixed">
-        <thead>
-        <tr class="table-secondary">
-            <!--<th scope="col">#</th>-->
-            <th scope="col">Nom</th>
-            <th scope="col">Unité</th>
-            <th scope="col">Coefficient</th>
-            <th scope="col">TAG eMonitoring</th>
-            <th scope="col">Element contrôle rondier</th>
-            <th scope="col">Commentaire</th>
-            <!--<th scope="col">#</th>-->
-            <!--<th scope="col">#</th>-->
-            <th scope="col" >Type de Récupération eMonitoring</th>
-            <th scope="col">Visibilité</th>
-        </tr>
-        </thead>
-        <tbody *ngFor="let pr of listProducts">
-        <tr class="table-light">
-            <!--<td>
+    <!--<button id="changeAllType" class="btn btn-primary btn-lg float-right" (click)="changeAllType()">Changer plusieurs Type</button>-->
+  </div>
+
+  <!--table des produits-->
+  <table class="table table-hover tableFixed">
+    <thead>
+      <tr class="table-secondary">
+        <!--<th scope="col">#</th>-->
+        <th scope="col">Nom</th>
+        <th scope="col">Unité</th>
+        <th scope="col">Coefficient</th>
+        <th scope="col">TAG eMonitoring</th>
+        <th scope="col">Element contrôle rondier</th>
+        <th scope="col">Commentaire</th>
+        <!--<th scope="col">#</th>-->
+        <!--<th scope="col">#</th>-->
+        <th scope="col">Type de Récupération eMonitoring</th>
+        <th scope="col">Visibilité</th>
+      </tr>
+    </thead>
+    <tbody *ngFor="let pr of listProducts">
+      <tr class="table-light">
+        <!--<td>
                 <div class="form-check form-switch">
                     <input class="form-check-input" type="checkbox" id="{{pr.Id}}" (click)="addPr(pr.Id)">
                 </div>
             </td>-->
-            <td>{{pr.Name}} 
-                <button *ngIf="isSuperAdmin" class="btn btn-light" (click)="editionNomProduit(pr.Name)">
-                    <i class="fas fa-edit"></i>
-                </button>
-            </td>
-            <td><span class="badge bg-dark">{{pr.Unit}}</span>
-            </td>
-            <td>
-                <span class="badge rounded-pill bg-secondary">{{pr.Coefficient}}</span>
-                <button id="updateCoeff" (click)="updateCoeff(pr)" class="btn btn-light">
-                    <i class="far fa-edit"></i>
-                </button>
-            </td>
-            <td>
-                <strong><span class="badge bg-success">{{pr.TAG}}</span></strong> 
-                <button *ngIf="pr.idElementRondier == null && pr.typeId != 1 && pr.typeId != 5" id="setTAG" (click)="setElement(pr,'TAG')" class="btn btn-light">
-                    <i class="far fa-edit"></i>
-                </button>
-                <p *ngIf="pr.idElementRondier != null && (pr.TAG == '' || pr.TAG == null)">
-                    La récupération se fait via Rondier
-                </p>
-            </td>
-            
-            <td >
-                <strong><span class="badge bg-primary">{{pr.nomElementRondier}}</span></strong>
-                <button *ngIf="(pr.TAG == '' || pr.TAG == null) && pr.typeId != 1 && pr.typeId != 5" id="setRondier" (click)="setElementRondier(pr)" class="btn btn-light">
-                    <i class="far fa-edit"></i>
-                </button>
-                <p *ngIf="(pr.idElementRondier == null && pr.TAG != '' && pr.TAG != null)">
-                    La récupération se fait via le TAG
-                </p>
-            </td>
-            
-            <td>{{pr.CodeEquipement}}<button id="setTAG" (click)="setElement(pr,'CodeEquipement')" class="btn btn-light">
-                <i class="far fa-edit"></i>
-            </button></td>
-            <!--<td><button id="setPrice" (click)="setUnit(pr)" class="btn btn-primary">
+        <td>
+          {{ pr.Name }}
+          <button
+            *ngIf="isSuperAdmin"
+            class="btn btn-light"
+            (click)="editionNomProduit(pr.Name)"
+          >
+            <i class="fas fa-edit"></i>
+          </button>
+        </td>
+        <td>
+          <span class="badge bg-dark">{{ pr.Unit }}</span>
+        </td>
+        <td>
+          <span class="badge rounded-pill bg-secondary">{{
+            pr.Coefficient
+          }}</span>
+          <button
+            id="updateCoeff"
+            (click)="updateCoeff(pr)"
+            class="btn btn-light"
+          >
+            <i class="far fa-edit"></i>
+          </button>
+        </td>
+        <td>
+          <strong
+            ><span class="badge bg-success">{{ pr.TAG }}</span></strong
+          >
+          <button
+            *ngIf="
+              pr.idElementRondier == null && pr.typeId != 1 && pr.typeId != 5
+            "
+            id="setTAG"
+            (click)="setElement(pr, 'TAG')"
+            class="btn btn-light"
+          >
+            <i class="far fa-edit"></i>
+          </button>
+          <p
+            *ngIf="
+              pr.idElementRondier != null && (pr.TAG == '' || pr.TAG == null)
+            "
+          >
+            La récupération se fait via Rondier
+          </p>
+        </td>
+
+        <td>
+          <strong
+            ><span class="badge bg-primary">{{
+              pr.nomElementRondier
+            }}</span></strong
+          >
+          <button
+            *ngIf="
+              (pr.TAG == '' || pr.TAG == null) &&
+              pr.typeId != 1 &&
+              pr.typeId != 5
+            "
+            id="setRondier"
+            (click)="setElementRondier(pr)"
+            class="btn btn-light"
+          >
+            <i class="far fa-edit"></i>
+          </button>
+          <p
+            *ngIf="
+              pr.idElementRondier == null && pr.TAG != '' && pr.TAG !== null
+            "
+          >
+            La récupération se fait via le TAG
+          </p>
+        </td>
+
+        <td>
+          {{ pr.CodeEquipement
+          }}<button
+            id="setTAG"
+            (click)="setElement(pr, 'CodeEquipement')"
+            class="btn btn-light"
+          >
+            <i class="far fa-edit"></i>
+          </button>
+        </td>
+        <!--<td><button id="setPrice" (click)="setUnit(pr)" class="btn btn-primary">
                 Changer unité
             </button></td>-->
-            <!--<td><button id="setType" (click)="setType(pr)" class="btn btn-primary">
+        <!--<td><button id="setType" (click)="setType(pr)" class="btn btn-primary">
                 Changer le type
             </button></td>-->
-            <td>
-                <select *ngIf="pr.idElementRondier == null && pr.typeId != 1 && pr.typeId != 5" class="form-select" id="{{pr.Id}}" ngModel [(ngModel)]="pr.typeRecupEMonitoring" (change)="updateTypeRecup(pr.Id, pr.typeRecupEMonitoring)">
-                    <option value=null>Aucune</option>
-                    <option value="tafVal">Valeur moyenne</option>
-                    <option value="tafMin">Valeur min</option>
-                    <option value="tafMax">Valeur max</option>
-                    <option value="cumul">Valeur cumulée</option>
-                </select>
-                <p *ngIf="(pr.idElementRondier != null && (pr.TAG == '' || pr.TAG == null)) || pr.typeId == 1 || pr.typeId == 5">
-                    /
-                </p>
-            </td>
-            <td *ngIf="pr.Enabled == 0"><button id="setDisabled" (click)="setVisibility(pr.Id,1)" class="btn btn-outline-danger">
-                <i style="color: red" class="fa fa-eye-slash"></i>
-            </button></td>
-            <td *ngIf="pr.Enabled == 1"><button id="setEnabled" (click)="setVisibility(pr.Id,0)" class="btn btn-outline-success">
-                <i style="color: green" class="fa fa-eye"></i>
-            </button></td>
-        </tr>
-        </tbody>
-    </table>
-
+        <td>
+          <select
+            *ngIf="
+              pr.idElementRondier == null && pr.typeId != 1 && pr.typeId != 5
+            "
+            class="form-select"
+            id="{{ pr.Id }}"
+            ngModel
+            [(ngModel)]="pr.typeRecupEMonitoring"
+            (change)="updateTypeRecup(pr.Id, pr.typeRecupEMonitoring)"
+          >
+            <option value="null">Aucune</option>
+            <option value="tafVal">Valeur moyenne</option>
+            <option value="tafMin">Valeur min</option>
+            <option value="tafMax">Valeur max</option>
+            <option value="cumul">Valeur cumulée</option>
+            <option value="derniere">Relevé Minuit</option>
+          </select>
+          <p
+            *ngIf="
+              (pr.idElementRondier != null &&
+                (pr.TAG == '' || pr.TAG == null)) ||
+              pr.typeId == 1 ||
+              pr.typeId == 5
+            "
+          >
+            /
+          </p>
+        </td>
+        <td *ngIf="pr.Enabled == 0">
+          <button
+            id="setDisabled"
+            (click)="setVisibility(pr.Id, 1)"
+            class="btn btn-outline-danger"
+          >
+            <i style="color: red" class="fa fa-eye-slash"></i>
+          </button>
+        </td>
+        <td *ngIf="pr.Enabled == 1">
+          <button
+            id="setEnabled"
+            (click)="setVisibility(pr.Id, 0)"
+            class="btn btn-outline-success"
+          >
+            <i style="color: green" class="fa fa-eye"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>

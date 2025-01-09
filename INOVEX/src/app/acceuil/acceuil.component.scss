@@ -1,4 +1,12 @@
-.gestionUsine{
-    width: 50%;
-    color: #73b843 !important;
+.bodyAcceuil {
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),
+    url("../../assets/paprec.png") fixed no-repeat bottom left 0.5em,
+    url("../../assets/Usine2_40.png") fixed no-repeat bottom right !important;
+  background-color: white !important;
+}
+
+.gestionUsine {
+  width: 50%;
+  color: #73b843 !important;
 }

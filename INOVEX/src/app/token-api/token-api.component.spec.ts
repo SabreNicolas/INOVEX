@@ -1,16 +1,15 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { TokenApiComponent } from './token-api.component';
+import { TokenApiComponent } from "./token-api.component";
 
-describe('TokenApiComponent', () => {
+describe("TokenApiComponent", () => {
   let component: TokenApiComponent;
   let fixture: ComponentFixture<TokenApiComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TokenApiComponent ]
-    })
-    .compileComponents();
+      declarations: [TokenApiComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('TokenApiComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

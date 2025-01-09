@@ -1,61 +1,116 @@
 <h1 class="creation">Création d'une consigne :</h1>
 
 <div class="row">
-    <div class="col-sm-5 col-sm-offset-1">
+  <div class="col-sm-5 col-sm-offset-1">
+    <form ngNativeValidate #f="ngForm">
+      <div class="form-group" id="photo">
+        <input
+          *ngIf="idConsigne == 0"
+          type="file"
+          id="fichier"
+          class="form-control"
+          name="fichier"
+          accept=".jpg,.jpeg,.png"
+          (change)="saveFile($event)"
+        />
+        <img *ngIf="imgSrc" [src]="imgSrc" alt="image" id="imgUpload" />
+      </div>
 
-        <form ngNativeValidate #f="ngForm">
+      <div class="form-group">
+        <label for="desc">Titre : * </label>
+        <input
+          required
+          maxlength="249"
+          type="text"
+          id="titre"
+          class="form-control"
+          placeholder="Titre"
+          name="titre"
+          ngModel
+          [(ngModel)]="titre"
+        />
+      </div>
 
-            <div class="form-group" id="photo">
-                <input *ngIf="idConsigne == 0" type="file" id="fichier" class="form-control" name="fichier" accept=".jpg,.jpeg,.png" (change)="saveFile($event)">
-                <img *ngIf="imgSrc" [src]="imgSrc" alt="image" id="imgUpload">
-            </div>
+      <div class="form-group">
+        <label for="desc">Description : </label>
+        <textarea
+          type="text"
+          maxlength="249"
+          id="desc"
+          class="form-control"
+          placeholder="Description"
+          name="desc"
+          ngModel
+          [(ngModel)]="desc"
+        ></textarea>
+      </div>
 
+      <div class="form-group">
+        <label>Type : *</label>
+        <div class="row">
+          <div class="col-sm-6">
             <div class="form-group">
-                <label for="desc">Titre : * </label>
-                <input required maxlength="249" type="text" id="titre" class="form-control" placeholder="Titre" name="titre" ngModel [(ngModel)]="titre">
+              <select
+                class="form-select"
+                aria-label=".form-select-sm example"
+                name="type"
+                ngModel
+                [(ngModel)]="type"
+              >
+                <option value="1">Consigne du "Jour"</option>
+                <option value="2">Consigne de Sécurité</option>
+                <option value="3">Consigne Process</option>
+                <option value="4">Autre Consigne</option>
+                <option value="5">
+                  Consigne venant de la création d'un évènement
+                </option>
+              </select>
             </div>
+          </div>
+        </div>
+      </div>
 
-            <div class="form-group">
-                <label for="desc">Description :  </label>
-                <textarea type="text" maxlength="249" id="desc" class="form-control" placeholder="Description" name="desc"  ngModel [(ngModel)]="desc"></textarea>
-            </div>
+      <div class="form-group">
+        <label>Début date validité : *</label>
+        <input
+          required
+          type="datetime-local"
+          id="dateDebut"
+          class="form-control"
+          placeholder="Date de début de validité"
+          name="dateDebut"
+          ngModel
+          [(ngModel)]="dateDebut"
+        />
+      </div>
 
-            <div class="form-group">
-                <label>Type : *</label>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <select class="form-select" aria-label=".form-select-sm example" name="type"  ngModel [(ngModel)]="type">
-                                <option value=1>Consigne du "Jour"</option>
-                                <option value=2>Consigne de Sécurité</option>
-                                <option value=3>Consigne Process</option>
-                                <option value=4>Autre Consigne</option>
-                                <option value=5>Consigne venant de la création d'un évènement</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <div class="form-group">
+        <label>Fin date validité : </label>
+        <input
+          required
+          type="datetime-local"
+          id="dateFin"
+          class="form-control"
+          placeholder="Date de validité"
+          name="dateFin"
+          ngModel
+          [(ngModel)]="dateFin"
+        />
+      </div>
 
-            <div class="form-group">
-                <label>Début date validité : *</label>
-                <input required type="datetime-local" id="dateDebut" class="form-control" placeholder="Date de début de validité" name="dateDebut"
-                ngModel [(ngModel)]="dateDebut">
-            </div>
-            
-            <div class="form-group">
-                <label>Fin date validité : </label>
-                <input required type="datetime-local" id="dateFin" class="form-control" placeholder="Date de validité" name="dateFin"
-                ngModel [(ngModel)]="dateFin">
-            </div>
+      <p style="font-size: smaller; color: grey">* : Obligatoire</p>
 
-            <p style="font-size: smaller; color: grey">* : Obligatoire</p>
-
-            <div class="form-group">
-                <button class="btn btn-success btn-lg" (click)="createConsigne(f)">Valider</button>
-                <button class="btn btn-danger btn-lg" onclick="window.location.replace('/cahierQuart/consignes')">Annuler</button>
-            </div>
-
-        </form>
-    </div>
+      <div class="form-group">
+        <button class="btn btn-success btn-lg" (click)="createConsigne(f)">
+          Valider
+        </button>
+        <button
+          class="btn btn-danger btn-lg"
+          onclick="window.location.replace('/cahierQuart/consignes')"
+        >
+          Annuler
+        </button>
+      </div>
+    </form>
+  </div>
 </div>

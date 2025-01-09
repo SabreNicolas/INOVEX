@@ -1,62 +1,63 @@
-.croix{
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 20000;
+.croix {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 20000;
 }
 
-#container{
-    display: flex;
-    justify-content: space-around;
-    position: relative;
-    height: 80vh;
-    overflow: hidden !important;
+#container {
+  display: flex;
+  justify-content: space-around;
+  position: relative;
+  height: 80vh;
+  overflow: hidden !important;
 }
-#droite,#gauche{
-    width: 49%;
-    position: relative;
-}
-
-#listRondier:hover{
-    cursor: grab;
+#droite,
+#gauche {
+  width: 49%;
+  position: relative;
 }
 
-#test{
-    max-height: 100% !important;
+#listRondier:hover {
+  cursor: grab;
 }
 
-body{
-    height: 100vh;
+#test {
+  max-height: 100% !important;
 }
 
-#legende{
-    margin: 0;
+body {
+  height: 100vh;
 }
 
-.mb-3{
-    display: flex;
-    height: 50px;
+#legende {
+  margin: 0;
 }
 
-.mb-3 label{
-    width: 35%;
-    text-align: center;
+.mb-3 {
+  display: flex;
+  height: 50px;
 }
 
-.mb-3 select{
-    height: 40px;
-}
-#choix{
-    display: flex;
-    align-items: center;
-    justify-content: baseline;
+.mb-3 label {
+  width: 35%;
+  text-align: center;
 }
 
-#choix .mb-3{
-    width: 49%;
-    margin-right: 2px;
+.mb-3 select {
+  height: 40px;
+}
+#choix {
+  display: flex;
+  align-items: center;
+  justify-content: baseline;
 }
 
-#tableAjout{
-    height: 60%;
+#choix .mb-3 {
+  width: 49%;
+  margin-right: 2px;
+}
+
+#tableAjout {
+  height: 60%;
 }

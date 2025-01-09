@@ -3,141 +3,273 @@
     <button routerLink="./newCompteur" target="_blank" id="newCompteur" class="btn btn-primary btn-lg float-right">Création de Compteur</button>
 </div>-->
 <div *ngIf="isSuperAdmin" id="usine">
-    {{usine}}
+  {{ usine }}
 </div>
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <a style="margin-left: 1em" class="navbar-brand" routerLink="">
+      <strong><i class="fa fa-home"></i> Accueil</strong>
+    </a>
 
-        <a style="margin-left: 1em;" class="navbar-brand" routerLink="">
-            <strong><i class="fa fa-home"></i> Accueil</strong>
+    <ul class="navbar-nav mr-auto">
+      <li
+        *ngIf="isSuperAdmin"
+        class="nav-item dropdown"
+        routerLinkActive="active"
+      >
+        <a
+          routerLink="./token"
+          class="nav-link"
+          id="token"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Token
         </a>
+      </li>
 
-        <ul class="navbar-nav mr-auto">
+      <li class="nav-item dropdown" routerLinkActive="active">
+        <a
+          routerLink="./modification"
+          class="nav-link"
+          id="modifProduits"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Modifier les Produits
+        </a>
+      </li>
 
-            <li *ngIf="isSuperAdmin" class="nav-item dropdown" routerLinkActive="active">
-                <a routerLink="./token" class="nav-link" id="token" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-                    Token
-                </a>
-            </li>
-
-            <li class="nav-item dropdown" routerLinkActive="active">
-                <a routerLink="./modification" class="nav-link" id="modifProduits" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Modifier les Produits
-                </a>
-            </li>
-
-            <!--<li class="nav-item dropdown">
+      <!--<li class="nav-item dropdown">
                 <a routerLink="./newCategorie" class="nav-link" id="navbarDropdownCategorie" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Nouveau Filtre de Recherche
                 </a>
             </li>-->
 
-            <!-- <li class="nav-item dropdown">
+      <!-- <li class="nav-item dropdown">
                 <a routerLink="./tags" class="nav-link" id="navbarDropdownEntree" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     TAGs
                 </a>
             </li> -->
 
+      <li class="nav-item dropdown" routerLinkActive="active">
+        <a
+          routerLink="./clients"
+          class="nav-link"
+          id="nouveauClient"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Nouveau Client
+        </a>
+      </li>
 
-            <li class="nav-item dropdown" routerLinkActive="active">
-                <a routerLink="./clients" class="nav-link" id="nouveauClient" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-                    Nouveau Client
-                </a>
-            </li>
+      <li class="nav-item dropdown" routerLinkActive="active">
+        <a
+          routerLink="./import"
+          class="nav-link"
+          id="correspondanceApporteur"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Correspondance apporteurs
+        </a>
+      </li>
 
-            <li class="nav-item dropdown" routerLinkActive="active">
-                <a routerLink="./import" class="nav-link" id="correspondanceApporteur" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-                    Correspondance apporteurs
-                </a>
-            </li>
-            
-            <li class="nav-item dropdown" routerLinkActive="active">
-                <a routerLink="./correspondanceSortants" class="nav-link" id="correspondanceSortants" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-                    Correspondance sortants
-                </a>
-            </li>
+      <li class="nav-item dropdown" routerLinkActive="active">
+        <a
+          routerLink="./correspondanceSortants"
+          class="nav-link"
+          id="correspondanceSortants"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Correspondance sortants
+        </a>
+      </li>
 
-            <li class="nav-item dropdown" routerLinkActive="active">
-                <a routerLink="./CorrespondanceReactifs" class="nav-link" id="correspondanceReactifs" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-                    Correspondance réactifs et livraisons
-                </a>
-            </li>
+      <li class="nav-item dropdown" routerLinkActive="active">
+        <a
+          routerLink="./CorrespondanceReactifs"
+          class="nav-link"
+          id="correspondanceReactifs"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Correspondance réactifs et livraisons
+        </a>
+      </li>
 
-            <li *ngIf="isSuperAdmin" class="nav-item dropdown" routerLinkActive="active">
-                <a routerLink="./newSortant" class="nav-link" id="nvSortant" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-                    Nouveau Sortant
-                </a>
-            </li>
+      <li
+        *ngIf="isSuperAdmin"
+        class="nav-item dropdown"
+        routerLinkActive="active"
+      >
+        <a
+          routerLink="./newSortant"
+          class="nav-link"
+          id="nvSortant"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Nouveau Sortant
+        </a>
+      </li>
 
-            <li *ngIf="isSuperAdmin" class="nav-item dropdown" routerLinkActive="active">
-                <a routerLink="./newCompteur" class="nav-link" id="nvCompteur" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Nouveau Compteur
-                </a>
-            </li>
+      <li
+        *ngIf="isSuperAdmin"
+        class="nav-item dropdown"
+        routerLinkActive="active"
+      >
+        <a
+          routerLink="./newCompteur"
+          class="nav-link"
+          id="nvCompteur"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Nouveau Compteur
+        </a>
+      </li>
 
-            <li *ngIf="isSuperAdmin" class="nav-item dropdown" routerLinkActive="active">
-                <a routerLink="./newAnalyse" class="nav-link" id="nvAnalyse" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Nouvelle Analyse
-                </a>
-            </li>
+      <li
+        *ngIf="isSuperAdmin"
+        class="nav-item dropdown"
+        routerLinkActive="active"
+      >
+        <a
+          routerLink="./newAnalyse"
+          class="nav-link"
+          id="nvAnalyse"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Nouvelle Analyse
+        </a>
+      </li>
 
-            <li *ngIf="isSuperAdmin" class="nav-item dropdown" routerLinkActive="active">
-                <a routerLink="./newConso" class="nav-link" id="navbarDropdownConso" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Nouveau Consommable
-                </a>
-            </li>
+      <li
+        *ngIf="isSuperAdmin"
+        class="nav-item dropdown"
+        routerLinkActive="active"
+      >
+        <a
+          routerLink="./newConso"
+          class="nav-link"
+          id="navbarDropdownConso"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Nouveau Consommable
+        </a>
+      </li>
 
-            <li class="nav-item dropdown" routerLinkActive="active">
-                <a class="nav-link dropdown-toggle" id="navbarDropdownForm" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-                    Formulaires
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" routerLink="./newForm" >Nouveau Formulaire</a>
-                    <a class="dropdown-item" routerLink="./forms">Liste des Formulaires</a>
-                </div>
-            </li>
+      <li class="nav-item dropdown" routerLinkActive="active">
+        <a
+          class="nav-link dropdown-toggle"
+          id="navbarDropdownForm"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Formulaires
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" routerLink="./newForm">Nouveau Formulaire</a>
+          <a class="dropdown-item" routerLink="./forms"
+            >Liste des Formulaires</a
+          >
+        </div>
+      </li>
 
-            <li class="nav-item dropdown" routerLinkActive="active">
-                <a class="nav-link dropdown-toggle" id="navbarDropdownUser" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Utilisateurs
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" routerLink="./newUser" >Nouvel Utilisateur</a>
-                    <a class="dropdown-item" routerLink="./users">Liste des Utilisateurs</a>
-                </div>
-            </li>
+      <li class="nav-item dropdown" routerLinkActive="active">
+        <a
+          class="nav-link dropdown-toggle"
+          id="navbarDropdownUser"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Utilisateurs
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" routerLink="./newUser">Nouvel Utilisateur</a>
+          <a class="dropdown-item" routerLink="./users"
+            >Liste des Utilisateurs</a
+          >
+        </div>
+      </li>
 
-            <li class="nav-item dropdown" routerLinkActive="active">
-                <a class="nav-link dropdown-toggle" id="navbarDropdownRondier" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    RONDIER
-                </a>
-                <div class="dropdown-menu menuGlobal" aria-labelledby="navbarDropdown">
-                    <!--<a class="dropdown-item" routerLink="./reporting" >REPORTING</a>-->
-                    
-                    <a class="dropdown-item" href="https://drive.kerlan-info.fr/d/s/uKSSWZluFqp6pHEI7Ech2OLLZpBmp0rx/A1NE_o04ApMl_hAYy2zku2pLN6CU-zj7--7sAwK0ZlQo" target="_blank">Blocage Tablette</a>
-                    <!--<a class="dropdown-item" routerLink="./finMois" >VALIDATION fin de mois</a>-->
-                    <a class="dropdown-item" routerLink="./badges" >Liste des Badges</a>
-                    <a class="dropdown-item" routerLink="./consignes" >Liste des Consignes</a>
-                    <a class="dropdown-item" routerLink="./zones" >Liste des Zones de Contrôle</a>
-                    <a class="dropdown-item" routerLink="./groupement" >Liste des Groupements</a>
-                    <a class="dropdown-item" routerLink="./elements" >Liste des Elements de Contrôle</a>
-                    <a class="dropdown-item" routerLink="./modesOP" >Liste des Modes Opératoire</a>
-                    <a class="dropdown-item" (click)="pdfMake()">Reprise de ronde</a>
-    
+      <li class="nav-item dropdown" routerLinkActive="active">
+        <a
+          class="nav-link dropdown-toggle"
+          id="navbarDropdownRondier"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          RONDIER
+        </a>
+        <div class="dropdown-menu menuGlobal" aria-labelledby="navbarDropdown">
+          <!--<a class="dropdown-item" routerLink="./reporting" >REPORTING</a>-->
 
-                    <!-- <a class="dropdown-item" (click)="download('https://drive.kerlan-info.fr/d/s/t8jDgzM5gbhel4o8zHX1qfKw4mSCecxr/2ZK8T_dAYyx9cwcN1fNRvVeKLDaxE5b6-0bzA1aToWwo')">Localisation Tablette</a>
+          <a
+            class="dropdown-item"
+            href="https://drive.kerlan-info.fr/d/s/uKSSWZluFqp6pHEI7Ech2OLLZpBmp0rx/A1NE_o04ApMl_hAYy2zku2pLN6CU-zj7--7sAwK0ZlQo"
+            target="_blank"
+            >Blocage Tablette</a
+          >
+          <!--<a class="dropdown-item" routerLink="./finMois" >VALIDATION fin de mois</a>-->
+          <a class="dropdown-item" routerLink="./badges">Liste des Badges</a>
+          <a class="dropdown-item" routerLink="./consignes"
+            >Liste des Consignes</a
+          >
+          <a class="dropdown-item" routerLink="./zones"
+            >Liste des Zones de Contrôle</a
+          >
+          <a class="dropdown-item" routerLink="./groupement"
+            >Liste des Groupements</a
+          >
+          <a class="dropdown-item" routerLink="./elements"
+            >Liste des Elements de Contrôle</a
+          >
+          <a class="dropdown-item" routerLink="./modesOP"
+            >Liste des Modes Opératoire</a
+          >
+          <a class="dropdown-item" (click)="pdfMake()">Reprise de ronde</a>
+
+          <!-- <a class="dropdown-item" (click)="download('https://drive.kerlan-info.fr/d/s/t8jDgzM5gbhel4o8zHX1qfKw4mSCecxr/2ZK8T_dAYyx9cwcN1fNRvVeKLDaxE5b6-0bzA1aToWwo')">Localisation Tablette</a>
                     <a class="dropdown-item" (click)="download('https://drive.kerlan-info.fr/d/s/qLEPdZ4j1BrVIDHAgfxV8usUWdEYR3ev/HR9pQTaI6SMXtRn19O0ezpwGy_IQrqLc-CL7AS8JT1Qk')">Blocage Tablette</a> -->
-                </div>
-            </li>
-
-        </ul>
-        <!-- <img src="assets/paprec.png" style="width:10em"> -->
-    </div>
+        </div>
+      </li>
+    </ul>
+    <!-- <img src="assets/paprec.png" style="width:10em"> -->
+  </div>
 </nav>
 
-
-
-
-<div style="margin-left: 0.5em;">
-    <router-outlet></router-outlet>
+<div style="margin-left: 0.5em">
+  <router-outlet></router-outlet>
 </div>

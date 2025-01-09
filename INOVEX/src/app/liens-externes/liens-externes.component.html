@@ -1,24 +1,46 @@
 <h1 class="creation">Création d'un lien :</h1>
-<h3 class="creation">Ce module permet de créer un lien vers un fichier sur un drive qui sera disponible sur l'acceuil du cahier de quart</h3>
+<h3 class="creation">
+  Ce module permet de créer un lien vers un fichier sur un drive qui sera
+  disponible sur l'acceuil du cahier de quart
+</h3>
 
 <div class="row">
-    <div class="col-sm-5 col-sm-offset-1">
-
-        <div class="form-group">
-            <label for="desc">Nom : * </label>
-            <input required type="text" id="nom" class="form-control" placeholder="Nom" name="nom" ngModel [(ngModel)]="nom">
-        </div>
-
-        <div class="form-group">
-            <label for="desc">Url : * </label>
-            <input required type="text" id="url" class="form-control" placeholder="Url" name="url" ngModel [(ngModel)]="url">
-        </div>
-
-        <p style="font-size: smaller; color: grey">* : Obligatoire</p>
-
-        <div class="form-group">
-            <button class="btn btn-success btn-lg" (click)="newLienExterne()">Valider</button>
-            <button class="btn btn-danger btn-lg">Annuler</button>
-        </div>
+  <div class="col-sm-5 col-sm-offset-1">
+    <div class="form-group">
+      <label for="desc">Nom : * </label>
+      <input
+        required
+        type="text"
+        id="nom"
+        class="form-control"
+        placeholder="Nom"
+        name="nom"
+        ngModel
+        [(ngModel)]="nom"
+      />
     </div>
+
+    <div class="form-group">
+      <label for="desc">Url : * </label>
+      <input
+        required
+        type="text"
+        id="url"
+        class="form-control"
+        placeholder="Url"
+        name="url"
+        ngModel
+        [(ngModel)]="url"
+      />
+    </div>
+
+    <p style="font-size: smaller; color: grey">* : Obligatoire</p>
+
+    <div class="form-group">
+      <button class="btn btn-success btn-lg" (click)="newLienExterne()">
+        Valider
+      </button>
+      <button class="btn btn-danger btn-lg">Annuler</button>
+    </div>
+  </div>
 </div>

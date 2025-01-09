@@ -1,121 +1,231 @@
 <div *ngIf="listConsignes">
-
-    <a (click)="ouvrirDialogCreerConsigne()" role="button" class="btn btn-primary" id="create">
-        Créer une consigne
-    </a>
-    <div class="table-style">
-        <!--table des consignes-->
-        <table class="table table-hover tableFixed">
-            <thead>
-            <tr class="table-secondary">
-                <th scope="col">Consigne</th>
-                <th scope="col">Description</th>
-                <th scope="col">Date de Début de validité</th>
-                <th scope="col">Date de Fin de validité</th>
-                <th scope="col">Type</th>
-                <th scope="col">Fichier</th>
-                <th scope="col">Dupliquer</th>
-                <th scope="col">Edition</th>
-                <th scope="col">#</th>
-            </tr>
-            </thead>
-            <tbody *ngFor="let consigne of listConsignes">
-            <tr class="table-light" [ngSwitch]="consigne.type">
-                <td>{{consigne.titre}}</td>
-                <td>{{consigne.commentaire}}</td>
-                <td>{{consigne.dateHeureDebut}}</td>
-                <td *ngIf="consigne.dateHeureFin != '01/01/2099 00:00:00'">{{consigne.dateHeureFin}}</td>
-                <td *ngIf="consigne.dateHeureFin == '01/01/2099 00:00:00'">Jamais</td>
-                <td *ngSwitchCase=1><span class="badge rounded-pill bg-primary">Jour</span></td>
-                <td *ngSwitchCase=2><span class="badge rounded-pill bg-warning text-dark">Sécurité</span></td>
-                <td *ngSwitchCase=3><span class="badge rounded-pill bg-primary">Process</span></td>
-                <td *ngSwitchCase=4><span class="badge rounded-pill bg-dark">Autres</span></td>
-                <td *ngSwitchCase=5><span class="badge rounded-pill bg-dark">Suite à un évènement</span></td>
-                <td *ngIf="consigne.url != null" (click)="downloadFile(consigne.url)"><i class="fas fa-download" ></i></td>
-                <td *ngIf="consigne.url == null">/</td>
-                <td>
-                    <button class="btn btn btn-light edition" (click)="ouvrirDialogModifConsigne(consigne.id,1)">
-                        <i class="far fa-copy"></i>
-                    </button>
-                </td>
-                <td>
-                    <button class="btn btn btn-light edition" (click)="ouvrirDialogModifConsigne(consigne.id,0)">
-                        <i class="far fa-edit"></i>
-                     </button>
-                </td>
-                <td>
-                    <button (click)="deleteConsigne(consigne.id)" id="deleteConsigne" class="btn btn-light">
-                        <i class="fa fa-trash-o" aria-hidden="true"></i>
-                    </button>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+  <a
+    (click)="ouvrirDialogCreerConsigne()"
+    role="button"
+    class="btn btn-primary"
+    id="create"
+  >
+    Créer une consigne
+  </a>
+  <mat-accordion class="example-headers-align" multi>
+    <mat-expansion-panel
+      *ngFor="let cat of categories; let i = index"
+      [expanded]="i === 0"
+    >
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{ cat }}
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <table class="table table-hover tableFixed">
+        <thead>
+          <tr class="table-secondary">
+            <th scope="col">Consigne</th>
+            <th scope="col">Description</th>
+            <th scope="col">Date de Début de validité</th>
+            <th scope="col">Date de Fin de validité</th>
+            <th scope="col">Type</th>
+            <th scope="col">Fichier</th>
+            <th scope="col">Dupliquer</th>
+            <th scope="col">Edition</th>
+            <th scope="col">#</th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let consigne of listConsignes">
+          <tr
+            class="table-light"
+            [ngSwitch]="consigne.type"
+            *ngIf="
+              (isDateInRange(consigne.dateHeureDebut, consigne.dateHeureFin) &&
+                cat === 'Actives') ||
+              (!isDateInRange(consigne.dateHeureDebut, consigne.dateHeureFin) &&
+                cat === 'Archivées')
+            "
+          >
+            <td>{{ consigne.titre }}</td>
+            <td>{{ consigne.commentaire }}</td>
+            <td>{{ consigne.dateHeureDebut }}</td>
+            <td *ngIf="consigne.dateHeureFin !== '01/01/2099 00:00:00'">
+              {{ consigne.dateHeureFin }}
+            </td>
+            <td *ngIf="consigne.dateHeureFin === '01/01/2099 00:00:00'">
+              Jamais
+            </td>
+            <td *ngSwitchCase="1">
+              <span class="badge rounded-pill bg-primary">Jour</span>
+            </td>
+            <td *ngSwitchCase="2">
+              <span class="badge rounded-pill bg-warning text-dark"
+                >Sécurité</span
+              >
+            </td>
+            <td *ngSwitchCase="3">
+              <span class="badge rounded-pill bg-primary">Process</span>
+            </td>
+            <td *ngSwitchCase="4">
+              <span class="badge rounded-pill bg-dark">Autres</span>
+            </td>
+            <td *ngSwitchCase="5">
+              <span class="badge rounded-pill bg-dark"
+                >Suite à un évènement</span
+              >
+            </td>
+            <td
+              *ngIf="consigne.url != null"
+              (click)="downloadFile(consigne.url)"
+            >
+              <i class="fas fa-download"></i>
+            </td>
+            <td *ngIf="consigne.url == null">/</td>
+            <td>
+              <button
+                class="btn btn btn-light edition"
+                (click)="ouvrirDialogModifConsigne(consigne.id, 1)"
+              >
+                <i class="far fa-copy"></i>
+              </button>
+            </td>
+            <td>
+              <button
+                class="btn btn btn-light edition"
+                (click)="ouvrirDialogModifConsigne(consigne.id, 0)"
+              >
+                <i class="far fa-edit"></i>
+              </button>
+            </td>
+            <td>
+              <button
+                (click)="deleteConsigne(consigne.id)"
+                id="deleteConsigne"
+                class="btn btn-light"
+              >
+                <i class="fa fa-trash-o" aria-hidden="true"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </mat-expansion-panel>
+  </mat-accordion>
 </div>
 
 <ng-template let-data #myCreateConsigneDialog>
-    <h1 class="creation" style="text-align: center;">Création d'une consigne :</h1>
+  <h1 class="creation" style="text-align: center">Création d'une consigne :</h1>
 
-    <mat-dialog-content>
-        <div class="row">
-            <div>
-        
-                <form ngNativeValidate #f="ngForm">
-        
-                    <div class="form-group" id="photo">
-                        <input *ngIf="idConsigne == 0" type="file" id="fichier" class="form-control" name="fichier" accept=".jpg,.jpeg,.png" (change)="saveFile($event)">
-                        <img *ngIf="imgSrc" [src]="imgSrc" alt="image" id="imgUpload">
-                    </div>
-        
-                    <div class="form-group">
-                        <label for="desc">Titre : * </label>
-                        <input required maxlength="249" type="text" id="titre" class="form-control" placeholder="Titre" name="titre" ngModel [(ngModel)]="titre">
-                    </div>
-        
-                    <div class="form-group">
-                        <label for="desc">Description :  </label>
-                        <textarea type="text" maxlength="249" id="desc" class="form-control" placeholder="Description" name="desc"  ngModel [(ngModel)]="desc"></textarea>
-                    </div>
-        
-                    <div class="form-group">
-                        <label>Type : *</label>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <select class="form-select" aria-label=".form-select-sm example" name="type"  ngModel [(ngModel)]="type">
-                                        <option value=1>Consigne du "Jour"</option>
-                                        <option value=2>Consigne de Sécurité</option>
-                                        <option value=3>Consigne Process</option>
-                                        <option value=4>Autre Consigne</option>
-                                        <option value=5>Consigne venant de la création d'un évènement</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-        
-                    <div class="form-group">
-                        <label>Début date validité : *</label>
-                        <input required type="datetime-local" id="dateDebut" class="form-control" placeholder="Date de début de validité" name="dateDebut"
-                        ngModel [(ngModel)]="dateDebut">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Fin date validité : </label>
-                        <input required type="datetime-local" id="dateFin" class="form-control" placeholder="Date de validité" name="dateFin"
-                        ngModel [(ngModel)]="dateFin">
-                    </div>
-        
-                    <p style="font-size: smaller; color: grey">* : Obligatoire</p>
-        
-                    <div class="form-group">
-                        <button class="btn btn-success btn-lg" (click)="createConsigne(f)">Valider</button>
-                        <button class="btn btn-danger btn-lg" onclick="window.location.replace('/cahierQuart/consignes')">Annuler</button>
-                    </div>
-        
-                </form>
+  <mat-dialog-content>
+    <div class="row">
+      <div>
+        <form ngNativeValidate #f="ngForm">
+          <div class="form-group" id="photo">
+            <input
+              *ngIf="idConsigne == 0"
+              type="file"
+              id="fichier"
+              class="form-control"
+              name="fichier"
+              accept=".jpg,.jpeg,.png"
+              (change)="saveFile($event)"
+            />
+            <img *ngIf="imgSrc" [src]="imgSrc" alt="image" id="imgUpload" />
+          </div>
+
+          <div class="form-group">
+            <label for="desc">Titre : * </label>
+            <input
+              required
+              maxlength="249"
+              type="text"
+              id="titre"
+              class="form-control"
+              placeholder="Titre"
+              name="titre"
+              ngModel
+              [(ngModel)]="titre"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="desc">Description : </label>
+            <textarea
+              type="text"
+              maxlength="249"
+              id="desc"
+              class="form-control"
+              placeholder="Description"
+              name="desc"
+              ngModel
+              [(ngModel)]="desc"
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Type : *</label>
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <select
+                    class="form-select"
+                    aria-label=".form-select-sm example"
+                    name="type"
+                    ngModel
+                    [(ngModel)]="type"
+                  >
+                    <option value="1">Consigne du "Jour"</option>
+                    <option value="2">Consigne de Sécurité</option>
+                    <option value="3">Consigne Process</option>
+                    <option value="4">Autre Consigne</option>
+                    <option value="5">
+                      Consigne venant de la création d'un évènement
+                    </option>
+                  </select>
+                </div>
+              </div>
             </div>
-        </div>
-    </mat-dialog-content>
+          </div>
+
+          <div class="form-group">
+            <label>Début date validité : *</label>
+            <input
+              required
+              type="datetime-local"
+              id="dateDebut"
+              class="form-control"
+              placeholder="Date de début de validité"
+              name="dateDebut"
+              ngModel
+              [(ngModel)]="dateDebut"
+            />
+          </div>
+
+          <div class="form-group">
+            <label>Fin date validité : </label>
+            <input
+              required
+              type="datetime-local"
+              id="dateFin"
+              class="form-control"
+              placeholder="Date de validité"
+              name="dateFin"
+              ngModel
+              [(ngModel)]="dateFin"
+            />
+          </div>
+
+          <p style="font-size: smaller; color: grey">* : Obligatoire</p>
+
+          <div class="form-group">
+            <button class="btn btn-success btn-lg" (click)="createConsigne(f)">
+              Valider
+            </button>
+            <button
+              class="btn btn-danger btn-lg"
+              onclick="window.location.replace('/cahierQuart/consignes')"
+            >
+              Annuler
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </mat-dialog-content>
 </ng-template>

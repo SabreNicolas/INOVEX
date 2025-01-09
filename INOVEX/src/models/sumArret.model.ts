@@ -1,4 +1,4 @@
-export interface sumArret{
-    Name : string;
-    Duree : number;
+export interface sumArret {
+  Name: string;
+  Duree: number;
 }

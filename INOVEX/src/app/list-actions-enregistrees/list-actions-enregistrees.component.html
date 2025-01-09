@@ -1,0 +1,85 @@
+<ng-template #myCreateActionDialog>
+  <h1 class="creation" style="text-align: center">
+    Création d'une action enregistrée :
+  </h1>
+
+  <mat-dialog-content>
+    <div class="row">
+      <div>
+        <div class="form-group">
+          <label for="desc">Nom de l'action : * </label>
+          <input
+            required
+            type="text"
+            id="nom"
+            class="form-control"
+            placeholder="nom"
+            name="nom"
+            ngModel
+            [(ngModel)]="nom"
+          />
+        </div>
+
+        <div class="form-group">
+          <button class="btn btn-success btn-lg" (click)="createAction()">
+            Valider
+          </button>
+          <button [mat-dialog-close]="true" class="btn btn-danger btn-lg">
+            Annuler
+          </button>
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
+</ng-template>
+<div>
+  <div>
+    <a
+      (click)="ouvrirDialogCreerAction()"
+      role="button"
+      class="btn btn-primary"
+      id="create"
+    >
+      Créer une action enregistrée
+    </a>
+
+    <div class="table-style">
+      <!--table des actus-->
+      <table class="table table-hover tableFixed">
+        <thead>
+          <tr class="table-secondary">
+            <th scope="col">Nom de l'action</th>
+            <th scope="col">Modifier</th>
+            <th scope="col">Supprimer</th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let action of listActions">
+          <tr class="table-light">
+            <td>{{ action.nom }}</td>
+            <td>
+              <button
+                class="btn btn btn-light edition"
+                (click)="ouvrirDialogUpdateAction(action.id, action.nom)"
+              >
+                <i class="far fa-edit"></i>
+              </button>
+            </td>
+            <td>
+              <button
+                (click)="deleteAction(action.id)"
+                id="deleteAction"
+                class="btn btn-light"
+              >
+                <i
+                  class="fa fa-trash-o"
+                  aria-hidden="true"
+                  style="color: red"
+                ></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

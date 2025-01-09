@@ -1,4 +1,4 @@
 export interface maintenance {
-    dateHeureDebut: string,
-    dateHeureFin: string,
+  dateHeureDebut: string;
+  dateHeureFin: string;
 }

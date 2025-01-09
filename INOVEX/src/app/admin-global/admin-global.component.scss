@@ -1,29 +1,24 @@
-.menu:hover .sous-menu{
-    display: block;
+.menu:hover .sous-menu {
+  display: block;
 }
 
-.sous-menu{
-    position: absolute;
-    left: -18em;
-    top: -1em;
-    width: 18em;
+.sous-menu {
+  position: absolute;
+  left: -18em;
+  top: -1em;
+  width: 18em;
 }
-.menu{
-    margin-left:  10px;
-}
-
-.menuGlobal{
-    left: -120px;
+.menu {
+  margin-left: 10px;
 }
 
-#usine{
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 100;
+.menuGlobal {
+  left: -120px;
 }
 
-.nav-item.active>a{
-    border-bottom: 2px solid blue;
-    color: black;
+#usine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
 }

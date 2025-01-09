@@ -1,110 +1,207 @@
 <!-- Bloc de choix du mode de création -->
 <div id="divCreation" *ngIf="idEquipe == 0">
-    <h3>Choix de l'équipe</h3>
-    <div class="form-check">
-      <input class="form-check-input" type="radio" name="new" id="new" value="new" [(ngModel)]="radioSelect" (click)="showNewEquipe()">
-      <label class="form-check-label" for="new">
-        Nouvelle équipe
-      </label>
-    </div>
-    <div class="form-check">
-      <input class="form-check-input" type="radio" name="enregistree" id="enregistree" value="enregistree" (click)="showEquipeEnregistree()" [(ngModel)]="radioSelect">
-      <label class="form-check-label" for="enregistree">
-        Equipe enregistrée
-      </label>
-    </div>
+  <h3>Choix de l'équipe</h3>
+  <div class="form-check">
+    <input
+      class="form-check-input"
+      type="radio"
+      name="new"
+      id="new"
+      value="new"
+      [(ngModel)]="radioSelect"
+      (click)="showNewEquipe()"
+    />
+    <label class="form-check-label" for="new"> Nouvelle équipe </label>
+  </div>
+  <div class="form-check">
+    <input
+      class="form-check-input"
+      type="radio"
+      name="enregistree"
+      id="enregistree"
+      value="enregistree"
+      (click)="showEquipeEnregistree()"
+      [(ngModel)]="radioSelect"
+    />
+    <label class="form-check-label" for="enregistree">
+      Equipe enregistrée
+    </label>
+  </div>
 </div>
 
 <div id="container">
-    <div id="gauche" style="display: none;">
-        <h3>Liste des rondiers sans équipe</h3>
-        <div id="test" class="overflow-auto">
-        <table class="table table-hover tableFixed" id="listRondier" cdkDropList [cdkDropListData]="listUsers" [cdkDropListConnectedTo]="'listAjout'" (cdkDropListDropped)="onItemDropped($event)" >
-            <thead>
-                <tr class="table-secondary">
-                    <th scope="col">Nom</th>
-                    <th scope="col">Prénom</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody *ngFor="let user of listUsers" cdkDrag>
-            <tr class="table-light"  >
-                <td>{{user.Nom}}</td>
-                <td>{{user.Prenom}}</td>
-                <td>
-                    <button type="button" class="btn btn-success" (click)="ajoutUser(user)">
-                        <i class="fas fa-arrow-right"></i> 
-                    </button> 
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        </div>
+  <div id="gauche" style="display: none">
+    <h3>Liste des rondiers sans équipe</h3>
+    <div id="test" class="overflow-auto">
+      <table
+        class="table table-hover tableFixed"
+        id="listRondier"
+        cdkDropList
+        [cdkDropListData]="listUsers"
+        [cdkDropListConnectedTo]="'listAjout'"
+        (cdkDropListDropped)="onItemDropped($event)"
+      >
+        <thead>
+          <tr class="table-secondary">
+            <th scope="col">Nom</th>
+            <th scope="col">Prénom</th>
+            <th scope="col">Poste</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let user of listUsers" cdkDrag>
+          <tr class="table-light">
+            <td>{{ user.Nom }}</td>
+            <td>{{ user.Prenom }}</td>
+            <td>{{ user.posteUser }}</td>
+            <td>
+              <button
+                type="button"
+                class="btn btn-success"
+                (click)="ajoutUser(user)"
+              >
+                <i class="fas fa-arrow-right"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="droite" style="display: none">
+    <h3>Création de la nouvelle équipe :</h3>
+    <div id="choix">
+      <div class="mb-3" id="newEquipe" style="display: none">
+        <label for="nomEquipe" class="form-label">Nom de l'équipe *</label>
+        <input
+          required
+          type="text"
+          id="nomEquipe"
+          class="form-control"
+          #nomEquipe
+          placeholder="Nom de l'équipe"
+          name="nomEquipe"
+          ngModel
+          [(ngModel)]="name"
+        />
+      </div>
+
+      <div class="mb-3" id="equipesEnregistrees" style="display: none">
+        <label for="nomEquipeEnregistree" class="form-label"
+          >Nom de l'équipe *</label
+        >
+        <select
+          class="form-select"
+          id="nomEquipeEnregistree"
+          #nomEquipeEnregistree
+          name="name"
+          required
+          ngModel
+          [(ngModel)]="idEquipeEnregistree"
+          (change)="chargerRondiersEquipeEnregistree()"
+        >
+          <option value="0">Choisissez une équipe</option>
+          <option
+            *ngFor="let equipe of equipesEnregistrees"
+            value="{{ equipe.id }}-{{ equipe.equipe }}"
+          >
+            {{ equipe.equipe }}
+          </option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="quart" class="form-label">Période :</label>
+        <strong>{{ periode }} du {{ dateDuJour }}</strong>
+      </div>
     </div>
 
-    <div id="droite" style="display: none;">
-        <h3>Création de la nouvelle équipe :</h3>
-        <div id="choix">
-            <div class="mb-3" id="newEquipe" style="display: none;">  
-                <label for="nomEquipe" class="form-label">Nom de l'équipe *</label>  
-                <input required type="text" id="nomEquipe" class="form-control" #nomEquipe placeholder="Nom de l'équipe" name="nomEquipe" ngModel [(ngModel)]="name">
-
-            </div>
-
-            <div class="mb-3" id="equipesEnregistrees" style="display: none;">  
-                <label for="nomEquipeEnregistree" class="form-label">Nom de l'équipe *</label>  
-                <select class="form-select" id="nomEquipeEnregistree" #nomEquipeEnregistree name="name" required ngModel [(ngModel)]="idEquipeEnregistree" (change)="chargerRondiersEquipeEnregistree()">
-                    <option value="0">Choisissez une équipe</option>
-                    <option *ngFor="let equipe of equipesEnregistrees" value="{{equipe.id}}-{{equipe.equipe}}">{{equipe.equipe}}</option>
-                </select>
-            </div>
-
-            <div class="mb-3">
-                <label for="quart" class="form-label">Période :</label>
-                <strong>{{periode}} du {{dateDuJour}}</strong>
-            </div>
-        </div>
-        
-        <div id="tableAjout" class="overflow-auto">
-            <table class="table table-hover tableFixed" id="listAjout" cdkDropList  [cdkDropListData]="listAjout" [cdkDropListConnectedTo]="'listRondier'" (cdkDropListDropped)="onItemDropped($event)">
-                <thead>
-                <tr class="table-secondary">
-                    <th scope="col">Nom</th>
-                    <th scope="col">Prénom</th>
-                    <th scope="col">Poste</th>
-                    <!-- <th scope="col">Ronde</th> -->
-                    <th></th>
-                </thead>
-                <tbody >
-                    <tr *ngFor="let user of listAjout" class="table-light" cdkDrag>
-                        <td>{{user.Nom}}</td>
-                        <td>{{user.Prenom}}</td>
-                        <td>
-                            <select id="{{user.Nom}}_{{user.Prenom}}_poste" class="form-select" name="poste" required ngModel [(ngModel)]="user.Poste">
-                                <option value="Rondier/Pontier">Rondier/Pontier</option>
-                                <option value="Opérateur de conduite">Opérateur de conduite</option>
-                                <option value="Adjoint Chef de Quart">Adjoint Chef de Quart</option>
-                                <option value="Chef de Quart">Chef de Quart</option>
-                            </select>
-                        </td>
-                        <td>
-                            <select class="form-select" id="{{user.Nom}}_{{user.Prenom}}_zone" id="ronde" name="ronde" required ngModel [(ngModel)]="user.Zone">
+    <div id="tableAjout" class="overflow-auto">
+      <table
+        class="table table-hover tableFixed"
+        id="listAjout"
+        cdkDropList
+        [cdkDropListData]="listAjout"
+        [cdkDropListConnectedTo]="'listRondier'"
+        (cdkDropListDropped)="onItemDropped($event)"
+      >
+        <thead>
+          <tr class="table-secondary">
+            <th scope="col">Nom</th>
+            <th scope="col">Prénom</th>
+            <th scope="col">Poste</th>
+            <!-- <th scope="col">Ronde</th>
+                    <th scope="col">#</th>-->
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of listAjout" class="table-light" cdkDrag>
+            <td>{{ user.Nom }}</td>
+            <td>{{ user.Prenom }}</td>
+            <td>
+              <select
+                id="{{ user.Nom }}_{{ user.Prenom }}_poste"
+                class="form-select"
+                name="poste"
+                required
+                ngModel
+                [(ngModel)]="user.posteUser"
+              >
+                <option value="Rondier/Pontier">Rondier/Pontier</option>
+                <option value="Opérateur de Conduite">
+                  Opérateur de Conduite
+                </option>
+                <option value="Intérimaire">Intérimaire</option>
+                <option value="Adjoint Chef de Quart">
+                  Adjoint Chef de Quart
+                </option>
+                <option value="Chef de Quart">Chef de Quart</option>
+              </select>
+            </td>
+            <td>
+              <!--<select class="form-select" id="{{user.Nom}}_{{user.Prenom}}_zone" id="ronde" name="ronde" required ngModel [(ngModel)]="user.Zone">
                                 <option value="0">Pontier</option>
                                 <option *ngFor="let zone of listZone" value="{{zone.Id}}">{{zone.nom}}</option>
-                            </select>
-                        </td>
-                        <td>
-                            <button type="button" class="btn btn-danger" (click)="suppUser(user)">
-                                <i class="fas fa-times"></i> 
-                            </button> 
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <p style="font-size: smaller; color: grey" id="legende">* : Obligatoire</p>
-        <button *ngIf="radioSelect == 'new' || radioSelect == ''" id="creer" type="submit" class="btn btn-success" (click)="nouvelleEquipe(nomEquipe.value)">Soumettre</button>  
-        <button *ngIf="radioSelect == 'enregistree'" id="creer" type="submit" class="btn btn-success" (click)="nouvelleEquipe(nomEquipeEnregistree.value)">Soumettre</button>  
-        <button class="btn btn-danger" onclick="window.location.replace('/cahierQuart')">Annuler</button>
-    </div>  
+                            </select>-->
+            </td>
+            <td>
+              <button
+                type="button"
+                class="btn btn-danger"
+                (click)="suppUser(user)"
+              >
+                <i class="fas fa-times"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size: smaller; color: grey" id="legende">* : Obligatoire</p>
+    <button
+      *ngIf="radioSelect === 'new' || radioSelect === ''"
+      id="creer"
+      type="submit"
+      class="btn btn-success"
+      (click)="nouvelleEquipe(nomEquipe.value)"
+    >
+      Soumettre
+    </button>
+    <button
+      *ngIf="radioSelect === 'enregistree'"
+      id="creer"
+      type="submit"
+      class="btn btn-success"
+      (click)="nouvelleEquipe(nomEquipeEnregistree.value)"
+    >
+      Soumettre
+    </button>
+    <button
+      class="btn btn-danger"
+      onclick="window.location.replace('/cahierQuart')"
+    >
+      Annuler
+    </button>
+  </div>
 </div>

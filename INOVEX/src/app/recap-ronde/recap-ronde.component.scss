@@ -1,17 +1,78 @@
-#create{
-    position: relative;
-    left: 45%;
-    margin-bottom: 10px;
+#create {
+  position: relative;
+  left: 45%;
+  margin-bottom: 10px;
 }
 
-.color--0{
-    background-color: lightgreen;
+#libelleQuart {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(84, 149, 216);
+  color: rgb(27, 37, 51);
+  border: solid 1px rgb(84, 149, 216);
+  border-radius: 3px;
+  flex-direction: column;
 }
 
-.color--1{
-    background-color: lightsalmon;
+.card {
+  overflow: hidden;
+  transition: transform 0.3s;
+  height: max-content;
+  cursor: help;
+  background-color: rgb(84, 149, 216);
 }
 
-.color--2{
-    background-color: lightcoral;
+.cardActu {
+  width: 45%;
+}
+
+.cardElem {
+  padding: 10px !important;
+  width: 100%;
+}
+
+.card-body {
+  padding: 1px !important;
+}
+
+.card-title {
+  text-shadow: none;
+  color: rgb(27, 37, 51);
+}
+
+.card-text {
+  font-weight: bold;
+  color: rgb(27, 37, 51);
+}
+
+.card-importance {
+  color: rgb(154, 196, 89);
+}
+
+.btnAdd {
+  background-color: rgb(154, 196, 89);
+  color: rgb(27, 37, 51);
+}
+
+.titre {
+  text-align: center;
+  color: rgb(154, 196, 89);
+}
+
+.color--0 {
+  color: rgb(154, 196, 89);
+}
+
+.color--1 {
+  color: orange;
+}
+
+.color--2 {
+  color: red;
+}
+
+#dateDebut:disabled {
+  background-color: rgb(27, 37, 51) !important;
+  color: white !important;
 }
