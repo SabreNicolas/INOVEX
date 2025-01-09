@@ -1,224 +1,323 @@
-<a role="button" (click)="ouvrirDialogCreerBadge()" class="btn btn-primary" id="create">
-    Créer un badge
+<a
+  role="button"
+  (click)="ouvrirDialogCreerBadge()"
+  class="btn btn-primary"
+  id="create"
+>
+  Créer un badge
 </a>
 
 <ng-template let-data #myCreateBadgeDialog>
-    <h1 class="creation" style="text-align: center;">Création d'un badge :</h1>
+  <h1 class="creation" style="text-align: center">Création d'un badge :</h1>
 
-    <mat-dialog-content>
-        <div class="row">
-            <div class="col-sm-5 col-sm-offset-1">
-        
-                <form ngNativeValidate  (ngSubmit)="onSubmit(f)" #f="ngForm">
-        
-                    <div class="form-group">
-                        <label for="idBadge">Identifiant badge : *</label>
-                        <input required type="text" id="idBadge" class="form-control" placeholder="identifiant du badge" name="idBadge" ngModel>
-                    </div>
-        
-                    <p style="font-size: smaller; color: grey">* : Obligatoire</p>
-        
-                    <div class="form-group">
-                        <button class="btn btn-success btn-lg" type="submit">Valider</button>
-                        <button [mat-dialog-close]="true" class="btn btn-danger btn-lg">Annuler</button>
-                    </div>
-        
-                </form>
-            </div>
-        </div>
-    </mat-dialog-content>
+  <mat-dialog-content>
+    <div class="row">
+      <div class="col-sm-5 col-sm-offset-1">
+        <form ngNativeValidate (ngSubmit)="onSubmit(f)" #f="ngForm">
+          <div class="form-group">
+            <label for="idBadge">Identifiant badge : *</label>
+            <input
+              required
+              type="text"
+              id="idBadge"
+              class="form-control"
+              placeholder="identifiant du badge"
+              name="idBadge"
+              ngModel
+            />
+          </div>
+
+          <p style="font-size: smaller; color: grey">* : Obligatoire</p>
+
+          <div class="form-group">
+            <button class="btn btn-success btn-lg" type="submit">
+              Valider
+            </button>
+            <button [mat-dialog-close]="true" class="btn btn-danger btn-lg">
+              Annuler
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </mat-dialog-content>
 </ng-template>
 
 <!--ATTENTION-->
 <!--Mauvaise pratique de mettre le style directement dans les balises HTML-->
 <!--A faire le moins possible-->
-<div *ngIf="listPermisFeu" style="display: flex; justify-content: space-around; margin-top: 1%;">
-    <!--PERMIS DE FEU-->
-     <div>
-         <div style="display: inline-flex; width: 100%">
-             <div style="width: 87%">
-                 <h5>Permis de feu en cours :</h5>
-             </div>
-             <button class="btn btn btn-outline-warning" routerLink="../permisFeu" [queryParams]="{ isPermisFeu: 'true'}">
-                 +<i class="fa fa-fire-extinguisher" aria-hidden="true"></i>
-             </button>
-         </div>
-         <!--table des permis de feu-->
-        <div class="table-style">
-            <table class="table table-primary table-bordered">
-                <thead>
-                <tr>
-                    <th scope="col">Numéro de badge</th>
-                    <th scope="col">Numéro de Permis de Feu</th>
-                    <th scope="col">Début</th>
-                    <th scope="col">Fin</th>
-                    <th scope="col">Zone</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr *ngFor="let permis of listPermisFeu">
-                    <td *ngIf="permis.isPermisFeu" class="fix">{{permis.badgeId}}</td>
-                    <td *ngIf="permis.isPermisFeu" class="fix">{{permis.numero}}</td>
-                    <td *ngIf="permis.isPermisFeu" class="fix">{{permis.dateHeureDeb}}</td>
-                    <td *ngIf="permis.isPermisFeu" class="fix">{{permis.dateHeureFin}}</td>
-                    <td *ngIf="permis.isPermisFeu" class="fix">{{permis.zone}}</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+<div
+  *ngIf="listPermisFeu"
+  style="display: flex; justify-content: space-around; margin-top: 1%"
+>
+  <!--PERMIS DE FEU-->
+  <div>
+    <div style="display: inline-flex; width: 100%">
+      <div style="width: 87%">
+        <h5>Permis de feu en cours :</h5>
+      </div>
+      <button
+        class="btn btn btn-outline-warning"
+        routerLink="../permisFeu"
+        [queryParams]="{ isPermisFeu: 'true' }"
+      >
+        +<i class="fa fa-fire-extinguisher" aria-hidden="true"></i>
+      </button>
     </div>
+    <!--table des permis de feu-->
+    <div class="table-style">
+      <table class="table table-primary table-bordered">
+        <thead>
+          <tr>
+            <th scope="col">Numéro de badge</th>
+            <th scope="col">Numéro de Permis de Feu</th>
+            <th scope="col">Début</th>
+            <th scope="col">Fin</th>
+            <th scope="col">Zone</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let permis of listPermisFeu">
+            <td *ngIf="permis.isPermisFeu" class="fix">{{ permis.badgeId }}</td>
+            <td *ngIf="permis.isPermisFeu" class="fix">{{ permis.numero }}</td>
+            <td *ngIf="permis.isPermisFeu" class="fix">
+              {{ permis.dateHeureDeb }}
+            </td>
+            <td *ngIf="permis.isPermisFeu" class="fix">
+              {{ permis.dateHeureFin }}
+            </td>
+            <td *ngIf="permis.isPermisFeu" class="fix">{{ permis.zone }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
-    <!--ZONE DE CONSIGNATION-->
-    <div>
-        <div style="display: inline-flex; width: 100%">
-            <div style="width: 87%">
-                <h5>Zones de consignation en cours :</h5>
-            </div>
-            <button class="btn btn btn-outline-warning" routerLink="../permisFeu" [queryParams]="{ isPermisFeu: 'false'}">
-                +<i class="fa fa-ban" aria-hidden="true"></i>
-            </button>
-        </div>
-        <!--table des zones de consignation-->
-        <div class="table-style">
-            <table class="table table-primary table-bordered">
-                <thead>
-                <tr>
-                    <th scope="col">Numéro de badge</th>
-                    <th scope="col">Début</th>
-                    <th scope="col">Fin</th>
-                    <th scope="col">Zone</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr *ngFor="let permis of listPermisFeu">
-                    <td *ngIf="!permis.isPermisFeu" class="fix">{{permis.badgeId}}</td>
-                    <td *ngIf="!permis.isPermisFeu" class="fix">{{permis.dateHeureDeb}}</td>
-                    <td *ngIf="!permis.isPermisFeu" class="fix">{{permis.dateHeureFin}}</td>
-                    <td *ngIf="!permis.isPermisFeu" class="fix">{{permis.zone}}</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+  <!--ZONE DE CONSIGNATION-->
+  <div>
+    <div style="display: inline-flex; width: 100%">
+      <div style="width: 87%">
+        <h5>Zones de consignation en cours :</h5>
+      </div>
+      <button
+        class="btn btn btn-outline-warning"
+        routerLink="../permisFeu"
+        [queryParams]="{ isPermisFeu: 'false' }"
+      >
+        +<i class="fa fa-ban" aria-hidden="true"></i>
+      </button>
     </div>
+    <!--table des zones de consignation-->
+    <div class="table-style">
+      <table class="table table-primary table-bordered">
+        <thead>
+          <tr>
+            <th scope="col">Numéro de badge</th>
+            <th scope="col">Début</th>
+            <th scope="col">Fin</th>
+            <th scope="col">Zone</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let permis of listPermisFeu">
+            <td *ngIf="!permis.isPermisFeu" class="fix">
+              {{ permis.badgeId }}
+            </td>
+            <td *ngIf="!permis.isPermisFeu" class="fix">
+              {{ permis.dateHeureDeb }}
+            </td>
+            <td *ngIf="!permis.isPermisFeu" class="fix">
+              {{ permis.dateHeureFin }}
+            </td>
+            <td *ngIf="!permis.isPermisFeu" class="fix">{{ permis.zone }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
 
-
 <div *ngIf="listBadgeLibre || listBadgeUser || listBadgeZone">
+  <div class="table-style">
+    <!--table des badges-->
+    <table class="table table-hover tableFixed">
+      <thead>
+        <tr class="table-secondary">
+          <th scope="col">Badge</th>
+          <th scope="col">UID</th>
+          <th scope="col">Utilisateur</th>
+          <th scope="col">Zone</th>
+          <th scope="col">Etat d'activation</th>
+          <th scope="col">Retirer Affectation</th>
+          <th scope="col">Supprimer le badge</th>
+        </tr>
+      </thead>
+      <!--BADGES LIBRES-->
+      <tbody>
+        <tr class="table-light">
+          <td style="font-weight: bold">Badges Libres</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+      <tbody *ngFor="let b of listBadgeLibre">
+        <tr class="table-light">
+          <td>{{ b.Id }}</td>
+          <td>{{ b.uid }}</td>
+          <td>
+            <button
+              id="setUser"
+              class="btn btn-primary"
+              routerLink="../gestionBadge"
+              [queryParams]="{ isUser: 'true', badgeId: b.Id }"
+            >
+              Affecter à un utilisateur
+            </button>
+          </td>
+          <td>
+            <button
+              id="setZone"
+              class="btn btn-primary"
+              routerLink="../gestionBadge"
+              [queryParams]="{ isUser: 'false', badgeId: b.Id }"
+            >
+              Affecter à une zone
+            </button>
+          </td>
+          <td *ngIf="b.isEnabled == false">
+            <button
+              id="setDisabled"
+              (click)="setActivation(b.Id, 1)"
+              class="btn btn-outline-danger"
+            >
+              <i class="fa fa-times-circle"></i>
+            </button>
+          </td>
+          <td *ngIf="b.isEnabled == true">
+            <button
+              id="setEnabled"
+              (click)="setActivation(b.Id, 0)"
+              class="btn btn-outline-success"
+            >
+              <i class="fa fa-check-circle" aria-hidden="true"></i>
+            </button>
+          </td>
+          <td></td>
+          <td>
+            <button
+              id="setEnabled"
+              (click)="deleteBadge(b.Id)"
+              class="btn btn-outline-danger"
+            >
+              <i class="fa fa-trash" aria-hidden="true"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+      <br />
 
+      <!--BADGES AFFECTES A UN USER-->
+      <tbody>
+        <tr class="table-light">
+          <td style="font-weight: bold">Badges Affectés à un utilisateur</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+      <tbody *ngFor="let b of listBadgeUser">
+        <tr class="table-light">
+          <td>{{ b.Id }}</td>
+          <td>{{ b.uid }}</td>
+          <td>{{ b.affect }}</td>
+          <td>/</td>
+          <td *ngIf="b.isEnabled == false">
+            <button
+              id="setDisabledUser"
+              (click)="setActivation(b.Id, 1)"
+              class="btn btn-outline-danger"
+            >
+              <i class="fa fa-times-circle"></i>
+            </button>
+          </td>
+          <td *ngIf="b.isEnabled == true">
+            <button
+              id="setEnabledUser"
+              (click)="setActivation(b.Id, 0)"
+              class="btn btn-outline-success"
+            >
+              <i class="fa fa-check-circle" aria-hidden="true"></i>
+            </button>
+          </td>
+          <td>
+            <button
+              id="resetAffectationUser"
+              (click)="resetAffectation(b.Id)"
+              class="btn btn btn-outline-primary"
+            >
+              <i class="fa fa-ban" aria-hidden="true"></i>
+            </button>
+          </td>
+          <td></td>
+        </tr>
+      </tbody>
+      <br />
 
-    <div class="table-style">
-        <!--table des badges-->
-        <table class="table table-hover tableFixed">
-            <thead>
-            <tr class="table-secondary">
-                <th scope="col">Badge</th>
-                <th scope="col">UID</th>
-                <th scope="col">Utilisateur</th>
-                <th scope="col">Zone</th>
-                <th scope="col">Etat d'activation</th>
-                <th scope="col">Retirer Affectation</th>
-                <th scope="col">Supprimer le badge</th>
-            </tr>
-            </thead>
-            <!--BADGES LIBRES-->
-            <tbody>
-            <tr class="table-light">
-                <td style="font-weight: bold">Badges Libres</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            </tbody>
-            <tbody *ngFor="let b of listBadgeLibre">
-            <tr class="table-light">
-                <td>{{b.Id}}</td>
-                <td>{{b.uid}}</td>
-                <td><button id="setUser" class="btn btn-primary" routerLink="../gestionBadge" [queryParams]="{ isUser: 'true', badgeId: b.Id}">
-                    Affecter à un utilisateur
-                </button></td>
-                <td><button id="setZone" class="btn btn-primary" routerLink="../gestionBadge" [queryParams]="{ isUser: 'false', badgeId: b.Id}">
-                    Affecter à une zone
-                </button></td>
-                <td *ngIf="b.isEnabled == false"><button id="setDisabled" (click)="setActivation(b.Id,1)" class="btn btn-outline-danger">
-                    <i class="fa fa-times-circle"></i>
-                </button></td>
-                <td *ngIf="b.isEnabled == true"><button id="setEnabled" (click)="setActivation(b.Id,0)" class="btn btn-outline-success">
-                    <i class="fa fa-check-circle" aria-hidden="true"></i>
-                </button></td>
-                <td></td>
-                <td><button id="setEnabled" (click)="deleteBadge(b.Id)" class="btn btn-outline-danger">
-                    <i class="fa fa-trash" aria-hidden="true"></i>
-                </button></td>
-            </tr>
-            </tbody>
-            <br>
-
-            <!--BADGES AFFECTES A UN USER-->
-            <tbody>
-            <tr class="table-light">
-                <td style="font-weight: bold">Badges Affectés à un utilisateur</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            </tbody>
-            <tbody *ngFor="let b of listBadgeUser">
-            <tr class="table-light">
-                <td>{{b.Id}}</td>
-                <td>{{b.uid}}</td>
-                <td>{{b.affect}}</td>
-                <td>/</td>
-                <td *ngIf="b.isEnabled == false"><button id="setDisabledUser" (click)="setActivation(b.Id,1)" class="btn btn-outline-danger">
-                    <i class="fa fa-times-circle"></i>
-                </button></td>
-                <td *ngIf="b.isEnabled == true"><button id="setEnabledUser" (click)="setActivation(b.Id,0)" class="btn btn-outline-success">
-                    <i class="fa fa-check-circle" aria-hidden="true"></i>
-                </button></td>
-                <td><button id="resetAffectationUser" (click)="resetAffectation(b.Id)" class="btn btn btn-outline-primary">
-                    <i class="fa fa-ban" aria-hidden="true"></i>
-                </button></td>
-                <td></td>
-            </tr>
-            </tbody>
-            <br>
-
-            <!--BADGES AFFECTES A UNE ZONE-->
-            <tbody>
-            <tr class="table-light">
-                <td style="font-weight: bold">Badges Affectés à une zone</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-
-            </tr>
-            </tbody>
-            <tbody *ngFor="let b of listBadgeZone">
-            <tr class="table-light">
-                <td>{{b.Id}}</td>
-                <td>{{b.uid}}</td>
-                <td>/</td>
-                <td>{{b.affect}}</td>
-                <td *ngIf="b.isEnabled == false"><button id="setDisabledZone" (click)="setActivation(b.Id,1)" class="btn btn-outline-danger">
-                    <i class="fa fa-times-circle"></i>
-                </button></td>
-                <td *ngIf="b.isEnabled == true"><button id="setEnabledZone" (click)="setActivation(b.Id,0)" class="btn btn-outline-success">
-                    <i class="fa fa-check-circle" aria-hidden="true"></i>
-                </button></td>
-                <td><button id="resetAffectationZone" (click)="resetAffectation(b.Id)" class="btn btn btn-outline-primary">
-                    <i class="fa fa-ban" aria-hidden="true"></i>
-                </button></td>
-                <td></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+      <!--BADGES AFFECTES A UNE ZONE-->
+      <tbody>
+        <tr class="table-light">
+          <td style="font-weight: bold">Badges Affectés à une zone</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+      <tbody *ngFor="let b of listBadgeZone">
+        <tr class="table-light">
+          <td>{{ b.Id }}</td>
+          <td>{{ b.uid }}</td>
+          <td>/</td>
+          <td>{{ b.affect }}</td>
+          <td *ngIf="b.isEnabled == false">
+            <button
+              id="setDisabledZone"
+              (click)="setActivation(b.Id, 1)"
+              class="btn btn-outline-danger"
+            >
+              <i class="fa fa-times-circle"></i>
+            </button>
+          </td>
+          <td *ngIf="b.isEnabled == true">
+            <button
+              id="setEnabledZone"
+              (click)="setActivation(b.Id, 0)"
+              class="btn btn-outline-success"
+            >
+              <i class="fa fa-check-circle" aria-hidden="true"></i>
+            </button>
+          </td>
+          <td>
+            <button
+              id="resetAffectationZone"
+              (click)="resetAffectation(b.Id)"
+              class="btn btn btn-outline-primary"
+            >
+              <i class="fa fa-ban" aria-hidden="true"></i>
+            </button>
+          </td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

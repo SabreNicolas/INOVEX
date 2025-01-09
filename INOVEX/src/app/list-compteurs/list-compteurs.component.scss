@@ -1,4 +1,4 @@
-.blockFiltres{
+.blockFiltres {
   position: fixed;
   top: 5.5em;
   right: 0;
@@ -7,43 +7,41 @@
   z-index: -2;
 }
 
-.table-style{
+.table-style {
   margin-top: 25em;
 }
 
 @media (width < 1320px) {
-  .table-style{
+  .table-style {
     margin-top: 28em;
   }
 }
 
 @media (width < 1235px) {
-  .blockFiltres{
+  .blockFiltres {
     top: 7em;
   }
-  .table-style{
+  .table-style {
     margin-top: 29em;
   }
 }
 
-
 @media (width < 992px) {
-  .blockFiltres{
+  .blockFiltres {
     top: 4em;
   }
-  .table-style{
+  .table-style {
     margin-top: 29em;
   }
 }
 @media (width < 838px) {
-  .blockFiltres{
+  .blockFiltres {
     top: 4em;
   }
-  .table-style{
+  .table-style {
     margin-top: 30.5em;
   }
 }
-
 
 .loader {
   @keyframes loader {
@@ -75,15 +73,18 @@
   background: white;
   margin: auto;
   position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   z-index: 20;
-  animation: loader 12s linear ;
+  animation: loader 12s linear;
   animation-iteration-count: infinite;
   visibility: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  .loaderBloc{
+  .loaderBloc {
     border: 10px solid transparent;
     border-top: 10px solid #2cb6aa;
     border-bottom: 10px solid #22498c;
@@ -92,15 +93,19 @@
     height: 100px;
     margin: auto;
     position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    animation: loader-bloc 12s linear ;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    animation: loader-bloc 12s linear;
     animation-iteration-count: infinite;
     z-index: 10;
     visibility: hidden;
   }
 }
 
-#spinner, #spinnerBloc{
+#spinner,
+#spinnerBloc {
   visibility: hidden;
   position: fixed;
 }

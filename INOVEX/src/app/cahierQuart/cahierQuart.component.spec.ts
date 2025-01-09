@@ -1,16 +1,15 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { cahierQuart } from './cahierQuart.component';
+import { cahierQuart } from "./cahierQuart.component";
 
-describe('EquipeGlobalComponent', () => {
+describe("EquipeGlobalComponent", () => {
   let component: cahierQuart;
   let fixture: ComponentFixture<cahierQuart>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ cahierQuart ]
-    })
-    .compileComponents();
+      declarations: [cahierQuart],
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('EquipeGlobalComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

@@ -1,21 +1,21 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { AcceuilCahierQuartComponent } from './acceuil-cahier-quart.component';
+import { AcceuilCahierQuartComponent } from "./acceuil-cahier-quart.component";
 
-describe('AcceuilCahierQuartComponent', () => {
+describe("AcceuilCahierQuartComponent", () => {
   let component: AcceuilCahierQuartComponent;
   let fixture: ComponentFixture<AcceuilCahierQuartComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [AcceuilCahierQuartComponent]
+      declarations: [AcceuilCahierQuartComponent],
     });
     fixture = TestBed.createComponent(AcceuilCahierQuartComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

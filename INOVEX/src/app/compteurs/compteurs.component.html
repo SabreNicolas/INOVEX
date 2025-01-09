@@ -1,50 +1,94 @@
 <h1 class="creation">Création d'un Compteur :</h1>
 
 <div class="row">
-    <div class="col-sm-5 col-sm-offset-1">
+  <div class="col-sm-5 col-sm-offset-1">
+    <form ngNativeValidate (ngSubmit)="onSubmit(f)" #f="ngForm">
+      <div class="form-group">
+        <label for="nom">Nom : * </label>
+        <input
+          required
+          type="text"
+          id="nom"
+          class="form-control"
+          placeholder="Nom"
+          name="nom"
+          ngModel
+        />
+      </div>
 
-        <form ngNativeValidate (ngSubmit)="onSubmit(f)" #f="ngForm">
+      <div class="form-group">
+        <label for="unit">TAG eMonitoring : </label>
+        <input
+          type="text"
+          id="tag"
+          class="form-control"
+          placeholder="TAG"
+          name="tag"
+          ngModel
+        />
+      </div>
 
+      <div class="form-group">
+        <label for="unit">Unité : </label>
+        <input
+          type="text"
+          id="unit"
+          class="form-control"
+          placeholder="Unité"
+          name="unit"
+          ngModel
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Filtre de Recherche : *</label>
+        <div class="row">
+          <div class="col-sm-6">
             <div class="form-group">
-                <label for="nom">Nom : * </label>
-                <input required type="text" id="nom" class="form-control" placeholder="Nom" name="nom" ngModel>
+              <select
+                required
+                class="form-select form-select-sm"
+                aria-label=".form-select-sm example"
+                name="categorie"
+                ngModel
+              >
+                <option
+                  *ngFor="let cat of listCategories"
+                  selected
+                  value="{{ cat.Code }}"
+                >
+                  {{ cat.Name }}
+                </option>
+              </select>
             </div>
+          </div>
+        </div>
+      </div>
 
-            <div class="form-group">
-                <label for="unit">TAG eMonitoring : </label>
-                <input type="text" id="tag" class="form-control" placeholder="TAG" name="tag" ngModel>
-            </div>
+      <div class="form-group form-check form-switch">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          name="isReferentiel"
+          id="isReferentiel"
+          ngModel
+        />
+        <label class="form-check-label" for="isReferentiel"
+          >Propre au site (n'appartient pas au référentiel produit)</label
+        >
+      </div>
 
-            <div class="form-group">
-                <label for="unit">Unité : </label>
-                <input type="text" id="unit" class="form-control" placeholder="Unité" name="unit" ngModel>
-            </div>
+      <p style="font-size: smaller; color: grey">* : Obligatoire</p>
 
-            <div class="form-group">
-                <label>Filtre de Recherche : *</label>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <select required class="form-select form-select-sm" aria-label=".form-select-sm example" name="categorie" ngModel>
-                                <option *ngFor="let cat of listCategories" selected value="{{cat.Code}}">{{cat.Name}}</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group form-check form-switch">
-                <input class="form-check-input" type="checkbox" name="isReferentiel" id="isReferentiel" ngModel>
-                <label class="form-check-label" for="isReferentiel">Propre au site (n'appartient pas au référentiel produit)</label>
-            </div>
-
-            <p style="font-size: smaller; color: grey">* : Obligatoire</p>
-
-            <div class="form-group">
-                <button class="btn btn-success btn-lg" type="submit">Valider</button>
-                <button class="btn btn-danger btn-lg" onclick="window.location.replace('/admin')">Annuler</button>
-            </div>
-
-        </form>
-    </div>
+      <div class="form-group">
+        <button class="btn btn-success btn-lg" type="submit">Valider</button>
+        <button
+          class="btn btn-danger btn-lg"
+          onclick="window.location.replace('/admin')"
+        >
+          Annuler
+        </button>
+      </div>
+    </form>
+  </div>
 </div>

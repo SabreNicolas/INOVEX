@@ -1,17 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
-body{
+body {
   //background: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url("./assets/paprec.png") fixed no-repeat bottom left 0.5em, url("./assets/Usine2_40.png") fixed no-repeat bottom right !important;
-  background-color: rgb(27,37,51);
-  color : white !important;
+  background-color: rgb(27, 37, 51);
+  color: white !important;
 }
 
-@import '@angular/material/prebuilt-themes/indigo-pink.css';
+@import "@angular/material/prebuilt-themes/indigo-pink.css";
 
 .tableFixed > thead th {
   position: -webkit-sticky; /* for Safari */
   position: sticky;
   top: 0;
-  z-index : 2;
+  z-index: 2;
 }
 
 .tableFixed > tbody td:first-child {
@@ -34,7 +34,7 @@ a {
 }
 
 .rapportsList {
-  display : flex;
+  display: flex;
   margin: 0 auto;
   width: max-content;
 }
@@ -45,15 +45,17 @@ a {
   width: 18rem;
 }
 
-a, a:hover, a:visited{
+a,
+a:hover,
+a:visited {
   text-decoration: none;
 }
 
-.card:hover{
+.card:hover {
   background-color: lightgray;
 }
 
-.loading{
+.loading {
   display: flex;
   align-content: center;
   align-items: center;
@@ -75,15 +77,15 @@ a, a:hover, a:visited{
   font-weight: bold;
 }
 
-#arrets{
+#arrets {
   display: flex;
 }
 
-#arretsFiltres{
+#arretsFiltres {
   width: 93em;
 }
 
-.blocCards{
+.blocCards {
   display: flex;
   justify-content: space-around;
   align-items: center !important;
@@ -92,23 +94,23 @@ a, a:hover, a:visited{
   height: 85vh;
 }
 
-.card{
+.card {
   box-shadow: 7px 7px 6px lightgray;
   border-radius: 10px 10px 10px 10px;
 }
 
-.card:hover{
+.card:hover {
   cursor: pointer;
 }
 
-.card-title{
+.card-title {
   margin-top: 1em;
   border-bottom: solid white 2px;
   padding-bottom: 1em;
   text-shadow: 2px 2px 3px black;
 }
 
-.btnAccueil{
+.btnAccueil {
   width: 12em;
   height: 3em;
   transform: scale(1);
@@ -117,102 +119,102 @@ a, a:hover, a:visited{
   background-color: #bcbccc !important;
 }
 
-.btnAccueil:hover{
+.btnAccueil:hover {
   transform: scale(1.15);
 }
 
-.btn:disabled{
+.btn:disabled {
   pointer-events: all !important;
   cursor: not-allowed;
 }
 
-.card-textAccueil{
+.card-textAccueil {
   height: 6em;
 }
 
-.cardAccueil{
+.cardAccueil {
   width: 17rem;
   height: 22rem;
   cursor: default !important;
 }
 
-.cardSaisie{
-  background-color: #Fb6019 !important;
+.cardSaisie {
+  background-color: #fb6019 !important;
 }
 
-.cardQSE{
+.cardQSE {
   background-color: #2cb6aa !important;
 }
 
-.cardRapports{
+.cardRapports {
   background-color: #73b843 !important;
 }
 
-.cardAdmin{
+.cardAdmin {
   background-color: #22498c !important;
 }
 
-.cardRondier{
-  background-color: #F6C344 !important;
+.cardRondier {
+  background-color: #f6c344 !important;
 }
 
-
-.btnRetour{
+.btnRetour {
   margin-left: 1em;
   margin-top: 1em;
 }
 
-.blockLogin{
+.blockLogin {
   display: flex;
   align-items: center;
   height: 80vh;
   justify-content: center;
 }
 
-.form-control{
+.form-control {
   /*width: 20em;*/
   /*height: 3em;*/
   background-color: lightgray;
 }
 
-.connexion{
+.connexion {
   margin-left: 7em;
   margin-top: 2em;
 }
 
-.Bienvenue{
-  color: rgb(154,196,89);
+.Bienvenue {
+  color: rgb(154, 196, 89);
   text-align: center;
   font-size: 3em;
   font-weight: bold;
 }
 
-.input-group-prepend{
+.input-group-prepend {
   border-radius: 0px 5px 5px 0px !important;
   overflow: hidden;
   height: 2.37em;
 }
 
-.eyeLogin:hover{
+.eyeLogin:hover {
   cursor: pointer;
 }
 
-.creation{
+.creation {
   margin-top: 1em;
   margin-bottom: 1em;
   color: #9ac459;
   font-weight: bold;
 }
 
-.notUsed{
-  border : solid green 1px
+.notUsed {
+  border: solid green 1px;
 }
 
-.used{
-  border : solid red 1px
+.used {
+  border: solid red 1px;
 }
 
-.gestionUser, .gestionUsine{
+.gestionUser,
+.gestionUsine {
   display: flex;
   font-weight: bold;
   color: #134592;
@@ -221,49 +223,49 @@ a, a:hover, a:visited{
   align-items: center;
 }
 
-.clickable:hover{
+.clickable:hover {
   cursor: pointer;
 }
 
-.headerAcceuil{
+.headerAcceuil {
   display: flex;
 }
 
-.blocLogoInovex{
+.blocLogoInovex {
   width: 90%;
 }
 
-.logoInovex{
+.logoInovex {
   width: 15%;
   margin-left: 0.5em;
 }
 
-.centerTop{
+.centerTop {
   margin-top: 0em !important;
 }
 
-.center{
+.center {
   text-align: center;
   margin-top: 2em;
   font-weight: bold;
 }
 
-#actualiser_calendrier{
+#actualiser_calendrier {
   position: relative !important;
   left: 45% !important;
 }
 
-.navbar{
-  background-color: rgb(84,149,216) !important;
+.navbar {
+  background-color: rgb(84, 149, 216) !important;
   font-weight: bold !important;
 }
 
-.nav-item.active>a{
-  border-bottom: 2px solid rgb(27,37,51);
-  color: rgb(27,37,51) !important;
+.nav-item.active > a {
+  border-bottom: 2px solid rgb(27, 37, 51);
+  color: rgb(27, 37, 51) !important;
 }
 
-.heure{
-  color: rgb(84,149,216);
+.heure {
+  color: rgb(84, 149, 216);
   font-weight: bold;
 }

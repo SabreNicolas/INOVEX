@@ -1,6 +1,6 @@
-export interface modeOP{
-    Id : number;
-    nom : string;
-    nomZone : string;
-    fichier : string;
+export interface modeOP {
+  Id: number;
+  nom: string;
+  nomZone: string;
+  fichier: string;
 }

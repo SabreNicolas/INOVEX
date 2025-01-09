@@ -1,4 +1,4 @@
-export interface sumDepassement{
-    Name : string;
-    Duree : number;
+export interface sumDepassement {
+  Name: string;
+  Duree: number;
 }

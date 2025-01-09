@@ -1,26 +1,25 @@
 <div *ngIf="listCategories">
-
-    <!--table des categories-->
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Nom</th>
-            <th scope="col">Catégorie Parente</th>
-            <th scope="col">Code</th>
-        </tr>
-        </thead>
-        <tbody *ngFor="let c of listCategories">
-        <tr class="table-light">
-            <td>
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="{{c.Id}}">
-                </div>
-            </td>
-            <td>{{c.Name }}</td>
-            <td>{{c.ParentName }}</td>
-            <td>{{c.Code }}</td>
-        </tr>
-        </tbody>
-    </table>
+  <!--table des categories-->
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Nom</th>
+        <th scope="col">Catégorie Parente</th>
+        <th scope="col">Code</th>
+      </tr>
+    </thead>
+    <tbody *ngFor="let c of listCategories">
+      <tr class="table-light">
+        <td>
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="{{ c.Id }}" />
+          </div>
+        </td>
+        <td>{{ c.Name }}</td>
+        <td>{{ c.ParentName }}</td>
+        <td>{{ c.Code }}</td>
+      </tr>
+    </tbody>
+  </table>
 </div>

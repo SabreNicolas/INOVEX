@@ -1,41 +1,41 @@
-.color--0{
-    background-color: lightgreen;
+.color--0 {
+  background-color: lightgreen;
 }
 
-.color--1{
-    background-color: lightsalmon;
+.color--1 {
+  background-color: lightsalmon;
 }
 
-.color--2{
-    background-color: lightcoral;
+.color--2 {
+  background-color: lightcoral;
 }
 
-.color--{
-    background-color : white;
+.color-- {
+  background-color: white;
 }
 
-#checkbox{
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    position: relative;    
+#checkbox {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  position: relative;
 }
 
-#titre{
-    max-width : 2000px
+#titre {
+  max-width: 2000px;
 }
 
-#dateDebut{
-    max-width : 400px
+#dateDebut {
+  max-width: 400px;
 }
 
-#dateFin{
-    max-width : 400px
+#dateFin {
+  max-width: 400px;
 }
 
 // #form{
 //     display: flex;
 //     justify-content: space-between;
 //     flex-wrap: wrap;
-//     position: relative;    
+//     position: relative;
 // }

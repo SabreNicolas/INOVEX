@@ -1,21 +1,21 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { RechercheComponent } from './recherche.component';
+import { RechercheComponent } from "./recherche.component";
 
-describe('RechercheComponent', () => {
+describe("RechercheComponent", () => {
   let component: RechercheComponent;
   let fixture: ComponentFixture<RechercheComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [RechercheComponent]
+      declarations: [RechercheComponent],
     });
     fixture = TestBed.createComponent(RechercheComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

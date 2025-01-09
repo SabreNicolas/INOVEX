@@ -1,200 +1,365 @@
 <div id="page">
+  <!--Filtres de recherche-->
+  <div class="form-group">
+    <h5><label>Filtres :</label></h5>
+    <div class="row">
+      <div class="col-sm-3">
+        <div class="form-group">
+          <select
+            id="type"
+            required
+            class="form-select form-select-sm"
+            aria-label=".form-select-sm example"
+            (change)="setFilters(false)"
+            name="type"
+            ngModel
+            [(ngModel)]="arretId"
+          >
+            <option *ngFor="let arret of listArrets" value="{{ arret.Id }}">
+              {{ arret.Name }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-group">
+          <button class="btn btn-success" (click)="setFilters(false)">
+            Valider
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    <!--Filtres de recherche-->
-    <div class="form-group">
-        <h5><label>Filtres :</label></h5>
+  <!--formulaire de saisie avec calcul de la durée et commentaire-->
+  <div class="row" *ngIf="arretId && !isTotal">
+    <!--Période-->
+    <form #f="ngForm">
+      <div class="form-group">
+        <h5><label>Période :</label></h5>
         <div class="row">
-            <div class="col-sm-3">
-                <div class="form-group">
-                    <select id="type" required class="form-select form-select-sm" aria-label=".form-select-sm example" (change)="setFilters(false)" name="type" ngModel [(ngModel)]="arretId">
-                        <option *ngFor="let arret of listArrets" value="{{arret.Id}}">{{arret.Name}}</option>
-                    </select>
-                </div>
-            </div>
-            <div class="col-sm-3">
-                <div class="form-group">
-                    <button class="btn btn-success" (click)="setFilters(false)">Valider</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!--formulaire de saisie avec calcul de la durée et commentaire-->
-    <div class="row" *ngIf="arretId && !isTotal">
-        <!--Période-->
-        <form #f="ngForm">
+          <div class="col-lg-3">
+            <input
+              required
+              type="datetime-local"
+              step="1"
+              id="dateDeb"
+              class="form-control"
+              placeholder="Date de début"
+              name="dateDebut"
+              ngModel
+              [(ngModel)]="dateDebut"
+            />
+          </div>
+          <div class="col-lg-3">
+            <input
+              required
+              type="datetime-local"
+              step="1"
+              id="dateFin"
+              class="form-control"
+              placeholder="Date de fin"
+              name="dateFin"
+              ngModel
+              [(ngModel)]="dateFin"
+            />
+          </div>
+          <div class="col-lg-3" *ngIf="isArret == false">
             <div class="form-group">
-                <h5><label>Période :</label></h5>
-                <div class="row">
-                    <div class="col-lg-3">
-                        <input required type="datetime-local" step="1" id="dateDeb" class="form-control" placeholder="Date de début" name="dateDebut"
-                               ngModel [(ngModel)]="dateDebut">
-                    </div>
-                    <div class="col-lg-3">
-                        <input required type="datetime-local" step="1" id="dateFin" class="form-control" placeholder="Date de fin" name="dateFin"
-                               ngModel [(ngModel)]="dateFin">
-                    </div>
-                    <div class="col-lg-3" *ngIf="isArret == false">
-                        <div class="form-group">
-                            <button class="btn btn-primary" type="submit" (click)="set10min(f)">10min</button>
-                        </div>
-                    </div>
-                    <div class="col-lg-3" *ngIf="isArret == false">
-                        <div class="form-group">
-                            <button class="btn btn-primary" type="submit" (click)="set30min(f)">30min</button>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <button class="btn btn-primary" type="submit" (click)="setDuree(f)">Calculer la durée</button>
-                        </div>
-                    </div>
-                </div>
+              <button
+                class="btn btn-primary"
+                type="submit"
+                (click)="set10min(f)"
+              >
+                10min
+              </button>
             </div>
-        </form>
-
-        <div class="col-sm-5 col-sm-offset-1">
-
-            <h3>Saisie {{arretName}}</h3>
-
-            <form (ngSubmit)="onSubmit(fnotTot)" #fnotTot="ngForm">
-
-                <div style="display: inline-flex" class="form-group">
-                    <label style="margin-right: 1em">Durée (en heures) :  </label>
-                    <p style="margin-right: 1em">{{duree}}</p>
-                    <div id="warning" *ngIf="duree == 0">
-                        <p> ATTENTION : Veuillez d'abord calculer la durée !</p>
-                    </div>
-                </div>
-
-                <h5 *ngIf="disponible || fortuit || programme || moteur">Catégorie : </h5>
-                <select *ngIf="disponible" id="disponible" class="form-select form-select-sm" aria-label=".form-select-sm example" name="disponible" ngModel [(ngModel)]="disponibleSelect">
-                    <option value="Manque de déchets">Manque de déchets</option>
-                    <option value="Coupure électricité (si pas de production électrique sur le site)">Coupure électricité (si pas de production électrique sur le site)</option>
-                    <option value="Non respect de l'arrêté prefectoral">Non respect de l'arrêté prefectoral</option>
-                    <option value="Autre">Autre</option>
-                </select>
-                
-                <select *ngIf="fortuit" id="fortuit" class="form-select form-select-sm" aria-label=".form-select-sm example" name="fortuit" (change)="setSousCommentaire('fortuit')" ngModel [(ngModel)]="fortuitSelect">
-                    <option value="Four">Four</option>
-                    <option value="Chaudière">Chaudière</option>
-                    <option value="Traitement des fumées">Traitement des fumées</option>
-                    <option value="Communs auxiliaires">Communs auxiliaires</option>
-                    <option value="Autre">Autre</option>
-                </select>
-
-                <select *ngIf="programme" id="programme" class="form-select form-select-sm" aria-label=".form-select-sm example" name="programme" ngModel [(ngModel)]="programmeSelect">
-                    <option value="Arrêt technique">Arrêt technique</option>
-                    <option value="Autre">Autre</option>
-                </select>
-
-                <select *ngIf="moteur" id="moteur" class="form-select form-select-sm" aria-label=".form-select-sm example" name="moteur" ngModel [(ngModel)]="moteurSelect">
-                    <option selected value="Manque biogaz">Manque biogaz</option>
-                    <option value="Alarme générale">Alarme générale</option>
-                    <option value="Bougies">Bougies</option>
-                    <option value="Contrôle rejets atmosphériques">Contrôle rejets atmosphériques</option>
-                    <option value="Contrôleur d'isolement">Contrôleur d'isolement</option>
-                    <option value="Coupure électrique">Coupure électrique</option>
-                    <option value="Défaut chaîne de sécurité">Défaut chaîne de sécurité</option>
-                    <option value="Défaut IPG">Défaut IPG</option>
-                    <option value="Défaut pénurie d'eau">Défaut pénurie d'eau</option>
-                    <option value="Dysfonctionnement générateur">Dysfonctionnement générateur</option>
-                    <option value="TEM">TEM</option>
-                    <option value="Fuite">Fuite</option>
-                    <option value="Révision et/ou vidange">Révision et/ou vidange</option>
-                    <option value="Sonde">Sonde</option>
-                    <option value="Orage">Orage</option>
-                    <option value="Autre">Autre</option>
-                </select>
-
-                <h5 *ngIf = "fortuit">Sous-catégorie : </h5>
-                <select *ngIf="fortuit_four" id="fortuit_four" class="form-select form-select-sm" aria-label=".form-select-sm example" name="fortuit_four" [(ngModel)]="sousCommentaire">
-                    <option value="Air de combustion">Air de combustion</option>
-                    <option value="Alimentation four">Alimentation four</option>
-                    <option value="Autres">Autres</option>
-                    <option value="Brûleurs">Brûleurs</option>
-                    <option value="Centrale hydraulique four">Centrale hydraulique four</option>
-                    <option value="Extracteur mâchefer">Extracteur mâchefer</option>
-                    <option value="Fine sous grille">Fine sous grille</option>
-                    <option value="Grille">Grille</option>
-                    <option value="Pressions four">Pressions four</option>
-                    <option value="Autre">Autre</option>
-                </select>
-
-                <select *ngIf="fortuit_chaudiere" id="fortuit_chaudiere" class="form-select form-select-sm" aria-label=".form-select-sm example" name="fortuit_chaudiere" [(ngModel)]="sousCommentaire">
-                    <option value="Fuite">Fuite</option>
-                    <option value="Hors fuite">Hors fuite</option>
-                    <option value="Autre">Autre</option>
-                </select>
-
-                <select *ngIf="fortuit_traitement" id="fortuit_traitement" class="form-select form-select-sm" aria-label=".form-select-sm example" name="fortuit_traitement" [(ngModel)]="sousCommentaire">
-                    <option value="Electrofiltres">Electrofiltres</option>
-                    <option value="Filtres à manches">Filtres à manches</option>
-                    <option value="SCR">SCR</option>
-                    <option value="Ventilateur tirage">Ventilateur tirage</option>
-                    <option value="Réacteur/Lit fluidisé">Réacteur/Lit fluidisé</option>
-                    <option value="Réactifs">Réactifs</option> 
-                    <option value="Contraintes environnementales">Contraintes environnementales</option>
-                    <option value="Autre">Autre</option>
-                </select>
-
-                <select *ngIf="fortuit_commun" id="fortuit_commun" class="form-select form-select-sm" aria-label=".form-select-sm example" name="fortuit_commun" [(ngModel)]="sousCommentaire">
-                    <option value="Air comprimé">Air comprimé</option>
-                    <option value="Contrôle commande">Contrôle commande</option>
-                    <option value="Electricité (si dispo GA/GE)">Electricité (si dispo GA/GE)</option>
-                    <option value="Evacuation cendrs/refiom">Evacuation cendrs/refiom</option>
-                    <option value="Evacuation mâchefer">Evacuation mâchefer</option>
-                    <option value="Mouvement social">Mouvement social</option>
-                    <option value="Non pécisé">Non pécisé</option>
-                    <option value="Pont">Pont</option>
-                    <option value="Préparation déchêts">Préparation déchêts</option>
-                    <option value="Réseau vapeur">Réseau vapeur</option>
-                    <option value="Traitement de l'eau">Traitement de l'eau</option>
-                    <option value="Traitement des effluents">Traitement des effluents</option>
-                    <option value="Autre">Autre</option>
-                </select>
-
-                <p style="font-size: smaller; color: grey">* : Obligatoire</p>
-
-                <div class="form-group">
-                    <input type="text" id="saisieLibre" class="form-control" placeholder="Saisie libre" name="saisieLibre"  ngModel [(ngModel)]="saisieLibre">
-                </div>
-                
-                <div class="form-group">
-                    <button [disabled]="duree < 0.001" class="btn btn-success btn-lg" type="submit">Valider</button>
-                    <button class="btn btn-danger btn-lg" routerLink="/">Annuler</button>
-                </div>
-
-            </form>
+          </div>
+          <div class="col-lg-3" *ngIf="isArret == false">
+            <div class="form-group">
+              <button
+                class="btn btn-primary"
+                type="submit"
+                (click)="set30min(f)"
+              >
+                30min
+              </button>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="form-group">
+              <button
+                class="btn btn-primary"
+                type="submit"
+                (click)="setDuree(f)"
+              >
+                Calculer la durée
+              </button>
+            </div>
+          </div>
         </div>
-    </div>
+      </div>
+    </form>
 
-    <!--formulaire de saisie avec input pour durée ===> Utilisé si daisie du total pour dépassement 1/2H-->
-    <div class="row" *ngIf="arretId && isTotal">
-        <div class="col-sm-5 col-sm-offset-1">
-            <h3>Saisie {{arretName}}</h3>
-            <form (ngSubmit)="onSubmit(fTot)" #fTot="ngForm">
+    <div class="col-sm-5 col-sm-offset-1">
+      <h3>Saisie {{ arretName }}</h3>
 
-                <div style="display: inline-flex; width: 90%" class="form-group">
-                    <label style="margin-right: 1em;width: 40%">Date : *</label>
-                    <input type="date" id="dateSaisie" class="form-control" placeholder="Date" name="dateSaisie" required [(ngModel)]="dateDebut">
-                </div>
-
-                <div style="display: inline-flex; width: 90%" class="form-group">
-                    <label style="margin-right: 1em;width: 40%">Durée (en heures) : *</label>
-                    <input (keyup)="updateDuree(fTot)" type="text" id="value" class="form-control" placeholder="Valeur" name="duree" required ngModel>
-                </div>
-
-                <p style="font-size: smaller; color: grey">* : Obligatoire</p>
-
-                <div class="form-group">
-                    <button [disabled]="duree < 0.001" class="btn btn-success btn-lg" type="submit">Valider</button>
-                    <button class="btn btn-danger btn-lg" routerLink="/">Annuler</button>
-                </div>
-
-            </form>
+      <form (ngSubmit)="onSubmit(fnotTot)" #fnotTot="ngForm">
+        <div style="display: inline-flex" class="form-group">
+          <label style="margin-right: 1em">Durée (en heures) : </label>
+          <p style="margin-right: 1em">{{ duree }}</p>
+          <div id="warning" *ngIf="duree == 0">
+            <p>ATTENTION : Veuillez d'abord calculer la durée !</p>
+          </div>
         </div>
+
+        <h5 *ngIf="disponible || fortuit || programme || moteur">
+          Catégorie :
+        </h5>
+        <select
+          *ngIf="disponible"
+          id="disponible"
+          class="form-select form-select-sm"
+          aria-label=".form-select-sm example"
+          name="disponible"
+          ngModel
+          [(ngModel)]="disponibleSelect"
+        >
+          <option value="Manque de déchets">Manque de déchets</option>
+          <option
+            value="Coupure électricité (si pas de production électrique sur le site)"
+          >
+            Coupure électricité (si pas de production électrique sur le site)
+          </option>
+          <option value="Non respect de l'arrêté prefectoral">
+            Non respect de l'arrêté prefectoral
+          </option>
+          <option value="Autre">Autre</option>
+        </select>
+
+        <select
+          *ngIf="fortuit"
+          id="fortuit"
+          class="form-select form-select-sm"
+          aria-label=".form-select-sm example"
+          name="fortuit"
+          (change)="setSousCommentaire('fortuit')"
+          ngModel
+          [(ngModel)]="fortuitSelect"
+        >
+          <option value="Four">Four</option>
+          <option value="Chaudière">Chaudière</option>
+          <option value="Traitement des fumées">Traitement des fumées</option>
+          <option value="Communs auxiliaires">Communs auxiliaires</option>
+          <option value="Autre">Autre</option>
+        </select>
+
+        <select
+          *ngIf="programme"
+          id="programme"
+          class="form-select form-select-sm"
+          aria-label=".form-select-sm example"
+          name="programme"
+          ngModel
+          [(ngModel)]="programmeSelect"
+        >
+          <option value="Arrêt technique">Arrêt technique</option>
+          <option value="Autre">Autre</option>
+        </select>
+
+        <select
+          *ngIf="moteur"
+          id="moteur"
+          class="form-select form-select-sm"
+          aria-label=".form-select-sm example"
+          name="moteur"
+          ngModel
+          [(ngModel)]="moteurSelect"
+        >
+          <option selected value="Manque biogaz">Manque biogaz</option>
+          <option value="Alarme générale">Alarme générale</option>
+          <option value="Bougies">Bougies</option>
+          <option value="Contrôle rejets atmosphériques">
+            Contrôle rejets atmosphériques
+          </option>
+          <option value="Contrôleur d'isolement">Contrôleur d'isolement</option>
+          <option value="Coupure électrique">Coupure électrique</option>
+          <option value="Défaut chaîne de sécurité">
+            Défaut chaîne de sécurité
+          </option>
+          <option value="Défaut IPG">Défaut IPG</option>
+          <option value="Défaut pénurie d'eau">Défaut pénurie d'eau</option>
+          <option value="Dysfonctionnement générateur">
+            Dysfonctionnement générateur
+          </option>
+          <option value="TEM">TEM</option>
+          <option value="Fuite">Fuite</option>
+          <option value="Révision et/ou vidange">Révision et/ou vidange</option>
+          <option value="Sonde">Sonde</option>
+          <option value="Orage">Orage</option>
+          <option value="Autre">Autre</option>
+        </select>
+
+        <h5 *ngIf="fortuit">Sous-catégorie :</h5>
+        <select
+          *ngIf="fortuit_four"
+          id="fortuit_four"
+          class="form-select form-select-sm"
+          aria-label=".form-select-sm example"
+          name="fortuit_four"
+          [(ngModel)]="sousCommentaire"
+        >
+          <option value="Air de combustion">Air de combustion</option>
+          <option value="Alimentation four">Alimentation four</option>
+          <option value="Autres">Autres</option>
+          <option value="Brûleurs">Brûleurs</option>
+          <option value="Centrale hydraulique four">
+            Centrale hydraulique four
+          </option>
+          <option value="Extracteur mâchefer">Extracteur mâchefer</option>
+          <option value="Fine sous grille">Fine sous grille</option>
+          <option value="Grille">Grille</option>
+          <option value="Pressions four">Pressions four</option>
+          <option value="Autre">Autre</option>
+        </select>
+
+        <select
+          *ngIf="fortuit_chaudiere"
+          id="fortuit_chaudiere"
+          class="form-select form-select-sm"
+          aria-label=".form-select-sm example"
+          name="fortuit_chaudiere"
+          [(ngModel)]="sousCommentaire"
+        >
+          <option value="Fuite">Fuite</option>
+          <option value="Hors fuite">Hors fuite</option>
+          <option value="Autre">Autre</option>
+        </select>
+
+        <select
+          *ngIf="fortuit_traitement"
+          id="fortuit_traitement"
+          class="form-select form-select-sm"
+          aria-label=".form-select-sm example"
+          name="fortuit_traitement"
+          [(ngModel)]="sousCommentaire"
+        >
+          <option value="Electrofiltres">Electrofiltres</option>
+          <option value="Filtres à manches">Filtres à manches</option>
+          <option value="SCR">SCR</option>
+          <option value="Ventilateur tirage">Ventilateur tirage</option>
+          <option value="Réacteur/Lit fluidisé">Réacteur/Lit fluidisé</option>
+          <option value="Réactifs">Réactifs</option>
+          <option value="Contraintes environnementales">
+            Contraintes environnementales
+          </option>
+          <option value="Autre">Autre</option>
+        </select>
+
+        <select
+          *ngIf="fortuit_commun"
+          id="fortuit_commun"
+          class="form-select form-select-sm"
+          aria-label=".form-select-sm example"
+          name="fortuit_commun"
+          [(ngModel)]="sousCommentaire"
+        >
+          <option value="Air comprimé">Air comprimé</option>
+          <option value="Contrôle commande">Contrôle commande</option>
+          <option value="Electricité (si dispo GA/GE)">
+            Electricité (si dispo GA/GE)
+          </option>
+          <option value="Evacuation cendrs/refiom">
+            Evacuation cendrs/refiom
+          </option>
+          <option value="Evacuation mâchefer">Evacuation mâchefer</option>
+          <option value="Mouvement social">Mouvement social</option>
+          <option value="Non pécisé">Non pécisé</option>
+          <option value="Pont">Pont</option>
+          <option value="Préparation déchêts">Préparation déchêts</option>
+          <option value="Réseau vapeur">Réseau vapeur</option>
+          <option value="Traitement de l'eau">Traitement de l'eau</option>
+          <option value="Traitement des effluents">
+            Traitement des effluents
+          </option>
+          <option value="Autre">Autre</option>
+        </select>
+
+        <p style="font-size: smaller; color: grey">* : Obligatoire</p>
+
+        <div class="form-group">
+          <input
+            type="text"
+            id="saisieLibre"
+            class="form-control"
+            placeholder="Saisie libre"
+            name="saisieLibre"
+            ngModel
+            [(ngModel)]="saisieLibre"
+          />
+        </div>
+
+        <div class="form-group">
+          <button
+            [disabled]="duree < 0.001"
+            class="btn btn-success btn-lg"
+            type="submit"
+          >
+            Valider
+          </button>
+          <button class="btn btn-danger btn-lg" routerLink="/">Annuler</button>
+        </div>
+      </form>
     </div>
+  </div>
 
+  <!--formulaire de saisie avec input pour durée ===> Utilisé si daisie du total pour dépassement 1/2H-->
+  <div class="row" *ngIf="arretId && isTotal">
+    <div class="col-sm-5 col-sm-offset-1">
+      <h3>Saisie {{ arretName }}</h3>
+      <form (ngSubmit)="onSubmit(fTot)" #fTot="ngForm">
+        <div style="display: inline-flex; width: 90%" class="form-group">
+          <label style="margin-right: 1em; width: 40%">Date : *</label>
+          <input
+            type="date"
+            id="dateSaisie"
+            class="form-control"
+            placeholder="Date"
+            name="dateSaisie"
+            required
+            [(ngModel)]="dateDebut"
+          />
+        </div>
 
+        <div style="display: inline-flex; width: 90%" class="form-group">
+          <label style="margin-right: 1em; width: 40%"
+            >Durée (en heures) : *</label
+          >
+          <input
+            (keyup)="updateDuree(fTot)"
+            type="text"
+            id="value"
+            class="form-control"
+            placeholder="Valeur"
+            name="duree"
+            required
+            ngModel
+          />
+        </div>
+
+        <p style="font-size: smaller; color: grey">* : Obligatoire</p>
+
+        <div class="form-group">
+          <button
+            [disabled]="duree < 0.001"
+            class="btn btn-success btn-lg"
+            type="submit"
+          >
+            Valider
+          </button>
+          <button class="btn btn-danger btn-lg" routerLink="/">Annuler</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>

@@ -1,35 +1,59 @@
-<h1 class="creation">Affectation d'un TAG eMonitoring à un produit CAP Exploitation :</h1>
+<h1 class="creation">
+  Affectation d'un TAG eMonitoring à un produit CAP Exploitation :
+</h1>
 
 <div class="row">
-    <div class="col-sm-5 col-sm-offset-1">
+  <div class="col-sm-5 col-sm-offset-1">
+    <form ngNativeValidate (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="unit">TAG eMonitoring : *</label>
+        <input
+          required
+          type="text"
+          id="tag"
+          class="form-control"
+          placeholder="TAG"
+          name="tag"
+          [(ngModel)]="tag"
+        />
+      </div>
 
-        <form ngNativeValidate (ngSubmit)="onSubmit()">
-
+      <div class="form-group">
+        <label>Produit : *</label>
+        <div class="row">
+          <div class="col-sm-6">
             <div class="form-group">
-                <label for="unit">TAG eMonitoring : *</label>
-                <input required type="text" id="tag" class="form-control" placeholder="TAG" name="tag" [(ngModel)]="tag">
+              <select
+                required
+                class="form-select form-select-sm"
+                aria-label=".form-select-sm example"
+                name="produit"
+                [(ngModel)]="productId"
+              >
+                <option
+                  *ngFor="let p of listProducts"
+                  selected
+                  value="{{ p.Id }}"
+                >
+                  {{ p.Name }}
+                </option>
+              </select>
             </div>
+          </div>
+        </div>
+      </div>
 
-            <div class="form-group">
-                <label>Produit : *</label>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <select required class="form-select form-select-sm" aria-label=".form-select-sm example" name="produit" [(ngModel)]="productId">
-                                <option *ngFor="let p of listProducts" selected value="{{p.Id}}">{{p.Name}}</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <p style="font-size: smaller; color: grey">* : Obligatoire</p>
 
-            <p style="font-size: smaller; color: grey">* : Obligatoire</p>
-
-            <div class="form-group">
-                <button class="btn btn-success btn-lg" type="submit">Valider</button>
-                <button class="btn btn-danger btn-lg" onclick="window.location.replace('/admin')">Annuler</button>
-            </div>
-
-        </form>
-    </div>
+      <div class="form-group">
+        <button class="btn btn-success btn-lg" type="submit">Valider</button>
+        <button
+          class="btn btn-danger btn-lg"
+          onclick="window.location.replace('/admin')"
+        >
+          Annuler
+        </button>
+      </div>
+    </form>
+  </div>
 </div>

@@ -1,4 +1,4 @@
-.blockFiltres{
+.blockFiltres {
   position: fixed;
   top: 9%;
   right: 0;
@@ -7,12 +7,12 @@
   z-index: -1;
 }
 
-.table-style{
+.table-style {
   margin-top: 21%;
 }
 
 //Permet de changer le style du label en cochant l'input
-.form-check-input:checked + .form-check-label{
+.form-check-input:checked + .form-check-label {
   background-color: #134592;
   color: white;
 }

@@ -1,81 +1,180 @@
 <h1 class="creation">Création d'un Client :</h1>
 
 <div class="row">
-    <div class="col-sm-5 col-sm-offset-1">
+  <div class="col-sm-5 col-sm-offset-1">
+    <form ngNativeValidate (ngSubmit)="onSubmit(f)" #f="ngForm">
+      <div class="form-group">
+        <label for="nom">Nom : * </label>
+        <input
+          required
+          type="text"
+          id="nom"
+          class="form-control"
+          placeholder="Nom"
+          name="nom"
+          ngModel
+          [(ngModel)]="name"
+        />
+      </div>
 
-      <form ngNativeValidate (ngSubmit)="onSubmit(f)" #f="ngForm">
+      <div class="form-group">
+        <label for="adress">Adresse : </label>
+        <input
+          type="text"
+          id="adress"
+          class="form-control"
+          placeholder="Adresse"
+          name="adress"
+          ngModel
+          [(ngModel)]="address"
+        />
+      </div>
 
-        <div class="form-group">
-          <label for="nom">Nom : * </label>
-          <input required type="text" id="nom" class="form-control" placeholder="Nom" name="nom" ngModel [(ngModel)]="name">
-        </div>
-
-        <div class="form-group">
-          <label for="adress">Adresse : </label>
-          <input type="text" id="adress" class="form-control" placeholder="Adresse" name="adress" ngModel [(ngModel)]="address">
-        </div>
-
-        <div class="form-group">
-            <label>Code : *</label>
-            <div class="row">
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <select required class="form-select form-select-sm" aria-label=".form-select-sm example" name="produit" ngModel [(ngModel)]="produit">
-                    <option *ngFor="let type of listTypeDechets" value="{{type.split('_')[0]}}">{{type.split("_")[1]}}</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-sm-6" *ngIf="listCollecteurs[0].split('_')[1] != 'undefined'">
-                <div class="form-group">
-                  <select required class="form-select form-select-sm" aria-label=".form-select-sm example" name="collecteur" ngModel [(ngModel)]="collecteur">
-                    <option *ngFor="let collecteur of listCollecteurs" value="{{collecteur.split('_')[0]}}">{{collecteur.split("_")[1]}}</option>
-                  </select>
-                </div>
-              </div>
+      <div class="form-group">
+        <label>Code : *</label>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <select
+                required
+                class="form-select form-select-sm"
+                aria-label=".form-select-sm example"
+                name="produit"
+                ngModel
+                [(ngModel)]="produit"
+              >
+                <option
+                  *ngFor="let type of listTypeDechets"
+                  value="{{ type.split('_')[0] }}"
+                >
+                  {{ type.split("_")[1] }}
+                </option>
+              </select>
             </div>
+          </div>
+          <div
+            class="col-sm-6"
+            *ngIf="
+              listCollecteurs.length != 0 &&
+              listCollecteurs[0].split('_')[1] !== 'undefined'
+            "
+          >
+            <div class="form-group">
+              <select
+                required
+                class="form-select form-select-sm"
+                aria-label=".form-select-sm example"
+                name="collecteur"
+                ngModel
+                [(ngModel)]="collecteur"
+              >
+                <option
+                  *ngFor="let collecteur of listCollecteurs"
+                  value="{{ collecteur.split('_')[0] }}"
+                >
+                  {{ collecteur.split("_")[1] }}
+                </option>
+              </select>
+            </div>
+          </div>
         </div>
+      </div>
 
-        <div class="form-group">
-          <label for="unitPrice">Prix unitaire : *</label>
-          <input required type="number" step="0.01" id="unitPrice" class="form-control" placeholder="Prix Unitaire" name="unitPrice" ngModel [(ngModel)]="unitPrice">
-        </div>
+      <div class="form-group">
+        <label for="unitPrice">Prix unitaire : *</label>
+        <input
+          required
+          type="number"
+          step="0.01"
+          id="unitPrice"
+          class="form-control"
+          placeholder="Prix Unitaire"
+          name="unitPrice"
+          ngModel
+          [(ngModel)]="unitPrice"
+        />
+      </div>
 
-        <div class="form-group">
-          <label for="numCAP">N° CAP :</label>
-          <input type="text" id="numCAP" class="form-control" placeholder="Numéro de CAP" name="numCAP" ngModel [(ngModel)]="CAP">
-        </div>
+      <div class="form-group">
+        <label for="numCAP">N° CAP :</label>
+        <input
+          type="text"
+          id="numCAP"
+          class="form-control"
+          placeholder="Numéro de CAP"
+          name="numCAP"
+          ngModel
+          [(ngModel)]="CAP"
+        />
+      </div>
 
-        <div class="form-group">
-          <label for="codeDechet">Code Déchet :</label>
-          <input type="text" id="codeDechet" class="form-control" placeholder="Code Déchet" name="codeDechet" ngModel [(ngModel)]="codeDechet">
-        </div>
+      <div class="form-group">
+        <label for="codeDechet">Code Déchet :</label>
+        <input
+          type="text"
+          id="codeDechet"
+          class="form-control"
+          placeholder="Code Déchet"
+          name="codeDechet"
+          ngModel
+          [(ngModel)]="codeDechet"
+        />
+      </div>
 
-        <div class="form-group">
-          <p style="color: #044daa; font-weight: bold">Contact Client :</p>
-        </div>
+      <div class="form-group">
+        <p style="color: #044daa; font-weight: bold">Contact Client :</p>
+      </div>
 
-        <div class="form-group">
-          <label for="nomClient">Nom :</label>
-          <input type="text" id="nomClient" class="form-control" placeholder="Nom du Contact" name="nomClient" ngModel [(ngModel)]="nomClient">
-        </div>
+      <div class="form-group">
+        <label for="nomClient">Nom :</label>
+        <input
+          type="text"
+          id="nomClient"
+          class="form-control"
+          placeholder="Nom du Contact"
+          name="nomClient"
+          ngModel
+          [(ngModel)]="nomClient"
+        />
+      </div>
 
-        <div class="form-group">
-          <label for="prenomClient">Prénom :</label>
-          <input type="text" id="prenomClient" class="form-control" placeholder="Prénom du Contact" name="prenomClient" ngModel [(ngModel)]="prenomClient">
-        </div>
+      <div class="form-group">
+        <label for="prenomClient">Prénom :</label>
+        <input
+          type="text"
+          id="prenomClient"
+          class="form-control"
+          placeholder="Prénom du Contact"
+          name="prenomClient"
+          ngModel
+          [(ngModel)]="prenomClient"
+        />
+      </div>
 
-        <div class="form-group">
-          <label for="mailClient">Adresse Mail :</label>
-          <input type="text" id="mailClient" class="form-control" placeholder="Adresse mail du Contact" name="mailClient" ngModel [(ngModel)]="mailClient">
-        </div>
+      <div class="form-group">
+        <label for="mailClient">Adresse Mail :</label>
+        <input
+          type="text"
+          id="mailClient"
+          class="form-control"
+          placeholder="Adresse mail du Contact"
+          name="mailClient"
+          ngModel
+          [(ngModel)]="mailClient"
+        />
+      </div>
 
-        <p style="font-size: smaller; color: grey">* : Obligatoire</p>
+      <p style="font-size: smaller; color: grey">* : Obligatoire</p>
 
-        <div class="form-group">
-          <button class="btn btn-success btn-lg" type="submit">Valider</button>
-          <button class="btn btn-danger btn-lg" onclick="window.location.replace('/admin')">Annuler</button>
-        </div>
-
-      </form>
-    </div>
+      <div class="form-group">
+        <button class="btn btn-success btn-lg" type="submit">Valider</button>
+        <button
+          class="btn btn-danger btn-lg"
+          onclick="window.location.replace('/admin')"
+        >
+          Annuler
+        </button>
+      </div>
+    </form>
   </div>
+</div>

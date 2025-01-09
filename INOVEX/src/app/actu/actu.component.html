@@ -1,49 +1,101 @@
 <h1 class="creation">Création d'une actualité :</h1>
 
 <div class="row">
-    <div class="col-sm-5 col-sm-offset-1">
-
-        <div class="form-group">
-            <label for="desc">Titre : * </label>
-            <input required type="text" id="titre" class="form-control" placeholder="Titre" name="titre" ngModel [(ngModel)]="titre">
-        </div>
-
-        <div class="form-group">
-            <label>Importance : *</label>
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <select required class="form-select" aria-label=".form-select-sm example" name="importance" ngModel [(ngModel)]="importance">
-                            <option value=0 style="background-color: rgb(81, 196, 81);">Faible</option>
-                            <option value=1 style="background-color: rgb(245, 171, 35);">Neutre</option>
-                            <option value=2 style="background-color: rgb(248, 75, 75);">Elevée</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>Début date validité : *</label>
-            <input required type="datetime-local" id="dateDebut" class="form-control" placeholder="Date de début de validité" name="dateDebut" ngModel [(ngModel)]="dateDeb">
-        </div>
-            
-        <div class="form-group">
-            <label>Fin date validité : *</label>
-            <input required type="datetime-local" id="dateFin" class="form-control" placeholder="Date de validité" name="dateFin" ngModel [(ngModel)]="dateFin">
-        </div>
-
-        <div class="form-group">
-            <label for="desc">Description : </label>
-            <textarea required name="description" id="description" class="form-control" cols="30" rows="5" ngModel  placeholder="Description" [(ngModel)]="description"> </textarea>
-            <!-- <input required type="text" id="description" class="form-control" placeholder="Description" name="description" ngModel [(ngModel)]="description"> -->
-        </div>
-
-        <p style="font-size: smaller; color: grey">* : Obligatoire</p>
-
-        <div class="form-group">
-            <button class="btn btn-success btn-lg" (click)="newActu()">Valider</button>
-            <button class="btn btn-danger btn-lg">Annuler</button>
-        </div>
+  <div class="col-sm-5 col-sm-offset-1">
+    <div class="form-group">
+      <label for="desc">Titre : * </label>
+      <input
+        required
+        type="text"
+        id="titre"
+        class="form-control"
+        placeholder="Titre"
+        name="titre"
+        ngModel
+        [(ngModel)]="titre"
+      />
     </div>
+
+    <div class="form-group">
+      <label>Importance : *</label>
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="form-group">
+            <select
+              required
+              class="form-select"
+              aria-label=".form-select-sm example"
+              name="importance"
+              ngModel
+              [(ngModel)]="importance"
+            >
+              <option value="0" style="background-color: rgb(81, 196, 81)">
+                Faible
+              </option>
+              <option value="1" style="background-color: rgb(245, 171, 35)">
+                Neutre
+              </option>
+              <option value="2" style="background-color: rgb(248, 75, 75)">
+                Elevée
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Début date validité : *</label>
+      <input
+        required
+        type="datetime-local"
+        id="dateDebut"
+        class="form-control"
+        placeholder="Date de début de validité"
+        name="dateDebut"
+        ngModel
+        [(ngModel)]="dateDeb"
+      />
+    </div>
+
+    <div class="form-group">
+      <label>Fin date validité : *</label>
+      <input
+        required
+        type="datetime-local"
+        id="dateFin"
+        class="form-control"
+        placeholder="Date de validité"
+        name="dateFin"
+        ngModel
+        [(ngModel)]="dateFin"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="desc">Description : </label>
+      <textarea
+        required
+        name="description"
+        id="description"
+        class="form-control"
+        cols="30"
+        rows="5"
+        ngModel
+        placeholder="Description"
+        [(ngModel)]="description"
+      >
+      </textarea>
+      <!-- <input required type="text" id="description" class="form-control" placeholder="Description" name="description" ngModel [(ngModel)]="description"> -->
+    </div>
+
+    <p style="font-size: smaller; color: grey">* : Obligatoire</p>
+
+    <div class="form-group">
+      <button class="btn btn-success btn-lg" (click)="newActu()">
+        Valider
+      </button>
+      <button class="btn btn-danger btn-lg">Annuler</button>
+    </div>
+  </div>
 </div>

@@ -1,21 +1,21 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { RecapRondeListeComponent } from './recap-ronde-liste.component';
+import { RecapRondeListeComponent } from "./recap-ronde-liste.component";
 
-describe('RecapRondeListeComponent', () => {
+describe("RecapRondeListeComponent", () => {
   let component: RecapRondeListeComponent;
   let fixture: ComponentFixture<RecapRondeListeComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [RecapRondeListeComponent]
+      declarations: [RecapRondeListeComponent],
     });
     fixture = TestBed.createComponent(RecapRondeListeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

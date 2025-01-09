@@ -1,120 +1,290 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <a style="margin-left: 1em;" class="navbar-brand" routerLink="">
-        <strong><i class="fa fa-home"></i> Accueil</strong>
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+  <a style="margin-left: 1em" class="navbar-brand" routerLink="">
+    <strong><i class="fa fa-home"></i> Accueil</strong>
+  </a>
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item dropdown" routerLinkActive="active">
+        <a
+          routerLink="acceuil"
+          class="nav-link"
+          id="navbarDropdownListClients"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Cahier de quart
+        </a>
+      </li>
 
-            <li class="nav-item dropdown" routerLinkActive="active">
-                <a routerLink="acceuil" class="nav-link" id="navbarDropdownListClients" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Cahier de quart
-                </a>
-            </li>
+      <li
+        class="nav-item dropdown"
+        *ngIf="idUsine == 7"
+        routerLinkActive="active"
+      >
+        <a
+          routerLink="outils"
+          class="nav-link"
+          id="navbarDropdownListClients"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Outils
+        </a>
+      </li>
 
-            <li class="nav-item dropdown" *ngIf="idUsine == 7" routerLinkActive="active">
-                <a routerLink="outils" class="nav-link" id="navbarDropdownListClients" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Outils
-                </a>
-            </li>
+      <li class="nav-item dropdown" routerLinkActive="active">
+        <a
+          routerLink="calendrier"
+          class="nav-link"
+          id="navbarDropdownActus"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Calendrier
+        </a>
+      </li>
 
-            <li class="nav-item dropdown" routerLinkActive="active">
-                <a routerLink="calendrier" class="nav-link" id="navbarDropdownActus" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Calendrier
-                </a>
-            </li>
+      <li class="nav-item dropdown" routerLinkActive="active">
+        <a
+          routerLink="enregistrementEquipe"
+          class="nav-link"
+          id="navbarDropdownActus"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Enregistrement Equipe
+        </a>
+      </li>
 
-            <li class="nav-item dropdown" routerLinkActive="active">
-                <a routerLink="enregistrementEquipe" class="nav-link" id="navbarDropdownActus" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Enregistrement Equipe
-                </a>
-            </li>
+      <li class="nav-item dropdown" routerLinkActive="active">
+        <a
+          routerLink="recherche"
+          class="nav-link"
+          id="navbarDropdownActus"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Recherche
+        </a>
+      </li>
 
-            <li class="nav-item dropdown" routerLinkActive="active">
-                <a routerLink="recherche" class="nav-link" id="navbarDropdownActus" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Recherche
-                </a>
-            </li>
+      <li class="nav-item dropdown" routerLinkActive="active">
+        <a
+          class="nav-link dropdown-toggle"
+          id="navbarDropdownForm"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Récapitulatif
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a
+            routerLink="evenement"
+            class="dropdown-item"
+            id="navbarDropdownActus"
+            role="button"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            Liste des Evènements
+          </a>
+          <a
+            routerLink="actu"
+            class="dropdown-item"
+            id="navbarDropdownActus"
+            role="button"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            Liste des Actualités
+          </a>
+          <a
+            routerLink="consignes"
+            class="dropdown-item"
+            id="navbarDropdownConsignes"
+            role="button"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            Liste des Consignes
+          </a>
+          <a
+            routerLink="anomalies"
+            class="dropdown-item"
+            id="navbarDropdownConsignes"
+            role="button"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            Liste des Anomalies
+          </a>
+          <a
+            routerLink="enregistrementAction"
+            class="dropdown-item"
+            id="navbarDropdownConsignes"
+            role="button"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            Liste des Actions enregistrées
+          </a>
+          <a
+            routerLink="liensExternes"
+            class="dropdown-item"
+            id="navbarDropdownConsignes"
+            role="button"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            Liste des Liens Externes
+          </a>
+        </div>
+      </li>
 
-            <li class="nav-item dropdown" routerLinkActive="active">
-                <a class="nav-link dropdown-toggle" id="navbarDropdownForm" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-                    Récapitulatif
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a routerLink="evenement" class="dropdown-item" id="navbarDropdownActus" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Liste des Evènements
-                    </a>
-                    <a routerLink="actu" class="dropdown-item" id="navbarDropdownActus" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Liste des Actualités
-                    </a>
-                    <a routerLink="consignes" class="dropdown-item" id="navbarDropdownConsignes" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Liste des Consignes
-                    </a>
-                    <a routerLink="anomalies" class="dropdown-item" id="navbarDropdownConsignes" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Liste des Anomalies
-                    </a>
-                    <a routerLink="liensExternes" class="dropdown-item" id="navbarDropdownConsignes" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Liste des Liens Externes
-                    </a>
-                </div>
-            </li>
+      <li class="nav-item dropdown" routerLinkActive="active">
+        <a
+          routerLink="reporting"
+          class="nav-link"
+          id="navbarDropdownActus"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Rondes
+        </a>
+      </li>
 
-            <li class="nav-item dropdown" routerLinkActive="active">
-                <a routerLink="reporting" class="nav-link" id="navbarDropdownActus" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Rondes
-                </a>
-            </li>
+      <li class="nav-item dropdown" routerLinkActive="active">
+        <a
+          routerLink="listForm"
+          class="nav-link"
+          id="navbarDropdownForm"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Formulaire
+        </a>
+      </li>
 
-            <li class="nav-item dropdown" routerLinkActive="active">
-                <a routerLink="listForm" class="nav-link" id="navbarDropdownForm" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-                    Formulaire
-                </a>
-            </li>
+      <li class="nav-item dropdown" routerLinkActive="active">
+        <a
+          class="nav-link dropdown-toggle"
+          id="navbarDropdownArrets"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Arrêts
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a
+            class="dropdown-item"
+            routerLink="arrets"
+            [queryParams]="{ isArret: 'true' }"
+            >Saisie</a
+          >
+          <a
+            class="dropdown-item"
+            routerLink="listArrets"
+            [queryParams]="{ isArret: 'true' }"
+            >Historique</a
+          >
+        </div>
+      </li>
 
-            <li class="nav-item dropdown" routerLinkActive="active">
-                <a class="nav-link dropdown-toggle" id="navbarDropdownArrets" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Arrêts
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" routerLink="arrets" [queryParams]="{ isArret: 'true'}" >Saisie</a>
-                    <a class="dropdown-item" routerLink="listArrets" [queryParams]="{ isArret: 'true'}" >Historique</a>
-                </div>
-            </li>
+      <li class="nav-item dropdown" routerLinkActive="active">
+        <a
+          class="nav-link dropdown-toggle"
+          id="navbarDropdownDep"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Dép 1/2H
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a
+            class="dropdown-item"
+            routerLink="arrets"
+            [queryParams]="{ isArret: 'false' }"
+            >Saisie</a
+          >
+          <a
+            class="dropdown-item"
+            routerLink="listArrets"
+            [queryParams]="{ isArret: 'false' }"
+            >Historique</a
+          >
+        </div>
+      </li>
 
-            <li class="nav-item dropdown" routerLinkActive="active">
-                <a class="nav-link dropdown-toggle" id="navbarDropdownDep" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Dép 1/2H
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" routerLink="arrets" [queryParams]="{ isArret: 'false'}">Saisie</a>
-                    <a class="dropdown-item" routerLink="listArrets" [queryParams]="{ isArret: 'false'}">Historique</a>
-                </div>
-            </li>
+      <li class="nav-item dropdown" routerLinkActive="active">
+        <a
+          routerLink="recapRondeListe"
+          class="nav-link"
+          id="navbarDropdownActus"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Recapitulatif Quart
+        </a>
+      </li>
+      <li class="nav-item dropdown" routerLinkActive="active">
+        <a
+          class="nav-link"
+          href="https://drive.kerlan-info.fr/d/s/zLWpU4BLVbn85lld2ei27hWYERy8fd3J/A83EuVZtf8xB9FfOo0ZvCttsehom0MzC-qbDAFMRlhgs"
+          target="_blank"
+        >
+          Template prise de quart
+        </a>
+      </li>
+    </ul>
 
-            <li class="nav-item dropdown" routerLinkActive="active">
-                <a routerLink="recapRondeListe" class="nav-link" id="navbarDropdownActus" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Recapitulatif Quart
-                </a>
-            </li>
-            <li class="nav-item dropdown" routerLinkActive="active">
-                <a class="nav-link" href="https://drive.kerlan-info.fr/d/s/zLWpU4BLVbn85lld2ei27hWYERy8fd3J/A83EuVZtf8xB9FfOo0ZvCttsehom0MzC-qbDAFMRlhgs" target="_blank">
-                    Template prise de quart
-                </a>
-            </li>
-
-        </ul>
-
-        <!--<a style="color: white" routerLink="admin" target="_blank" class="nav-link" id="navbarDropdownAdministration" role="button" aria-haspopup="true" aria-expanded="false">
+    <!--<a style="color: white" routerLink="admin" target="_blank" class="nav-link" id="navbarDropdownAdministration" role="button" aria-haspopup="true" aria-expanded="false">
             Administration
         </a>-->
 
-        <img src="assets/paprec.png" style="width:10em">
-    </div>
+    <img src="assets/paprec.png" style="width: 10em" />
+  </div>
 </nav>
 
-<div style="margin : 5px">
-    <router-outlet></router-outlet>
+<div style="margin: 5px">
+  <router-outlet></router-outlet>
 </div>

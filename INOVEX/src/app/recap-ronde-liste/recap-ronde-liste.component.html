@@ -1,252 +1,263 @@
-<div class="col-md-6" style="display: flex;">
-    <input type="date" id="date" class="form-control" placeholder="Date de début" name="date" ngModel [(ngModel)]="dateDebForm">
-    <select id="quart" required class="form-select form-select-sm" aria-label=".form-select-sm example" name="quart" [(ngModel)]="quart">
-        <option value="0">Veuillez choisir un quart</option>
-        <option value="1">Matin</option>
-        <option value="2">Après-midi</option>
-        <option value="3">Nuit</option>
-    </select>
-    <button class="btn btn-success" (click)="setFilters()">Valider</button>
+<div class="col-md-6" style="display: flex">
+  <input
+    type="date"
+    id="date"
+    class="form-control"
+    placeholder="Date de début"
+    name="date"
+    ngModel
+    [(ngModel)]="dateDebForm"
+  />
+  <select
+    id="quart"
+    required
+    class="form-select form-select-sm"
+    aria-label=".form-select-sm example"
+    name="quart"
+    [(ngModel)]="quart"
+  >
+    <option value="0">Veuillez choisir un quart</option>
+    <option value="1">Matin</option>
+    <option value="2">Après-midi</option>
+    <option value="3">Nuit</option>
+  </select>
+  <button class="btn btn-success" (click)="setFilters()">Valider</button>
 </div>
 
-<h2 style="text-align: center;">
-    {{nomEquipe}}
+<h2 style="text-align: center">
+  {{ nomEquipe }}
 </h2>
 <!--table des rondiers-->
 <table class="table table-hover tableFixed">
-    <thead>
+  <thead>
     <tr class="table-secondary">
-        <th scope="col">Nom</th>
-        <th scope="col">Prenom</th>
-        <th scope="col">Heure Début</th>
-        <th scope="col">Heure Fin</th>
-        <th scope="col">Heure Travaux Pénible</th>
-        <th scope="col">Commentaire</th>
-        <!--<th scope="col">Poste</th>-->
+      <th scope="col">Nom</th>
+      <th scope="col">Prenom</th>
+      <th scope="col">Heure Début</th>
+      <th scope="col">Heure Fin</th>
+      <th scope="col">Heure Travaux Pénible</th>
+      <th scope="col">Commentaire</th>
+      <!--<th scope="col">Poste</th>-->
     </tr>
-    </thead>
-    <tbody *ngFor="let rondier of listRondier">
-    <tr class="table-light" >
-        <td>{{rondier.Nom}}</td>
-        <td>
-            {{rondier.Prenom}}
-        </td>
-        <td class="heure">
-            {{rondier.heure_deb}}
-        </td>
-        <td class="heure">
-            {{rondier.heure_fin}}
-        </td>
-        <td class="heure">
-            {{rondier.heure_tp}}
-        </td>
-        <td class="heure">
-            {{rondier.comm_tp}}
-        </td>
-        <!--<td>
+  </thead>
+  <tbody *ngFor="let rondier of listRondier">
+    <tr class="table-light">
+      <td>{{ rondier.Nom }}</td>
+      <td>
+        {{ rondier.Prenom }}
+      </td>
+      <td class="heure">
+        {{ rondier.heure_deb }}
+      </td>
+      <td class="heure">
+        {{ rondier.heure_fin }}
+      </td>
+      <td class="heure">
+        {{ rondier.heure_tp }}
+      </td>
+      <td class="heure">
+        {{ rondier.comm_tp }}
+      </td>
+      <!--<td>
             {{rondier.Poste}}
         </td>-->
     </tr>
-    </tbody>
+  </tbody>
 </table>
 
-<h2 style="text-align: center;">Actualités</h2>
+<h2 style="text-align: center">Actualités</h2>
 <!--table des actus-->
 <table class="table table-hover tableFixed">
-    <thead>
+  <thead>
     <tr class="table-secondary">
-        <th scope="col">Actualité</th>
-        <th scope="col">Description</th>
-        <th scope="col">Date de Début de validité</th>
-        <th scope="col">Date de Fin de validité</th>
+      <th scope="col">Actualité</th>
+      <th scope="col">Description</th>
+      <th scope="col">Date de Début de validité</th>
+      <th scope="col">Date de Fin de validité</th>
     </tr>
-    </thead>
-    <tbody *ngFor="let actu of listActu">
-    <tr class="table-light" >
-        <td>{{actu.titre}}</td>
-        <td>{{actu.description}}</td>
-        <td>{{actu.date_heure_debut}}</td>
-        <td>{{actu.date_heure_fin}}</td> 
+  </thead>
+  <tbody *ngFor="let actu of listActu">
+    <tr class="table-light">
+      <td>{{ actu.titre }}</td>
+      <td>{{ actu.description }}</td>
+      <td>{{ actu.date_heure_debut }}</td>
+      <td>{{ actu.date_heure_fin }}</td>
     </tr>
-    </tbody>
+  </tbody>
 </table>
 
-
-<div class="row" style="display: none;">
-    <div class="col-md-6">
-        <h2 style="text-align: center;">Maintenances</h2>
-        <!--table des maintenances altair-->
-        <table class="table table-hover tableFixed">
-            <thead>
-            <tr class="table-secondary">
-                <th scope="col">Actualité</th>
-                <th scope="col">Date de Début de validité</th>
-                <th scope="col">Date de Fin de validité</th>
-            </tr>
-            </thead>
-            <tbody *ngFor="let actu of listActu">
-            <tr class="table-light" >
-                <td>{{actu.titre}}</td>
-                <td>{{actu.date_heure_debut}}</td>
-                <td>{{actu.date_heure_fin}}</td> 
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="col-md-6">
-        <h2 style="text-align: center;">Info Sécu</h2>
-        <!--table des infos sécu-->
-        <table class="table table-hover tableFixed">
-            <thead>
-            <tr class="table-secondary">
-                <th scope="col">Actualité</th>
-                <th scope="col">Date de Début de validité</th>
-                <th scope="col">Date de Fin de validité</th>
-            </tr>
-            </thead>
-            <tbody *ngFor="let actu of listActu">
-            <tr class="table-light" >
-                <td>{{actu.titre}}</td>
-                <td>{{actu.date_heure_debut}}</td>
-                <td>{{actu.date_heure_fin}}</td> 
-            </tr>
-            </tbody>
-        </table>
-    </div>
+<div class="row" style="display: none">
+  <div class="col-md-6">
+    <h2 style="text-align: center">Maintenances</h2>
+    <!--table des maintenances altair-->
+    <table class="table table-hover tableFixed">
+      <thead>
+        <tr class="table-secondary">
+          <th scope="col">Actualité</th>
+          <th scope="col">Date de Début de validité</th>
+          <th scope="col">Date de Fin de validité</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let actu of listActu">
+        <tr class="table-light">
+          <td>{{ actu.titre }}</td>
+          <td>{{ actu.date_heure_debut }}</td>
+          <td>{{ actu.date_heure_fin }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-md-6">
+    <h2 style="text-align: center">Info Sécu</h2>
+    <!--table des infos sécu-->
+    <table class="table table-hover tableFixed">
+      <thead>
+        <tr class="table-secondary">
+          <th scope="col">Actualité</th>
+          <th scope="col">Date de Début de validité</th>
+          <th scope="col">Date de Fin de validité</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let actu of listActu">
+        <tr class="table-light">
+          <td>{{ actu.titre }}</td>
+          <td>{{ actu.date_heure_debut }}</td>
+          <td>{{ actu.date_heure_fin }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
-<h2 style="text-align: center;">
-    Consignes
-</h2>
+<h2 style="text-align: center">Consignes</h2>
 <!-- Tableau des consignes -->
 <table class="table table-hover tableFixed">
-    <thead>
+  <thead>
     <tr class="table-secondary">
-        <th scope="col">Consigne</th>
-        <th scope="col">Description</th>
-        <th scope="col">Date de Début de validité</th>
-        <th scope="col">Date de Fin de validité</th>
-        <th scope="col">Type</th>
-        <th scope="col">Fichier</th>
+      <th scope="col">Consigne</th>
+      <th scope="col">Description</th>
+      <th scope="col">Date de Début de validité</th>
+      <th scope="col">Date de Fin de validité</th>
+      <th scope="col">Type</th>
+      <th scope="col">Fichier</th>
     </tr>
-    </thead>
-    <tbody *ngFor="let consigne of listConsigne">
+  </thead>
+  <tbody *ngFor="let consigne of listConsigne">
     <tr class="table-light" [ngSwitch]="consigne.type">
-        <td>{{consigne.titre}}</td>
-        <td>{{consigne.commentaire}}</td>
-        <td>{{consigne.dateHeureDebut}}</td>
-        <td *ngIf="consigne.dateHeureFin != '01/01/2099 00:00:00'">{{consigne.dateHeureFin}}</td>
-        <td *ngIf="consigne.dateHeureFin == '01/01/2099 00:00:00'">Jamais</td>
-        <td *ngSwitchCase=1 style="color: blue">Jour</td>
-        <td *ngSwitchCase=2 style="color: orange">Sécurité</td>
-        <td *ngSwitchCase=3 style="color: blue">Process</td>
-        <td *ngSwitchCase=4 style="color: black">Autres</td>
-        <td *ngSwitchCase=5 style="color: black">Suite à un évènement</td>
-        <td *ngIf="consigne.url != null" (click)="downloadFile(consigne.url)"><i class="fas fa-download" ></i></td>
-        <td *ngIf="consigne.url == null">/</td>
+      <td>{{ consigne.titre }}</td>
+      <td>{{ consigne.commentaire }}</td>
+      <td>{{ consigne.dateHeureDebut }}</td>
+      <td *ngIf="consigne.dateHeureFin !== '01/01/2099 00:00:00'">
+        {{ consigne.dateHeureFin }}
+      </td>
+      <td *ngIf="consigne.dateHeureFin === '01/01/2099 00:00:00'">Jamais</td>
+      <td *ngSwitchCase="1" style="color: blue">Jour</td>
+      <td *ngSwitchCase="2" style="color: orange">Sécurité</td>
+      <td *ngSwitchCase="3" style="color: blue">Process</td>
+      <td *ngSwitchCase="4" style="color: black">Autres</td>
+      <td *ngSwitchCase="5" style="color: black">Suite à un évènement</td>
+      <td *ngIf="consigne.url != null" (click)="downloadFile(consigne.url)">
+        <i class="fas fa-download"></i>
+      </td>
+      <td *ngIf="consigne.url == null">/</td>
     </tr>
-    </tbody>
+  </tbody>
 </table>
 <div class="row">
-
-    <div class="col-md-6">
-        <h2 style="text-align: center;">
-            Zones
-        </h2>
-        <!--table des zones-->
-        <table class="table table-hover tableFixed">
-            <thead>
-            <tr class="table-secondary">
-                <th scope="col">Nom</th>
-                <th scope="col">Terminé ?</th>
-                <th scope="col">Contrôlée par :</th>
-            </tr>
-            </thead>
-            <tbody *ngFor="let zone of listZone">
-            <tr class="table-light">
-                <td>{{zone.zone}}</td>
-                <td *ngIf="zone.termine"> 
-                    <button class="btn btn btn-light">
-                        <i style="color: green" class="fas fa-check"></i>
-                    </button>
-                </td>
-                <td *ngIf="!zone.termine"> 
-                    <button class="btn btn btn-light">
-                        <i style="color: red" class="fas fa-times-circle"></i>
-                    </button>
-                </td>
-                <td>
-                    {{zone.prenomRondier}}  {{zone.nomRondier}}
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="col-md-6">
-        <h2 style="text-align: center;">
-            Actions
-        </h2>
-        <!--table des actions-->
-        <table class="table table-hover tableFixed">
-            <thead>
-            <tr class="table-secondary">
-                <th scope="col">Nom</th>
-                <th scope="col">Terminé ?</th>
-                <th scope="col">Contrôlée par :</th>
-            </tr>
-            </thead>
-            <tbody *ngFor="let action of listAction">
-            <tr class="table-light" >
-                <td>{{action.nom}}</td>
-                <td *ngIf="action.termine"> 
-                    <button class="btn btn btn-light">
-                        <i style="color: green" class="fas fa-check"></i>
-                    </button>
-                </td>
-                <td *ngIf="!action.termine"> 
-                    <button class="btn btn btn-light">
-                        <i style="color: red" class="fas fa-times-circle"></i>
-                    </button>
-                </td>
-                <td>
-                    {{action.prenomRondier}}  {{action.nomRondier}}
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+  <div class="col-md-6">
+    <h2 style="text-align: center">Zones</h2>
+    <!--table des zones-->
+    <table class="table table-hover tableFixed">
+      <thead>
+        <tr class="table-secondary">
+          <th scope="col">Nom</th>
+          <th scope="col">Terminé ?</th>
+          <th scope="col">Contrôlée par :</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let zone of listZone">
+        <tr class="table-light">
+          <td>{{ zone.zone }}</td>
+          <td *ngIf="zone.termine">
+            <button class="btn btn btn-light">
+              <i style="color: green" class="fas fa-check"></i>
+            </button>
+          </td>
+          <td *ngIf="!zone.termine">
+            <button class="btn btn btn-light">
+              <i style="color: red" class="fas fa-times-circle"></i>
+            </button>
+          </td>
+          <td>{{ zone.prenomRondier }} {{ zone.nomRondier }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-md-6">
+    <h2 style="text-align: center">Actions</h2>
+    <!--table des actions-->
+    <table class="table table-hover tableFixed">
+      <thead>
+        <tr class="table-secondary">
+          <th scope="col">Nom</th>
+          <th scope="col">Terminé ?</th>
+          <th scope="col">Contrôlée par :</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let action of listAction">
+        <tr class="table-light">
+          <td>{{ action.nom }}</td>
+          <td *ngIf="action.termine">
+            <button class="btn btn btn-light">
+              <i style="color: green" class="fas fa-check"></i>
+            </button>
+          </td>
+          <td *ngIf="!action.termine">
+            <button class="btn btn btn-light">
+              <i style="color: red" class="fas fa-times-circle"></i>
+            </button>
+          </td>
+          <td>{{ action.prenomRondier }} {{ action.nomRondier }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
-<h2 style="text-align: center;">
-    Evènements
-</h2>
+<h2 style="text-align: center">Evènements</h2>
 <!--table des évènements-->
 <table class="table tableFixed">
-    <thead>
+  <thead>
     <tr class="table-secondary">
-        <th scope="col">Titre</th>
-        <th scope="col">Description</th>
-        <th scope="col">Cause</th>
-        <th scope="col">Date de Début </th>
-        <th scope="col">Date de Fin</th>
-        <th scope="col">Demande de travaux</th>
-        <th scope="col">Photo</th>
+      <th scope="col">Titre</th>
+      <th scope="col">Description</th>
+      <th scope="col">Cause</th>
+      <th scope="col">Date de Début</th>
+      <th scope="col">Date de Fin</th>
+      <th scope="col">Demande de travaux</th>
+      <th scope="col">Photo</th>
     </tr>
-    </thead>
-    <tbody *ngFor="let evenement of listEvenement">
-    <tr class=" line color--{{evenement.importance}}">
-        <td>{{evenement.titre}}</td>
-        <td>{{evenement.description}}</td>
-        <td>{{evenement.cause}}</td>
-        <td>{{evenement.date_heure_debut}}</td>
-        <td>{{evenement.date_heure_fin}}</td>
-        <td *ngIf="evenement.demande_travaux.length > 1">{{evenement.demande_travaux}}</td>
-        <td>
-            <a *ngIf="evenement.url > 0" routerLink="{{evenement.url}}" target="_blank">
-                <button class="btn btn-success">
-                    <i class="fas fa-image"></i> 
-                </button>
-            </a>
-        </td> 
+  </thead>
+  <tbody *ngFor="let evenement of listEvenement">
+    <tr class=" line color--{{ evenement.importance }}">
+      <td>{{ evenement.titre }}</td>
+      <td>{{ evenement.description }}</td>
+      <td>{{ evenement.cause }}</td>
+      <td>{{ evenement.date_heure_debut }}</td>
+      <td>{{ evenement.date_heure_fin }}</td>
+      <td *ngIf="evenement.demande_travaux.length > 1">
+        {{ evenement.demande_travaux }}
+      </td>
+      <td>
+        <a
+          *ngIf="evenement.url > 0"
+          routerLink="{{ evenement.url }}"
+          target="_blank"
+        >
+          <button class="btn btn-success">
+            <i class="fas fa-image"></i>
+          </button>
+        </a>
+      </td>
     </tr>
-    </tbody>
+  </tbody>
 </table>

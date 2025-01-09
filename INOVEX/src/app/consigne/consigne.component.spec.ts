@@ -1,16 +1,15 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { ConsigneComponent } from './consigne.component';
+import { ConsigneComponent } from "./consigne.component";
 
-describe('ConsigneComponent', () => {
+describe("ConsigneComponent", () => {
   let component: ConsigneComponent;
   let fixture: ComponentFixture<ConsigneComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ConsigneComponent ]
-    })
-    .compileComponents();
+      declarations: [ConsigneComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('ConsigneComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

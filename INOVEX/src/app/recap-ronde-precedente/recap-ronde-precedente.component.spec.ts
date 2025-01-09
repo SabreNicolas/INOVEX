@@ -1,21 +1,21 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { RecapRondePrecedenteComponent } from './recap-ronde-precedente.component';
+import { RecapRondePrecedenteComponent } from "./recap-ronde-precedente.component";
 
-describe('RecapRondePrecedenteComponent', () => {
+describe("RecapRondePrecedenteComponent", () => {
   let component: RecapRondePrecedenteComponent;
   let fixture: ComponentFixture<RecapRondePrecedenteComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [RecapRondePrecedenteComponent]
+      declarations: [RecapRondePrecedenteComponent],
     });
     fixture = TestBed.createComponent(RecapRondePrecedenteComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

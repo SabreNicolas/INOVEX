@@ -1,95 +1,136 @@
-<a role="button" (click)="ouvrirDialogCreerZone()" class="btn btn-primary" id="create">
-    Créer une zone de contrôle
+<a
+  role="button"
+  (click)="ouvrirDialogCreerZone()"
+  class="btn btn-primary"
+  id="create"
+>
+  Créer une zone de contrôle
 </a>
 
 <div *ngIf="listZone">
-
-    <div class="table-style">
-        <!--table des zones de controle-->
-        <table class="table table-hover tableFixed">
-            <thead>
-            <tr class="table-secondary">
-                <th scope="col">Nom</th>
-                <th scope="col">Commentaire</th>
-                <th scope="col">Num Four</th>
-                <th scope="col">Supprimer</th>
-            </tr>
-            </thead>
-            <tbody *ngFor="let z of listZone">
-            <tr class="table-light">
-                <td>
-                    {{z.nom}}
-                    <button id="setName" (click)="setName(z)" class="btn btn-light">
-                        <i class="far fa-edit"></i>
-                    </button>
-                </td>
-                <td>
-                    {{z.commentaire}}
-                    <button id="setComment" (click)="setComment(z)" class="btn btn-light">
-                        <i class="far fa-edit"></i>
-                    </button>
-                </td>
-                <!--<td style="text-align: center" *ngIf="z.four1 === 1"><i style="color: green" class="fa fa-check" aria-hidden="true"></i></td>
+  <div class="table-style">
+    <!--table des zones de controle-->
+    <table class="table table-hover tableFixed">
+      <thead>
+        <tr class="table-secondary">
+          <th scope="col">Nom</th>
+          <th scope="col">Commentaire</th>
+          <th scope="col">Num Four</th>
+          <th scope="col">Supprimer</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let z of listZone">
+        <tr class="table-light">
+          <td>
+            {{ z.nom }}
+            <button id="setName" (click)="setName(z)" class="btn btn-light">
+              <i class="far fa-edit"></i>
+            </button>
+          </td>
+          <td>
+            {{ z.commentaire }}
+            <button
+              id="setComment"
+              (click)="setComment(z)"
+              class="btn btn-light"
+            >
+              <i class="far fa-edit"></i>
+            </button>
+          </td>
+          <!--<td style="text-align: center" *ngIf="z.four1 === 1"><i style="color: green" class="fa fa-check" aria-hidden="true"></i></td>
                 <td style="text-align: center" *ngIf="z.four1 === 0"><i style="color: red" class="fa fa-times" aria-hidden="true"></i></td>
                 <td style="text-align: center" *ngIf="z.four2 === 1"><i style="color: green" class="fa fa-check" aria-hidden="true"></i></td>
                 <td style="text-align: center" *ngIf="z.four2 === 0"><i style="color: red" class="fa fa-times" aria-hidden="true"></i></td>-->
-                <td>
-                    <span class="badge rounded-pill bg-secondary">{{z.four}}</span>
-                    <button id="setFOur" (click)="setFour(z)" class="btn btn-light">
-                        <i class="far fa-edit"></i>
-                    </button>
-                </td>
-                <td>
-                    <button id="deleteZone" (click)="deleteZone(z.Id)" class="btn btn-danger">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+          <td>
+            <span class="badge rounded-pill bg-secondary">{{ z.four }}</span>
+            <button id="setFOur" (click)="setFour(z)" class="btn btn-light">
+              <i class="far fa-edit"></i>
+            </button>
+          </td>
+          <td>
+            <button
+              id="deleteZone"
+              (click)="deleteZone(z.Id)"
+              class="btn btn-danger"
+            >
+              <i class="fas fa-trash-alt"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <ng-template let-data #myCreateZoneDialog>
-    <h1 class="creation" style="text-align: center;">Création d'une {{denomination}} :</h1>
-    <mat-dialog-content>
+  <h1 class="creation" style="text-align: center">
+    Création d'une {{ denomination }} :
+  </h1>
+  <mat-dialog-content>
+    <div class="row">
+      <div class="col-sm-5 col-sm-offset-1">
+        <form ngNativeValidate (ngSubmit)="onSubmit(f)" #f="ngForm">
+          <div class="form-group">
+            <label for="nom">Nom : *</label>
+            <input
+              required
+              type="text"
+              id="nom"
+              class="form-control"
+              placeholder="Nom"
+              name="nom"
+              ngModel
+            />
+          </div>
 
-        <div class="row">
-            <div class="col-sm-5 col-sm-offset-1">
-        
-                <form ngNativeValidate  (ngSubmit)="onSubmit(f)" #f="ngForm">
-        
-                    <div class="form-group">
-                        <label for="nom">Nom : *</label>
-                        <input required type="text" id="nom" class="form-control" placeholder="Nom" name="nom" ngModel>
-                    </div>
-        
-                    <div class="form-group">
-                        <label for="commentaire">Commentaire : </label>
-                        <textarea id="commentaire" class="form-control" placeholder="Commentaire" name="commentaire" ngModel>
-                        </textarea>
-                    </div>
-        
-                    <div class="form-group">
-                        <label for="choixFour1">Zone correspondant à un four :</label>
-                        <div *ngFor="let fourNumber of numbers" class="form-check">
-                            <input class="form-check-input" type="radio" name="four" id="choixFour{{fourNumber}}" [value]=fourNumber ngModel>
-                            <label class="form-check-label" for="choixFour{{fourNumber}}">
-                                Four {{fourNumber}}
-                            </label>
-                        </div>
-                        <button class="btn btn-warning" (click)="resetFourZone(f)" type="button">Décocher le choix du four</button>
-                    </div>
-        
-                    <p style="font-size: smaller; color: grey">* : Obligatoire</p>
-        
-                    <div class="form-group">
-                        <button class="btn btn-success btn-lg" type="submit">Valider</button>
-                        <button [mat-dialog-close]="true" class="btn btn-danger btn-lg">Annuler</button>
-                    </div>
-        
-                </form>
+          <div class="form-group">
+            <label for="commentaire">Commentaire : </label>
+            <textarea
+              id="commentaire"
+              class="form-control"
+              placeholder="Commentaire"
+              name="commentaire"
+              ngModel
+            >
+            </textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="choixFour1">Zone correspondant à un four :</label>
+            <div *ngFor="let fourNumber of numbers" class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="four"
+                id="choixFour{{ fourNumber }}"
+                [value]="fourNumber"
+                ngModel
+              />
+              <label class="form-check-label" for="choixFour{{ fourNumber }}">
+                Four {{ fourNumber }}
+              </label>
             </div>
-        </div>
-    </mat-dialog-content>
+            <button
+              class="btn btn-warning"
+              (click)="resetFourZone(f)"
+              type="button"
+            >
+              Décocher le choix du four
+            </button>
+          </div>
+
+          <p style="font-size: smaller; color: grey">* : Obligatoire</p>
+
+          <div class="form-group">
+            <button class="btn btn-success btn-lg" type="submit">
+              Valider
+            </button>
+            <button [mat-dialog-close]="true" class="btn btn-danger btn-lg">
+              Annuler
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </mat-dialog-content>
 </ng-template>

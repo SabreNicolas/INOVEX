@@ -1,16 +1,15 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { ListBadgesComponent } from './list-badges.component';
+import { ListBadgesComponent } from "./list-badges.component";
 
-describe('ListBadgesComponent', () => {
+describe("ListBadgesComponent", () => {
   let component: ListBadgesComponent;
   let fixture: ComponentFixture<ListBadgesComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ListBadgesComponent ]
-    })
-    .compileComponents();
+      declarations: [ListBadgesComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('ListBadgesComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

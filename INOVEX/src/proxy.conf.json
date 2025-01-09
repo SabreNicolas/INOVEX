@@ -1,7 +1,7 @@
 {
-    "/altairrest":{
-        "target": "https://paprec.altairsystem.fr:443",
-        "secure": false,
-        "changeOrigin":true
-    }
+  "/altairrest": {
+    "target": "https://paprec.altairsystem.fr:443",
+    "secure": false,
+    "changeOrigin": true
+  }
 }

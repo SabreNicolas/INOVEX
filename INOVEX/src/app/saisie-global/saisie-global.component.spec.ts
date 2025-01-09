@@ -1,16 +1,15 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { SaisieGlobalComponent } from './saisie-global.component';
+import { SaisieGlobalComponent } from "./saisie-global.component";
 
-describe('SaisieGlobalComponent', () => {
+describe("SaisieGlobalComponent", () => {
   let component: SaisieGlobalComponent;
   let fixture: ComponentFixture<SaisieGlobalComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SaisieGlobalComponent ]
-    })
-    .compileComponents();
+      declarations: [SaisieGlobalComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('SaisieGlobalComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

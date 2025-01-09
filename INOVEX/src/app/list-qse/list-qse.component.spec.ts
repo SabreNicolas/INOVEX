@@ -1,16 +1,15 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { ListQseComponent } from './list-qse.component';
+import { ListQseComponent } from "./list-qse.component";
 
-describe('ListQseComponent', () => {
+describe("ListQseComponent", () => {
   let component: ListQseComponent;
   let fixture: ComponentFixture<ListQseComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ListQseComponent ]
-    })
-    .compileComponents();
+      declarations: [ListQseComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('ListQseComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

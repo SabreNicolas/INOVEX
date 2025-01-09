@@ -1,16 +1,15 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { GestionBadgeComponent } from './gestion-badge.component';
+import { GestionBadgeComponent } from "./gestion-badge.component";
 
-describe('GestionBadgeComponent', () => {
+describe("GestionBadgeComponent", () => {
   let component: GestionBadgeComponent;
   let fixture: ComponentFixture<GestionBadgeComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ GestionBadgeComponent ]
-    })
-    .compileComponents();
+      declarations: [GestionBadgeComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('GestionBadgeComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });
