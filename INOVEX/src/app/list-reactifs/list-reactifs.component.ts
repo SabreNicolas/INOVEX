@@ -240,7 +240,7 @@ export class ListReactifsComponent implements OnInit {
     //Maubeuge
     else if (this.typeImportTonnage.toLowerCase().includes("tradim")) {
       //delimiter,header,typedechet,dateEntree,tonnage, posEntreeSortie
-      this.lectureCSV(event, ";", true, 6, 0, 5, 11);
+      this.lectureCSV(event, ";", true, 6, 1, 5, 11);
     }
     //Plouharnel / GIEN
     else if (this.typeImportTonnage.toLowerCase().includes("arpege masterk")) {
