@@ -49,6 +49,7 @@ Pour lancer le projet directement sur le serveur en pré-prod :
          meta?: MetaType;
          ronde?: any[];
          isAction?: boolean;
+         dateFinReccurrence?: string;
       }
    ```
 
