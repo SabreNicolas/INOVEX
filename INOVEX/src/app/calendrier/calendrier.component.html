@@ -482,7 +482,13 @@
           [disabled]="!userLogged['isAdmin'] === true"
           class="btn btn-outline-danger"
           (click)="
-            deleteEvenement(ronde.id, false, modalData!.isAction!); close()
+            deleteEvenement(
+              ronde.id,
+              false,
+              modalData!.isAction!,
+              modalData?.dateDeb
+            );
+            close()
           "
         >
           <i class="fas fa-trash"></i>
@@ -496,7 +502,7 @@
               ronde.id,
               true,
               modalData!.isAction!,
-              modalData!.event.title!
+              modalData?.dateDeb
             );
             close()
           "
@@ -511,6 +517,11 @@
             aria-hidden="true"
           ></i>
           Supprimer l'occurence
+          {{
+            ronde.finReccurrence === null
+              ? ""
+              : "jusqu'au " + (ronde.finReccurrence | date: "dd/MM/yyyy")
+          }}
         </button>
       </div>
       <div *ngIf="modalData?.isAction">
@@ -520,7 +531,12 @@
           class="btn btn-outline-danger"
           [disabled]="!userLogged['isAdmin'] === true"
           (click)="
-            deleteEvenement(modalData?.event?.id, false, modalData!.isAction!);
+            deleteEvenement(
+              modalData?.event?.id,
+              false,
+              modalData!.isAction!,
+              modalData?.dateDeb
+            );
             close()
           "
         >
@@ -531,7 +547,12 @@
           class="btn btn-outline-secondary"
           class="btn btn-danger"
           (click)="
-            deleteEvenement(modalData?.event?.id, true, modalData!.isAction!);
+            deleteEvenement(
+              modalData?.event?.id,
+              true,
+              modalData!.isAction!,
+              modalData?.dateDeb
+            );
             close()
           "
           [disabled]="
@@ -545,6 +566,12 @@
             aria-hidden="true"
           ></i>
           Supprimer l'occurence
+          {{
+            modalData?.event?.dateFinReccurrence === null
+              ? ""
+              : "jusqu'au " +
+                (modalData?.event?.dateFinReccurrence | date: "dd/MM/yyyy")
+          }}
         </button>
       </div>
     </div>

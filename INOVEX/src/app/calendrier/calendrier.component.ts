@@ -270,6 +270,7 @@ export class CalendrierComponent implements OnInit {
           color: color,
           id: event.id,
           isAction: true,
+          dateFinReccurrence: event.finReccurrence,
         });
       }
       this.setView(CalendarView.Week);
@@ -344,8 +345,14 @@ export class CalendrierComponent implements OnInit {
     id: any,
     deleteOccurence: boolean,
     isAction: boolean,
-    title?: string,
+    dateDebutSupp: string,
   ) {
+    dateDebutSupp =
+      dateDebutSupp.substring(6, 10) +
+      "-" +
+      dateDebutSupp.substring(3, 5) +
+      "-" +
+      dateDebutSupp.substring(0, 2);
     Swal.fire({
       title: "Etes vous sûr de vouloir supprimer cet évènement ?",
       icon: "warning",
@@ -365,7 +372,7 @@ export class CalendrierComponent implements OnInit {
               .subscribe((response) => {
                 const idAction = response.data[0].idAction;
                 this.cahierQuartService
-                  .deleteActionCalendrier(idAction)
+                  .deleteActionCalendrier(idAction, dateDebutSupp)
                   .subscribe((response) => {
                     if (
                       response == "Suppression des actions du calendrier OK"
@@ -388,7 +395,7 @@ export class CalendrierComponent implements OnInit {
                 const idZone = response.data[0].idZone;
                 const quart = response.data[0].quart;
                 this.cahierQuartService
-                  .deleteZoneCalendrier(idZone, quart)
+                  .deleteZoneCalendrier(idZone, quart, dateDebutSupp)
                   .subscribe((response) => {
                     if (response == "Suppression des zones du calendrier OK") {
                       this.popupService.alertSuccessForm(
@@ -608,7 +615,7 @@ export class CalendrierComponent implements OnInit {
           //On parcours la liste des zones pour toutes les ajouter
           for (const zone of this.listZoneSelection) {
             this.cahierQuartService
-              .newCalendrierZone(zone, dateHeureDeb, quart, dateFin)
+              .newCalendrierZone(zone, dateHeureDeb, quart, dateFin, null)
               .subscribe((response) => {
                 const dateFin = "";
               });
@@ -626,6 +633,7 @@ export class CalendrierComponent implements OnInit {
                   quart,
                   response.data[0].date_heure_fin,
                   0,
+                  null,
                 )
                 .subscribe((response) => {
                   const dateFin = "";
@@ -689,7 +697,13 @@ export class CalendrierComponent implements OnInit {
             //On parcours la liste des zones pour toutes les ajouter
             for (const zone of this.listZoneSelection) {
               this.cahierQuartService
-                .newCalendrierZone(zone, dateHeureDeb, quart, dateFin)
+                .newCalendrierZone(
+                  zone,
+                  dateHeureDeb,
+                  quart,
+                  dateFin,
+                  this.dateFin,
+                )
                 .subscribe((response) => {
                   const dateFin = "";
                 });
@@ -698,7 +712,14 @@ export class CalendrierComponent implements OnInit {
           //Si on ajoute une action
           else {
             this.cahierQuartService
-              .newCalendrierAction(idAction, dateHeureDeb, quart, dateFin, 0)
+              .newCalendrierAction(
+                idAction,
+                dateHeureDeb,
+                quart,
+                dateFin,
+                0,
+                this.dateFin,
+              )
               .subscribe((response) => {
                 const dateFin = "";
               });

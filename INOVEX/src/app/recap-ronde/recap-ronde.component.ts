@@ -331,6 +331,7 @@ export class RecapRondeComponent implements OnInit {
           this.dateDebString,
           this.quart,
           this.dateFinString,
+          null,
         )
         .subscribe(() => {
           this.ngOnInit();
@@ -370,6 +371,7 @@ export class RecapRondeComponent implements OnInit {
             this.quart,
             response.data[0].date_heure_fin,
             1,
+            null,
           )
           .subscribe(() => {
             //réinitialiser le champ de saisie
