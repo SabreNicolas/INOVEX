@@ -278,7 +278,7 @@ export class ListConsignesComponent implements OnInit {
     const startDate = this.parseCustomDate(dateDebut);
     const endDate = this.parseCustomDate(dateFin);
 
-    return now >= startDate && now <= endDate;
+    return now <= endDate;
   }
 
   parseCustomDate(dateStr: string): Date {
