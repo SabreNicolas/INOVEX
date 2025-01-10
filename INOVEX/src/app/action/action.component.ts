@@ -154,6 +154,7 @@ export class ActionComponent implements OnInit {
                   this.quart,
                   response.data[0].date_heure_fin,
                   0,
+                  null,
                 )
                 .subscribe((response) => {
                   const dateFin = "";

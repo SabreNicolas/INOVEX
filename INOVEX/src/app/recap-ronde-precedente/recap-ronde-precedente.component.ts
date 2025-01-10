@@ -598,7 +598,7 @@ export class RecapRondePrecedenteComponent implements OnInit {
       const file = new File(
         [blob],
         "_" +
-          this.formatDateTime(this.dateDebString) +
+          this.formatDateTime(this.dateDebString).replace(":", "h") +
           "-" +
           quart +
           " - " +

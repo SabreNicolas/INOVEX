@@ -893,6 +893,7 @@ export class cahierQuartService {
     dateDeb: string,
     quart: number,
     dateFin: string,
+    dateFinReccurrence: any,
   ) {
     const requete =
       "https://" +
@@ -905,6 +906,8 @@ export class cahierQuartService {
       dateDeb +
       "&dateFin=" +
       dateFin +
+      "&dateFinReccurrence=" +
+      dateFinReccurrence +
       "&idUsine=" +
       this.idUsine;
 
@@ -922,6 +925,7 @@ export class cahierQuartService {
     quart: number,
     dateFin: string,
     termine: number,
+    dateFinReccurrence: any,
   ) {
     const requete =
       "https://" +
@@ -934,6 +938,8 @@ export class cahierQuartService {
       dateDeb +
       "&dateFin=" +
       dateFin +
+      "&dateFinReccurrence=" +
+      dateFinReccurrence +
       "&idUsine=" +
       this.idUsine +
       "&termine=" +
@@ -1028,9 +1034,14 @@ export class cahierQuartService {
   }
 
   //Supprimer les action avec le même id du calendrier
-  deleteActionCalendrier(idAction: number) {
+  deleteActionCalendrier(idAction: number, dateDeb: string) {
     const requete =
-      "https://" + this.ip + "/deleteActionCalendrier/" + idAction;
+      "https://" +
+      this.ip +
+      "/deleteActionCalendrier/" +
+      idAction +
+      "?dateDeb=" +
+      dateDeb;
     //console.log(requete);
 
     const requestOptions = {
@@ -1041,14 +1052,16 @@ export class cahierQuartService {
   }
 
   //Supprimer ules zones avec le même id sur le même quart du calendrier
-  deleteZoneCalendrier(idZone: number, quart: number) {
+  deleteZoneCalendrier(idZone: number, quart: number, dateDeb: string) {
     const requete =
       "https://" +
       this.ip +
       "/deleteZoneCalendrier/" +
       idZone +
       "?quart=" +
-      quart;
+      quart +
+      "&dateDeb=" +
+      dateDeb;
     //console.log(requete);
 
     const requestOptions = {
