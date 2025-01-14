@@ -15,4 +15,5 @@ export interface element{
     idGroupement : number;
     CodeEquipement : string;
     infoSup : string;
+    valeur?: string;
 }

@@ -14,11 +14,12 @@ import {anomalie} from "../../models/anomalie.model";
 import {elementsOfZone} from "../../models/elementsOfZone.model";
 import {permisFeuValidation} from "../../models/permisfeu-validation.model";
 import { idUsineService } from "./idUsine.service";
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class rondierService {
 
-
+    private apiUrl = 'https://localhost:3100/'; // Remplacez par l'URL de votre API
     httpClient: HttpClient;
     private headerDict = {
         'Content-Type': 'application/json',
@@ -27,17 +28,18 @@ export class rondierService {
         'Authorization': 'Bearer ' + localStorage.getItem('token')
     }
     private portAPI = 3100;
-    private ip = "fr-couvinove301.prod.paprec.fr";
-    //private ip = "localhost";
+    //private ip = "fr-couvinove301.prod.paprec.fr";
+    private ip = "localhost";
     private idUsine : number | undefined;
     private idUser : number;
-
     constructor(private http: HttpClient, private idUsineService : idUsineService) {
         this.httpClient = http;
         this.idUsine = this.idUsineService.getIdUsine();
         this.idUser = this.idUsineService.getIdUser();
     }
-
+    getAnomalies(): Observable<anomalie[]> {
+        return this.http.get<anomalie[]>(`${this.apiUrl}/anomalies`);
+    }
     /*
     BADGE
     */
@@ -273,6 +275,22 @@ export class rondierService {
             .put<any>(requete,null,requestOptions);
     }
 
+    getBadgeAndElementsOfZones(idUsine: number): Observable<any> {
+        let requete = `https://${this.ip}:${this.portAPI}/BadgeAndElementsOfZone/${idUsine}`;
+        const requestOptions = {
+            headers: new HttpHeaders(this.headerDict),
+        };
+        return this.http.get<any>(requete, requestOptions);
+    }
+
+      getAnomaliesOfOneRonde(date: string, quart: number): Observable<any> {
+        const requete = `https://${this.ip}:${this.portAPI}/anomalies?date=${encodeURIComponent(date)}&quart=${quart}&idUsine=${this.idUsine}`;
+        const requestOptions = {
+          headers: new HttpHeaders(this.headerDict),
+        };
+        return this.http.get<any>(requete, requestOptions);
+      }
+
     deleteZone(id : number){
         let requete = "https://"+this.ip+":"+this.portAPI+"/deleteZone?Id="+id;
         //console.log(requete);
@@ -446,19 +464,14 @@ export class rondierService {
             .get<element>(requete,requestOptions);
     }
 
-    getAnomaliesOfOneDay(date : string | undefined,quart:number){
-        if(date != undefined)
-            date = encodeURIComponent(date)
-        let requete = "https://"+this.ip+":"+this.portAPI+"/getAnomaliesOfOneDay/"+this.idUsine+"/"+date+"?quart="+quart;
-        //console.log(requete);
-
+    getAnomaliesOfOneDay(date: string | undefined, quart: number) {
+        if (date != undefined) date = encodeURIComponent(date);
+        let requete = `https://${this.ip}:${this.portAPI}/getAnomaliesOfOneDay/${this.idUsine}/${date}?quart=${quart}`;
         const requestOptions = {
-            headers: new HttpHeaders(this.headerDict),
+          headers: new HttpHeaders(this.headerDict),
         };
-
-        return this.http
-            .get<element>(requete,requestOptions);
-    }
+        return this.http.get<element[]>(requete, requestOptions);
+      }
 
     changeTypeRecupSetRondier(Id : number, elementRondier: number){
         let requete = "https://"+this.ip+":"+this.portAPI+"/productElementRondier?id="+Id+"&idElementRondier=" +elementRondier;

@@ -35,7 +35,7 @@
                 <td style="text-align: center" *ngIf="z.four2 === 0"><i style="color: red" class="fa fa-times" aria-hidden="true"></i></td>-->
                 <td>
                     <span class="badge rounded-pill bg-secondary">{{z.four}}</span>
-                    <button id="setFOur" (click)="setFour(z)" class="btn btn-light">
+                    <button id="setFour" (click)="setFour(z)" class="btn btn-light">
                         <i class="far fa-edit"></i>
                     </button>
                 </td>
@@ -43,6 +43,27 @@
                     <button id="deleteZone" (click)="deleteZone(z.Id)" class="btn btn-danger">
                         <i class="fas fa-trash-alt"></i>
                     </button>
+                </td>
+            </tr>
+            <!-- Ajouter une section pour afficher les éléments de contrôle d'une zone -->
+            <tr *ngIf="z.elements && z.elements.length > 0">
+                <td colspan="4">
+                    <div class="table-style">
+                        <table class="table table-hover tableFixed">
+                            <thead>
+                            <tr class="table-secondary">
+                                <th scope="col">Nom de l'élément</th>
+                                <th scope="col">Valeur</th>
+                            </tr>
+                            </thead>
+                            <tbody *ngFor="let element of z.elements">
+                            <tr class="table-light">
+                                <td>{{element.nom}}</td>
+                                <td>{{element.valeur}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </td>
             </tr>
             </tbody>

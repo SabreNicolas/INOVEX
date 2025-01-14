@@ -10,7 +10,6 @@ import {DatePipe, Location} from "@angular/common";
 @Injectable()
 export class cahierQuartService {
 
-
     httpClient: HttpClient;
     private headerDict = {
         'Content-Type': 'application/json',
@@ -19,17 +18,19 @@ export class cahierQuartService {
         'Authorization': 'Bearer ' + localStorage.getItem('token')
     }
     private portAPI = 3100;
-    private ip = "fr-couvinove301.prod.paprec.fr";
-    //private ip = "localhost";
-    private idUsine : number | undefined;
-    private idUser : number | undefined;
+    //private ip = "fr-couvinove301.prod.paprec.fr";
+    private ip = "localhost";
+    private idUsine : number;
+    private idUser : number;
 
     constructor(private http: HttpClient, private idUsineService : idUsineService,private datePipe : DatePipe) {
         this.httpClient = http;
         this.idUsine = this.idUsineService.getIdUsine();
         this.idUser = this.idUsineService.getIdUser();
     }
-
+    public getIdUsine(): number {
+      return this.idUsine;
+  }
     //Récupérer une localisation du site
     getOneLocalisation(){
       let requete = "https://"+this.ip+":"+this.portAPI+"/getOneLocalisation/" + this.idUsine;

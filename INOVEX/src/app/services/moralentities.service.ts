@@ -28,8 +28,8 @@ export class moralEntitiesService {
     }
     private portAPI = 3100;
     private portAPIHodja = 3101;
-    private ip = "fr-couvinove301.prod.paprec.fr";
-    //private ip = "localhost";
+    //private ip = "fr-couvinove301.prod.paprec.fr";
+    private ip = "localhost";
     private idUsine : number | undefined;
 
     constructor(private http: HttpClient, private idUsineService : idUsineService) {

@@ -1,6 +1,9 @@
-export interface zone{
-    Id : number;
-    nom : string;
-    commentaire : string;
-    four :number;
+import { element } from './element.model';
+
+export interface zone {
+  Id: number;
+  nom: string;
+  commentaire: string;
+  four: number;
+  elements?: element[];
 }

@@ -1,5 +1,4 @@
 <div *ngIf="listAnomalies">
-
     <div class="table-style">
         <!--table des consignes-->
         <table class="table table-hover tableFixed">
@@ -15,10 +14,10 @@
             </thead>
             <tbody *ngFor="let anomalie of listAnomalies">
             <tr class="table-light" [ngSwitch]="anomalie.quart">
-                <td>{{anomalie.nom[0]}}</td>
+                <td>{{anomalie.nom}}</td>
                 <td>{{anomalie.commentaire}}</td>
                 <td>{{anomalie.dateHeure}}</td>
-                <td *ngSwitchCase=1 style="color: green">Matin</td>
+                <td *ngSwitchCase=1 style="color: blue">Matin</td>
                 <td *ngSwitchCase=2 style="color: orange">Après-midi</td>
                 <td *ngSwitchCase=3 style="color: blue">Nuit</td>
                 <td>
@@ -30,14 +29,14 @@
                     Evènement déjà créé
                 </td>
                 <td *ngIf="anomalie.evenement == 0">
-                    <a (click)="ouvrirDialogCreerEvent(anomalie.id)" role="button" class="btn btn-primary" id="create">
-                        Créer un évènement
-                    </a>
-                </td>
-            <!-- </tr> -->
-            </tbody>
-        </table>
-    </div>
+<a (click)="ouvrirDialogCreerEvent(anomalie.id)" role="button" class="btn btn-primary" id="create">
+    Créer un évènement
+</a>
+</td>
+<!-- </tr> -->
+</tbody>
+</table>
+</div>
 </div>
 
 <ng-template let-data #myCreateEventDialog>
@@ -51,41 +50,27 @@
                     <input *ngIf="idEvenement == 0" type="file" id="fichier" class="form-control" required name="fichier" accept=".jpg,.jpeg,.png" (change)="saveFile($event)"><img *ngIf="imgSrc" [src]="imgSrc" alt="image" id="imgUpload">
                     <p *ngIf="idEvenement == 0" style="font-size: smaller; color: grey">*Format image !</p>
                 </div>
-                <div class="col-9">
-                    <div class="form-check" >
-                        <input class="form-check-input" type="checkbox" value="" id="demandeTravaux" ngModel [(ngModel)]="demandeTravaux" (click)="clickDemandeTravaux()" >
-                        <label class="form-check-label" for="demandeTravaux" id="demandeTravauxLabel">
-                        Demande d'intervention (oui/non)
-                        </label>
-                    </div>
-                
-                    <div class="form-check" *ngIf="idEvenement==0">
-                        <input class="form-check-input" type="checkbox" value="" id="consigne" ngModel [(ngModel)]="consigne" >
-                        <label class="form-check-label" for="consigne">
-                        Consigne (oui/non)
-                        </label>
-                    </div>
-                </div>
+
                 <div class="col-md-5">
                     <div class="form-group">
                         <label for="desc">Titre : * </label>
                         <input required type="text" id="titre" class="form-control" placeholder="Titre" name="titre" ngModel [(ngModel)]="titre">
                     </div>
-            
-                    
+
+
                     <div class="form-group" style="display: none;" id="groupementGMAO">
                         <label for="product">Groupement GMAO : * </label>
                         <select id="product" (change)="updateElements()" required class="form-control" ngModel [(ngModel)]="groupementGMAO" >
-                            <option value="">Choisissez un Groupement GMAO</option>
-                            <option *ngFor="let groupement of listGroupementGMAOTable" value="{{groupement.split('---')[0]}}">{{groupement}}</option>
+                            <option value="">Choisissez un produit CAP Exploitation</option>
+                            <option *ngFor="let groupement of listGroupementGMAOTable" value="{{groupement}}">{{groupement}}</option>
                         </select>
                     </div>
 
                     <div class="form-group">
-                        <label>Début date validité : * (non modifiable en cas de DI)</label>
-                        <input required [disabled]="demandeTravaux != 0" type="datetime-local" id="dateDebut" class="form-control" placeholder="Date de début de validité" name="dateDebut" ngModel [(ngModel)]="dateDeb">
+                        <label>Début date validité : *</label>
+                        <input required type="datetime-local" id="dateDebut" class="form-control" placeholder="Date de début de validité" name="dateDebut" ngModel [(ngModel)]="dateDeb">
                     </div>
-                
+
                     <div class="form-group">
                         <label for="desc">Description : </label>
                         <textarea required name="description" id="description" class="form-control" cols="30" rows="10" ngModel  placeholder="Description" [(ngModel)]="description"> </textarea>
@@ -93,7 +78,7 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-            
+
                     <div class="form-group">
                         <label for="desc">Cause : </label>
                         <select id="cause" required class="form-control" ngModel [(ngModel)]="cause" >
@@ -127,11 +112,11 @@
                             <option value="BRUIT_ANORMAL">Bruit anormal</option>
                         </select>
                     </div>
-                    
+
                     <div class="form-group" style="display: none;" id="equipementGMAO" >
                         <label for="product">Equipement GMAO : * </label>
                         <select id="product" (change)="updateGroupements()" required class="form-control" ngModel [(ngModel)]="equipementGMAO" >
-                            <option value="">Choisissez un Equipement GMAO</option>
+                            <option value="">Choisissez un produit CAP Exploitation</option>
                             <option *ngFor="let equipement of listEquipementGMAOFiltre" value="{{equipement.codeequipment}}---{{equipement.description}}">{{equipement.codeequipment}}---{{equipement.description}}</option>
                         </select>
                     </div>
@@ -149,15 +134,29 @@
                             </div>
                         </div>
                     </div>
-                    
+
                 </div>
-                    
+
                 <div class="col-9">
-                    <div class="form-group">
+
+                    <div class="form-check" >
+                        <input class="form-check-input" type="checkbox" value="" id="demandeTravaux" ngModel [(ngModel)]="demandeTravaux" (click)="clickDemandeTravaux()" >
+                        <label class="form-check-label" for="demandeTravaux" id="demandeTravauxLabel">
+                        Demande d'intervention (oui/non)
+                        </label>
+                    </div>
+
+                    <div class="form-check" *ngIf="idEvenement==0">
+                        <input class="form-check-input" type="checkbox" value="" id="consigne" ngModel [(ngModel)]="consigne" >
+                        <label class="form-check-label" for="consigne">
+                        Consigne (oui/non)
+                        </label>
+                    </div>
+                        <div class="form-group">
                         <button class="btn btn-success btn-lg" (click)="newEvenement()">Valider</button>
                         <button [mat-dialog-close]="true" class="btn btn-danger btn-lg">Annuler</button>
                     </div>
-                
+
                     <p style="font-size: smaller; color: grey">* : Obligatoire</p>
                 </div>
             </div>

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { categoriesService } from '../services/categories.service';
 import { user } from 'src/models/user.model';
-import * as pdfMake from 'pdfmake/build/pdfMake';
-import * as pdfFonts from 'pdfMake/build/vfs_fonts'
+import * as pdfMake from 'pdfmake/build/pdfmake';
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { rondierService } from '../services/rondier.service';
 
 //@ts-ignore

@@ -14,43 +14,6 @@
 
     <button type="button" (click)="finQuart()" class="btn btn-warning" id="finQuart">FIN DE QUART</button>
 
-    <div class="col-md-13" style="display: flex; flex-direction: column;" *ngIf="listActu.length > 0">
-        <h2 style="text-align: center; color: rgb(154,196,89);;">Actualités</h2>
-        <!--Liste des actus non lié à un quart-->
-        <div style="display: flex; justify-content: space-evenly;">
-            <div class="card cardActu" *ngFor="let actu of listActu">
-                <!--<div class="card-body" class="color--{{actu.importance}}">-->
-                <div class="card-body" class="color--3">
-                    <h5 class="card-title" [ngStyle]="{'color' : actu.importance == 2 ? 'red' : 'rgb(27,37,51)'}">{{actu.titre}}>{{actu.titre}}</h5>
-                    <p class="card-text" *ngFor="let descr of splitDescription(actu.description)">{{descr}}</p>
-                    <p *ngIf="actu.importance == 0" class="card-text color--{{actu.importance}}">Importance : Faible</p>
-                    <p *ngIf="actu.importance == 1" class="card-text color--{{actu.importance}}">Importance : Neutre</p>
-                    <p *ngIf="actu.importance == 2" class="card-text color--{{actu.importance}}">Importance : Elevée</p>
-                </div>
-            </div>
-        </div>
-
-        <!--table des consignes-->
-        <!--<table class="table tableFixed" style="width: 70%;">
-            <thead>
-            <tr class="table-secondary">
-                <th scope="col">Actualité</th>
-                <th scope="col">Description</th>
-                <th scope="col">Date de Début de validité</th>
-                <th scope="col">Date de Fin de validité</th>
-            </tr>
-            </thead>
-            <tbody *ngFor="let actu of listActu">
-            <tr class="color--{{actu.importance}}" >
-                <td>{{actu.titre}}</td>
-                <td><p *ngFor="let descr of splitDescription(actu.description)">{{descr}}</p></td>
-                <td>{{actu.date_heure_debut}}</td>
-                <td>{{actu.date_heure_fin}}</td>
-            </tr>
-            </tbody>
-        </table>-->
-    </div>
-
     <div class="col-md-13" *ngIf="listMaintenance.length > 0">
         <h2 style="text-align: center;">Maintenances</h2>
         <!--table des consignes-->

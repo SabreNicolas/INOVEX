@@ -363,7 +363,7 @@ export class RecapRondeComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         this.cahierQuartService.historiquePriseQuart().subscribe((response)=>{
-          window.location.href = "https://fr-couvinove300.prod.paprec.fr:8100/cahierQuart/recapRondePrecedente?quart="+this.quart+"&idEquipe="+this.idEquipe
+          window.location.href = "https://localhost:8100/cahierQuart/recapRondePrecedente?quart="+this.quart+"&idEquipe="+this.idEquipe
         })
       }
       else {

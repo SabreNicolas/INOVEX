@@ -16,9 +16,10 @@ export class arretsService {
         'Access-Control-Allow-Origin' : '*',
         'Authorization': 'Bearer ' + localStorage.getItem('token')
     }
+
     private portAPI = 3100;
-    private ip = "fr-couvinove301.prod.paprec.fr";
-    //private ip = "localhost";
+    //private ip = "fr-couvinove301.prod.paprec.fr";
+    private ip = "127.0.0.1";
     private idUsine : number | undefined;
 
     constructor(private http: HttpClient, private idUsineService : idUsineService) {
