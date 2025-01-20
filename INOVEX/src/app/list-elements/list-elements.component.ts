@@ -6,6 +6,7 @@ import { PopupService } from '../services/popup.service';
 import { groupement } from 'src/models/groupement.model';
 import {NgForm} from "@angular/forms";
 import { MatDialog } from '@angular/material/dialog';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-list-elements',
@@ -21,7 +22,7 @@ export class ListElementsComponent implements OnInit {
   public zoneId : number;
   public listElements : element[];
   public nom : string;
-  public zoneIdSelect : number[];
+  public zoneIdSelect : any[];
   public listElement : element[];
   public ordreElem : number;
   public valeurMin : number;
@@ -52,7 +53,6 @@ export class ListElementsComponent implements OnInit {
     this.listZone = [];
     this.zoneId = 0;
     this.listElements = [];
-    this.listZone = [];
     this.nom = "";
     this.zoneIdSelect = [];
     this.listElement = [];
@@ -80,7 +80,7 @@ export class ListElementsComponent implements OnInit {
     this.rondierService.listZone().subscribe((response)=>{
       // @ts-ignore
       this.listZone = response.data;
-      this.zoneId = this.listZone[0].Id
+      //this.zoneId = this.listZone[0].Id
       this.setListElementsOfZone();
     });
     
@@ -108,7 +108,8 @@ export class ListElementsComponent implements OnInit {
       // @ts-ignore
       this.element = response.data[0];
       this.nom = this.element.nom;
-      this.zoneIdSelect[0] = this.element.zoneId;
+      //this.zoneIdSelect[0] = this.element.zoneId;
+      this.zoneIdSelect = [this.element.zoneId.toString()];
       this.getGroupement();
       this.valeurMin = this.element.valeurMin;
       this.valeurMax = this.element.valeurMax;
@@ -129,18 +130,13 @@ export class ListElementsComponent implements OnInit {
       this.changeType(null);
       //Gestion du mode regulateur
       if (this.isRegulateur == 1) {
+        this.checkboxRegulateur = <HTMLInputElement>document.getElementsByName('regulateur')[0];
         this.checkboxRegulateur.checked = true;
       }
       //Gestion du type compteur
       if (this.isCompteur == 1) {
+        this.checkboxCompteur = <HTMLInputElement>document.getElementsByName('compteur')[0];
         this.checkboxCompteur.checked = true;
-      }
-      //Gestion de la zone
-      let selectZone = <HTMLSelectElement>document.getElementById("zone");
-      for (var i = 0; i < selectZone.options.length; i++) {
-        if("'"+this.zoneIdSelect[0].toString()+"'" === selectZone.options[i].value.split(": ")[1]){
-          selectZone.options[i].selected = true;
-        }
       }
       //Gestion de la pastille info sup
       if(this.element.infoSup.length > 0){
@@ -174,15 +170,30 @@ export class ListElementsComponent implements OnInit {
 
   //suppression d'un element de controle
   deleteElement(id : number){
-    this.rondierService.deleteElement(id).subscribe((response)=>{
-      if (response == "Suppression de l'élément OK"){
-        this.popupService.alertSuccessForm("L'élément de contrôle a bien été supprimé !");
+    Swal.fire({
+      title : 'Voulez-vous supprimer cet élément de ronde ?',
+      icon : 'warning',
+      showCancelButton : true,
+      confirmButtonColor : '#3085d6',
+      cancelButtonColor : '#d33',
+      confirmButtonText : 'Oui',
+      cancelButtonText : 'Non'
+    }).then(async (result)=>{
+      if(result.isConfirmed){
+        this.rondierService.deleteElement(id).subscribe((response)=>{
+          if (response == "Suppression de l'élément OK"){
+            this.popupService.alertSuccessForm("L'élément de contrôle a bien été supprimé !");
+          }
+          else {
+            this.popupService.alertSuccessForm('Erreur lors de la suppression de l\'élément de contrôle....')
+          }
+        });
+        this.ngOnInit();
       }
-      else {
-        this.popupService.alertSuccessForm('Erreur lors de la suppression de l\'élément de contrôle....')
+      else{
+        this.popupService.alertErrorForm('Annulation de la suppression')
       }
     });
-    this.ngOnInit();
   }
 
   getPreviousItem(index :number){
@@ -236,13 +247,14 @@ export class ListElementsComponent implements OnInit {
         if(this.listGroupements.length < 1 ){
           this.idGroupement = 0;
         }
+
+        this.getElements();
       });
     }
   }
   
   //Création éléments contrôle
   onSubmit(form : NgForm) {
-    
     this.checkboxRegulateur = <HTMLInputElement>document.getElementsByName('regulateur')[0];
     this.checkboxCompteur = <HTMLInputElement>document.getElementsByName('compteur')[0];
     this.nom = form.value['nom'].replace(/'/g,"''");
@@ -301,20 +313,19 @@ export class ListElementsComponent implements OnInit {
                 this.nom = "";
                 this.popupService.alertSuccessForm("L'élément de contrôle a bien été créé !");
                 this.dialog.closeAll();
+                this.resetFields();
               }
               
               else {
-                this.popupService.alertErrorForm('Erreur lors de la création de l\'élément de contrôle ....')
+                this.popupService.alertErrorForm('Erreur lors de la création de l\'élément de contrôle ....');
               }
             });
           }
           else {
-            this.popupService.alertErrorForm('Erreur lors de la création de l\'élément de contrôle ....')
+            this.popupService.alertErrorForm('Erreur lors de la création de l\'élément de contrôle ....');
           }
         });
       });
-
-      this.resetFields(form);
     }
   }
 
@@ -350,16 +361,29 @@ export class ListElementsComponent implements OnInit {
     });
   }
 
-
-  //TODO : reset le formulaire après saisie => pb si reset et pas de saisie alors erreur (si saisie OK)
-  resetFields(form: NgForm){
-    this.isRegulateur = 0;
+  resetFields(){
+    this.listZone = [];
+    this.zoneId = 0;
+    this.listElements = [];
+    this.nom = "";
     this.zoneIdSelect = [];
-    form.value['zone'] = null;
-    //form.reset();
-    var four = document.getElementsByName('four');
-    var regulateur = document.getElementsByName('regulateur');
-    (<HTMLInputElement>four[0]).checked = false;
-    (<HTMLInputElement>regulateur[0]).checked = false;
+    this.listElement = [];
+    this.ordreElem = 1;
+    this.valeurMin = 0;
+    this.valeurMax = 0;
+    this.typeChamp = 2;
+    this.unit = "_";
+    this.defaultValue = 0;
+    this.isRegulateur = 0;
+    this.isCompteur = 0;
+    this.needListValues = false;
+    this.needBornes = false;
+    this.listValues = "";
+    this.elementId = 0;
+    this.listGroupements = [];
+    this.idGroupement = 0;
+    this.codeEquipement ="";
+    this.infoSup = false;
+    this.infoSupValue = "";
   }
 }

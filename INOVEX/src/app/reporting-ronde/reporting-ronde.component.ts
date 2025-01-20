@@ -3,15 +3,11 @@ import {rondierService} from "../services/rondier.service";
 import {ronde} from "../../models/ronde.models";
 import {NgForm} from "@angular/forms";
 import Swal from "sweetalert2";
-import {mesureRonde} from "../../models/mesureRonde.model";
 import {anomalie} from "../../models/anomalie.model";
 import {elementsOfZone} from "../../models/elementsOfZone.model";
 import {permisFeuValidation} from "../../models/permisfeu-validation.model";
-import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 import {user} from "../../models/user.model";
-import { element } from 'src/models/element.model';
 import { groupement } from 'src/models/groupement.model';
-import { zone } from 'src/models/zone.model';
 import { PopupService } from '../services/popup.service';
 declare var $ : any;
 
@@ -229,7 +225,7 @@ export class ReportingRondeComponent implements OnInit {
             else {
               promptVal += '<p>'+this.listElementsOfUsine[i].value+'</p>'
             }
-            promptVal += '<button id="'+this.listElementsOfUsine[i].idMesure+'--'+this.listElementsOfUsine[i].value+'" class="btn btn-warning btn-sm updateValue" ><i class="fa fa-pencil-square-o updateValue" id="'+this.listElementsOfUsine[i].idMesure+'--'+this.listElementsOfUsine[i].value+'" aria-hidden="true"></i></button>'
+            promptVal += '<button id="'+this.listElementsOfUsine[i].idMesure+'--'+this.listElementsOfUsine[i].value+'" class="btn btn-warning btn-sm updateValue" ><i class="fa fa-pencil-square-o" id="'+this.listElementsOfUsine[i].idMesure+'--'+this.listElementsOfUsine[i].value+'" aria-hidden="true"></i></button>'
             if(this.listElementsOfUsine[i].value != this.listElementsOfUsine[i].defaultValue && this.listElementsOfUsine[i].defaultValue != ''){
               promptVal += '<p style="background-color: #ff726f;">Attention la valeur par défaut est :'+this.listElementsOfUsine[i].defaultValue+'</p>'
             }
@@ -239,10 +235,8 @@ export class ReportingRondeComponent implements OnInit {
 
             //Fonction pour modifier la valeur d'un élément
             $(id).append(promptVal).on('click','.updateValue', (event : any)=>{
-              var id = event.target.id.split('--')[0]
-              var value = event.target.id.split('--')[1]
-              console.log(id)
-              console.log(value)
+              var id = event.target.id.split('--')[0];
+              var value = event.target.id.split('--')[1];
               this.updateValueElement(id,value);
             })
               
@@ -355,8 +349,8 @@ export class ReportingRondeComponent implements OnInit {
     value = value.replace(/'/g,"''");
     this.rondierService.updateMesureRondier(Id,value).subscribe((response)=>{
       if (response == "Mise à jour de la valeur OK"){
-        this.popupService.alertSuccessForm("La valeur a bien été mis à jour !");
-        this.ngOnInit();
+        this.popupService.alertSuccessForm("La valeur a bien été mis à jour ! Veuillez rafraichir la page pour voir la modification");
+        //this.ngOnInit();
       }
     });
   }

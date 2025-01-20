@@ -134,7 +134,7 @@ export class CalendrierComponent implements OnInit{
               title: texte,
               allDay: false,
               color: {
-                primary: '#1e90ff',
+                primary: color,
                 secondary: color,
                 secondaryText:'black'
               },

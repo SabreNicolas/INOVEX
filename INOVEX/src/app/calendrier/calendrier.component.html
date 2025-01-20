@@ -174,6 +174,7 @@
   </mwl-calendar-month-view>
   <mwl-calendar-week-view
     *ngSwitchCase="CalendarView.Week"
+    style="color: blue;"
     [viewDate]="viewDate"
     locale="fr"
     [events]="events"
@@ -185,6 +186,7 @@
   </mwl-calendar-week-view>
   <mwl-calendar-day-view
     *ngSwitchCase="CalendarView.Day"
+    style="color: blue;"
     [viewDate]="viewDate"
     locale="fr"
     [events]="events"

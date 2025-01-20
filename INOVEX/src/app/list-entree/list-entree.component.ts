@@ -356,7 +356,7 @@ export class ListEntreeComponent implements OnInit {
   exportExcel(){
     /* table id is passed over here */
     let element = document.getElementById('listEntree');
-    console.log(element)
+    //console.log(element)
     const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element,{raw:false,dateNF:'mm/dd/yyyy'}); //Attention les jours sont considérés comme mois !!!!
 
     /* generate workbook and add the worksheet */
@@ -457,7 +457,7 @@ export class ListEntreeComponent implements OnInit {
       //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
       if(this.idUsine === 15){
         //Vitré
-        this.lectureCSV(event, ";", true,13, 20, 4, 28, 31);
+        this.lectureCSV(event, ";", true, 13, 20, 4, 28, 31);
       }
       else if(this.idUsine === 26) {
         //PONTEX
@@ -539,7 +539,7 @@ export class ListEntreeComponent implements OnInit {
           for (let i = debut; i < results.data.length; i++) {
             if(results.data[i][0] != "Compteur" && results.data[i][0] != 'Somme'){
               //Création de l'objet qui contient l'ensemble des infos nécessaires
-              console.log(results.data[i]);
+              //console.log(results.data[i]);
               let importCSV = {
                 numDePesee: results.data[i][0].replace(/'/g,"''"),
                 type: results.data[i][1].replace(/'/g,"''"),
@@ -631,7 +631,7 @@ export class ListEntreeComponent implements OnInit {
               this.csvRegistre.push(importCSV);
             }
           }
-          console.log(this.csvRegistre)
+          //console.log(this.csvRegistre)
           this.removeloading();
           this.moralEntitiesService.registreDNDTS(this.csvRegistre).subscribe((response)=>{
             this.popupService.alertSuccessForm('Valeurs insérées avec succès')
@@ -718,6 +718,7 @@ export class ListEntreeComponent implements OnInit {
                   entrant : EntreeSortie
                 };
                 this.csvArray.push(importCSV);
+                //console.log(importCSV);
               }
               
             }
@@ -797,7 +798,7 @@ export class ListEntreeComponent implements OnInit {
         });
         //Si sur ce dechet, nous n'avons pas trouvé de correspondant, count = 0, et que ce dechet est une entree, on la'jouter au tableau des dechet et clients manquants
         if(count == 0 && (csv.entrant.toLowerCase() == "e" || csv.entrant == 1 || csv.entrant.toLowerCase() == "réception" || csv.entrant.toLowerCase() == "reception" || csv.entrant.toLowerCase().includes("entree") || csv.entrant.toLowerCase() == "entrée" || csv.entrant.toLowerCase() == "entrant" || csv.entrant.toLowerCase() == "incinerables")){
-          this.clientManquants.set(dechetManquant +"-"+ clientManquant,dechetManquant +"-"+ clientManquant);
+          this.clientManquants.set(dechetManquant +"__"+ clientManquant,dechetManquant +"__"+ clientManquant);
         }
     });
     //debug
@@ -815,7 +816,7 @@ export class ListEntreeComponent implements OnInit {
     if (successInsert){
       var afficher = "";
       this.clientManquants.forEach(async (value : String, key : String) => {       
-        afficher += "Le client <strong>'" + key.split("-")[1] + "'</strong> avec le déchet : <strong>'" + key.split("-")[0] + "'</strong> n'a pas de correspondance dans CAP Exploitation <br>";
+        afficher += "Le client <strong>'" + key.split("__")[1] + "'</strong> avec le déchet : <strong>'" + key.split("__")[0] + "'</strong> n'a pas de correspondance dans CAP Exploitation <br>";
       });
 
       afficher += "<strong>Pensez à faire la correspondance dans l'administration !</strong>";

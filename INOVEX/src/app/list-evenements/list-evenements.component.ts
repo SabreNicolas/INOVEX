@@ -118,7 +118,7 @@ export class ListEvenementsComponent implements OnInit {
         for(let equipement of this.listEquipementGMAO){
           this.listGroupementsGMAOMap.set(equipement.fkcodelocation,equipement.fkcodelocation)
         }
-        this.listGroupementGMAOTable = Array.from(this.listGroupementsGMAOMap.keys())
+        this.listGroupementGMAOTable = Array.from(this.listGroupementsGMAOMap.keys());
 
       })
     })

@@ -4,3 +4,7 @@
     margin-bottom: 10px;
     margin-top: 10px;
 }
+
+::ng-deep .mat-option-pseudo-checkbox.mat-pseudo-checkbox-checked {
+    background-color: blue !important;
+}
