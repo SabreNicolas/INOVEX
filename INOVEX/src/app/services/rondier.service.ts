@@ -28,8 +28,8 @@ export class rondierService {
         'Authorization': 'Bearer ' + localStorage.getItem('token')
     }
     private portAPI = 3100;
-    //private ip = "fr-couvinove301.prod.paprec.fr";
-    private ip = "localhost";
+    private ip = "fr-couvinove301.prod.paprec.fr";
+    //private ip = "localhost";
     private idUsine : number | undefined;
     private idUser : number;
     constructor(private http: HttpClient, private idUsineService : idUsineService) {
