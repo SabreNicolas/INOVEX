@@ -860,9 +860,9 @@ export class ListEntreeComponent implements OnInit {
                   typeDechet: typeDechet,
                   dateEntree: results.data[i][posDateEntree].substring(0, 10),
                   tonnage:
-                    results.data[i][posTonnage]
+                    Math.abs(results.data[i][posTonnage]
                       .replace(/[^0-9,.]/g, "")
-                      .replace(",", ".") / divisionKgToTonnes,
+                      .replace(",", ".") / divisionKgToTonnes),
                   entrant: EntreeSortie,
                 };
                 this.csvArray.push(importCSV);

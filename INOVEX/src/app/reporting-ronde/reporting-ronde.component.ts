@@ -130,6 +130,7 @@ export class ReportingRondeComponent implements OnInit {
     this.listeZoneUnique = new Map();
     this.listRonde = [];
     this.listZone = [];
+    this.listReprise = [];
     this.listElementsUniques = [];
     this.listGroupements = [];
     this.quart = quart;
@@ -150,10 +151,6 @@ export class ReportingRondeComponent implements OnInit {
         }
       });
 
-    this.rondierService.getReprisesRonde().subscribe((response) => {
-      //@ts-expect-error data
-      this.listReprise = response.data;
-    });
     //Récupération du nombre de four du site
     this.rondierService.nbLigne().subscribe((response) => {
       //@ts-expect-error data
@@ -161,6 +158,10 @@ export class ReportingRondeComponent implements OnInit {
       this.numbers = Array(this.nbfour)
         .fill(1)
         .map((x, i) => i + 1);
+        this.rondierService.getReprisesRonde().subscribe((response) => {
+          //@ts-expect-error data
+          this.listReprise = response.data;
+        });
     });
 
     if (this.dateDeb != undefined)
@@ -355,7 +356,7 @@ export class ReportingRondeComponent implements OnInit {
         //@ts-expect-error data
         this.listAnomalie = response.data;
         // console.log(this.listAnomalie)
-      });
+    });
   }
 
   await(ms: number) {

@@ -379,10 +379,10 @@
               <td>{{ evenement.cause }}</td>
               <td>{{ evenement.date_heure_debut }}</td>
               <!--<td>{{evenement.date_heure_fin}}</td>-->
-              <td *ngIf="evenement.demande_travaux === 0">
+              <td *ngIf="evenement.demande_travaux === '0'">
                 <i style="color: red" class="fas fa-times-circle"></i>
               </td>
-              <td *ngIf="evenement.demande_travaux !== 0">
+              <td *ngIf="evenement.demande_travaux !== '0'">
                 <i style="color: green" class="fas fa-check"></i>
                 {{ evenement.demande_travaux }}
               </td>
@@ -571,7 +571,7 @@
             <label>Début date validité : * (non modifiable en cas de DI)</label>
             <input
               required
-              [disabled]="demandeTravaux !== 0"
+              [disabled]="demandeTravaux !== false"
               type="datetime-local"
               id="dateDebut"
               class="form-control"

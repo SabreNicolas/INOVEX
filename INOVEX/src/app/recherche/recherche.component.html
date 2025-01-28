@@ -170,6 +170,7 @@
         <tr class="table-secondary">
           <th scope="col">Type</th>
           <th scope="col">Nom</th>
+          <th scope="col" *ngIf="evenement || actu">Description</th>
           <th scope="col" *ngIf="evenement">Groupement GMAO</th>
           <th scope="col" *ngIf="evenement">Equipement GMAO</th>
           <th scope="col" *ngIf="evenement">Cause</th>
@@ -184,6 +185,7 @@
         <tr class="color--{{ event.importance }} line">
           <td>{{ event.typeDonnee }}</td>
           <td>{{ event.nom }}</td>
+          <td *ngIf="evenement === true || actu === true">{{ event.description }}</td>
           <td *ngIf="evenement === true">{{ event.groupementGMAO }}</td>
           <td *ngIf="evenement === true">{{ event.equipementGMAO }}</td>
           <td *ngIf="evenement === true">{{ event.cause }}</td>

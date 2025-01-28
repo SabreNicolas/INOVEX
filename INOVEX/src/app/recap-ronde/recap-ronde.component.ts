@@ -56,7 +56,7 @@ export class RecapRondeComponent implements OnInit {
   public listEquipementGMAOFiltre: any[];
   private token: string;
   public dateFin: Date | undefined;
-  public demandeTravaux: number;
+  public demandeTravaux: boolean;
   public consigne: number;
   public description: string;
   public cause: string;
@@ -100,7 +100,7 @@ export class RecapRondeComponent implements OnInit {
     this.idEvenement = 0;
     this.submitted = false;
     this.token = "";
-    this.demandeTravaux = 0;
+    this.demandeTravaux = false;
     this.consigne = 0;
     this.description = "";
     this.groupementGMAO = "";
@@ -556,7 +556,7 @@ export class RecapRondeComponent implements OnInit {
       return;
     }
 
-    if (this.demandeTravaux != 0) {
+    if (this.demandeTravaux != false) {
       // console.log(this.equipementGMAO);
       if (this.equipementGMAO == "") {
         this.popupService.alertErrorForm(
@@ -638,7 +638,7 @@ export class RecapRondeComponent implements OnInit {
         }
         //Sinon on créé
         else {
-          if (this.demandeTravaux != 0) {
+          if (this.demandeTravaux != false) {
             //TODO : récupérer le userGMAO du user
             this.altairService
               .createDI(
@@ -695,7 +695,7 @@ export class RecapRondeComponent implements OnInit {
                 this.cause,
                 this.description,
                 this.consigne,
-                this.demandeTravaux,
+                0,
               )
               .subscribe((response) => {
                 if (response != undefined) {
@@ -739,20 +739,13 @@ export class RecapRondeComponent implements OnInit {
 
   clickDemandeTravaux() {
     if ($("input#demandeTravaux").is(":checked")) {
+      this.demandeTravaux = true;
       $("#dateFin").show();
       $("#equipementGMAO").show();
       $("#groupementGMAO").show();
-      const date = new Date();
-      const yyyy = date.getFullYear();
-      const dd = String(date.getDate()).padStart(2, "0");
-      const mm = String(date.getMonth() + 1).padStart(2, "0"); //January is 0!
-      const hh = String(date.getHours()).padStart(2, "0");
-      const min = String(date.getMinutes()).padStart(2, "0");
-      const day = yyyy + "-" + mm + "-" + dd + "T" + hh + ":" + min;
-      (document.getElementById("dateDebut") as HTMLInputElement).value = day;
-      //@ts-expect-error data
-      this.dateDeb = day;
+      this.getNow();
     } else {
+      this.demandeTravaux = false;
       $("#dateFin").hide();
       $("#equipementGMAO").hide();
       $("#groupementGMAO").hide();
@@ -765,6 +758,7 @@ export class RecapRondeComponent implements OnInit {
       disableClose: true,
       autoFocus: true,
     });
+    this.getNow();
     this.dialog.afterAllClosed.subscribe(() => {
       this.idEvenement = 0;
       this.ngOnInit();
@@ -775,7 +769,7 @@ export class RecapRondeComponent implements OnInit {
       this.idEvenement = 0;
       this.submitted = false;
       this.token = "";
-      this.demandeTravaux = 0;
+      this.demandeTravaux = false;
       this.consigne = 0;
       this.description = "";
       this.groupementGMAO = "";
@@ -971,5 +965,19 @@ export class RecapRondeComponent implements OnInit {
         this.popupService.alertErrorForm("La suppression a été annulée.");
       }
     });
+  }
+
+  getNow(){
+    //mise par défaut la date de début à l'instant T
+    const date = new Date();
+    const yyyy = date.getFullYear();
+    const dd = String(date.getDate()).padStart(2, "0");
+    const mm = String(date.getMonth() + 1).padStart(2, "0"); //January is 0!
+    const hh = String(date.getHours()).padStart(2, "0");
+    const min = String(date.getMinutes()).padStart(2, "0");
+    const day = yyyy + "-" + mm + "-" + dd + "T" + hh + ":" + min;
+    (document.getElementById("dateDebut") as HTMLInputElement).value = day;
+    //@ts-ignore
+    this.dateDeb = day;
   }
 }
