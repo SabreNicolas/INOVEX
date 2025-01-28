@@ -860,9 +860,9 @@ export class ListEntreeComponent implements OnInit {
                   typeDechet: typeDechet,
                   dateEntree: results.data[i][posDateEntree].substring(0, 10),
                   tonnage:
-                    Math.abs(results.data[i][posTonnage]
+                    results.data[i][posTonnage]
                       .replace(/[^0-9,.]/g, "")
-                      .replace(",", ".") / divisionKgToTonnes),
+                      .replace(",", ".") / divisionKgToTonnes,
                   entrant: EntreeSortie,
                 };
                 this.csvArray.push(importCSV);
@@ -998,7 +998,7 @@ export class ListEntreeComponent implements OnInit {
       await this.moralEntitiesService
         .createMeasure(
           key.split("_")[0],
-          value,
+          Math.abs(value),
           parseInt(key.split("_")[1]),
           parseInt(key.split("_")[2]),
         )
