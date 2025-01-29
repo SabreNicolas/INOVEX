@@ -21,7 +21,7 @@
         </div>
 
         <div class="form-group" *ngIf="idActu === 0">
-          <label>Envoyer un email : (Maintenir CTRL pour choix multiple)</label>
+          <!--<label>Envoyer un email : (Maintenir CTRL pour choix multiple)</label>
           <div class="row">
             <div class="form-group">
               <select
@@ -39,6 +39,21 @@
                 </option>
               </select>
             </div>
+          </div>-->
+          <div class="row">
+              <mat-form-field>
+                  <mat-label>Envoyer un email :</mat-label>
+                  <mat-select 
+                    multiple 
+                    name="listEmail"
+                    ngModel
+                    [(ngModel)]="listEmail"
+                  >
+                    <mat-option *ngFor="let user of listUsers" value="{{ user.email }}">
+                      {{ user.Nom }} {{ user.Prenom }} - {{ user.email }}
+                    </mat-option>
+                  </mat-select>
+              </mat-form-field>
           </div>
         </div>
 
