@@ -23,6 +23,7 @@ export class ListBadgesComponent implements OnInit {
   public listPermisFeu: permisFeu[];
   private uid: string;
   public dialogRef = {};
+  public isAdmin: boolean;
 
   constructor(
     private rondierService: rondierService,
@@ -34,9 +35,18 @@ export class ListBadgesComponent implements OnInit {
     this.listBadgeZone = [];
     this.listPermisFeu = [];
     this.uid = "";
+    this.isAdmin = false;
   }
 
   ngOnInit(): void {
+    //La création de zone consignation et de permis de feu est également possible pour les QSE donc on vérifie les droits admin pour afficher les 
+    //badges liés aux zones pour les admins
+    const userLogged = localStorage.getItem("user");
+    if (typeof userLogged === "string") {
+      const userLoggedParse = JSON.parse(userLogged);
+      this.isAdmin = userLoggedParse["isAdmin"];
+    }
+
     this.rondierService.listBadgeNonAffect().subscribe((response) => {
       // @ts-expect-error data
       this.listBadgeLibre = response.data;

@@ -280,7 +280,7 @@ export class ListSortantsComponent implements OnInit {
       }
       //Douchy
       else if (this.idUsine === 10) {
-        this.lectureCSV(event, ";", true, 27, 16, 7);
+        this.lectureCSV(event, ";", true, 27, 18, 7);
       }
       //Mourenx
       else if (this.idUsine === 18) {

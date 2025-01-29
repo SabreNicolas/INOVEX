@@ -20,7 +20,8 @@ export class AuthGuard {
         const userLoggedParse = JSON.parse(userLogged);
         //test pour admin
         if (this.location.path() === "/admin") {
-          if (userLoggedParse["isAdmin"] === true) {
+          if (userLoggedParse["isAdmin"] === true ||
+            userLoggedParse["isQSE"] === true) {
             return true;
           } else this.router.navigate(["/"]);
         }
