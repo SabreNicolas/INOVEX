@@ -13,6 +13,8 @@ declare let $: any;
 import jsPDF from "jspdf";
 import { PopupService } from "../services/popup.service";
 import { anomalie } from "src/models/anomalie.model";
+import { HttpClient } from "@angular/common/http";
+import { color } from "html2canvas/dist/types/css/types/color";
 
 //@ts-expect-error data
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
@@ -40,6 +42,9 @@ export class RecapRondePrecedenteComponent implements OnInit {
   public nomEquipe: string;
   public listRondier: any[];
   @ViewChild("pdfTable") pdfContent!: ElementRef;
+  public paprecB64 : any;
+  public listZoneRemonter: any[];
+  public listElements: Map<string, string>;
 
   constructor(
     public cahierQuartService: cahierQuartService,
@@ -47,6 +52,7 @@ export class RecapRondePrecedenteComponent implements OnInit {
     private route: ActivatedRoute,
     private rondierService: rondierService,
     private router: Router,
+    private http: HttpClient
   ) {
     this.listAction = [];
     this.listConsigne = [];
@@ -64,6 +70,8 @@ export class RecapRondePrecedenteComponent implements OnInit {
     this.user = "";
     this.userPrecedent = "";
     this.localisation = "";
+    this.listZoneRemonter = [];
+    this.listElements = new Map();
 
     this.route.queryParams.subscribe((params) => {
       if (params.quart != undefined) {
@@ -117,12 +125,28 @@ export class RecapRondePrecedenteComponent implements OnInit {
         this.listActu = response.data;
       });
 
-    //Récupération des zones pour la ronde précédente
+    //Récupération des zones devant être remonté sur le récap pour la ronde précédente
     this.cahierQuartService
-      .getZonesCalendrierRonde(this.dateDebString, this.dateFinString)
+      .getZonesPDF()
       .subscribe((response) => {
-        this.listZone = response.BadgeAndElementsOfZone;
-      });
+        this.listZoneRemonter = response.data;
+        let dateFR = this.dateDebString.substring(8,10)+'/'+this.dateDebString.substring(5,7)+'/'+this.dateDebString.substring(0,4);
+        //On va maintenant récupérer les elements de controle des zones ainsi que leur valeur sur la date et le quart
+        this.listZoneRemonter.forEach(zone =>{
+          this.cahierQuartService
+          .getElementsPDF(zone.Id, dateFr, this.quartPrecedent)
+          .subscribe((response) => {
+            response.data.forEach((elem: { nomZone: string; nom: string; value: string; }) =>{
+              this.listElements.set(elem.nomZone+"__"+elem.nom, elem.value);
+            });
+          });
+        });
+    });
+
+    // Récupération des zones pour la ronde précédente
+    this.cahierQuartService.getZonesCalendrierRonde(this.dateDebString, this.dateFinString).subscribe((response: any) => {
+      this.listZone = response?.BadgeAndElementsOfZone ?? [];
+    });
 
     //On récupére la liste des consignes de la ronde précédente
     this.rondierService.listConsignes().subscribe((response) => {
@@ -184,12 +208,24 @@ export class RecapRondePrecedenteComponent implements OnInit {
       this.dateDebString.split(" ")[0].split("-")[1] +
       "/" +
       this.dateDebString.split(" ")[0].split("-")[0];
+
     this.cahierQuartService
       .getAnomaliesOfOneRonde(dateFr, this.quartPrecedent)
       .subscribe((response) => {
         //@ts-expect-error data
         this.listAnomalies = response.data;
       });
+
+    //transformation logo paprec en base64
+    //TODO POUR LES SIGNATURES AUSSI
+    this.http.get('/assets/paprec.png', { responseType: 'blob' })
+      .subscribe(res => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          this.paprecB64 = reader.result;
+        }
+        reader.readAsDataURL(res);
+    });
   }
 
   downloadFile(consigne: string) {
@@ -248,11 +284,12 @@ export class RecapRondePrecedenteComponent implements OnInit {
   
   //**************** */
   async createPDF() {
+    //this.listElements = new Map();
     let quart = '';
     if (this.quartPrecedent === 1) {
       quart = 'Matin';
     } else if (this.quartPrecedent === 2) {
-      quart = 'Après-midi';
+      quart = 'Apres-midi';
     } else {
       quart = 'Nuit';
     }
@@ -262,6 +299,7 @@ export class RecapRondePrecedenteComponent implements OnInit {
     const formattedDate = `${date.getDate().toString().padStart(2, '0')}-${(date.getMonth() + 1)
       .toString().padStart(2, '0')}-${date.getFullYear()} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
   
+    //tableau de l'équipe
     const tableHeader = [
       [
         { text: 'Poste', style: 'tableHeader', alignment: 'center' },
@@ -279,6 +317,33 @@ export class RecapRondePrecedenteComponent implements OnInit {
         { text: rondier.heure_deb || '', style: 'tableCell', alignment: 'center' },
         { text: rondier.heure_fin || '', style: 'tableCell', alignment: 'center' },
         { text: rondier.heure_tp || '', style: 'tableCell', alignment: 'center' }
+      ]);
+    }
+
+    //tableau des zones à faire remonter
+    const tableZones: any[] = [];
+  
+    if(this.listZoneRemonter.length > 0){
+      this.listZoneRemonter.forEach(zone =>{
+        tableZones.push([
+          { text: zone.nom , style: 'tableHeader', alignment: 'left', color:'#5495d8', fontSize:'15' },
+          { text: '', style: 'tableHeader', alignment: 'left', color:'#5495d8', fontSize:'15' },
+        ]);
+        this.listElements.forEach((value: string, key: string) => {
+          //si l'element se trouve dans la zone
+          if(zone.nom === key.split("__")[0]){
+            tableZones.push([
+              { text: key.split("__")[1] , style: 'tableCell', alignment: 'center' },
+              { text: value, style: 'tableCell', alignment: 'center', color:'#1b253' },
+            ]);
+          }
+        });
+      });
+    }
+    else{
+      tableZones.push([
+        { text: 'Pour faire remonter une zone, veuiller ajouter " - PDF" à la fin du nom de zone ' , style: 'tableCell', alignment: 'left', color:'#5495d8', fontSize:'10' },
+        { text: '', style: 'tableCell', alignment: 'left', color:'#5495d8', fontSize:'10' },
       ]);
     }
   
@@ -315,105 +380,61 @@ export class RecapRondePrecedenteComponent implements OnInit {
     const pdfContent: any = {
       content: [
         {
-          canvas: [
-            {
-              type: 'rect',
-              x: 130,
-              y: 0,
-              w: 255,
-              h: 35,
-              r: 0,
-              lineWidth: 1,
-              lineColor: 'black',
-              color: '#ededed'
-            }
-          ],
-          margin: [0, 0, 0, -40]
-        },
-        {
-          text: `Registre de quart : ${this.localisation || ''}`,
-          style: 'header',
-          alignment: 'center',
-          fontSize: 18,
-          bold: true,
-        },
-        {
-          text: `Date: ${formattedDate}`,
-          margin: [390, -30, 0, 10]
-        },
-        {
-          text: `Quart: ${quart}`,
-          margin: [390, -10, 0, 10]
-        },
-        { text: '\n' },
-        {
           columns: [
             {
-              width: '*',
-              text: ''
+              image: this.paprecB64,
+              width: 120,
             },
             {
-              width: 'auto',
-              table: {
-                headerRows: 1,
-                body: tableHeader
-              },
-              layout: 'lightHorizontalLines'
+              text: `Registre de quart :\n${this.localisation || ''}`,
+              bold: true,
+              fontSize: 18,
             },
             {
-              width: '*',
-              text: ''
+              text: `Date: ${formattedDate}\nQuart: ${quart}`,
             }
           ]
         },
-        { text: '\n\n' },
+        { text: '\n' },
         {
-          canvas: [
-            {
-              type: 'rect',
-              x: 0,
-              y: 0,
-              w: 515,
-              h: 20,
-              r: 0,
-              lineWidth: 1,
-              lineColor: 'black',
-              color: '#ededed'
-            }
-          ],
-          margin: [0, 0, 0, -28]
+          width: 'auto',
+          table: {
+          headerRows: 1,
+          body: tableHeader
+          },
+          layout: 'lightHorizontalLines'
         },
+        { text: '\n' },
         {
-          text: 'Consignes',
+          width: 'auto',
+          table: {
+            headerRows: 1,
+            widths: ['*', '*'],
+            body: tableZones
+          },
+          layout: 'lightHorizontalLines'
+        },
+        { text: '\n' },
+        {
+          text: 'Consignes :',
           style: 'subheader',
+          color:'#5495d8', 
+          fontSize:'15',
           alignment: 'center',
           margin: [0, 10, 0, 5],
           width: '100%'
         },
         {
-          ul: this.listConsigne.map((consigne: any) => `${consigne.titre} - ${consigne.commentaire || 'Pas de description'}`) || []
+          ul: this.listConsigne.map((consigne: any) => `${consigne.titre} - ${consigne.commentaire || 'Pas de description'}`) || "Pas de consignes..."
         },
-        { text: '\n\n' },
+        { text: '\n' },
+        
         {
-          canvas: [
-            {
-              type: 'rect',
-              x: 0,
-              y: 0,
-              w: 515,
-              h: 20,
-              r: 0,
-              lineWidth: 1,
-              lineColor: 'black',
-              color: '#ededed'
-            }
-          ],
-          margin: [0, 0, 0, -28]
-        },
-        {
-          text: 'Actions',
+          text: 'Actions :',
           style: 'subheader',
           alignment: 'center',
+          color:'#5495d8', 
+          fontSize:'15',
           margin: [0, 10, 0, 5],
           width: '100%'
         },
@@ -421,29 +442,15 @@ export class RecapRondePrecedenteComponent implements OnInit {
           ul: this.listAction?.map((action: any) => ({
             text: `${action.nom}`,
             color: action.termine ? 'green' : 'red'
-          })) || []
+          })) || "Pas d'actions..."
         },
-        { text: '\n\n' },
+        { text: '\n' },
         {
-          canvas: [
-            {
-              type: 'rect',
-              x: 0,
-              y: 0,
-              w: 515,
-              h: 20,
-              r: 0,
-              lineWidth: 1,
-              lineColor: 'black',
-              color: '#ededed'
-            }
-          ],
-          margin: [0, 0, 0, -28]
-        },
-        {
-          text: 'Evenements',
+          text: 'Evenements :',
           style: 'subheader',
           alignment: 'center',
+          color:'#5495d8', 
+          fontSize:'15',
           margin: [0, 10, 0, 5],
           width: '100%'
         },
@@ -451,29 +458,15 @@ export class RecapRondePrecedenteComponent implements OnInit {
           ul: this.listEvenement?.map((evenement: any) => {
             const demandeTravauxText = evenement.demande_travaux == 0 ? 'Aucune demande' : evenement.demande_travaux;
             return `${evenement.titre} - ${evenement.description || 'Pas de description'} (${evenement.date_heure_debut} - Cause: ${evenement.cause || 'Non spécifiée'} - Demande de Travaux: ${demandeTravauxText}`;
-          }) || []
+          }) || "Pas d'evenements...."
         },
-        { text: '\n\n' },
+        { text: '\n' },
         {
-          canvas: [
-            {
-              type: 'rect',
-              x: 0,
-              y: 0,
-              w: 515,
-              h: 20,
-              r: 0,
-              lineWidth: 1,
-              lineColor: 'black',
-              color: '#ededed'
-            }
-          ],
-          margin: [0, 0, 0, -28]
-        },
-        {
-          text: 'Zones contrôlées',
+          text: 'Zones contrôlées :',
           style: 'subheader',
           alignment: 'center',
+          color:'#5495d8', 
+          fontSize:'15',
           margin: [0, 10, 0, 5],
           width: '100%'
         },
@@ -481,56 +474,28 @@ export class RecapRondePrecedenteComponent implements OnInit {
           ul: this.listZone?.map((zone: any) => ({
             text: `${zone.zone} - Contrôlée par : ${zone.prenomRondier} ${zone.nomRondier} (${zone.termine ? 'Terminé' : 'Non terminé'})`,
             color: zone.termine ? 'green' : 'red'
-          })) || []
+          })) || 'Pas de zones...'
         },
-        { text: '\n\n' },
+        { text: '\n' },
         {
-          canvas: [
-            {
-              type: 'rect',
-              x: 0,
-              y: 0,
-              w: 515,
-              h: 20,
-              r: 0,
-              lineWidth: 1,
-              lineColor: 'black',
-              color: '#ededed'
-            }
-          ],
-          margin: [0, 0, 0, -28]
-        },
-        {
-          text: 'Actualités',
+          text: 'Actualités :',
           style: 'subheader',
           alignment: 'center',
+          color:'#5495d8', 
+          fontSize:'15',
           margin: [0, 10, 0, 5],
           width: '100%'
         },
         {
-          ul: this.listActu?.map((actu: any) => `${actu.titre} - ${actu.description || 'Pas de description'} (${actu.date_heure_debut} - ${actu.date_heure_fin})`) || []
+          ul: this.listActu?.map((actu: any) => `${actu.titre} - ${actu.description || 'Pas de description'} (${actu.date_heure_debut} - ${actu.date_heure_fin})`) || "Pas d'actualités..."
         },
-        { text: '\n\n' },
+        { text: '\n' },
         {
-          canvas: [
-            {
-              type: 'rect',
-              x: 0,
-              y: 0,
-              w: 515,
-              h: 20,
-              r: 0,
-              lineWidth: 1,
-              lineColor: 'black',
-              color: '#ededed'
-            }
-          ],
-          margin: [0, 0, 0, -24]
-        },
-        {
-          text: 'Anomalies',
+          text: 'Anomalies :',
           style: 'subheader',
           alignment: 'center',
+          color:'#5495d8', 
+          fontSize:'15',
           margin: [0, 5, 0, 2],
           width: '100%'
         },
@@ -540,7 +505,7 @@ export class RecapRondePrecedenteComponent implements OnInit {
             style: 'tableCell'
           }))
         },
-        { text: '\n\n' },
+        { text: '\n' },
         {
           columns: [
             {
@@ -576,83 +541,41 @@ export class RecapRondePrecedenteComponent implements OnInit {
             }
           ],
           margin: [0, 50, 0, 0]
-        },
-        { text: '\n' },
-        {
-          text: 'Annexe : Élément de zone',
-          style: 'header',
-          alignment: 'center',
-          margin: [0, 10, 0, 5],
-          width: '100%',
-          pageBreak: 'before'
-        },
-        {
-          canvas: [
-            {
-              type: 'rect',
-              x: -40,
-              y: 0,
-              w: 600,
-              h: 0,
-              r: 0,
-              lineWidth: 1,
-              lineColor: 'black',
-              color: '#ededed'
-            }
-          ],
-          margin: [0, 0, 0, 0]
-        },
-        { text: '\n' },
-        {
-          ul: elementsOfControlledZones.map((element: any) => ({
-            text: `${element[0].text} - ${element[1].text}`,
-            style: 'tableCell'
-          })) || []
-        },
-        { text: '\n\n' }
-      ],
-      styles: {
-        header: {
-          fontSize: 18,
-          bold: true,
-          margin: [0, 10, 0, 5]
-        },
-        subheader: {
-          fontSize: 14,
-          bold: true,
-          margin: [0, 10, 0, 5]
-        },
-        tableHeader: {
-          bold: true,
-          fontSize: 13,
-          color: 'black'
-        },
-        tableCell: {
-          margin: [0, 5, 0, 5]
-        },
-        signature: {
-          fontSize: 12,
-          bold: true
         }
-      }
+      ]
     };
-  
-    //@ts-ignore
-    let pdfCreate = pdfMake.createPdf(pdfContent);
-    pdfCreate.download('Résumé quart ' + quart + ' du ' + formattedDate);
-  
-    // Blob pour stockage et envoi
-    pdfCreate.getBlob((blob: any) => {
-      var file = new File([blob], quart + ' - ' + this.userPrecedent + ".pdf");
-      this.cahierQuartService.stockageRecapPDF(file, quart, formattedDate).subscribe((response: any) => {
-        if (response == "Envoi mail OK") {
-          this.popupService.alertSuccessForm("Le mail a bien été envoyé !");
-        } else {
-          this.popupService.alertErrorForm('Erreur envoi du mail ....');
-        }
-      });
+
+    const pdfCreate = pdfMake.createPdf(pdfContent);
+    pdfCreate.download(
+      "Résumé quart du " +
+        quart +
+        " du " +
+        this.formatDateTime(this.dateDebString),
+    );
+
+    //On récupère le blob pour créer un file que l'on va envoyer à l'API pour le stocker avec multer
+    pdfCreate.getBlob((blob) => {
+      const file = new File(
+        [blob],
+        "_" +
+          this.formatDateTime(this.dateDebString).replace(":", "h") +
+          "-" +
+          quart +
+          " - " +
+          this.userPrecedent.replace("'", "") +
+          ".pdf",
+      );
+      this.cahierQuartService
+        .stockageRecapPDF(file, quart, this.formatDateTime(this.dateDebString))
+        .subscribe((response) => {
+          if (response == "Envoi mail OK") {
+            this.popupService.alertSuccessForm("Le mail a bien été envoyé !");
+          } else {
+            this.popupService.alertErrorForm("Erreur envoi du mail ....");
+          }
+        });
     });
-  
+
     await this.delay(1000);
     this.router.navigate(["/cahierQuart/newEquipe"], {
       queryParams: { quart: this.quart },
@@ -665,7 +588,7 @@ export class RecapRondePrecedenteComponent implements OnInit {
     if (this.quartPrecedent == 1) {
       quart = "Matin";
     } else if (this.quartPrecedent == 2) {
-      quart = "Après-midi";
+      quart = "Apres-midi";
     } else {
       quart = "Nuit";
     }

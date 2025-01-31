@@ -838,6 +838,38 @@ export class cahierQuartService {
     return this.http.get<any>(requete, requestOptions);
   }
 
+  //Récupérer les zones devant remonter sur le PDF (contenant PDF dans le nom)
+  getZonesPDF() {
+    const requete =
+      "https://" +
+      this.ip +
+      "/recupZonesPDF?idUsine=" +
+      this.idUsine;
+
+    const requestOptions = {
+      headers: new HttpHeaders(this.headerDict),
+    };
+
+    return this.http.get<any>(requete, requestOptions);
+  }
+
+  //Récupérer les zones devant remonter sur le PDF (contenant PDF dans le nom)
+  getElementsPDF(idZone : number, date : string, quart : number) {
+    const requete =
+      "https://" +
+      this.ip +
+      "/recupElementsPDF?idZone=" +
+      idZone +
+      "&date="+date+
+      "&quart="+quart;
+
+    const requestOptions = {
+      headers: new HttpHeaders(this.headerDict),
+    };
+
+    return this.http.get<any>(requete, requestOptions);
+  }
+
   //Récupérer une équipe sur une ronde
   getEquipeRonde(quart: number) {
     const requete =
