@@ -486,7 +486,7 @@ export class RecapRondePrecedenteComponent implements OnInit {
           width: '100%'
         },
         {
-          ul: this.listActu?.map((actu: any) => `${actu.titre} - ${actu.description || 'Pas de description'} (${actu.date_heure_debut} - ${actu.date_heure_fin})\n\n`) || "Pas d'actualités..."
+          ul: this.listActu?.map((actu: any) => `${actu.titre} - ${actu.description || 'Pas de description'} (${actu.date_heure_debut} - ${actu.date_heure_fin})\n------\n`) || "Pas d'actualités..."
         },
         { text: '\n' },
         {
