@@ -273,8 +273,8 @@ export class ListEntreeComponent implements OnInit {
             }
           });
       }
-      this.getTotaux();
     }
+    this.getTotaux();
   }
 
   //récpérer les totaux

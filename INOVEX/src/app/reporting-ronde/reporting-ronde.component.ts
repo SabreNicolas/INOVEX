@@ -25,7 +25,6 @@ export class ReportingRondeComponent implements OnInit {
   public listElementsOfZone: elementsOfZone[];
   public listElementsOfZoneControl: elementsOfZone[];
   public listPermisFeuValidation: permisFeuValidation[];
-  public isAdmin;
   public isChefQuart;
   public numbers: number[];
   private nbfour: number;
@@ -39,6 +38,7 @@ export class ReportingRondeComponent implements OnInit {
   public idUsine: number;
   public usine: string;
   public isSuperAdmin: boolean;
+  public isAdmin: boolean;
   public dateRechercher: string;
   public quart: number;
   public listElementsOfUsine: any[];
@@ -57,6 +57,7 @@ export class ReportingRondeComponent implements OnInit {
     this.listeZoneUnique = new Map();
     this.usine = "";
     this.isSuperAdmin = false;
+    this.isAdmin = false;
     this.idUsine = 0;
     this.dateRechercher = "";
     this.quart = 0;
