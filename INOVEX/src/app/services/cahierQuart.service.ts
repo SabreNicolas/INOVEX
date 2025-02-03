@@ -1606,6 +1606,18 @@ export class cahierQuartService {
     return this.http.post<any>(requete, formData, requestOptions);
   }
 
+  //Récupération de l'url de récap de quart PDF
+  getUrlPDF(date : string, quart : number){
+    const requete =
+      "https://" + this.ip + "/getURLPDF?idUsine=" + this.idUsine+"&quart="+quart+"&date="+date;
+
+    const requestOptions = {
+      headers: new HttpHeaders(this.headerDict),
+    };
+
+    return this.http.get<any>(requete, requestOptions);
+  }
+
   //Enregistrement action
   createActionEnregistrement(nom: string) {
     const requete =
