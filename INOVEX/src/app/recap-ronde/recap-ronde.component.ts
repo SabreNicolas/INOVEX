@@ -183,7 +183,7 @@ export class RecapRondeComponent implements OnInit {
       if (heure >= 13 && heure < 21 + margeHeure) {
         this.saisieAutorise = true;
       }
-    } else {
+    } else if (this.quart == 3) {
       if (heure < 5 + margeHeure) {
         this.dateDebString =
           format(addDays(new Date(), -1), "yyyy-MM-dd") + " 21:00:00.000";

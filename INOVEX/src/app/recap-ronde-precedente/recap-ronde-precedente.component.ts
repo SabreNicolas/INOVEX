@@ -218,7 +218,7 @@ export class RecapRondePrecedenteComponent implements OnInit {
 
     //transformation logo paprec en base64
     //TODO POUR LES SIGNATURES AUSSI
-    this.http.get('/assets/paprec.png', { responseType: 'blob' })
+    this.http.get('assets/paprec.png', { responseType: 'blob' })
       .subscribe(res => {
         const reader = new FileReader();
         reader.onloadend = () => {
@@ -408,7 +408,6 @@ export class RecapRondePrecedenteComponent implements OnInit {
         {
           width: 'auto',
           table: {
-            headerRows: 1,
             widths: ['*', '*'],
             body: tableZones
           },
@@ -487,7 +486,7 @@ export class RecapRondePrecedenteComponent implements OnInit {
           width: '100%'
         },
         {
-          ul: this.listActu?.map((actu: any) => `${actu.titre} - ${actu.description || 'Pas de description'} (${actu.date_heure_debut} - ${actu.date_heure_fin})`) || "Pas d'actualités..."
+          ul: this.listActu?.map((actu: any) => `${actu.titre} - ${actu.description || 'Pas de description'} (${actu.date_heure_debut} - ${actu.date_heure_fin})\n\n`) || "Pas d'actualités..."
         },
         { text: '\n' },
         {
