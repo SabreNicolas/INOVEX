@@ -217,6 +217,7 @@ export class RecapRondeListeComponent implements OnInit {
   setFilters() {
     // console.log(this.dateDebForm);
     this.date = new Date(this.dateDebForm);
+    this.dateFormatRonde = format(this.date, "dd/MM/yyyy");
     //Récupération de la date de début et de la date de fin en fonction du quart
     if (this.quart == 1) {
       this.dateDebString = format(this.date, "yyyy-MM-dd") + " 05:00:00.000";

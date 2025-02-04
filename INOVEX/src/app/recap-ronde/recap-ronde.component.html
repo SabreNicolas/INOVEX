@@ -547,22 +547,27 @@
 
           <div class="form-group" style="display: none" id="groupementGMAO">
             <label for="product">Groupement GMAO : * </label>
-            <select
+            <input
               id="product"
               (change)="updateElements()"
               required
+              list="datalistOptions"
               class="form-control"
               ngModel
               [(ngModel)]="groupementGMAO"
-            >
-              <option value="">Choisissez un Groupement GMAO</option>
+            />
+            <datalist id="datalistOptions">
+              <option
+                disabled="true"
+                value="Choisissez un groupement GMAO"
+              ></option>
               <option
                 *ngFor="let groupement of listGroupementGMAOTable"
                 value="{{ groupement.split('---')[0] }}"
               >
                 {{ groupement }}
               </option>
-            </select>
+            </datalist>
           </div>
 
           <div class="form-group">
@@ -642,15 +647,20 @@
 
           <div class="form-group" style="display: none" id="equipementGMAO">
             <label for="product">Equipement GMAO : * </label>
-            <select
+            <input
               id="product"
               (change)="updateGroupements()"
               required
               class="form-control"
               ngModel
               [(ngModel)]="equipementGMAO"
-            >
-              <option value="">Choisissez un Equipement GMAO</option>
+              list="datalistOptions2"
+            />
+            <datalist id="datalistOptions2">
+              <option
+                disabled="true"
+                value="Choisissez un equipement GMAO"
+              ></option>
               <option
                 *ngFor="let equipement of listEquipementGMAOFiltre"
                 value="{{ equipement.codeequipment }}---{{
@@ -659,7 +669,7 @@
               >
                 {{ equipement.codeequipment }}---{{ equipement.description }}
               </option>
-            </select>
+            </datalist>
           </div>
 
           <div class="form-group">
