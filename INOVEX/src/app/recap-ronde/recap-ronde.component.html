@@ -306,21 +306,19 @@
               {{ action.nom }}
               <button
                 [disabled]="!saisieAutorise"
-                [ngClass]="{
-                  btn: true,
-                  'btn-outline-success': action.termine === 1,
-                  'btn-outline-danger': action.termine === 0,
-                }"
+                class="btn btnUnique"
                 (click)="updateAction(action.id, !action.termine)"
               >
                 <i
-                  [ngStyle]="{ color: action.termine === 1 ? 'green' : 'red' }"
                   [ngClass]="{
                     fas: true,
-                    'fa-check': action.termine === 1,
-                    'fa-times-circle': action.termine === 0,
+                    'fa-check': true,
                   }"
-                ></i>
+                  [ngStyle]="{
+                    'color':
+                    action.termine === 1 ? 'white' : 'black',
+                  }"
+                >{{action.termine === 1 ? "" : "Valider l'action"}}</i>
               </button>
             </td>
             <td>
