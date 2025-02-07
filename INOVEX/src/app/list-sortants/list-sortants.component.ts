@@ -329,10 +329,17 @@ export class ListSortantsComponent implements OnInit {
       //delimiter,header,typedechet,dateEntree,tonnage, posEntreeSortie
       this.lectureCSV(event, ";", true, 3, 0, 6, 1);
     }
-    //Bourg en Bresse
+    //Bourg en Bresse & Chagny
     else if (this.typeImportTonnage.toLowerCase().includes("adepro")) {
       //delimiter,header,typedechet,dateEntree,tonnage, posEntreeSortie
-      this.lectureCSV(event, ";", true, 3, 5, 9, 4);
+      if (this.idUsine === 20) {
+        //Bourg en Bresse
+        this.lectureCSV(event, ";", true, 3, 5, 9, 4);
+      }
+      //Chagny
+      else {
+        this.lectureCSV(event, ";", true, 12, 2, 5);
+      }
     }
   }
 
