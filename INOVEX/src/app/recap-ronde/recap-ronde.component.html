@@ -130,6 +130,48 @@
 
 <!-- routerLink="../newEquipe" [queryParams]="{quart: quart, idEquipe: idEquipe}" -->
 
+<!-- ACTUS -->
+<div *ngIf="listActu.length > 0" class="col-md-13" style="display: flex; flex-direction: column">
+  <h2 class="titre">Actualités</h2>
+  <!--Liste des actus non lié à un quart-->
+  <div style="display: flex; justify-content: space-evenly">
+    <div class="card cardActu" *ngFor="let actu of listActu">
+      <div class="card-body">
+        <h5
+          class="card-title"
+          [ngStyle]="{ color: actu.importance === 2 ? 'red' : 'rgb(27,37,51)' }"
+        >
+          {{ actu.titre }}
+        </h5>
+        <p
+          class="card-text"
+          *ngFor="let descr of splitDescription(actu.description)"
+        >
+          {{ descr }}
+        </p>
+        <p
+          *ngIf="actu.importance === 0"
+          class="card-text color--{{ actu.importance }}"
+        >
+          Importance : Faible
+        </p>
+        <p
+          *ngIf="actu.importance === 1"
+          class="card-text color--{{ actu.importance }}"
+        >
+          Importance : Neutre
+        </p>
+        <p
+          *ngIf="actu.importance === 2"
+          class="card-text color--{{ actu.importance }}"
+        >
+          Importance : Elevée
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Tableau des consignes -->
 <div class="row">
   <div class="col-md-12">
@@ -432,48 +474,6 @@
   </div>
 </div>
 <br />
-
-<!-- ACTUS -->
-<div class="col-md-13" style="display: flex; flex-direction: column">
-  <h2 class="titre">Actualités</h2>
-  <!--Liste des actus non lié à un quart-->
-  <div style="display: flex; justify-content: space-evenly">
-    <div class="card cardActu" *ngFor="let actu of listActu">
-      <div class="card-body">
-        <h5
-          class="card-title"
-          [ngStyle]="{ color: actu.importance === 2 ? 'red' : 'rgb(27,37,51)' }"
-        >
-          {{ actu.titre }}
-        </h5>
-        <p
-          class="card-text"
-          *ngFor="let descr of splitDescription(actu.description)"
-        >
-          {{ descr }}
-        </p>
-        <p
-          *ngIf="actu.importance === 0"
-          class="card-text color--{{ actu.importance }}"
-        >
-          Importance : Faible
-        </p>
-        <p
-          *ngIf="actu.importance === 1"
-          class="card-text color--{{ actu.importance }}"
-        >
-          Importance : Neutre
-        </p>
-        <p
-          *ngIf="actu.importance === 2"
-          class="card-text color--{{ actu.importance }}"
-        >
-          Importance : Elevée
-        </p>
-      </div>
-    </div>
-  </div>
-</div>
 
 <ng-template let-data #myCreateEventDialog>
   <h1 class="creation" style="text-align: center">Création d'un évènement :</h1>
