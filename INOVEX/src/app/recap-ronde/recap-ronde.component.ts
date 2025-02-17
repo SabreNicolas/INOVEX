@@ -37,6 +37,7 @@ export class RecapRondeComponent implements OnInit {
   public quart: number;
   public nomAction: string;
   public idEquipe: number;
+  public listAnomalie: any[];
 
   public submitted: boolean;
   public idEvenement: number;
@@ -67,6 +68,7 @@ export class RecapRondeComponent implements OnInit {
   public userPrecedent: string;
   public listActu: Actualite[];
   public hideEquipe: boolean;
+  public idAnomalie : number;
 
   constructor(
     public altairService: AltairService,
@@ -92,6 +94,7 @@ export class RecapRondeComponent implements OnInit {
     this.quart = 0;
     this.nomAction = "";
     this.idEquipe = 0;
+    this.listAnomalie = [];
 
     this.dateDebString = "";
     this.titre = "";
@@ -117,6 +120,7 @@ export class RecapRondeComponent implements OnInit {
     this.userPrecedent = "";
     this.listActu = [];
     this.hideEquipe = true;
+    this.idAnomalie = 0;
 
     this.altairService.login().subscribe((response) => {
       this.token = response.token;
@@ -158,6 +162,7 @@ export class RecapRondeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.idAnomalie = 0;
     //Récupération de l'heure actuelle pour vérifier si on a le droit d'ajouter des actions et autre (on ne peut plus le faire sur un quart terminé)
     const heure = new Date().getHours();
 
@@ -222,6 +227,14 @@ export class RecapRondeComponent implements OnInit {
       .getEvenementsRonde(this.dateDebString, this.dateFinString)
       .subscribe((response) => {
         this.listEvenement = response.data;
+      });
+
+    //Récupération des anomalies pour la ronde en cours
+    this.rondierService
+      .getAnomaliesOfOneDay(this.dateDebStringToShow.substring(0,10), this.quart)
+      .subscribe((response) => {
+        //@ts-expect-error data
+        this.listAnomalie = response.data;
       });
 
     //Récupération des zones pour la ronde en cours
@@ -675,6 +688,11 @@ export class RecapRondeComponent implements OnInit {
                       this.cahierQuartService
                         .historiqueEvenementCreate(this.idEvenement)
                         .subscribe(() => {
+                          if(this.idAnomalie > 0){
+                            this.rondierService
+                            .updateAnomalieSetEvenement(this.idAnomalie)
+                            .subscribe((response) => {});
+                          }
                           this.ngOnInit();
                           this.dialog.closeAll();
                         });
@@ -704,6 +722,11 @@ export class RecapRondeComponent implements OnInit {
                   this.cahierQuartService
                     .historiqueEvenementCreate(this.idEvenement)
                     .subscribe(() => {
+                      if(this.idAnomalie > 0){
+                        this.rondierService
+                        .updateAnomalieSetEvenement(this.idAnomalie)
+                        .subscribe((response) => {});
+                      }
                       this.ngOnInit();
                       this.dialog.closeAll();
                     });
@@ -752,13 +775,35 @@ export class RecapRondeComponent implements OnInit {
     }
   }
 
-  ouvrirDialogCreerEvent() {
+  //L'id est optionnel
+  ouvrirDialogCreerEvent(id?: number) {
     this.dialogRef = this.dialog.open(this.createEventDialog, {
       width: "60%",
       disableClose: true,
       autoFocus: true,
     });
     this.getNow();
+    if(id != undefined){
+      this.idAnomalie = id;
+      this.rondierService.getOneAnomalie(id).subscribe((response) => {
+        // console.log(response);
+        //@ts-expect-error data
+        this.description = response.data[0]["commentaire"];
+        //@ts-expect-error data
+        this.imgSrc = response.data[0]["photo"];
+  
+        const input = document.getElementById("fichier") as HTMLInputElement;
+        // console.log(this.imgSrc);
+        if (
+          this.imgSrc != "NULL" &&
+          this.imgSrc != null &&
+          this.imgSrc != undefined &&
+          this.imgSrc != ""
+        ) {
+          this.addImgaeToInput(this.imgSrc, input);
+        }
+      });
+    }
     this.dialog.afterAllClosed.subscribe(() => {
       this.idEvenement = 0;
       this.ngOnInit();
@@ -779,6 +824,7 @@ export class RecapRondeComponent implements OnInit {
       this.listEquipementGMAO = [];
       this.equipementGMAO = "";
       this.cause = "";
+      this.idAnomalie = 0;
     });
   }
 
@@ -979,5 +1025,19 @@ export class RecapRondeComponent implements OnInit {
     (document.getElementById("dateDebut") as HTMLInputElement).value = day;
     //@ts-ignore
     this.dateDeb = day;
+  }
+
+  async addImgaeToInput(url: string, element: HTMLInputElement) {
+    const reponse = await fetch(url);
+    const blob = await reponse.blob();
+    const fileName = url.split("/").pop() || "file.jpg";
+
+    const file = new File([blob], fileName, { type: blob.type });
+
+    const dataTranfer = new DataTransfer();
+    dataTranfer.items.add(file);
+
+    element.files = dataTranfer.files;
+    this.fileToUpload = element.files[0];
   }
 }

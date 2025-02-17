@@ -592,7 +592,7 @@ export class rondierService {
       headers: new HttpHeaders(this.headerDict),
     };
 
-    return this.http.get<element>(requete, requestOptions);
+    return this.http.get<any[]>(requete, requestOptions);
   }
 
   changeTypeRecupSetRondier(Id: number, elementRondier: number) {
@@ -1246,6 +1246,8 @@ export class rondierService {
 
     return this.http.put<anomalie[]>(requete, requestOptions);
   }
+
+
   /*
     FIN ANOMALIES
     */

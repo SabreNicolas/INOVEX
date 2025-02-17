@@ -381,6 +381,62 @@
 </div>
 <br />
 
+
+<!-- ANOMALIES -->
+<div class="row" *ngIf="listAnomalie.length > 0">
+  <!-- Tableau des anomalies -->
+  <div class="col-md-12">
+    <div class="card cardElem">
+      <h2 class="titre">
+        Anomalies
+      </h2>
+
+      <div class="table-style">
+        <!--table des anomalies-->
+        <table class="table tableFixed">
+          <thead>
+            <tr class="table-secondary">
+              <th scope="col">Zone</th>
+              <th scope="col">Description</th>
+              <th scope="col">Photo</th>
+              <th scope="col">Créer un évènement</th>
+            </tr>
+          </thead>
+          <tbody *ngFor="let anomalie of listAnomalie">
+            <tr class="table-light">
+              <td>{{ anomalie.nom }}</td>
+              <td>{{ anomalie.commentaire }}</td>
+              <td><a
+                href="{{ anomalie.photo }}"
+                target="_blank"
+              >
+                <button class="btn btn-outline-secondary">
+                  <i style="color: black"
+                  class="fa fa-camera"
+                  aria-hidden="true"></i>
+                </button>
+              </a></td>
+              <td *ngIf="anomalie.evenement == 1">Evènement déjà créé</td>
+              <td *ngIf="anomalie.evenement == 0">
+                <a
+                (click)="ouvrirDialogCreerEvent(anomalie.id)"
+                  role="button"
+                  class="btn btn-primary"
+                  id="create"
+                >
+                  Créer un évènement
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<br />
+
+
 <!-- EVENEMENTS -->
 <div class="row">
   <!-- Tableau des Evènements -->
@@ -432,8 +488,10 @@
                   *ngIf="evenement.url !== ''"
                   target="_blank"
                 >
-                  <button class="btn btn-success">
-                    <i class="fas fa-image"></i>
+                  <button class="btn btn-outline-secondary">
+                    <i style="color: black"
+                    class="fa fa-camera"
+                    aria-hidden="true"></i>
                   </button>
                 </a>
               </td>
