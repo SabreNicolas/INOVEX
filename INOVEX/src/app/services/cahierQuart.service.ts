@@ -63,6 +63,7 @@ export class cahierQuartService {
 
   //Récupérer les rondiers sans équipe
   getOneUser() {
+    this.idUser = this.idUsineService.getIdUser();
     const requete = "https://" + this.ip + "/getOneUser/" + this.idUser;
 
     const requestOptions = {

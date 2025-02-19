@@ -17,6 +17,7 @@ export class CompteursComponent implements OnInit {
   public typeId: number;
   public estUnique: boolean;
   public idUsine: number;
+  public creation: boolean;
 
   constructor(
     private productsService: productsService,
@@ -29,6 +30,7 @@ export class CompteursComponent implements OnInit {
     this.typeId = 4; // 4 for compteur
     this.estUnique = false;
     this.idUsine = this.idUsineService.getIdUsine();
+    this.creation = false;
   }
 
   ngOnInit(): void {
@@ -46,6 +48,8 @@ export class CompteursComponent implements OnInit {
   }
 
   async onSubmit(form: NgForm) {
+    this.creation = true;
+
     if (form.value["unit"] == null) {
       this.productsService.unit = "";
     } else this.productsService.unit = form.value["unit"];
@@ -78,7 +82,7 @@ export class CompteursComponent implements OnInit {
         });
     });
 
-    await this.wait(500);
+    await this.wait(3000);
 
     //Si la case produit unique n'est pas coché => on va créer le produit pour l'ensemble des sites
     if (!form.value["isReferentiel"]) {
@@ -118,5 +122,6 @@ export class CompteursComponent implements OnInit {
     form.value["tag"] = "";
     form.controls["isReferentiel"].reset();
     form.value["isReferentiel"] = "";
+    this.creation = false;
   }
 }

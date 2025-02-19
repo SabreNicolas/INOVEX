@@ -370,28 +370,42 @@ export class RecapRondeComponent implements OnInit {
   createAction() {
     //Récupération de l'heure à l'instant T pour concaténer avec le texte de l'action
     const now = format(new Date(), "HH:mm");
-    this.cahierQuartService
-      .newAction(
-        now + " " + this.nomAction,
-        this.dateDebString,
-        this.dateFinString,
-      )
-      .subscribe((response) => {
+    Swal.fire({
+      title: "Veuillez saisir l'heure de réalisation",
+      input: 'time',
+      inputValue: now,
+      showCancelButton: true,
+      confirmButtonText: "Valider",
+      confirmButtonColor: "green",
+      cancelButtonText: "Annuler",
+      cancelButtonColor: "red",
+      allowOutsideClick: true,
+    }).then((result) => {
+      if (result.value != undefined) {
         this.cahierQuartService
-          .newCalendrierAction(
-            response.data[0].id,
-            response.data[0].date_heure_debut,
-            this.quart,
-            response.data[0].date_heure_fin,
-            1,
-            null,
-          )
-          .subscribe(() => {
-            //réinitialiser le champ de saisie
-            this.nomAction = "";
-            this.ngOnInit();
-          });
-      });
+        .newAction(
+          result.value + " " + this.nomAction,
+          this.dateDebString,
+          this.dateFinString,
+        )
+        .subscribe((response) => {
+          this.cahierQuartService
+            .newCalendrierAction(
+              response.data[0].id,
+              response.data[0].date_heure_debut,
+              this.quart,
+              response.data[0].date_heure_fin,
+              1,
+              null,
+            )
+            .subscribe(() => {
+              //réinitialiser le champ de saisie
+              this.nomAction = "";
+              this.ngOnInit();
+            });
+        });
+      }
+    });
   }
 
   //supprimer une zone

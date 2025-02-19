@@ -182,14 +182,34 @@
           <tr>
             <th scope="col">Consigne</th>
             <th scope="col">Description</th>
+            <th scope="col">Type</th>
             <th scope="col">Date de Fin</th>
             <th scope="col">Fichier</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let consigne of consignes">
-            <th scope="row">{{ consigne.titre }}</th>
-            <th scope="row">{{ consigne.commentaire }}</th>
+          <tr *ngFor="let consigne of consignes" [ngSwitch]="consigne.type">
+            <td>{{ consigne.titre }}</td>
+            <td>{{ consigne.commentaire }}</td>
+            <td *ngSwitchCase="1">
+              <span class="badge rounded-pill bg-primary">Jour</span>
+            </td>
+            <td *ngSwitchCase="2">
+              <span class="badge rounded-pill bg-warning text-dark"
+                >Sécurité</span
+              >
+            </td>
+            <td *ngSwitchCase="3">
+              <span class="badge rounded-pill bg-primary">Process</span>
+            </td>
+            <td *ngSwitchCase="4">
+              <span class="badge rounded-pill bg-dark">Autres</span>
+            </td>
+            <td *ngSwitchCase="5">
+              <span class="badge rounded-pill bg-dark"
+                >Suite à un évènement</span
+              >
+            </td>
             <td>{{ consigne.dateHeureFin }}</td>
             <td
               *ngIf="consigne.url !== null"
