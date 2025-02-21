@@ -840,12 +840,13 @@ export class cahierQuartService {
   }
 
   //Récupérer les zones devant remonter sur le PDF (contenant PDF dans le nom)
-  getZonesPDF() {
+  getZonesPDF(date : string) {
     const requete =
       "https://" +
       this.ip +
       "/recupZonesPDF?idUsine=" +
-      this.idUsine;
+      this.idUsine +
+      "&date="+date;
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),

@@ -127,7 +127,7 @@ export class RecapRondePrecedenteComponent implements OnInit {
 
     //Récupération des zones devant être remonté sur le récap pour la ronde précédente
     this.cahierQuartService
-      .getZonesPDF()
+      .getZonesPDF(this.dateDebString)
       .subscribe((response) => {
         this.listZoneRemonter = response.data;
         let dateFR = this.dateDebString.substring(8,10)+'/'+this.dateDebString.substring(5,7)+'/'+this.dateDebString.substring(0,4);
