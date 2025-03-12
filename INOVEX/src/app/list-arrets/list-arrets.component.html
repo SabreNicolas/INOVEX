@@ -612,6 +612,72 @@
             </td>
           </tr>
         </ng-container>
+
+        <tr
+          *ngIf="isArret"
+          class="table-light"
+          style="color: blue"
+        >
+          <td class="fix"><strong>DASRI</strong></td>
+        </tr>
+        <ng-container *ngFor="let arret of listArretsDepassements">
+          <tr class="table-light" *ngIf="arret.Name.includes('DASRI')">
+            <td class="fix">
+              <a
+                routerLink="/saisie/arrets"
+                [queryParams]="{ isArret: isArret, id: arret.Id }"
+              >
+                <button class="btn btn-light">
+                  <i class="fa fa-edit" aria-hidden="true"></i>
+                </button>
+              </a>
+            </td>
+            <td class="fix">
+              <button class="btn btn-light" (click)="delete(arret.Id)">
+                <i
+                  style="color: red"
+                  class="fa fa-trash-o"
+                  aria-hidden="true"
+                ></i>
+              </button>
+            </td>
+            <td class="fix">
+              <strong>{{ arret.Name }}</strong>
+            </td>
+            <td class="fix">
+              <span style="font-size: 13px" class="badge bg-success">{{
+                arret.dateDebut
+              }}</span>
+            </td>
+            <td class="fix">
+              <span style="font-size: 13px" class="badge bg-success">{{
+                arret.heureDebut
+              }}</span>
+            </td>
+            <td class="fix">
+              <span style="font-size: 13px" class="badge bg-danger">{{
+                arret.dateFin
+              }}</span>
+            </td>
+            <td class="fix">
+              <span style="font-size: 13px" class="badge bg-danger">{{
+                arret.heureFin
+              }}</span>
+            </td>
+            <td class="fix">
+              <span
+                style="font-size: 13px"
+                class="badge rounded-pill bg-secondary"
+                >{{ arret.duree }}</span
+              >
+            </td>
+            <td class="fix">
+              <span style="font-size: 13px" class="badge bg-primary">{{
+                arret.description
+              }}</span>
+            </td>
+          </tr>
+        </ng-container>
       </tbody>
     </table>
   </div>
