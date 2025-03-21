@@ -224,36 +224,75 @@ export class AdminComponent implements OnInit {
       });
   }
 
-  //fonction qui permet de choisir l'élement rondier correspondant au produit pour la récupération automatique
   setElementRondier(pr: product) {
-    const listElementsRondier = {};
-    //Un peu particulier ici mais si la clef de l'objet n'est pas une chaine, l'ordre alphabétique n'est pas respecté car classement selon la clef
-    //d'ou le 0_rondier
-    //@ts-expect-error data
-    listElementsRondier["0_rondier"] = "Aucun";
-    this.listElements.forEach((element) => {
-      const id = String(element.Id) + "_rondier";
-      //@ts-expect-error data
-      listElementsRondier[id] = element.nomZone + " - " + element.nom;
-    });
     Swal.fire({
       title: "Veuillez choisir un élément rondier",
-      input: "select",
-      inputOptions: listElementsRondier,
+      html: `
+        <div style="width: 100%; overflow-x: hidden; max-height: 80vh;">
+          <input 
+            id="searchInput" 
+            class="swal2-input" 
+            placeholder="Rechercher..."
+            onfocus="this.value=''"
+            style="width: calc(100% - 50px); max-width: 100%;"
+          />
+          <select 
+            id="selectElement" 
+            class="swal2-select" 
+            style="width: calc(100% - 50px); margin-top: 10px; display: none; overflow-x: scroll; white-space: nowrap; height: 400px;"
+            size="15"
+          >
+            <option value="0_rondier">Aucun</option>
+            ${this.listElements.map(element => 
+                // @ts-expect-error data
+              `<option value="${element.Id}_rondier">${element.nomZone} - ${element.nom}</option>`
+            ).join('')}
+          </select>
+        </div>
+      `,
+      customClass: {
+        popup: 'large-popup',
+        container: 'large-container'
+      },
+      width: '1300px',
+      didOpen: () => {
+        const input = document.getElementById('searchInput') as HTMLInputElement;
+        const select = document.getElementById('selectElement') as HTMLSelectElement;
+        
+        input.addEventListener('focus', () => {
+          select.style.display = 'block';
+        });
+  
+        input.addEventListener('input', () => {
+          const filterValue = input.value.toLowerCase();
+          Array.from(select.options).forEach(option => {
+            const text = option.text.toLowerCase();
+            option.style.display = text.includes(filterValue) ? '' : 'none';
+          });
+        });
+  
+        select.addEventListener('change', () => {
+          const selectedOption = select.options[select.selectedIndex];
+          input.value = selectedOption.text;
+          select.style.display = 'none';
+          
+        });
+      },
       showCancelButton: true,
       confirmButtonText: "Confirmer",
       cancelButtonText: "Annuler",
-      allowOutsideClick: false,
+      preConfirm: () => {
+        const input = document.getElementById('searchInput') as HTMLInputElement;
+        const select = document.getElementById('selectElement') as HTMLSelectElement;
+        const selectedValue = Array.from(select.options).find(opt => opt.text === input.value);
+        return selectedValue ? selectedValue.value : null;
+      }
     }).then((result) => {
-      if (result.value != undefined) {
-        //On récupérer l'id de l'élément rondier que l'on a stocké dans la clef de la liste
-        const idElementRondier = Number(result.value.split("_")[0]);
-        this.rondierService
-          .changeTypeRecupSetRondier(pr.Id, idElementRondier)
-          .subscribe((response) => {
-            this.popupService.alertSuccessForm(
-              "L'élément rondier a été enregistré !",
-            );
+      if (result.value) {
+        const idElementRondier = Number(result.value.split('_')[0]);
+        this.rondierService.changeTypeRecupSetRondier(pr.Id, idElementRondier)
+          .subscribe(response => {
+            this.popupService.alertSuccessForm("L'élément rondier a été enregistré !");
             this.ngOnInit();
           });
       }
