@@ -108,7 +108,6 @@
             {{ rondier.comm_tp }}
             <button
               class="btn btn btn-light edition"
-              [disabled]="rondier.heure_tp === '00:00'"
               (click)="
                 updateInfos(
                   rondier.IdEquipe,
@@ -385,7 +384,7 @@
             </td>
             <td>
               <button
-                [disabled]="!saisieAutorise"
+                disabled="true"
                 type="button"
                 class="btn btn-outline-danger"
                 (click)="deleteAction(action.id)"
