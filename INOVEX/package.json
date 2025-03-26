@@ -1,6 +1,6 @@
 {
   "name": "CAPEXPLOITATION",
-  "version": "0.0.0",
+  "version": "5.3.0",
   "scripts": {
     "ng": "ng",
     "start": "set NODE_OPTIONS=--openssl-legacy-provider && ng serve --port 8100 --host 0.0.0.0 --disable-host-check --ssl true --ssl-cert E:\\INOVEX\\serverV2.crt --ssl-key E:\\INOVEX\\serverV2-decrypted.key --configuration development",

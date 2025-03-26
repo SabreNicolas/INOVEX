@@ -301,7 +301,7 @@ export class ListSortantsComponent implements OnInit {
       }
       //Cergy
       else {
-        this.lectureCSV(event, ",", true, 12, 0, 14);
+        this.lectureCSV(event, ";", true, 12, 0, 14);
       }
     }
     //Vitré
