@@ -223,24 +223,29 @@ export class AdminComponent implements OnInit {
         }
       });
   }
-
+  
+  //fonction qui permet de choisir l'élement rondier correspondant au produit pour la récupération automatique
   setElementRondier(pr: product) {
+    let searchValue = '';
+    let selectedText = '';
+    let selectedOption = '';
+
     Swal.fire({
       title: "Veuillez choisir un élément rondier",
       html: `
-        <div style="width: 100%; overflow-x: hidden; max-height: 80vh;">
+        <div style="width: 100%; overflow-x: hidden; max-height: 50em;">
           <input 
             id="searchInput" 
             class="swal2-input" 
             placeholder="Rechercher..."
             onfocus="this.value=''"
-            style="width: calc(100% - 50px); max-width: 100%;"
+            style="width: calc(100% - 3em); max-width: 100%;"
           />
           <select 
             id="selectElement" 
             class="swal2-select" 
-            style="width: calc(100% - 50px); margin-top: 10px; display: none; overflow-x: scroll; white-space: nowrap; height: 400px;"
-            size="15"
+            style="width: calc(100% - 3em); margin-top: 0.625em; display: none; overflow-x: scroll; white-space: nowrap; height: 25em;"
+            size="100"
           >
             <option value="0_rondier">Aucun</option>
             ${this.listElements.map(element => 
@@ -254,7 +259,7 @@ export class AdminComponent implements OnInit {
         popup: 'large-popup',
         container: 'large-container'
       },
-      width: '1300px',
+      width: '81.25em',
       didOpen: () => {
         const input = document.getElementById('searchInput') as HTMLInputElement;
         const select = document.getElementById('selectElement') as HTMLSelectElement;
@@ -264,40 +269,32 @@ export class AdminComponent implements OnInit {
         });
   
         input.addEventListener('input', () => {
-          const filterValue = input.value.toLowerCase();
+          searchValue = input.value.toLowerCase();
           Array.from(select.options).forEach(option => {
-            const text = option.text.toLowerCase();
-            option.style.display = text.includes(filterValue) ? '' : 'none';
+            option.style.display = option.text.toLowerCase().includes(searchValue) ? '' : 'none';
           });
         });
   
         select.addEventListener('change', () => {
-          const selectedOption = select.options[select.selectedIndex];
-          input.value = selectedOption.text;
+          selectedText = select.options[select.selectedIndex].text;
+          selectedOption = select.value;
+          input.value = selectedText;
           select.style.display = 'none';
-          
         });
       },
       showCancelButton: true,
       confirmButtonText: "Confirmer",
-      cancelButtonText: "Annuler",
-      preConfirm: () => {
-        const input = document.getElementById('searchInput') as HTMLInputElement;
-        const select = document.getElementById('selectElement') as HTMLSelectElement;
-        const selectedValue = Array.from(select.options).find(opt => opt.text === input.value);
-        return selectedValue ? selectedValue.value : null;
-      }
+      cancelButtonText: "Annuler"
     }).then((result) => {
-      if (result.value) {
-        const idElementRondier = Number(result.value.split('_')[0]);
-        this.rondierService.changeTypeRecupSetRondier(pr.Id, idElementRondier)
+      if (result.value && selectedOption) {
+        this.rondierService.changeTypeRecupSetRondier(pr.Id, Number(selectedOption.split('_')[0]))
           .subscribe(response => {
             this.popupService.alertSuccessForm("L'élément rondier a été enregistré !");
             this.ngOnInit();
           });
       }
     });
-  }
+}
 
   //Mettre à jour le coefficient d'un produit
   updateCoeff(pr: product) {
