@@ -557,14 +557,16 @@ export class productsService {
     return this.http.put<any>(requete, null, requestOptions);
   }
 
-  updateTypeRecup(id: number, typeRecupEMonitoring: string) {
+  updateTypeRecup(id: number, typeRecupEMonitoring: string, colonneBDD: string) {
     const requete =
       "https://" +
       this.ip +
       "/updateRecupEMonitoring?id=" +
       id +
       "&typeRecup=" +
-      typeRecupEMonitoring;
+      typeRecupEMonitoring +
+      "&colonneBDD=" +
+      colonneBDD;
     //console.log(requete);
 
     const requestOptions = {

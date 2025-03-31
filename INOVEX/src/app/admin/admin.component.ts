@@ -210,9 +210,9 @@ export class AdminComponent implements OnInit {
       });
   }
 
-  updateTypeRecup(id: number, typeRecupEMonitoring: string) {
+  updateTypeRecup(id: number, typeRecupEMonitoring: string, colonneBDD : string) {
     this.productsService
-      .updateTypeRecup(id, typeRecupEMonitoring)
+      .updateTypeRecup(id, typeRecupEMonitoring, colonneBDD)
       .subscribe((response) => {
         if (response == "Changement du type de récupération OK") {
           this.popupService.alertSuccessForm("Le type a été changé !");

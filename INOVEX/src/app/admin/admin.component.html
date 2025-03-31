@@ -65,6 +65,7 @@
         <!--<th scope="col">#</th>-->
         <!--<th scope="col">#</th>-->
         <th scope="col">Type de Récupération eMonitoring</th>
+        <th scope="col">Type de Données eMonitoring</th>
         <th scope="col">Visibilité</th>
       </tr>
     </thead>
@@ -178,7 +179,7 @@
             id="{{ pr.Id }}"
             ngModel
             [(ngModel)]="pr.typeRecupEMonitoring"
-            (change)="updateTypeRecup(pr.Id, pr.typeRecupEMonitoring)"
+            (change)="updateTypeRecup(pr.Id, pr.typeRecupEMonitoring,'typeRecupEMonitoring')"
           >
             <option value="null">Aucune</option>
             <option value="tafVal">Valeur moyenne</option>
@@ -186,6 +187,31 @@
             <option value="tafMax">Valeur max</option>
             <option value="cumul">Valeur cumulée</option>
             <option value="derniere">Relevé Minuit</option>
+          </select>
+          <p
+            *ngIf="
+              (pr.idElementRondier != null &&
+                (pr.TAG == '' || pr.TAG == null)) ||
+              pr.typeId == 1 ||
+              pr.typeId == 5
+            "
+          >
+            /
+          </p>
+        </td>
+        <td>
+          <select
+            *ngIf="
+              pr.idElementRondier == null && pr.typeId != 1 && pr.typeId != 5
+            "
+            class="form-select"
+            id="{{ pr.Id }}--typeDonnee"
+            ngModel
+            [(ngModel)]="pr.typeDonneeEMonitoring"
+            (change)="updateTypeRecup(pr.Id, pr.typeDonneeEMonitoring,'typeDonneeEMonitoring')"
+          >
+            <option value="AnalogSummary">Analogique</option>
+            <option value="ProcessValue">Boolean</option>
           </select>
           <p
             *ngIf="

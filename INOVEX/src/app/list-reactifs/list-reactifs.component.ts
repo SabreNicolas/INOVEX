@@ -365,7 +365,9 @@ export class ListReactifsComponent implements OnInit {
             //si ce n'est pas caktus on divise par 1000 pour avoir en tonnes
             if (
               !this.typeImportTonnage.toLowerCase().includes("caktus") &&
-              !this.typeImportTonnage.toLowerCase().includes("tradim")
+              !this.typeImportTonnage.toLowerCase().includes("tradim") &&
+              this.idUsine != 9 &&
+              !this.typeImportTonnage.toLowerCase().includes("quantum")
             ) {
               divisionKgToTonnes = 1000;
             }

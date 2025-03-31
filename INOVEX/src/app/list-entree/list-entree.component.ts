@@ -833,7 +833,7 @@ export class ListEntreeComponent implements OnInit {
 
             //permet de diviser le tonnage par 1000 si on l'a en kg
             let divisionKgToTonnes = 1;
-            //si ce n'est pas caktus ni tradim ni Dunkerque ni Quantum, on divise par 1000 pour avoir en tonnes
+            //si ce n'est pas caktus ni tradim ni Dunkerque ni Quantum (sauf les sites Calais), on divise par 1000 pour avoir en tonnes
             if (
               !this.typeImportTonnage.toLowerCase().includes("caktus") &&
               !this.typeImportTonnage.toLowerCase().includes("tradim") &&
