@@ -127,6 +127,157 @@
   </div>
 </div>
 
+<!-- ANOMALIES -->
+<div class="row" *ngIf="listAnomalie.length > 0">
+  <!-- Tableau des anomalies -->
+  <div class="col-md-12">
+    <div class="card cardElem">
+      <h2 class="titre">
+        Anomalies
+      </h2>
+
+      <div class="table-style">
+        <!--table des anomalies-->
+        <table class="table tableFixed">
+          <thead>
+            <tr class="table-secondary">
+              <th scope="col">Zone</th>
+              <th scope="col">Description</th>
+              <th scope="col">Photo</th>
+              <th scope="col">Créer un évènement</th>
+            </tr>
+          </thead>
+          <tbody *ngFor="let anomalie of listAnomalie">
+            <tr class="table-light">
+              <td>{{ anomalie.nom }}</td>
+              <td>{{ anomalie.commentaire }}</td>
+              <td><a
+                href="{{ anomalie.photo }}"
+                target="_blank"
+              >
+                <button class="btn btn-outline-secondary">
+                  <i style="color: black"
+                  class="fa fa-camera"
+                  aria-hidden="true"></i>
+                </button>
+              </a></td>
+              <td *ngIf="anomalie.evenement == 1">Evènement déjà créé</td>
+              <td *ngIf="anomalie.evenement == 0">
+                <a
+                (click)="ouvrirDialogCreerEvent(anomalie.id)"
+                  role="button"
+                  class="btn btn-primary"
+                  id="create"
+                >
+                  Créer un évènement
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<br />
+
+
+<!-- EVENEMENTS -->
+<div class="row">
+  <!-- Tableau des Evènements -->
+  <div class="col-md-12">
+    <div class="card cardElem">
+      <h2 class="titre">
+        Evènements
+        <a (click)="ouvrirDialogCreerEvent()" role="button">
+          <button [disabled]="!saisieAutorise" class="btn btn-success btnAdd">
+            +
+          </button>
+        </a>
+      </h2>
+
+      <div class="table-style">
+        <!--table des events-->
+        <table class="table tableFixed">
+          <thead>
+            <tr class="table-secondary">
+              <th scope="col">Titre</th>
+              <th scope="col">Description</th>
+              <th scope="col">Cause</th>
+              <th scope="col">Date de Début</th>
+              <!--<th scope="col">Date de Fin</th>-->
+              <th scope="col">Demande de travaux</th>
+              <th scope="col">Photo</th>
+              <th scope="col">Dupliquer</th>
+              <th scope="col">Editer</th>
+              <th scope="col">Supprimer</th>
+            </tr>
+          </thead>
+          <tbody *ngFor="let evenement of listEvenement">
+            <tr class="table-light">
+              <td>{{ evenement.titre }}</td>
+              <td>{{ evenement.description }}</td>
+              <td>{{ evenement.cause }}</td>
+              <td>{{ evenement.date_heure_debut }}</td>
+              <!--<td>{{evenement.date_heure_fin}}</td>-->
+              <td *ngIf="evenement.demande_travaux === '0'">
+                <i style="color: red" class="fas fa-times-circle"></i>
+              </td>
+              <td *ngIf="evenement.demande_travaux !== '0'">
+                <i style="color: green" class="fas fa-check"></i>
+                {{ evenement.demande_travaux }}
+              </td>
+              <td>
+                <a
+                  href="{{ evenement.url }}"
+                  *ngIf="evenement.url !== ''"
+                  target="_blank"
+                >
+                  <button class="btn btn-outline-secondary">
+                    <i style="color: black"
+                    class="fa fa-camera"
+                    aria-hidden="true"></i>
+                  </button>
+                </a>
+              </td>
+              <td>
+                <button
+                  class="btn btn btn-light edition"
+                  (click)="ouvrirDialogModifEvent(evenement.id, 1)"
+                >
+                  <i class="far fa-copy"></i>
+                </button>
+              </td>
+              <td>
+                <button
+                  class="btn btn btn-light edition"
+                  (click)="ouvrirDialogModifEvent(evenement.id, 0)"
+                >
+                  <i class="far fa-edit"></i>
+                </button>
+              </td>
+              <td>
+                <button
+                  (click)="deleteEvenement(evenement.id)"
+                  id="deleteEvenement"
+                  class="btn btn-light"
+                >
+                  <i
+                    class="fa fa-trash-o"
+                    aria-hidden="true"
+                    style="color: red"
+                  ></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<br/>
+
 <!-- routerLink="../newEquipe" [queryParams]="{quart: quart, idEquipe: idEquipe}" -->
 
 <!-- ACTUS -->
@@ -285,7 +436,7 @@
             <td>{{ zone.zone }}</td>
             <td>
               <button
-                [disabled]="!saisieAutorise"
+                disabled="true"
                 type="button"
                 class="btn btn-outline-danger"
                 (click)="deleteAction(zone.id)"
@@ -395,158 +546,6 @@
           </tr>
         </tbody>
       </table>
-    </div>
-  </div>
-</div>
-<br />
-
-
-<!-- ANOMALIES -->
-<div class="row" *ngIf="listAnomalie.length > 0">
-  <!-- Tableau des anomalies -->
-  <div class="col-md-12">
-    <div class="card cardElem">
-      <h2 class="titre">
-        Anomalies
-      </h2>
-
-      <div class="table-style">
-        <!--table des anomalies-->
-        <table class="table tableFixed">
-          <thead>
-            <tr class="table-secondary">
-              <th scope="col">Zone</th>
-              <th scope="col">Description</th>
-              <th scope="col">Photo</th>
-              <th scope="col">Créer un évènement</th>
-            </tr>
-          </thead>
-          <tbody *ngFor="let anomalie of listAnomalie">
-            <tr class="table-light">
-              <td>{{ anomalie.nom }}</td>
-              <td>{{ anomalie.commentaire }}</td>
-              <td><a
-                href="{{ anomalie.photo }}"
-                target="_blank"
-              >
-                <button class="btn btn-outline-secondary">
-                  <i style="color: black"
-                  class="fa fa-camera"
-                  aria-hidden="true"></i>
-                </button>
-              </a></td>
-              <td *ngIf="anomalie.evenement == 1">Evènement déjà créé</td>
-              <td *ngIf="anomalie.evenement == 0">
-                <a
-                (click)="ouvrirDialogCreerEvent(anomalie.id)"
-                  role="button"
-                  class="btn btn-primary"
-                  id="create"
-                >
-                  Créer un évènement
-                </a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</div>
-<br />
-
-
-<!-- EVENEMENTS -->
-<div class="row">
-  <!-- Tableau des Evènements -->
-  <div class="col-md-12">
-    <div class="card cardElem">
-      <h2 class="titre">
-        Evènements
-        <a (click)="ouvrirDialogCreerEvent()" role="button">
-          <button [disabled]="!saisieAutorise" class="btn btn-success btnAdd">
-            +
-          </button>
-        </a>
-      </h2>
-
-      <div class="table-style">
-        <!--table des events-->
-        <table class="table tableFixed">
-          <thead>
-            <tr class="table-secondary">
-              <th scope="col">Titre</th>
-              <th scope="col">Description</th>
-              <th scope="col">Cause</th>
-              <th scope="col">Date de Début</th>
-              <!--<th scope="col">Date de Fin</th>-->
-              <th scope="col">Demande de travaux</th>
-              <th scope="col">Photo</th>
-              <th scope="col">Dupliquer</th>
-              <th scope="col">Editer</th>
-              <th scope="col">Supprimer</th>
-            </tr>
-          </thead>
-          <tbody *ngFor="let evenement of listEvenement">
-            <tr class="table-light">
-              <td>{{ evenement.titre }}</td>
-              <td>{{ evenement.description }}</td>
-              <td>{{ evenement.cause }}</td>
-              <td>{{ evenement.date_heure_debut }}</td>
-              <!--<td>{{evenement.date_heure_fin}}</td>-->
-              <td *ngIf="evenement.demande_travaux === '0'">
-                <i style="color: red" class="fas fa-times-circle"></i>
-              </td>
-              <td *ngIf="evenement.demande_travaux !== '0'">
-                <i style="color: green" class="fas fa-check"></i>
-                {{ evenement.demande_travaux }}
-              </td>
-              <td>
-                <a
-                  href="{{ evenement.url }}"
-                  *ngIf="evenement.url !== ''"
-                  target="_blank"
-                >
-                  <button class="btn btn-outline-secondary">
-                    <i style="color: black"
-                    class="fa fa-camera"
-                    aria-hidden="true"></i>
-                  </button>
-                </a>
-              </td>
-              <td>
-                <button
-                  class="btn btn btn-light edition"
-                  (click)="ouvrirDialogModifEvent(evenement.id, 1)"
-                >
-                  <i class="far fa-copy"></i>
-                </button>
-              </td>
-              <td>
-                <button
-                  class="btn btn btn-light edition"
-                  (click)="ouvrirDialogModifEvent(evenement.id, 0)"
-                >
-                  <i class="far fa-edit"></i>
-                </button>
-              </td>
-              <td>
-                <button
-                  (click)="deleteEvenement(evenement.id)"
-                  id="deleteEvenement"
-                  class="btn btn-light"
-                >
-                  <i
-                    class="fa fa-trash-o"
-                    aria-hidden="true"
-                    style="color: red"
-                  ></i>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
     </div>
   </div>
 </div>
