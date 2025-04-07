@@ -233,65 +233,70 @@ export class AdminComponent implements OnInit {
     Swal.fire({
       title: "Veuillez choisir un élément rondier",
       html: `
-        <div style="width: 100%; overflow-x: hidden; max-height: 50em;">
-          <input 
-            id="searchInput" 
-            class="swal2-input" 
-            placeholder="Rechercher..."
-            onfocus="this.value=''"
-            style="width: calc(100% - 3em); max-width: 100%;"
-          />
-          <select 
-            id="selectElement" 
-            class="swal2-select" 
-            style="width: calc(100% - 3em); margin-top: 0.625em; display: none; overflow-x: scroll; white-space: nowrap; height: 25em;"
-            size="100"
-          >
-            <option value="0_rondier">Aucun</option>
-            ${this.listElements.map(element => 
-                // @ts-expect-error data
-              `<option value="${element.Id}_rondier">${element.nomZone} - ${element.nom}</option>`
-            ).join('')}
-          </select>
-        </div>
+      <div>
+      <input 
+      id="searchInput" 
+      class="swal2-input" 
+      placeholder="Rechercher..."
+      onfocus="this.value=''"
+      />
+      <select 
+      id="selectElement" 
+      class="swal2-select element-select" 
+      size="20"
+      >
+      <option value="0_rondier">Aucun</option>
+      ${this.listElements.map(element => 
+      // @ts-expect-error data
+      `<option value="${element.Id}_rondier" title="${element.nomZone} - ${element.nom}">${element.nomZone} - ${element.nom}</option>`
+      ).join('')}
+      </select>
+      </div>
       `,
-      customClass: {
-        popup: 'large-popup',
-        container: 'large-container'
-      },
-      width: '81.25em',
+      width: '100em',
+      
       didOpen: () => {
-        const input = document.getElementById('searchInput') as HTMLInputElement;
-        const select = document.getElementById('selectElement') as HTMLSelectElement;
-        
-        input.addEventListener('focus', () => {
-          select.style.display = 'block';
-        });
-  
-        input.addEventListener('input', () => {
-          searchValue = input.value.toLowerCase();
-          Array.from(select.options).forEach(option => {
-            option.style.display = option.text.toLowerCase().includes(searchValue) ? '' : 'none';
-          });
-        });
-  
-        select.addEventListener('change', () => {
-          selectedText = select.options[select.selectedIndex].text;
-          selectedOption = select.value;
-          input.value = selectedText;
-          select.style.display = 'none';
-        });
+      const styleElement = document.createElement('style');
+      styleElement.textContent = `
+      .element-select { 
+        width: 80%; 
+        margin: 0 auto;
+        display: block;
+      }
+      `;
+      document.head.appendChild(styleElement);
+
+      const input = document.getElementById('searchInput') as HTMLInputElement;
+      const select = document.getElementById('selectElement') as HTMLSelectElement;
+      
+      input.addEventListener('focus', () => {
+      select.style.display = 'block';
+      });
+    
+      input.addEventListener('input', () => {
+      searchValue = input.value.toLowerCase();
+      Array.from(select.options).forEach(option => {
+      option.style.display = option.text.toLowerCase().includes(searchValue) ? '' : 'none';
+      });
+      });
+    
+      select.addEventListener('change', () => {
+      selectedText = select.options[select.selectedIndex].text;
+      selectedOption = select.value;
+      input.value = selectedText;
+      select.style.display = 'none';
+      });
       },
       showCancelButton: true,
       confirmButtonText: "Confirmer",
       cancelButtonText: "Annuler"
     }).then((result) => {
       if (result.value && selectedOption) {
-        this.rondierService.changeTypeRecupSetRondier(pr.Id, Number(selectedOption.split('_')[0]))
-          .subscribe(response => {
-            this.popupService.alertSuccessForm("L'élément rondier a été enregistré !");
-            this.ngOnInit();
-          });
+      this.rondierService.changeTypeRecupSetRondier(pr.Id, Number(selectedOption.split('_')[0]))
+      .subscribe(response => {
+      this.popupService.alertSuccessForm("L'élément rondier a été enregistré !");
+      this.ngOnInit();
+      });
       }
     });
 }
