@@ -11,6 +11,7 @@ import { groupement } from "src/models/groupement.model";
 import { PopupService } from "../services/popup.service";
 declare let $: any;
 import { moralEntitiesService } from "../services/moralentities.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-reporting-ronde",
@@ -52,7 +53,8 @@ export class ReportingRondeComponent implements OnInit {
     private rondierService: rondierService,
     private elementRef: ElementRef,
     private popupService: PopupService,
-    private moralEntitiesService: moralEntitiesService
+    private moralEntitiesService: moralEntitiesService,
+    private router: Router
   ) {
     this.listRonde = [];
     this.listZone = [];
@@ -642,5 +644,12 @@ export class ReportingRondeComponent implements OnInit {
         this.popupService.alertErrorForm("La suppression a été annulée.");
       }
     });
+  }
+
+  repriseRonde(id : number){
+    this.router.navigate(['reporting/repriseRonde'], {
+      queryParams: { id: id }
+    });
+    
   }
 }

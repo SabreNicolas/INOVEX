@@ -40,7 +40,7 @@ import { ListModeOperatoireComponent } from "./list-mode-operatoire/list-mode-op
 import { ListConsignesComponent } from "./list-consignes/list-consignes.component";
 import { ConsigneComponent } from "./consigne/consigne.component";
 import { RondierFinMoisComponent } from "./rondier-fin-mois/rondier-fin-mois.component";
-import { MaintenanceComponent } from "./maintenance/maintenance.component";
+// import { MaintenanceComponent } from "./maintenance/maintenance.component";
 import { TokenApiComponent } from "./token-api/token-api.component";
 import { ListEquipeComponent } from "./list-equipe/list-equipe.component";
 import { cahierQuart } from "./cahierQuart/cahierQuart.component";
@@ -73,6 +73,7 @@ import { LiensExternesComponent } from "./liens-externes/liens-externes.componen
 import { RecapRondePrecedenteComponent } from "./recap-ronde-precedente/recap-ronde-precedente.component";
 import { RecapRondeListeComponent } from "./recap-ronde-liste/recap-ronde-liste.component";
 import { ListActionsEnregistreesComponent } from "./list-actions-enregistrees/list-actions-enregistrees.component";
+import { RepriseRondeComponent } from "./reprise-ronde/reprise-ronde.component";
 
 const routes: Routes = [
   {
@@ -176,6 +177,11 @@ const routes: Routes = [
     path: "reporting",
     canActivate: [AuthGuard],
     component: ReportingRondeComponent,
+  },
+  {
+    path: "reporting/repriseRonde",
+    canActivate: [AuthGuard],
+    component: RepriseRondeComponent,
   },
 
   {

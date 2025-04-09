@@ -1327,6 +1327,64 @@ export class rondierService {
     return this.http.get<number>(requete, requestOptions);
   }
 
+  getOneRepriseRonde(id : number) {
+    const requete = "https://" + this.ip + "/getOneRepriseRonde/" + id;
+    //console.log(requete);
+
+    const requestOptions = {
+      headers: new HttpHeaders(this.headerDict),
+    };
+
+    return this.http.get<number>(requete, requestOptions);
+  }
+
+  getZonesCalendrierRonde(dateDeb : Date) {
+    const requete = "https://" + this.ip + "/getZonesCalendrierRonde?idUsine=" + this.idUsine + "&dateDeb=" + dateDeb + "&idZone=0";
+    //console.log(requete);
+
+    const requestOptions = {
+      headers: new HttpHeaders(this.headerDict),
+    };
+
+    return this.http.get<number>(requete, requestOptions);
+  }
+
+  postMesuresRondier(data : any) {
+    
+    const requete =
+      "https://" + this.ip + "/mesureRondierOneRequest"
+
+      const requestOptions = {
+        headers: new HttpHeaders(this.headerDict),
+      };
+
+    return this.http.put<any>(requete, data, requestOptions);
+  }
+
+  postRonde(date : string, quart: number) {
+    
+    const requete =
+      "https://" + this.ip + "/rondeReturnId?dateHeure=" + date + "&quart=" + quart + "&idUsine=" + this.idUsine + "&userId=" + this.idUser + "&chefQuartId=" +this.idUser;
+
+      const requestOptions = {
+        headers: new HttpHeaders(this.headerDict),
+      };
+
+    return this.http.put<any>(requete, null, requestOptions);
+  }
+
+  finishronde(id: number) {
+    
+    const requete =
+      "https://" + this.ip + "/clotureRonde?id=" + id;
+
+      const requestOptions = {
+        headers: new HttpHeaders(this.headerDict),
+      };
+
+    return this.http.put<any>(requete, null, requestOptions);
+  }
+
   deleteRepriseRonde(id: number) {
     const requete = "https://" + this.ip + "/deleteRepriseRonde?id=" + id;
     //console.log(requete);
