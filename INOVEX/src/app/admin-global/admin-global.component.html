@@ -30,7 +30,11 @@
         </a>
       </li>
 
-      <li *ngIf="isAdmin || isSuperAdmin" class="nav-item dropdown" routerLinkActive="active">
+      <li
+        *ngIf="isAdmin || isSuperAdmin"
+        class="nav-item dropdown"
+        routerLinkActive="active"
+      >
         <a
           routerLink="./modification"
           class="nav-link"
@@ -56,7 +60,11 @@
                 </a>
             </li> -->
 
-      <li *ngIf="isAdmin || isSuperAdmin" class="nav-item dropdown" routerLinkActive="active">
+      <li
+        *ngIf="isAdmin || isSuperAdmin"
+        class="nav-item dropdown"
+        routerLinkActive="active"
+      >
         <a
           routerLink="./clients"
           class="nav-link"
@@ -70,7 +78,11 @@
         </a>
       </li>
 
-      <li *ngIf="isAdmin || isSuperAdmin" class="nav-item dropdown" routerLinkActive="active">
+      <li
+        *ngIf="isAdmin || isSuperAdmin"
+        class="nav-item dropdown"
+        routerLinkActive="active"
+      >
         <a
           routerLink="./import"
           class="nav-link"
@@ -84,7 +96,11 @@
         </a>
       </li>
 
-      <li *ngIf="isAdmin || isSuperAdmin" class="nav-item dropdown" routerLinkActive="active">
+      <li
+        *ngIf="isAdmin || isSuperAdmin"
+        class="nav-item dropdown"
+        routerLinkActive="active"
+      >
         <a
           routerLink="./correspondanceSortants"
           class="nav-link"
@@ -98,7 +114,11 @@
         </a>
       </li>
 
-      <li *ngIf="isAdmin || isSuperAdmin" class="nav-item dropdown" routerLinkActive="active">
+      <li
+        *ngIf="isAdmin || isSuperAdmin"
+        class="nav-item dropdown"
+        routerLinkActive="active"
+      >
         <a
           routerLink="./CorrespondanceReactifs"
           class="nav-link"
@@ -184,7 +204,11 @@
         </a>
       </li>
 
-      <li *ngIf="isAdmin || isSuperAdmin" class="nav-item dropdown" routerLinkActive="active">
+      <li
+        *ngIf="isAdmin || isSuperAdmin"
+        class="nav-item dropdown"
+        routerLinkActive="active"
+      >
         <a
           class="nav-link dropdown-toggle"
           id="navbarDropdownForm"
@@ -203,7 +227,11 @@
         </div>
       </li>
 
-      <li *ngIf="isAdmin || isSuperAdmin" class="nav-item dropdown" routerLinkActive="active">
+      <li
+        *ngIf="isAdmin || isSuperAdmin"
+        class="nav-item dropdown"
+        routerLinkActive="active"
+      >
         <a
           class="nav-link dropdown-toggle"
           id="navbarDropdownUser"
@@ -236,7 +264,8 @@
         <div class="dropdown-menu menuGlobal" aria-labelledby="navbarDropdown">
           <!--<a class="dropdown-item" routerLink="./reporting" >REPORTING</a>-->
 
-          <a *ngIf="isAdmin || isSuperAdmin"
+          <a
+            *ngIf="isAdmin || isSuperAdmin"
             class="dropdown-item"
             href="https://drive.kerlan-info.fr/d/s/uKSSWZluFqp6pHEI7Ech2OLLZpBmp0rx/A1NE_o04ApMl_hAYy2zku2pLN6CU-zj7--7sAwK0ZlQo"
             target="_blank"
@@ -247,19 +276,36 @@
           <a class="dropdown-item" routerLink="./consignes"
             >Liste des Consignes</a
           >
-          <a *ngIf="isAdmin || isSuperAdmin" class="dropdown-item" routerLink="./zones"
+          <a
+            *ngIf="isAdmin || isSuperAdmin"
+            class="dropdown-item"
+            routerLink="./zones"
             >Liste des Zones de Contrôle</a
           >
-          <a *ngIf="isAdmin || isSuperAdmin" class="dropdown-item" routerLink="./groupement"
+          <a
+            *ngIf="isAdmin || isSuperAdmin"
+            class="dropdown-item"
+            routerLink="./groupement"
             >Liste des Groupements</a
           >
-          <a *ngIf="isAdmin || isSuperAdmin" class="dropdown-item" routerLink="./elements"
+          <a
+            *ngIf="isAdmin || isSuperAdmin"
+            class="dropdown-item"
+            routerLink="./elements"
             >Liste des Elements de Contrôle</a
           >
-          <a *ngIf="isAdmin || isSuperAdmin" class="dropdown-item" routerLink="./modesOP"
+          <a
+            *ngIf="isAdmin || isSuperAdmin"
+            class="dropdown-item"
+            routerLink="./modesOP"
             >Liste des Modes Opératoire</a
           >
-          <a *ngIf="isAdmin || isSuperAdmin" class="dropdown-item" (click)="pdfMake()">Reprise de ronde</a>
+          <a
+            *ngIf="isAdmin || isSuperAdmin"
+            class="dropdown-item"
+            (click)="pdfMake()"
+            >Reprise de ronde</a
+          >
 
           <!-- <a class="dropdown-item" (click)="download('https://drive.kerlan-info.fr/d/s/t8jDgzM5gbhel4o8zHX1qfKw4mSCecxr/2ZK8T_dAYyx9cwcN1fNRvVeKLDaxE5b6-0bzA1aToWwo')">Localisation Tablette</a>
                     <a class="dropdown-item" (click)="download('https://drive.kerlan-info.fr/d/s/qLEPdZ4j1BrVIDHAgfxV8usUWdEYR3ev/HR9pQTaI6SMXtRn19O0ezpwGy_IQrqLc-CL7AS8JT1Qk')">Blocage Tablette</a> -->

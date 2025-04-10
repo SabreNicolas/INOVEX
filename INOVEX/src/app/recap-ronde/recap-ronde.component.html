@@ -132,9 +132,7 @@
   <!-- Tableau des anomalies -->
   <div class="col-md-12">
     <div class="card cardElem">
-      <h2 class="titre">
-        Anomalies
-      </h2>
+      <h2 class="titre">Anomalies</h2>
 
       <div class="table-style">
         <!--table des anomalies-->
@@ -151,20 +149,21 @@
             <tr class="table-light">
               <td>{{ anomalie.nom }}</td>
               <td>{{ anomalie.commentaire }}</td>
-              <td><a
-                href="{{ anomalie.photo }}"
-                target="_blank"
-              >
-                <button class="btn btn-outline-secondary">
-                  <i style="color: black"
-                  class="fa fa-camera"
-                  aria-hidden="true"></i>
-                </button>
-              </a></td>
+              <td>
+                <a href="{{ anomalie.photo }}" target="_blank">
+                  <button class="btn btn-outline-secondary">
+                    <i
+                      style="color: black"
+                      class="fa fa-camera"
+                      aria-hidden="true"
+                    ></i>
+                  </button>
+                </a>
+              </td>
               <td *ngIf="anomalie.evenement == 1">Evènement déjà créé</td>
               <td *ngIf="anomalie.evenement == 0">
                 <a
-                (click)="ouvrirDialogCreerEvent(anomalie.id)"
+                  (click)="ouvrirDialogCreerEvent(anomalie.id)"
                   role="button"
                   class="btn btn-primary"
                   id="create"
@@ -180,7 +179,6 @@
   </div>
 </div>
 <br />
-
 
 <!-- EVENEMENTS -->
 <div class="row">
@@ -234,9 +232,11 @@
                   target="_blank"
                 >
                   <button class="btn btn-outline-secondary">
-                    <i style="color: black"
-                    class="fa fa-camera"
-                    aria-hidden="true"></i>
+                    <i
+                      style="color: black"
+                      class="fa fa-camera"
+                      aria-hidden="true"
+                    ></i>
                   </button>
                 </a>
               </td>
@@ -276,12 +276,16 @@
     </div>
   </div>
 </div>
-<br/>
+<br />
 
 <!-- routerLink="../newEquipe" [queryParams]="{quart: quart, idEquipe: idEquipe}" -->
 
 <!-- ACTUS -->
-<div *ngIf="listActu.length > 0" class="col-md-13" style="display: flex; flex-direction: column">
+<div
+  *ngIf="listActu.length > 0"
+  class="col-md-13"
+  style="display: flex; flex-direction: column"
+>
   <h2 class="titre">Actualités</h2>
   <!--Liste des actus non lié à un quart-->
   <div style="display: flex; justify-content: space-evenly">
@@ -527,10 +531,10 @@
                     'fa-check': true,
                   }"
                   [ngStyle]="{
-                    'color':
-                    action.termine === 1 ? 'white' : 'black',
+                    color: action.termine === 1 ? 'white' : 'black',
                   }"
-                >{{action.termine === 1 ? "" : "Valider l'action"}}</i>
+                  >{{ action.termine === 1 ? "" : "Valider l'action" }}</i
+                >
               </button>
             </td>
             <td>

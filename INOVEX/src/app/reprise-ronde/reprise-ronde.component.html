@@ -1,86 +1,280 @@
-<div *ngFor="let zone of zones" class="mb-4">
-    <h4 class="text-center">{{ zone.zone }}</h4>
-    <p class="text-center">{{ zone.commentaire }}</p>
-    
-    <!-- Gros trait entre les zones -->
-    <div class="border-bottom mb-3 pb-3 w-75 mx-auto"></div>
-  
-    <div *ngFor="let element of zone.elements">
-      <div class="form-group">
-        
-        <!-- Curseur -->
-        <div *ngIf="element.typeChamp === '1'" class="mb-3 w-75 mx-auto">
-          <label for="{{element.Id}}" class="d-block font-weight-bold w-25 " style="font-size: 1.1rem;">{{ element.nom }} : {{ element.valeurMin }} - {{ element.valeurMax }}</label>
-            <!-- Input range -->
-            <input 
-            type="range" 
-            class="form-range mx-2 flex-grow-1" 
-            [min]="element.valeurMin" 
-            [max]="element.valeurMax" 
-            [value]="valeursCurseur[element.Id] || element.previousValue ? element.previousValue : element.defaultValue" 
-            (input)="mettreAJourValeur(zone.id, element.Id, $event.target, element.isRegulateur)">
+<div *ngFor="let zone of zones" class="mb-4 mt-4">
+  <h4 class="text-center" style="color: rgb(154, 196, 89)">{{ zone.zone }}</h4>
+  <p class="text-center" style="color: rgb(154, 196, 89)">
+    {{ zone.commentaire }}
+  </p>
 
-            <!-- Valeur actuelle -->
-            <span class="ml-4 font-weight-bold" style="min-width: 40px;">
-            {{ valeursCurseur[element.Id] || element.defaultValue }}
-            </span>
-        </div>
-  
-        <!-- Saisie libre -->
-        <div *ngIf="element.typeChamp === '2'" class="form-group d-flex align-items-center mb-3 w-75 mx-auto">
-          <label class="mr-2 w-25 font-weight-bold" for="{{element.Id}}" style="font-size: 1.1rem;">{{ element.nom }} :</label>
-          <input 
-            type="text" 
-            class="form-control" 
-            [value]="element.previousValue ? element.previousValue : element.defaultValue" 
-            (input)="mettreAJourValeur(zone.id, element.Id, $event.target, element.isRegulateur)"
-            id="{{element.Id}}" />
-        </div>
-  
-        <!-- Case à cocher (Radio button) -->
-        <div *ngIf="element.typeChamp === '3'" class="mb-3 w-75 mx-auto">
-          <label class="mr-2 w-25 font-weight-bold" for="{{element.Id}}" style="font-size: 1.1rem;">{{ element.nom }} :</label>
-          <div class="form-check form-check-inline" *ngFor="let option of element.listValues.split(' ')">
-            <label class="form-check-label" for="checkboxGroup{{element.Id}}">{{ option }}</label>
+  <div class="border-bottom border-4 mb-3 pb-3 w-75 mx-auto"></div>
+
+  <!-- Affichage des éléments de la zone -->
+  <div *ngFor="let element of zone.elements; let i = index">
+    <div class="form-group">
+      <!-- Afficher le groupement uniquement s'il est différent du précédent -->
+      <ng-container
+        *ngIf="
+          i === 0 || element.groupement !== zone.elements[i - 1].groupement
+        "
+      >
+        <h4 style="color: darkorange" class="pb-3 w-75 ml-5">
+          {{ element.groupement }}
+        </h4>
+        <div class="border-bottom mb-3 w-75 mx-auto"></div>
+      </ng-container>
+
+      <!-- Curseur -->
+      <div *ngIf="element.typeChamp === '1'" class="mb-3 w-75 mx-auto">
+        <label
+          for="{{ element.Id }}"
+          class="d-block font-weight-bold w-25"
+          style="font-size: 1.1rem"
+          >{{ element.nom }} : {{ element.valeurMin }} -
+          {{ element.valeurMax }}</label
+        >
+        <input
+          type="range"
+          class="form-range mx-2 flex-grow-1"
+          [min]="element.valeurMin"
+          [max]="element.valeurMax"
+          [value]="valeursCurseur[element.Id]"
+          (input)="
+            mettreAJourValeur(
+              zone.id,
+              element.Id,
+              $event.target,
+              element.isRegulateur
+            )
+          "
+        />
+        <input
+          type="number"
+          class="form-control d-inline-block w-auto"
+          [value]="valeursCurseur[element.Id] || element.defaultValue"
+          (input)="
+            mettreAJourValeur(
+              zone.id,
+              element.Id,
+              $event.target,
+              element.isRegulateur
+            )
+          "
+        />
+        <p
+          *ngIf="
+            valeursCurseur[element.Id] > element.valeurMax ||
+            valeursCurseur[element.Id] < element.valeurMin
+          "
+          style="background-color: #ff726f"
+        >
+          Attention vous avez dépassé la valeur min ou max :
+          {{ element.valeurMin }} - {{ element.valeurMax }}
+        </p>
+        <p
+          *ngIf="
+            valeursCurseur[element.Id] !== +element.defaultValue &&
+            element.defaultValue !== ''
+          "
+          style="background-color: #ff726f"
+        >
+          Attention la valeur par défaut est :
+          {{ element.defaultValue }}
+        </p>
+      </div>
+
+      <!-- Saisie libre -->
+      <div
+        *ngIf="element.typeChamp === '2'"
+        class="form-group d-flex align-items-center mb-3 w-75 mx-auto"
+      >
+        <label
+          class="mr-2 w-25 font-weight-bold"
+          for="{{ element.Id }}"
+          style="font-size: 1.1rem"
+          >{{ element.nom }} :</label
+        >
+        <input
+          type="text"
+          class="form-control"
+          [value]="element.defaultValue ? element.defaultValue : ''"
+          (input)="
+            mettreAJourValeur(
+              zone.id,
+              element.Id,
+              $event.target,
+              element.isRegulateur
+            )
+          "
+          id="{{ element.Id }}"
+          #inputRef
+        />
+        <p
+          class="w-75 mb-0 p-2 rounded"
+          *ngIf="element.isCompteur && +element.previousValue > +inputRef.value"
+          style="background-color: #ff726f"
+        >
+          Attention vous avez saisi une valeur inférieure à la précédente :
+          {{ element.previousValue }}
+        </p>
+        <p
+          class="w-75 mb-0 p-2 rounded"
+          *ngIf="
+            inputRef.value !== element.defaultValue &&
+            element.defaultValue !== ''
+          "
+          style="background-color: #ff726f"
+        >
+          Attention la valeur par défaut est :
+          {{ element.defaultValue }}
+        </p>
+      </div>
+
+      <!-- Case à cocher (Radio button) -->
+      <div *ngIf="element.typeChamp === '3'" class="mb-3 w-75 mx-auto">
+        <label
+          class="mr-2 w-25 font-weight-bold"
+          for="{{ element.Id }}"
+          style="font-size: 1.1rem"
+          >{{ element.nom }} :</label
+        >
+        <ng-container #groupRef>
+          <div
+            class="form-check form-check-inline"
+            *ngFor="let option of element.listValues.split(' ')"
+          >
+            <label
+              class="form-check-label"
+              for="checkboxGroup{{ element.Id }}"
+              >{{ option }}</label
+            >
             <input
+              *ngIf="option !== ''"
               type="radio"
               class="form-check-input"
-              name="checkboxGroup{{element.Id}}"  
+              name="checkboxGroup{{ element.Id }}"
               [value]="option"
-              [checked]="(element.previousValue ? element.previousValue : element.defaultValue) === option"
-              (change)="mettreAJourValeur(zone.id, element.Id, $event.target, element.isRegulateur)" />
+              [checked]="element.defaultValue === option"
+              (change)="
+                selectedValues[element.Id] = option;
+                mettreAJourValeur(
+                  zone.id,
+                  element.Id,
+                  $event.target,
+                  element.isRegulateur
+                )
+              "
+            />
           </div>
-        </div>
-  
-<!-- Menu déroulant -->
-<div *ngIf="element.typeChamp === '4'" class="mb-3 w-75 mx-auto d-flex align-items-center">
-    <label 
-      for="{{element.Id}}" 
-      class="mr-3 w-25 font-weight-bold mb-0" 
-      style="white-space: nowrap; font-size: 1.1rem;">
-      {{ element.nom }} :
-    </label>
-    <select 
-      class="form-control w-100" 
-      [value]="element.previousValue ? element.previousValue : element.defaultValue" 
-      name="{{element.Id}}"
-      (change)="mettreAJourValeur(zone.id, element.Id, $event.target, element.isRegulateur)">
-      <option *ngFor="let option of element.listValues.split(' ')" [value]="option">{{ option }}</option>
-    </select>
-  </div>
-  
-      </div>
-  
-      <!-- Trait entre chaque élément -->
-      <div class="border-bottom mb-3 pb-3 w-75 mx-auto"></div>
-    </div>
-  </div>
-  
-  <!-- Bouton d'envoi -->
-  <button *ngIf="zones.length !== 0" class="btn btn-primary d-block mx-auto" (click)="envoyerDonnees()">Envoyer</button>
 
-  <div *ngIf="!zones.length" class="text-center mt-4">
-    <p class="font-weight-bold">Aucune zone à afficher.</p>
-    <p>Veuillez ajouter des zones à votre calendrier à cette date : {{date}} sur ce quart {{quart}}</p>
+          <p
+            class="w-75 mb-0 p-2 rounded"
+            *ngIf="
+              selectedValues[element.Id] &&
+              selectedValues[element.Id] !== element.defaultValue &&
+              element.defaultValue !== ''
+            "
+            style="background-color: #ff726f"
+          >
+            Attention la valeur par défaut est :
+            {{ element.defaultValue }}
+          </p>
+        </ng-container>
+      </div>
+
+      <!-- Menu déroulant -->
+      <div
+        *ngIf="element.typeChamp === '4'"
+        class="mb-3 w-75 mx-auto d-flex align-items-center"
+      >
+        <label
+          for="{{ element.Id }}"
+          class="mr-3 w-25 font-weight-bold mb-0"
+          style="white-space: nowrap; font-size: 1.1rem"
+        >
+          {{ element.nom }} :
+        </label>
+        <select
+          class="form-control w-100"
+          name="{{ element.Id }}"
+          [ngModel]="selectedValues[element.Id]"
+          (change)="
+            mettreAJourValeur(
+              zone.id,
+              element.Id,
+              $event.target,
+              element.isRegulateur
+            )
+          "
+          #inputRef
+        >
+          <option
+            *ngFor="let option of element.listValues.split(' ')"
+            [value]="option"
+          >
+            {{ option }}
+          </option>
+        </select>
+
+        <p
+          class="w-75 mb-0 p-2 rounded"
+          *ngIf="
+            inputRef.value !== element.defaultValue &&
+            element.defaultValue !== ''
+          "
+          style="background-color: #ff726f"
+        >
+          Attention la valeur par défaut est :
+          {{ element.defaultValue }}
+        </p>
+      </div>
+    </div>
+
+    <!-- Regulateur -->
+    <ng-container *ngIf="element.isRegulateur">
+      <div class="d-flex align-items-center mb-3 ml-6 w-75 mx-auto">
+        <label
+          for="{{ element.Id }}--Regulateur"
+          class="mb-0 mr-3"
+          style="font-size: 1.1rem"
+        >
+          Régulateur :
+        </label>
+        <select
+          class="form-control w-auto"
+          name="{{ element.Id }}--Regulateur"
+          (change)="
+            mettreAJourValeur(
+              zone.id,
+              element.Id,
+              $event.target,
+              element.isRegulateur
+            )
+          "
+          #inputRef
+        >
+          <option value="Automatique">Automatique</option>
+          <option value="Distance">Distance</option>
+          <option value="Manuel">Manuel</option>
+        </select>
+      </div>
+    </ng-container>
+
+    <!-- Trait entre chaque élément -->
+    <div class="border-bottom mb-3 pb-3 w-75 mx-auto"></div>
   </div>
-  
+</div>
+
+<!-- Bouton d'envoi -->
+<button
+  *ngIf="zones.length !== 0"
+  class="btn btn-primary d-block mx-auto"
+  (click)="envoyerDonnees()"
+>
+  Envoyer
+</button>
+
+<div *ngIf="!zones.length" class="text-center mt-4">
+  <p class="font-weight-bold">Aucune zone à afficher.</p>
+  <p>
+    Veuillez ajouter des zones à votre calendrier à cette date : {{ date }} sur
+    ce quart {{ quart }}
+  </p>
+</div>

@@ -47,14 +47,14 @@ export class ReportingRondeComponent implements OnInit {
   public listGroupements: groupement[];
   public listeZoneUnique: Map<string, number>;
   public listElementsUniques: any;
-  public dateMeasuresCAP : string;
+  public dateMeasuresCAP: string;
 
   constructor(
     private rondierService: rondierService,
     private elementRef: ElementRef,
     private popupService: PopupService,
     private moralEntitiesService: moralEntitiesService,
-    private router: Router
+    private router: Router,
   ) {
     this.listRonde = [];
     this.listZone = [];
@@ -73,7 +73,7 @@ export class ReportingRondeComponent implements OnInit {
     const yyyy = dt.getFullYear();
     const day = dd + "/" + mm + "/" + yyyy;
     this.dateDeb = day;
-    this.dateMeasuresCAP = yyyy + "-" + mm + "-" + dd
+    this.dateMeasuresCAP = yyyy + "-" + mm + "-" + dd;
     //fin gestion date défaut
     this.listAnomalie = [];
     this.listElementsOfZone = [];
@@ -165,10 +165,10 @@ export class ReportingRondeComponent implements OnInit {
       this.numbers = Array(this.nbfour)
         .fill(1)
         .map((x, i) => i + 1);
-        this.rondierService.getReprisesRonde().subscribe((response) => {
-          //@ts-expect-error data
-          this.listReprise = response.data;
-        });
+      this.rondierService.getReprisesRonde().subscribe((response) => {
+        //@ts-expect-error data
+        this.listReprise = response.data;
+      });
     });
 
     if (this.dateDeb != undefined)
@@ -363,7 +363,7 @@ export class ReportingRondeComponent implements OnInit {
         //@ts-expect-error data
         this.listAnomalie = response.data;
         // console.log(this.listAnomalie)
-    });
+      });
   }
 
   await(ms: number) {
@@ -381,7 +381,7 @@ export class ReportingRondeComponent implements OnInit {
     const yyyy = dt.getFullYear();
     const day = dd + "/" + mm + "/" + yyyy;
     this.dateDeb = day;
-    this.dateMeasuresCAP = yyyy + "-" + mm + "-" + dd
+    this.dateMeasuresCAP = yyyy + "-" + mm + "-" + dd;
     // (<HTMLDivElement>document.getElementById("tableDesRondes")).style.display = "block";
     this.ngOnInit();
   }
@@ -461,31 +461,30 @@ export class ReportingRondeComponent implements OnInit {
     value = value.replace(/'/g, "''");
     this.rondierService.updateMesureRondier(Id, value).subscribe((response) => {
       if (response == "Mise à jour de la valeur OK") {
-        this.popupService.alertSuccessForm("La valeur a bien été mis à jour dans Rondier!");
+        this.popupService.alertSuccessForm(
+          "La valeur a bien été mis à jour dans Rondier!",
+        );
         //après la mise à jour de la valeur, on regarde si un produit CAP est lié à l'élément de ronde
-        this.rondierService.getProductMesureRondier(Id).subscribe((response) => {
-          //Si oui on insert ou update la caleur dans la table measures_new
-          if(response > 0){
-            this.moralEntitiesService
-            .createMeasure(
-              this.dateMeasuresCAP,
-              Number(value),
-              response,
-              0,
-            )
-            .subscribe((response) => {
-              if (response == "Création du Measures OK") {
-                this.popupService.alertSuccessForm(
-                  "Les valeurs ont été insérées avec succès dans CAP Exploitation !",
-                );
-              } else {
-                this.popupService.alertErrorForm(
-                  "Erreur lors de l'insertion des valeurs ....",
-                );
-              }
-            });
-          }
-        });
+        this.rondierService
+          .getProductMesureRondier(Id)
+          .subscribe((response) => {
+            //Si oui on insert ou update la caleur dans la table measures_new
+            if (response > 0) {
+              this.moralEntitiesService
+                .createMeasure(this.dateMeasuresCAP, Number(value), response, 0)
+                .subscribe((response) => {
+                  if (response == "Création du Measures OK") {
+                    this.popupService.alertSuccessForm(
+                      "Les valeurs ont été insérées avec succès dans CAP Exploitation !",
+                    );
+                  } else {
+                    this.popupService.alertErrorForm(
+                      "Erreur lors de l'insertion des valeurs ....",
+                    );
+                  }
+                });
+            }
+          });
         this.ngOnInit();
       }
     });
@@ -646,10 +645,9 @@ export class ReportingRondeComponent implements OnInit {
     });
   }
 
-  repriseRonde(id : number){
-    this.router.navigate(['reporting/repriseRonde'], {
-      queryParams: { id: id }
+  repriseRonde(id: number) {
+    this.router.navigate(["reporting/repriseRonde"], {
+      queryParams: { id: id },
     });
-    
   }
 }

@@ -2,38 +2,54 @@ import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { ActivatedRoute } from "@angular/router";
 import { rondierService } from "../services/rondier.service";
-import { CommonModule } from '@angular/common';
-import {
-  format,
-} from "date-fns";
+import { CommonModule } from "@angular/common";
+import { format } from "date-fns";
 import { PopupService } from "../services/popup.service";
-import { RepriseRonde, NameValuePair, ResultatsFormulaires } from "src/models/repriseRonde.model";
-
+import { FormsModule } from "@angular/forms";
+import {
+  RepriseRonde,
+  NameValuePair,
+  ResultatsFormulaires,
+  element,
+  Zone,
+} from "src/models/repriseRonde.model";
 
 @Component({
   standalone: true,
-  selector: 'app-reprise-ronde',
-  templateUrl: './reprise-ronde.component.html',
-  styleUrl: './reprise-ronde.component.scss',
-  imports: [CommonModule] // <-- c’est ici
+  selector: "app-reprise-ronde",
+  templateUrl: "./reprise-ronde.component.html",
+  styleUrl: "./reprise-ronde.component.scss",
+  imports: [CommonModule, FormsModule],
 })
-
-
 export class RepriseRondeComponent implements OnInit {
-  public id : number;
-  public repriseRonde : any;
-  public date = '';
-  public quart  = 0;
-  public zones : any[] = [];
-  
-  public resultatsFormulaires: ResultatsFormulaires = {
-    values: [] // Initialisation de la clé "values" avec un tableau vide
+  public id: number;
+  public repriseRonde: RepriseRonde = {
+    Id: 0,
+    date: "",
+    quart: 0,
+    termine: false,
   };
-  
-  valeursCurseur: { [elementId: number]: number } = {};
+  public date = "";
+  public quart = 0;
+  public zones: Zone[] = [];
+  selectedValues: Record<string, string> = {};
 
-  constructor(private rondierService: rondierService, private route: ActivatedRoute, private router: Router,     private popupService: PopupService,
-  ) { 
+  public resultatsFormulaires: ResultatsFormulaires = {
+    values: [], // Initialisation de la clé "values" avec un tableau vide
+  };
+
+  //si compteur l'index est au moins égal
+  //Régulateur
+  //Valeur par défaut si pas égal popup
+  //curseur hors champs
+  valeursCurseur: Record<number, number> = {};
+
+  constructor(
+    private rondierService: rondierService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private popupService: PopupService,
+  ) {
     this.id = 0;
 
     this.route.queryParams.subscribe((params) => {
@@ -47,112 +63,169 @@ export class RepriseRondeComponent implements OnInit {
 
   ngOnInit(): void {
     this.rondierService.getOneRepriseRonde(this.id).subscribe((ronde) => {
-      // @ts-ignore
+      // @ts-expect-error data
       this.repriseRonde = ronde["data"][0];
       console.log(this.repriseRonde);
 
-      let heure = '00';
+      let heure = "00";
       if (this.repriseRonde.quart === 1) {
-        heure = '05';
+        heure = "05";
       } else if (this.repriseRonde.quart === 2) {
-        heure = '13';
+        heure = "13";
       } else if (this.repriseRonde.quart === 3) {
-        heure = '21';
+        heure = "21";
       }
-      this.date = this.repriseRonde.date
+      this.date =
+        typeof this.repriseRonde.date === "string"
+          ? this.repriseRonde.date
+          : this.repriseRonde.date.toISOString();
       this.quart = this.repriseRonde.quart;
-      this.repriseRonde.date = format(this.repriseRonde.date,'yyyy-dd-MM');
-      this.repriseRonde.date = this.repriseRonde.date + ' ' + heure + ':00:00';
-      console.log(this.repriseRonde.date);
-      this.rondierService.getZonesCalendrierRonde(this.repriseRonde.date).subscribe((zones) => {
-        // @ts-ignore
-        this.zones = zones.BadgeAndElementsOfZone
-        console.log(this.zones);
+      this.repriseRonde.date = format(this.repriseRonde.date, "yyyy-dd-MM");
+      this.repriseRonde.date = this.repriseRonde.date + " " + heure + ":00:00";
 
-        const valuesArray: { nameValuePairs: NameValuePair }[] = []; // Initialisation de valuesArray
-        // Initialisation de resultatsFormulaires avec tous les éléments des zones
-        this.zones.forEach(zone => {
-          zone.elements.forEach((element: any) => {
-            // Créer l'objet nameValuePairs avec les valeurs de l'élément
-            const nameValuePairs = {
-              value: element.previousValue ? element.previousValue : element.defaultValue, // Utilisation de previousValue ou defaultValue
-              modeRegulateur: element.isRegulateur ? 'activé' : 'désactivé', // Mode régulateur, converti en chaîne 'activé' ou 'désactivé'
-              elementId: element.Id,  // ID de l'élément
-              rondeId: this.repriseRonde.Id // ID de la ronde
-            };
-        
-            // Ajouter l'élément dans valuesArray
-            const updatedValue = {
-              nameValuePairs: nameValuePairs // Structure demandée avec nameValuePairs
-            };
-        
-            valuesArray.push(updatedValue); // Ajoute l'élément à la liste
-          });
+      this.rondierService
+        .getZonesCalendrierRonde(this.repriseRonde.date)
+        .subscribe((zones) => {
+          // @ts-expect-error BadgeAndElementsOfZone
+          this.zones = zones.BadgeAndElementsOfZone;
+          this.initResultatsFormulaires();
+          if (this.zones.length === 0) {
+            this.rondierService.listZonesAndElements().subscribe((zones) => {
+              // @ts-expect-error BadgeAndElementsOfZone
+              this.zones = zones.BadgeAndElementsOfZone;
+              this.initResultatsFormulaires();
+            });
+          }
         });
-        
-        // Encadrer le tableau resultatsFormulaires avec la clé "values"
-        this.resultatsFormulaires = {
-          values: valuesArray
-        };
-
-        console.log('Valeurs des formulaires :', this.resultatsFormulaires); // Affiche les valeurs des formulaires dans la console
-      });
     });
   }
 
- // Fonction pour mettre à jour la valeur
- mettreAJourValeur(rondeId: number, elementId: number, target: any, isRegulateur: boolean) {
-  const value = (target as HTMLInputElement).value; // Récupérer la valeur de l'input
-  console.log('Valeur entrée :', value); // Affiche la valeur entrée dans la console
-  this.valeursCurseur[elementId] = Number(value);
+  initResultatsFormulaires() {
+    const valuesArray: { nameValuePairs: NameValuePair }[] = [];
 
-   // Cherche si l'élément avec le même elementId existe déjà dans la liste
-   const existingElement = this.resultatsFormulaires.values.find(item => item.nameValuePairs.elementId === elementId);
-   console.log('Élément existant :', existingElement); // Affiche l'élément existant dans la console
-   if (existingElement) {
-     // Si l'élément existe déjà, on met à jour sa valeur
-     existingElement.nameValuePairs.value = value;
-     existingElement.nameValuePairs.modeRegulateur = isRegulateur ? 'activé' : 'désactivé';
-   } else {
-     // Sinon, on ajoute un nouvel élément à la liste
-     const updatedValue = {
-       nameValuePairs: {
-         value: value,
-         modeRegulateur: isRegulateur ? 'activé' : 'désactivé',
-         elementId: elementId,
-          rondeId: rondeId // Ajout de rondeId
-       }
-     };
-     this.resultatsFormulaires.values.push(updatedValue);
-   }
+    // Initialisation de resultatsFormulaires avec tous les éléments des zones
+    this.zones.forEach((zone) => {
+      zone.elements.forEach((element: element) => {
+        this.valeursCurseur[element.Id] = Number(0);
+        this.selectedValues[element.Id] = element.defaultValue;
 
-  // Affiche les résultats mis à jour
-  console.log('Résultats des formulaires :', this.resultatsFormulaires); 
-}
-  
-envoyerDonnees(){
-  console.log('Données à envoyer :', this.resultatsFormulaires); // Affiche les données à envoyer
-  this.rondierService.postRonde(this.date, this.quart).subscribe((response) => {
-    console.log(response); // Affiche la réponse du serveur
-    const rondeId = response.data[0]["Id"];  // Adapter cette ligne à la structure de ta réponse
+        const nameValuePairs = {
+          value: element.defaultValue ? element.defaultValue : "/",
+          modeRegulateur: "undefined",
+          elementId: element.Id,
+          rondeId: 0,
+        };
 
-    this.resultatsFormulaires.values.forEach(item => {
-      // Ajouter ou mettre à jour le champ rondeId dans chaque nameValuePairs
-      item.nameValuePairs.rondeId = rondeId;
-    });
+        // Ajouter l'élément dans valuesArray
+        const updatedValue = {
+          nameValuePairs: nameValuePairs,
+        };
 
-    this.rondierService.postMesuresRondier(this.resultatsFormulaires).subscribe((response) => {
-      console.log('Réponse du serveur :', response); // Affiche la réponse du serveur
-      this.rondierService.closeRonde(rondeId).subscribe((response) => {
-        console.log('Ronde fermée :', response); // Affiche la réponse du serveur
-        this.rondierService.deleteRepriseRonde(this.id).subscribe((response) => {
-          console.log('Ronde supprimée :', response); // Affiche la réponse du serveur
-          this.popupService.alertSuccessForm('Ronde reprise avec succès !');
-          this.router.navigate(['/reporting']);
-        });
+        valuesArray.push(updatedValue);
       });
     });
-  });
-}
-}
 
+    // Encadrer le tableau resultatsFormulaires avec la clé "values"
+    this.resultatsFormulaires = {
+      values: valuesArray,
+    };
+
+    console.log("Valeurs des formulaires :", this.resultatsFormulaires); // Affiche les valeurs des formulaires dans la console
+  }
+  // Fonction pour mettre à jour la valeur
+  mettreAJourValeur(
+    rondeId: number,
+    elementId: number,
+    target: EventTarget | null,
+    isRegulateur: boolean,
+  ) {
+    const value = (target as HTMLInputElement).value;
+    console.log("Valeur entrée :", value);
+    this.valeursCurseur[elementId] = Number(value);
+
+    // Cherche si l'élément avec le même elementId existe déjà dans la liste
+    const existingElement = this.resultatsFormulaires.values.find(
+      (item) => item.nameValuePairs.elementId === elementId,
+    );
+
+    if (existingElement) {
+      // Si l'élément existe déjà, on met à jour sa valeur
+      if (
+        isRegulateur &&
+        (value === "Automatique" || value === "Manuel" || value === "Distance")
+      )
+        existingElement.nameValuePairs.modeRegulateur = value;
+      else existingElement.nameValuePairs.value = value;
+    } else {
+      let updatedValue = {
+        nameValuePairs: {
+          value: "/",
+          modeRegulateur: "undefined",
+          elementId: elementId,
+          rondeId: 0,
+        },
+      };
+      // Sinon, on ajoute un nouvel élément à la liste
+      if (
+        isRegulateur &&
+        (value === "Automatique" || value === "Manuel" || value === "Distance")
+      ) {
+        updatedValue = {
+          nameValuePairs: {
+            value: "/",
+            modeRegulateur: value,
+            elementId: elementId,
+            rondeId: 0,
+          },
+        };
+      } else {
+        updatedValue = {
+          nameValuePairs: {
+            value: value,
+            modeRegulateur: "undefined",
+            elementId: elementId,
+            rondeId: 0,
+          },
+        };
+      }
+
+      this.resultatsFormulaires.values.push(updatedValue);
+    }
+
+    // Affiche les résultats mis à jour
+    console.log("Résultats des formulaires :", this.resultatsFormulaires);
+  }
+
+  envoyerDonnees() {
+    console.log("Données à envoyer :", this.resultatsFormulaires); // Affiche les données à envoyer
+    this.rondierService
+      .postRonde(this.date, this.quart)
+      .subscribe((response) => {
+        console.log(response); // Affiche la réponse du serveur
+        const rondeId = response.data[0]["Id"];
+
+        this.resultatsFormulaires.values.forEach((item) => {
+          // Met à jour le rondeId pour chaque élément
+          item.nameValuePairs.rondeId = rondeId;
+        });
+
+        this.rondierService
+          .postMesuresRondier(this.resultatsFormulaires)
+          .subscribe((response) => {
+            console.log("Réponse du serveur :", response); // Affiche la réponse du serveur
+            this.rondierService.closeRonde(rondeId).subscribe((response) => {
+              console.log("Ronde fermée :", response); // Affiche la réponse du serveur
+              this.rondierService
+                .deleteRepriseRonde(this.id)
+                .subscribe((response) => {
+                  console.log("Ronde supprimée :", response); // Affiche la réponse du serveur
+                  this.popupService.alertSuccessForm(
+                    "Ronde reprise avec succès !",
+                  );
+                  this.router.navigate(["/reporting"]);
+                });
+            });
+          });
+      });
+  }
+}

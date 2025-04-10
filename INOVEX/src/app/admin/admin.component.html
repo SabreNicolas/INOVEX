@@ -179,7 +179,13 @@
             id="{{ pr.Id }}"
             ngModel
             [(ngModel)]="pr.typeRecupEMonitoring"
-            (change)="updateTypeRecup(pr.Id, pr.typeRecupEMonitoring,'typeRecupEMonitoring')"
+            (change)="
+              updateTypeRecup(
+                pr.Id,
+                pr.typeRecupEMonitoring,
+                'typeRecupEMonitoring'
+              )
+            "
           >
             <option value="null">Aucune</option>
             <option value="tafVal">Valeur moyenne</option>
@@ -208,7 +214,13 @@
             id="{{ pr.Id }}--typeDonnee"
             ngModel
             [(ngModel)]="pr.typeDonneeEMonitoring"
-            (change)="updateTypeRecup(pr.Id, pr.typeDonneeEMonitoring,'typeDonneeEMonitoring')"
+            (change)="
+              updateTypeRecup(
+                pr.Id,
+                pr.typeDonneeEMonitoring,
+                'typeDonneeEMonitoring'
+              )
+            "
           >
             <option value="AnalogSummary">Analogique</option>
             <option value="ProcessValues">Boolean</option>

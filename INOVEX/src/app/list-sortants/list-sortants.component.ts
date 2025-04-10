@@ -522,7 +522,8 @@ export class ListSortantsComponent implements OnInit {
           csv.entrant.toLowerCase() == "sortant" ||
           csv.entrant.toLowerCase() == "sous produits" ||
           csv.entrant.toLowerCase() == "recyclables" ||
-          (csv.entrant.toLowerCase() == "transfert" && this.typeImportTonnage.toLowerCase().includes("adepro"))
+          (csv.entrant.toLowerCase() == "transfert" &&
+            this.typeImportTonnage.toLowerCase().includes("adepro"))
         ) {
           //Si il y a correspondance on fait traitement
           if (correspondance.productImport == csv.typeDechet) {
