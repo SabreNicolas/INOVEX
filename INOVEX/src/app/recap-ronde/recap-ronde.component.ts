@@ -527,7 +527,7 @@ export class RecapRondeComponent implements OnInit {
       if (result.isConfirmed) {
         this.cahierQuartService.historiquePriseQuart().subscribe(() => {
           this.router.navigate(["/cahierQuart/newEquipe"], {
-            queryParams: { idEquipe: this.idEquipe },
+            queryParams: { quart: this.quart, idEquipe: this.idEquipe },
           });
         });
       } else {
