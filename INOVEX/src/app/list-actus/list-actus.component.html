@@ -41,19 +41,22 @@
             </div>
           </div>-->
           <div class="row">
-              <mat-form-field>
-                  <mat-label>Envoyer un email :</mat-label>
-                  <mat-select 
-                    multiple 
-                    name="listEmail"
-                    ngModel
-                    [(ngModel)]="listEmail"
-                  >
-                    <mat-option *ngFor="let user of listUsers" value="{{ user.email }}">
-                      {{ user.Nom }} {{ user.Prenom }} - {{ user.email }}
-                    </mat-option>
-                  </mat-select>
-              </mat-form-field>
+            <mat-form-field>
+              <mat-label>Envoyer un email :</mat-label>
+              <mat-select
+                multiple
+                name="listEmail"
+                ngModel
+                [(ngModel)]="listEmail"
+              >
+                <mat-option
+                  *ngFor="let user of listUsers"
+                  value="{{ user.email }}"
+                >
+                  {{ user.Nom }} {{ user.Prenom }} - {{ user.email }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
           </div>
         </div>
 

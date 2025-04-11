@@ -26,6 +26,7 @@
         <th scope="col">Quart</th>
         <th scope="col">Termine ?</th>
         <th scope="col">Supprimer</th>
+        <th scope="col">Reprendre</th>
       </tr>
     </thead>
     <tbody *ngFor="let reprise of listReprise">
@@ -42,6 +43,15 @@
             class="btn btn-light"
           >
             <i class="fa fa-trash-o" aria-hidden="true"></i>
+          </button>
+        </td>
+        <td>
+          <button
+            (click)="repriseRonde(reprise.id)"
+            id="reprise"
+            class="btn btn-light"
+          >
+            <i class="fa fa-refresh" aria-hidden="true"></i>
           </button>
         </td>
       </tr>

@@ -20,8 +20,10 @@ export class AuthGuard {
         const userLoggedParse = JSON.parse(userLogged);
         //test pour admin
         if (this.location.path() === "/admin") {
-          if (userLoggedParse["isAdmin"] === true ||
-            userLoggedParse["isQSE"] === true) {
+          if (
+            userLoggedParse["isAdmin"] === true ||
+            userLoggedParse["isQSE"] === true
+          ) {
             return true;
           } else this.router.navigate(["/"]);
         }
@@ -49,6 +51,10 @@ export class AuthGuard {
         //test pour rapports
         else if (this.location.path() === "/rapports") {
           if (userLoggedParse["isRapport"] === true) {
+            return true;
+          } else this.router.navigate(["/"]);
+        } else if (this.location.path() === "/admin/choixDepassement") {
+          if (userLogged.hasOwnProperty("localisation")) {
             return true;
           } else this.router.navigate(["/"]);
         } else return true;

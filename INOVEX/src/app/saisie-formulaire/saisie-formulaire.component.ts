@@ -23,7 +23,7 @@ export class SaisieFormulaireComponent implements OnInit {
   public listDays: string[];
   public listProducts: any[];
   public isAdmin: number;
-  public isSuperAdmin : number;
+  public isSuperAdmin: number;
 
   constructor(
     private productsService: productsService,
@@ -65,9 +65,9 @@ export class SaisieFormulaireComponent implements OnInit {
       const userLoggedParse = JSON.parse(userLogged);
       this.isAdmin = userLoggedParse["isAdmin"];
 
-      if(userLoggedParse["localisation"] !== undefined) {
+      if (userLoggedParse["localisation"] !== undefined) {
         this.isSuperAdmin = 1;
-      };
+      }
     }
   }
 

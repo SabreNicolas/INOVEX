@@ -420,10 +420,7 @@
           <td class="fix"><strong>GTA 1</strong></td>
         </tr>
         <ng-container *ngFor="let arret of listArretsDepassements">
-          <tr
-            class="table-light"
-            *ngIf="arret.Name.includes('GTA 1')"
-          >
+          <tr class="table-light" *ngIf="arret.Name.includes('GTA 1')">
             <td class="fix">
               <a
                 routerLink="/saisie/arrets"
@@ -613,11 +610,7 @@
           </tr>
         </ng-container>
 
-        <tr
-          *ngIf="isArret"
-          class="table-light"
-          style="color: blue"
-        >
+        <tr *ngIf="isArret" class="table-light" style="color: blue">
           <td class="fix"><strong>DASRI</strong></td>
         </tr>
         <ng-container *ngFor="let arret of listArretsDepassements">

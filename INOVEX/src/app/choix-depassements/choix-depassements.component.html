@@ -1,0 +1,178 @@
+<div class="py-4 text-dark container-fluid">
+  <div class="row g-4">
+    <!-- Dépassements -->
+    <div class="col">
+      <h4 class="text-muted">Dépassements</h4>
+      <div class="input-group mb-3">
+        <input
+          [(ngModel)]="newDepassement"
+          class="form-control"
+          placeholder="Ajouter un dépassement"
+        />
+        <button (click)="addDepassement()" class="btn btn-primary">
+          <i class="fas fa-plus"></i>
+        </button>
+      </div>
+      <table
+        class="table table-bordered table-hover bg-white text-dark w-100 rounded"
+      >
+        <thead class="table-light">
+          <tr>
+            <th>Nom</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let depassement of choixDepassements">
+            <td>{{ depassement.nom }}</td>
+            <td>
+              <button
+                (click)="removeDepassement(depassement.id)"
+                class="btn btn-danger btn-sm"
+              >
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Produits -->
+    <div class="col">
+      <h4 class="text-muted">Produits</h4>
+      <div class="input-group mb-3">
+        <input
+          [(ngModel)]="newProduit"
+          class="form-control"
+          placeholder="Ajouter un produit"
+        />
+        <button (click)="addProduit()" class="btn btn-success">
+          <i class="fas fa-plus"></i>
+        </button>
+      </div>
+      <table
+        class="table table-bordered table-hover bg-white text-dark w-100 rounded"
+      >
+        <thead class="table-light">
+          <tr>
+            <th>Nom</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let produit of choixDepassementsProduits">
+            <td>{{ produit.nom }}</td>
+            <td>
+              <button
+                (click)="removeProduit(produit.id)"
+                class="btn btn-danger btn-sm"
+              >
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Association de produits avec un choix de dépassement -->
+    <div class="col">
+      <h4 class="text-muted">Associer Produit à un Choix de Dépassement</h4>
+      <div class="mb-3">
+        <label for="selectDepassement" class="form-label text-muted"
+          >Choisissez un choix de dépassement</label
+        >
+        <select
+          [(ngModel)]="selectedDepassement"
+          id="selectDepassement"
+          class="form-select"
+        >
+          <option [ngValue]="null">Sélectionner un dépassement</option>
+          <option
+            *ngFor="let depassement of choixDepassements"
+            [value]="depassement.id"
+          >
+            {{ depassement.nom }}
+          </option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="selectDepassementProduit" class="form-label text-muted"
+          >Choisissez un produit de dépassement</label
+        >
+        <select
+          [(ngModel)]="selectedDepassementProduit"
+          id="selectDepassementProduit"
+          class="form-select"
+        >
+          <option [ngValue]="null">Sélectionner un produit dépassement</option>
+          <option
+            *ngFor="let depassementProduit of choixDepassementsProduits"
+            [value]="depassementProduit.id"
+          >
+            {{ depassementProduit.nom }}
+          </option>
+        </select>
+      </div>
+      <div class="input-group mb-3">
+        <button (click)="addAssociation()" class="btn btn-success">
+          <i class="fas fa-plus"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Associations existantes -->
+    <div class="col">
+      <h4 class="text-muted">Associations existantes</h4>
+
+      <div class="mb-3">
+        <label for="filtreDepassement" class="form-label text-muted"
+          >Filtrer par dépassement</label
+        >
+        <select
+          [(ngModel)]="selectedDepassementFiltre"
+          id="filtreDepassement"
+          class="form-select"
+        >
+          <option [ngValue]="null">Tous les dépassements</option>
+          <option
+            *ngFor="let depassement of choixDepassements"
+            [ngValue]="depassement.id"
+          >
+            {{ depassement.nom }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Tableau filtré -->
+      <table
+        class="table table-bordered table-hover bg-white text-dark w-100 rounded"
+      >
+        <thead class="table-light">
+          <tr>
+            <th>Nom Dépassement</th>
+            <th>Nom Produit</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let association of getFilteredAssociations()">
+            <td>{{ getDepassementName(association.idChoixDepassements) }}</td>
+            <td>
+              {{ getProduitName(association.idChoixDepassementsProduits) }}
+            </td>
+            <td>
+              <button
+                (click)="removeAssociation(association.id)"
+                class="btn btn-danger btn-sm"
+              >
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -180,21 +180,11 @@
           aria-haspopup="true"
           aria-expanded="false"
         >
-          Dépassements 1/2H
+          Dépassements
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a
-            class="dropdown-item"
-            routerLink="arrets"
-            [queryParams]="{ isArret: 'false' }"
-            >Saisie</a
-          >
-          <a
-            class="dropdown-item"
-            routerLink="listArrets"
-            [queryParams]="{ isArret: 'false' }"
-            >Historique</a
-          >
+          <a class="dropdown-item" routerLink="depassements">Saisie</a>
+          <a class="dropdown-item" routerLink="listDepassements">Historique</a>
         </div>
       </li>
 

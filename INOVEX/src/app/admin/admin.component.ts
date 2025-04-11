@@ -210,7 +210,11 @@ export class AdminComponent implements OnInit {
       });
   }
 
-  updateTypeRecup(id: number, typeRecupEMonitoring: string, colonneBDD : string) {
+  updateTypeRecup(
+    id: number,
+    typeRecupEMonitoring: string,
+    colonneBDD: string,
+  ) {
     this.productsService
       .updateTypeRecup(id, typeRecupEMonitoring, colonneBDD)
       .subscribe((response) => {

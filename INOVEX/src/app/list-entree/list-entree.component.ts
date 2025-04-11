@@ -1011,9 +1011,9 @@ export class ListEntreeComponent implements OnInit {
     //on parcours la hashmap pour insertion en BDD
     this.stockageImport.forEach(async (value: number, key: string) => {
       //On ne retire plus le - donc on stocke la valeur absolu si ce n'est pas Douchy
-      if(this.idUsine !== 10) value = Math.abs(value);
+      if (this.idUsine !== 10) value = Math.abs(value);
       //Si c'est Douchy on stocke avec un coeeficient de -1 pour remettre le bon signe
-      else value = value*-1;
+      else value = value * -1;
       await this.moralEntitiesService
         .createMeasure(
           key.split("_")[0],
