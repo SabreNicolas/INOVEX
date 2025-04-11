@@ -42,7 +42,7 @@ export class RecapRondePrecedenteComponent implements OnInit {
   public nomEquipe: string;
   public listRondier: any[];
   @ViewChild("pdfTable") pdfContent!: ElementRef;
-  public paprecB64 : any;
+  public paprecB64: any;
   public listZoneRemonter: any[];
   public listElements: Map<string, string>;
 
@@ -52,7 +52,7 @@ export class RecapRondePrecedenteComponent implements OnInit {
     private route: ActivatedRoute,
     private rondierService: rondierService,
     private router: Router,
-    private http: HttpClient
+    private http: HttpClient,
   ) {
     this.listAction = [];
     this.listConsigne = [];
@@ -130,23 +130,35 @@ export class RecapRondePrecedenteComponent implements OnInit {
       .getZonesPDF(this.dateDebString)
       .subscribe((response) => {
         this.listZoneRemonter = response.data;
-        let dateFR = this.dateDebString.substring(8,10)+'/'+this.dateDebString.substring(5,7)+'/'+this.dateDebString.substring(0,4);
+        let dateFR =
+          this.dateDebString.substring(8, 10) +
+          "/" +
+          this.dateDebString.substring(5, 7) +
+          "/" +
+          this.dateDebString.substring(0, 4);
         //On va maintenant récupérer les elements de controle des zones ainsi que leur valeur sur la date et le quart
-        this.listZoneRemonter.forEach(zone =>{
+        this.listZoneRemonter.forEach((zone) => {
           this.cahierQuartService
-          .getElementsPDF(zone.Id, dateFr, this.quartPrecedent)
-          .subscribe((response) => {
-            response.data.forEach((elem: { nomZone: string; nom: string; value: string; }) =>{
-              this.listElements.set(elem.nomZone+"__"+elem.nom, elem.value);
+            .getElementsPDF(zone.Id, dateFr, this.quartPrecedent)
+            .subscribe((response) => {
+              response.data.forEach(
+                (elem: { nomZone: string; nom: string; value: string }) => {
+                  this.listElements.set(
+                    elem.nomZone + "__" + elem.nom,
+                    elem.value,
+                  );
+                },
+              );
             });
-          });
         });
-    });
+      });
 
     // Récupération des zones pour la ronde précédente
-    this.cahierQuartService.getZonesCalendrierRonde(this.dateDebString, this.dateFinString).subscribe((response: any) => {
-      this.listZone = response?.BadgeAndElementsOfZone ?? [];
-    });
+    this.cahierQuartService
+      .getZonesCalendrierRonde(this.dateDebString, this.dateFinString)
+      .subscribe((response: any) => {
+        this.listZone = response?.BadgeAndElementsOfZone ?? [];
+      });
 
     //On récupére la liste des consignes de la ronde précédente
     this.rondierService.listConsignes().subscribe((response) => {
@@ -176,9 +188,9 @@ export class RecapRondePrecedenteComponent implements OnInit {
                     Prenom: response.data[i]["prenomRondier"],
                     Nom: response.data[i]["nomRondier"],
                     Poste: response.data[i]["poste"],
-                    heure_fin: response.data[i]['heure_fin'],
-                    heure_deb: response.data[i]['heure_deb'],
-                    heure_tp: response.data[i]['heure_tp']
+                    heure_fin: response.data[i]["heure_fin"],
+                    heure_deb: response.data[i]["heure_deb"],
+                    heure_tp: response.data[i]["heure_tp"],
                   });
                   if (response.data[i]["poste"] == "Chef de Quart") {
                     this.userPrecedent =
@@ -218,14 +230,15 @@ export class RecapRondePrecedenteComponent implements OnInit {
 
     //transformation logo paprec en base64
     //TODO POUR LES SIGNATURES AUSSI
-    this.http.get('assets/paprec.png', { responseType: 'blob' })
-      .subscribe(res => {
+    this.http
+      .get("assets/paprec.png", { responseType: "blob" })
+      .subscribe((res) => {
         const reader = new FileReader();
         reader.onloadend = () => {
           this.paprecB64 = reader.result;
-        }
+        };
         reader.readAsDataURL(res);
-    });
+      });
   }
 
   downloadFile(consigne: string) {
@@ -281,102 +294,175 @@ export class RecapRondePrecedenteComponent implements OnInit {
     return { width, height };
   }
 
-  
   //**************** */
   async createPDF() {
     //this.listElements = new Map();
-    let quart = '';
+    let quart = "";
     if (this.quartPrecedent === 1) {
-      quart = 'Matin';
+      quart = "Matin";
     } else if (this.quartPrecedent === 2) {
-      quart = 'Apres-midi';
+      quart = "Apres-midi";
     } else {
-      quart = 'Nuit';
+      quart = "Nuit";
     }
-  
+
     // Formatage direct de la date et de l'heure
     const date = new Date(this.dateDebString);
-    const formattedDate = `${date.getDate().toString().padStart(2, '0')}-${(date.getMonth() + 1)
-      .toString().padStart(2, '0')}-${date.getFullYear()} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
-  
+    const formattedDate = `${date.getDate().toString().padStart(2, "0")}-${(
+      date.getMonth() + 1
+    )
+      .toString()
+      .padStart(
+        2,
+        "0",
+      )}-${date.getFullYear()} ${date.getHours().toString().padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")}`;
+
     //tableau de l'équipe
     const tableHeader = [
       [
-        { text: 'Poste', style: 'tableHeader', alignment: 'center' },
-        { text: 'Nom / Prénom', style: 'tableHeader', alignment: 'center' },
-        { text: 'Heure Début', style: 'tableHeader', alignment: 'center' },
-        { text: 'Heure Fin', style: 'tableHeader', alignment: 'center' },
-        { text: 'Travaux pénible', style: 'tableHeader', alignment: 'center' }
-      ]
+        { text: "Poste", style: "tableHeader", alignment: "center" },
+        { text: "Nom / Prénom", style: "tableHeader", alignment: "center" },
+        { text: "Heure Début", style: "tableHeader", alignment: "center" },
+        { text: "Heure Fin", style: "tableHeader", alignment: "center" },
+        { text: "Travaux pénible", style: "tableHeader", alignment: "center" },
+      ],
     ];
-  
+
     for (let rondier of this.listRondier) {
       tableHeader.push([
-        { text: rondier.Poste || '', style: 'tableCell', alignment: 'center' },
-        { text: `${rondier.Nom || ''} ${rondier.Prenom || ''}`, style: 'tableCell', alignment: 'center' },
-        { text: rondier.heure_deb || '', style: 'tableCell', alignment: 'center' },
-        { text: rondier.heure_fin || '', style: 'tableCell', alignment: 'center' },
-        { text: rondier.heure_tp || '', style: 'tableCell', alignment: 'center' }
+        { text: rondier.Poste || "", style: "tableCell", alignment: "center" },
+        {
+          text: `${rondier.Nom || ""} ${rondier.Prenom || ""}`,
+          style: "tableCell",
+          alignment: "center",
+        },
+        {
+          text: rondier.heure_deb || "",
+          style: "tableCell",
+          alignment: "center",
+        },
+        {
+          text: rondier.heure_fin || "",
+          style: "tableCell",
+          alignment: "center",
+        },
+        {
+          text: rondier.heure_tp || "",
+          style: "tableCell",
+          alignment: "center",
+        },
       ]);
     }
 
     //tableau des zones à faire remonter
     const tableZones: any[] = [];
-  
-    if(this.listZoneRemonter.length > 0){
-      this.listZoneRemonter.forEach(zone =>{
+
+    if (this.listZoneRemonter.length > 0) {
+      this.listZoneRemonter.forEach((zone) => {
         tableZones.push([
-          { text: zone.nom , style: 'tableHeader', alignment: 'left', color:'#5495d8', fontSize:'15' },
-          { text: '', style: 'tableHeader', alignment: 'left', color:'#5495d8', fontSize:'15' },
+          {
+            text: zone.nom,
+            style: "tableHeader",
+            alignment: "left",
+            color: "#5495d8",
+            fontSize: "15",
+          },
+          {
+            text: "",
+            style: "tableHeader",
+            alignment: "left",
+            color: "#5495d8",
+            fontSize: "15",
+          },
         ]);
         this.listElements.forEach((value: string, key: string) => {
           //si l'element se trouve dans la zone
-          if(zone.nom === key.split("__")[0]){
+          if (zone.nom === key.split("__")[0]) {
             tableZones.push([
-              { text: key.split("__")[1] , style: 'tableCell', alignment: 'center' },
-              { text: value, style: 'tableCell', alignment: 'center', color:'#1b253' },
+              {
+                text: key.split("__")[1],
+                style: "tableCell",
+                alignment: "center",
+              },
+              {
+                text: value,
+                style: "tableCell",
+                alignment: "center",
+                color: "#1b253",
+              },
             ]);
           }
         });
       });
-    }
-    else{
+    } else {
       tableZones.push([
-        { text: 'Pour faire remonter une zone, veuiller ajouter " - PDF" à la fin du nom de zone ' , style: 'tableCell', alignment: 'left', color:'#5495d8', fontSize:'10' },
-        { text: '', style: 'tableCell', alignment: 'left', color:'#5495d8', fontSize:'10' },
+        {
+          text: 'Pour faire remonter une zone, veuiller ajouter " - PDF" à la fin du nom de zone ',
+          style: "tableCell",
+          alignment: "left",
+          color: "#5495d8",
+          fontSize: "10",
+        },
+        {
+          text: "",
+          style: "tableCell",
+          alignment: "left",
+          color: "#5495d8",
+          fontSize: "10",
+        },
       ]);
     }
-  
+
     const tableAnomalies: any[] = [
       [
-        { text: 'Zone', style: 'tableHeader', alignment: 'center' },
-        { text: 'Commentaire', style: 'tableHeader', alignment: 'center' }
-      ]
+        { text: "Zone", style: "tableHeader", alignment: "center" },
+        { text: "Commentaire", style: "tableHeader", alignment: "center" },
+      ],
     ];
-  
+
     for (const anomalie of this.listAnomalies) {
-      const zone = this.listZone.find(z => z.zoneId === anomalie.zoneId);
-      const zoneName = zone ? zone.zone : 'Zone inconnue';
+      const zone = this.listZone.find((z) => z.zoneId === anomalie.zoneId);
+      const zoneName = zone ? zone.zone : "Zone inconnue";
       tableAnomalies.push([
-        { text: zoneName, fontSize: 10, style: "tableCell", alignment: 'center' },
-        { text: anomalie.commentaire, fontSize: 10, style: "tableCell", alignment: 'center' }
+        {
+          text: zoneName,
+          fontSize: 10,
+          style: "tableCell",
+          alignment: "center",
+        },
+        {
+          text: anomalie.commentaire,
+          fontSize: 10,
+          style: "tableCell",
+          alignment: "center",
+        },
       ]);
     }
-  
+
     // Filtrer les zones contrôlées (en vert)
-    const controlledZones = this.listZone.filter(zone => zone.termine);
-  
+    const controlledZones = this.listZone.filter((zone) => zone.termine);
+
     // Récupérer les éléments des zones contrôlées
     const elementsOfControlledZones: any[] = [];
     for (const zone of controlledZones) {
       for (const element of zone.elements) {
         elementsOfControlledZones.push([
-          { text: element.nom, fontSize: 8, style: 'tableCell', alignment: 'left' },
-          { text: element.value, fontSize: 8, style: 'tableCell', alignment: 'left' }
+          {
+            text: element.nom,
+            fontSize: 8,
+            style: "tableCell",
+            alignment: "left",
+          },
+          {
+            text: element.value,
+            fontSize: 8,
+            style: "tableCell",
+            alignment: "left",
+          },
         ]);
       }
     }
-  
+
     const pdfContent: any = {
       content: [
         {
@@ -386,133 +472,147 @@ export class RecapRondePrecedenteComponent implements OnInit {
               width: 120,
             },
             {
-              text: `Registre de quart :\n${this.localisation || ''}`,
+              text: `Registre de quart :\n${this.localisation || ""}`,
               bold: true,
               fontSize: 18,
             },
             {
               text: `Date: ${formattedDate}\nQuart: ${quart}`,
-            }
-          ]
+            },
+          ],
         },
-        { text: '\n' },
+        { text: "\n" },
         {
-          width: 'auto',
+          width: "auto",
           table: {
-          headerRows: 1,
-          body: tableHeader
+            headerRows: 1,
+            body: tableHeader,
           },
-          layout: 'lightHorizontalLines'
+          layout: "lightHorizontalLines",
         },
-        { text: '\n' },
+        { text: "\n" },
         {
-          width: 'auto',
+          width: "auto",
           table: {
-            widths: ['*', '*'],
-            body: tableZones
+            widths: ["*", "*"],
+            body: tableZones,
           },
-          layout: 'lightHorizontalLines'
+          layout: "lightHorizontalLines",
         },
-        { text: '\n' },
+        { text: "\n" },
         {
-          text: 'Consignes :',
-          style: 'subheader',
-          color:'#5495d8', 
-          fontSize:'15',
-          alignment: 'center',
+          text: "Consignes :",
+          style: "subheader",
+          color: "#5495d8",
+          fontSize: "15",
+          alignment: "center",
           margin: [0, 10, 0, 5],
-          width: '100%'
+          width: "100%",
         },
         {
-          ul: this.listConsigne.map((consigne: any) => `${consigne.titre} - ${consigne.commentaire || 'Pas de description'}`) || "Pas de consignes..."
+          ul:
+            this.listConsigne.map(
+              (consigne: any) =>
+                `${consigne.titre} - ${consigne.commentaire || "Pas de description"}`,
+            ) || "Pas de consignes...",
         },
-        { text: '\n' },
-        
+        { text: "\n" },
+
         {
-          text: 'Actions :',
-          style: 'subheader',
-          alignment: 'center',
-          color:'#5495d8', 
-          fontSize:'15',
+          text: "Actions :",
+          style: "subheader",
+          alignment: "center",
+          color: "#5495d8",
+          fontSize: "15",
           margin: [0, 10, 0, 5],
-          width: '100%'
+          width: "100%",
         },
         {
-          ul: this.listAction?.map((action: any) => ({
-            text: `${action.nom}`,
-            color: action.termine ? 'green' : 'red'
-          })) || "Pas d'actions..."
+          ul:
+            this.listAction?.map((action: any) => ({
+              text: `${action.nom}`,
+              color: action.termine ? "green" : "red",
+            })) || "Pas d'actions...",
         },
-        { text: '\n' },
+        { text: "\n" },
         {
-          text: 'Evenements :',
-          style: 'subheader',
-          alignment: 'center',
-          color:'#5495d8', 
-          fontSize:'15',
+          text: "Evenements :",
+          style: "subheader",
+          alignment: "center",
+          color: "#5495d8",
+          fontSize: "15",
           margin: [0, 10, 0, 5],
-          width: '100%'
+          width: "100%",
         },
         {
-          ul: this.listEvenement?.map((evenement: any) => {
-            const demandeTravauxText = evenement.demande_travaux == 0 ? 'Aucune demande' : evenement.demande_travaux;
-            return `${evenement.titre} - ${evenement.description || 'Pas de description'} (${evenement.date_heure_debut} - Cause: ${evenement.cause || 'Non spécifiée'} - Demande de Travaux: ${demandeTravauxText}`;
-          }) || "Pas d'evenements...."
+          ul:
+            this.listEvenement?.map((evenement: any) => {
+              const demandeTravauxText =
+                evenement.demande_travaux == 0
+                  ? "Aucune demande"
+                  : evenement.demande_travaux;
+              return `${evenement.titre} - ${evenement.description || "Pas de description"} (${evenement.date_heure_debut} - Cause: ${evenement.cause || "Non spécifiée"} - Demande de Travaux: ${demandeTravauxText}`;
+            }) || "Pas d'evenements....",
         },
-        { text: '\n' },
+        { text: "\n" },
         {
-          text: 'Zones contrôlées :',
-          style: 'subheader',
-          alignment: 'center',
-          color:'#5495d8', 
-          fontSize:'15',
+          text: "Zones contrôlées :",
+          style: "subheader",
+          alignment: "center",
+          color: "#5495d8",
+          fontSize: "15",
           margin: [0, 10, 0, 5],
-          width: '100%'
+          width: "100%",
         },
         {
-          ul: this.listZone?.map((zone: any) => ({
-            text: `${zone.zone} - Contrôlée par : ${zone.prenomRondier} ${zone.nomRondier} (${zone.termine ? 'Terminé' : 'Non terminé'})`,
-            color: zone.termine ? 'green' : 'red'
-          })) || 'Pas de zones...'
+          ul:
+            this.listZone?.map((zone: any) => ({
+              text: `${zone.zone} - Contrôlée par : ${zone.prenomRondier} ${zone.nomRondier} (${zone.termine ? "Terminé" : "Non terminé"})`,
+              color: zone.termine ? "green" : "red",
+            })) || "Pas de zones...",
         },
-        { text: '\n' },
+        { text: "\n" },
         {
-          text: 'Actualités :',
-          style: 'subheader',
-          alignment: 'center',
-          color:'#5495d8', 
-          fontSize:'15',
+          text: "Actualités :",
+          style: "subheader",
+          alignment: "center",
+          color: "#5495d8",
+          fontSize: "15",
           margin: [0, 10, 0, 5],
-          width: '100%'
+          width: "100%",
         },
         {
-          ul: this.listActu?.map((actu: any) => `${actu.titre} - ${actu.description || 'Pas de description'} (${actu.date_heure_debut} - ${actu.date_heure_fin})\n------\n`) || "Pas d'actualités..."
+          ul:
+            this.listActu?.map(
+              (actu: any) =>
+                `${actu.titre} - ${actu.description || "Pas de description"} (${actu.date_heure_debut} - ${actu.date_heure_fin})\n------\n`,
+            ) || "Pas d'actualités...",
         },
-        { text: '\n' },
+        { text: "\n" },
         {
-          text: 'Anomalies :',
-          style: 'subheader',
-          alignment: 'center',
-          color:'#5495d8', 
-          fontSize:'15',
+          text: "Anomalies :",
+          style: "subheader",
+          alignment: "center",
+          color: "#5495d8",
+          fontSize: "15",
           margin: [0, 5, 0, 2],
-          width: '100%'
+          width: "100%",
         },
         {
           ul: tableAnomalies.slice(1).map((anomalie: any) => ({
             text: `${anomalie[0].text} - ${anomalie[1].text}`,
-            style: 'tableCell'
-          }))
+            style: "tableCell",
+          })),
         },
-        { text: '\n' },
+        { text: "\n" },
         {
           columns: [
             {
-              width: '50%',
+              width: "50%",
               stack: [
                 {
-                  text: 'CDQ SORTANT : '+this.userPrecedent,
-                  style: 'signature'
+                  text: "CDQ SORTANT : " + this.userPrecedent,
+                  style: "signature",
                 },
                 {
                   image:
@@ -520,15 +620,15 @@ export class RecapRondePrecedenteComponent implements OnInit {
                   width: 125,
                   height: 100,
                 },
-              ]
+              ],
             },
             {
-              width: '50%',
+              width: "50%",
               stack: [
                 {
-                  text: 'CDQ ENTRANT : '+this.user,
-                  style: 'signature',
-                  alignment: 'right'
+                  text: "CDQ ENTRANT : " + this.user,
+                  style: "signature",
+                  alignment: "right",
                 },
                 {
                   image:
@@ -536,12 +636,12 @@ export class RecapRondePrecedenteComponent implements OnInit {
                   width: 125,
                   height: 100,
                 },
-              ]
-            }
+              ],
+            },
           ],
-          margin: [0, 50, 0, 0]
-        }
-      ]
+          margin: [0, 50, 0, 0],
+        },
+      ],
     };
 
     const pdfCreate = pdfMake.createPdf(pdfContent);
@@ -581,7 +681,7 @@ export class RecapRondePrecedenteComponent implements OnInit {
     });
   }
   //**************** */
-  
+
   async createPDF_old() {
     let quart = "";
     if (this.quartPrecedent == 1) {

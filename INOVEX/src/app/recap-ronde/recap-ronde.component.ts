@@ -68,7 +68,7 @@ export class RecapRondeComponent implements OnInit {
   public userPrecedent: string;
   public listActu: Actualite[];
   public hideEquipe: boolean;
-  public idAnomalie : number;
+  public idAnomalie: number;
 
   constructor(
     public altairService: AltairService,
@@ -231,7 +231,10 @@ export class RecapRondeComponent implements OnInit {
 
     //Récupération des anomalies pour la ronde en cours
     this.rondierService
-      .getAnomaliesOfOneDay(this.dateDebStringToShow.substring(0,10), this.quart)
+      .getAnomaliesOfOneDay(
+        this.dateDebStringToShow.substring(0, 10),
+        this.quart,
+      )
       .subscribe((response) => {
         //@ts-expect-error data
         this.listAnomalie = response.data;
@@ -372,7 +375,7 @@ export class RecapRondeComponent implements OnInit {
     const now = format(new Date(), "HH:mm");
     Swal.fire({
       title: "Veuillez saisir l'heure de réalisation",
-      input: 'time',
+      input: "time",
       inputValue: now,
       showCancelButton: true,
       confirmButtonText: "Valider",
@@ -383,27 +386,27 @@ export class RecapRondeComponent implements OnInit {
     }).then((result) => {
       if (result.value != undefined) {
         this.cahierQuartService
-        .newAction(
-          result.value + " " + this.nomAction,
-          this.dateDebString,
-          this.dateFinString,
-        )
-        .subscribe((response) => {
-          this.cahierQuartService
-            .newCalendrierAction(
-              response.data[0].id,
-              response.data[0].date_heure_debut,
-              this.quart,
-              response.data[0].date_heure_fin,
-              1,
-              null,
-            )
-            .subscribe(() => {
-              //réinitialiser le champ de saisie
-              this.nomAction = "";
-              this.ngOnInit();
-            });
-        });
+          .newAction(
+            result.value + " " + this.nomAction,
+            this.dateDebString,
+            this.dateFinString,
+          )
+          .subscribe((response) => {
+            this.cahierQuartService
+              .newCalendrierAction(
+                response.data[0].id,
+                response.data[0].date_heure_debut,
+                this.quart,
+                response.data[0].date_heure_fin,
+                1,
+                null,
+              )
+              .subscribe(() => {
+                //réinitialiser le champ de saisie
+                this.nomAction = "";
+                this.ngOnInit();
+              });
+          });
       }
     });
   }
@@ -702,10 +705,10 @@ export class RecapRondeComponent implements OnInit {
                       this.cahierQuartService
                         .historiqueEvenementCreate(this.idEvenement)
                         .subscribe(() => {
-                          if(this.idAnomalie > 0){
+                          if (this.idAnomalie > 0) {
                             this.rondierService
-                            .updateAnomalieSetEvenement(this.idAnomalie)
-                            .subscribe((response) => {});
+                              .updateAnomalieSetEvenement(this.idAnomalie)
+                              .subscribe((response) => {});
                           }
                           this.ngOnInit();
                           this.dialog.closeAll();
@@ -736,10 +739,10 @@ export class RecapRondeComponent implements OnInit {
                   this.cahierQuartService
                     .historiqueEvenementCreate(this.idEvenement)
                     .subscribe(() => {
-                      if(this.idAnomalie > 0){
+                      if (this.idAnomalie > 0) {
                         this.rondierService
-                        .updateAnomalieSetEvenement(this.idAnomalie)
-                        .subscribe((response) => {});
+                          .updateAnomalieSetEvenement(this.idAnomalie)
+                          .subscribe((response) => {});
                       }
                       this.ngOnInit();
                       this.dialog.closeAll();
@@ -797,7 +800,7 @@ export class RecapRondeComponent implements OnInit {
       autoFocus: true,
     });
     this.getNow();
-    if(id != undefined){
+    if (id != undefined) {
       this.idAnomalie = id;
       this.rondierService.getOneAnomalie(id).subscribe((response) => {
         // console.log(response);
@@ -805,7 +808,7 @@ export class RecapRondeComponent implements OnInit {
         this.description = response.data[0]["commentaire"];
         //@ts-expect-error data
         this.imgSrc = response.data[0]["photo"];
-  
+
         const input = document.getElementById("fichier") as HTMLInputElement;
         // console.log(this.imgSrc);
         if (
@@ -1027,7 +1030,7 @@ export class RecapRondeComponent implements OnInit {
     });
   }
 
-  getNow(){
+  getNow() {
     //mise par défaut la date de début à l'instant T
     const date = new Date();
     const yyyy = date.getFullYear();
