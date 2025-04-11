@@ -1,0 +1,128 @@
+<div id="page">
+  <div class="row">
+    <h5><label for="choixDepassements">Période :</label></h5>
+    <div class="col-sm-3">
+      <div class="form-group">
+        <input
+          type="date"
+          id="date_heure_debut"
+          name="date_heure_debut"
+          ngModel
+          class="form-control"
+          ngModel
+          [(ngModel)]="dateDeb"
+        />
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="form-group">
+        <input
+          type="date"
+          id="dateFin"
+          name="dateFin"
+          ngModel
+          class="form-control"
+          ngModel
+          [(ngModel)]="dateFin"
+        />
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="form-group">
+        <button class="btn btnUnique" type="submit" (click)="getDepassements()">
+          <img src="assets/refresh.png" alt="Refresh" />
+        </button>
+        <button
+          style="margin-left: 0.5em"
+          class="btn btnUnique"
+          (click)="setPeriode('currentMonth')"
+        >
+          Mois en cours
+        </button>
+        <button
+          style="margin-left: 0.5em"
+          class="btn btnUnique"
+          (click)="setPeriode('lastMonth')"
+        >
+          Mois précédent
+        </button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="form-group">
+          <div class="table-style">
+            <table class="table table-primary">
+              <thead>
+                <tr>
+                  <th scope="col">Dépassements</th>
+                  <th scope="col">Détails</th>
+                  <th scope="col">Date de début</th>
+                  <th scope="col">Date de fin</th>
+                  <th scope="col">Durée</th>
+                  <th scope="col">Causes</th>
+                  <th scope="col">Concentration</th>
+                  <th scope="col">Modifier</th>
+                  <th scope="col">Supprimer</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container
+                  *ngFor="let depassement of listeDepassements; let i = index"
+                >
+                  <!-- Séparateur de groupe par ligne -->
+                  <tr
+                    *ngIf="
+                      depassement.ligne !== listeDepassements[i - 1]?.ligne
+                    "
+                  >
+                    <td colspan="9" class="bg-light fw-bold text-dark">
+                      {{ depassement.ligne }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>{{ depassement.choixDepassements }}</td>
+                    <td>{{ depassement.choixDepassementsProduits }}</td>
+                    <td>
+                      {{
+                        depassement.date_heure_debut | date: "dd/MM/yyyy HH:mm"
+                      }}
+                    </td>
+                    <td>
+                      {{
+                        depassement.date_heure_fin | date: "dd/MM/yyyy HH:mm"
+                      }}
+                    </td>
+                    <td>{{ calculerDuree(depassement) }}</td>
+                    <td>{{ depassement.causes }}</td>
+                    <td>{{ depassement.concentration }}</td>
+                    <td>
+                      <button
+                        class="btn btn-light"
+                        (click)="openModal(depassement)"
+                      >
+                        <i class="fas fa-edit"></i>
+                      </button>
+                    </td>
+                    <td>
+                      <button
+                        class="btn btn-light"
+                        (click)="deleteDepassement(depassement.id)"
+                      >
+                        <i
+                          style="color: red"
+                          class="fa fa-trash-o"
+                          aria-hidden="true"
+                        ></i>
+                      </button>
+                    </td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

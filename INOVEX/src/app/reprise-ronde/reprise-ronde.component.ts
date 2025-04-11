@@ -2,10 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { ActivatedRoute } from "@angular/router";
 import { rondierService } from "../services/rondier.service";
-import { CommonModule } from "@angular/common";
 import { format } from "date-fns";
 import { PopupService } from "../services/popup.service";
-import { FormsModule } from "@angular/forms";
 import {
   RepriseRonde,
   NameValuePair,
@@ -15,11 +13,9 @@ import {
 } from "src/models/repriseRonde.model";
 
 @Component({
-  standalone: true,
   selector: "app-reprise-ronde",
   templateUrl: "./reprise-ronde.component.html",
   styleUrl: "./reprise-ronde.component.scss",
-  imports: [CommonModule, FormsModule],
 })
 export class RepriseRondeComponent implements OnInit {
   public id: number;

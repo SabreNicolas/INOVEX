@@ -84,51 +84,43 @@
         routerLinkActive="active"
       >
         <a
-          routerLink="./import"
-          class="nav-link"
-          id="correspondanceApporteur"
+          class="nav-link dropdown-toggle"
+          id="navbarDropdownForm"
           role="button"
           data-toggle="dropdown"
           aria-haspopup="true"
           aria-expanded="false"
         >
-          Correspondance apporteurs
+          Correspondances
         </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" routerLink="./import"
+            >Correspondance apporteurs</a
+          >
+          <a class="dropdown-item" routerLink="./correspondanceSortants">
+            Correspondance sortants</a
+          >
+          <a class="dropdown-item" routerLink="./CorrespondanceReactifs">
+            Correspondance réactifs</a
+          >
+        </div>
       </li>
 
       <li
-        *ngIf="isAdmin || isSuperAdmin"
+        *ngIf="isSuperAdmin"
         class="nav-item dropdown"
         routerLinkActive="active"
       >
         <a
-          routerLink="./correspondanceSortants"
+          routerLink="./choixDepassement"
           class="nav-link"
-          id="correspondanceSortants"
+          id="choixDepassement"
           role="button"
           data-toggle="dropdown"
           aria-haspopup="true"
           aria-expanded="false"
         >
-          Correspondance sortants
-        </a>
-      </li>
-
-      <li
-        *ngIf="isAdmin || isSuperAdmin"
-        class="nav-item dropdown"
-        routerLinkActive="active"
-      >
-        <a
-          routerLink="./CorrespondanceReactifs"
-          class="nav-link"
-          id="correspondanceReactifs"
-          role="button"
-          data-toggle="dropdown"
-          aria-haspopup="true"
-          aria-expanded="false"
-        >
-          Correspondance réactifs et livraisons
+          Choix des Dépassements
         </a>
       </li>
 

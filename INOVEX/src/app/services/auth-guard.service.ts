@@ -53,6 +53,10 @@ export class AuthGuard {
           if (userLoggedParse["isRapport"] === true) {
             return true;
           } else this.router.navigate(["/"]);
+        } else if (this.location.path() === "/admin/choixDepassement") {
+          if (userLogged.hasOwnProperty("localisation")) {
+            return true;
+          } else this.router.navigate(["/"]);
         } else return true;
       }
     }

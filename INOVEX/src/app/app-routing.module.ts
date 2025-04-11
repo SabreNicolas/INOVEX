@@ -74,6 +74,9 @@ import { RecapRondePrecedenteComponent } from "./recap-ronde-precedente/recap-ro
 import { RecapRondeListeComponent } from "./recap-ronde-liste/recap-ronde-liste.component";
 import { ListActionsEnregistreesComponent } from "./list-actions-enregistrees/list-actions-enregistrees.component";
 import { RepriseRondeComponent } from "./reprise-ronde/reprise-ronde.component";
+import { DepassementsComponent } from "./depassements/depassements.component";
+import { ListDepassementsComponent } from "./list-depassements/list-depassements.component";
+import { ChoixDepassementsComponent } from "./choix-depassements/choix-depassements.component";
 
 const routes: Routes = [
   {
@@ -119,6 +122,16 @@ const routes: Routes = [
         component: ListConsoComponent,
       },
       { path: "arrets", canActivate: [AuthGuard], component: ArretsComponent },
+      {
+        path: "depassements",
+        canActivate: [AuthGuard],
+        component: DepassementsComponent,
+      },
+      {
+        path: "listDepassements",
+        canActivate: [AuthGuard],
+        component: ListDepassementsComponent,
+      },
       {
         path: "listArrets",
         canActivate: [AuthGuard],
@@ -476,6 +489,11 @@ const routes: Routes = [
         path: "saisieForm",
         canActivate: [AuthGuard],
         component: SaisieFormulaireComponent,
+      },
+      {
+        path: "choixDepassement",
+        canActivate: [AuthGuard],
+        component: ChoixDepassementsComponent,
       },
     ],
   },
