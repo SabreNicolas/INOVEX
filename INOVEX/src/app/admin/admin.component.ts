@@ -243,7 +243,7 @@ export class AdminComponent implements OnInit {
       <select 
       id="selectElement" 
       class="swal2-select element-select" 
-      size="20"
+      size="15"
       >
       <option value="0_rondier">Aucun</option>
       ${this.listElements.map(element => 
@@ -253,7 +253,7 @@ export class AdminComponent implements OnInit {
       </select>
       </div>
       `,
-      width: '100em',
+      width: '60%',
       
       didOpen: () => {
       const styleElement = document.createElement('style');
