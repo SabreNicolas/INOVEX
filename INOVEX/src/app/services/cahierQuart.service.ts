@@ -63,6 +63,7 @@ export class cahierQuartService {
 
   //Récupérer les rondiers sans équipe
   getOneUser() {
+    this.idUser = this.idUsineService.getIdUser();
     const requete = "https://" + this.ip + "/getOneUser/" + this.idUser;
 
     const requestOptions = {
@@ -838,6 +839,39 @@ export class cahierQuartService {
     return this.http.get<any>(requete, requestOptions);
   }
 
+  //Récupérer les zones devant remonter sur le PDF (contenant PDF dans le nom)
+  getZonesPDF(date : string) {
+    const requete =
+      "https://" +
+      this.ip +
+      "/recupZonesPDF?idUsine=" +
+      this.idUsine +
+      "&date="+date;
+
+    const requestOptions = {
+      headers: new HttpHeaders(this.headerDict),
+    };
+
+    return this.http.get<any>(requete, requestOptions);
+  }
+
+  //Récupérer les zones devant remonter sur le PDF (contenant PDF dans le nom)
+  getElementsPDF(idZone : number, date : string, quart : number) {
+    const requete =
+      "https://" +
+      this.ip +
+      "/recupElementsPDF?idZone=" +
+      idZone +
+      "&date="+date+
+      "&quart="+quart;
+
+    const requestOptions = {
+      headers: new HttpHeaders(this.headerDict),
+    };
+
+    return this.http.get<any>(requete, requestOptions);
+  }
+
   //Récupérer une équipe sur une ronde
   getEquipeRonde(quart: number) {
     const requete =
@@ -1572,6 +1606,18 @@ export class cahierQuartService {
     };
 
     return this.http.post<any>(requete, formData, requestOptions);
+  }
+
+  //Récupération de l'url de récap de quart PDF
+  getUrlPDF(date : string, quart : number){
+    const requete =
+      "https://" + this.ip + "/getURLPDF?idUsine=" + this.idUsine+"&quart="+quart+"&date="+date;
+
+    const requestOptions = {
+      headers: new HttpHeaders(this.headerDict),
+    };
+
+    return this.http.get<any>(requete, requestOptions);
   }
 
   //Enregistrement action

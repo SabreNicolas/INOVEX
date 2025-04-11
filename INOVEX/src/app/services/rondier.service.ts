@@ -592,7 +592,7 @@ export class rondierService {
       headers: new HttpHeaders(this.headerDict),
     };
 
-    return this.http.get<element>(requete, requestOptions);
+    return this.http.get<any[]>(requete, requestOptions);
   }
 
   changeTypeRecupSetRondier(Id: number, elementRondier: number) {
@@ -748,6 +748,19 @@ export class rondierService {
 
     return this.http.put<any>(requete, null, requestOptions);
   }
+
+    //Récupération de l'id du produit lié à l'id de la mesurerondier (et donc à l'élément de controle)
+    getProductMesureRondier(id: number) {
+      const requete =
+        "https://" + this.ip + "/getProductMesureRondier?id=" + id;
+      //console.log(requete);
+  
+      const requestOptions = {
+        headers: new HttpHeaders(this.headerDict),
+      };
+  
+      return this.http.get<any>(requete, requestOptions);
+    }
 
   //Récupérer la valeur pour un élément de contrôle et une date (quart de nuit => dernier de la journée)
   //?id=111&date=dhdhdh
@@ -1233,6 +1246,8 @@ export class rondierService {
 
     return this.http.put<anomalie[]>(requete, requestOptions);
   }
+
+
   /*
     FIN ANOMALIES
     */

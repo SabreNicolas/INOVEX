@@ -210,9 +210,9 @@ export class AdminComponent implements OnInit {
       });
   }
 
-  updateTypeRecup(id: number, typeRecupEMonitoring: string) {
+  updateTypeRecup(id: number, typeRecupEMonitoring: string, colonneBDD : string) {
     this.productsService
-      .updateTypeRecup(id, typeRecupEMonitoring)
+      .updateTypeRecup(id, typeRecupEMonitoring, colonneBDD)
       .subscribe((response) => {
         if (response == "Changement du type de récupération OK") {
           this.popupService.alertSuccessForm("Le type a été changé !");
@@ -223,42 +223,83 @@ export class AdminComponent implements OnInit {
         }
       });
   }
-
+  
   //fonction qui permet de choisir l'élement rondier correspondant au produit pour la récupération automatique
   setElementRondier(pr: product) {
-    const listElementsRondier = {};
-    //Un peu particulier ici mais si la clef de l'objet n'est pas une chaine, l'ordre alphabétique n'est pas respecté car classement selon la clef
-    //d'ou le 0_rondier
-    //@ts-expect-error data
-    listElementsRondier["0_rondier"] = "Aucun";
-    this.listElements.forEach((element) => {
-      const id = String(element.Id) + "_rondier";
-      //@ts-expect-error data
-      listElementsRondier[id] = element.nomZone + " - " + element.nom;
-    });
+    let searchValue = '';
+    let selectedText = '';
+    let selectedOption = '';
+
     Swal.fire({
       title: "Veuillez choisir un élément rondier",
-      input: "select",
-      inputOptions: listElementsRondier,
+      html: `
+      <div>
+      <input 
+      id="searchInput" 
+      class="swal2-input" 
+      placeholder="Rechercher..."
+      onfocus="this.value=''"
+      />
+      <select 
+      id="selectElement" 
+      class="swal2-select element-select" 
+      size="20"
+      >
+      <option value="0_rondier">Aucun</option>
+      ${this.listElements.map(element => 
+      // @ts-expect-error data
+      `<option value="${element.Id}_rondier" title="${element.nomZone} - ${element.nom}">${element.nomZone} - ${element.nom}</option>`
+      ).join('')}
+      </select>
+      </div>
+      `,
+      width: '100em',
+      
+      didOpen: () => {
+      const styleElement = document.createElement('style');
+      styleElement.textContent = `
+      .element-select { 
+        width: 80%; 
+        margin: 0 auto;
+        display: block;
+      }
+      `;
+      document.head.appendChild(styleElement);
+
+      const input = document.getElementById('searchInput') as HTMLInputElement;
+      const select = document.getElementById('selectElement') as HTMLSelectElement;
+      
+      input.addEventListener('focus', () => {
+      select.style.display = 'block';
+      });
+    
+      input.addEventListener('input', () => {
+      searchValue = input.value.toLowerCase();
+      Array.from(select.options).forEach(option => {
+      option.style.display = option.text.toLowerCase().includes(searchValue) ? '' : 'none';
+      });
+      });
+    
+      select.addEventListener('change', () => {
+      selectedText = select.options[select.selectedIndex].text;
+      selectedOption = select.value;
+      input.value = selectedText;
+      select.style.display = 'none';
+      });
+      },
       showCancelButton: true,
       confirmButtonText: "Confirmer",
-      cancelButtonText: "Annuler",
-      allowOutsideClick: false,
+      cancelButtonText: "Annuler"
     }).then((result) => {
-      if (result.value != undefined) {
-        //On récupérer l'id de l'élément rondier que l'on a stocké dans la clef de la liste
-        const idElementRondier = Number(result.value.split("_")[0]);
-        this.rondierService
-          .changeTypeRecupSetRondier(pr.Id, idElementRondier)
-          .subscribe((response) => {
-            this.popupService.alertSuccessForm(
-              "L'élément rondier a été enregistré !",
-            );
-            this.ngOnInit();
-          });
+      if (result.value && selectedOption) {
+      this.rondierService.changeTypeRecupSetRondier(pr.Id, Number(selectedOption.split('_')[0]))
+      .subscribe(response => {
+      this.popupService.alertSuccessForm("L'élément rondier a été enregistré !");
+      this.ngOnInit();
+      });
       }
     });
-  }
+}
 
   //Mettre à jour le coefficient d'un produit
   updateCoeff(pr: product) {

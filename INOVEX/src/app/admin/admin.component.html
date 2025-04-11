@@ -56,6 +56,7 @@
       <tr class="table-secondary">
         <!--<th scope="col">#</th>-->
         <th scope="col">Nom</th>
+        <th scope="col">Code</th>
         <th scope="col">Unité</th>
         <th scope="col">Coefficient</th>
         <th scope="col">TAG eMonitoring</th>
@@ -64,6 +65,7 @@
         <!--<th scope="col">#</th>-->
         <!--<th scope="col">#</th>-->
         <th scope="col">Type de Récupération eMonitoring</th>
+        <th scope="col">Type de Données eMonitoring</th>
         <th scope="col">Visibilité</th>
       </tr>
     </thead>
@@ -83,6 +85,9 @@
           >
             <i class="fas fa-edit"></i>
           </button>
+        </td>
+        <td>
+          <span class="badge bg-info">{{ pr.Code }}</span>
         </td>
         <td>
           <span class="badge bg-dark">{{ pr.Unit }}</span>
@@ -174,7 +179,7 @@
             id="{{ pr.Id }}"
             ngModel
             [(ngModel)]="pr.typeRecupEMonitoring"
-            (change)="updateTypeRecup(pr.Id, pr.typeRecupEMonitoring)"
+            (change)="updateTypeRecup(pr.Id, pr.typeRecupEMonitoring,'typeRecupEMonitoring')"
           >
             <option value="null">Aucune</option>
             <option value="tafVal">Valeur moyenne</option>
@@ -182,6 +187,31 @@
             <option value="tafMax">Valeur max</option>
             <option value="cumul">Valeur cumulée</option>
             <option value="derniere">Relevé Minuit</option>
+          </select>
+          <p
+            *ngIf="
+              (pr.idElementRondier != null &&
+                (pr.TAG == '' || pr.TAG == null)) ||
+              pr.typeId == 1 ||
+              pr.typeId == 5
+            "
+          >
+            /
+          </p>
+        </td>
+        <td>
+          <select
+            *ngIf="
+              pr.idElementRondier == null && pr.typeId != 1 && pr.typeId != 5
+            "
+            class="form-select"
+            id="{{ pr.Id }}--typeDonnee"
+            ngModel
+            [(ngModel)]="pr.typeDonneeEMonitoring"
+            (change)="updateTypeRecup(pr.Id, pr.typeDonneeEMonitoring,'typeDonneeEMonitoring')"
+          >
+            <option value="AnalogSummary">Analogique</option>
+            <option value="ProcessValues">Boolean</option>
           </select>
           <p
             *ngIf="

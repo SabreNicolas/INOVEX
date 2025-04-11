@@ -37,6 +37,7 @@ export class RecapRondeComponent implements OnInit {
   public quart: number;
   public nomAction: string;
   public idEquipe: number;
+  public listAnomalie: any[];
 
   public submitted: boolean;
   public idEvenement: number;
@@ -56,7 +57,7 @@ export class RecapRondeComponent implements OnInit {
   public listEquipementGMAOFiltre: any[];
   private token: string;
   public dateFin: Date | undefined;
-  public demandeTravaux: number;
+  public demandeTravaux: boolean;
   public consigne: number;
   public description: string;
   public cause: string;
@@ -67,6 +68,7 @@ export class RecapRondeComponent implements OnInit {
   public userPrecedent: string;
   public listActu: Actualite[];
   public hideEquipe: boolean;
+  public idAnomalie : number;
 
   constructor(
     public altairService: AltairService,
@@ -92,6 +94,7 @@ export class RecapRondeComponent implements OnInit {
     this.quart = 0;
     this.nomAction = "";
     this.idEquipe = 0;
+    this.listAnomalie = [];
 
     this.dateDebString = "";
     this.titre = "";
@@ -100,7 +103,7 @@ export class RecapRondeComponent implements OnInit {
     this.idEvenement = 0;
     this.submitted = false;
     this.token = "";
-    this.demandeTravaux = 0;
+    this.demandeTravaux = false;
     this.consigne = 0;
     this.description = "";
     this.groupementGMAO = "";
@@ -117,6 +120,7 @@ export class RecapRondeComponent implements OnInit {
     this.userPrecedent = "";
     this.listActu = [];
     this.hideEquipe = true;
+    this.idAnomalie = 0;
 
     this.altairService.login().subscribe((response) => {
       this.token = response.token;
@@ -158,6 +162,7 @@ export class RecapRondeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.idAnomalie = 0;
     //Récupération de l'heure actuelle pour vérifier si on a le droit d'ajouter des actions et autre (on ne peut plus le faire sur un quart terminé)
     const heure = new Date().getHours();
 
@@ -183,7 +188,7 @@ export class RecapRondeComponent implements OnInit {
       if (heure >= 13 && heure < 21 + margeHeure) {
         this.saisieAutorise = true;
       }
-    } else {
+    } else if (this.quart == 3) {
       if (heure < 5 + margeHeure) {
         this.dateDebString =
           format(addDays(new Date(), -1), "yyyy-MM-dd") + " 21:00:00.000";
@@ -222,6 +227,14 @@ export class RecapRondeComponent implements OnInit {
       .getEvenementsRonde(this.dateDebString, this.dateFinString)
       .subscribe((response) => {
         this.listEvenement = response.data;
+      });
+
+    //Récupération des anomalies pour la ronde en cours
+    this.rondierService
+      .getAnomaliesOfOneDay(this.dateDebStringToShow.substring(0,10), this.quart)
+      .subscribe((response) => {
+        //@ts-expect-error data
+        this.listAnomalie = response.data;
       });
 
     //Récupération des zones pour la ronde en cours
@@ -357,28 +370,42 @@ export class RecapRondeComponent implements OnInit {
   createAction() {
     //Récupération de l'heure à l'instant T pour concaténer avec le texte de l'action
     const now = format(new Date(), "HH:mm");
-    this.cahierQuartService
-      .newAction(
-        now + " " + this.nomAction,
-        this.dateDebString,
-        this.dateFinString,
-      )
-      .subscribe((response) => {
+    Swal.fire({
+      title: "Veuillez saisir l'heure de réalisation",
+      input: 'time',
+      inputValue: now,
+      showCancelButton: true,
+      confirmButtonText: "Valider",
+      confirmButtonColor: "green",
+      cancelButtonText: "Annuler",
+      cancelButtonColor: "red",
+      allowOutsideClick: true,
+    }).then((result) => {
+      if (result.value != undefined) {
         this.cahierQuartService
-          .newCalendrierAction(
-            response.data[0].id,
-            response.data[0].date_heure_debut,
-            this.quart,
-            response.data[0].date_heure_fin,
-            1,
-            null,
-          )
-          .subscribe(() => {
-            //réinitialiser le champ de saisie
-            this.nomAction = "";
-            this.ngOnInit();
-          });
-      });
+        .newAction(
+          result.value + " " + this.nomAction,
+          this.dateDebString,
+          this.dateFinString,
+        )
+        .subscribe((response) => {
+          this.cahierQuartService
+            .newCalendrierAction(
+              response.data[0].id,
+              response.data[0].date_heure_debut,
+              this.quart,
+              response.data[0].date_heure_fin,
+              1,
+              null,
+            )
+            .subscribe(() => {
+              //réinitialiser le champ de saisie
+              this.nomAction = "";
+              this.ngOnInit();
+            });
+        });
+      }
+    });
   }
 
   //supprimer une zone
@@ -500,7 +527,7 @@ export class RecapRondeComponent implements OnInit {
       if (result.isConfirmed) {
         this.cahierQuartService.historiquePriseQuart().subscribe(() => {
           this.router.navigate(["/cahierQuart/newEquipe"], {
-            queryParams: { idEquipe: this.idEquipe },
+            queryParams: { quart: this.quart, idEquipe: this.idEquipe },
           });
         });
       } else {
@@ -556,7 +583,7 @@ export class RecapRondeComponent implements OnInit {
       return;
     }
 
-    if (this.demandeTravaux != 0) {
+    if (this.demandeTravaux != false) {
       // console.log(this.equipementGMAO);
       if (this.equipementGMAO == "") {
         this.popupService.alertErrorForm(
@@ -638,7 +665,7 @@ export class RecapRondeComponent implements OnInit {
         }
         //Sinon on créé
         else {
-          if (this.demandeTravaux != 0) {
+          if (this.demandeTravaux != false) {
             //TODO : récupérer le userGMAO du user
             this.altairService
               .createDI(
@@ -675,6 +702,11 @@ export class RecapRondeComponent implements OnInit {
                       this.cahierQuartService
                         .historiqueEvenementCreate(this.idEvenement)
                         .subscribe(() => {
+                          if(this.idAnomalie > 0){
+                            this.rondierService
+                            .updateAnomalieSetEvenement(this.idAnomalie)
+                            .subscribe((response) => {});
+                          }
                           this.ngOnInit();
                           this.dialog.closeAll();
                         });
@@ -695,7 +727,7 @@ export class RecapRondeComponent implements OnInit {
                 this.cause,
                 this.description,
                 this.consigne,
-                this.demandeTravaux,
+                0,
               )
               .subscribe((response) => {
                 if (response != undefined) {
@@ -704,6 +736,11 @@ export class RecapRondeComponent implements OnInit {
                   this.cahierQuartService
                     .historiqueEvenementCreate(this.idEvenement)
                     .subscribe(() => {
+                      if(this.idAnomalie > 0){
+                        this.rondierService
+                        .updateAnomalieSetEvenement(this.idAnomalie)
+                        .subscribe((response) => {});
+                      }
                       this.ngOnInit();
                       this.dialog.closeAll();
                     });
@@ -739,32 +776,48 @@ export class RecapRondeComponent implements OnInit {
 
   clickDemandeTravaux() {
     if ($("input#demandeTravaux").is(":checked")) {
+      this.demandeTravaux = true;
       $("#dateFin").show();
       $("#equipementGMAO").show();
       $("#groupementGMAO").show();
-      const date = new Date();
-      const yyyy = date.getFullYear();
-      const dd = String(date.getDate()).padStart(2, "0");
-      const mm = String(date.getMonth() + 1).padStart(2, "0"); //January is 0!
-      const hh = String(date.getHours()).padStart(2, "0");
-      const min = String(date.getMinutes()).padStart(2, "0");
-      const day = yyyy + "-" + mm + "-" + dd + "T" + hh + ":" + min;
-      (document.getElementById("dateDebut") as HTMLInputElement).value = day;
-      //@ts-expect-error data
-      this.dateDeb = day;
+      this.getNow();
     } else {
+      this.demandeTravaux = false;
       $("#dateFin").hide();
       $("#equipementGMAO").hide();
       $("#groupementGMAO").hide();
     }
   }
 
-  ouvrirDialogCreerEvent() {
+  //L'id est optionnel
+  ouvrirDialogCreerEvent(id?: number) {
     this.dialogRef = this.dialog.open(this.createEventDialog, {
       width: "60%",
       disableClose: true,
       autoFocus: true,
     });
+    this.getNow();
+    if(id != undefined){
+      this.idAnomalie = id;
+      this.rondierService.getOneAnomalie(id).subscribe((response) => {
+        // console.log(response);
+        //@ts-expect-error data
+        this.description = response.data[0]["commentaire"];
+        //@ts-expect-error data
+        this.imgSrc = response.data[0]["photo"];
+  
+        const input = document.getElementById("fichier") as HTMLInputElement;
+        // console.log(this.imgSrc);
+        if (
+          this.imgSrc != "NULL" &&
+          this.imgSrc != null &&
+          this.imgSrc != undefined &&
+          this.imgSrc != ""
+        ) {
+          this.addImgaeToInput(this.imgSrc, input);
+        }
+      });
+    }
     this.dialog.afterAllClosed.subscribe(() => {
       this.idEvenement = 0;
       this.ngOnInit();
@@ -775,7 +828,7 @@ export class RecapRondeComponent implements OnInit {
       this.idEvenement = 0;
       this.submitted = false;
       this.token = "";
-      this.demandeTravaux = 0;
+      this.demandeTravaux = false;
       this.consigne = 0;
       this.description = "";
       this.groupementGMAO = "";
@@ -785,6 +838,7 @@ export class RecapRondeComponent implements OnInit {
       this.listEquipementGMAO = [];
       this.equipementGMAO = "";
       this.cause = "";
+      this.idAnomalie = 0;
     });
   }
 
@@ -971,5 +1025,33 @@ export class RecapRondeComponent implements OnInit {
         this.popupService.alertErrorForm("La suppression a été annulée.");
       }
     });
+  }
+
+  getNow(){
+    //mise par défaut la date de début à l'instant T
+    const date = new Date();
+    const yyyy = date.getFullYear();
+    const dd = String(date.getDate()).padStart(2, "0");
+    const mm = String(date.getMonth() + 1).padStart(2, "0"); //January is 0!
+    const hh = String(date.getHours()).padStart(2, "0");
+    const min = String(date.getMinutes()).padStart(2, "0");
+    const day = yyyy + "-" + mm + "-" + dd + "T" + hh + ":" + min;
+    (document.getElementById("dateDebut") as HTMLInputElement).value = day;
+    //@ts-ignore
+    this.dateDeb = day;
+  }
+
+  async addImgaeToInput(url: string, element: HTMLInputElement) {
+    const reponse = await fetch(url);
+    const blob = await reponse.blob();
+    const fileName = url.split("/").pop() || "file.jpg";
+
+    const file = new File([blob], fileName, { type: blob.type });
+
+    const dataTranfer = new DataTransfer();
+    dataTranfer.items.add(file);
+
+    element.files = dataTranfer.files;
+    this.fileToUpload = element.files[0];
   }
 }

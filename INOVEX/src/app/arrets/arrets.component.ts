@@ -385,7 +385,7 @@ export class ArretsComponent implements OnInit {
         var selection = document.getElementById("fortuit");
         //@ts-expect-error data
         this.commentaire = selection.options[selection.selectedIndex].value;
-        if (this.commentaire != "Autre") {
+        if (this.commentaire != "Autre" && this.commentaire != "Turbine" && this.commentaire != "Réducteur" && this.commentaire != "Alternateur" && this.commentaire != "Auxiliaires - Instrumentation - Contrôle commande GTA") {
           if (this.fortuit_chaudiere == true) {
             var selection2 = document.getElementById("fortuit_chaudiere");
             this.commentaire =
@@ -417,7 +417,9 @@ export class ArretsComponent implements OnInit {
           }
         }
       } else if (this.programme == true) {
-        this.commentaire = "Arrêt technique";
+        var selection = document.getElementById("programme");
+        //@ts-expect-error data
+        this.commentaire = selection.options[selection.selectedIndex].value;
       } else if (this.moteur == true) {
         var selection = document.getElementById("moteur");
         //@ts-expect-error data
@@ -625,12 +627,12 @@ export class ArretsComponent implements OnInit {
     // @ts-expect-error data
     this.stringDateDebut = this.datePipe.transform(
       this.dateDebut,
-      "yyyy-MM-dd HH:mm",
+      "yyyy-MM-dd HH:mm:ss",
     );
     // @ts-expect-error data
     this.stringDateFin = this.datePipe.transform(
       this.dateFin,
-      "yyyy-MM-dd HH:mm",
+      "yyyy-MM-dd HH:mm:ss",
     );
     // @ts-expect-error data
     this.stringDateSaisie = this.datePipe.transform(

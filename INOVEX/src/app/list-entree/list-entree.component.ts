@@ -273,8 +273,8 @@ export class ListEntreeComponent implements OnInit {
             }
           });
       }
-      this.getTotaux();
     }
+    this.getTotaux();
   }
 
   //récpérer les totaux
@@ -532,7 +532,7 @@ export class ListEntreeComponent implements OnInit {
       }
       //Douchy
       else if (this.idUsine === 10) {
-        this.lectureCSV(event, ";", true, 28, 27, 16, 7);
+        this.lectureCSV(event, ";", true, 28, 27, 18, 7);
       }
       //Mourenx
       else if (this.idUsine === 18) {
@@ -555,7 +555,7 @@ export class ListEntreeComponent implements OnInit {
       }
       //Cergy
       else {
-        this.lectureCSV(event, ",", true, 9, 12, 0, 14);
+        this.lectureCSV(event, ";", true, 9, 12, 0, 14);
       }
     }
     //Vitré
@@ -578,15 +578,29 @@ export class ListEntreeComponent implements OnInit {
       //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
       this.lectureCSV(event, ";", true, 0, 18, 5, 9, 4);
     }
-    //Saint-barth
+    //Saint-barth & Calais
     else if (this.typeImportTonnage.toLowerCase().includes("quantum")) {
-      //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
-      this.lectureCSV(event, ";", true, 8, 3, 0, 6, 1);
+      if (this.idUsine === 29 || this.idUsine === 31) {
+        //Calais
+        this.lectureCSV(event, ";", true, 2, 4, 1, 11);
+      }
+      //Saint-barth
+      else {
+        //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
+        this.lectureCSV(event, ";", true, 8, 3, 0, 6, 1);
+      }
     }
-    //Bourg en Bresse
+    //Bourg en Bresse & Chagny
     else if (this.typeImportTonnage.toLowerCase().includes("adepro")) {
       //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
-      this.lectureCSV(event, ";", true, 13, 3, 5, 9, 4);
+      if (this.idUsine === 20) {
+        //Bourg en Bresse
+        this.lectureCSV(event, ";", true, 13, 3, 5, 9, 4);
+      }
+      //Chagny
+      else {
+        this.lectureCSV(event, ";", true, 8, 12, 2, 5);
+      }
     }
   }
 
@@ -790,6 +804,7 @@ export class ListEntreeComponent implements OnInit {
     const file = files[0];
     const reader = new FileReader();
     let debut = 0;
+    this.stockageImport.clear();
 
     //Si on a une ligne header, on commence l'acquisition à 1.
     if (header == true) {
@@ -818,7 +833,7 @@ export class ListEntreeComponent implements OnInit {
 
             //permet de diviser le tonnage par 1000 si on l'a en kg
             let divisionKgToTonnes = 1;
-            //si ce n'est pas caktus ni tradim ni Dunkerque ni Quantum, on divise par 1000 pour avoir en tonnes
+            //si ce n'est pas caktus ni tradim ni Dunkerque ni Quantum (sauf les sites Calais), on divise par 1000 pour avoir en tonnes
             if (
               !this.typeImportTonnage.toLowerCase().includes("caktus") &&
               !this.typeImportTonnage.toLowerCase().includes("tradim") &&
@@ -861,7 +876,7 @@ export class ListEntreeComponent implements OnInit {
                   dateEntree: results.data[i][posDateEntree].substring(0, 10),
                   tonnage:
                     results.data[i][posTonnage]
-                      .replace(/[^0-9,.]/g, "")
+                      .replace(/[^0-9,.-]/g, "")
                       .replace(",", ".") / divisionKgToTonnes,
                   entrant: EntreeSortie,
                 };
@@ -995,6 +1010,10 @@ export class ListEntreeComponent implements OnInit {
     // console.log(this.stockageImport);
     //on parcours la hashmap pour insertion en BDD
     this.stockageImport.forEach(async (value: number, key: string) => {
+      //On ne retire plus le - donc on stocke la valeur absolu si ce n'est pas Douchy
+      if(this.idUsine !== 10) value = Math.abs(value);
+      //Si c'est Douchy on stocke avec un coeeficient de -1 pour remettre le bon signe
+      else value = value*-1;
       await this.moralEntitiesService
         .createMeasure(
           key.split("_")[0],

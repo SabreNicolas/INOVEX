@@ -27,6 +27,8 @@ export class RecapRondeListeComponent implements OnInit {
   public nomEquipe: string;
   public listRondier: any[];
   public dateDebForm: string;
+  public dateFormatRonde : string;
+  public urlPDF : string;
 
   constructor(
     public cahierQuartService: cahierQuartService,
@@ -48,6 +50,8 @@ export class RecapRondeListeComponent implements OnInit {
     this.nomEquipe = "";
     this.listRondier = [];
     this.dateDebForm = "";
+    this.dateFormatRonde = "";
+    this.urlPDF = "";
 
     this.route.queryParams.subscribe((params) => {
       if (params.quart != undefined) {
@@ -81,6 +85,8 @@ export class RecapRondeListeComponent implements OnInit {
       this.dateFinString =
         format(addDays(this.date, 1), "yyyy-MM-dd") + " 05:00:00.000";
     }
+
+    this.dateFormatRonde = format(this.date, "dd/MM/yyyy");
   }
 
   ngOnInit(): void {
@@ -167,6 +173,16 @@ export class RecapRondeListeComponent implements OnInit {
             });
         }
       });
+
+    //Récupération de l'url de récap de quart
+    this.cahierQuartService
+      .getUrlPDF(this.dateFormatRonde, this.quart)
+      .subscribe((response) => {
+        if(response.data.length > 0){
+          this.urlPDF = response.data[0].urlPDF;
+        }
+        else this.urlPDF = "";
+      });
   }
 
   downloadFile(consigne: string) {
@@ -201,6 +217,7 @@ export class RecapRondeListeComponent implements OnInit {
   setFilters() {
     // console.log(this.dateDebForm);
     this.date = new Date(this.dateDebForm);
+    this.dateFormatRonde = format(this.date, "dd/MM/yyyy");
     //Récupération de la date de début et de la date de fin en fonction du quart
     if (this.quart == 1) {
       this.dateDebString = format(this.date, "yyyy-MM-dd") + " 05:00:00.000";
@@ -214,5 +231,9 @@ export class RecapRondeListeComponent implements OnInit {
         format(addDays(this.date, 1), "yyyy-MM-dd") + " 05:00:00.000";
     }
     this.ngOnInit();
+  }
+
+  DLFile(){
+    window.open(this.urlPDF,"_blank");
   }
 }

@@ -50,7 +50,6 @@ export class EnregistrementEquipeComponent implements OnInit {
         .getOneEnregistrementEquipe(this.idEquipe)
         .subscribe((response) => {
           this.name = response.data[0]["equipe"];
-
           if (response.data[0]["idRondier"] != null) {
             for (let i = 0; i < response.data.length; i++) {
               this.listAjout.push({

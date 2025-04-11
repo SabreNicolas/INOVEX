@@ -22,6 +22,10 @@
     <option value="3">Nuit</option>
   </select>
   <button class="btn btn-success" (click)="setFilters()">Valider</button>
+  <button *ngIf="urlPDF.length > 0" class="btn btnUnique" (click)="DLFile()">
+    <i class="fas fa-download"></i>
+    Télécharger le Récapitulatif
+    </button>
 </div>
 
 <h2 style="text-align: center">
@@ -33,6 +37,7 @@
     <tr class="table-secondary">
       <th scope="col">Nom</th>
       <th scope="col">Prenom</th>
+      <th scope="col">Poste</th>
       <th scope="col">Heure Début</th>
       <th scope="col">Heure Fin</th>
       <th scope="col">Heure Travaux Pénible</th>
@@ -45,6 +50,9 @@
       <td>{{ rondier.Nom }}</td>
       <td>
         {{ rondier.Prenom }}
+      </td>
+      <td>
+        {{ rondier.Poste }}
       </td>
       <td class="heure">
         {{ rondier.heure_deb }}

@@ -13,4 +13,5 @@ export interface product {
   idElementRondier: number;
   nomElementRondier: string;
   Coefficient: number;
+  typeDonneeEMonitoring: string;
 }

@@ -321,7 +321,7 @@ const routes: Routes = [
     component: AdminGlobalComponent,
     // component : MaintenanceComponent,
     children: [
-      { path: "", canActivate: [AuthGuard], component: AdminComponent },
+      { path: "", canActivate: [AuthGuard], component: ListConsignesComponent },
       { path: "token", canActivate: [AuthGuard], component: TokenApiComponent },
       {
         path: "import",

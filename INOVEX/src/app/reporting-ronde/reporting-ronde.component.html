@@ -13,11 +13,12 @@
       role="button"
       class="btn btn-primary"
       id="create"
+      *ngIf="isAdmin"
     >
       +
     </a>
   </h3>
-  <!--table des consignes-->
+  <!--table des reprises de ronde-->
   <table class="table tableFixed" *ngIf="listReprise.length !== 0">
     <thead>
       <tr class="table-secondary">

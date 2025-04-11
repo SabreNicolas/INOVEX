@@ -23,6 +23,7 @@ export class SaisieFormulaireComponent implements OnInit {
   public listDays: string[];
   public listProducts: any[];
   public isAdmin: number;
+  public isSuperAdmin : number;
 
   constructor(
     private productsService: productsService,
@@ -37,6 +38,7 @@ export class SaisieFormulaireComponent implements OnInit {
     this.listDays = [];
     this.listProducts = [];
     this.isAdmin = 0;
+    this.isSuperAdmin = 0;
 
     //Permet de récupérer l'id du formulaire à saisir
     this.route.queryParams.subscribe((params) => {
@@ -62,6 +64,10 @@ export class SaisieFormulaireComponent implements OnInit {
     if (typeof userLogged === "string") {
       const userLoggedParse = JSON.parse(userLogged);
       this.isAdmin = userLoggedParse["isAdmin"];
+
+      if(userLoggedParse["localisation"] !== undefined) {
+        this.isSuperAdmin = 1;
+      };
     }
   }
 

@@ -1,4 +1,4 @@
-<a
+<a *ngIf="isAdmin"
   role="button"
   (click)="ouvrirDialogCreerBadge()"
   class="btn btn-primary"
@@ -137,7 +137,7 @@
   </div>
 </div>
 
-<div *ngIf="listBadgeLibre || listBadgeUser || listBadgeZone">
+<div *ngIf="(listBadgeLibre || listBadgeUser || listBadgeZone) && isAdmin">
   <div class="table-style">
     <!--table des badges-->
     <table class="table table-hover tableFixed">

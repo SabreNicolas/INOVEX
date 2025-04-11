@@ -15,22 +15,20 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 })
 export class AdminGlobalComponent implements OnInit {
   public isSuperAdmin: boolean;
+  public isAdmin: boolean;
   public idUsine: number;
   public userLogged!: user;
   public usine: string;
   private listZones: any[];
-  private listGroupements: any[];
-  private listElements: any[];
 
   constructor(
     private categoriesService: categoriesService,
     private rondierService: rondierService,
   ) {
     this.isSuperAdmin = false;
+    this.isAdmin = false;
     this.idUsine = 0;
     this.usine = "";
-    this.listElements = [];
-    this.listGroupements = [];
     this.listZones = [];
   }
 
@@ -43,11 +41,12 @@ export class AdminGlobalComponent implements OnInit {
     const userLogged = localStorage.getItem("user");
     if (typeof userLogged === "string") {
       const userLoggedParse = JSON.parse(userLogged);
+      this.userLogged = userLoggedParse;
       //Si une localisation est stocké dans le localstorage, c'est que c'est un superAdmin et qu'il a choisi le site au début
-      if (userLoggedParse.hasOwnProperty("localisation")) {
+      if (this.userLogged.hasOwnProperty("localisation")) {
         this.isSuperAdmin = true;
       }
-      this.userLogged = userLoggedParse;
+      this.isAdmin = this.userLogged["isAdmin"];
       // @ts-expect-error data
       this.idUsine = this.userLogged["idUsine"];
       // @ts-expect-error data

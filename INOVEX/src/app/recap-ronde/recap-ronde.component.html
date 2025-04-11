@@ -108,7 +108,6 @@
             {{ rondier.comm_tp }}
             <button
               class="btn btn btn-light edition"
-              [disabled]="rondier.heure_tp === '00:00'"
               (click)="
                 updateInfos(
                   rondier.IdEquipe,
@@ -128,7 +127,200 @@
   </div>
 </div>
 
+<!-- ANOMALIES -->
+<div class="row" *ngIf="listAnomalie.length > 0">
+  <!-- Tableau des anomalies -->
+  <div class="col-md-12">
+    <div class="card cardElem">
+      <h2 class="titre">
+        Anomalies
+      </h2>
+
+      <div class="table-style">
+        <!--table des anomalies-->
+        <table class="table tableFixed">
+          <thead>
+            <tr class="table-secondary">
+              <th scope="col">Zone</th>
+              <th scope="col">Description</th>
+              <th scope="col">Photo</th>
+              <th scope="col">Créer un évènement</th>
+            </tr>
+          </thead>
+          <tbody *ngFor="let anomalie of listAnomalie">
+            <tr class="table-light">
+              <td>{{ anomalie.nom }}</td>
+              <td>{{ anomalie.commentaire }}</td>
+              <td><a
+                href="{{ anomalie.photo }}"
+                target="_blank"
+              >
+                <button class="btn btn-outline-secondary">
+                  <i style="color: black"
+                  class="fa fa-camera"
+                  aria-hidden="true"></i>
+                </button>
+              </a></td>
+              <td *ngIf="anomalie.evenement == 1">Evènement déjà créé</td>
+              <td *ngIf="anomalie.evenement == 0">
+                <a
+                (click)="ouvrirDialogCreerEvent(anomalie.id)"
+                  role="button"
+                  class="btn btn-primary"
+                  id="create"
+                >
+                  Créer un évènement
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<br />
+
+
+<!-- EVENEMENTS -->
+<div class="row">
+  <!-- Tableau des Evènements -->
+  <div class="col-md-12">
+    <div class="card cardElem">
+      <h2 class="titre">
+        Evènements
+        <a (click)="ouvrirDialogCreerEvent()" role="button">
+          <button [disabled]="!saisieAutorise" class="btn btn-success btnAdd">
+            +
+          </button>
+        </a>
+      </h2>
+
+      <div class="table-style">
+        <!--table des events-->
+        <table class="table tableFixed">
+          <thead>
+            <tr class="table-secondary">
+              <th scope="col">Titre</th>
+              <th scope="col">Description</th>
+              <th scope="col">Cause</th>
+              <th scope="col">Date de Début</th>
+              <!--<th scope="col">Date de Fin</th>-->
+              <th scope="col">Demande de travaux</th>
+              <th scope="col">Photo</th>
+              <th scope="col">Dupliquer</th>
+              <th scope="col">Editer</th>
+              <th scope="col">Supprimer</th>
+            </tr>
+          </thead>
+          <tbody *ngFor="let evenement of listEvenement">
+            <tr class="table-light">
+              <td>{{ evenement.titre }}</td>
+              <td>{{ evenement.description }}</td>
+              <td>{{ evenement.cause }}</td>
+              <td>{{ evenement.date_heure_debut }}</td>
+              <!--<td>{{evenement.date_heure_fin}}</td>-->
+              <td *ngIf="evenement.demande_travaux === '0'">
+                <i style="color: red" class="fas fa-times-circle"></i>
+              </td>
+              <td *ngIf="evenement.demande_travaux !== '0'">
+                <i style="color: green" class="fas fa-check"></i>
+                {{ evenement.demande_travaux }}
+              </td>
+              <td>
+                <a
+                  href="{{ evenement.url }}"
+                  *ngIf="evenement.url !== ''"
+                  target="_blank"
+                >
+                  <button class="btn btn-outline-secondary">
+                    <i style="color: black"
+                    class="fa fa-camera"
+                    aria-hidden="true"></i>
+                  </button>
+                </a>
+              </td>
+              <td>
+                <button
+                  class="btn btn btn-light edition"
+                  (click)="ouvrirDialogModifEvent(evenement.id, 1)"
+                >
+                  <i class="far fa-copy"></i>
+                </button>
+              </td>
+              <td>
+                <button
+                  class="btn btn btn-light edition"
+                  (click)="ouvrirDialogModifEvent(evenement.id, 0)"
+                >
+                  <i class="far fa-edit"></i>
+                </button>
+              </td>
+              <td>
+                <button
+                  (click)="deleteEvenement(evenement.id)"
+                  id="deleteEvenement"
+                  class="btn btn-light"
+                >
+                  <i
+                    class="fa fa-trash-o"
+                    aria-hidden="true"
+                    style="color: red"
+                  ></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<br/>
+
 <!-- routerLink="../newEquipe" [queryParams]="{quart: quart, idEquipe: idEquipe}" -->
+
+<!-- ACTUS -->
+<div *ngIf="listActu.length > 0" class="col-md-13" style="display: flex; flex-direction: column">
+  <h2 class="titre">Actualités</h2>
+  <!--Liste des actus non lié à un quart-->
+  <div style="display: flex; justify-content: space-evenly">
+    <div class="card cardActu" *ngFor="let actu of listActu">
+      <div class="card-body">
+        <h5
+          class="card-title"
+          [ngStyle]="{ color: actu.importance === 2 ? 'red' : 'rgb(27,37,51)' }"
+        >
+          {{ actu.titre }}
+        </h5>
+        <p
+          class="card-text"
+          *ngFor="let descr of splitDescription(actu.description)"
+        >
+          {{ descr }}
+        </p>
+        <p
+          *ngIf="actu.importance === 0"
+          class="card-text color--{{ actu.importance }}"
+        >
+          Importance : Faible
+        </p>
+        <p
+          *ngIf="actu.importance === 1"
+          class="card-text color--{{ actu.importance }}"
+        >
+          Importance : Neutre
+        </p>
+        <p
+          *ngIf="actu.importance === 2"
+          class="card-text color--{{ actu.importance }}"
+        >
+          Importance : Elevée
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Tableau des consignes -->
 <div class="row">
@@ -140,14 +332,34 @@
           <tr>
             <th scope="col">Consigne</th>
             <th scope="col">Description</th>
+            <th scope="col">Type</th>
             <th scope="col">Date de Fin</th>
             <th scope="col">Fichier</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let consigne of consignes">
-            <th scope="row">{{ consigne.titre }}</th>
-            <th scope="row">{{ consigne.commentaire }}</th>
+          <tr *ngFor="let consigne of consignes" [ngSwitch]="consigne.type">
+            <td>{{ consigne.titre }}</td>
+            <td>{{ consigne.commentaire }}</td>
+            <td *ngSwitchCase="1">
+              <span class="badge rounded-pill bg-primary">Jour</span>
+            </td>
+            <td *ngSwitchCase="2">
+              <span class="badge rounded-pill bg-warning text-dark"
+                >Sécurité</span
+              >
+            </td>
+            <td *ngSwitchCase="3">
+              <span class="badge rounded-pill bg-primary">Process</span>
+            </td>
+            <td *ngSwitchCase="4">
+              <span class="badge rounded-pill bg-dark">Autres</span>
+            </td>
+            <td *ngSwitchCase="5">
+              <span class="badge rounded-pill bg-dark"
+                >Suite à un évènement</span
+              >
+            </td>
             <td>{{ consigne.dateHeureFin }}</td>
             <td
               *ngIf="consigne.url !== null"
@@ -224,7 +436,7 @@
             <td>{{ zone.zone }}</td>
             <td>
               <button
-                [disabled]="!saisieAutorise"
+                disabled="true"
                 type="button"
                 class="btn btn-outline-danger"
                 (click)="deleteAction(zone.id)"
@@ -306,26 +518,24 @@
               {{ action.nom }}
               <button
                 [disabled]="!saisieAutorise"
-                [ngClass]="{
-                  btn: true,
-                  'btn-outline-success': action.termine === 1,
-                  'btn-outline-danger': action.termine === 0,
-                }"
+                class="btn btnUnique"
                 (click)="updateAction(action.id, !action.termine)"
               >
                 <i
-                  [ngStyle]="{ color: action.termine === 1 ? 'green' : 'red' }"
                   [ngClass]="{
                     fas: true,
-                    'fa-check': action.termine === 1,
-                    'fa-times-circle': action.termine === 0,
+                    'fa-check': true,
                   }"
-                ></i>
+                  [ngStyle]="{
+                    'color':
+                    action.termine === 1 ? 'white' : 'black',
+                  }"
+                >{{action.termine === 1 ? "" : "Valider l'action"}}</i>
               </button>
             </td>
             <td>
               <button
-                [disabled]="!saisieAutorise"
+                disabled="true"
                 type="button"
                 class="btn btn-outline-danger"
                 (click)="deleteAction(action.id)"
@@ -340,142 +550,6 @@
   </div>
 </div>
 <br />
-
-<!-- EVENEMENTS -->
-<div class="row">
-  <!-- Tableau des Evènements -->
-  <div class="col-md-12">
-    <div class="card cardElem">
-      <h2 class="titre">
-        Evènements
-        <a (click)="ouvrirDialogCreerEvent()" role="button">
-          <button [disabled]="!saisieAutorise" class="btn btn-success btnAdd">
-            +
-          </button>
-        </a>
-      </h2>
-
-      <div class="table-style">
-        <!--table des events-->
-        <table class="table tableFixed">
-          <thead>
-            <tr class="table-secondary">
-              <th scope="col">Titre</th>
-              <th scope="col">Description</th>
-              <th scope="col">Cause</th>
-              <th scope="col">Date de Début</th>
-              <!--<th scope="col">Date de Fin</th>-->
-              <th scope="col">Demande de travaux</th>
-              <th scope="col">Photo</th>
-              <th scope="col">Dupliquer</th>
-              <th scope="col">Editer</th>
-              <th scope="col">Supprimer</th>
-            </tr>
-          </thead>
-          <tbody *ngFor="let evenement of listEvenement">
-            <tr class="table-light">
-              <td>{{ evenement.titre }}</td>
-              <td>{{ evenement.description }}</td>
-              <td>{{ evenement.cause }}</td>
-              <td>{{ evenement.date_heure_debut }}</td>
-              <!--<td>{{evenement.date_heure_fin}}</td>-->
-              <td *ngIf="evenement.demande_travaux === 0">
-                <i style="color: red" class="fas fa-times-circle"></i>
-              </td>
-              <td *ngIf="evenement.demande_travaux !== 0">
-                <i style="color: green" class="fas fa-check"></i>
-                {{ evenement.demande_travaux }}
-              </td>
-              <td>
-                <a
-                  href="{{ evenement.url }}"
-                  *ngIf="evenement.url !== ''"
-                  target="_blank"
-                >
-                  <button class="btn btn-success">
-                    <i class="fas fa-image"></i>
-                  </button>
-                </a>
-              </td>
-              <td>
-                <button
-                  class="btn btn btn-light edition"
-                  (click)="ouvrirDialogModifEvent(evenement.id, 1)"
-                >
-                  <i class="far fa-copy"></i>
-                </button>
-              </td>
-              <td>
-                <button
-                  class="btn btn btn-light edition"
-                  (click)="ouvrirDialogModifEvent(evenement.id, 0)"
-                >
-                  <i class="far fa-edit"></i>
-                </button>
-              </td>
-              <td>
-                <button
-                  (click)="deleteEvenement(evenement.id)"
-                  id="deleteEvenement"
-                  class="btn btn-light"
-                >
-                  <i
-                    class="fa fa-trash-o"
-                    aria-hidden="true"
-                    style="color: red"
-                  ></i>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</div>
-<br />
-
-<!-- ACTUS -->
-<div class="col-md-13" style="display: flex; flex-direction: column">
-  <h2 class="titre">Actualités</h2>
-  <!--Liste des actus non lié à un quart-->
-  <div style="display: flex; justify-content: space-evenly">
-    <div class="card cardActu" *ngFor="let actu of listActu">
-      <div class="card-body">
-        <h5
-          class="card-title"
-          [ngStyle]="{ color: actu.importance === 2 ? 'red' : 'rgb(27,37,51)' }"
-        >
-          {{ actu.titre }}
-        </h5>
-        <p
-          class="card-text"
-          *ngFor="let descr of splitDescription(actu.description)"
-        >
-          {{ descr }}
-        </p>
-        <p
-          *ngIf="actu.importance === 0"
-          class="card-text color--{{ actu.importance }}"
-        >
-          Importance : Faible
-        </p>
-        <p
-          *ngIf="actu.importance === 1"
-          class="card-text color--{{ actu.importance }}"
-        >
-          Importance : Neutre
-        </p>
-        <p
-          *ngIf="actu.importance === 2"
-          class="card-text color--{{ actu.importance }}"
-        >
-          Importance : Elevée
-        </p>
-      </div>
-    </div>
-  </div>
-</div>
 
 <ng-template let-data #myCreateEventDialog>
   <h1 class="creation" style="text-align: center">Création d'un évènement :</h1>
@@ -549,29 +623,34 @@
 
           <div class="form-group" style="display: none" id="groupementGMAO">
             <label for="product">Groupement GMAO : * </label>
-            <select
+            <input
               id="product"
               (change)="updateElements()"
               required
+              list="datalistOptions"
               class="form-control"
               ngModel
               [(ngModel)]="groupementGMAO"
-            >
-              <option value="">Choisissez un Groupement GMAO</option>
+            />
+            <datalist id="datalistOptions">
+              <option
+                disabled="true"
+                value="Choisissez un groupement GMAO"
+              ></option>
               <option
                 *ngFor="let groupement of listGroupementGMAOTable"
                 value="{{ groupement.split('---')[0] }}"
               >
                 {{ groupement }}
               </option>
-            </select>
+            </datalist>
           </div>
 
           <div class="form-group">
             <label>Début date validité : * (non modifiable en cas de DI)</label>
             <input
               required
-              [disabled]="demandeTravaux !== 0"
+              [disabled]="demandeTravaux !== false"
               type="datetime-local"
               id="dateDebut"
               class="form-control"
@@ -644,15 +723,20 @@
 
           <div class="form-group" style="display: none" id="equipementGMAO">
             <label for="product">Equipement GMAO : * </label>
-            <select
+            <input
               id="product"
               (change)="updateGroupements()"
               required
               class="form-control"
               ngModel
               [(ngModel)]="equipementGMAO"
-            >
-              <option value="">Choisissez un Equipement GMAO</option>
+              list="datalistOptions2"
+            />
+            <datalist id="datalistOptions2">
+              <option
+                disabled="true"
+                value="Choisissez un equipement GMAO"
+              ></option>
               <option
                 *ngFor="let equipement of listEquipementGMAOFiltre"
                 value="{{ equipement.codeequipment }}---{{
@@ -661,7 +745,7 @@
               >
                 {{ equipement.codeequipment }}---{{ equipement.description }}
               </option>
-            </select>
+            </datalist>
           </div>
 
           <div class="form-group">

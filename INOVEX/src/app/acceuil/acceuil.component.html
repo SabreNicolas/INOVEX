@@ -17,6 +17,20 @@
       </p>
     </div>
 
+    <div style="background-color: lightcoral; width: 1200px">
+      <p>
+        <strong>INFORMATION</strong> : Vous êtes actuellement sur la version de développement de CAP EXPLOITATION.
+      </p>
+      <p>
+        Merci d'accéder à CAP Exploitation via ce nouveau lien : <br />
+        <strong>
+          <a href="https://fr-couvinove300.prod.paprec.fr/capexploitation/"
+            >https://fr-couvinove300.prod.paprec.fr/capexploitation/</a
+          ></strong
+        >
+      </p>
+    </div>
+    
     <div class="gestionUsine">
       <a
         *ngIf="userLogged.hasOwnProperty('localisation')"
@@ -70,14 +84,6 @@
       </div>
     </div>
 
-    <!--<div class="card text-white bg-primary cardAccueil cardQSE">
-                <div class="card-body text-center">
-                    <h2 class="card-title">Budget</h2>
-                    <p class="card-text card-textAccueil">Saisir les différents objectifs/budgets</p>
-                    <a routerLink="/qse"> <button [disabled]="!isQSE" type="button" class="btn btn-light btnAccueil">Accéder</button></a>
-                </div>
-            </div>-->
-
     <div class="card text-white bg-primary cardAccueil cardRapports">
       <div class="card-body text-center">
         <h2 class="card-title">Rapports</h2>
@@ -104,7 +110,7 @@
         </p>
         <a routerLink="/admin">
           <button
-            [disabled]="!isAdmin"
+            [disabled]="!isAdmin && !isQSE"
             type="button"
             class="btn btn-light btnAccueil"
           >
@@ -144,7 +150,12 @@
         idUsine == 13 ||
         idUsine == 26 ||
         idUsine == 22 ||
-        idUsine == 6
+        idUsine == 6 ||
+        idUsine ==  9 ||
+        idUsine ==  8 ||
+        idUsine ==  29 ||
+        idUsine ==  15 ||
+        idUsine ==  31
       "
       class="card text-white bg-primary cardAccueil cardCahierQuart"
     >

@@ -280,7 +280,7 @@ export class ListSortantsComponent implements OnInit {
       }
       //Douchy
       else if (this.idUsine === 10) {
-        this.lectureCSV(event, ";", true, 27, 16, 7);
+        this.lectureCSV(event, ";", true, 27, 18, 7);
       }
       //Mourenx
       else if (this.idUsine === 18) {
@@ -301,7 +301,7 @@ export class ListSortantsComponent implements OnInit {
       }
       //Cergy
       else {
-        this.lectureCSV(event, ",", true, 12, 0, 14);
+        this.lectureCSV(event, ";", true, 12, 0, 14);
       }
     }
     //Vitré
@@ -324,15 +324,29 @@ export class ListSortantsComponent implements OnInit {
       //delimiter,header,typedechet,dateEntree,tonnage, posEntreeSortie
       this.lectureCSV(event, ";", true, 18, 5, 9, 4);
     }
-    //Saint-barth
+    //Saint-barth & Calais
     else if (this.typeImportTonnage.toLowerCase().includes("quantum")) {
-      //delimiter,header,typedechet,dateEntree,tonnage, posEntreeSortie
-      this.lectureCSV(event, ";", true, 3, 0, 6, 1);
+      if (this.idUsine === 29 || this.idUsine === 31) {
+        //Calais
+        this.lectureCSV(event, ";", true, 4, 1, 11);
+      }
+      //Saint-barth
+      else {
+        //delimiter,header,typedechet,dateEntree,tonnage, posEntreeSortie
+        this.lectureCSV(event, ";", true, 3, 0, 6, 1);
+      }
     }
-    //Bourg en Bresse
+    //Bourg en Bresse & Chagny
     else if (this.typeImportTonnage.toLowerCase().includes("adepro")) {
       //delimiter,header,typedechet,dateEntree,tonnage, posEntreeSortie
-      this.lectureCSV(event, ";", true, 3, 5, 9, 4);
+      if (this.idUsine === 20) {
+        //Bourg en Bresse
+        this.lectureCSV(event, ";", true, 3, 5, 9, 4);
+      }
+      //Chagny
+      else {
+        this.lectureCSV(event, ";", true, 12, 2, 5);
+      }
     }
   }
 
@@ -380,7 +394,9 @@ export class ListSortantsComponent implements OnInit {
             //si ce n'est pas caktus on divise par 1000 pour avoir en tonnes
             if (
               !this.typeImportTonnage.toLowerCase().includes("caktus") &&
-              !this.typeImportTonnage.toLowerCase().includes("tradim")
+              !this.typeImportTonnage.toLowerCase().includes("tradim") &&
+              this.idUsine != 9 &&
+              !this.typeImportTonnage.toLowerCase().includes("quantum")
             ) {
               divisionKgToTonnes = 1000;
             }
@@ -505,7 +521,8 @@ export class ListSortantsComponent implements OnInit {
           csv.entrant.toLowerCase() == "sortie" ||
           csv.entrant.toLowerCase() == "sortant" ||
           csv.entrant.toLowerCase() == "sous produits" ||
-          csv.entrant.toLowerCase() == "recyclables"
+          csv.entrant.toLowerCase() == "recyclables" ||
+          (csv.entrant.toLowerCase() == "transfert" && this.typeImportTonnage.toLowerCase().includes("adepro"))
         ) {
           //Si il y a correspondance on fait traitement
           if (correspondance.productImport == csv.typeDechet) {
