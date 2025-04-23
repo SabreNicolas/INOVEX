@@ -840,14 +840,13 @@ export class cahierQuartService {
   }
 
   //Récupérer les zones devant remonter sur le PDF (contenant PDF dans le nom)
-  getZonesPDF(date: string) {
+  getZonesPDF(date : string) {
     const requete =
       "https://" +
       this.ip +
       "/recupZonesPDF?idUsine=" +
       this.idUsine +
-      "&date=" +
-      date;
+      "&date="+date;
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
@@ -857,16 +856,14 @@ export class cahierQuartService {
   }
 
   //Récupérer les zones devant remonter sur le PDF (contenant PDF dans le nom)
-  getElementsPDF(idZone: number, date: string, quart: number) {
+  getElementsPDF(idZone : number, date : string, quart : number) {
     const requete =
       "https://" +
       this.ip +
       "/recupElementsPDF?idZone=" +
       idZone +
-      "&date=" +
-      date +
-      "&quart=" +
-      quart;
+      "&date="+date+
+      "&quart="+quart;
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
@@ -1140,16 +1137,16 @@ export class cahierQuartService {
   ////Actions////
 
   //Récupérer toutes les actions d'une ronde
-  getActionsRonde(dateDeb: string, dateFin: string) {
+  getActionsRonde(dateDebString: string, dateFinString: string) {
     const requete =
       "https://" +
       this.ip +
       "/getActionsRonde?idUsine=" +
       this.idUsine +
       "&dateDeb=" +
-      dateDeb +
+      dateDebString +
       "&dateFin=" +
-      dateFin;
+      dateFinString;
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
@@ -1612,16 +1609,9 @@ export class cahierQuartService {
   }
 
   //Récupération de l'url de récap de quart PDF
-  getUrlPDF(date: string, quart: number) {
+  getUrlPDF(date : string, quart : number){
     const requete =
-      "https://" +
-      this.ip +
-      "/getURLPDF?idUsine=" +
-      this.idUsine +
-      "&quart=" +
-      quart +
-      "&date=" +
-      date;
+      "https://" + this.ip + "/getURLPDF?idUsine=" + this.idUsine+"&quart="+quart+"&date="+date;
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),

@@ -215,6 +215,9 @@ export class RecapRondeComponent implements OnInit {
     this.cahierQuartService
       .getActionsRonde(this.dateDebString, this.dateFinString)
       .subscribe((response) => {
+        console.log(this.dateDebString);
+        console.log(this.dateFinString);
+        console.log("Actions : "+response.data);
         this.listAction = response.data;
         // mettre en place un décodage pour ne plus avoir espace en format %20
         for (let i = 0; i < this.listAction.length; i++) {
