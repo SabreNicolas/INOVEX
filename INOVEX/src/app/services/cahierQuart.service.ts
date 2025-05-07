@@ -5,6 +5,7 @@ import { zone } from "src/models/zone.model";
 import { idUsineService } from "./idUsine.service";
 import { DatePipe } from "@angular/common";
 import { environment } from "src/environments/environment";
+import { GroupedOccurrence } from 'src/models/groupoccurence.model';
 
 @Injectable()
 export class cahierQuartService {
@@ -1675,5 +1676,35 @@ export class cahierQuartService {
     };
 
     return this.http.get<any[]>(requete, requestOptions);
+  }
+
+  // Grouper et compter les occurences par zone/quart/action
+  groupAndCountOccurrences(zoneData: any[]) {
+    const grouped = new Map<string, any>();
+  
+    zoneData.forEach(item => {
+      const key = `${item.nom}-${item.quart}-${item.isAction ? 'Action' : 'Zone'}`;
+      
+      if (!grouped.has(key)) {
+        grouped.set(key, {
+          ...item,
+          count: 1,
+          finReccurrence: item.finReccurrence || item.date_heure_fin
+        });
+      } else {
+        const existing = grouped.get(key);
+        existing.count++;
+        
+        // Compare les dates pour garder la plus éloignée
+        const currentFinRec = existing.finReccurrence ? new Date(existing.finReccurrence) : new Date(existing.date_heure_fin);
+        const newFinRec = item.finReccurrence ? new Date(item.finReccurrence) : new Date(item.date_heure_fin);
+        
+        if (newFinRec > currentFinRec) {
+          existing.finReccurrence = item.finReccurrence || item.date_heure_fin;
+        }
+      }
+    });
+  
+    return Array.from(grouped.values());
   }
 }

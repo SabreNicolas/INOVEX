@@ -117,6 +117,7 @@ import { MatInputModule } from "@angular/material/input";
 import { PreventDoubleClickDirective } from "./prevent-double-click";
 import { MatAccordion, MatExpansionModule } from "@angular/material/expansion";
 import { ListActionsEnregistreesComponent } from "./list-actions-enregistrees/list-actions-enregistrees.component";
+import { ListOccurencesComponent } from './list-occurences/list-occurences.component';
 
 registerLocaleData(localeFr, "fr");
 class CustomDateFormatter extends CalendarNativeDateFormatter {
@@ -211,6 +212,7 @@ class CustomDateFormatter extends CalendarNativeDateFormatter {
     RecapRondeListeComponent,
     PreventDoubleClickDirective,
     ListActionsEnregistreesComponent,
+    ListOccurencesComponent,
   ],
   imports: [
     BrowserModule,

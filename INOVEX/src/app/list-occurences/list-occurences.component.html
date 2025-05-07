@@ -1,0 +1,132 @@
+<div class="container">
+    <h2>Liste des Occurrences</h2>
+    <div class="info-message">
+        <i class="fas fa-info-circle"></i>
+        Cliquez sur les en-têtes de colonnes pour trier. Un second clic sur une colonne inverse l'ordre de tri. Les tris peuvent être combinés.Pour réinitialiser les filtres, cliquez sur le bouton "Réinitialiser les filtres".
+      </div>
+<div class="filter-section mb-4">
+  <div class="row align-items-end">
+    <div class="col-md-4">
+      <div class="form-group">
+        <label>Rechercher une Zone/Action</label>
+        <input 
+          type="text" 
+          class="form-control" 
+          [(ngModel)]="searchText"
+          (input)="filterOccurrences()"
+          placeholder="Tapez pour filtrer..."
+        >
+      </div>
+    </div>
+    
+    <div class="col-md-4">
+      <div class="form-group">
+        <label>Date début</label>
+        <input 
+          type="date" 
+          class="form-control" 
+          [(ngModel)]="filterDateDebut"
+          (change)="filterOccurrences()"
+        >
+      </div>
+      <div class="form-group mt-3">
+        <label>Date fin</label>
+        <input 
+          type="date" 
+          class="form-control" 
+          [(ngModel)]="filterDateFin"
+          (change)="filterOccurrences()"
+        >
+      </div>
+    </div>
+
+    <div class="col-md-4 d-flex align-items-center">
+      <div class="form-check me-3">
+        <input 
+          type="checkbox" 
+          class="form-check-input" 
+          id="hideExpired"
+          [(ngModel)]="hideExpiredOccurrences"
+          (change)="filterOccurrences()"
+        >
+        <label class="form-check-label" for="hideExpired">
+          Masquer les occurrences expirées
+        </label>
+      </div>
+      <button class="btn btn-secondary" (click)="resetFilters()">
+        Réinitialiser les filtres
+      </button>
+    </div>
+  </div>
+</div>
+  
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+            <tr>
+                <th (click)="sortData('type')" class="sortable">
+                    Type
+                    <i class="fas" [ngClass]="{
+                      'fa-sort': !sortState['type'],
+                      'fa-sort-up': sortState['type'] === 'asc',
+                      'fa-sort-down': sortState['type'] === 'desc'
+                    }"></i>
+                  </th>
+                  <th (click)="sortData('nomZone')" class="sortable">
+                    Zone/Action
+                    <i class="fas" [ngClass]="{
+                      'fa-sort': !sortState['nomZone'],
+                      'fa-sort-up': sortState['nomZone'] === 'asc',
+                      'fa-sort-down': sortState['nomZone'] === 'desc'
+                    }"></i>
+                  </th>
+            <th (click)="sortData('quart')" class="sortable">
+              Quart
+              <i class="fas" [ngClass]="{
+                'fa-sort': !sortState['quart'],
+                'fa-sort-up': sortState['quart'] === 'asc',
+                'fa-sort-down': sortState['quart'] === 'desc'
+              }"></i>
+            </th>
+            <th (click)="sortData('finReccurrence')" class="sortable">
+              Fin récurrence
+              <i class="fas" [ngClass]="{
+                'fa-sort': !sortState['finReccurrence'],
+                'fa-sort-up': sortState['finReccurrence'] === 'asc',
+                'fa-sort-down': sortState['finReccurrence'] === 'desc'
+              }"></i>
+            </th>
+            <th (click)="sortData('count')" class="sortable">
+              Périodicité
+              <i class="fas" [ngClass]="{
+                'fa-sort': !sortState['count'],
+                'fa-sort-up': sortState['count'] === 'asc',
+                'fa-sort-down': sortState['count'] === 'desc'
+              }"></i>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let occ of listOccurences">
+            <td>
+              <span class="badge" [ngClass]="{'badge-zone': !occ.isAction, 'badge-action': occ.isAction}">
+                {{ occ.type }}
+              </span>
+            </td>
+            <td>{{ occ.nomZone }}</td>
+            <td>
+              <span class="quart" [ngClass]="{
+                'matin': occ.quart === 1,
+                'apres-midi': occ.quart === 2,
+                'nuit': occ.quart === 3
+              }">
+                {{ getQuartLibelle(occ.quart) }}
+              </span>
+            </td>
+            <td>{{ occ.finReccurrence | date:'dd/MM/yyyy' }}</td>
+            <td>{{ occ.count }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>

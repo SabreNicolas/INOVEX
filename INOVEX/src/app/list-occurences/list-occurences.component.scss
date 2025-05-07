@@ -1,0 +1,166 @@
+.container {
+    padding: 2rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-top: 2rem;
+    max-width: 95% !important;
+    width: 100%;
+  
+    h2 {
+      color: #2c3e50;
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+      text-align: center;
+    }
+  
+    .filter-section {
+      .form-group {
+        label {
+          color: #000;
+          font-weight: 500;
+          margin-bottom: 0.5rem;
+        }
+  
+        input.form-control {
+          height: 38px;
+          padding: 0.375rem 0.75rem;
+          width: 100%;
+        }
+      }
+  
+      .form-check {
+        margin: 2rem 0;
+        
+        .form-check-input {
+          cursor: pointer;
+          width: 1.2rem;
+          height: 1.2rem;
+          margin-right: 0.5rem;
+        }
+        
+        .form-check-label {
+          cursor: pointer;
+          user-select: none;
+          color: #000;
+          font-size: 1rem;
+          font-weight: 500;
+        }
+      }
+    }
+  
+    .table-responsive {
+      background: #fff;
+      border-radius: 6px;
+      
+      .table {
+        margin-bottom: 0;
+  
+        th.sortable {
+          cursor: pointer;
+          user-select: none;
+          position: relative;
+          padding-right: 2rem;
+  
+          &:hover {
+            background-color: #f8f9fa;
+          }
+  
+          i {
+            position: absolute;
+            right: 0.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0.5;
+  
+            &.fa-sort-up,
+            &.fa-sort-down {
+              opacity: 1;
+            }
+          }
+        }
+  
+        thead {
+          background: #1e88e5;
+          
+          th {
+            color: white;
+            font-weight: 500;
+            padding: 1rem;
+            border: none;
+          }
+        }
+  
+        tbody {
+          tr {
+            &:hover {
+              background-color: #f5f5f5;
+            }
+  
+            td {
+              vertical-align: middle;
+              padding: 0.8rem 1rem;
+              color: #34495e;
+            }
+          }
+        }
+      }
+    }
+  
+    .badge {
+      padding: 0.4rem 0.8rem;
+      border-radius: 4px;
+      font-weight: 500;
+      
+      &.badge-zone {
+        background-color: #4caf50;
+        color: white;
+      }
+      
+      &.badge-action {
+        background-color: #ff9800;
+        color: white;
+      }
+    }
+  
+    .quart {
+      display: inline-block;
+      padding: 0.3rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      
+      &.matin {
+        background-color: #71C1F9;
+        color: white;
+      }
+      
+      &.apres-midi {
+        background-color: #73FF97;
+        color: white;
+      }
+      
+      &.nuit {
+        background-color: #F1FF6A;
+        color: black;
+      }
+    }
+    .info-message {
+        background-color: #dbfbfd;
+        color: #0056b3;
+        padding: 12px;
+        border-radius: 4px;
+        margin: 0 auto 20px auto;
+        max-width: 60%;
+        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        
+        i {
+          margin-right: 10px;
+          font-size: 1.2rem;
+        }
+      }
+  }
