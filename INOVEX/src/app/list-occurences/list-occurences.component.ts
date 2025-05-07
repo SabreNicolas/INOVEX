@@ -29,7 +29,7 @@ export class ListOccurencesComponent implements OnInit {
   filterDateFin: string = '';
   sortState: {[key: string]: 'asc' | 'desc' | null} = {};
   hideExpiredOccurrences: boolean = false;
-
+  hideCurrentOccurrences: boolean = false;
 
 
   constructor(private cahierQuartService: cahierQuartService) {}
@@ -200,7 +200,7 @@ export class ListOccurencesComponent implements OnInit {
   }
 
   filterOccurrences() {
-    let filteredList = [...this.originalList];
+    let filteredList = [...this.originalList]; 
     const today = new Date();
     today.setHours(0, 0, 0, 0);
   
@@ -212,16 +212,25 @@ export class ListOccurencesComponent implements OnInit {
       );
     }
   
-    // Filtrer par période si les deux dates sont présentes
-    if (this.filterDateDebut && this.filterDateFin) {
-      const startDate = new Date(this.filterDateDebut);
-      const endDate = new Date(this.filterDateFin);
+    // Filtrer par période si les dates sont présentes
+    if (this.filterDateDebut || this.filterDateFin) {
+      const startDate = this.filterDateDebut ? new Date(this.filterDateDebut) : new Date(0);
+      const endDate = this.filterDateFin ? new Date(this.filterDateFin) : new Date('9999-12-31');
+      
       startDate.setHours(0, 0, 0, 0);
       endDate.setHours(23, 59, 59, 999);
   
       filteredList = filteredList.filter(occ => {
         const occDate = new Date(occ.finReccurrence || occ.date_heure_fin);
         return occDate >= startDate && occDate <= endDate;
+      });
+    }
+  
+    // Filtrer les occurrences en cours si la case est cochée
+    if (this.hideCurrentOccurrences) {
+      filteredList = filteredList.filter(occ => {
+        const occDate = new Date(occ.finReccurrence || occ.date_heure_fin);
+        return occDate <= today;
       });
     }
   
@@ -235,7 +244,7 @@ export class ListOccurencesComponent implements OnInit {
   
     this.listOccurences = [...filteredList];
   
-    // Réappliquer le tri si une colonne est déjà triée
+    // Réappliquer le tri si une colonne est triée
     if (this.sortColumn) {
       this.sortData(this.sortColumn);
     }
@@ -251,6 +260,7 @@ export class ListOccurencesComponent implements OnInit {
     this.filterDateDebut = '';
     this.filterDateFin = '';
     this.hideExpiredOccurrences = false;
+    this.hideCurrentOccurrences = false;
     this.sortState = {};
     this.listOccurences = [...this.originalList];
   }

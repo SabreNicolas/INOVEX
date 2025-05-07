@@ -2,7 +2,7 @@
     <h2>Liste des Occurrences</h2>
     <div class="info-message">
         <i class="fas fa-info-circle"></i>
-        Cliquez sur les en-têtes de colonnes pour trier. Un second clic sur une colonne inverse l'ordre de tri. Les tris peuvent être combinés.Pour réinitialiser les filtres, cliquez sur le bouton "Réinitialiser les filtres".
+        Cliquez sur les en-têtes de colonnes pour trier. Un second clic sur une colonne inverse l'ordre de tri. Les tris peuvent être combinés. Pour réinitialiser les filtres, cliquez sur le bouton "Réinitialiser les filtres".
       </div>
 <div class="filter-section mb-4">
   <div class="row align-items-end">
@@ -39,8 +39,20 @@
         >
       </div>
     </div>
-
     <div class="col-md-4 d-flex align-items-center">
+      <div class="form-check me-3">
+        <input 
+          type="checkbox" 
+          class="form-check-input" 
+          id="hideCurrent"
+          [(ngModel)]="hideCurrentOccurrences"
+          (change)="filterOccurrences()"
+        >
+        <label class="form-check-label" for="hideCurrent">
+          Masquer les occurrences en cours
+        </label>
+      </div>
+
       <div class="form-check me-3">
         <input 
           type="checkbox" 
