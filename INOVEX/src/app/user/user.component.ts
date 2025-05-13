@@ -3,6 +3,7 @@ import { NgForm } from "@angular/forms";
 import { loginService } from "../services/login.service";
 import { Md5 } from "ts-md5";
 import { PopupService } from "../services/popup.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-user",
@@ -22,10 +23,10 @@ export class UserComponent implements OnInit {
   public isAdmin: number; //0 ou 1
   public isChefQuart: number; //0 ou 1
   public loginUsed: boolean;
-
   constructor(
     private loginService: loginService,
     private popupService: PopupService,
+    private router: Router
   ) {
     this.nom = "";
     this.prenom = "";
@@ -136,5 +137,9 @@ export class UserComponent implements OnInit {
         this.login = login;
       }
     });
+  }
+
+    goToAdmin() {
+    this.router.navigate(["/admin"]);
   }
 }

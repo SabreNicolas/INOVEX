@@ -360,4 +360,9 @@ export class ElementControleComponent implements OnInit {
     (four[0] as HTMLInputElement).checked = false;
     (regulateur[0] as HTMLInputElement).checked = false;
   }
+
+  
+  goToAdmin() {
+    this.router.navigate(["/admin"]);
+  }
 }

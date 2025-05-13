@@ -4,6 +4,7 @@ import { NgForm } from "@angular/forms";
 import { productsService } from "../services/products.service";
 import { categoriesService } from "../services/categories.service";
 import { PopupService } from "../services/popup.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-new-analyse",
@@ -14,11 +15,11 @@ export class NewAnalyseComponent implements OnInit {
   public listCategories: category[];
   public Code: string;
   public typeId: number;
-
   constructor(
     private productsService: productsService,
     private popupService: PopupService,
     private categoriesService: categoriesService,
+    private router: Router
   ) {
     this.listCategories = [];
     this.Code = "";
@@ -99,5 +100,9 @@ export class NewAnalyseComponent implements OnInit {
     form.value["unit"] = "";
     form.controls["tag"].reset();
     form.value["tag"] = "";
+  }
+
+    goToAdmin() {
+    this.router.navigate(["/admin"]);
   }
 }
