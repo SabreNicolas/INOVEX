@@ -141,7 +141,8 @@ export class DepassementsComponent implements OnInit {
       this.depassement.ligne != "" &&
       this.depassement.date_heure_debut != "" &&
       this.depassement.date_heure_fin != "" &&
-      this.depassement.date_heure_debut <= this.depassement.date_heure_fin
+      this.depassement.date_heure_debut <= this.depassement.date_heure_fin &&
+      this.depassement.concentration != ""
     );
   }
 

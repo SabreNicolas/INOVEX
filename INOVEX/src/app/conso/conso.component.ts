@@ -19,7 +19,7 @@ export class ConsoComponent implements OnInit {
     private productsService: productsService,
     private popupService: PopupService,
     private categoriesService: categoriesService,
-    private router: Router
+    private router: Router,
   ) {
     this.listCategories = [];
     this.Code = "";
@@ -99,7 +99,6 @@ export class ConsoComponent implements OnInit {
     form.value["tag"] = "";
   }
 
-  
   goToAdmin() {
     this.router.navigate(["/admin"]);
   }

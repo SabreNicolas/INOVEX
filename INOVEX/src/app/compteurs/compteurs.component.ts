@@ -24,7 +24,7 @@ export class CompteursComponent implements OnInit {
     private popupService: PopupService,
     private categoriesService: categoriesService,
     private idUsineService: idUsineService,
-    private router: Router
+    private router: Router,
   ) {
     this.listCategories = [];
     this.Code = "";

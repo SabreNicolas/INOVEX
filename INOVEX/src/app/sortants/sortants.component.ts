@@ -19,7 +19,7 @@ export class SortantsComponent implements OnInit {
     private productsService: productsService,
     private categoriesService: categoriesService,
     private popupService: PopupService,
-    private router: Router
+    private router: Router,
   ) {
     this.listCategories = [];
     this.Code = "";
@@ -99,7 +99,7 @@ export class SortantsComponent implements OnInit {
     form.value["tag"] = "";
   }
 
-    goToAdmin() {
+  goToAdmin() {
     this.router.navigate(["/admin"]);
   }
 }

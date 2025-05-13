@@ -361,7 +361,6 @@ export class ElementControleComponent implements OnInit {
     (regulateur[0] as HTMLInputElement).checked = false;
   }
 
-  
   goToAdmin() {
     this.router.navigate(["/admin"]);
   }

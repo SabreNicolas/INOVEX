@@ -78,6 +78,8 @@
               ngModel
               [(ngModel)]="depassement.date_heure_debut"
               class="form-control"
+              step="1"
+              max="9999-12-31T23:59:59"
             />
           </div>
         </div>
@@ -90,15 +92,31 @@
               ngModel
               [(ngModel)]="depassement.date_heure_fin"
               class="form-control"
+              step="1"
+              max="9999-12-31T23:59:59"
             />
           </div>
         </div>
         <div class="col-sm-3">
           <div class="form-group">
-            <button class="btn btn-success mr-3" (click)="setPeriode(10)">
+            <button
+              class="btn btn-success mr-3"
+              (click)="setPeriode(10)"
+              *ngIf="
+                depassement.choixDepassements.includes('10mn') ||
+                !depassement.choixDepassements.includes('30mn')
+              "
+            >
               10 min
             </button>
-            <button class="btn btn-success" (click)="setPeriode(30)">
+            <button
+              class="btn btn-success"
+              (click)="setPeriode(30)"
+              *ngIf="
+                depassement.choixDepassements.includes('30mn') ||
+                !depassement.choixDepassements.includes('10mn')
+              "
+            >
               30 min
             </button>
           </div>
@@ -123,9 +141,10 @@
       <div class="row" *ngIf="depassement.choixDepassementsProduits !== ''">
         <div class="col-sm-6">
           <div class="form-group">
-            <label for="concentration">Concentration :</label>
+            <label for="concentration">Concentration : *</label>
             <input
               type="text"
+              required
               name="concentration"
               id="concentration"
               ngModel

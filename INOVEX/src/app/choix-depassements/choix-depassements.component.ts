@@ -38,11 +38,15 @@ export class ChoixDepassementsComponent implements OnInit {
       .getChoixDepassements()
       .subscribe((data: choixDepassement[]) => {
         this.choixDepassements = data;
+        this.choixDepassements.sort((a, b) => a.nom.localeCompare(b.nom));
       });
     this.depassementsService
       .getchoixDepassementsProduits()
       .subscribe((data: choixDepassementProduit[]) => {
         this.choixDepassementsProduits = data;
+        this.choixDepassementsProduits.sort((a, b) =>
+          a.nom.localeCompare(b.nom),
+        );
       });
     this.depassementsService
       .getDepassementsProduits()
@@ -156,14 +160,20 @@ export class ChoixDepassementsComponent implements OnInit {
     return produit ? produit.nom : "Nom non trouvé";
   }
 
-  getFilteredAssociations() {
-    if (!this.selectedDepassementFiltre) {
-      return this.depassementsProduitsAssocies;
-    }
+  getFilteredAssociations(): depassementProduit[] {
+    return this.depassementsProduitsAssocies.sort((a, b) => {
+      const depassementNameA = this.getDepassementName(a.idChoixDepassements);
+      const depassementNameB = this.getDepassementName(b.idChoixDepassements);
 
-    return this.depassementsProduitsAssocies.filter(
-      (association) =>
-        association.idChoixDepassements === this.selectedDepassementFiltre,
-    );
+      // Si les noms de dépassement sont différents, on les trie
+      if (depassementNameA !== depassementNameB) {
+        return depassementNameA.localeCompare(depassementNameB);
+      }
+
+      // Si les noms de dépassement sont identiques, on trie par nom de produit
+      const produitNameA = this.getProduitName(a.idChoixDepassementsProduits);
+      const produitNameB = this.getProduitName(b.idChoixDepassementsProduits);
+      return produitNameA.localeCompare(produitNameB);
+    });
   }
 }

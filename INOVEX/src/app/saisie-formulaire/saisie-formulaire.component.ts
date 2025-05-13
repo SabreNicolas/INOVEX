@@ -64,7 +64,7 @@ export class SaisieFormulaireComponent implements OnInit {
     if (typeof userLogged === "string") {
       const userLoggedParse = JSON.parse(userLogged);
       this.isAdmin = userLoggedParse["isAdmin"];
-      
+
       if (userLoggedParse["localisation"] !== undefined) {
         this.isSuperAdmin = 1;
       }

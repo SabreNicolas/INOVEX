@@ -217,7 +217,7 @@ export class RecapRondeComponent implements OnInit {
       .subscribe((response) => {
         console.log(this.dateDebString);
         console.log(this.dateFinString);
-        console.log("Actions : "+response.data);
+        console.log("Actions : " + response.data);
         this.listAction = response.data;
         // mettre en place un décodage pour ne plus avoir espace en format %20
         for (let i = 0; i < this.listAction.length; i++) {

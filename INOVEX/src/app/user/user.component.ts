@@ -26,7 +26,7 @@ export class UserComponent implements OnInit {
   constructor(
     private loginService: loginService,
     private popupService: PopupService,
-    private router: Router
+    private router: Router,
   ) {
     this.nom = "";
     this.prenom = "";
@@ -139,7 +139,7 @@ export class UserComponent implements OnInit {
     });
   }
 
-    goToAdmin() {
+  goToAdmin() {
     this.router.navigate(["/admin"]);
   }
 }

@@ -19,7 +19,7 @@ export class NewAnalyseComponent implements OnInit {
     private productsService: productsService,
     private popupService: PopupService,
     private categoriesService: categoriesService,
-    private router: Router
+    private router: Router,
   ) {
     this.listCategories = [];
     this.Code = "";
@@ -102,7 +102,7 @@ export class NewAnalyseComponent implements OnInit {
     form.value["tag"] = "";
   }
 
-    goToAdmin() {
+  goToAdmin() {
     this.router.navigate(["/admin"]);
   }
 }

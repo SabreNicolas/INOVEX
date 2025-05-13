@@ -1,3 +1,38 @@
+<ng-template #myTotauxDialog>
+  <h2 mat-dialog-title>Totaux des Dépassements</h2>
+  <h3 mat-dialog-title>
+    Entre : {{ dateDeb | date: "dd/MM/yyyy HH:mm:ss" }} et
+    {{ dateFin | date: "dd/MM/yyyy HH:mm:ss" }}
+  </h3>
+
+  <mat-dialog-content>
+    <table class="table table-primary">
+      <thead>
+        <tr>
+          <th scope="col">Dépassements</th>
+          <th scope="col">Total Duree</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container
+          *ngFor="let depassement of sumDepassements; let i = index"
+        >
+          <!-- Séparateur de groupe par ligne -->
+          <tr *ngIf="depassement.ligne !== sumDepassements[i - 1]?.ligne">
+            <td colspan="9" class="bg-light fw-bold text-dark">
+              {{ depassement.ligne }}
+            </td>
+          </tr>
+          <tr>
+            <td>{{ depassement.choixDepassements }}</td>
+            <td>{{ depassement.totalDuree }} minutes</td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </mat-dialog-content>
+</ng-template>
+
 <div id="page">
   <div class="row">
     <h5><label for="choixDepassements">Période :</label></h5>
@@ -9,7 +44,6 @@
           name="date_heure_debut"
           ngModel
           class="form-control"
-          ngModel
           [(ngModel)]="dateDeb"
         />
       </div>
@@ -22,14 +56,13 @@
           name="dateFin"
           ngModel
           class="form-control"
-          ngModel
           [(ngModel)]="dateFin"
         />
       </div>
     </div>
-    <div class="col-sm-3">
+    <div class="col-sm-4">
       <div class="form-group">
-        <button class="btn btnUnique" type="submit" (click)="getDepassements()">
+        <button class="btn btnUnique" type="submit" (click)="setPeriode()">
           <img src="assets/refresh.png" alt="Refresh" />
         </button>
         <button
@@ -45,6 +78,13 @@
           (click)="setPeriode('lastMonth')"
         >
           Mois précédent
+        </button>
+        <button
+          style="margin-left: 5em"
+          class="btn btnUnique"
+          (click)="ouvrirDialogTotaux()"
+        >
+          Voir les totaux
         </button>
       </div>
     </div>
@@ -85,12 +125,14 @@
                     <td>{{ depassement.choixDepassementsProduits }}</td>
                     <td>
                       {{
-                        depassement.date_heure_debut | date: "dd/MM/yyyy HH:mm"
+                        depassement.date_heure_debut
+                          | date: "dd/MM/yyyy HH:mm:ss" : "UTC"
                       }}
                     </td>
                     <td>
                       {{
-                        depassement.date_heure_fin | date: "dd/MM/yyyy HH:mm"
+                        depassement.date_heure_fin
+                          | date: "dd/MM/yyyy HH:mm:ss" : "UTC"
                       }}
                     </td>
                     <td>{{ calculerDuree(depassement) }}</td>

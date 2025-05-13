@@ -35,7 +35,7 @@ export class MoralEntitiesComponent implements OnInit {
     private moralEntitiesService: moralEntitiesService,
     private route: ActivatedRoute,
     private popupService: PopupService,
-    private router: Router
+    private router: Router,
   ) {
     this.code = "";
     this.produit = "201";
@@ -271,7 +271,6 @@ export class MoralEntitiesComponent implements OnInit {
     this.code = "";
   }
 
-  
   goToAdmin() {
     this.router.navigate(["/admin"]);
   }

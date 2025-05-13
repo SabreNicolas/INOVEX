@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, TemplateRef, ViewChild } from "@angular/core";
 import { depassement } from "src/models/depassement.model";
 import { depassementsService } from "../services/depassements.service";
 import { format } from "date-fns";
@@ -13,9 +13,18 @@ import Swal from "sweetalert2";
   styleUrl: "./list-depassements.component.scss",
 })
 export class ListDepassementsComponent implements OnInit {
+  @ViewChild("myTotauxDialog") totauxDialog = {} as TemplateRef<any>;
   public listeDepassements: depassement[] = [];
   public dateFin = "";
   public dateDeb = "";
+  public sumDepassements: {
+    ligne: string;
+    choixDepassements: string;
+    totalDuree: number;
+  }[] = [];
+  public numbers: number[] = [];
+  public nbfour = 0;
+  public dialogRef = {};
 
   constructor(
     private depassementsService: depassementsService,
@@ -27,11 +36,88 @@ export class ListDepassementsComponent implements OnInit {
     this.getDepassements();
   }
 
+  ouvrirDialogTotaux() {
+    this.dialogRef = this.dialog.open(this.totauxDialog, {
+      width: "40%",
+      height: "60%",
+      autoFocus: true,
+    });
+    this.dialog.afterAllClosed.subscribe(() => {
+      this.ngOnInit();
+    });
+  }
+
+  getTotaux() {
+    this.sumDepassements = [];
+    const sumsMap = new Map<
+      string,
+      { ligne: string; choixDepassements: string; totalDuree: number }
+    >();
+
+    // Ensemble pour suivre les périodes déjà comptabilisées
+    const processedPeriods = new Set<string>();
+
+    // Trier les dépassements pour assurer un traitement cohérent
+    const sortedDepassements = [...this.listeDepassements].sort(
+      (a, b) =>
+        a.date_heure_debut.localeCompare(b.date_heure_debut) ||
+        a.date_heure_fin.localeCompare(b.date_heure_fin),
+    );
+
+    sortedDepassements.forEach((dep) => {
+      // Créer une clé unique pour la période (date_début + date_fin)
+      const periodKey = `${dep.date_heure_debut}|${dep.date_heure_fin}|${dep.ligne}|${dep.choixDepassements}`;
+
+      // Si cette période exacte a déjà été traitée, on l'ignore
+      if (processedPeriods.has(periodKey)) {
+        return; // Skip this iteration
+      }
+
+      // Marquer cette période comme traitée
+      processedPeriods.add(periodKey);
+
+      // Créer une clé unique combinant ligne et choixDepassements
+      const key = `${dep.ligne}|${dep.choixDepassements}`;
+
+      // Calculer la durée du dépassement en minutes
+      const duration = this.calculateDuration(
+        dep.date_heure_debut,
+        dep.date_heure_fin,
+      );
+
+      // Ajouter à la somme existante ou créer une nouvelle entrée
+      if (sumsMap.has(key)) {
+        sumsMap.get(key)!.totalDuree += duration;
+      } else {
+        sumsMap.set(key, {
+          ligne: dep.ligne,
+          choixDepassements: dep.choixDepassements,
+          totalDuree: duration,
+        });
+      }
+    });
+    this.sumDepassements = Array.from(sumsMap.values());
+  }
+
+  calculateDuration(start: string, end: string): number {
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+    const diffMs = endDate.getTime() - startDate.getTime();
+    return diffMs > 0 ? diffMs / 60000 : 0; // convertir ms en minutes
+  }
+
   getDepassements() {
     this.depassementsService
       .getDepassements()
       .subscribe((response: depassement[]) => {
         this.listeDepassements = response;
+        this.listeDepassements.sort(
+          (a, b) =>
+            a.ligne.localeCompare(b.ligne) ||
+            a.choixDepassements.localeCompare(b.choixDepassements) ||
+            a.date_heure_debut.localeCompare(b.date_heure_debut),
+        );
+        this.getTotaux();
       });
   }
 
@@ -58,6 +144,13 @@ export class ListDepassementsComponent implements OnInit {
         .getDepassementsByDate(this.dateDeb, this.dateFin)
         .subscribe((response: depassement[]) => {
           this.listeDepassements = response;
+          this.listeDepassements.sort(
+            (a, b) =>
+              a.ligne.localeCompare(b.ligne) ||
+              a.choixDepassements.localeCompare(b.choixDepassements) ||
+              a.date_heure_debut.localeCompare(b.date_heure_debut),
+          );
+          this.getTotaux();
         });
     } else {
       this.getDepassements();
