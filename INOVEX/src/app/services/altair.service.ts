@@ -199,8 +199,10 @@ export class AltairService {
       prio = "BASSE";
     } else if (priority == 1) {
       prio = "MOYENNE";
-    } else {
+    } else if (priority == 2) {
       prio = "HAUTE";
+    } else {
+      prio = "SECURITE";
     }
     const payload =
       '{\r\n  "description": "' +

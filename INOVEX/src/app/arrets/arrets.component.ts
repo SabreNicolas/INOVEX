@@ -501,8 +501,8 @@ export class ArretsComponent implements OnInit {
               this.duree = 0;
               this.ngOnInit();
             } else {
-              this.popupService.alertErrorForm(
-                "Erreur lors de la création de l'arrêt ....",
+              this.popupService.alertSuccessForm(
+                "Un arrêt de ce type existe déjà pour cette période ....",
               );
             }
           });

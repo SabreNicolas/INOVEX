@@ -76,9 +76,20 @@ export class RepriseRondeComponent implements OnInit {
           ? this.repriseRonde.date
           : this.repriseRonde.date.toISOString();
       this.quart = this.repriseRonde.quart;
-      this.repriseRonde.date = format(this.repriseRonde.date, "yyyy-dd-MM");
+      // Parse the date string "DD/MM/YYYY" to a Date object
+      const [day, month, year] = (
+        typeof this.repriseRonde.date === "string" ? this.repriseRonde.date : ""
+      ).split("/");
+      let parsedDate: Date;
+      if (day && month && year) {
+        parsedDate = new Date(Number(year), Number(month) - 1, Number(day));
+      } else {
+        parsedDate = new Date(this.repriseRonde.date);
+      }
+      console.log(format(parsedDate, "yyyy-dd-MM"));
+      this.repriseRonde.date = format(parsedDate, "yyyy-MM-dd");
       this.repriseRonde.date = this.repriseRonde.date + " " + heure + ":00:00";
-
+      console.log("Date de la reprise ronde :", this.repriseRonde.date);
       this.rondierService
         .getZonesCalendrierRonde(this.repriseRonde.date)
         .subscribe((zones) => {
