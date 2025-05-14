@@ -1,144 +1,190 @@
-<div class="container">
-    <h2>Liste des Occurrences</h2>
-    <div class="info-message">
-        <i class="fas fa-info-circle"></i>
-        Cliquez sur les en-têtes de colonnes pour trier. Un second clic sur une colonne inverse l'ordre de tri. Les tris peuvent être combinés. Pour réinitialiser les filtres, cliquez sur le bouton "Réinitialiser les filtres".
-      </div>
-<div class="filter-section mb-4">
-  <div class="row align-items-end">
-    <div class="col-md-4">
-      <div class="form-group">
-        <label>Rechercher une Zone/Action</label>
-        <input 
-          type="text" 
-          class="form-control" 
-          [(ngModel)]="searchText"
-          (input)="filterOccurrences()"
-          placeholder="Tapez pour filtrer..."
-        >
-      </div>
-    </div>
-    
-    <div class="col-md-4">
-      <div class="form-group">
-        <label>Date début</label>
-        <input 
-          type="date" 
-          class="form-control" 
-          [(ngModel)]="filterDateDebut"
-          (change)="filterOccurrences()"
-        >
-      </div>
-      <div class="form-group mt-3">
-        <label>Date fin</label>
-        <input 
-          type="date" 
-          class="form-control" 
-          [(ngModel)]="filterDateFin"
-          (change)="filterOccurrences()"
-        >
-      </div>
-    </div>
-    <div class="col-md-4 d-flex align-items-center">
-      <div class="form-check me-3">
-        <input 
-          type="checkbox" 
-          class="form-check-input" 
-          id="hideCurrent"
-          [(ngModel)]="hideCurrentOccurrences"
-          (change)="filterOccurrences()"
-        >
-        <label class="form-check-label" for="hideCurrent">
-          Masquer les occurrences en cours
-        </label>
-      </div>
-
-      <div class="form-check me-3">
-        <input 
-          type="checkbox" 
-          class="form-check-input" 
-          id="hideExpired"
-          [(ngModel)]="hideExpiredOccurrences"
-          (change)="filterOccurrences()"
-        >
-        <label class="form-check-label" for="hideExpired">
-          Masquer les occurrences expirées
-        </label>
-      </div>
-      <button class="btn btn-secondary" (click)="resetFilters()">
-        Réinitialiser les filtres
-      </button>
+<div class="container-fluid min-vh-100 py-5 bg-white">
+  <h2 class="mb-4 text-dark text-center">Liste des Occurrences</h2>
+  <div class="alert alert-info d-flex align-items-center mb-4" role="alert">
+    <i class="fas fa-info-circle me-2"></i>
+    <div>
+      Cliquez sur les en-têtes de colonnes pour trier. Un second clic sur une colonne inverse l'ordre de tri.
+      Les tris peuvent être combinés. Pour réinitialiser les filtres, cliquez sur le bouton
+      <strong>"Réinitialiser les filtres"</strong>.
     </div>
   </div>
-</div>
-  
-    <div class="table-responsive">
-      <table class="table">
-        <thead>
-            <tr>
-                <th (click)="sortData('type')" class="sortable">
-                    Type
-                    <i class="fas" [ngClass]="{
-                      'fa-sort': !sortState['type'],
-                      'fa-sort-up': sortState['type'] === 'asc',
-                      'fa-sort-down': sortState['type'] === 'desc'
-                    }"></i>
-                  </th>
-                  <th (click)="sortData('nomZone')" class="sortable">
-                    Zone/Action
-                    <i class="fas" [ngClass]="{
-                      'fa-sort': !sortState['nomZone'],
-                      'fa-sort-up': sortState['nomZone'] === 'asc',
-                      'fa-sort-down': sortState['nomZone'] === 'desc'
-                    }"></i>
-                  </th>
-            <th (click)="sortData('quart')" class="sortable">
-              Quart
-              <i class="fas" [ngClass]="{
+
+  <form class="mb-4">
+    <div class="row g-3 align-items-end">
+      <div class="col-md-4">
+        <label class="form-label text-dark" for="searchZoneAction">Rechercher une Zone/Action</label>
+        <input
+          id="searchZoneAction"
+          type="text"
+          class="form-control border-secondary"
+          ngModel
+          [(ngModel)]="searchText"
+          [ngModelOptions]="{ standalone: true }"
+          (input)="filterOccurrences()"
+          placeholder="Tapez pour filtrer..."
+        />
+      </div>
+      <div class="col-md-4">
+        <label class="form-label text-dark" for="filterDateDebut">Date début</label>
+        <input
+          id="filterDateDebut"
+          type="date"
+          class="form-control mb-3 border-secondary"
+          [(ngModel)]="filterDateDebut"
+          [ngModelOptions]="{ standalone: true }"
+          ngModel
+          (change)="filterOccurrences()"
+        />
+        <label class="form-label text-dark" for="filterDateFin">Date fin</label>
+        <input
+          id="filterDateFin"
+          type="date"
+          class="form-control border-secondary"
+          [(ngModel)]="filterDateFin"
+          [ngModelOptions]="{ standalone: true }"
+          ngModel
+          (change)="filterOccurrences()"
+        />
+      </div>
+      <div class="col-md-4">
+        <div class="form-check mb-2">
+          <input
+            type="checkbox"
+            class="form-check-input"
+            id="hideCurrent"
+            [(ngModel)]="hideCurrentOccurrences"
+            [ngModelOptions]="{ standalone: true }"
+            ngModel
+            (change)="filterOccurrences()"
+          />
+          <label class="form-check-label text-dark" for="hideCurrent">
+            Masquer les occurrences en cours
+          </label>
+        </div>
+        <div class="form-check mb-2">
+          <input
+            type="checkbox"
+            class="form-check-input"
+            id="hideExpired"
+            [(ngModel)]="hideExpiredOccurrences"
+            [ngModelOptions]="{ standalone: true }"
+            (change)="filterOccurrences()"
+          />
+          <label class="form-check-label text-dark" for="hideExpired">
+            Masquer les occurrences expirées
+          </label>
+        </div>
+        <button type="button" class="btn btn-outline-dark w-100 mt-2" (click)="resetFilters()">
+          <i class="fas fa-undo me-1"></i> Réinitialiser les filtres
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <div class="table-responsive">
+    <table class="table table-hover align-middle bg-white rounded shadow overflow-hidden">
+      <thead class="table-light">
+        <tr>
+          <th (click)="sortData('type')" class="sortable" style="cursor:pointer; user-select:none;">
+            <span>Type</span>
+            <i class="fas ms-1 text-primary"
+              [ngClass]="{
+                'fa-sort': !sortState['type'],
+                'fa-sort-up': sortState['type'] === 'asc',
+                'fa-sort-down': sortState['type'] === 'desc'
+              }"></i>
+          </th>
+          <th (click)="sortData('nomZone')" class="sortable" style="cursor:pointer; user-select:none;">
+            <span>Zone/Action</span>
+            <i class="fas ms-1 text-primary"
+              [ngClass]="{
+                'fa-sort': !sortState['nomZone'],
+                'fa-sort-up': sortState['nomZone'] === 'asc',
+                'fa-sort-down': sortState['nomZone'] === 'desc'
+              }"></i>
+          </th>
+          <th (click)="sortData('quart')" class="sortable" style="cursor:pointer; user-select:none;">
+            <span>Quart</span>
+            <i class="fas ms-1 text-primary"
+              [ngClass]="{
                 'fa-sort': !sortState['quart'],
                 'fa-sort-up': sortState['quart'] === 'asc',
                 'fa-sort-down': sortState['quart'] === 'desc'
               }"></i>
-            </th>
-            <th (click)="sortData('finReccurrence')" class="sortable">
-              Fin récurrence
-              <i class="fas" [ngClass]="{
+          </th>
+          <th (click)="sortData('finReccurrence')" class="sortable" style="cursor:pointer; user-select:none;">
+            <span>Fin récurrence</span>
+            <i class="fas ms-1 text-primary"
+              [ngClass]="{
                 'fa-sort': !sortState['finReccurrence'],
                 'fa-sort-up': sortState['finReccurrence'] === 'asc',
                 'fa-sort-down': sortState['finReccurrence'] === 'desc'
               }"></i>
-            </th>
-            <th (click)="sortData('count')" class="sortable">
-              Périodicité
-              <i class="fas" [ngClass]="{
-                'fa-sort': !sortState['count'],
-                'fa-sort-up': sortState['count'] === 'asc',
-                'fa-sort-down': sortState['count'] === 'desc'
-              }"></i>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let occ of listOccurences">
+          </th>
+          <th (click)="sortData('count')" class="sortable" style="cursor:pointer; user-select:none;">
+            <span>Périodicité</span>
+          </th>
+          <th>
+            <span>Prolonger</span>
+          </th>
+          <th>
+            <span>Supprimer l'ocurrence</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let occ of listOccurences"
+          [ngClass]="{
+              'past-date': isDatePassed(occ.finReccurrence),
+              'soon-date': isDateSoon(occ.finReccurrence)
+          }">
+          <ng-container *ngIf="occ.recurrencePhrase !== null && occ.recurrencePhrase !== undefined && occ.recurrencePhrase !== ''">
             <td>
-              <span class="badge" [ngClass]="{'badge-zone': !occ.isAction, 'badge-action': occ.isAction}">
-                {{ occ.type }}
-              </span>
+            <span
+              class="badge px-3 py-2 fs-6"
+              [ngClass]="{
+              'bg-primary': !occ.isAction,
+              'bg-success': occ.isAction
+              }"
+            >
+              {{ occ.type }}
+            </span>
             </td>
             <td>{{ occ.nomZone }}</td>
             <td>
-              <span class="quart" [ngClass]="{
-                'matin': occ.quart === 1,
-                'apres-midi': occ.quart === 2,
-                'nuit': occ.quart === 3
-              }">
-                {{ getQuartLibelle(occ.quart) }}
-              </span>
+            <span
+              class="badge px-3 py-2 fs-6"
+              [ngClass]="{
+              'bg-warning text-dark': occ.quart === 1,
+              'bg-info text-dark': occ.quart === 2,
+              'bg-dark': occ.quart === 3
+              }"
+            >
+              {{ getQuartLibelle(occ.quart) }}
+            </span>
             </td>
-            <td>{{ occ.finReccurrence | date:'dd/MM/yyyy' }}</td>
-            <td>{{ occ.count }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+            <td>{{ occ.finReccurrence | date: "dd/MM/yyyy" }}</td>
+            <td>{{ occ.recurrencePhrase }}</td>
+            <td>
+            <button
+              class="btn btn-outline-primary"
+              (click)="openSelectionDate(occ)"
+              [disabled]="!occ.recurrencePhrase"
+            >
+              <i class="fas fa-plus"></i>
+            </button>
+            </td>
+            <td>
+            <button
+              class="btn btn-outline-danger"
+              (click)="deleteOccurrence(occ)"
+            >
+              <i class="fas fa-trash"></i>
+            </button>
+            </td>
+          </ng-container>
+        </tr>
+      </tbody>
+    </table>
   </div>
+</div>

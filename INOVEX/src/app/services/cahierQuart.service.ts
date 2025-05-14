@@ -5,7 +5,6 @@ import { zone } from "src/models/zone.model";
 import { idUsineService } from "./idUsine.service";
 import { DatePipe } from "@angular/common";
 import { environment } from "src/environments/environment";
-import { GroupedOccurrence } from 'src/models/groupoccurence.model';
 
 @Injectable()
 export class cahierQuartService {
@@ -24,7 +23,7 @@ export class cahierQuartService {
   constructor(
     private http: HttpClient,
     private idUsineService: idUsineService,
-    private datePipe: DatePipe,
+    private datePipe: DatePipe
   ) {
     this.httpClient = http;
     this.idUsine = this.idUsineService.getIdUsine();
@@ -152,7 +151,7 @@ export class cahierQuartService {
     idZone: number,
     poste: string,
     heure_deb: string,
-    heure_fin: string,
+    heure_fin: string
   ) {
     const requete =
       "https://" +
@@ -182,7 +181,7 @@ export class cahierQuartService {
     idUser: number,
     idEquipe: number,
     typeInfo: string,
-    valueInfo: string,
+    valueInfo: string
   ) {
     valueInfo = valueInfo.replace("'", "''");
     const requete =
@@ -402,7 +401,7 @@ export class cahierQuartService {
     dateFin: string,
     description: string,
     forQuart: number,
-    maillist: string,
+    maillist: string
   ) {
     titre = encodeURIComponent(titre);
     description = encodeURIComponent(description);
@@ -441,7 +440,7 @@ export class cahierQuartService {
     dateFin: string,
     idActu: number,
     description: string,
-    forQuart: number,
+    forQuart: number
   ) {
     titre = encodeURIComponent(titre);
     description = encodeURIComponent(description);
@@ -549,7 +548,7 @@ export class cahierQuartService {
     dateDeb: string,
     dateFin: string,
     titre: string,
-    importance: number,
+    importance: number
   ) {
     titre = encodeURIComponent(titre);
     const requete =
@@ -599,7 +598,7 @@ export class cahierQuartService {
     cause: string,
     description: string,
     consigne: number,
-    demandeTravaux: number,
+    demandeTravaux: number
   ) {
     titre = encodeURIComponent(titre);
     groupementGMAO = encodeURIComponent(groupementGMAO);
@@ -663,7 +662,7 @@ export class cahierQuartService {
     description: string,
     consigne: number,
     demandeTravaux: number,
-    idEvenement: number,
+    idEvenement: number
   ) {
     titre = encodeURIComponent(titre);
     groupementGMAO = encodeURIComponent(groupementGMAO);
@@ -747,7 +746,7 @@ export class cahierQuartService {
     titre: string,
     groupementGMAO: string,
     equipementGMAO: string,
-    importance: number,
+    importance: number
   ) {
     titre = encodeURIComponent(titre);
 
@@ -841,13 +840,14 @@ export class cahierQuartService {
   }
 
   //Récupérer les zones devant remonter sur le PDF (contenant PDF dans le nom)
-  getZonesPDF(date : string) {
+  getZonesPDF(date: string) {
     const requete =
       "https://" +
       this.ip +
       "/recupZonesPDF?idUsine=" +
       this.idUsine +
-      "&date="+date;
+      "&date=" +
+      date;
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
@@ -857,14 +857,16 @@ export class cahierQuartService {
   }
 
   //Récupérer les zones devant remonter sur le PDF (contenant PDF dans le nom)
-  getElementsPDF(idZone : number, date : string, quart : number) {
+  getElementsPDF(idZone: number, date: string, quart: number) {
     const requete =
       "https://" +
       this.ip +
       "/recupElementsPDF?idZone=" +
       idZone +
-      "&date="+date+
-      "&quart="+quart;
+      "&date=" +
+      date +
+      "&quart=" +
+      quart;
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
@@ -929,6 +931,7 @@ export class cahierQuartService {
     quart: number,
     dateFin: string,
     dateFinReccurrence: any,
+    recurrencePhrase = ""
   ) {
     const requete =
       "https://" +
@@ -944,8 +947,10 @@ export class cahierQuartService {
       "&dateFinReccurrence=" +
       dateFinReccurrence +
       "&idUsine=" +
-      this.idUsine;
-
+      this.idUsine +
+      "&recurrencePhrase=" +
+      recurrencePhrase;
+    console.log(requete);
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
     };
@@ -961,6 +966,7 @@ export class cahierQuartService {
     dateFin: string,
     termine: number,
     dateFinReccurrence: any,
+    recurrencePhrase = ""
   ) {
     const requete =
       "https://" +
@@ -978,7 +984,9 @@ export class cahierQuartService {
       "&idUsine=" +
       this.idUsine +
       "&termine=" +
-      termine;
+      termine +
+      "&recurrencePhrase=" +
+      recurrencePhrase;
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
@@ -992,7 +1000,7 @@ export class cahierQuartService {
     idAction: number,
     dateDeb: string,
     quart: number,
-    dateFin: string,
+    dateFin: string
   ) {
     const requete =
       "https://" +
@@ -1097,7 +1105,7 @@ export class cahierQuartService {
       quart +
       "&dateDeb=" +
       dateDeb;
-    //console.log(requete);
+    // console.log(requete);
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
@@ -1206,7 +1214,7 @@ export class cahierQuartService {
     nom: string,
     dateDeb: string,
     dateFin: string,
-    idAction: number,
+    idAction: number
   ) {
     nom = encodeURIComponent(nom);
     const requete =
@@ -1610,9 +1618,16 @@ export class cahierQuartService {
   }
 
   //Récupération de l'url de récap de quart PDF
-  getUrlPDF(date : string, quart : number){
+  getUrlPDF(date: string, quart: number) {
     const requete =
-      "https://" + this.ip + "/getURLPDF?idUsine=" + this.idUsine+"&quart="+quart+"&date="+date;
+      "https://" +
+      this.ip +
+      "/getURLPDF?idUsine=" +
+      this.idUsine +
+      "&quart=" +
+      quart +
+      "&date=" +
+      date;
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),
@@ -1678,33 +1693,82 @@ export class cahierQuartService {
     return this.http.get<any[]>(requete, requestOptions);
   }
 
+  //Créer un nouvel historique de consgine
+  updateFinRecurrenceActionCalendrier(
+    idAction: number,
+    dateDeb: string,
+    quart: number
+  ) {
+    const requete =
+      "https://" +
+      this.ip +
+      "/updateFinRecurrenceActionCalendrier/" +
+      idAction +
+      "?dateDeb=" +
+      dateDeb +
+      "&quart=" +
+      quart;
+
+    const requestOptions = {
+      headers: new HttpHeaders(this.headerDict),
+    };
+
+    return this.http.put<any>(requete, null, requestOptions);
+  }
+
+  //Créer un nouvel historique de consgine
+  updateFinRecurrenceZoneCalendrier(
+    idZone: number,
+    dateDeb: string,
+    quart: number
+  ) {
+    const requete =
+      "https://" +
+      this.ip +
+      "/updateFinRecurrenceZoneCalendrier/" +
+      idZone +
+      "?dateDeb=" +
+      dateDeb +
+      "&quart=" +
+      quart;
+
+    const requestOptions = {
+      headers: new HttpHeaders(this.headerDict),
+    };
+
+    return this.http.put<any>(requete, null, requestOptions);
+  }
   // Grouper et compter les occurences par zone/quart/action
   groupAndCountOccurrences(zoneData: any[]) {
     const grouped = new Map<string, any>();
-  
-    zoneData.forEach(item => {
-      const key = `${item.nom}-${item.quart}-${item.isAction ? 'Action' : 'Zone'}`;
-      
+
+    zoneData.forEach((item) => {
+      const key = `${item.nom}-${item.quart}-${item.isAction ? "Action" : "Zone"}`;
       if (!grouped.has(key)) {
         grouped.set(key, {
           ...item,
           count: 1,
-          finReccurrence: item.finReccurrence || item.date_heure_fin
+          finReccurrence: item.finReccurrence,
+          recurrencePhrase: item.recurrencePhrase,
         });
       } else {
         const existing = grouped.get(key);
         existing.count++;
-        
+        existing.recurrencePhrase = item.recurrencePhrase;
         // Compare les dates pour garder la plus éloignée
-        const currentFinRec = existing.finReccurrence ? new Date(existing.finReccurrence) : new Date(existing.date_heure_fin);
-        const newFinRec = item.finReccurrence ? new Date(item.finReccurrence) : new Date(item.date_heure_fin);
-        
+        const currentFinRec = existing.finReccurrence
+          ? new Date(existing.finReccurrence)
+          : new Date(existing.date_heure_fin);
+        const newFinRec = item.finReccurrence
+          ? new Date(item.finReccurrence)
+          : new Date(item.date_heure_fin);
+
         if (newFinRec > currentFinRec) {
           existing.finReccurrence = item.finReccurrence || item.date_heure_fin;
         }
       }
     });
-  
+
     return Array.from(grouped.values());
   }
 }
