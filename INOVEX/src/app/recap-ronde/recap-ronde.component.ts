@@ -69,7 +69,7 @@ export class RecapRondeComponent implements OnInit {
   public listActu: Actualite[];
   public hideEquipe: boolean;
   public idAnomalie: number;
-
+  public isAdmin: boolean;
   constructor(
     public altairService: AltairService,
     private route: ActivatedRoute,
@@ -121,6 +121,12 @@ export class RecapRondeComponent implements OnInit {
     this.listActu = [];
     this.hideEquipe = true;
     this.idAnomalie = 0;
+    this.isAdmin = false;
+    const userLogged = localStorage.getItem("user");
+    if (typeof userLogged === "string") {
+      const userLoggedParse = JSON.parse(userLogged);
+      this.isAdmin = userLoggedParse["isAdmin"];
+    }
 
     this.altairService.login().subscribe((response) => {
       this.token = response.token;

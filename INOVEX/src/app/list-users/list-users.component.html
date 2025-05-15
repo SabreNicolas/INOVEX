@@ -41,6 +41,7 @@
         <th scope="col">QSE</th>
         <th scope="col">Rapports</th>
         <th scope="col">Chef de quart</th>
+        <th scope="col">Mail</th>
         <th scope="col">Admin</th>
         <th scope="col">#</th>
       </tr>
@@ -176,6 +177,24 @@
         <td *ngIf="user.isChefQuart == true">
           <button
             (click)="changeDroit(user.login, 0, 'UserChefQuart')"
+            id="setNotChefQuart"
+            class="btn btn-outline-success"
+          >
+            <i style="color: green" class="fas fa-check"></i>
+          </button>
+        </td>
+        <td *ngIf="user.isMail == false">
+          <button
+            (click)="changeDroit(user.login, 1, 'UserMail')"
+            id="setChefQuart"
+            class="btn btn-outline-danger"
+          >
+            <i style="color: red" class="fas fa-times-circle"></i>
+          </button>
+        </td>
+        <td *ngIf="user.isMail == true">
+          <button
+            (click)="changeDroit(user.login, 0, 'UserMail')"
             id="setNotChefQuart"
             class="btn btn-outline-success"
           >

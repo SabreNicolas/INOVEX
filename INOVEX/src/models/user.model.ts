@@ -13,4 +13,5 @@ export interface user {
   isRapport: boolean;
   isChefQuart: boolean;
   isAdmin: boolean;
+  isMail: boolean;
 }
