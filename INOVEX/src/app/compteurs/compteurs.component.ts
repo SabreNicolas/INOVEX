@@ -5,6 +5,7 @@ import { categoriesService } from "../services/categories.service";
 import { category } from "src/models/categories.model";
 import { idUsineService } from "src/app/services/idUsine.service";
 import { PopupService } from "../services/popup.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-compteurs",
@@ -18,12 +19,12 @@ export class CompteursComponent implements OnInit {
   public estUnique: boolean;
   public idUsine: number;
   public creation: boolean;
-
   constructor(
     private productsService: productsService,
     private popupService: PopupService,
     private categoriesService: categoriesService,
     private idUsineService: idUsineService,
+    private router: Router,
   ) {
     this.listCategories = [];
     this.Code = "";
@@ -123,5 +124,9 @@ export class CompteursComponent implements OnInit {
     form.controls["isReferentiel"].reset();
     form.value["isReferentiel"] = "";
     this.creation = false;
+  }
+
+  goToAdmin() {
+    this.router.navigate(["/admin"]);
   }
 }

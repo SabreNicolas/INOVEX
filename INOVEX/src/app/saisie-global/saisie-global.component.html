@@ -171,16 +171,16 @@
         </div>
       </li>
 
-      <li class="nav-item dropdown" routerLinkActive="active">
+      <!-- <li class="nav-item dropdown" routerLinkActive="active">
         <a
           class="nav-link dropdown-toggle"
-          id="navbarDropdownDep"
+          id="navbarDropdownArrets"
           role="button"
           data-toggle="dropdown"
           aria-haspopup="true"
           aria-expanded="false"
         >
-          Dépassements 1/2H
+          Depassements 1/2H
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a
@@ -195,6 +195,23 @@
             [queryParams]="{ isArret: 'false' }"
             >Historique</a
           >
+        </div>
+      </li> -->
+
+      <li class="nav-item dropdown" routerLinkActive="active">
+        <a
+          class="nav-link dropdown-toggle"
+          id="navbarDropdownDep"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Dépassements
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" routerLink="depassements">Saisie</a>
+          <a class="dropdown-item" routerLink="listDepassements">Historique</a>
         </div>
       </li>
 

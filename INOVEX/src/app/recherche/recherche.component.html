@@ -185,7 +185,9 @@
         <tr class="color--{{ event.importance }} line">
           <td>{{ event.typeDonnee }}</td>
           <td>{{ event.nom }}</td>
-          <td *ngIf="evenement === true || actu === true">{{ event.description }}</td>
+          <td *ngIf="evenement === true || actu === true">
+            {{ event.description }}
+          </td>
           <td *ngIf="evenement === true">{{ event.groupementGMAO }}</td>
           <td *ngIf="evenement === true">{{ event.equipementGMAO }}</td>
           <td *ngIf="evenement === true">{{ event.cause }}</td>

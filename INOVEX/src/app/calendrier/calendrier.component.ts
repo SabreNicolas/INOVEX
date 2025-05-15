@@ -658,6 +658,8 @@ export class CalendrierComponent implements OnInit {
         let nbOccurrence = 0;
         let idAction = 0;
         if (this.radioSelect !== "zone") {
+          this.dateDeb = this.dateDeb + " " + heureDeb;
+          this.dateFin = this.dateFin + " " + heureFin;
           nbOccurrence = dates.length * this.quart.length;
           try {
             const response = await this.cahierQuartService

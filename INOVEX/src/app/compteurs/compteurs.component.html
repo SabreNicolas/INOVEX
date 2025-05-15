@@ -81,11 +81,14 @@
       <p style="font-size: smaller; color: grey">* : Obligatoire</p>
 
       <div class="form-group">
-        <button class="btn btn-success btn-lg" type="submit" [disabled]="creation">Valider</button>
         <button
-          class="btn btn-danger btn-lg"
-          onclick="window.location.replace('/admin')"
+          class="btn btn-success btn-lg"
+          type="submit"
+          [disabled]="creation"
         >
+          Valider
+        </button>
+        <button class="btn btn-danger btn-lg" (click)="goToAdmin()">
           Annuler
         </button>
       </div>

@@ -1146,16 +1146,16 @@ export class cahierQuartService {
   ////Actions////
 
   //Récupérer toutes les actions d'une ronde
-  getActionsRonde(dateDeb: string, dateFin: string) {
+  getActionsRonde(dateDebString: string, dateFinString: string) {
     const requete =
       "https://" +
       this.ip +
       "/getActionsRonde?idUsine=" +
       this.idUsine +
       "&dateDeb=" +
-      dateDeb +
+      dateDebString +
       "&dateFin=" +
-      dateFin;
+      dateFinString;
 
     const requestOptions = {
       headers: new HttpHeaders(this.headerDict),

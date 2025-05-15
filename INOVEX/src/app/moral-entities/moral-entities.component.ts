@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import { dechetsCollecteurs } from "src/models/dechetsCollecteurs.model";
 import { ActivatedRoute } from "@angular/router";
 import { PopupService } from "../services/popup.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-moral-entities",
@@ -34,6 +35,7 @@ export class MoralEntitiesComponent implements OnInit {
     private moralEntitiesService: moralEntitiesService,
     private route: ActivatedRoute,
     private popupService: PopupService,
+    private router: Router,
   ) {
     this.code = "";
     this.produit = "201";
@@ -267,5 +269,9 @@ export class MoralEntitiesComponent implements OnInit {
     form.controls["mailClient"].reset();
     form.value["mailClient"] = "";
     this.code = "";
+  }
+
+  goToAdmin() {
+    this.router.navigate(["/admin"]);
   }
 }

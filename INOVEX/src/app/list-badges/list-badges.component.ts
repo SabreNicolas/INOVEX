@@ -39,7 +39,7 @@ export class ListBadgesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    //La création de zone consignation et de permis de feu est également possible pour les QSE donc on vérifie les droits admin pour afficher les 
+    //La création de zone consignation et de permis de feu est également possible pour les QSE donc on vérifie les droits admin pour afficher les
     //badges liés aux zones pour les admins
     const userLogged = localStorage.getItem("user");
     if (typeof userLogged === "string") {

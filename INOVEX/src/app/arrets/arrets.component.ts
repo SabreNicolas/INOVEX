@@ -385,7 +385,14 @@ export class ArretsComponent implements OnInit {
         var selection = document.getElementById("fortuit");
         //@ts-expect-error data
         this.commentaire = selection.options[selection.selectedIndex].value;
-        if (this.commentaire != "Autre" && this.commentaire != "Turbine" && this.commentaire != "Réducteur" && this.commentaire != "Alternateur" && this.commentaire != "Auxiliaires - Instrumentation - Contrôle commande GTA") {
+        if (
+          this.commentaire != "Autre" &&
+          this.commentaire != "Turbine" &&
+          this.commentaire != "Réducteur" &&
+          this.commentaire != "Alternateur" &&
+          this.commentaire !=
+            "Auxiliaires - Instrumentation - Contrôle commande GTA"
+        ) {
           if (this.fortuit_chaudiere == true) {
             var selection2 = document.getElementById("fortuit_chaudiere");
             this.commentaire =
@@ -494,8 +501,8 @@ export class ArretsComponent implements OnInit {
               this.duree = 0;
               this.ngOnInit();
             } else {
-              this.popupService.alertErrorForm(
-                "Erreur lors de la création de l'arrêt ....",
+              this.popupService.alertSuccessForm(
+                "Un arrêt de ce type existe déjà pour cette période ....",
               );
             }
           });

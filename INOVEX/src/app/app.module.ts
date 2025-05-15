@@ -118,7 +118,11 @@ import { PreventDoubleClickDirective } from "./prevent-double-click";
 import { MatAccordion, MatExpansionModule } from "@angular/material/expansion";
 import { ListActionsEnregistreesComponent } from "./list-actions-enregistrees/list-actions-enregistrees.component";
 import { ListOccurencesComponent } from './list-occurences/list-occurences.component';
-
+import { ChoixDepassementsComponent } from "./choix-depassements/choix-depassements.component";
+import { depassementsService } from "./services/depassements.service";
+import { DepassementsComponent } from "./depassements/depassements.component";
+import { ListDepassementsComponent } from "./list-depassements/list-depassements.component";
+import { RepriseRondeComponent } from "./reprise-ronde/reprise-ronde.component";
 registerLocaleData(localeFr, "fr");
 class CustomDateFormatter extends CalendarNativeDateFormatter {
   public override dayViewHour({ date, locale }: DateFormatterParams): string {
@@ -213,6 +217,10 @@ class CustomDateFormatter extends CalendarNativeDateFormatter {
     PreventDoubleClickDirective,
     ListActionsEnregistreesComponent,
     ListOccurencesComponent,
+    ChoixDepassementsComponent,
+    DepassementsComponent,
+    ListDepassementsComponent,
+    RepriseRondeComponent,
   ],
   imports: [
     BrowserModule,
@@ -261,6 +269,7 @@ class CustomDateFormatter extends CalendarNativeDateFormatter {
     cahierQuartService,
     idUsineService,
     formulaireService,
+    depassementsService,
   ],
   bootstrap: [AppComponent],
 })

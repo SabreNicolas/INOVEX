@@ -27,8 +27,8 @@ export class RecapRondeListeComponent implements OnInit {
   public nomEquipe: string;
   public listRondier: any[];
   public dateDebForm: string;
-  public dateFormatRonde : string;
-  public urlPDF : string;
+  public dateFormatRonde: string;
+  public urlPDF: string;
 
   constructor(
     public cahierQuartService: cahierQuartService,
@@ -178,10 +178,9 @@ export class RecapRondeListeComponent implements OnInit {
     this.cahierQuartService
       .getUrlPDF(this.dateFormatRonde, this.quart)
       .subscribe((response) => {
-        if(response.data.length > 0){
+        if (response.data.length > 0) {
           this.urlPDF = response.data[0].urlPDF;
-        }
-        else this.urlPDF = "";
+        } else this.urlPDF = "";
       });
   }
 
@@ -233,7 +232,7 @@ export class RecapRondeListeComponent implements OnInit {
     this.ngOnInit();
   }
 
-  DLFile(){
-    window.open(this.urlPDF,"_blank");
+  DLFile() {
+    window.open(this.urlPDF, "_blank");
   }
 }

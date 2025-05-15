@@ -301,7 +301,7 @@ export class ListSortantsComponent implements OnInit {
       }
       //Cergy
       else {
-        this.lectureCSV(event, ",", true, 12, 0, 14);
+        this.lectureCSV(event, ";", true, 12, 0, 14);
       }
     }
     //Vitré
@@ -324,10 +324,17 @@ export class ListSortantsComponent implements OnInit {
       //delimiter,header,typedechet,dateEntree,tonnage, posEntreeSortie
       this.lectureCSV(event, ";", true, 18, 5, 9, 4);
     }
-    //Saint-barth
+    //Saint-barth & Calais
     else if (this.typeImportTonnage.toLowerCase().includes("quantum")) {
-      //delimiter,header,typedechet,dateEntree,tonnage, posEntreeSortie
-      this.lectureCSV(event, ";", true, 3, 0, 6, 1);
+      if (this.idUsine === 29 || this.idUsine === 31) {
+        //Calais
+        this.lectureCSV(event, ";", true, 4, 1, 11);
+      }
+      //Saint-barth
+      else {
+        //delimiter,header,typedechet,dateEntree,tonnage, posEntreeSortie
+        this.lectureCSV(event, ";", true, 3, 0, 6, 1);
+      }
     }
     //Bourg en Bresse & Chagny
     else if (this.typeImportTonnage.toLowerCase().includes("adepro")) {
@@ -387,7 +394,9 @@ export class ListSortantsComponent implements OnInit {
             //si ce n'est pas caktus on divise par 1000 pour avoir en tonnes
             if (
               !this.typeImportTonnage.toLowerCase().includes("caktus") &&
-              !this.typeImportTonnage.toLowerCase().includes("tradim")
+              !this.typeImportTonnage.toLowerCase().includes("tradim") &&
+              this.idUsine != 9 &&
+              !this.typeImportTonnage.toLowerCase().includes("quantum")
             ) {
               divisionKgToTonnes = 1000;
             }
@@ -513,7 +522,8 @@ export class ListSortantsComponent implements OnInit {
           csv.entrant.toLowerCase() == "sortant" ||
           csv.entrant.toLowerCase() == "sous produits" ||
           csv.entrant.toLowerCase() == "recyclables" ||
-          (csv.entrant.toLowerCase() == "transfert" && this.typeImportTonnage.toLowerCase().includes("adepro"))
+          (csv.entrant.toLowerCase() == "transfert" &&
+            this.typeImportTonnage.toLowerCase().includes("adepro"))
         ) {
           //Si il y a correspondance on fait traitement
           if (correspondance.productImport == csv.typeDechet) {

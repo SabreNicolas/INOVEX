@@ -1,0 +1,177 @@
+<div id="page">
+  <!--Filtres de recherche-->
+  <div class="form-group">
+    <h5><label for="choixDepassement">Filtres :</label></h5>
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-group">
+          <select
+            id="choixDepassement"
+            required
+            class="form-select"
+            aria-label="example"
+            name="choixDepassement"
+            (change)="depassement.choixDepassementsProduits = ''"
+            ngModel
+            [(ngModel)]="depassement.choixDepassements"
+          >
+            <option value="" disabled selected>Choisir un filtre</option>
+            <option
+              *ngFor="let choixDepassement of choixDepassementsTable"
+              value="{{ choixDepassement.nom }}"
+            >
+              {{ choixDepassement.nom }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="row" *ngIf="depassement.choixDepassements !== ''">
+      <div class="col-sm-6">
+        <div class="form-group">
+          <select
+            id="choixDepassementProduit"
+            required
+            class="form-select"
+            aria-label="example"
+            name="choixDepassementProduit"
+            ngModel
+            [(ngModel)]="depassement.choixDepassementsProduits"
+          >
+            <option value="" disabled selected>Choisir le détail</option>
+            <option
+              *ngFor="let choixDepassementProduit of getFilteredAssociations()"
+              value="{{ choixDepassementProduit.nom }}"
+            >
+              {{ choixDepassementProduit.nom }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="row" *ngIf="depassement.choixDepassements !== ''">
+        <div class="col-sm-6">
+          <div class="form-group">
+            <select
+              id="lignes"
+              required
+              class="form-select"
+              aria-label="example"
+              name="lignes"
+              ngModel
+              [(ngModel)]="depassement.ligne"
+            >
+              <option *ngFor="let ligne of listeLignes" value="{{ ligne }}">
+                {{ ligne }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="row" *ngIf="depassement.choixDepassementsProduits !== ''">
+        <h5><label for="periode">Période :</label></h5>
+        <div class="col-sm-3">
+          <div class="form-group">
+            <input
+              type="datetime-local"
+              id="date_heure_debut"
+              name="date_heure_debut"
+              ngModel
+              [(ngModel)]="depassement.date_heure_debut"
+              class="form-control"
+              step="1"
+              max="9999-12-31T23:59:59"
+            />
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="form-group">
+            <input
+              type="datetime-local"
+              id="date_heure_fin"
+              name="date_heure_fin"
+              ngModel
+              [(ngModel)]="depassement.date_heure_fin"
+              class="form-control"
+              step="1"
+              max="9999-12-31T23:59:59"
+            />
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="form-group">
+            <button
+              class="btn btn-success mr-3"
+              (click)="setPeriode(10)"
+              *ngIf="
+                depassement.choixDepassements.includes('10mn') ||
+                !depassement.choixDepassements.includes('30mn')
+              "
+            >
+              10 min
+            </button>
+            <button
+              class="btn btn-success"
+              (click)="setPeriode(30)"
+              *ngIf="
+                depassement.choixDepassements.includes('30mn') ||
+                !depassement.choixDepassements.includes('10mn')
+              "
+            >
+              30 min
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="row" *ngIf="depassement.choixDepassementsProduits !== ''">
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label for="causes">Causes :</label>
+            <input
+              type="text"
+              name="causes"
+              id="causes"
+              ngModel
+              [(ngModel)]="depassement.causes"
+              class="form-control"
+              placeholder="Causes"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="row" *ngIf="depassement.choixDepassementsProduits !== ''">
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label for="concentration">Concentration : *</label>
+            <input
+              type="text"
+              required
+              name="concentration"
+              id="concentration"
+              ngModel
+              [(ngModel)]="depassement.concentration"
+              class="form-control"
+              placeholder="Concentration"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="row" *ngIf="depassement.choixDepassementsProduits !== ''">
+        <div class="col-sm-6">
+          <div class="form-group">
+            <button
+              [disabled]="!validDepassement()"
+              class="btn btn-success btn-lg"
+              type="submit"
+              (click)="ajouterDepassement()"
+            >
+              Valider
+            </button>
+            <button class="btn btn-danger btn-lg" routerLink="/">
+              Annuler
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
