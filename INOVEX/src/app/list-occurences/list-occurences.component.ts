@@ -37,7 +37,7 @@ export class ListOccurencesComponent implements OnInit {
   hideCurrentOccurrences = false;
   constructor(
     private cahierQuartService: cahierQuartService,
-    private popupService: PopupService
+    private popupService: PopupService,
   ) {}
 
   ngOnInit() {
@@ -55,7 +55,7 @@ export class ListOccurencesComponent implements OnInit {
           recurrencePhrase: zone.recurrencePhrase,
           isAction: false,
           type: "Zone",
-        }))
+        })),
       );
       // Charger et grouper les actions
       this.cahierQuartService
@@ -72,12 +72,12 @@ export class ListOccurencesComponent implements OnInit {
                 quart: this.getQuartFromHour(action.date_heure_debut),
                 isAction: true,
                 type: "Action",
-              }))
+              })),
             );
           console.log(groupedActions);
           // Combiner et trier par nomZone par défaut
           this.listOccurences = [...groupedZones, ...groupedActions].sort(
-            (a, b) => a.nomZone.localeCompare(b.nomZone)
+            (a, b) => a.nomZone.localeCompare(b.nomZone),
           );
           this.originalList = [...this.listOccurences];
         });
@@ -107,7 +107,7 @@ export class ListOccurencesComponent implements OnInit {
   sortData(column: string) {
     // Si la colonne est déjà dans l'historique, inverser sa direction
     const existingSort = this.sortHistory.find(
-      (sort) => sort.column === column
+      (sort) => sort.column === column,
     );
     if (existingSort) {
       existingSort.direction =
@@ -235,7 +235,7 @@ export class ListOccurencesComponent implements OnInit {
     if (this.searchText) {
       const searchLower = this.searchText.toLowerCase();
       filteredList = filteredList.filter((occ) =>
-        occ.nomZone.toLowerCase().includes(searchLower)
+        occ.nomZone.toLowerCase().includes(searchLower),
       );
     }
 
@@ -304,7 +304,7 @@ export class ListOccurencesComponent implements OnInit {
   async genererDatesAjout(
     dateDeb: Date,
     dateFin: Date,
-    recurrencePhrase: string
+    recurrencePhrase: string,
   ): Promise<Date[]> {
     const dates: Date[] = [];
     let currentDate = new Date(dateDeb);
@@ -345,7 +345,7 @@ export class ListOccurencesComponent implements OnInit {
             const firstDayOfMonth = new Date(
               currentDate.getFullYear(),
               currentDate.getMonth(),
-              1
+              1,
             );
             let count = 0;
             let day = new Date(firstDayOfMonth);
@@ -364,7 +364,7 @@ export class ListOccurencesComponent implements OnInit {
             currentDate = new Date(
               firstDayOfMonth.getFullYear(),
               firstDayOfMonth.getMonth() + interval,
-              1
+              1,
             );
           }
         } else {
@@ -415,7 +415,7 @@ export class ListOccurencesComponent implements OnInit {
         ((date.getTime() - week1.getTime()) / 86400000 -
           3 +
           ((week1.getDay() + 6) % 7)) /
-          7
+          7,
       )
     );
   }
@@ -439,7 +439,7 @@ export class ListOccurencesComponent implements OnInit {
         }
         if (new Date(dateFin) < new Date(event.finReccurrence)) {
           Swal.showValidationMessage(
-            "La date de fin doit être supérieure à la date de récurrence."
+            "La date de fin doit être supérieure à la date de récurrence.",
           );
           return false;
         }
@@ -461,12 +461,12 @@ export class ListOccurencesComponent implements OnInit {
 
   async createEvenementCalendrier(
     event: GroupedOccurrence,
-    dateFinRecurrence: string
+    dateFinRecurrence: string,
   ) {
     const dates = await this.genererDatesAjout(
       new Date(event.finReccurrence),
       new Date(dateFinRecurrence),
-      event.recurrencePhrase || ""
+      event.recurrencePhrase || "",
     );
     console.log(dates);
     let nbOccurrence = 0;
@@ -509,7 +509,7 @@ export class ListOccurencesComponent implements OnInit {
         dateFin =
           format(
             addDays(parseISO(dateHeureDeb.split(" ")[0]), 1),
-            "yyyy-MM-dd"
+            "yyyy-MM-dd",
           ) +
           " " +
           heureFin;
@@ -525,7 +525,7 @@ export class ListOccurencesComponent implements OnInit {
             event.quart,
             dateFin,
             dateFinRecurrence,
-            event.recurrencePhrase
+            event.recurrencePhrase,
           )
           .subscribe((response) => {
             this.ngOnInit();
@@ -541,7 +541,7 @@ export class ListOccurencesComponent implements OnInit {
             dateFin,
             0,
             dateFinRecurrence,
-            event.recurrencePhrase
+            event.recurrencePhrase,
           )
           .subscribe((response) => {
             this.ngOnInit();
@@ -601,17 +601,17 @@ export class ListOccurencesComponent implements OnInit {
                   .updateFinRecurrenceActionCalendrier(
                     event.idAction,
                     dateDebutSupp,
-                    event.quart
+                    event.quart,
                   )
                   .subscribe((response) => {
                     this.popupService.alertSuccessForm(
-                      "L'occurence a bien été supprimé !"
+                      "L'occurence a bien été supprimé !",
                     );
                     this.ngOnInit();
                   });
               } else {
                 this.popupService.alertErrorForm(
-                  "Erreur lors de la suppression de l'occurence...."
+                  "Erreur lors de la suppression de l'occurence....",
                 );
               }
             });
@@ -624,17 +624,17 @@ export class ListOccurencesComponent implements OnInit {
                   .updateFinRecurrenceZoneCalendrier(
                     event.idZone,
                     dateDebutSupp,
-                    event.quart
+                    event.quart,
                   )
                   .subscribe((response) => {
                     this.popupService.alertSuccessForm(
-                      "L'occurence a bien été supprimé !"
+                      "L'occurence a bien été supprimé !",
                     );
                     this.ngOnInit();
                   });
               } else {
                 this.popupService.alertErrorForm(
-                  "Erreur lors de la suppression de l'occurence...."
+                  "Erreur lors de la suppression de l'occurence....",
                 );
               }
             });

@@ -23,7 +23,7 @@ export class cahierQuartService {
   constructor(
     private http: HttpClient,
     private idUsineService: idUsineService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
   ) {
     this.httpClient = http;
     this.idUsine = this.idUsineService.getIdUsine();
@@ -151,7 +151,7 @@ export class cahierQuartService {
     idZone: number,
     poste: string,
     heure_deb: string,
-    heure_fin: string
+    heure_fin: string,
   ) {
     const requete =
       "https://" +
@@ -181,7 +181,7 @@ export class cahierQuartService {
     idUser: number,
     idEquipe: number,
     typeInfo: string,
-    valueInfo: string
+    valueInfo: string,
   ) {
     valueInfo = valueInfo.replace("'", "''");
     const requete =
@@ -401,7 +401,7 @@ export class cahierQuartService {
     dateFin: string,
     description: string,
     forQuart: number,
-    maillist: string
+    maillist: string,
   ) {
     titre = encodeURIComponent(titre);
     description = encodeURIComponent(description);
@@ -440,7 +440,7 @@ export class cahierQuartService {
     dateFin: string,
     idActu: number,
     description: string,
-    forQuart: number
+    forQuart: number,
   ) {
     titre = encodeURIComponent(titre);
     description = encodeURIComponent(description);
@@ -548,7 +548,7 @@ export class cahierQuartService {
     dateDeb: string,
     dateFin: string,
     titre: string,
-    importance: number
+    importance: number,
   ) {
     titre = encodeURIComponent(titre);
     const requete =
@@ -598,7 +598,7 @@ export class cahierQuartService {
     cause: string,
     description: string,
     consigne: number,
-    demandeTravaux: number
+    demandeTravaux: number,
   ) {
     titre = encodeURIComponent(titre);
     groupementGMAO = encodeURIComponent(groupementGMAO);
@@ -662,7 +662,7 @@ export class cahierQuartService {
     description: string,
     consigne: number,
     demandeTravaux: number,
-    idEvenement: number
+    idEvenement: number,
   ) {
     titre = encodeURIComponent(titre);
     groupementGMAO = encodeURIComponent(groupementGMAO);
@@ -746,7 +746,7 @@ export class cahierQuartService {
     titre: string,
     groupementGMAO: string,
     equipementGMAO: string,
-    importance: number
+    importance: number,
   ) {
     titre = encodeURIComponent(titre);
 
@@ -931,7 +931,7 @@ export class cahierQuartService {
     quart: number,
     dateFin: string,
     dateFinReccurrence: any,
-    recurrencePhrase = ""
+    recurrencePhrase = "",
   ) {
     const requete =
       "https://" +
@@ -966,7 +966,7 @@ export class cahierQuartService {
     dateFin: string,
     termine: number,
     dateFinReccurrence: any,
-    recurrencePhrase = ""
+    recurrencePhrase = "",
   ) {
     const requete =
       "https://" +
@@ -1000,7 +1000,7 @@ export class cahierQuartService {
     idAction: number,
     dateDeb: string,
     quart: number,
-    dateFin: string
+    dateFin: string,
   ) {
     const requete =
       "https://" +
@@ -1214,7 +1214,7 @@ export class cahierQuartService {
     nom: string,
     dateDeb: string,
     dateFin: string,
-    idAction: number
+    idAction: number,
   ) {
     nom = encodeURIComponent(nom);
     const requete =
@@ -1697,7 +1697,7 @@ export class cahierQuartService {
   updateFinRecurrenceActionCalendrier(
     idAction: number,
     dateDeb: string,
-    quart: number
+    quart: number,
   ) {
     const requete =
       "https://" +
@@ -1720,7 +1720,7 @@ export class cahierQuartService {
   updateFinRecurrenceZoneCalendrier(
     idZone: number,
     dateDeb: string,
-    quart: number
+    quart: number,
   ) {
     const requete =
       "https://" +
