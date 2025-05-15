@@ -44,21 +44,29 @@ export class DepassementsComponent implements OnInit {
     private datePipe: DatePipe,
     private route: ActivatedRoute,
     private router: Router,
-    @Optional() @Inject(MAT_DIALOG_DATA) public data?: depassement,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data?: depassement
   ) {
     if (this.data) {
       this.edition = true;
       this.depassement = this.data;
       this.depassement.date_heure_debut =
         this.datePipe.transform(
-          this.depassement.date_heure_debut,
+          new Date(this.depassement.date_heure_debut),
           "yyyy-MM-ddTHH:mm:ss",
+          "UTC"
         ) || "";
       this.depassement.date_heure_fin =
         this.datePipe.transform(
-          this.depassement.date_heure_fin,
+          new Date(this.depassement.date_heure_fin),
           "yyyy-MM-ddTHH:mm:ss",
+          "UTC"
         ) || "";
+
+      console.log(
+        "Date de début transformée :",
+        this.depassement.date_heure_debut
+      );
+      console.log("Date de fin transformée :", this.depassement.date_heure_fin);
     }
   }
 
@@ -99,18 +107,18 @@ export class DepassementsComponent implements OnInit {
     }
 
     const selectedDepassement = this.choixDepassementsTable.find(
-      (dep) => dep.nom === this.depassement.choixDepassements,
+      (dep) => dep.nom === this.depassement.choixDepassements
     );
 
     const associations = this.depassementsProduitsTable.filter(
       (association) =>
-        association.idChoixDepassements === selectedDepassement?.id,
+        association.idChoixDepassements === selectedDepassement?.id
     );
 
     return this.choixDepassementsProduitsTable.filter((produit) =>
       associations.some(
-        (association) => association.idChoixDepassementsProduits === produit.id,
-      ),
+        (association) => association.idChoixDepassementsProduits === produit.id
+      )
     );
   }
 
@@ -122,14 +130,14 @@ export class DepassementsComponent implements OnInit {
       const transformedDate = this.datePipe.transform(
         new Date(
           new Date(this.depassement.date_heure_debut).getTime() +
-            minutes * 60000,
+            minutes * 60000
         ),
-        "yyyy-MM-ddTHH:mm:ss",
+        "yyyy-MM-ddTHH:mm:ss"
       );
       this.depassement.date_heure_fin = transformedDate ? transformedDate : "";
     } else {
       this.popupService.alertErrorForm(
-        "Veuillez d'abord choisir une date de début.",
+        "Veuillez d'abord choisir une date de début."
       );
     }
   }
@@ -164,13 +172,21 @@ export class DepassementsComponent implements OnInit {
           },
           () => {
             this.popupService.alertErrorForm(
-              "Erreur lors de l'ajout du depassement.",
+              "Erreur lors de l'ajout du depassement."
             );
-          },
+          }
         );
       }
     } else {
       this.popupService.alertErrorForm("Veuillez remplir tous les champs.");
+    }
+  }
+
+  close() {
+    if (!this.edition) {
+      this.router.navigate(["/saisie/listDepassements"]);
+    } else {
+      this.dialogRef.close();
     }
   }
 }

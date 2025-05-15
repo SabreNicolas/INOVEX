@@ -1,4 +1,4 @@
-<div id="page">
+<div id="page" class="container-fluid bg-dark">
   <!--Filtres de recherche-->
   <div class="form-group">
     <h5><label for="choixDepassement">Filtres :</label></h5>
@@ -166,7 +166,7 @@
             >
               Valider
             </button>
-            <button class="btn btn-danger btn-lg" routerLink="/">
+            <button class="btn btn-danger btn-lg" (click)="close()">
               Annuler
             </button>
           </div>

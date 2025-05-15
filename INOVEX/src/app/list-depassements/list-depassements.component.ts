@@ -29,7 +29,7 @@ export class ListDepassementsComponent implements OnInit {
   constructor(
     private depassementsService: depassementsService,
     private dialog: MatDialog,
-    private PopupSerivce: PopupService,
+    private PopupSerivce: PopupService
   ) {}
 
   ngOnInit(): void {
@@ -61,7 +61,7 @@ export class ListDepassementsComponent implements OnInit {
     const sortedDepassements = [...this.listeDepassements].sort(
       (a, b) =>
         a.date_heure_debut.localeCompare(b.date_heure_debut) ||
-        a.date_heure_fin.localeCompare(b.date_heure_fin),
+        a.date_heure_fin.localeCompare(b.date_heure_fin)
     );
 
     sortedDepassements.forEach((dep) => {
@@ -82,7 +82,7 @@ export class ListDepassementsComponent implements OnInit {
       // Calculer la durée du dépassement en minutes
       const duration = this.calculateDuration(
         dep.date_heure_debut,
-        dep.date_heure_fin,
+        dep.date_heure_fin
       );
 
       // Ajouter à la somme existante ou créer une nouvelle entrée
@@ -103,7 +103,7 @@ export class ListDepassementsComponent implements OnInit {
     const startDate = new Date(start);
     const endDate = new Date(end);
     const diffMs = endDate.getTime() - startDate.getTime();
-    return diffMs > 0 ? diffMs / 60000 : 0; // convertir ms en minutes
+    return diffMs > 0 ? diffMs / 3600000 : 0; // convertir ms en heures
   }
 
   getDepassements() {
@@ -115,7 +115,7 @@ export class ListDepassementsComponent implements OnInit {
           (a, b) =>
             a.ligne.localeCompare(b.ligne) ||
             a.choixDepassements.localeCompare(b.choixDepassements) ||
-            a.date_heure_debut.localeCompare(b.date_heure_debut),
+            a.date_heure_debut.localeCompare(b.date_heure_debut)
         );
         this.getTotaux();
       });
@@ -126,17 +126,17 @@ export class ListDepassementsComponent implements OnInit {
       const now = new Date();
       this.dateDeb = format(
         new Date(now.getFullYear(), now.getMonth() - 1, 1),
-        "yyyy-MM-dd",
+        "yyyy-MM-dd"
       );
       this.dateFin = format(
         new Date(now.getFullYear(), now.getMonth(), 0),
-        "yyyy-MM-dd",
+        "yyyy-MM-dd"
       );
     } else if (periode === "currentMonth") {
       this.dateDeb = format(new Date(new Date().setDate(1)), "yyyy-MM-dd");
       this.dateFin = format(
         new Date(new Date().setMonth(new Date().getMonth() + 1, 1)),
-        "yyyy-MM-dd",
+        "yyyy-MM-dd"
       );
     }
     if (this.dateDeb !== "" && this.dateFin !== "") {
@@ -148,7 +148,7 @@ export class ListDepassementsComponent implements OnInit {
             (a, b) =>
               a.ligne.localeCompare(b.ligne) ||
               a.choixDepassements.localeCompare(b.choixDepassements) ||
-              a.date_heure_debut.localeCompare(b.date_heure_debut),
+              a.date_heure_debut.localeCompare(b.date_heure_debut)
           );
           this.getTotaux();
         });
@@ -169,8 +169,6 @@ export class ListDepassementsComponent implements OnInit {
   openModal(depassement: depassement) {
     this.dialog
       .open(DepassementsComponent, {
-        width: "90%",
-        height: "90%",
         data: depassement,
       })
       .afterClosed()
