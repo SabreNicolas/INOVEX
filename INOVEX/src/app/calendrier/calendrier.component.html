@@ -24,6 +24,7 @@
             class="form-control w-50"
             placeholder="Date de début"
             name="dateDeb"
+            [attr.min]="today | date:'yyyy-MM-dd'"
             [(ngModel)]="dateDeb"
             (ngModelChange)="getJourOccurrenceMois($event)"
           />
@@ -257,6 +258,7 @@
           placeholder="Date de début"
           name="dateDeb"
           [(ngModel)]="dateDeb"
+          [attr.min]="today | date:'yyyy-MM-dd'"
         />
         <button
           class="btn"
@@ -275,7 +277,8 @@
       <div *ngIf="setRepetition == true">
         <p
           class="note mb-0 me-2"
-          *ngIf="!(repeterChaque >= 2 && periodeReccurence === 'jour')"
+          *ngIf="!(repeterChaque >= 2 && periodeReccurence === 'jour') && 
+            periodeReccurence !== 'mois'"
         >
           A lieu
           {{
@@ -288,6 +291,20 @@
               ? "toutes les " + repeterChaque + " " + periodeReccurence
               : ""
           }}
+          jusqu'au {{ dateFin }}
+        </p>
+        <p
+          class="note mb-0 me-2"
+          *ngIf="periodeReccurence === 'mois' && dateDeb != undefined"
+        >
+          A lieu tout les
+          <span *ngIf="radioMois === 'occurenceMois'">
+            {{ occurenceMois }}{{ occurenceMois == 1 ? "er" : "ème" }}
+            {{ jourMois }} du mois
+          </span>
+          <span *ngIf="radioMois === 'dateMois'">
+            {{ numeroJour }} du mois
+          </span>
           jusqu'au {{ dateFin }}
         </p>
         <p

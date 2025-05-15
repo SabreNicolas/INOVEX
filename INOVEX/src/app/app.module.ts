@@ -117,6 +117,7 @@ import { MatInputModule } from "@angular/material/input";
 import { PreventDoubleClickDirective } from "./prevent-double-click";
 import { MatAccordion, MatExpansionModule } from "@angular/material/expansion";
 import { ListActionsEnregistreesComponent } from "./list-actions-enregistrees/list-actions-enregistrees.component";
+import { ListOccurencesComponent } from './list-occurences/list-occurences.component';
 import { ChoixDepassementsComponent } from "./choix-depassements/choix-depassements.component";
 import { depassementsService } from "./services/depassements.service";
 import { DepassementsComponent } from "./depassements/depassements.component";
@@ -215,6 +216,7 @@ class CustomDateFormatter extends CalendarNativeDateFormatter {
     RecapRondeListeComponent,
     PreventDoubleClickDirective,
     ListActionsEnregistreesComponent,
+    ListOccurencesComponent,
     ChoixDepassementsComponent,
     DepassementsComponent,
     ListDepassementsComponent,

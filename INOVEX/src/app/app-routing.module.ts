@@ -73,10 +73,12 @@ import { LiensExternesComponent } from "./liens-externes/liens-externes.componen
 import { RecapRondePrecedenteComponent } from "./recap-ronde-precedente/recap-ronde-precedente.component";
 import { RecapRondeListeComponent } from "./recap-ronde-liste/recap-ronde-liste.component";
 import { ListActionsEnregistreesComponent } from "./list-actions-enregistrees/list-actions-enregistrees.component";
+import { ListOccurencesComponent } from "./list-occurences/list-occurences.component";
 import { RepriseRondeComponent } from "./reprise-ronde/reprise-ronde.component";
 import { DepassementsComponent } from "./depassements/depassements.component";
 import { ListDepassementsComponent } from "./list-depassements/list-depassements.component";
 import { ChoixDepassementsComponent } from "./choix-depassements/choix-depassements.component";
+
 
 const routes: Routes = [
   {
@@ -331,6 +333,12 @@ const routes: Routes = [
         canActivate: [AuthGuard],
         component: ListActionsEnregistreesComponent,
       },
+      {
+      
+        path: 'list-occurences',
+        canActivate: [AuthGuard],
+        component: ListOccurencesComponent,
+    },
     ],
   },
 
