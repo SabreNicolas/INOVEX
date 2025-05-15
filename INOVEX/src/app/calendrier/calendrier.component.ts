@@ -101,7 +101,7 @@ export class CalendrierComponent implements OnInit {
     private popupService: PopupService,
     private rondierService: rondierService,
     public cahierQuartService: cahierQuartService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
   ) {
     this.listeJours = [];
     this.tabAction = [];
@@ -210,7 +210,7 @@ export class CalendrierComponent implements OnInit {
               eventP.date_heure_debut.split("-")[2].split("T")[0],
               eventP.date_heure_debut.split("-")[2].split("T")[1].split(":")[0],
               0,
-              0
+              0,
             ),
             end: new Date(
               eventP.date_heure_fin.split("-")[0],
@@ -218,7 +218,7 @@ export class CalendrierComponent implements OnInit {
               eventP.date_heure_fin.split("-")[2].split("T")[0],
               eventP.date_heure_fin.split("-")[2].split("T")[1].split(":")[0],
               0,
-              0
+              0,
             ),
             title: texte,
             allDay: false,
@@ -256,7 +256,7 @@ export class CalendrierComponent implements OnInit {
             event.date_heure_debut.split("-")[2].split("T")[0],
             event.date_heure_debut.split("-")[2].split("T")[1].split(":")[0],
             0,
-            0
+            0,
           ),
           end: new Date(
             event.date_heure_fin.split("-")[0],
@@ -264,7 +264,7 @@ export class CalendrierComponent implements OnInit {
             event.date_heure_fin.split("-")[2].split("T")[0],
             event.date_heure_fin.split("-")[2].split("T")[1].split(":")[0],
             0,
-            0
+            0,
           ),
           title: event.nom,
           allDay: false,
@@ -346,7 +346,7 @@ export class CalendrierComponent implements OnInit {
     id: any,
     deleteOccurence: boolean,
     isAction: boolean,
-    dateDebutSupp: string
+    dateDebutSupp: string,
   ) {
     dateDebutSupp =
       dateDebutSupp.substring(6, 10) +
@@ -379,12 +379,12 @@ export class CalendrierComponent implements OnInit {
                       response == "Suppression des actions du calendrier OK"
                     ) {
                       this.popupService.alertSuccessForm(
-                        "L'occurence a bien été supprimé !"
+                        "L'occurence a bien été supprimé !",
                       );
                       this.ngOnInit();
                     } else {
                       this.popupService.alertErrorForm(
-                        "Erreur lors de la suppression de l'occurence...."
+                        "Erreur lors de la suppression de l'occurence....",
                       );
                     }
                   });
@@ -400,12 +400,12 @@ export class CalendrierComponent implements OnInit {
                   .subscribe((response) => {
                     if (response == "Suppression des zones du calendrier OK") {
                       this.popupService.alertSuccessForm(
-                        "L'occurence a bien été supprimé !"
+                        "L'occurence a bien été supprimé !",
                       );
                       this.ngOnInit();
                     } else {
                       this.popupService.alertErrorForm(
-                        "Erreur lors de la suppression de l'occurence...."
+                        "Erreur lors de la suppression de l'occurence....",
                       );
                     }
                   });
@@ -415,12 +415,12 @@ export class CalendrierComponent implements OnInit {
           this.cahierQuartService.deleteCalendrier(id).subscribe((response) => {
             if (response == "Suppression de l'evenement du calendrier OK") {
               this.popupService.alertSuccessForm(
-                "L'évènement a bien été supprimé !"
+                "L'évènement a bien été supprimé !",
               );
               this.ngOnInit();
             } else {
               this.popupService.alertErrorForm(
-                "Erreur lors de la suppression de l'évènement...."
+                "Erreur lors de la suppression de l'évènement....",
               );
             }
           });
@@ -577,7 +577,7 @@ export class CalendrierComponent implements OnInit {
   async createEvenementCalendrier() {
     if (this.dateDeb <= this.today) {
       this.popupService.alertErrorForm(
-        "La date de début doit être supérieure à la date actuelle !"
+        "La date de début doit être supérieure à la date actuelle !",
       );
       return;
     }
@@ -640,7 +640,7 @@ export class CalendrierComponent implements OnInit {
                   quart,
                   response.data[0].date_heure_fin,
                   0,
-                  null
+                  null,
                 )
                 .subscribe((response) => {
                   const dateFin = "";
@@ -653,7 +653,7 @@ export class CalendrierComponent implements OnInit {
           this.dateFin,
           this.repeterChaque,
           this.periodeReccurence,
-          this.listeJours
+          this.listeJours,
         );
         let nbOccurrence = 0;
         let idAction = 0;
@@ -696,7 +696,7 @@ export class CalendrierComponent implements OnInit {
             var dateFin =
               format(
                 addDays(parseISO(dateHeureDeb.split(" ")[0]), 1),
-                "yyyy-MM-dd"
+                "yyyy-MM-dd",
               ) +
               " " +
               heureFin;
@@ -726,7 +726,7 @@ export class CalendrierComponent implements OnInit {
                   quart,
                   dateFin,
                   this.dateFin,
-                  recurrencePhrase
+                  recurrencePhrase,
                 )
                 .subscribe((response) => {
                   const dateFin = "";
@@ -743,7 +743,7 @@ export class CalendrierComponent implements OnInit {
                 dateFin,
                 0,
                 this.dateFin,
-                recurrencePhrase
+                recurrencePhrase,
               )
               .subscribe((response) => {
                 const dateFin = "";
@@ -762,7 +762,7 @@ export class CalendrierComponent implements OnInit {
     dateFin: Date,
     repeterChaque: number,
     periodeReccurence: string,
-    listeJours: string[]
+    listeJours: string[],
   ): Promise<Date[]> {
     const dates: Date[] = [];
     let currentDate = new Date(dateDeb);
@@ -794,7 +794,7 @@ export class CalendrierComponent implements OnInit {
         //On récupère le numéro de la semaine de la date
         const currentWeekNumber = Math.floor(
           (currentDate.getTime() - dateDebut.getTime()) /
-            (7 * 24 * 60 * 60 * 1000)
+            (7 * 24 * 60 * 60 * 1000),
         );
         //On regarde sur le numéro de la semaine correspond à la répéter chaque
         //Utile quand on veut répéter un event toutes les 2 semaines par exemple
@@ -823,7 +823,7 @@ export class CalendrierComponent implements OnInit {
           const firstDayOfMonth = new Date(
             currentDate.getFullYear(),
             currentDate.getMonth(),
-            1
+            1,
           );
 
           let occurrenceCount = 0;
@@ -845,7 +845,7 @@ export class CalendrierComponent implements OnInit {
           currentDate = new Date(
             firstDayOfMonth.getFullYear(),
             firstDayOfMonth.getMonth() + 1,
-            1
+            1,
           );
         }
       } else {

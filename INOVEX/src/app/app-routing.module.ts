@@ -79,7 +79,6 @@ import { DepassementsComponent } from "./depassements/depassements.component";
 import { ListDepassementsComponent } from "./list-depassements/list-depassements.component";
 import { ChoixDepassementsComponent } from "./choix-depassements/choix-depassements.component";
 
-
 const routes: Routes = [
   {
     path: "saisie",
@@ -334,11 +333,10 @@ const routes: Routes = [
         component: ListActionsEnregistreesComponent,
       },
       {
-      
-        path: 'list-occurences',
+        path: "list-occurences",
         canActivate: [AuthGuard],
         component: ListOccurencesComponent,
-    },
+      },
     ],
   },
 

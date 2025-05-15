@@ -563,7 +563,7 @@ export class ListEntreeComponent implements OnInit {
       //delimiter,header,client,typedechet,dateEntree,tonnage, posEntreeSortie
       if (this.idUsine === 15) {
         //Vitré
-        this.lectureCSV(event, ";", true, 13, 20, 4, 28, 31);
+        this.lectureCSV(event, ";", true, 27, 19, 6, 11, 2);
       } else if (this.idUsine === 26) {
         //PONTEX
         this.lectureCSV(event, ";", true, 34, 19, 11, 6, 3);

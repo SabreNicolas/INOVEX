@@ -280,7 +280,7 @@ export class ListReactifsComponent implements OnInit {
       //delimiter,header,typedechet,dateEntree,tonnage, posEntreeSortie
       if (this.idUsine === 15) {
         //Vitré
-        this.lectureCSV(event, ";", true, 20, 4, 27, 31);
+        this.lectureCSV(event, ";", true, 19, 6, 11, 2);
       } else if (this.idUsine === 26) {
         //PONTEX
         this.lectureCSV(event, ";", true, 19, 11, 6, 3);
