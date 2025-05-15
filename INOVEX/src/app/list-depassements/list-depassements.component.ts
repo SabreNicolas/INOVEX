@@ -114,8 +114,8 @@ export class ListDepassementsComponent implements OnInit {
         this.listeDepassements.sort(
           (a, b) =>
             a.ligne.localeCompare(b.ligne) ||
-            a.choixDepassements.localeCompare(b.choixDepassements) ||
-            a.date_heure_debut.localeCompare(b.date_heure_debut)
+            a.date_heure_debut.localeCompare(b.date_heure_debut) ||
+            a.choixDepassements.localeCompare(b.choixDepassements)
         );
         this.getTotaux();
       });
